@@ -1,0 +1,55 @@
+[workspace]
+
+[package]
+name = "mozjpeg"
+authors = ["C2Rust"]
+version = "0.0.0"
+publish = false
+edition = "2018"
+
+[lib]
+name = "mozjpeg"
+path = "lib.rs"
+
+[[bin]]
+name = "cjpeg"
+path = "bin/cjpeg.rs"
+
+[[bin]]
+name = "djpeg"
+path = "bin/djpeg.rs"
+
+[[bin]]
+name = "jcstest"
+path = "bin/jcstest.rs"
+
+[[bin]]
+name = "jpegtran"
+path = "bin/jpegtran.rs"
+
+[[bin]]
+name = "md5cmp"
+path = "bin/md5cmp.rs"
+
+[[bin]]
+name = "rdjpgcom"
+path = "bin/rdjpgcom.rs"
+
+[[bin]]
+name = "tjbench"
+path = "bin/tjbench.rs"
+
+[[bin]]
+name = "tjexample"
+path = "bin/tjexample.rs"
+
+[[bin]]
+name = "tjunittest"
+path = "bin/tjunittest.rs"
+
+[[bin]]
+name = "wrjpgcom"
+path = "bin/wrjpgcom.rs"
+
+[dependencies]
+libc = "0.2"
