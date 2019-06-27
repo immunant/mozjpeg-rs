@@ -1,0 +1,6 @@
+.DS_Store
+/target/
+**/*.rs.bk
+
+/test_enc_*
+test_yuv*.jpg
