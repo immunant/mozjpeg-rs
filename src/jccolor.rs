@@ -288,7 +288,7 @@ pub struct my_color_converter {
     pub pub_0: jpeg_color_converter,
     pub rgb_ycc_tab: *mut JLONG,
 }
-/* *************** RGB -> YCbCr conversion: most common case **************/
+/**************** RGB -> YCbCr conversion: most common case **************/
 /*
  * YCbCr is defined per CCIR 601-1, except that Cb and Cr are
  * normalized to the range 0..MAXJSAMPLE rather than -0.5 .. 0.5.
@@ -419,7 +419,7 @@ unsafe extern "C" fn rgb_ycc_convert(
         }
     };
 }
-/* *************** Cases other than RGB -> YCbCr **************/
+/**************** Cases other than RGB -> YCbCr **************/
 /*
  * Convert some rows of samples to the JPEG colorspace.
  */

@@ -407,7 +407,7 @@ pub unsafe extern "C" fn extrgb_ycc_convert_internal(
         }
     }
 }
-/* *************** Cases other than RGB -> YCbCr **************/
+/**************** Cases other than RGB -> YCbCr **************/
 
 /*
  * Convert some rows of samples to the JPEG colorspace.

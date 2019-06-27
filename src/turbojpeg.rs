@@ -1,55 +1,7 @@
-use libc::c_char;
-use libc::c_int;
-use libc::c_short;
-use libc::c_uchar;
-use libc::c_uint;
-use libc::c_ulong;
-use libc::c_void;
-extern "C" {
-
-    /*
-     * Copyright (C)2009-2018 D. R. Commander.  All Rights Reserved.
-     * mozjpeg Modifications:
-     * Copyright (C) 2014, Mozilla Corporation.
-     *
-     * Redistribution and use in source and binary forms, with or without
-     * modification, are permitted provided that the following conditions are met:
-     *
-     * - Redistributions of source code must retain the above copyright notice,
-     *   this list of conditions and the following disclaimer.
-     * - Redistributions in binary form must reproduce the above copyright notice,
-     *   this list of conditions and the following disclaimer in the documentation
-     *   and/or other materials provided with the distribution.
-     * - Neither the name of the libjpeg-turbo Project nor the names of its
-     *   contributors may be used to endorse or promote products derived from this
-     *   software without specific prior written permission.
-     *
-     * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS",
-     * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-     * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-     * ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
-     * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-     * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-     * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-     * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-     * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-     * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-     * POSSIBILITY OF SUCH DAMAGE.
-     */
-    /* TurboJPEG/LJT:  this implements the TurboJPEG API using libjpeg or
-    libjpeg-turbo */
-    #[no_mangle]
-    pub fn jpeg_mem_dest_tj(_: j_compress_ptr, _: *mut *mut c_uchar, _: *mut c_ulong, _: boolean);
-    #[no_mangle]
-    pub fn jpeg_mem_src_tj(_: j_decompress_ptr, _: *const c_uchar, _: c_ulong);
-}
-pub use crate::cderror_h::C2RustUnnamed_92;
-pub use crate::jpeglib_h::C2RustUnnamed_2;
-pub use crate::jpeglib_h::C2RustUnnamed_3;
-/* Global structures, macros, etc. */
-pub type C2RustUnnamed_93 = c_uint;
 /*
- * Copyright (C)2009-2015, 2017 D. R. Commander.  All Rights Reserved.
+ * Copyright (C)2009-2018 D. R. Commander.  All Rights Reserved.
+ * mozjpeg Modifications:
+ * Copyright (C) 2014, Mozilla Corporation.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -75,7 +27,30 @@ pub type C2RustUnnamed_93 = c_uint;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-/* *
+
+/* TurboJPEG/LJT:  this implements the TurboJPEG API using libjpeg or
+   libjpeg-turbo */
+
+use libc::c_char;
+use libc::c_int;
+use libc::c_short;
+use libc::c_uchar;
+use libc::c_uint;
+use libc::c_ulong;
+use libc::c_void;
+extern "C" {
+    #[no_mangle]
+    pub fn jpeg_mem_dest_tj(_: j_compress_ptr, _: *mut *mut c_uchar, _: *mut c_ulong, _: boolean);
+    #[no_mangle]
+    pub fn jpeg_mem_src_tj(_: j_decompress_ptr, _: *const c_uchar, _: c_ulong);
+}
+pub use crate::cderror_h::C2RustUnnamed_92;
+pub use crate::jpeglib_h::C2RustUnnamed_2;
+pub use crate::jpeglib_h::C2RustUnnamed_3;
+/* Global structures, macros, etc. */
+pub type C2RustUnnamed_93 = c_uint;
+
+/**
  * @addtogroup TurboJPEG
  * TurboJPEG API.  This API provides an interface for generating, decoding, and
  * transforming planar YUV and JPEG images in memory.
@@ -111,10 +86,14 @@ pub type C2RustUnnamed_93 = c_uint;
  *
  * @{
  */
-/* *
+
+
+/**
  * The number of chrominance subsampling options
  */
-/* *
+pub const TJ_NUMSAMP: c_int = 6i32;
+
+/**
  * Chrominance subsampling options.
  * When pixels are converted from RGB to YCbCr (see #TJCS_YCbCr) or from CMYK
  * to YCCK (see #TJCS_YCCK) as part of the JPEG compression process, some of
@@ -124,39 +103,39 @@ pub type C2RustUnnamed_93 = c_uint;
  * small changes in color.)  This is called "chrominance subsampling".
  */
 pub type TJSAMP = c_uint;
-/* *
+/**
  * The number of pixel formats
  */
-/* *
+/**
  * Pixel formats
  */
 pub type TJPF = c_int;
-/* *
+/**
  * The number of transform operations
  */
-/* *
+/**
  * Transform operations for #tjTransform()
  */
 pub type TJXOP = c_uint;
-/* *
+/**
  * This option will prevent #tjTransform() from outputting a JPEG image for
  * this particular transform (this can be used in conjunction with a custom
  * filter to capture the transformed DCT coefficients without transcoding
  * them.)
  */
-/* *
+/**
  * This option will enable progressive entropy coding in the output image
  * generated by this particular transform.  Progressive entropy coding will
  * generally improve compression relative to baseline entropy coding (the
  * default), but it will reduce compression and decompression performance
  * considerably.
  */
-/* *
+/**
  * This option will prevent #tjTransform() from copying any extra markers
  * (including EXIF and ICC profile data) from the source image to the output
  * image.
  */
-/* *
+/**
  * Scaling factor
  */
 
@@ -166,7 +145,7 @@ pub struct tjscalingfactor {
     pub num: c_int,
     pub denom: c_int,
 }
-/* *
+/**
  * Cropping region
  */
 
@@ -178,7 +157,7 @@ pub struct tjregion {
     pub w: c_int,
     pub h: c_int,
 }
-/* *
+/**
  * Lossless transform
  */
 
@@ -200,23 +179,23 @@ pub struct tjtransform {
         ) -> c_int,
     >,
 }
-/* *
+/**
  * TurboJPEG instance handle
  */
 pub type tjhandle = *mut c_void;
 use libc;
 
-/* *
+/**
  * The number of JPEG colorspaces
  */
-/* *
+/**
  * JPEG colorspaces
  */
 pub type TJCS = c_uint;
-/* *
+/**
  * The number of error codes
  */
-/* *
+/**
  * Error codes
  */
 pub type TJERR = c_uint;
@@ -328,7 +307,7 @@ pub struct my_error_mgr {
 }
 
 pub type my_error_ptr = *mut my_error_mgr;
-/* *
+/**
  * 4:1:1 chrominance subsampling.  The JPEG or YUV image will contain one
  * chrominance component for every 4x1 block of pixels in the source image.
  * JPEG images compressed with 4:1:1 subsampling will be almost exactly the
@@ -340,38 +319,38 @@ pub type my_error_ptr = *mut my_error_mgr;
  * @note 4:1:1 subsampling is not fully accelerated in libjpeg-turbo.
  */
 pub const TJSAMP_411: TJSAMP = 5;
-/* *
+/**
  * 4:4:0 chrominance subsampling.  The JPEG or YUV image will contain one
  * chrominance component for every 1x2 block of pixels in the source image.
  *
  * @note 4:4:0 subsampling is not fully accelerated in libjpeg-turbo.
  */
 pub const TJSAMP_440: TJSAMP = 4;
-/* *
+/**
  * Grayscale.  The JPEG or YUV image will contain no chrominance components.
  */
 pub const TJSAMP_GRAY: TJSAMP = 3;
-/* *
+/**
  * 4:2:0 chrominance subsampling.  The JPEG or YUV image will contain one
  * chrominance component for every 2x2 block of pixels in the source image.
  */
 pub const TJSAMP_420: TJSAMP = 2;
-/* *
+/**
  * 4:2:2 chrominance subsampling.  The JPEG or YUV image will contain one
  * chrominance component for every 2x1 block of pixels in the source image.
  */
 pub const TJSAMP_422: TJSAMP = 1;
-/* *
+/**
  * 4:4:4 chrominance subsampling (no chrominance subsampling).  The JPEG or
  * YUV image will contain one chrominance component for every pixel in the
  * source image.
  */
 pub const TJSAMP_444: TJSAMP = 0;
-/* *
+/**
  * Unknown pixel format.  Currently this is only used by #tjLoadImage().
  */
 pub const TJPF_UNKNOWN: TJPF = -1;
-/* *
+/**
  * CMYK pixel format.  Unlike RGB, which is an additive color model used
  * primarily for display, CMYK (Cyan/Magenta/Yellow/Key) is a subtractive
  * color model used primarily for printing.  In the CMYK color model, the
@@ -387,128 +366,128 @@ pub const TJPF_UNKNOWN: TJPF = -1;
  * JPEG images into CMYK pixels.
  */
 pub const TJPF_CMYK: TJPF = 11;
-/* *
+/**
  * ARGB pixel format.  This is the same as @ref TJPF_XRGB, except that when
  * decompressing, the X component is guaranteed to be 0xFF, which can be
  * interpreted as an opaque alpha channel.
  */
 pub const TJPF_ARGB: TJPF = 10;
-/* *
+/**
  * ABGR pixel format.  This is the same as @ref TJPF_XBGR, except that when
  * decompressing, the X component is guaranteed to be 0xFF, which can be
  * interpreted as an opaque alpha channel.
  */
 pub const TJPF_ABGR: TJPF = 9;
-/* *
+/**
  * BGRA pixel format.  This is the same as @ref TJPF_BGRX, except that when
  * decompressing, the X component is guaranteed to be 0xFF, which can be
  * interpreted as an opaque alpha channel.
  */
 pub const TJPF_BGRA: TJPF = 8;
-/* *
+/**
  * RGBA pixel format.  This is the same as @ref TJPF_RGBX, except that when
  * decompressing, the X component is guaranteed to be 0xFF, which can be
  * interpreted as an opaque alpha channel.
  */
 pub const TJPF_RGBA: TJPF = 7;
-/* *
+/**
  * Grayscale pixel format.  Each 1-byte pixel represents a luminance
  * (brightness) level from 0 to 255.
  */
 pub const TJPF_GRAY: TJPF = 6;
-/* *
+/**
  * XRGB pixel format.  The red, green, and blue components in the image are
  * stored in 4-byte pixels in the order B, G, R from highest to lowest byte
  * address within each pixel.  The X component is ignored when compressing
  * and undefined when decompressing.
  */
 pub const TJPF_XRGB: TJPF = 5;
-/* *
+/**
  * XBGR pixel format.  The red, green, and blue components in the image are
  * stored in 4-byte pixels in the order R, G, B from highest to lowest byte
  * address within each pixel.  The X component is ignored when compressing
  * and undefined when decompressing.
  */
 pub const TJPF_XBGR: TJPF = 4;
-/* *
+/**
  * BGRX pixel format.  The red, green, and blue components in the image are
  * stored in 4-byte pixels in the order B, G, R from lowest to highest byte
  * address within each pixel.  The X component is ignored when compressing
  * and undefined when decompressing.
  */
 pub const TJPF_BGRX: TJPF = 3;
-/* *
+/**
  * RGBX pixel format.  The red, green, and blue components in the image are
  * stored in 4-byte pixels in the order R, G, B from lowest to highest byte
  * address within each pixel.  The X component is ignored when compressing
  * and undefined when decompressing.
  */
 pub const TJPF_RGBX: TJPF = 2;
-/* *
+/**
  * BGR pixel format.  The red, green, and blue components in the image are
  * stored in 3-byte pixels in the order B, G, R from lowest to highest byte
  * address within each pixel.
  */
 pub const TJPF_BGR: TJPF = 1;
-/* *
+/**
  * RGB pixel format.  The red, green, and blue components in the image are
  * stored in 3-byte pixels in the order R, G, B from lowest to highest byte
  * address within each pixel.
  */
 pub const TJPF_RGB: TJPF = 0;
-/* *
+/**
  * Rotate image counter-clockwise by 90 degrees.  This transform is imperfect
  * if there are any partial MCU blocks on the right edge (see
  * #TJXOPT_PERFECT.)
  */
 pub const TJXOP_ROT270: TJXOP = 7;
-/* *
+/**
  * Rotate image 180 degrees.  This transform is imperfect if there are any
  * partial MCU blocks in the image (see #TJXOPT_PERFECT.)
  */
 pub const TJXOP_ROT180: TJXOP = 6;
-/* *
+/**
  * Rotate image clockwise by 90 degrees.  This transform is imperfect if
  * there are any partial MCU blocks on the bottom edge (see
  * #TJXOPT_PERFECT.)
  */
 pub const TJXOP_ROT90: TJXOP = 5;
-/* *
+/**
  * Transverse transpose image (flip/mirror along upper right to lower left
  * axis.)  This transform is imperfect if there are any partial MCU blocks in
  * the image (see #TJXOPT_PERFECT.)
  */
 pub const TJXOP_TRANSVERSE: TJXOP = 4;
-/* *
+/**
  * Transpose image (flip/mirror along upper left to lower right axis.)  This
  * transform is always perfect.
  */
 pub const TJXOP_TRANSPOSE: TJXOP = 3;
-/* *
+/**
  * Flip (mirror) image vertically.  This transform is imperfect if there are
  * any partial MCU blocks on the bottom edge (see #TJXOPT_PERFECT.)
  */
 pub const TJXOP_VFLIP: TJXOP = 2;
-/* *
+/**
  * Flip (mirror) image horizontally.  This transform is imperfect if there
  * are any partial MCU blocks on the right edge (see #TJXOPT_PERFECT.)
  */
 pub const TJXOP_HFLIP: TJXOP = 1;
-/* *
+/**
  * Do not transform the position of the image pixels
  */
 pub const TJXOP_NONE: TJXOP = 0;
-/* *
+/**
  * Pixel size (in bytes) for a given pixel format
  */
 pub static mut tjPixelSize: [c_int; 12] = [
     3i32, 3i32, 4i32, 4i32, 4i32, 4i32, 1i32, 4i32, 4i32, 4i32, 4i32, 4i32,
 ];
-/* *
+/**
  * The uncompressed source/destination image is stored in bottom-up (Windows,
  * OpenGL) order, not top-down (X11) order.
  */
-/* *
+/**
  * When decompressing an image that was compressed using chrominance
  * subsampling, use the fastest chrominance upsampling algorithm available in
  * the underlying codec.  The default is to use smooth upsampling, which
@@ -516,14 +495,14 @@ pub static mut tjPixelSize: [c_int; 12] = [
  * order to reduce upsampling artifacts in the decompressed image.
  */
 pub const TJFLAG_FASTUPSAMPLE: c_int = 256i32;
-/* *
+/**
  * Disable buffer (re)allocation.  If passed to one of the JPEG compression or
  * transform functions, this flag will cause those functions to generate an
  * error if the JPEG image buffer is invalid or too small rather than
  * attempting to allocate or reallocate that buffer.  This reproduces the
  * behavior of earlier versions of TurboJPEG.
  */
-/* *
+/**
  * Use the fastest DCT/IDCT algorithm available in the underlying codec.  The
  * default if this flag is not specified is implementation-specific.  For
  * example, the implementation of TurboJPEG for libjpeg[-turbo] uses the fast
@@ -532,7 +511,7 @@ pub const TJFLAG_FASTUPSAMPLE: c_int = 256i32;
  * when decompressing, because this has been shown to have a larger effect.
  */
 pub const TJFLAG_FASTDCT: c_int = 2048i32;
-/* *
+/**
  * Use the most accurate DCT/IDCT algorithm available in the underlying codec.
  * The default if this flag is not specified is implementation-specific.  For
  * example, the implementation of TurboJPEG for libjpeg[-turbo] uses the fast
@@ -541,7 +520,7 @@ pub const TJFLAG_FASTDCT: c_int = 2048i32;
  * when decompressing, because this has been shown to have a larger effect.
  */
 pub const TJFLAG_ACCURATEDCT: c_int = 4096i32;
-/* *
+/**
  * This option will cause #tjTransform() to return an error if the transform is
  * not perfect.  Lossless transforms operate on MCU blocks, whose size depends
  * on the level of chrominance subsampling used (see #tjMCUWidth
@@ -553,30 +532,30 @@ pub const TJFLAG_ACCURATEDCT: c_int = 4096i32;
  * that cannot be transformed will be left in place, which will create
  * odd-looking strips on the right or bottom edge of the image.
  */
-/* *
+/**
  * This option will cause #tjTransform() to discard any partial MCU blocks that
  * cannot be transformed.
  */
 pub const TJXOPT_TRIM: c_int = 2i32;
-/* *
+/**
  * This option will enable lossless cropping.  See #tjTransform() for more
  * information.
  */
 pub const TJXOPT_CROP: c_int = 4i32;
-/* *
+/**
  * This option will discard the color data in the input image and produce
  * a grayscale output image.
  */
 pub const TJXOPT_GRAY: c_int = 8i32;
-/* *
+/**
  * Pad the given width to the nearest 32-bit boundary
  */
-/* *
+/**
  * Compute the scaled value of <tt>dimension</tt> using the given scaling
  * factor.  This macro performs the integer equivalent of <tt>ceil(dimension *
  * scalingFactor)</tt>.
  */
-/* *
+/**
  * Create a TurboJPEG compressor instance.
  *
  * @return a handle to the newly-created instance, or NULL if an error
@@ -606,7 +585,7 @@ pub unsafe extern "C" fn tjInitCompress() -> tjhandle {
     );
     return _tjInitCompress(this);
 }
-/* *
+/**
  * Compress an RGB, grayscale, or CMYK image into a JPEG image.
  *
  * @param handle a handle to a TurboJPEG compressor or transformer instance
@@ -823,7 +802,7 @@ pub unsafe extern "C" fn tjCompress2(
     (*this).jerr.stopOnWarning = FALSE;
     return retval;
 }
-/* *
+/**
  * Create a TurboJPEG decompressor instance.
  *
  * @return a handle to the newly-created instance, or NULL if an error
@@ -853,7 +832,7 @@ pub unsafe extern "C" fn tjInitDecompress() -> tjhandle {
     );
     return _tjInitDecompress(this);
 }
-/* *
+/**
  * Retrieve information about a JPEG image without decompressing it.
  *
  * @param handle a handle to a TurboJPEG decompressor or transformer instance
@@ -1017,7 +996,7 @@ pub unsafe extern "C" fn tjDecompressHeader3(
     }
     return retval;
 }
-/* *
+/**
  * Returns a list of fractional scaling factors that the JPEG decompressor in
  * this implementation of TurboJPEG supports.
  *
@@ -1042,7 +1021,7 @@ pub unsafe extern "C" fn tjGetScalingFactors(
     *numscalingfactors = NUMSF;
     return sf.as_ptr() as *mut tjscalingfactor;
 }
-/* *
+/**
  * Decompress a JPEG image to an RGB, grayscale, or CMYK image.
  *
  * @param handle a handle to a TurboJPEG decompressor or transformer instance
@@ -1305,7 +1284,7 @@ pub unsafe extern "C" fn tjDecompress2(
     (*this).jerr.stopOnWarning = FALSE;
     return retval;
 }
-/* *
+/**
  * Create a new TurboJPEG transformer instance.
  *
  * @return a handle to the newly-created instance, or NULL if an error
@@ -1342,7 +1321,7 @@ pub unsafe extern "C" fn tjInitTransform() -> tjhandle {
     handle = _tjInitDecompress(this);
     return handle;
 }
-/* *
+/**
  * Losslessly transform a JPEG image into another JPEG image.  Lossless
  * transforms work by moving the raw DCT coefficients from one JPEG image
  * structure to another without altering the values of the coefficients.  While
@@ -1843,7 +1822,7 @@ pub unsafe extern "C" fn tjTransform(
     (*this).jerr.stopOnWarning = FALSE;
     return retval;
 }
-/* *
+/**
  * Destroy a TurboJPEG compressor, decompressor, or transformer instance.
  *
  * @param handle a handle to a TurboJPEG compressor, decompressor or
@@ -1880,7 +1859,7 @@ pub unsafe extern "C" fn tjDestroy(mut handle: tjhandle) -> c_int {
     free(this as *mut c_void);
     return 0i32;
 }
-/* *
+/**
  * Allocate an image buffer for use with TurboJPEG.  You should always use
  * this function to allocate the JPEG destination buffer(s) for the compression
  * and transform functions unless you are disabling automatic buffer
@@ -1897,7 +1876,7 @@ pub unsafe extern "C" fn tjDestroy(mut handle: tjhandle) -> c_int {
 pub unsafe extern "C" fn tjAlloc(mut bytes: c_int) -> *mut c_uchar {
     return malloc(bytes as c_ulong) as *mut c_uchar;
 }
-/* *
+/**
  * Load an uncompressed image from disk into memory.
  *
  * @param filename name of a file containing an uncompressed image in Windows
@@ -2147,7 +2126,7 @@ pub unsafe extern "C" fn tjLoadImage(
     }
     return dstBuf;
 }
-/* *
+/**
  * Save an uncompressed image from memory to disk.
  *
  * @param filename name of a file to which to save the uncompressed image.
@@ -2331,7 +2310,7 @@ pub unsafe extern "C" fn tjSaveImage(
 DLL boundaries except when the CRT DLL is used, and we don't use the CRT DLL
 with turbojpeg.dll for compatibility reasons.  However, these functions
 can potentially be used for other purposes by different implementations. */
-/* *
+/**
  * Free an image buffer previously allocated by TurboJPEG.  You should always
  * use this function to free JPEG destination buffer(s) that were automatically
  * (re)allocated by the compression and transform functions or that were
@@ -2347,7 +2326,7 @@ pub unsafe extern "C" fn tjFree(mut buf: *mut c_uchar) {
         free(buf as *mut c_void);
     };
 }
-/* *
+/**
  * Returns a descriptive error message explaining why the last command failed.
  *
  * @param handle a handle to a TurboJPEG compressor, decompressor, or
@@ -2368,7 +2347,7 @@ pub unsafe extern "C" fn tjGetErrorStr2(mut handle: tjhandle) -> *mut c_char {
         return errStr.as_mut_ptr();
     };
 }
-/* *
+/**
  * YCCK colorspace.  YCCK (AKA "YCbCrK") is not an absolute colorspace but
  * rather a mathematical transformation of CMYK designed solely for storage
  * and transmission.  It is to CMYK as YCbCr is to RGB.  CMYK pixels can be
@@ -2378,14 +2357,14 @@ pub unsafe extern "C" fn tjGetErrorStr2(mut handle: tjhandle) -> *mut c_char {
  * decompressed to CMYK pixels.
  */
 pub const TJCS_YCCK: TJCS = 4;
-/* *
+/**
  * CMYK colorspace.  When compressing the JPEG image, the C, M, Y, and K
  * components in the source image are reordered into image planes, but no
  * colorspace conversion or subsampling is performed.  CMYK JPEG images can
  * only be decompressed to CMYK pixels.
  */
 pub const TJCS_CMYK: TJCS = 3;
-/* *
+/**
  * Grayscale colorspace.  The JPEG image retains only the luminance data (Y
  * component), and any color data from the source image is discarded.
  * Grayscale JPEG images can be compressed from and decompressed to any of
@@ -2393,7 +2372,7 @@ pub const TJCS_CMYK: TJCS = 3;
  * to YUV planar images.
  */
 pub const TJCS_GRAY: TJCS = 2;
-/* *
+/**
  * YCbCr colorspace.  YCbCr is not an absolute colorspace but rather a
  * mathematical transformation of RGB designed solely for storage and
  * transmission.  YCbCr images must be converted to RGB before they can
@@ -2409,7 +2388,7 @@ pub const TJCS_GRAY: TJCS = 2;
  * formats or grayscale, or they can be decompressed to YUV planar images.
  */
 pub const TJCS_YCbCr: TJCS = 1;
-/* *
+/**
  * RGB colorspace.  When compressing the JPEG image, the R, G, and B
  * components in the source image are reordered into image planes, but no
  * colorspace conversion or subsampling is performed.  RGB JPEG images can be
@@ -2417,11 +2396,11 @@ pub const TJCS_YCbCr: TJCS = 1;
  * they cannot be decompressed to YUV images.
  */
 pub const TJCS_RGB: TJCS = 0;
-/* *
+/**
  * The error was fatal and non-recoverable.
  */
 pub const TJERR_FATAL: TJERR = 1;
-/* *
+/**
  * The error was non-fatal and recoverable, but the image may still be
  * corrupt.
  */
@@ -2453,7 +2432,7 @@ pub const TJERR_WARNING: TJERR = 0;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-/* *
+/**
  * @addtogroup TurboJPEG
  * TurboJPEG API.  This API provides an interface for generating, decoding, and
  * transforming planar YUV and JPEG images in memory.
@@ -2489,11 +2468,7 @@ pub const TJERR_WARNING: TJERR = 0;
  *
  * @{
  */
-/* *
- * The number of chrominance subsampling options
- */
-pub const TJ_NUMSAMP: c_int = 6i32;
-/* *
+/**
  * MCU block width (in pixels) for a given level of chrominance subsampling.
  * MCU block sizes:
  * - 8x8 for no subsampling or grayscale
@@ -2503,7 +2478,7 @@ pub const TJ_NUMSAMP: c_int = 6i32;
  * - 32x8 for 4:1:1
  */
 pub static mut tjMCUWidth: [c_int; 6] = [8i32, 16i32, 16i32, 8i32, 8i32, 32i32];
-/* *
+/**
  * MCU block height (in pixels) for a given level of chrominance subsampling.
  * MCU block sizes:
  * - 8x8 for no subsampling or grayscale
@@ -2513,7 +2488,7 @@ pub static mut tjMCUWidth: [c_int; 6] = [8i32, 16i32, 16i32, 8i32, 8i32, 32i32];
  * - 32x8 for 4:1:1
  */
 pub static mut tjMCUHeight: [c_int; 6] = [8i32, 8i32, 16i32, 8i32, 16i32, 8i32];
-/* *
+/**
  * Red offset (in bytes) for a given pixel format.  This specifies the number
  * of bytes that the red component is offset from the start of the pixel.  For
  * instance, if a pixel of format TJ_BGRX is stored in <tt>char pixel[]</tt>,
@@ -2523,7 +2498,7 @@ pub static mut tjMCUHeight: [c_int; 6] = [8i32, 8i32, 16i32, 8i32, 16i32, 8i32];
 pub static mut tjRedOffset: [c_int; 12] = [
     0i32, 2i32, 0i32, 2i32, 3i32, 1i32, -1i32, 0i32, 2i32, 3i32, 1i32, -1i32,
 ];
-/* *
+/**
  * Green offset (in bytes) for a given pixel format.  This specifies the number
  * of bytes that the green component is offset from the start of the pixel.
  * For instance, if a pixel of format TJ_BGRX is stored in
@@ -2534,7 +2509,7 @@ pub static mut tjRedOffset: [c_int; 12] = [
 pub static mut tjGreenOffset: [c_int; 12] = [
     1i32, 1i32, 1i32, 1i32, 2i32, 2i32, -1i32, 1i32, 1i32, 2i32, 2i32, -1i32,
 ];
-/* *
+/**
  * Blue offset (in bytes) for a given pixel format.  This specifies the number
  * of bytes that the Blue component is offset from the start of the pixel.  For
  * instance, if a pixel of format TJ_BGRX is stored in <tt>char pixel[]</tt>,
@@ -2544,12 +2519,12 @@ pub static mut tjGreenOffset: [c_int; 12] = [
 pub static mut tjBlueOffset: [c_int; 12] = [
     2i32, 0i32, 2i32, 0i32, 1i32, 3i32, -1i32, 2i32, 0i32, 1i32, 3i32, -1i32,
 ];
-/* *
+/**
  * The uncompressed source/destination image is stored in bottom-up (Windows,
  * OpenGL) order, not top-down (X11) order.
  */
 pub const TJFLAG_BOTTOMUP: c_int = 2i32;
-/* *
+/**
  * Disable buffer (re)allocation.  If passed to one of the JPEG compression or
  * transform functions, this flag will cause those functions to generate an
  * error if the JPEG image buffer is invalid or too small rather than
@@ -2557,35 +2532,35 @@ pub const TJFLAG_BOTTOMUP: c_int = 2i32;
  * behavior of earlier versions of TurboJPEG.
  */
 pub const TJFLAG_NOREALLOC: c_int = 1024i32;
-/* *
+/**
  * Immediately discontinue the current compression/decompression/transform
  * operation if the underlying codec throws a warning (non-fatal error).  The
  * default behavior is to allow the operation to complete unless a fatal error
  * is encountered.
  */
 pub const TJFLAG_STOPONWARNING: c_int = 8192i32;
-/* *
+/**
  * Use progressive entropy coding in JPEG images generated by the compression
  * and transform functions.  Progressive entropy coding will generally improve
  * compression relative to baseline entropy coding (the default), but it will
  * reduce compression and decompression performance considerably.
  */
 pub const TJFLAG_PROGRESSIVE: c_int = 16384i32;
-/* *
+/**
  * This option will prevent #tjTransform() from outputting a JPEG image for
  * this particular transform (this can be used in conjunction with a custom
  * filter to capture the transformed DCT coefficients without transcoding
  * them.)
  */
 pub const TJXOPT_NOOUTPUT: c_int = 16i32;
-/* *
+/**
  * This option will enable progressive entropy coding in the output image
  * generated by this particular transform.  Progressive entropy coding will
  * generally improve compression relative to baseline entropy coding (the
  * default), but it will reduce compression and decompression performance
  * considerably.
  */
-/* *
+/**
  * This option will prevent #tjTransform() from copying any extra markers
  * (including EXIF and ICC profile data) from the source image to the output
  * image.
@@ -2594,7 +2569,7 @@ pub const TJXOPT_COPYNONE: c_int = 64i32;
 /* Deprecated functions and macros */
 /* Backward compatibility functions and macros (nothing to see here) */
 pub const TJ_GRAYSCALE: c_int = TJSAMP_GRAY as c_int;
-/* *
+/**
  * Compress a YUV planar image into a JPEG image.
  *
  * @param handle a handle to a TurboJPEG compressor or transformer instance
@@ -2738,7 +2713,7 @@ pub unsafe extern "C" fn tjCompressFromYUV(
     }
     return retval;
 }
-/* *
+/**
  * The maximum size of the buffer (in bytes) required to hold a JPEG image with
  * the given parameters.  The number of bytes returned by this function is
  * larger than the size of the uncompressed source image.  The reason for this
@@ -2793,7 +2768,7 @@ pub unsafe extern "C" fn tjBufSize(
     }
     return retval;
 }
-/* *
+/**
  * The size of the buffer (in bytes) required to hold a YUV planar image with
  * the given parameters.
  *
@@ -2849,7 +2824,7 @@ pub unsafe extern "C" fn tjBufSizeYUV2(
     }
     return retval as c_ulong;
 }
-/* *
+/**
  * Encode an RGB or grayscale image into a YUV planar image.  This function
  * uses the accelerated color conversion routines in the underlying
  * codec but does not execute any of the other steps in the JPEG compression
@@ -2983,7 +2958,7 @@ pub unsafe extern "C" fn tjEncodeYUV3(
     }
     return retval;
 }
-/* *
+/**
  * Decompress a JPEG image to a YUV planar image.  This function performs JPEG
  * decompression but leaves out the color conversion step, so a planar YUV
  * image is generated instead of an RGB image.
@@ -3187,7 +3162,7 @@ pub unsafe extern "C" fn tjDecompressToYUV2(
     (*this).jerr.stopOnWarning = FALSE;
     return retval;
 }
-/* *
+/**
  * Decode a YUV planar image into an RGB or grayscale image.  This function
  * uses the accelerated color conversion routines in the underlying
  * codec but does not execute any of the other steps in the JPEG decompression
@@ -3320,7 +3295,7 @@ pub unsafe extern "C" fn tjDecodeYUV(
     }
     return retval;
 }
-/* *
+/**
  * Returns a code indicating the severity of the last error.  See
  * @ref TJERR "Error codes".
  *
@@ -3343,11 +3318,11 @@ pub unsafe extern "C" fn tjGetErrorCode(mut handle: tjhandle) -> c_int {
 pub unsafe extern "C" fn tjGetErrorStr() -> *mut c_char {
     return errStr.as_mut_ptr();
 }
-/* *
+/**
  * The number of pixel formats
  */
 pub const TJ_NUMPF: c_int = 12i32;
-/* *
+/**
  * This option will cause #tjTransform() to return an error if the transform is
  * not perfect.  Lossless transforms operate on MCU blocks, whose size depends
  * on the level of chrominance subsampling used (see #tjMCUWidth
@@ -3360,7 +3335,7 @@ pub const TJ_NUMPF: c_int = 12i32;
  * odd-looking strips on the right or bottom edge of the image.
  */
 pub const TJXOPT_PERFECT: c_int = 1i32;
-/* *
+/**
  * This option will enable progressive entropy coding in the output image
  * generated by this particular transform.  Progressive entropy coding will
  * generally improve compression relative to baseline entropy coding (the
@@ -3378,7 +3353,7 @@ pub const TJ_420: c_int = TJSAMP_420 as c_int;
 pub const TJ_BGR: c_int = 1i32;
 pub const TJ_ALPHAFIRST: c_int = 64i32;
 pub const TJ_YUV: c_int = 512i32;
-/* *
+/**
  * Alpha offset (in bytes) for a given pixel format.  This specifies the number
  * of bytes that the Alpha component is offset from the start of the pixel.
  * For instance, if a pixel of format TJ_BGRA is stored in
@@ -4028,7 +4003,7 @@ pub unsafe extern "C" fn TJBUFSIZEYUV(
 ) -> c_ulong {
     return tjBufSizeYUV(width, height, subsamp);
 }
-/* *
+/**
  * The plane width of a YUV image plane with the given parameters.  Refer to
  * @ref YUVnotes "YUV Image Format Notes" for a description of plane width.
  *
@@ -4085,7 +4060,7 @@ pub unsafe extern "C" fn tjPlaneWidth(
     }
     return retval;
 }
-/* *
+/**
  * The plane height of a YUV image plane with the given parameters.  Refer to
  * @ref YUVnotes "YUV Image Format Notes" for a description of plane height.
  *
@@ -4142,7 +4117,7 @@ pub unsafe extern "C" fn tjPlaneHeight(
     }
     return retval;
 }
-/* *
+/**
  * The size of the buffer (in bytes) required to hold a YUV image plane with
  * the given parameters.
  *
@@ -4244,7 +4219,7 @@ pub unsafe extern "C" fn tjCompress(
     *jpegSize = size;
     return retval;
 }
-/* *
+/**
  * Encode an RGB or grayscale image into separate Y, U (Cb), and V (Cr) image
  * planes.  This function uses the accelerated color conversion routines in the
  * underlying codec but does not execute any of the other steps in the JPEG
@@ -4891,7 +4866,7 @@ pub unsafe extern "C" fn tjEncodeYUV(
         flags,
     );
 }
-/* *
+/**
  * Compress a set of Y, U (Cb), and V (Cr) image planes into a JPEG image.
  *
  * @param handle a handle to a TurboJPEG compressor or transformer instance
@@ -5477,7 +5452,7 @@ pub unsafe extern "C" fn my_read_markers(mut dinfo: j_decompress_ptr) -> c_int {
 }
 #[no_mangle]
 pub unsafe extern "C" fn my_reset_marker_reader(mut dinfo: j_decompress_ptr) {}
-/* *
+/**
  * Decode a set of Y, U (Cb), and V (Cr) image planes into an RGB or grayscale
  * image.  This function uses the accelerated color conversion routines in the
  * underlying codec but does not execute any of the other steps in the JPEG
@@ -5949,7 +5924,7 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
     (*this).jerr.stopOnWarning = FALSE;
     return retval;
 }
-/* *
+/**
  * Decompress a JPEG image into separate Y, U (Cb), and V (Cr) image
  * planes.  This function performs JPEG decompression but leaves out the color
  * conversion step, so a planar YUV image is generated instead of an RGB image.

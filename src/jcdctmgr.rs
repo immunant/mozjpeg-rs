@@ -679,7 +679,7 @@ unsafe extern "C" fn catmull_rom(
         + value3 as c_int as c_float * f2
         + tan2 as c_float * f4;
 }
-/* * Prevents visible ringing artifacts near hard edges on white backgrounds.
+/** Prevents visible ringing artifacts near hard edges on white backgrounds.
 
  1. JPEG can encode samples with higher values than it's possible to display (higher than 255 in RGB),
     and the decoder will always clamp values to 0-255. To encode 255 you can use any value >= 255,

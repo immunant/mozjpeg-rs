@@ -405,8 +405,8 @@ pub struct my_color_deconverter {
     pub Cb_g_tab: *mut JLONG,
     pub rgb_y_tab: *mut JLONG,
 }
-/* *************** YCbCr -> RGB conversion: most common case **************/
-/* ***************   RGB -> Y   conversion: less common case **************/
+/**************** YCbCr -> RGB conversion: most common case **************/
+/****************   RGB -> Y   conversion: less common case **************/
 /*
  * YCbCr is defined per CCIR 601-1, except that Cb and Cr are
  * normalized to the range 0..MAXJSAMPLE rather than -0.5 .. 0.5.
@@ -570,7 +570,7 @@ unsafe extern "C" fn ycc_rgb_convert(
         }
     };
 }
-/* *************** Cases other than YCbCr -> RGB **************/
+/**************** Cases other than YCbCr -> RGB **************/
 /*
  * Initialize for RGB->grayscale colorspace conversion.
  */
