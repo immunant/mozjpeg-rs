@@ -2,7 +2,7 @@
 
 [package]
 name = "mozjpeg"
-authors = ["C2Rust"]
+authors = ["MozJPEG & libjpeg-turbo Authors", "Stephen Crane <sjc@immunant.com>"]
 version = "0.0.0"
 publish = false
 edition = "2018"
