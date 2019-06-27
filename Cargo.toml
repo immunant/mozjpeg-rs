@@ -53,3 +53,6 @@ path = "bin/wrjpgcom.rs"
 
 [dependencies]
 libc = "0.2"
+
+[build-dependencies]
+nasm-rs = "0.1"
