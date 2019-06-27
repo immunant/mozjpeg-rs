@@ -104,19 +104,196 @@ pub const TJ_NUMSAMP: c_int = 6i32;
  */
 pub type TJSAMP = c_uint;
 /**
+ * 4:1:1 chrominance subsampling.  The JPEG or YUV image will contain one
+ * chrominance component for every 4x1 block of pixels in the source image.
+ * JPEG images compressed with 4:1:1 subsampling will be almost exactly the
+ * same size as those compressed with 4:2:0 subsampling, and in the
+ * aggregate, both subsampling methods produce approximately the same
+ * perceptual quality.  However, 4:1:1 is better able to reproduce sharp
+ * horizontal features.
+ *
+ * @note 4:1:1 subsampling is not fully accelerated in libjpeg-turbo.
+ */
+pub const TJSAMP_411: TJSAMP = 5;
+/**
+ * 4:4:0 chrominance subsampling.  The JPEG or YUV image will contain one
+ * chrominance component for every 1x2 block of pixels in the source image.
+ *
+ * @note 4:4:0 subsampling is not fully accelerated in libjpeg-turbo.
+ */
+pub const TJSAMP_440: TJSAMP = 4;
+/**
+ * Grayscale.  The JPEG or YUV image will contain no chrominance components.
+ */
+pub const TJSAMP_GRAY: TJSAMP = 3;
+/**
+ * 4:2:0 chrominance subsampling.  The JPEG or YUV image will contain one
+ * chrominance component for every 2x2 block of pixels in the source image.
+ */
+pub const TJSAMP_420: TJSAMP = 2;
+/**
+ * 4:2:2 chrominance subsampling.  The JPEG or YUV image will contain one
+ * chrominance component for every 2x1 block of pixels in the source image.
+ */
+pub const TJSAMP_422: TJSAMP = 1;
+/**
+ * 4:4:4 chrominance subsampling (no chrominance subsampling).  The JPEG or
+ * YUV image will contain one chrominance component for every pixel in the
+ * source image.
+ */
+pub const TJSAMP_444: TJSAMP = 0;
+
+/**
  * The number of pixel formats
  */
+pub const TJ_NUMPF: c_int = 12i32;
+
 /**
  * Pixel formats
  */
 pub type TJPF = c_int;
 /**
+ * Unknown pixel format.  Currently this is only used by #tjLoadImage().
+ */
+pub const TJPF_UNKNOWN: TJPF = -1;
+/**
+ * CMYK pixel format.  Unlike RGB, which is an additive color model used
+ * primarily for display, CMYK (Cyan/Magenta/Yellow/Key) is a subtractive
+ * color model used primarily for printing.  In the CMYK color model, the
+ * value of each color component typically corresponds to an amount of cyan,
+ * magenta, yellow, or black ink that is applied to a white background.  In
+ * order to convert between CMYK and RGB, it is necessary to use a color
+ * management system (CMS.)  A CMS will attempt to map colors within the
+ * printer's gamut to perceptually similar colors in the display's gamut and
+ * vice versa, but the mapping is typically not 1:1 or reversible, nor can it
+ * be defined with a simple formula.  Thus, such a conversion is out of scope
+ * for a codec library.  However, the TurboJPEG API allows for compressing
+ * CMYK pixels into a YCCK JPEG image (see #TJCS_YCCK) and decompressing YCCK
+ * JPEG images into CMYK pixels.
+ */
+pub const TJPF_CMYK: TJPF = 11;
+/**
+ * ARGB pixel format.  This is the same as @ref TJPF_XRGB, except that when
+ * decompressing, the X component is guaranteed to be 0xFF, which can be
+ * interpreted as an opaque alpha channel.
+ */
+pub const TJPF_ARGB: TJPF = 10;
+/**
+ * ABGR pixel format.  This is the same as @ref TJPF_XBGR, except that when
+ * decompressing, the X component is guaranteed to be 0xFF, which can be
+ * interpreted as an opaque alpha channel.
+ */
+pub const TJPF_ABGR: TJPF = 9;
+/**
+ * BGRA pixel format.  This is the same as @ref TJPF_BGRX, except that when
+ * decompressing, the X component is guaranteed to be 0xFF, which can be
+ * interpreted as an opaque alpha channel.
+ */
+pub const TJPF_BGRA: TJPF = 8;
+/**
+ * RGBA pixel format.  This is the same as @ref TJPF_RGBX, except that when
+ * decompressing, the X component is guaranteed to be 0xFF, which can be
+ * interpreted as an opaque alpha channel.
+ */
+pub const TJPF_RGBA: TJPF = 7;
+/**
+ * Grayscale pixel format.  Each 1-byte pixel represents a luminance
+ * (brightness) level from 0 to 255.
+ */
+pub const TJPF_GRAY: TJPF = 6;
+/**
+ * XRGB pixel format.  The red, green, and blue components in the image are
+ * stored in 4-byte pixels in the order B, G, R from highest to lowest byte
+ * address within each pixel.  The X component is ignored when compressing
+ * and undefined when decompressing.
+ */
+pub const TJPF_XRGB: TJPF = 5;
+/**
+ * XBGR pixel format.  The red, green, and blue components in the image are
+ * stored in 4-byte pixels in the order R, G, B from highest to lowest byte
+ * address within each pixel.  The X component is ignored when compressing
+ * and undefined when decompressing.
+ */
+pub const TJPF_XBGR: TJPF = 4;
+/**
+ * BGRX pixel format.  The red, green, and blue components in the image are
+ * stored in 4-byte pixels in the order B, G, R from lowest to highest byte
+ * address within each pixel.  The X component is ignored when compressing
+ * and undefined when decompressing.
+ */
+pub const TJPF_BGRX: TJPF = 3;
+/**
+ * RGBX pixel format.  The red, green, and blue components in the image are
+ * stored in 4-byte pixels in the order R, G, B from lowest to highest byte
+ * address within each pixel.  The X component is ignored when compressing
+ * and undefined when decompressing.
+ */
+pub const TJPF_RGBX: TJPF = 2;
+/**
+ * BGR pixel format.  The red, green, and blue components in the image are
+ * stored in 3-byte pixels in the order B, G, R from lowest to highest byte
+ * address within each pixel.
+ */
+pub const TJPF_BGR: TJPF = 1;
+/**
+ * RGB pixel format.  The red, green, and blue components in the image are
+ * stored in 3-byte pixels in the order R, G, B from lowest to highest byte
+ * address within each pixel.
+ */
+pub const TJPF_RGB: TJPF = 0;
+
+/**
  * The number of transform operations
  */
+pub const TJ_NUMXOP: c_int = 8;
+
 /**
  * Transform operations for #tjTransform()
  */
 pub type TJXOP = c_uint;
+/**
+ * Rotate image counter-clockwise by 90 degrees.  This transform is imperfect
+ * if there are any partial MCU blocks on the right edge (see
+ * #TJXOPT_PERFECT.)
+ */
+pub const TJXOP_ROT270: TJXOP = 7;
+/**
+ * Rotate image 180 degrees.  This transform is imperfect if there are any
+ * partial MCU blocks in the image (see #TJXOPT_PERFECT.)
+ */
+pub const TJXOP_ROT180: TJXOP = 6;
+/**
+ * Rotate image clockwise by 90 degrees.  This transform is imperfect if
+ * there are any partial MCU blocks on the bottom edge (see
+ * #TJXOPT_PERFECT.)
+ */
+pub const TJXOP_ROT90: TJXOP = 5;
+/**
+ * Transverse transpose image (flip/mirror along upper right to lower left
+ * axis.)  This transform is imperfect if there are any partial MCU blocks in
+ * the image (see #TJXOPT_PERFECT.)
+ */
+pub const TJXOP_TRANSVERSE: TJXOP = 4;
+/**
+ * Transpose image (flip/mirror along upper left to lower right axis.)  This
+ * transform is always perfect.
+ */
+pub const TJXOP_TRANSPOSE: TJXOP = 3;
+/**
+ * Flip (mirror) image vertically.  This transform is imperfect if there are
+ * any partial MCU blocks on the bottom edge (see #TJXOPT_PERFECT.)
+ */
+pub const TJXOP_VFLIP: TJXOP = 2;
+/**
+ * Flip (mirror) image horizontally.  This transform is imperfect if there
+ * are any partial MCU blocks on the right edge (see #TJXOPT_PERFECT.)
+ */
+pub const TJXOP_HFLIP: TJXOP = 1;
+/**
+ * Do not transform the position of the image pixels
+ */
+pub const TJXOP_NONE: TJXOP = 0;
+
 /**
  * This option will prevent #tjTransform() from outputting a JPEG image for
  * this particular transform (this can be used in conjunction with a custom
@@ -307,176 +484,6 @@ pub struct my_error_mgr {
 }
 
 pub type my_error_ptr = *mut my_error_mgr;
-/**
- * 4:1:1 chrominance subsampling.  The JPEG or YUV image will contain one
- * chrominance component for every 4x1 block of pixels in the source image.
- * JPEG images compressed with 4:1:1 subsampling will be almost exactly the
- * same size as those compressed with 4:2:0 subsampling, and in the
- * aggregate, both subsampling methods produce approximately the same
- * perceptual quality.  However, 4:1:1 is better able to reproduce sharp
- * horizontal features.
- *
- * @note 4:1:1 subsampling is not fully accelerated in libjpeg-turbo.
- */
-pub const TJSAMP_411: TJSAMP = 5;
-/**
- * 4:4:0 chrominance subsampling.  The JPEG or YUV image will contain one
- * chrominance component for every 1x2 block of pixels in the source image.
- *
- * @note 4:4:0 subsampling is not fully accelerated in libjpeg-turbo.
- */
-pub const TJSAMP_440: TJSAMP = 4;
-/**
- * Grayscale.  The JPEG or YUV image will contain no chrominance components.
- */
-pub const TJSAMP_GRAY: TJSAMP = 3;
-/**
- * 4:2:0 chrominance subsampling.  The JPEG or YUV image will contain one
- * chrominance component for every 2x2 block of pixels in the source image.
- */
-pub const TJSAMP_420: TJSAMP = 2;
-/**
- * 4:2:2 chrominance subsampling.  The JPEG or YUV image will contain one
- * chrominance component for every 2x1 block of pixels in the source image.
- */
-pub const TJSAMP_422: TJSAMP = 1;
-/**
- * 4:4:4 chrominance subsampling (no chrominance subsampling).  The JPEG or
- * YUV image will contain one chrominance component for every pixel in the
- * source image.
- */
-pub const TJSAMP_444: TJSAMP = 0;
-/**
- * Unknown pixel format.  Currently this is only used by #tjLoadImage().
- */
-pub const TJPF_UNKNOWN: TJPF = -1;
-/**
- * CMYK pixel format.  Unlike RGB, which is an additive color model used
- * primarily for display, CMYK (Cyan/Magenta/Yellow/Key) is a subtractive
- * color model used primarily for printing.  In the CMYK color model, the
- * value of each color component typically corresponds to an amount of cyan,
- * magenta, yellow, or black ink that is applied to a white background.  In
- * order to convert between CMYK and RGB, it is necessary to use a color
- * management system (CMS.)  A CMS will attempt to map colors within the
- * printer's gamut to perceptually similar colors in the display's gamut and
- * vice versa, but the mapping is typically not 1:1 or reversible, nor can it
- * be defined with a simple formula.  Thus, such a conversion is out of scope
- * for a codec library.  However, the TurboJPEG API allows for compressing
- * CMYK pixels into a YCCK JPEG image (see #TJCS_YCCK) and decompressing YCCK
- * JPEG images into CMYK pixels.
- */
-pub const TJPF_CMYK: TJPF = 11;
-/**
- * ARGB pixel format.  This is the same as @ref TJPF_XRGB, except that when
- * decompressing, the X component is guaranteed to be 0xFF, which can be
- * interpreted as an opaque alpha channel.
- */
-pub const TJPF_ARGB: TJPF = 10;
-/**
- * ABGR pixel format.  This is the same as @ref TJPF_XBGR, except that when
- * decompressing, the X component is guaranteed to be 0xFF, which can be
- * interpreted as an opaque alpha channel.
- */
-pub const TJPF_ABGR: TJPF = 9;
-/**
- * BGRA pixel format.  This is the same as @ref TJPF_BGRX, except that when
- * decompressing, the X component is guaranteed to be 0xFF, which can be
- * interpreted as an opaque alpha channel.
- */
-pub const TJPF_BGRA: TJPF = 8;
-/**
- * RGBA pixel format.  This is the same as @ref TJPF_RGBX, except that when
- * decompressing, the X component is guaranteed to be 0xFF, which can be
- * interpreted as an opaque alpha channel.
- */
-pub const TJPF_RGBA: TJPF = 7;
-/**
- * Grayscale pixel format.  Each 1-byte pixel represents a luminance
- * (brightness) level from 0 to 255.
- */
-pub const TJPF_GRAY: TJPF = 6;
-/**
- * XRGB pixel format.  The red, green, and blue components in the image are
- * stored in 4-byte pixels in the order B, G, R from highest to lowest byte
- * address within each pixel.  The X component is ignored when compressing
- * and undefined when decompressing.
- */
-pub const TJPF_XRGB: TJPF = 5;
-/**
- * XBGR pixel format.  The red, green, and blue components in the image are
- * stored in 4-byte pixels in the order R, G, B from highest to lowest byte
- * address within each pixel.  The X component is ignored when compressing
- * and undefined when decompressing.
- */
-pub const TJPF_XBGR: TJPF = 4;
-/**
- * BGRX pixel format.  The red, green, and blue components in the image are
- * stored in 4-byte pixels in the order B, G, R from lowest to highest byte
- * address within each pixel.  The X component is ignored when compressing
- * and undefined when decompressing.
- */
-pub const TJPF_BGRX: TJPF = 3;
-/**
- * RGBX pixel format.  The red, green, and blue components in the image are
- * stored in 4-byte pixels in the order R, G, B from lowest to highest byte
- * address within each pixel.  The X component is ignored when compressing
- * and undefined when decompressing.
- */
-pub const TJPF_RGBX: TJPF = 2;
-/**
- * BGR pixel format.  The red, green, and blue components in the image are
- * stored in 3-byte pixels in the order B, G, R from lowest to highest byte
- * address within each pixel.
- */
-pub const TJPF_BGR: TJPF = 1;
-/**
- * RGB pixel format.  The red, green, and blue components in the image are
- * stored in 3-byte pixels in the order R, G, B from lowest to highest byte
- * address within each pixel.
- */
-pub const TJPF_RGB: TJPF = 0;
-/**
- * Rotate image counter-clockwise by 90 degrees.  This transform is imperfect
- * if there are any partial MCU blocks on the right edge (see
- * #TJXOPT_PERFECT.)
- */
-pub const TJXOP_ROT270: TJXOP = 7;
-/**
- * Rotate image 180 degrees.  This transform is imperfect if there are any
- * partial MCU blocks in the image (see #TJXOPT_PERFECT.)
- */
-pub const TJXOP_ROT180: TJXOP = 6;
-/**
- * Rotate image clockwise by 90 degrees.  This transform is imperfect if
- * there are any partial MCU blocks on the bottom edge (see
- * #TJXOPT_PERFECT.)
- */
-pub const TJXOP_ROT90: TJXOP = 5;
-/**
- * Transverse transpose image (flip/mirror along upper right to lower left
- * axis.)  This transform is imperfect if there are any partial MCU blocks in
- * the image (see #TJXOPT_PERFECT.)
- */
-pub const TJXOP_TRANSVERSE: TJXOP = 4;
-/**
- * Transpose image (flip/mirror along upper left to lower right axis.)  This
- * transform is always perfect.
- */
-pub const TJXOP_TRANSPOSE: TJXOP = 3;
-/**
- * Flip (mirror) image vertically.  This transform is imperfect if there are
- * any partial MCU blocks on the bottom edge (see #TJXOPT_PERFECT.)
- */
-pub const TJXOP_VFLIP: TJXOP = 2;
-/**
- * Flip (mirror) image horizontally.  This transform is imperfect if there
- * are any partial MCU blocks on the right edge (see #TJXOPT_PERFECT.)
- */
-pub const TJXOP_HFLIP: TJXOP = 1;
-/**
- * Do not transform the position of the image pixels
- */
-pub const TJXOP_NONE: TJXOP = 0;
 /**
  * Pixel size (in bytes) for a given pixel format
  */
@@ -3318,10 +3325,6 @@ pub unsafe extern "C" fn tjGetErrorCode(mut handle: tjhandle) -> c_int {
 pub unsafe extern "C" fn tjGetErrorStr() -> *mut c_char {
     return errStr.as_mut_ptr();
 }
-/**
- * The number of pixel formats
- */
-pub const TJ_NUMPF: c_int = 12i32;
 /**
  * This option will cause #tjTransform() to return an error if the transform is
  * not perfect.  Lossless transforms operate on MCU blocks, whose size depends
