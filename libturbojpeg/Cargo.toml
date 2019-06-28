@@ -1,0 +1,15 @@
+[package]
+name = "libtubojpeg"
+authors = ["MozJPEG & libjpeg-turbo Authors", "Stephen Crane <sjc@immunant.com>"]
+version = "0.0.0"
+publish = false
+edition = "2018"
+
+[lib]
+name = "turbojpeg"
+path = "lib.rs"
+crate_type = ["dylib"]
+
+[dependencies]
+libc = "0.2"
+mozjpeg = {path = "../"}

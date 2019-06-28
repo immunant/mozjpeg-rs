@@ -1,4 +1,9 @@
 [workspace]
+members = [
+   ".",
+   "libjpeg",
+   "libturbojpeg",
+]
 
 [package]
 name = "mozjpeg"
