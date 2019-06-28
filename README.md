@@ -7,7 +7,7 @@ The original MozJPEG sources this code is based on can be found in the `mozjpeg-
 
 ## Compiling
 
-    cargo build
+    cargo build --release --all
 
 MozJPEG-rs is currently supported only on x86_64 Linux. It was transpiled on Arch linux, and is as of yet untested on other distros. Compatibility problems may arise other platforms due to platform-specific macro expansion.
 
