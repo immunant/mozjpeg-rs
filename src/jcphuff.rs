@@ -1,4 +1,4 @@
-pub use crate::internal::__CHAR_BIT__;
+pub use crate::__CHAR_BIT__;
 pub use crate::jchuff::c_derived_tbl;
 pub use crate::jchuff::jpeg_gen_optimal_table;
 pub use crate::jchuff::jpeg_make_c_derived_tbl;

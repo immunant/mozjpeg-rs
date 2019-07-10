@@ -1,4 +1,4 @@
-pub use crate::internal::__INT_MAX__;
+pub use crate::__INT_MAX__;
 pub use crate::jdhuff::bit_buf_type;
 pub use crate::jdhuff::bitread_perm_state;
 pub use crate::jdhuff::bitread_working_state;

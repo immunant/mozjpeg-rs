@@ -14,6 +14,10 @@
 
 extern crate libc;
 
+use libc::c_int;
+pub const __CHAR_BIT__: c_int = 8i32;
+pub const __INT_MAX__: c_int = 2147483647i32;
+
 #[path = "src/cderror_h.rs"]
 pub mod cderror_h;
 #[path = "src/cdjpeg.rs"]
@@ -21,9 +25,6 @@ pub mod cdjpeg;
 
 #[path = "src/cmyk_h.rs"]
 pub mod cmyk_h;
-
-#[path = "src/internal.rs"]
-pub mod internal;
 #[path = "src/jcapimin.rs"]
 pub mod jcapimin;
 #[path = "src/jcapistd.rs"]

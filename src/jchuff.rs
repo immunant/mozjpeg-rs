@@ -22,7 +22,7 @@ extern "C" {
         src_above: JBLOCKROW,
     );
 }
-pub use crate::internal::__CHAR_BIT__;
+pub use crate::__CHAR_BIT__;
 pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
