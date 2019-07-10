@@ -11,8 +11,6 @@
 #![feature(label_break_value)]
 #![feature(ptr_wrapping_offset_from)]
 
-extern crate libc;
-use mozjpeg::*;
 
 pub use crate::jpeglib_h::JMSG_LENGTH_MAX;
 pub use crate::stddef_h::size_t;
@@ -148,6 +146,9 @@ pub use crate::turbojpeg::TJXOP_TRANSVERSE;
 pub use crate::turbojpeg::TJXOP_VFLIP;
 pub use crate::turbojpeg::TJ_GRAYSCALE;
 pub use crate::turbojpeg::TJ_NUMSAMP;
+extern crate libc;
+use mozjpeg::*;
+
 /*
  * Copyright (C)2009-2018 D. R. Commander.  All Rights Reserved.
  *

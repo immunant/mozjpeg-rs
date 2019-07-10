@@ -1,12 +1,5 @@
-use libc;
-use libc::c_int;
-use libc::c_long;
-use libc::c_uint;
-use libc::c_ulong;
-use libc::c_void;
-
-pub use crate::jconfig_h::BITS_IN_JSAMPLE;
-pub use crate::jerror::C2RustUnnamed_4;
+use libc::c_void;use libc::c_int;use libc::c_uint;use libc::c_ulong;use libc::c_long;pub use crate::jconfig_h::BITS_IN_JSAMPLE;
+pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -208,7 +201,7 @@ pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
-pub use crate::jpeglib_h::C2RustUnnamed_3;
+pub use crate::jpeglib_h::C2RustUnnamed_2;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::JBLOCK;
 pub use crate::jpeglib_h::JBLOCKARRAY;
@@ -247,9 +240,9 @@ pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::jpeglib_h::J_DITHER_MODE;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
+use libc;
 pub type my_cquantize_ptr = *mut my_cquantizer;
 /* Private subobject */
-
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct my_cquantizer {
@@ -301,7 +294,6 @@ pub type boxptr = *mut box_0;
  * These routines work with a list of "boxes", each representing a rectangular
  * subset of the input color space (to histogram precision).
  */
-
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct box_0 {
@@ -475,7 +467,10 @@ unsafe extern "C" fn prescan_quantize(
         row += 1
     }
 }
-unsafe extern "C" fn find_biggest_color_pop(mut boxlist: boxptr, mut numboxes: c_int) -> boxptr {
+unsafe extern "C" fn find_biggest_color_pop(
+    mut boxlist: boxptr,
+    mut numboxes: c_int,
+) -> boxptr {
     let mut boxp: boxptr = 0 as *mut box_0;
     let mut i: c_int = 0;
     let mut maxc: c_long = 0i32 as c_long;
@@ -681,11 +676,14 @@ unsafe extern "C" fn update_box(mut cinfo: j_decompress_ptr, mut boxp: boxptr) {
         }
     }
     dist0 = ((c0max - c0min << C0_SHIFT)
-        * c_scales[rgb_red[(*cinfo).out_color_space as usize] as usize]) as JLONG;
+        * c_scales[rgb_red[(*cinfo).out_color_space as usize] as usize])
+        as JLONG;
     dist1 = ((c1max - c1min << C1_SHIFT)
-        * c_scales[rgb_green[(*cinfo).out_color_space as usize] as usize]) as JLONG;
+        * c_scales[rgb_green[(*cinfo).out_color_space as usize] as usize])
+        as JLONG;
     dist2 = ((c2max - c2min << C2_SHIFT)
-        * c_scales[rgb_blue[(*cinfo).out_color_space as usize] as usize]) as JLONG;
+        * c_scales[rgb_blue[(*cinfo).out_color_space as usize] as usize])
+        as JLONG;
     (*boxp).volume = dist0 * dist0 + dist1 * dist1 + dist2 * dist2;
     ccount = 0i32 as c_long;
     c0 = c0min;
@@ -835,9 +833,12 @@ unsafe extern "C" fn compute_color(
                 count = *fresh4 as c_long;
                 if count != 0i32 as c_long {
                     total += count;
-                    c0total += ((c0 << C0_SHIFT) + (1i32 << C0_SHIFT >> 1i32)) as c_long * count;
-                    c1total += ((c1 << C1_SHIFT) + (1i32 << C1_SHIFT >> 1i32)) as c_long * count;
-                    c2total += ((c2 << C2_SHIFT) + (1i32 << C2_SHIFT >> 1i32)) as c_long * count
+                    c0total +=
+                        ((c0 << C0_SHIFT) + (1i32 << C0_SHIFT >> 1i32)) as c_long * count;
+                    c1total +=
+                        ((c1 << C1_SHIFT) + (1i32 << C1_SHIFT >> 1i32)) as c_long * count;
+                    c2total +=
+                        ((c2 << C2_SHIFT) + (1i32 << C2_SHIFT >> 1i32)) as c_long * count
                 }
                 c2 += 1
             }
@@ -852,7 +853,10 @@ unsafe extern "C" fn compute_color(
     *(*(*cinfo).colormap.offset(2isize)).offset(icolor as isize) =
         ((c2total + (total >> 1i32)) / total) as JSAMPLE;
 }
-unsafe extern "C" fn select_colors(mut cinfo: j_decompress_ptr, mut desired_colors: c_int) {
+unsafe extern "C" fn select_colors(
+    mut cinfo: j_decompress_ptr,
+    mut desired_colors: c_int,
+) {
     let mut boxlist: boxptr = 0 as *mut box_0;
     let mut numboxes: c_int = 0;
     let mut i: c_int = 0;
@@ -861,7 +865,8 @@ unsafe extern "C" fn select_colors(mut cinfo: j_decompress_ptr, mut desired_colo
         .expect("non-null function pointer")(
         cinfo as j_common_ptr,
         JPOOL_IMAGE,
-        (desired_colors as c_ulong).wrapping_mul(::std::mem::size_of::<box_0>() as c_ulong),
+        (desired_colors as c_ulong)
+            .wrapping_mul(::std::mem::size_of::<box_0>() as c_ulong),
     ) as boxptr;
     numboxes = 1i32;
     (*boxlist.offset(0isize)).c0min = 0i32;
@@ -988,78 +993,102 @@ unsafe extern "C" fn find_nearby_colors(
     while i < numcolors {
         x = *(*(*cinfo).colormap.offset(0isize)).offset(i as isize) as c_int;
         if x < minc0 {
-            tdist = ((x - minc0) * c_scales[rgb_red[(*cinfo).out_color_space as usize] as usize])
+            tdist = ((x - minc0)
+                * c_scales[rgb_red[(*cinfo).out_color_space as usize] as usize])
                 as JLONG;
             min_dist = tdist * tdist;
-            tdist = ((x - maxc0) * c_scales[rgb_red[(*cinfo).out_color_space as usize] as usize])
+            tdist = ((x - maxc0)
+                * c_scales[rgb_red[(*cinfo).out_color_space as usize] as usize])
                 as JLONG;
             max_dist = tdist * tdist
         } else if x > maxc0 {
-            tdist = ((x - maxc0) * c_scales[rgb_red[(*cinfo).out_color_space as usize] as usize])
+            tdist = ((x - maxc0)
+                * c_scales[rgb_red[(*cinfo).out_color_space as usize] as usize])
                 as JLONG;
             min_dist = tdist * tdist;
-            tdist = ((x - minc0) * c_scales[rgb_red[(*cinfo).out_color_space as usize] as usize])
+            tdist = ((x - minc0)
+                * c_scales[rgb_red[(*cinfo).out_color_space as usize] as usize])
                 as JLONG;
             max_dist = tdist * tdist
         } else {
             min_dist = 0i32 as JLONG;
             if x <= centerc0 {
                 tdist = ((x - maxc0)
-                    * c_scales[rgb_red[(*cinfo).out_color_space as usize] as usize])
+                    * c_scales
+                        [rgb_red[(*cinfo).out_color_space as usize] as usize])
                     as JLONG;
                 max_dist = tdist * tdist
             } else {
                 tdist = ((x - minc0)
-                    * c_scales[rgb_red[(*cinfo).out_color_space as usize] as usize])
+                    * c_scales
+                        [rgb_red[(*cinfo).out_color_space as usize] as usize])
                     as JLONG;
                 max_dist = tdist * tdist
             }
         }
         x = *(*(*cinfo).colormap.offset(1isize)).offset(i as isize) as c_int;
         if x < minc1 {
-            tdist = ((x - minc1) * c_scales[rgb_green[(*cinfo).out_color_space as usize] as usize])
+            tdist = ((x - minc1)
+                * c_scales
+                    [rgb_green[(*cinfo).out_color_space as usize] as usize])
                 as JLONG;
             min_dist += tdist * tdist;
-            tdist = ((x - maxc1) * c_scales[rgb_green[(*cinfo).out_color_space as usize] as usize])
+            tdist = ((x - maxc1)
+                * c_scales
+                    [rgb_green[(*cinfo).out_color_space as usize] as usize])
                 as JLONG;
             max_dist += tdist * tdist
         } else if x > maxc1 {
-            tdist = ((x - maxc1) * c_scales[rgb_green[(*cinfo).out_color_space as usize] as usize])
+            tdist = ((x - maxc1)
+                * c_scales
+                    [rgb_green[(*cinfo).out_color_space as usize] as usize])
                 as JLONG;
             min_dist += tdist * tdist;
-            tdist = ((x - minc1) * c_scales[rgb_green[(*cinfo).out_color_space as usize] as usize])
+            tdist = ((x - minc1)
+                * c_scales
+                    [rgb_green[(*cinfo).out_color_space as usize] as usize])
                 as JLONG;
             max_dist += tdist * tdist
         } else if x <= centerc1 {
-            tdist = ((x - maxc1) * c_scales[rgb_green[(*cinfo).out_color_space as usize] as usize])
+            tdist = ((x - maxc1)
+                * c_scales
+                    [rgb_green[(*cinfo).out_color_space as usize] as usize])
                 as JLONG;
             max_dist += tdist * tdist
         } else {
-            tdist = ((x - minc1) * c_scales[rgb_green[(*cinfo).out_color_space as usize] as usize])
+            tdist = ((x - minc1)
+                * c_scales
+                    [rgb_green[(*cinfo).out_color_space as usize] as usize])
                 as JLONG;
             max_dist += tdist * tdist
         }
         x = *(*(*cinfo).colormap.offset(2isize)).offset(i as isize) as c_int;
         if x < minc2 {
-            tdist = ((x - minc2) * c_scales[rgb_blue[(*cinfo).out_color_space as usize] as usize])
+            tdist = ((x - minc2)
+                * c_scales[rgb_blue[(*cinfo).out_color_space as usize] as usize])
                 as JLONG;
             min_dist += tdist * tdist;
-            tdist = ((x - maxc2) * c_scales[rgb_blue[(*cinfo).out_color_space as usize] as usize])
+            tdist = ((x - maxc2)
+                * c_scales[rgb_blue[(*cinfo).out_color_space as usize] as usize])
                 as JLONG;
             max_dist += tdist * tdist
         } else if x > maxc2 {
-            tdist = ((x - maxc2) * c_scales[rgb_blue[(*cinfo).out_color_space as usize] as usize])
+            tdist = ((x - maxc2)
+                * c_scales[rgb_blue[(*cinfo).out_color_space as usize] as usize])
                 as JLONG;
             min_dist += tdist * tdist;
-            tdist = ((x - minc2) * c_scales[rgb_blue[(*cinfo).out_color_space as usize] as usize])
+            tdist = ((x - minc2)
+                * c_scales[rgb_blue[(*cinfo).out_color_space as usize] as usize])
                 as JLONG;
             max_dist += tdist * tdist
         } else if x <= centerc2 {
-            tdist = ((x - maxc2) * c_scales[rgb_blue[(*cinfo).out_color_space as usize] as usize])
+            tdist = ((x - maxc2)
+                * c_scales[rgb_blue[(*cinfo).out_color_space as usize] as usize])
                 as JLONG;
             max_dist += tdist * tdist
         } else {
-            tdist = ((x - minc2) * c_scales[rgb_blue[(*cinfo).out_color_space as usize] as usize])
+            tdist = ((x - minc2)
+                * c_scales[rgb_blue[(*cinfo).out_color_space as usize] as usize])
                 as JLONG;
             max_dist += tdist * tdist
         }
@@ -1125,47 +1154,56 @@ unsafe extern "C" fn find_best_colors(
     i = 0i32;
     while i < numcolors {
         icolor = *colorlist.offset(i as isize) as c_int;
-        inc0 = ((minc0 - *(*(*cinfo).colormap.offset(0isize)).offset(icolor as isize) as c_int)
+        inc0 = ((minc0
+            - *(*(*cinfo).colormap.offset(0isize)).offset(icolor as isize) as c_int)
             * c_scales[rgb_red[(*cinfo).out_color_space as usize] as usize])
             as JLONG;
         dist0 = inc0 * inc0;
-        inc1 = ((minc1 - *(*(*cinfo).colormap.offset(1isize)).offset(icolor as isize) as c_int)
+        inc1 = ((minc1
+            - *(*(*cinfo).colormap.offset(1isize)).offset(icolor as isize) as c_int)
             * c_scales[rgb_green[(*cinfo).out_color_space as usize] as usize])
             as JLONG;
         dist0 += inc1 * inc1;
-        inc2 = ((minc2 - *(*(*cinfo).colormap.offset(2isize)).offset(icolor as isize) as c_int)
+        inc2 = ((minc2
+            - *(*(*cinfo).colormap.offset(2isize)).offset(icolor as isize) as c_int)
             * c_scales[rgb_blue[(*cinfo).out_color_space as usize] as usize])
             as JLONG;
         dist0 += inc2 * inc2;
         inc0 = inc0
             * (2i32
                 * ((1i32 << C0_SHIFT)
-                    * c_scales[rgb_red[(*cinfo).out_color_space as usize] as usize]))
+                    * c_scales
+                        [rgb_red[(*cinfo).out_color_space as usize] as usize]))
                 as c_long
             + ((1i32 << C0_SHIFT)
                 * c_scales[rgb_red[(*cinfo).out_color_space as usize] as usize]
                 * ((1i32 << C0_SHIFT)
-                    * c_scales[rgb_red[(*cinfo).out_color_space as usize] as usize]))
+                    * c_scales
+                        [rgb_red[(*cinfo).out_color_space as usize] as usize]))
                 as c_long;
-        inc1 = inc1
-            * (2i32
+        inc1 =
+            inc1 * (2i32
                 * ((1i32 << C1_SHIFT)
-                    * c_scales[rgb_green[(*cinfo).out_color_space as usize] as usize]))
+                    * c_scales
+                        [rgb_green[(*cinfo).out_color_space as usize] as usize]))
                 as c_long
-            + ((1i32 << C1_SHIFT)
-                * c_scales[rgb_green[(*cinfo).out_color_space as usize] as usize]
-                * ((1i32 << C1_SHIFT)
-                    * c_scales[rgb_green[(*cinfo).out_color_space as usize] as usize]))
-                as c_long;
+                + ((1i32 << C1_SHIFT)
+                    * c_scales
+                        [rgb_green[(*cinfo).out_color_space as usize] as usize]
+                    * ((1i32 << C1_SHIFT)
+                        * c_scales[rgb_green[(*cinfo).out_color_space as usize]
+                            as usize])) as c_long;
         inc2 = inc2
             * (2i32
                 * ((1i32 << C2_SHIFT)
-                    * c_scales[rgb_blue[(*cinfo).out_color_space as usize] as usize]))
+                    * c_scales
+                        [rgb_blue[(*cinfo).out_color_space as usize] as usize]))
                 as c_long
             + ((1i32 << C2_SHIFT)
                 * c_scales[rgb_blue[(*cinfo).out_color_space as usize] as usize]
                 * ((1i32 << C2_SHIFT)
-                    * c_scales[rgb_blue[(*cinfo).out_color_space as usize] as usize]))
+                    * c_scales
+                        [rgb_blue[(*cinfo).out_color_space as usize] as usize]))
                 as c_long;
         bptr = bestdist.as_mut_ptr();
         cptr = bestcolor;
@@ -1187,10 +1225,13 @@ unsafe extern "C" fn find_best_colors(
                     dist2 += xx2;
                     xx2 += (2i32
                         * ((1i32 << C2_SHIFT)
-                            * c_scales[rgb_blue[(*cinfo).out_color_space as usize] as usize])
+                            * c_scales[rgb_blue
+                                [(*cinfo).out_color_space as usize]
+                                as usize])
                         * ((1i32 << C2_SHIFT)
-                            * c_scales[rgb_blue[(*cinfo).out_color_space as usize] as usize]))
-                        as c_long;
+                            * c_scales[rgb_blue
+                                [(*cinfo).out_color_space as usize]
+                                as usize])) as c_long;
                     bptr = bptr.offset(1isize);
                     cptr = cptr.offset(1isize);
                     ic2 -= 1
@@ -1198,18 +1239,21 @@ unsafe extern "C" fn find_best_colors(
                 dist1 += xx1;
                 xx1 += (2i32
                     * ((1i32 << C1_SHIFT)
-                        * c_scales[rgb_green[(*cinfo).out_color_space as usize] as usize])
+                        * c_scales[rgb_green[(*cinfo).out_color_space as usize]
+                            as usize])
                     * ((1i32 << C1_SHIFT)
-                        * c_scales[rgb_green[(*cinfo).out_color_space as usize] as usize]))
-                    as c_long;
+                        * c_scales[rgb_green[(*cinfo).out_color_space as usize]
+                            as usize])) as c_long;
                 ic1 -= 1
             }
             dist0 += xx0;
             xx0 += (2i32
                 * ((1i32 << C0_SHIFT)
-                    * c_scales[rgb_red[(*cinfo).out_color_space as usize] as usize])
+                    * c_scales
+                        [rgb_red[(*cinfo).out_color_space as usize] as usize])
                 * ((1i32 << C0_SHIFT)
-                    * c_scales[rgb_red[(*cinfo).out_color_space as usize] as usize]))
+                    * c_scales
+                        [rgb_red[(*cinfo).out_color_space as usize] as usize]))
                 as c_long;
             ic0 -= 1
         }
@@ -1523,11 +1567,16 @@ unsafe extern "C" fn finish_pass2(mut cinfo: j_decompress_ptr) {}
 /*
  * Initialize for each processing pass.
  */
-unsafe extern "C" fn start_pass_2_quant(mut cinfo: j_decompress_ptr, mut is_pre_scan: boolean) {
+unsafe extern "C" fn start_pass_2_quant(
+    mut cinfo: j_decompress_ptr,
+    mut is_pre_scan: boolean,
+) {
     let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr;
     let mut histogram: hist3d = (*cquantize).histogram;
     let mut i: c_int = 0;
-    if (*cinfo).dither_mode as c_uint != JDITHER_NONE as c_int as c_uint {
+    if (*cinfo).dither_mode as c_uint
+        != JDITHER_NONE as c_int as c_uint
+    {
         (*cinfo).dither_mode = JDITHER_FS
     }
     if 0 != is_pre_scan {
@@ -1544,7 +1593,9 @@ unsafe extern "C" fn start_pass_2_quant(mut cinfo: j_decompress_ptr, mut is_pre_
             Some(finish_pass1 as unsafe extern "C" fn(_: j_decompress_ptr) -> ());
         (*cquantize).needs_zeroed = TRUE
     } else {
-        if (*cinfo).dither_mode as c_uint == JDITHER_FS as c_int as c_uint {
+        if (*cinfo).dither_mode as c_uint
+            == JDITHER_FS as c_int as c_uint
+        {
             (*cquantize).pub_0.color_quantize = Some(
                 pass2_fs_dither
                     as unsafe extern "C" fn(
@@ -1573,20 +1624,28 @@ unsafe extern "C" fn start_pass_2_quant(mut cinfo: j_decompress_ptr, mut is_pre_
             (*(*cinfo).err).msg_parm.i[0usize] = 1i32;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                cinfo as j_common_ptr
+            );
         }
         if i > MAXNUMCOLORS {
             (*(*cinfo).err).msg_code = JERR_QUANT_MANY_COLORS as c_int;
             (*(*cinfo).err).msg_parm.i[0usize] = 255i32 + 1i32;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                cinfo as j_common_ptr
+            );
         }
-        if (*cinfo).dither_mode as c_uint == JDITHER_FS as c_int as c_uint {
+        if (*cinfo).dither_mode as c_uint
+            == JDITHER_FS as c_int as c_uint
+        {
             let mut arraysize: size_t =
-                ((*cinfo).output_width.wrapping_add(2i32 as c_uint) as c_ulong).wrapping_mul(
-                    (3i32 as c_ulong).wrapping_mul(::std::mem::size_of::<FSERROR>() as c_ulong),
-                );
+                ((*cinfo).output_width.wrapping_add(2i32 as c_uint) as c_ulong)
+                    .wrapping_mul(
+                        (3i32 as c_ulong)
+                            .wrapping_mul(::std::mem::size_of::<FSERROR>() as c_ulong),
+                    );
             if (*cquantize).fserrors.is_null() {
                 (*cquantize).fserrors = (*(*cinfo).mem)
                     .alloc_large
@@ -1638,10 +1697,16 @@ pub unsafe extern "C" fn jinit_2pass_quantizer(mut cinfo: j_decompress_ptr) {
         ::std::mem::size_of::<my_cquantizer>() as c_ulong,
     ) as my_cquantize_ptr;
     (*cinfo).cquantize = cquantize as *mut jpeg_color_quantizer;
-    (*cquantize).pub_0.start_pass =
-        Some(start_pass_2_quant as unsafe extern "C" fn(_: j_decompress_ptr, _: boolean) -> ());
-    (*cquantize).pub_0.new_color_map =
-        Some(new_color_map_2_quant as unsafe extern "C" fn(_: j_decompress_ptr) -> ());
+    (*cquantize).pub_0.start_pass = Some(
+        start_pass_2_quant
+            as unsafe extern "C" fn(
+                _: j_decompress_ptr,
+                _: boolean,
+            ) -> (),
+    );
+    (*cquantize).pub_0.new_color_map = Some(
+        new_color_map_2_quant as unsafe extern "C" fn(_: j_decompress_ptr) -> (),
+    );
     (*cquantize).fserrors = NULL as FSERRPTR;
     (*cquantize).error_limiter = NULL as *mut c_int;
     if (*cinfo).out_color_components != 3i32 {
@@ -1655,7 +1720,8 @@ pub unsafe extern "C" fn jinit_2pass_quantizer(mut cinfo: j_decompress_ptr) {
         .expect("non-null function pointer")(
         cinfo as j_common_ptr,
         JPOOL_IMAGE,
-        (HIST_C0_ELEMS as c_ulong).wrapping_mul(::std::mem::size_of::<hist2d>() as c_ulong),
+        (HIST_C0_ELEMS as c_ulong)
+            .wrapping_mul(::std::mem::size_of::<hist2d>() as c_ulong),
     ) as hist3d;
     i = 0i32;
     while i < HIST_C0_ELEMS {
@@ -1678,14 +1744,18 @@ pub unsafe extern "C" fn jinit_2pass_quantizer(mut cinfo: j_decompress_ptr) {
             (*(*cinfo).err).msg_parm.i[0usize] = 8i32;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                cinfo as j_common_ptr
+            );
         }
         if desired > MAXNUMCOLORS {
             (*(*cinfo).err).msg_code = JERR_QUANT_MANY_COLORS as c_int;
             (*(*cinfo).err).msg_parm.i[0usize] = 255i32 + 1i32;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                cinfo as j_common_ptr
+            );
         }
         (*cquantize).sv_colormap = (*(*cinfo).mem)
             .alloc_sarray
@@ -1699,18 +1769,24 @@ pub unsafe extern "C" fn jinit_2pass_quantizer(mut cinfo: j_decompress_ptr) {
     } else {
         (*cquantize).sv_colormap = NULL as JSAMPARRAY
     }
-    if (*cinfo).dither_mode as c_uint != JDITHER_NONE as c_int as c_uint {
+    if (*cinfo).dither_mode as c_uint
+        != JDITHER_NONE as c_int as c_uint
+    {
         (*cinfo).dither_mode = JDITHER_FS
     }
-    if (*cinfo).dither_mode as c_uint == JDITHER_FS as c_int as c_uint {
+    if (*cinfo).dither_mode as c_uint
+        == JDITHER_FS as c_int as c_uint
+    {
         (*cquantize).fserrors = (*(*cinfo).mem)
             .alloc_large
             .expect("non-null function pointer")(
             cinfo as j_common_ptr,
             JPOOL_IMAGE,
-            ((*cinfo).output_width.wrapping_add(2i32 as c_uint) as c_ulong).wrapping_mul(
-                (3i32 as c_ulong).wrapping_mul(::std::mem::size_of::<FSERROR>() as c_ulong),
-            ),
+            ((*cinfo).output_width.wrapping_add(2i32 as c_uint) as c_ulong)
+                .wrapping_mul(
+                    (3i32 as c_ulong)
+                        .wrapping_mul(::std::mem::size_of::<FSERROR>() as c_ulong),
+                ),
         ) as FSERRPTR;
         init_error_limit(cinfo);
     };

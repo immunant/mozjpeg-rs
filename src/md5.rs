@@ -1,13 +1,11 @@
-use libc::c_char;
-use libc::c_uchar;
-use libc::c_uint;
-use libc::c_ulong;
-use libc::c_void;
-extern "C" {
+use libc::c_char;use libc::c_uint;use libc::c_void;use libc::c_ulong;use libc::c_uchar;extern "C" {
     #[no_mangle]
     pub fn MD5File(_: *const c_char, _: *mut c_char) -> *mut c_char;
 }
+use crate::stdlib::memcpy;
+use crate::stdlib::memset;
 use libc;
+// =============== BEGIN md5_h ================
 
 /*
  * libjpeg-turbo Modifications:
@@ -37,6 +35,7 @@ use libc;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 /*  On machines where "long" is 64 bits, we need to declare
 uint32 as something guaranteed to be 32 bits.  */
 pub type uint32 = c_uint;
@@ -48,6 +47,8 @@ pub struct MD5Context {
     pub in_0: [c_uchar; 64],
 }
 pub type MD5_CTX = MD5Context;
+// ================ END md5_h ================
+
 /*
  * This code implements the MD5 message-digest algorithm.
  * The algorithm is due to Ron Rivest.  This code was
@@ -92,8 +93,11 @@ pub type MD5_CTX = MD5Context;
  * POSSIBILITY OF SUCH DAMAGE.
  * ----------------------------------------------------------------------------
  */
+
 /* for memcpy() */
+
 /* Nothing */
+
 /*
  * Start MD5 accumulation.  Set bit count to 0 and buffer to mysterious
  * initialization constants.
@@ -123,17 +127,25 @@ pub unsafe extern "C" fn MD5Update(
     if (*ctx).bits[0usize] < t {
         (*ctx).bits[1usize] = (*ctx).bits[1usize].wrapping_add(1)
     }
-    (*ctx).bits[1usize] =
-        ((*ctx).bits[1usize] as c_uint).wrapping_add(len >> 29i32) as uint32 as uint32;
+    (*ctx).bits[1usize] = ((*ctx).bits[1usize] as c_uint).wrapping_add(len >> 29i32)
+        as uint32 as uint32;
     t = t >> 3i32 & 0x3fi32 as c_uint;
     if 0 != t {
         let mut p: *mut c_uchar = (*ctx).in_0.as_mut_ptr().offset(t as isize);
         t = (64i32 as c_uint).wrapping_sub(t);
         if len < t {
-            memcpy(p as *mut c_void, buf as *const c_void, len as c_ulong);
+            memcpy(
+                p as *mut c_void,
+                buf as *const c_void,
+                len as c_ulong,
+            );
             return;
         }
-        memcpy(p as *mut c_void, buf as *const c_void, t as c_ulong);
+        memcpy(
+            p as *mut c_void,
+            buf as *const c_void,
+            t as c_ulong,
+        );
         MD5Transform(
             (*ctx).buf.as_mut_ptr(),
             (*ctx).in_0.as_mut_ptr() as *mut uint32,
@@ -165,7 +177,10 @@ pub unsafe extern "C" fn MD5Update(
  * 1 0* (64-bit count of bits processed, MSB-first)
  */
 #[no_mangle]
-pub unsafe extern "C" fn MD5Final(mut digest: *mut c_uchar, mut ctx: *mut MD5Context) {
+pub unsafe extern "C" fn MD5Final(
+    mut digest: *mut c_uchar,
+    mut ctx: *mut MD5Context,
+) {
     let mut count: c_uint = 0;
     let mut p: *mut c_uchar = 0 as *mut c_uchar;
     let mut in32: *mut uint32 = (*ctx).in_0.as_mut_ptr() as *mut uint32;
@@ -210,18 +225,22 @@ pub unsafe extern "C" fn MD5Final(mut digest: *mut c_uchar, mut ctx: *mut MD5Con
         ::std::mem::size_of::<MD5Context>() as c_ulong,
     );
 }
-use crate::stdlib::memcpy;
-use crate::stdlib::memset;
 /* The four core functions - F1 is optimized somewhat */
+
 /* #define F1(x, y, z) (x & y | ~x & z) */
+
 /* This is the central step in the MD5 algorithm. */
+
 /*
  * The core of the MD5 algorithm, this alters an existing MD5 hash to
  * reflect the addition of 16 longwords of new data.  MD5Update blocks
  * the data and converts bytes into longwords for this routine.
  */
 #[no_mangle]
-pub unsafe extern "C" fn MD5Transform(mut buf: *mut uint32, mut in_0: *mut uint32) {
+pub unsafe extern "C" fn MD5Transform(
+    mut buf: *mut uint32,
+    mut in_0: *mut uint32,
+) {
     let mut a: uint32 = 0;
     let mut b: uint32 = 0;
     let mut c: uint32 = 0;

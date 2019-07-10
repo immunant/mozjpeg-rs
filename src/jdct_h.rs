@@ -1,26 +1,13 @@
-use libc::c_float;
-use libc::c_int;
-use libc::c_short;
-use libc::c_uint;
-use libc::c_ushort;
-extern "C" {
-
-    /*
-     * Each IDCT routine is responsible for range-limiting its results and
-     * converting them to unsigned form (0..MAXJSAMPLE).  The raw outputs could
-     * be quite far out of range if the input data is corrupt, so a bulletproof
-     * range-limiting step is required.  We use a mask-and-table-lookup method
-     * to do the combined operations quickly.  See the comments with
-     * prepare_range_limit_table (in jdmaster.c) for more info.
-     */
-    /* 2 bits wider than legal samples */
-    /* Extern declarations for the forward and inverse DCT routines. */
+use libc::c_float;use libc::c_int;use libc::c_uint;use libc::c_ushort;use libc::c_short;extern "C" {
     #[no_mangle]
     pub fn jpeg_fdct_islow(data: *mut DCTELEM);
+
     #[no_mangle]
     pub fn jpeg_fdct_ifast(data: *mut DCTELEM);
+
     #[no_mangle]
     pub fn jpeg_fdct_float(data: *mut c_float);
+
     #[no_mangle]
     pub fn jpeg_idct_islow(
         cinfo: j_decompress_ptr,
@@ -29,6 +16,7 @@ extern "C" {
         output_buf: JSAMPARRAY,
         output_col: JDIMENSION,
     );
+
     #[no_mangle]
     pub fn jpeg_idct_ifast(
         cinfo: j_decompress_ptr,
@@ -37,6 +25,7 @@ extern "C" {
         output_buf: JSAMPARRAY,
         output_col: JDIMENSION,
     );
+
     #[no_mangle]
     pub fn jpeg_idct_float(
         cinfo: j_decompress_ptr,
@@ -45,6 +34,7 @@ extern "C" {
         output_buf: JSAMPARRAY,
         output_col: JDIMENSION,
     );
+
     #[no_mangle]
     pub fn jpeg_idct_7x7(
         cinfo: j_decompress_ptr,
@@ -53,6 +43,7 @@ extern "C" {
         output_buf: JSAMPARRAY,
         output_col: JDIMENSION,
     );
+
     #[no_mangle]
     pub fn jpeg_idct_6x6(
         cinfo: j_decompress_ptr,
@@ -61,6 +52,7 @@ extern "C" {
         output_buf: JSAMPARRAY,
         output_col: JDIMENSION,
     );
+
     #[no_mangle]
     pub fn jpeg_idct_5x5(
         cinfo: j_decompress_ptr,
@@ -69,6 +61,7 @@ extern "C" {
         output_buf: JSAMPARRAY,
         output_col: JDIMENSION,
     );
+
     #[no_mangle]
     pub fn jpeg_idct_4x4(
         cinfo: j_decompress_ptr,
@@ -77,6 +70,7 @@ extern "C" {
         output_buf: JSAMPARRAY,
         output_col: JDIMENSION,
     );
+
     #[no_mangle]
     pub fn jpeg_idct_3x3(
         cinfo: j_decompress_ptr,
@@ -85,6 +79,7 @@ extern "C" {
         output_buf: JSAMPARRAY,
         output_col: JDIMENSION,
     );
+
     #[no_mangle]
     pub fn jpeg_idct_2x2(
         cinfo: j_decompress_ptr,
@@ -93,6 +88,7 @@ extern "C" {
         output_buf: JSAMPARRAY,
         output_col: JDIMENSION,
     );
+
     #[no_mangle]
     pub fn jpeg_idct_1x1(
         cinfo: j_decompress_ptr,
@@ -101,6 +97,7 @@ extern "C" {
         output_buf: JSAMPARRAY,
         output_col: JDIMENSION,
     );
+
     #[no_mangle]
     pub fn jpeg_idct_9x9(
         cinfo: j_decompress_ptr,
@@ -109,6 +106,7 @@ extern "C" {
         output_buf: JSAMPARRAY,
         output_col: JDIMENSION,
     );
+
     #[no_mangle]
     pub fn jpeg_idct_10x10(
         cinfo: j_decompress_ptr,
@@ -117,6 +115,7 @@ extern "C" {
         output_buf: JSAMPARRAY,
         output_col: JDIMENSION,
     );
+
     #[no_mangle]
     pub fn jpeg_idct_11x11(
         cinfo: j_decompress_ptr,
@@ -125,6 +124,7 @@ extern "C" {
         output_buf: JSAMPARRAY,
         output_col: JDIMENSION,
     );
+
     #[no_mangle]
     pub fn jpeg_idct_12x12(
         cinfo: j_decompress_ptr,
@@ -133,6 +133,7 @@ extern "C" {
         output_buf: JSAMPARRAY,
         output_col: JDIMENSION,
     );
+
     #[no_mangle]
     pub fn jpeg_idct_13x13(
         cinfo: j_decompress_ptr,
@@ -141,6 +142,7 @@ extern "C" {
         output_buf: JSAMPARRAY,
         output_col: JDIMENSION,
     );
+
     #[no_mangle]
     pub fn jpeg_idct_14x14(
         cinfo: j_decompress_ptr,
@@ -149,6 +151,7 @@ extern "C" {
         output_buf: JSAMPARRAY,
         output_col: JDIMENSION,
     );
+
     #[no_mangle]
     pub fn jpeg_idct_15x15(
         cinfo: j_decompress_ptr,
@@ -157,6 +160,7 @@ extern "C" {
         output_buf: JSAMPARRAY,
         output_col: JDIMENSION,
     );
+
     #[no_mangle]
     pub fn jpeg_idct_16x16(
         cinfo: j_decompress_ptr,
@@ -166,6 +170,10 @@ extern "C" {
         output_col: JDIMENSION,
     );
 }
+// =============== BEGIN jdct_h ================
+use ::libc;
+/* fractional bits in scale factors */
+pub const IFAST_SCALE_BITS: c_int = 2i32;
 /*
  * jdct.h
  *
@@ -201,7 +209,6 @@ extern "C" {
 pub type DCTELEM = c_short;
 pub type UDCTELEM2 = c_uint;
 pub type UDCTELEM = c_ushort;
-use ::libc;
 /* fractional bits in scale factors */
 
 /* preferred floating type */
@@ -229,6 +236,7 @@ pub type IFAST_MULT_TYPE = c_short;
 pub type ISLOW_MULT_TYPE = c_short;
 use crate::jmorecfg_h::JCOEF;
 use crate::jmorecfg_h::JDIMENSION;
+use crate::jmorecfg_h::MAXJSAMPLE;
 use crate::jpeglib_h::j_decompress_ptr;
 use crate::jpeglib_h::jpeg_component_info;
 use crate::jpeglib_h::jpeg_decompress_struct;
@@ -246,7 +254,6 @@ use crate::jpeglib_h::JSAMPROW;
 
 /* 2 bits wider than legal samples */
 pub const RANGE_MASK: c_int = MAXJSAMPLE * 4i32 + 3i32;
-use crate::jmorecfg_h::MAXJSAMPLE;
 /*
  * Macros for handling fixed-point arithmetic; these are used by many
  * but not all of the DCT/IDCT modules.
@@ -257,5 +264,3 @@ use crate::jmorecfg_h::MAXJSAMPLE;
  * and may differ from one module to the next.
  */
 pub const ONE: c_int = 1i32;
-/* fractional bits in scale factors */
-pub const IFAST_SCALE_BITS: c_int = 2i32;

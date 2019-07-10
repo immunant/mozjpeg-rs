@@ -1,10 +1,4 @@
-use libc;
-use libc::c_int;
-use libc::c_long;
-use libc::c_uint;
-use libc::c_ulong;
-
-pub use crate::jerror::C2RustUnnamed_4;
+use libc::c_ulong;use libc::c_long;use libc::c_int;use libc::c_uint;pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -174,8 +168,8 @@ pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
+pub use crate::jpeglib_h::C2RustUnnamed_1;
 pub use crate::jpeglib_h::C2RustUnnamed_2;
-pub use crate::jpeglib_h::C2RustUnnamed_3;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::DCTSIZE2;
 pub use crate::jpeglib_h::JBLOCK;
@@ -214,9 +208,9 @@ pub use crate::jpeglib_h::NUM_HUFF_TBLS;
 pub use crate::jpeglib_h::NUM_QUANT_TBLS;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
+use libc;
 pub type my_marker_ptr = *mut my_marker_writer;
 /* Private state */
-
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct my_marker_writer {
@@ -316,22 +310,33 @@ unsafe extern "C" fn emit_byte(mut cinfo: j_compress_ptr, mut val: c_int) {
             (*(*cinfo).err).msg_code = JERR_CANT_SUSPEND as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                cinfo as j_common_ptr
+            );
         }
     };
 }
-unsafe extern "C" fn emit_marker(mut cinfo: j_compress_ptr, mut mark: JPEG_MARKER) {
+unsafe extern "C" fn emit_marker(
+    mut cinfo: j_compress_ptr,
+    mut mark: JPEG_MARKER,
+) {
     emit_byte(cinfo, 0xffi32);
     emit_byte(cinfo, mark as c_int);
 }
-unsafe extern "C" fn emit_2bytes(mut cinfo: j_compress_ptr, mut value: c_int) {
+unsafe extern "C" fn emit_2bytes(
+    mut cinfo: j_compress_ptr,
+    mut value: c_int,
+) {
     emit_byte(cinfo, value >> 8i32 & 0xffi32);
     emit_byte(cinfo, value & 0xffi32);
 }
 /*
  * Routines to write specific marker types.
  */
-unsafe extern "C" fn emit_dqt(mut cinfo: j_compress_ptr, mut index: c_int) -> c_int {
+unsafe extern "C" fn emit_dqt(
+    mut cinfo: j_compress_ptr,
+    mut index: c_int,
+) -> c_int {
     let mut qtbl: *mut JQUANT_TBL = (*cinfo).quant_tbl_ptrs[index as usize];
     let mut prec: c_int = 0;
     let mut i: c_int = 0;
@@ -363,9 +368,10 @@ unsafe extern "C" fn emit_dqt(mut cinfo: j_compress_ptr, mut index: c_int) -> c_
         emit_byte(cinfo, index + (prec << 4i32));
         i = 0i32;
         while i < DCTSIZE2 {
-            let mut qval: c_uint = (*qtbl).quantval
-                [*jpeg_natural_order.as_ptr().offset(i as isize) as usize]
-                as c_uint;
+            let mut qval: c_uint = (*qtbl).quantval[*jpeg_natural_order
+                .as_ptr()
+                .offset(i as isize)
+                as usize] as c_uint;
             if 0 != prec {
                 emit_byte(cinfo, (qval >> 8i32) as c_int);
             }
@@ -397,7 +403,8 @@ unsafe extern "C" fn emit_multi_dqt(mut cinfo: j_compress_ptr) -> c_int {
         i = 0i32;
         while i < DCTSIZE2 {
             prec[ci as usize] = (0
-                != prec[ci as usize] + ((*qtbl).quantval[i as usize] as c_int > 255i32) as c_int)
+                != prec[ci as usize]
+                    + ((*qtbl).quantval[i as usize] as c_int > 255i32) as c_int)
                 as c_int;
             i += 1
         }
@@ -420,14 +427,16 @@ unsafe extern "C" fn emit_multi_dqt(mut cinfo: j_compress_ptr) -> c_int {
     while ci < (*cinfo).num_components {
         let mut tbl_num_1: c_int = (*(*cinfo).comp_info.offset(ci as isize)).quant_tbl_no;
         let mut i_0: c_int = 0;
-        let mut qtbl_0: *mut JQUANT_TBL = (*cinfo).quant_tbl_ptrs[tbl_num_1 as usize];
+        let mut qtbl_0: *mut JQUANT_TBL =
+            (*cinfo).quant_tbl_ptrs[tbl_num_1 as usize];
         if !((*qtbl_0).sent_table == TRUE) {
             emit_byte(cinfo, tbl_num_1 + (prec[ci as usize] << 4i32));
             i_0 = 0i32;
             while i_0 < DCTSIZE2 {
-                let mut qval: c_uint = (*qtbl_0).quantval
-                    [*jpeg_natural_order.as_ptr().offset(i_0 as isize) as usize]
-                    as c_uint;
+                let mut qval: c_uint =
+                    (*qtbl_0).quantval[*jpeg_natural_order
+                        .as_ptr()
+                        .offset(i_0 as isize) as usize] as c_uint;
                 if 0 != prec[ci as usize] {
                     emit_byte(cinfo, (qval >> 8i32) as c_int);
                 }
@@ -440,7 +449,11 @@ unsafe extern "C" fn emit_multi_dqt(mut cinfo: j_compress_ptr) -> c_int {
     }
     return fin_prec;
 }
-unsafe extern "C" fn emit_dht(mut cinfo: j_compress_ptr, mut index: c_int, mut is_ac: boolean) {
+unsafe extern "C" fn emit_dht(
+    mut cinfo: j_compress_ptr,
+    mut index: c_int,
+    mut is_ac: boolean,
+) {
     let mut htbl: *mut JHUFF_TBL = 0 as *mut JHUFF_TBL;
     let mut length: c_int = 0;
     let mut i: c_int = 0;
@@ -480,7 +493,9 @@ unsafe extern "C" fn emit_dht(mut cinfo: j_compress_ptr, mut index: c_int, mut i
         (*htbl).sent_table = TRUE
     };
 }
-unsafe extern "C" fn emit_multi_dht(mut cinfo: j_compress_ptr) -> boolean {
+unsafe extern "C" fn emit_multi_dht(
+    mut cinfo: j_compress_ptr,
+) -> boolean {
     let mut i: c_int = 0;
     let mut j: c_int = 0;
     let mut length: c_int = 2i32;
@@ -504,7 +519,8 @@ unsafe extern "C" fn emit_multi_dht(mut cinfo: j_compress_ptr) -> boolean {
     let mut current_block_23: u64;
     i = 0i32;
     while i < (*cinfo).comps_in_scan {
-        let mut compptr: *mut jpeg_component_info = (*cinfo).cur_comp_info[i as usize];
+        let mut compptr: *mut jpeg_component_info =
+            (*cinfo).cur_comp_info[i as usize];
         let mut dcidx: c_int = (*compptr).dc_tbl_no;
         let mut acidx: c_int = (*compptr).ac_tbl_no;
         let mut dctbl: *mut JHUFF_TBL = (*cinfo).dc_huff_tbl_ptrs[dcidx as usize];
@@ -517,7 +533,9 @@ unsafe extern "C" fn emit_multi_dht(mut cinfo: j_compress_ptr) -> boolean {
                 (*(*cinfo).err).msg_parm.i[0usize] = dcidx;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(cinfo as j_common_ptr);
+                    .expect("non-null function pointer")(
+                    cinfo as j_common_ptr
+                );
             }
             if 0 != (*dctbl).sent_table {
                 current_block_23 = 11875828834189669668;
@@ -553,7 +571,7 @@ unsafe extern "C" fn emit_multi_dht(mut cinfo: j_compress_ptr) -> boolean {
                         (*(*cinfo).err)
                             .error_exit
                             .expect("non-null function pointer")(
-                            cinfo as j_common_ptr
+                            cinfo as j_common_ptr,
                         );
                     }
                     if !(0 != (*actbl).sent_table) {
@@ -586,11 +604,14 @@ unsafe extern "C" fn emit_multi_dht(mut cinfo: j_compress_ptr) -> boolean {
     emit_2bytes(cinfo, length);
     i = 0i32;
     while i < (*cinfo).comps_in_scan {
-        let mut compptr_0: *mut jpeg_component_info = (*cinfo).cur_comp_info[i as usize];
+        let mut compptr_0: *mut jpeg_component_info =
+            (*cinfo).cur_comp_info[i as usize];
         let mut dcidx_0: c_int = (*compptr_0).dc_tbl_no;
         let mut acidx_0: c_int = (*compptr_0).ac_tbl_no;
-        let mut dctbl_0: *mut JHUFF_TBL = (*cinfo).dc_huff_tbl_ptrs[dcidx_0 as usize];
-        let mut actbl_0: *mut JHUFF_TBL = (*cinfo).ac_huff_tbl_ptrs[acidx_0 as usize];
+        let mut dctbl_0: *mut JHUFF_TBL =
+            (*cinfo).dc_huff_tbl_ptrs[dcidx_0 as usize];
+        let mut actbl_0: *mut JHUFF_TBL =
+            (*cinfo).ac_huff_tbl_ptrs[acidx_0 as usize];
         acidx_0 += 0x10i32;
         if (*cinfo).Ss == 0i32 && (*cinfo).Ah == 0i32 && 0 == (*dctbl_0).sent_table {
             emit_byte(cinfo, dcidx_0);
@@ -633,10 +654,13 @@ unsafe extern "C" fn emit_dri(mut cinfo: j_compress_ptr) {
 }
 unsafe extern "C" fn emit_sof(mut cinfo: j_compress_ptr, mut code: JPEG_MARKER) {
     let mut ci: c_int = 0;
-    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info =
+        0 as *mut jpeg_component_info;
     emit_marker(cinfo, code);
     emit_2bytes(cinfo, 3i32 * (*cinfo).num_components + 2i32 + 5i32 + 1i32);
-    if (*cinfo).image_height as c_long > 65535i64 || (*cinfo).image_width as c_long > 65535i64 {
+    if (*cinfo).image_height as c_long > 65535i64
+        || (*cinfo).image_width as c_long > 65535i64
+    {
         (*(*cinfo).err).msg_code = JERR_IMAGE_TOO_BIG as c_int;
         (*(*cinfo).err).msg_parm.i[0usize] = 65535i32 as c_uint as c_int;
         (*(*cinfo).err)
@@ -664,7 +688,8 @@ unsafe extern "C" fn emit_sos(mut cinfo: j_compress_ptr) {
     let mut i: c_int = 0;
     let mut td: c_int = 0;
     let mut ta: c_int = 0;
-    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info =
+        0 as *mut jpeg_component_info;
     emit_marker(cinfo, M_SOS);
     emit_2bytes(cinfo, 2i32 * (*cinfo).comps_in_scan + 2i32 + 1i32 + 3i32);
     emit_byte(cinfo, (*cinfo).comps_in_scan);
@@ -750,9 +775,15 @@ unsafe extern "C" fn write_marker_header(
             .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     emit_marker(cinfo, marker as JPEG_MARKER);
-    emit_2bytes(cinfo, datalen.wrapping_add(2i32 as c_uint) as c_int);
+    emit_2bytes(
+        cinfo,
+        datalen.wrapping_add(2i32 as c_uint) as c_int,
+    );
 }
-unsafe extern "C" fn write_marker_byte(mut cinfo: j_compress_ptr, mut val: c_int) {
+unsafe extern "C" fn write_marker_byte(
+    mut cinfo: j_compress_ptr,
+    mut val: c_int,
+) {
     emit_byte(cinfo, val);
 }
 /*
@@ -787,7 +818,8 @@ unsafe extern "C" fn write_frame_header(mut cinfo: j_compress_ptr) {
     let mut ci: c_int = 0;
     let mut prec: c_int = 0;
     let mut is_baseline: boolean = 0;
-    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info =
+        0 as *mut jpeg_component_info;
     prec = emit_multi_dqt(cinfo);
     if prec == -1i32 {
         prec = 0i32;
@@ -818,7 +850,9 @@ unsafe extern "C" fn write_frame_header(mut cinfo: j_compress_ptr) {
             (*(*cinfo).err).msg_code = JTRC_16BIT_TABLES as c_int;
             (*(*cinfo).err)
                 .emit_message
-                .expect("non-null function pointer")(cinfo as j_common_ptr, 0i32);
+                .expect("non-null function pointer")(
+                cinfo as j_common_ptr, 0i32
+            );
         }
     }
     if 0 != (*cinfo).arith_code {
@@ -843,7 +877,8 @@ unsafe extern "C" fn write_frame_header(mut cinfo: j_compress_ptr) {
 unsafe extern "C" fn write_scan_header(mut cinfo: j_compress_ptr) {
     let mut marker: my_marker_ptr = (*cinfo).marker as my_marker_ptr;
     let mut i: c_int = 0;
-    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info =
+        0 as *mut jpeg_component_info;
     if 0 != (*cinfo).arith_code {
         emit_dac(cinfo);
     } else if 0 == emit_multi_dht(cinfo) {
@@ -926,9 +961,16 @@ pub unsafe extern "C" fn jinit_marker_writer(mut cinfo: j_compress_ptr) {
     (*marker).pub_0.write_tables_only =
         Some(write_tables_only as unsafe extern "C" fn(_: j_compress_ptr) -> ());
     (*marker).pub_0.write_marker_header = Some(
-        write_marker_header as unsafe extern "C" fn(_: j_compress_ptr, _: c_int, _: c_uint) -> (),
+        write_marker_header
+            as unsafe extern "C" fn(
+                _: j_compress_ptr,
+                _: c_int,
+                _: c_uint,
+            ) -> (),
     );
-    (*marker).pub_0.write_marker_byte =
-        Some(write_marker_byte as unsafe extern "C" fn(_: j_compress_ptr, _: c_int) -> ());
+    (*marker).pub_0.write_marker_byte = Some(
+        write_marker_byte
+            as unsafe extern "C" fn(_: j_compress_ptr, _: c_int) -> (),
+    );
     (*marker).last_restart_interval = 0i32 as c_uint;
 }

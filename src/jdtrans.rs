@@ -1,8 +1,4 @@
-use libc;
-use libc::c_int;
-use libc::c_long;
-
-pub use crate::jerror::C2RustUnnamed_4;
+use libc::c_int;use libc::c_long;pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -182,7 +178,7 @@ pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
-pub use crate::jpeglib_h::C2RustUnnamed_3;
+pub use crate::jpeglib_h::C2RustUnnamed_2;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::JBLOCK;
 pub use crate::jpeglib_h::JBLOCKARRAY;
@@ -224,6 +220,8 @@ pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::jpeglib_h::J_DITHER_MODE;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
+use libc;
+/* Read or write raw DCT coefficients --- useful for lossless transcoding. */
 /*
  * Read the coefficient arrays from a JPEG file.
  * jpeg_read_header must be completed before calling this.
@@ -245,7 +243,6 @@ pub use crate::stddef_h::NULL;
  * Returns NULL if suspended.  This case need be checked only if
  * a suspending data source is used.
  */
-/* Read or write raw DCT coefficients --- useful for lossless transcoding. */
 #[no_mangle]
 pub unsafe extern "C" fn jpeg_read_coefficients(
     mut cinfo: j_decompress_ptr,
@@ -260,7 +257,9 @@ pub unsafe extern "C" fn jpeg_read_coefficients(
             if !(*cinfo).progress.is_null() {
                 (*(*cinfo).progress)
                     .progress_monitor
-                    .expect("non-null function pointer")(cinfo as j_common_ptr);
+                    .expect("non-null function pointer")(
+                    cinfo as j_common_ptr
+                );
             }
             retcode = (*(*cinfo).inputctl)
                 .consume_input
@@ -272,7 +271,8 @@ pub unsafe extern "C" fn jpeg_read_coefficients(
                 break;
             }
             if !(*cinfo).progress.is_null()
-                && (retcode == JPEG_ROW_COMPLETED || retcode == JPEG_REACHED_SOS)
+                && (retcode == JPEG_ROW_COMPLETED
+                    || retcode == JPEG_REACHED_SOS)
             {
                 (*(*cinfo).progress).pass_counter += 1;
                 if (*(*cinfo).progress).pass_counter >= (*(*cinfo).progress).pass_limit {
@@ -282,7 +282,8 @@ pub unsafe extern "C" fn jpeg_read_coefficients(
         }
         (*cinfo).global_state = DSTATE_STOPPING
     }
-    if ((*cinfo).global_state == DSTATE_STOPPING || (*cinfo).global_state == DSTATE_BUFIMAGE)
+    if ((*cinfo).global_state == DSTATE_STOPPING
+        || (*cinfo).global_state == DSTATE_BUFIMAGE)
         && 0 != (*cinfo).buffered_image
     {
         return (*(*cinfo).coef).coef_arrays;
@@ -294,10 +295,6 @@ pub unsafe extern "C" fn jpeg_read_coefficients(
         .expect("non-null function pointer")(cinfo as j_common_ptr);
     return NULL as *mut jvirt_barray_ptr;
 }
-/*
- * Master selection of decompression modules for transcoding.
- * This substitutes for jdmaster.c's initialization of the full decompressor.
- */
 /*
  * jdtrans.c
  *
@@ -313,6 +310,10 @@ pub unsafe extern "C" fn jpeg_read_coefficients(
  * The routines in jdapimin.c will also be needed by a transcoder.
  */
 /* Forward declarations */
+/*
+ * Master selection of decompression modules for transcoding.
+ * This substitutes for jdmaster.c's initialization of the full decompressor.
+ */
 unsafe extern "C" fn transdecode_master_selection(mut cinfo: j_decompress_ptr) {
     (*cinfo).buffered_image = TRUE;
     if 0 != (*cinfo).arith_code {
@@ -342,7 +343,8 @@ unsafe extern "C" fn transdecode_master_selection(mut cinfo: j_decompress_ptr) {
             nscans = 1i32
         }
         (*(*cinfo).progress).pass_counter = 0i64;
-        (*(*cinfo).progress).pass_limit = (*cinfo).total_iMCU_rows as c_long * nscans as c_long;
+        (*(*cinfo).progress).pass_limit =
+            (*cinfo).total_iMCU_rows as c_long * nscans as c_long;
         (*(*cinfo).progress).completed_passes = 0i32;
         (*(*cinfo).progress).total_passes = 1i32
     };

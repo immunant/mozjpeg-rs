@@ -1,10 +1,4 @@
-use libc;
-use libc::c_int;
-use libc::c_long;
-use libc::c_ulong;
-use libc::c_void;
-
-pub use crate::jerror::C2RustUnnamed_4;
+use libc::c_ulong;use libc::c_int;use libc::c_long;use libc::c_void;pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -150,7 +144,7 @@ pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
-pub use crate::jpeglib_h::C2RustUnnamed_3;
+pub use crate::jpeglib_h::C2RustUnnamed_2;
 pub use crate::jpeglib_h::JBLOCK;
 pub use crate::jpeglib_h::JBLOCKARRAY;
 pub use crate::jpeglib_h::JBLOCKROW;
@@ -167,6 +161,7 @@ use crate::stdlib::free;
 use crate::stdlib::malloc;
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::_IO_FILE;
+use libc;
 /*
  * jmemnobs.c
  *
@@ -184,11 +179,6 @@ pub use crate::stdlib::_IO_FILE;
  * This is very portable in the sense that it'll compile on almost anything,
  * but you'd better have lots of main memory (or virtual memory) if you want
  * to process big images.
- */
-/* <stdlib.h> should declare malloc(),free() */
-/*
- * Memory allocation and freeing are controlled by the regular library
- * routines malloc() and free().
  */
 /*
  * jmemsys.h
@@ -220,6 +210,11 @@ pub use crate::stdlib::_IO_FILE;
  * On most systems, these ARE malloc and free.  jpeg_free_small is passed the
  * size of the object being freed, just in case it's needed.
  */
+/* <stdlib.h> should declare malloc(),free() */
+/*
+ * Memory allocation and freeing are controlled by the regular library
+ * routines malloc() and free().
+ */
 #[no_mangle]
 pub unsafe extern "C" fn jpeg_get_small(
     mut cinfo: j_common_ptr,
@@ -236,14 +231,14 @@ pub unsafe extern "C" fn jpeg_free_small(
     free(object);
 }
 /*
- * "Large" objects are treated the same as "small" ones.
- */
-/*
  * These two functions are used to allocate and release large chunks of
  * memory (up to the total free space designated by jpeg_mem_available).
  * These are identical to the jpeg_get/free_small routines; but we keep them
  * separate anyway, in case a different allocation strategy is desirable for
  * large chunks.
+ */
+/*
+ * "Large" objects are treated the same as "small" ones.
  */
 #[no_mangle]
 pub unsafe extern "C" fn jpeg_get_large(
@@ -260,9 +255,6 @@ pub unsafe extern "C" fn jpeg_free_large(
 ) {
     free(object);
 }
-/*
- * This routine computes the total memory space available for allocation.
- */
 /*
  * The macro MAX_ALLOC_CHUNK designates the maximum number of bytes that may
  * be requested in a single call to jpeg_get_large (and jpeg_get_small for that
@@ -295,6 +287,9 @@ pub unsafe extern "C" fn jpeg_free_large(
  * On machines with lots of virtual memory, any large constant may be returned.
  * Conversely, zero may be returned to always use the minimum amount of memory.
  */
+/*
+ * This routine computes the total memory space available for allocation.
+ */
 #[no_mangle]
 pub unsafe extern "C" fn jpeg_mem_available(
     mut cinfo: j_common_ptr,
@@ -304,7 +299,8 @@ pub unsafe extern "C" fn jpeg_mem_available(
 ) -> size_t {
     if 0 != (*(*cinfo).mem).max_memory_to_use {
         if (*(*cinfo).mem).max_memory_to_use as size_t > already_allocated {
-            return ((*(*cinfo).mem).max_memory_to_use as c_ulong).wrapping_sub(already_allocated);
+            return ((*(*cinfo).mem).max_memory_to_use as c_ulong)
+                .wrapping_sub(already_allocated);
         } else {
             return 0i32 as size_t;
         }
@@ -313,16 +309,16 @@ pub unsafe extern "C" fn jpeg_mem_available(
     };
 }
 /*
- * Backing store (temporary file) management.
- * Since jpeg_mem_available always promised the moon,
- * this should never be called and we can just error out.
- */
-/*
  * Initial opening of a backing-store object.  This must fill in the
  * read/write/close pointers in the object.  The read/write routines
  * may take an error exit if the specified maximum file size is exceeded.
  * (If jpeg_mem_available always returns a large value, this routine can
  * just take an error exit.)
+ */
+/*
+ * Backing store (temporary file) management.
+ * Since jpeg_mem_available always promised the moon,
+ * this should never be called and we can just error out.
  */
 #[no_mangle]
 pub unsafe extern "C" fn jpeg_open_backing_store(
@@ -337,10 +333,6 @@ pub unsafe extern "C" fn jpeg_open_backing_store(
 }
 /*
  * These routines take care of any system-dependent initialization and
- * cleanup required.  Here, there isn't any.
- */
-/*
- * These routines take care of any system-dependent initialization and
  * cleanup required.  jpeg_mem_init will be called before anything is
  * allocated (and, therefore, nothing in cinfo is of use except the error
  * manager pointer).  It should return a suitable default value for
@@ -349,6 +341,10 @@ pub unsafe extern "C" fn jpeg_open_backing_store(
  * jpeg_mem_available chooses to consult it ... no one else will.)
  * jpeg_mem_term may assume that all requested memory has been freed and that
  * all opened backing-store objects have been closed.
+ */
+/*
+ * These routines take care of any system-dependent initialization and
+ * cleanup required.  Here, there isn't any.
  */
 #[no_mangle]
 pub unsafe extern "C" fn jpeg_mem_init(mut cinfo: j_common_ptr) -> c_long {

@@ -1,12 +1,4 @@
-use libc;
-use libc::c_char;
-use libc::c_int;
-use libc::c_long;
-use libc::c_uint;
-use libc::c_ulong;
-use libc::c_void;
-
-pub use crate::cderror_h::C2RustUnnamed_92;
+use libc::c_char;use libc::c_uint;use libc::c_int;use libc::c_void;use libc::c_ulong;use libc::c_long;pub use crate::cderror_h::C2RustUnnamed_91;
 pub use crate::cderror_h::JERR_BAD_CMAP_FILE;
 pub use crate::cderror_h::JERR_BMP_BADCMAP;
 pub use crate::cderror_h::JERR_BMP_BADDEPTH;
@@ -56,7 +48,7 @@ pub use crate::cderror_h::JWRN_GIF_ENDCODE;
 pub use crate::cderror_h::JWRN_GIF_NOMOREDATA;
 pub use crate::cdjpeg::djpeg_dest_ptr;
 pub use crate::cdjpeg::djpeg_dest_struct;
-pub use crate::jerror::C2RustUnnamed_4;
+pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -222,7 +214,7 @@ pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
-pub use crate::jpeglib_h::C2RustUnnamed_3;
+pub use crate::jpeglib_h::C2RustUnnamed_2;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::JBLOCK;
 pub use crate::jpeglib_h::JBLOCKARRAY;
@@ -271,6 +263,7 @@ use crate::stdlib::fwrite;
 use crate::stdlib::putc;
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::_IO_FILE;
+use libc;
 pub type gif_dest_ptr = *mut gif_dest_struct;
 /*
  * wrgif.c
@@ -313,7 +306,6 @@ pub type gif_dest_ptr = *mut gif_dest_struct;
  *    CompuServe Incorporated."
  */
 /* Private version of data destination object */
-
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct gif_dest_struct {
@@ -349,7 +341,9 @@ unsafe extern "C" fn flush_packet(mut dinfo: gif_dest_ptr) {
             (*(*(*dinfo).cinfo).err).msg_code = JERR_FILE_WRITE as c_int;
             (*(*(*dinfo).cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")((*dinfo).cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                (*dinfo).cinfo as j_common_ptr,
+            );
         }
         (*dinfo).bytesinpkt = 0i32
     };
@@ -425,7 +419,10 @@ unsafe extern "C" fn compress_term(mut dinfo: gif_dest_ptr) {
 }
 /* GIF header construction */
 unsafe extern "C" fn put_word(mut dinfo: gif_dest_ptr, mut w: c_uint) {
-    putc((w & 0xffi32 as c_uint) as c_int, (*dinfo).pub_0.output_file);
+    putc(
+        (w & 0xffi32 as c_uint) as c_int,
+        (*dinfo).pub_0.output_file,
+    );
     putc(
         (w >> 8i32 & 0xffi32 as c_uint) as c_int,
         (*dinfo).pub_0.output_file,
@@ -452,7 +449,9 @@ unsafe extern "C" fn emit_header(
         (*(*(*dinfo).cinfo).err).msg_parm.i[0usize] = num_colors;
         (*(*(*dinfo).cinfo).err)
             .error_exit
-            .expect("non-null function pointer")((*dinfo).cinfo as j_common_ptr);
+            .expect("non-null function pointer")(
+            (*dinfo).cinfo as j_common_ptr
+        );
     }
     BitsPerPixel = 1i32;
     while num_colors > 1i32 << BitsPerPixel {
@@ -482,7 +481,9 @@ unsafe extern "C" fn emit_header(
     while i < ColorMapSize {
         if i < num_colors {
             if !colormap.is_null() {
-                if (*(*dinfo).cinfo).out_color_space as c_uint == JCS_RGB as c_int as c_uint {
+                if (*(*dinfo).cinfo).out_color_space as c_uint
+                    == JCS_RGB as c_int as c_uint
+                {
                     putc(
                         *(*colormap.offset(0isize)).offset(i as isize) as c_int >> cshift,
                         (*dinfo).pub_0.output_file,
@@ -524,12 +525,19 @@ unsafe extern "C" fn emit_header(
 /*
  * Startup: write the file header.
  */
-unsafe extern "C" fn start_output_gif(mut cinfo: j_decompress_ptr, mut dinfo: djpeg_dest_ptr) {
+unsafe extern "C" fn start_output_gif(
+    mut cinfo: j_decompress_ptr,
+    mut dinfo: djpeg_dest_ptr,
+) {
     let mut dest: gif_dest_ptr = dinfo as gif_dest_ptr;
     if 0 != (*cinfo).quantize_colors {
         emit_header(dest, (*cinfo).actual_number_of_colors, (*cinfo).colormap);
     } else {
-        emit_header(dest, 256i32, NULL as *mut c_void as JSAMPARRAY);
+        emit_header(
+            dest,
+            256i32,
+            NULL as *mut c_void as JSAMPARRAY,
+        );
     };
 }
 /*
@@ -556,7 +564,10 @@ unsafe extern "C" fn put_pixel_rows(
 /*
  * Finish up at the end of the file.
  */
-unsafe extern "C" fn finish_output_gif(mut cinfo: j_decompress_ptr, mut dinfo: djpeg_dest_ptr) {
+unsafe extern "C" fn finish_output_gif(
+    mut cinfo: j_decompress_ptr,
+    mut dinfo: djpeg_dest_ptr,
+) {
     let mut dest: gif_dest_ptr = dinfo as gif_dest_ptr;
     compress_term(dest);
     putc(0i32, (*dest).pub_0.output_file);
@@ -581,7 +592,9 @@ unsafe extern "C" fn calc_buffer_dimensions_gif(
  * The module selection routine for GIF format output.
  */
 #[no_mangle]
-pub unsafe extern "C" fn jinit_write_gif(mut cinfo: j_decompress_ptr) -> djpeg_dest_ptr {
+pub unsafe extern "C" fn jinit_write_gif(
+    mut cinfo: j_decompress_ptr,
+) -> djpeg_dest_ptr {
     let mut dest: gif_dest_ptr = 0 as *mut gif_dest_struct;
     dest = (*(*cinfo).mem)
         .alloc_small
@@ -592,28 +605,46 @@ pub unsafe extern "C" fn jinit_write_gif(mut cinfo: j_decompress_ptr) -> djpeg_d
     ) as gif_dest_ptr;
     (*dest).cinfo = cinfo;
     (*dest).pub_0.start_output = Some(
-        start_output_gif as unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> (),
+        start_output_gif
+            as unsafe extern "C" fn(
+                _: j_decompress_ptr,
+                _: djpeg_dest_ptr,
+            ) -> (),
     );
     (*dest).pub_0.put_pixel_rows = Some(
         put_pixel_rows
-            as unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr, _: JDIMENSION) -> (),
+            as unsafe extern "C" fn(
+                _: j_decompress_ptr,
+                _: djpeg_dest_ptr,
+                _: JDIMENSION,
+            ) -> (),
     );
     (*dest).pub_0.finish_output = Some(
-        finish_output_gif as unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> (),
+        finish_output_gif
+            as unsafe extern "C" fn(
+                _: j_decompress_ptr,
+                _: djpeg_dest_ptr,
+            ) -> (),
     );
     (*dest).pub_0.calc_buffer_dimensions = Some(
         calc_buffer_dimensions_gif
-            as unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> (),
+            as unsafe extern "C" fn(
+                _: j_decompress_ptr,
+                _: djpeg_dest_ptr,
+            ) -> (),
     );
-    if (*cinfo).out_color_space as c_uint != JCS_GRAYSCALE as c_int as c_uint
-        && (*cinfo).out_color_space as c_uint != JCS_RGB as c_int as c_uint
+    if (*cinfo).out_color_space as c_uint
+        != JCS_GRAYSCALE as c_int as c_uint
+        && (*cinfo).out_color_space as c_uint
+            != JCS_RGB as c_int as c_uint
     {
         (*(*cinfo).err).msg_code = JERR_GIF_COLORSPACE as c_int;
         (*(*cinfo).err)
             .error_exit
             .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
-    if (*cinfo).out_color_space as c_uint != JCS_GRAYSCALE as c_int as c_uint
+    if (*cinfo).out_color_space as c_uint
+        != JCS_GRAYSCALE as c_int as c_uint
         || (*cinfo).data_precision > 8i32
     {
         (*cinfo).quantize_colors = TRUE;

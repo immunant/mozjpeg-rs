@@ -1,13 +1,4 @@
-use libc;
-use libc::c_double;
-use libc::c_float;
-use libc::c_int;
-use libc::c_uint;
-use libc::c_ulong;
-use libc::c_void;
-use libc::intptr_t;
-
-pub use crate::jchuff::c_derived_tbl;
+use libc::c_float;use libc::c_double;use libc::c_int;use libc::c_uint;use libc::c_ulong;use libc::c_void;use libc::intptr_t;pub use crate::jchuff::c_derived_tbl;
 pub use crate::jchuff::MAX_COEF_BITS;
 pub use crate::jdct_h::jpeg_fdct_float;
 pub use crate::jdct_h::jpeg_fdct_ifast;
@@ -15,7 +6,7 @@ pub use crate::jdct_h::jpeg_fdct_islow;
 pub use crate::jdct_h::DCTELEM;
 pub use crate::jdct_h::UDCTELEM;
 pub use crate::jdct_h::UDCTELEM2;
-pub use crate::jerror::C2RustUnnamed_4;
+pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -187,7 +178,7 @@ pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
-pub use crate::jpeglib_h::C2RustUnnamed_3;
+pub use crate::jpeglib_h::C2RustUnnamed_2;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::DCTSIZE;
 pub use crate::jpeglib_h::DCTSIZE2;
@@ -244,12 +235,17 @@ use crate::stdlib::ceilf;
 use crate::stdlib::free;
 use crate::stdlib::malloc;
 use crate::stdlib::pow;
-pub type float_preprocess_method_ptr =
-    Option<unsafe extern "C" fn(_: *mut c_float, _: *const JQUANT_TBL) -> ()>;
-pub type preprocess_method_ptr =
-    Option<unsafe extern "C" fn(_: *mut DCTELEM, _: *const JQUANT_TBL) -> ()>;
+use libc;
+pub type float_preprocess_method_ptr = Option<
+    unsafe extern "C" fn(_: *mut c_float, _: *const JQUANT_TBL) -> (),
+>;
+pub type preprocess_method_ptr = Option<
+    unsafe extern "C" fn(
+        _: *mut DCTELEM,
+        _: *const JQUANT_TBL,
+    ) -> (),
+>;
 pub type my_fdct_ptr = *mut my_fdct_controller;
-
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct my_fdct_controller {
@@ -267,15 +263,35 @@ pub struct my_fdct_controller {
     pub float_divisors: [*mut c_float; 4],
     pub float_workspace: *mut c_float,
 }
-pub type float_quantize_method_ptr =
-    Option<unsafe extern "C" fn(_: JCOEFPTR, _: *mut c_float, _: *mut c_float) -> ()>;
-pub type float_convsamp_method_ptr =
-    Option<unsafe extern "C" fn(_: JSAMPARRAY, _: JDIMENSION, _: *mut c_float) -> ()>;
+pub type float_quantize_method_ptr = Option<
+    unsafe extern "C" fn(
+        _: JCOEFPTR,
+        _: *mut c_float,
+        _: *mut c_float,
+    ) -> (),
+>;
+pub type float_convsamp_method_ptr = Option<
+    unsafe extern "C" fn(
+        _: JSAMPARRAY,
+        _: JDIMENSION,
+        _: *mut c_float,
+    ) -> (),
+>;
 pub type float_DCT_method_ptr = Option<unsafe extern "C" fn(_: *mut c_float) -> ()>;
-pub type quantize_method_ptr =
-    Option<unsafe extern "C" fn(_: JCOEFPTR, _: *mut DCTELEM, _: *mut DCTELEM) -> ()>;
-pub type convsamp_method_ptr =
-    Option<unsafe extern "C" fn(_: JSAMPARRAY, _: JDIMENSION, _: *mut DCTELEM) -> ()>;
+pub type quantize_method_ptr = Option<
+    unsafe extern "C" fn(
+        _: JCOEFPTR,
+        _: *mut DCTELEM,
+        _: *mut DCTELEM,
+    ) -> (),
+>;
+pub type convsamp_method_ptr = Option<
+    unsafe extern "C" fn(
+        _: JSAMPARRAY,
+        _: JDIMENSION,
+        _: *mut DCTELEM,
+    ) -> (),
+>;
 /*
  * jcdctmgr.c
  *
@@ -295,7 +311,8 @@ pub type convsamp_method_ptr =
  * quantization.
  */
 /* Private subobject for this module */
-pub type forward_DCT_method_ptr = Option<unsafe extern "C" fn(_: *mut DCTELEM) -> ()>;
+pub type forward_DCT_method_ptr =
+    Option<unsafe extern "C" fn(_: *mut DCTELEM) -> ()>;
 /*
  * Find the highest bit in an integer through binary search.
  */
@@ -381,7 +398,10 @@ unsafe extern "C" fn flss(mut val: UINT16) -> c_int {
  * of in a consecutive manner, yet again in order to allow SIMD
  * routines.
  */
-unsafe extern "C" fn compute_reciprocal(mut divisor: UINT16, mut dtbl: *mut DCTELEM) -> c_int {
+unsafe extern "C" fn compute_reciprocal(
+    mut divisor: UINT16,
+    mut dtbl: *mut DCTELEM,
+) -> c_int {
     let mut fq: UDCTELEM2 = 0;
     let mut fr: UDCTELEM2 = 0;
     let mut c: UDCTELEM = 0;
@@ -391,9 +411,10 @@ unsafe extern "C" fn compute_reciprocal(mut divisor: UINT16, mut dtbl: *mut DCTE
         *dtbl.offset((DCTSIZE2 * 0i32) as isize) = 1i32 as DCTELEM;
         *dtbl.offset((DCTSIZE2 * 1i32) as isize) = 0i32 as DCTELEM;
         *dtbl.offset((DCTSIZE2 * 2i32) as isize) = 1i32 as DCTELEM;
-        *dtbl.offset((DCTSIZE2 * 3i32) as isize) = -((::std::mem::size_of::<DCTELEM>() as c_ulong)
-            .wrapping_mul(8i32 as c_ulong)
-            as DCTELEM as c_int) as DCTELEM;
+        *dtbl.offset((DCTSIZE2 * 3i32) as isize) =
+            -((::std::mem::size_of::<DCTELEM>() as c_ulong)
+                .wrapping_mul(8i32 as c_ulong) as DCTELEM
+                as c_int) as DCTELEM;
         return 0i32;
     }
     b = flss(divisor) - 1i32;
@@ -417,10 +438,13 @@ unsafe extern "C" fn compute_reciprocal(mut divisor: UINT16, mut dtbl: *mut DCTE
         << (::std::mem::size_of::<DCTELEM>() as c_ulong)
             .wrapping_mul(8i32 as c_ulong)
             .wrapping_mul(2i32 as c_ulong)
-            .wrapping_sub(r as c_ulong)) as DCTELEM;
-    *dtbl.offset((DCTSIZE2 * 3i32) as isize) = (r as DCTELEM as c_ulong)
-        .wrapping_sub((::std::mem::size_of::<DCTELEM>() as c_ulong).wrapping_mul(8i32 as c_ulong))
+            .wrapping_sub(r as c_ulong))
         as DCTELEM;
+    *dtbl.offset((DCTSIZE2 * 3i32) as isize) =
+        (r as DCTELEM as c_ulong).wrapping_sub(
+            (::std::mem::size_of::<DCTELEM>() as c_ulong)
+                .wrapping_mul(8i32 as c_ulong),
+        ) as DCTELEM;
     if r <= 16i32 {
         return 0i32;
     } else {
@@ -440,7 +464,8 @@ unsafe extern "C" fn start_pass_fdctmgr(mut cinfo: j_compress_ptr) {
     let mut ci: c_int = 0;
     let mut qtblno: c_int = 0;
     let mut i: c_int = 0;
-    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info =
+        0 as *mut jpeg_component_info;
     let mut qtbl: *mut JQUANT_TBL = 0 as *mut JQUANT_TBL;
     let mut dtbl: *mut DCTELEM = 0 as *mut DCTELEM;
     ci = 0i32;
@@ -455,7 +480,9 @@ unsafe extern "C" fn start_pass_fdctmgr(mut cinfo: j_compress_ptr) {
             (*(*cinfo).err).msg_parm.i[0usize] = qtblno;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                cinfo as j_common_ptr
+            );
         }
         qtbl = (*cinfo).quant_tbl_ptrs[qtblno as usize];
         match (*cinfo).dct_method as c_uint {
@@ -466,15 +493,18 @@ unsafe extern "C" fn start_pass_fdctmgr(mut cinfo: j_compress_ptr) {
                         .expect("non-null function pointer")(
                         cinfo as j_common_ptr,
                         JPOOL_IMAGE,
-                        ((DCTSIZE2 * 4i32) as c_ulong)
-                            .wrapping_mul(::std::mem::size_of::<DCTELEM>() as c_ulong),
-                    ) as *mut DCTELEM
+                        ((DCTSIZE2 * 4i32) as c_ulong).wrapping_mul(
+                            ::std::mem::size_of::<DCTELEM>() as c_ulong,
+                        ),
+                    )
+                        as *mut DCTELEM
                 }
                 dtbl = (*fdct).divisors[qtblno as usize];
                 i = 0i32;
                 while i < DCTSIZE2 {
                     if 0 == compute_reciprocal(
-                        (((*qtbl).quantval[i as usize] as c_int) << 3i32) as UINT16,
+                        (((*qtbl).quantval[i as usize] as c_int) << 3i32)
+                            as UINT16,
                         &mut *dtbl.offset(i as isize),
                     ) && (*fdct).quantize
                         == Some(
@@ -571,15 +601,18 @@ unsafe extern "C" fn start_pass_fdctmgr(mut cinfo: j_compress_ptr) {
                         .expect("non-null function pointer")(
                         cinfo as j_common_ptr,
                         JPOOL_IMAGE,
-                        ((DCTSIZE2 * 4i32) as c_ulong)
-                            .wrapping_mul(::std::mem::size_of::<DCTELEM>() as c_ulong),
-                    ) as *mut DCTELEM
+                        ((DCTSIZE2 * 4i32) as c_ulong).wrapping_mul(
+                            ::std::mem::size_of::<DCTELEM>() as c_ulong,
+                        ),
+                    )
+                        as *mut DCTELEM
                 }
                 dtbl = (*fdct).divisors[qtblno as usize];
                 i = 0i32;
                 while i < DCTSIZE2 {
                     if 0 == compute_reciprocal(
-                        ((*qtbl).quantval[i as usize] as JLONG * aanscales[i as usize] as JLONG
+                        ((*qtbl).quantval[i as usize] as JLONG
+                            * aanscales[i as usize] as JLONG
                             + ((1i32 as JLONG) << 14i32 - 3i32 - 1i32)
                             >> 14i32 - 3i32) as UINT16,
                         &mut *dtbl.offset(i as isize),
@@ -627,7 +660,8 @@ unsafe extern "C" fn start_pass_fdctmgr(mut cinfo: j_compress_ptr) {
                         JPOOL_IMAGE,
                         (DCTSIZE2 as c_ulong)
                             .wrapping_mul(::std::mem::size_of::<c_float>() as c_ulong),
-                    ) as *mut c_float
+                    )
+                        as *mut c_float
                 }
                 fdtbl = (*fdct).float_divisors[qtblno as usize];
                 i = 0i32;
@@ -651,7 +685,9 @@ unsafe extern "C" fn start_pass_fdctmgr(mut cinfo: j_compress_ptr) {
                 (*(*cinfo).err).msg_code = JERR_NOT_COMPILED as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(cinfo as j_common_ptr);
+                    .expect("non-null function pointer")(
+                    cinfo as j_common_ptr
+                );
             }
         }
         ci += 1;
@@ -679,7 +715,7 @@ unsafe extern "C" fn catmull_rom(
         + value3 as c_int as c_float * f2
         + tan2 as c_float * f4;
 }
-/** Prevents visible ringing artifacts near hard edges on white backgrounds.
+/* * Prevents visible ringing artifacts near hard edges on white backgrounds.
 
  1. JPEG can encode samples with higher values than it's possible to display (higher than 255 in RGB),
     and the decoder will always clamp values to 0-255. To encode 255 you can use any value >= 255,
@@ -694,7 +730,8 @@ unsafe extern "C" fn preprocess_deringing(
     mut data: *mut DCTELEM,
     mut quantization_table: *const JQUANT_TBL,
 ) {
-    let maxsample: DCTELEM = (255i32 - CENTERJSAMPLE) as DCTELEM;
+    let maxsample: DCTELEM =
+        (255i32 - CENTERJSAMPLE) as DCTELEM;
     let size: c_int = DCTSIZE * DCTSIZE;
     /* Decoders don't handle overflow of DC very well, so calculate
     maximum overflow that is safe to do without increasing DC out of range */
@@ -743,7 +780,11 @@ unsafe extern "C" fn preprocess_deringing(
         let mut step: c_float = 0.;
         let mut position: c_float = 0.;
         /* Pixels are traversed in zig-zag order to process them as a line */
-        if (*data.offset(*jpeg_natural_order.as_ptr().offset(n as isize) as isize) as c_int)
+        if (*data.offset(
+            *jpeg_natural_order
+                .as_ptr()
+                .offset(n as isize) as isize,
+        ) as c_int)
             < maxsample as c_int
         {
             n += 1
@@ -752,8 +793,11 @@ unsafe extern "C" fn preprocess_deringing(
             loop {
                 n += 1;
                 if !(n < size
-                    && *data.offset(*jpeg_natural_order.as_ptr().offset(n as isize) as isize)
-                        as c_int
+                    && *data.offset(
+                        *jpeg_natural_order
+                            .as_ptr()
+                            .offset(n as isize) as isize,
+                    ) as c_int
                         >= maxsample as c_int)
                 {
                     break;
@@ -785,12 +829,16 @@ unsafe extern "C" fn preprocess_deringing(
                     size - 1i32
                 }) as isize,
             ) as isize);
-            fslope = (if f1 as c_int - f2 as c_int > maxsample as c_int - f1 as c_int {
+            fslope = (if f1 as c_int - f2 as c_int
+                > maxsample as c_int - f1 as c_int
+            {
                 f1 as c_int - f2 as c_int
             } else {
                 maxsample as c_int - f1 as c_int
             }) as DCTELEM;
-            lslope = (if l1 as c_int - l2 as c_int > maxsample as c_int - l1 as c_int {
+            lslope = (if l1 as c_int - l2 as c_int
+                > maxsample as c_int - l1 as c_int
+            {
                 l1 as c_int - l2 as c_int
             } else {
                 maxsample as c_int - l1 as c_int
@@ -814,12 +862,15 @@ unsafe extern "C" fn preprocess_deringing(
                     position,
                     length,
                 )) as DCTELEM;
-                *data.offset(*jpeg_natural_order.as_ptr().offset(i as isize) as isize) =
-                    (if (tmp as c_int) < maxovershoot as c_int {
-                        tmp as c_int
-                    } else {
-                        maxovershoot as c_int
-                    }) as DCTELEM;
+                *data.offset(
+                    *jpeg_natural_order
+                        .as_ptr()
+                        .offset(i as isize) as isize,
+                ) = (if (tmp as c_int) < maxovershoot as c_int {
+                    tmp as c_int
+                } else {
+                    maxovershoot as c_int
+                }) as DCTELEM;
                 i += 1;
                 position += step
             }
@@ -884,15 +935,23 @@ unsafe extern "C" fn float_preprocess_deringing(
         let mut lslope: c_float = 0.;
         let mut step: c_float = 0.;
         let mut position: c_float = 0.;
-        if *data.offset(*jpeg_natural_order.as_ptr().offset(n as isize) as isize) < maxsample {
+        if *data.offset(
+            *jpeg_natural_order
+                .as_ptr()
+                .offset(n as isize) as isize,
+        ) < maxsample
+        {
             n += 1
         } else {
             start = n;
             loop {
                 n += 1;
                 if !(n < size
-                    && *data.offset(*jpeg_natural_order.as_ptr().offset(n as isize) as isize)
-                        >= maxsample)
+                    && *data.offset(
+                        *jpeg_natural_order
+                            .as_ptr()
+                            .offset(n as isize) as isize,
+                    ) >= maxsample)
                 {
                     break;
                 }
@@ -952,12 +1011,15 @@ unsafe extern "C" fn float_preprocess_deringing(
                     position,
                     length,
                 );
-                *data.offset(*jpeg_natural_order.as_ptr().offset(i as isize) as isize) =
-                    if tmp < maxovershoot {
-                        tmp
-                    } else {
-                        maxovershoot
-                    };
+                *data.offset(
+                    *jpeg_natural_order
+                        .as_ptr()
+                        .offset(i as isize) as isize,
+                ) = if tmp < maxovershoot {
+                    tmp
+                } else {
+                    maxovershoot
+                };
                 i += 1;
                 position += step
             }
@@ -987,42 +1049,50 @@ unsafe extern "C" fn convsamp(
         workspaceptr = workspaceptr.offset(1);
         let fresh0 = elemptr;
         elemptr = elemptr.offset(1);
-        *fresh1 = (*fresh0 as c_int - CENTERJSAMPLE) as DCTELEM;
+        *fresh1 =
+            (*fresh0 as c_int - CENTERJSAMPLE) as DCTELEM;
         let fresh3 = workspaceptr;
         workspaceptr = workspaceptr.offset(1);
         let fresh2 = elemptr;
         elemptr = elemptr.offset(1);
-        *fresh3 = (*fresh2 as c_int - CENTERJSAMPLE) as DCTELEM;
+        *fresh3 =
+            (*fresh2 as c_int - CENTERJSAMPLE) as DCTELEM;
         let fresh5 = workspaceptr;
         workspaceptr = workspaceptr.offset(1);
         let fresh4 = elemptr;
         elemptr = elemptr.offset(1);
-        *fresh5 = (*fresh4 as c_int - CENTERJSAMPLE) as DCTELEM;
+        *fresh5 =
+            (*fresh4 as c_int - CENTERJSAMPLE) as DCTELEM;
         let fresh7 = workspaceptr;
         workspaceptr = workspaceptr.offset(1);
         let fresh6 = elemptr;
         elemptr = elemptr.offset(1);
-        *fresh7 = (*fresh6 as c_int - CENTERJSAMPLE) as DCTELEM;
+        *fresh7 =
+            (*fresh6 as c_int - CENTERJSAMPLE) as DCTELEM;
         let fresh9 = workspaceptr;
         workspaceptr = workspaceptr.offset(1);
         let fresh8 = elemptr;
         elemptr = elemptr.offset(1);
-        *fresh9 = (*fresh8 as c_int - CENTERJSAMPLE) as DCTELEM;
+        *fresh9 =
+            (*fresh8 as c_int - CENTERJSAMPLE) as DCTELEM;
         let fresh11 = workspaceptr;
         workspaceptr = workspaceptr.offset(1);
         let fresh10 = elemptr;
         elemptr = elemptr.offset(1);
-        *fresh11 = (*fresh10 as c_int - CENTERJSAMPLE) as DCTELEM;
+        *fresh11 =
+            (*fresh10 as c_int - CENTERJSAMPLE) as DCTELEM;
         let fresh13 = workspaceptr;
         workspaceptr = workspaceptr.offset(1);
         let fresh12 = elemptr;
         elemptr = elemptr.offset(1);
-        *fresh13 = (*fresh12 as c_int - CENTERJSAMPLE) as DCTELEM;
+        *fresh13 =
+            (*fresh12 as c_int - CENTERJSAMPLE) as DCTELEM;
         let fresh15 = workspaceptr;
         workspaceptr = workspaceptr.offset(1);
         let fresh14 = elemptr;
         elemptr = elemptr.offset(1);
-        *fresh15 = (*fresh14 as c_int - CENTERJSAMPLE) as DCTELEM;
+        *fresh15 =
+            (*fresh14 as c_int - CENTERJSAMPLE) as DCTELEM;
         elemr += 1
     }
 }
@@ -1044,21 +1114,27 @@ unsafe extern "C" fn quantize(
     i = 0i32;
     while i < DCTSIZE2 {
         temp = *workspace.offset(i as isize);
-        recip = *divisors.offset((i + DCTSIZE2 * 0i32) as isize) as UDCTELEM;
-        corr = *divisors.offset((i + DCTSIZE2 * 1i32) as isize) as UDCTELEM;
+        recip = *divisors.offset((i + DCTSIZE2 * 0i32) as isize)
+            as UDCTELEM;
+        corr = *divisors.offset((i + DCTSIZE2 * 1i32) as isize)
+            as UDCTELEM;
         shift = *divisors.offset((i + DCTSIZE2 * 3i32) as isize) as c_int;
         if (temp as c_int) < 0i32 {
             temp = -(temp as c_int) as DCTELEM;
-            product = ((temp as c_int + corr as c_int) as UDCTELEM2).wrapping_mul(recip as c_uint);
+            product = ((temp as c_int + corr as c_int) as UDCTELEM2)
+                .wrapping_mul(recip as c_uint);
             product >>= (shift as c_ulong).wrapping_add(
-                (::std::mem::size_of::<DCTELEM>() as c_ulong).wrapping_mul(8i32 as c_ulong),
+                (::std::mem::size_of::<DCTELEM>() as c_ulong)
+                    .wrapping_mul(8i32 as c_ulong),
             );
             temp = product as DCTELEM;
             temp = -(temp as c_int) as DCTELEM
         } else {
-            product = ((temp as c_int + corr as c_int) as UDCTELEM2).wrapping_mul(recip as c_uint);
+            product = ((temp as c_int + corr as c_int) as UDCTELEM2)
+                .wrapping_mul(recip as c_uint);
             product >>= (shift as c_ulong).wrapping_add(
-                (::std::mem::size_of::<DCTELEM>() as c_ulong).wrapping_mul(8i32 as c_ulong),
+                (::std::mem::size_of::<DCTELEM>() as c_ulong)
+                    .wrapping_mul(8i32 as c_ulong),
             );
             temp = product as DCTELEM
         }
@@ -1085,8 +1161,10 @@ unsafe extern "C" fn forward_DCT(
 ) {
     /* This routine is heavily used, so it's worth coding it tightly. */
     let mut fdct: my_fdct_ptr = (*cinfo).fdct as my_fdct_ptr;
-    let mut divisors: *mut DCTELEM = (*fdct).divisors[(*compptr).quant_tbl_no as usize];
-    let mut qtbl: *mut JQUANT_TBL = (*cinfo).quant_tbl_ptrs[(*compptr).quant_tbl_no as usize];
+    let mut divisors: *mut DCTELEM =
+        (*fdct).divisors[(*compptr).quant_tbl_no as usize];
+    let mut qtbl: *mut JQUANT_TBL =
+        (*cinfo).quant_tbl_ptrs[(*compptr).quant_tbl_no as usize];
     let mut workspace: *mut DCTELEM = 0 as *mut DCTELEM;
     let mut bi: JDIMENSION = 0;
     /* Make sure the compiler doesn't look up these every pass */
@@ -1105,7 +1183,9 @@ unsafe extern "C" fn forward_DCT(
         do_dct.expect("non-null function pointer")(workspace);
         if !dst.is_null() {
             let mut i: c_int = 0;
-            if (*cinfo).dct_method as c_uint == JDCT_IFAST as c_int as c_uint {
+            if (*cinfo).dct_method as c_uint
+                == JDCT_IFAST as c_int as c_uint
+            {
                 static mut aanscales: [INT16; 64] = [
                     16384i32 as INT16,
                     22725i32 as INT16,
@@ -1203,17 +1283,20 @@ unsafe extern "C" fn forward_DCT(
             i_0 = 0i32;
             while i_0 < 64i32 {
                 if ((*coef_blocks.offset(bi as isize))[i_0 as usize] as c_int) < -maxval {
-                    (*coef_blocks.offset(bi as isize))[i_0 as usize] = -maxval as JCOEF
+                    (*coef_blocks.offset(bi as isize))[i_0 as usize] =
+                        -maxval as JCOEF
                 }
                 if (*coef_blocks.offset(bi as isize))[i_0 as usize] as c_int > maxval {
-                    (*coef_blocks.offset(bi as isize))[i_0 as usize] = maxval as JCOEF
+                    (*coef_blocks.offset(bi as isize))[i_0 as usize] =
+                        maxval as JCOEF
                 }
                 i_0 += 1
             }
         }
         bi = bi.wrapping_add(1);
-        start_col =
-            (start_col as c_uint).wrapping_add(DCTSIZE as c_uint) as JDIMENSION as JDIMENSION
+        start_col = (start_col as c_uint)
+            .wrapping_add(DCTSIZE as c_uint)
+            as JDIMENSION as JDIMENSION
     }
 }
 unsafe extern "C" fn convsamp_float(
@@ -1282,8 +1365,8 @@ unsafe extern "C" fn quantize_float(
     i = 0i32;
     while i < DCTSIZE2 {
         temp = *workspace.offset(i as isize) * *divisors.offset(i as isize);
-        *output_ptr.offset(i as isize) =
-            ((temp + 16384.5f64 as c_float) as c_int - 16384i32) as JCOEF;
+        *output_ptr.offset(i as isize) = ((temp + 16384.5f64 as c_float) as c_int
+            - 16384i32) as JCOEF;
         i += 1
     }
 }
@@ -1300,7 +1383,8 @@ unsafe extern "C" fn forward_DCT_float(
     /* This routine is heavily used, so it's worth coding it tightly. */
     let mut fdct: my_fdct_ptr = (*cinfo).fdct as my_fdct_ptr;
     let mut divisors: *mut c_float = (*fdct).float_divisors[(*compptr).quant_tbl_no as usize];
-    let mut qtbl: *mut JQUANT_TBL = (*cinfo).quant_tbl_ptrs[(*compptr).quant_tbl_no as usize];
+    let mut qtbl: *mut JQUANT_TBL =
+        (*cinfo).quant_tbl_ptrs[(*compptr).quant_tbl_no as usize];
     let mut workspace: *mut c_float = 0 as *mut c_float;
     let mut bi: JDIMENSION = 0;
     let mut v: c_float = 0.;
@@ -1356,17 +1440,20 @@ unsafe extern "C" fn forward_DCT_float(
             i_0 = 0i32;
             while i_0 < 64i32 {
                 if ((*coef_blocks.offset(bi as isize))[i_0 as usize] as c_int) < -maxval {
-                    (*coef_blocks.offset(bi as isize))[i_0 as usize] = -maxval as JCOEF
+                    (*coef_blocks.offset(bi as isize))[i_0 as usize] =
+                        -maxval as JCOEF
                 }
                 if (*coef_blocks.offset(bi as isize))[i_0 as usize] as c_int > maxval {
-                    (*coef_blocks.offset(bi as isize))[i_0 as usize] = maxval as JCOEF
+                    (*coef_blocks.offset(bi as isize))[i_0 as usize] =
+                        maxval as JCOEF
                 }
                 i_0 += 1
             }
         }
         bi = bi.wrapping_add(1);
-        start_col =
-            (start_col as c_uint).wrapping_add(DCTSIZE as c_uint) as JDIMENSION as JDIMENSION
+        start_col = (start_col as c_uint)
+            .wrapping_add(DCTSIZE as c_uint)
+            as JDIMENSION as JDIMENSION
     }
 }
 /* DCT_FLOAT_SUPPORTED */
@@ -1432,8 +1519,10 @@ pub unsafe extern "C" fn quantize_trellis(
     };
     let mut Ss: c_int = 0;
     let mut Se: c_int = 0;
-    let mut accumulated_zero_block_cost: *mut c_float = NULL as *mut c_float;
-    let mut accumulated_block_cost: *mut c_float = NULL as *mut c_float;
+    let mut accumulated_zero_block_cost: *mut c_float =
+        NULL as *mut c_float;
+    let mut accumulated_block_cost: *mut c_float =
+        NULL as *mut c_float;
     let mut block_run_start: *mut c_int = NULL as *mut c_int;
     let mut requires_eob: *mut c_int = NULL as *mut c_int;
     let mut has_eob: c_int = 0;
@@ -1445,7 +1534,8 @@ pub unsafe extern "C" fn quantize_trellis(
     let mut rate: c_int = 0;
     let mut accumulated_dc_cost: [*mut c_float; 9] = [0 as *mut c_float; 9];
     let mut dc_cost_backtrack: [*mut c_int; 9] = [0 as *mut c_int; 9];
-    let mut dc_candidate: [*mut JCOEF; 9] = [0 as *mut JCOEF; 9];
+    let mut dc_candidate: [*mut JCOEF; 9] =
+        [0 as *mut JCOEF; 9];
     let mut mode: c_int = 1i32;
     let mut lambda_table: [c_float; 64] = [0.; 64];
     let dc_trellis_candidates: c_int =
@@ -1467,9 +1557,10 @@ pub unsafe extern "C" fn quantize_trellis(
             (num_blocks.wrapping_add(1i32 as c_uint) as c_ulong)
                 .wrapping_mul(::std::mem::size_of::<c_float>() as c_ulong),
         ) as *mut c_float;
-        block_run_start =
-            malloc((num_blocks as c_ulong).wrapping_mul(::std::mem::size_of::<c_int>() as c_ulong))
-                as *mut c_int;
+        block_run_start = malloc(
+            (num_blocks as c_ulong)
+                .wrapping_mul(::std::mem::size_of::<c_int>() as c_ulong),
+        ) as *mut c_int;
         requires_eob = malloc(
             (num_blocks.wrapping_add(1i32 as c_uint) as c_ulong)
                 .wrapping_mul(::std::mem::size_of::<c_int>() as c_ulong),
@@ -1482,7 +1573,9 @@ pub unsafe extern "C" fn quantize_trellis(
             (*(*cinfo).err).msg_code = JERR_OUT_OF_MEMORY as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                cinfo as j_common_ptr
+            );
         }
         *accumulated_zero_block_cost.offset(0isize) = 0i32 as c_float;
         *accumulated_block_cost.offset(0isize) = 0i32 as c_float;
@@ -1492,14 +1585,17 @@ pub unsafe extern "C" fn quantize_trellis(
         i = 0i32;
         while i < dc_trellis_candidates {
             accumulated_dc_cost[i as usize] = malloc(
-                (num_blocks as c_ulong).wrapping_mul(::std::mem::size_of::<c_float>() as c_ulong),
+                (num_blocks as c_ulong)
+                    .wrapping_mul(::std::mem::size_of::<c_float>() as c_ulong),
             ) as *mut c_float;
             dc_cost_backtrack[i as usize] = malloc(
-                (num_blocks as c_ulong).wrapping_mul(::std::mem::size_of::<c_int>() as c_ulong),
+                (num_blocks as c_ulong)
+                    .wrapping_mul(::std::mem::size_of::<c_int>() as c_ulong),
             ) as *mut c_int;
-            dc_candidate[i as usize] = malloc(
-                (num_blocks as c_ulong).wrapping_mul(::std::mem::size_of::<JCOEF>() as c_ulong),
-            ) as *mut JCOEF;
+            dc_candidate[i as usize] =
+                malloc((num_blocks as c_ulong).wrapping_mul(
+                    ::std::mem::size_of::<JCOEF>() as c_ulong,
+                )) as *mut JCOEF;
             if accumulated_dc_cost[i as usize].is_null()
                 || dc_cost_backtrack[i as usize].is_null()
                 || dc_candidate[i as usize].is_null()
@@ -1507,7 +1603,9 @@ pub unsafe extern "C" fn quantize_trellis(
                 (*(*cinfo).err).msg_code = JERR_OUT_OF_MEMORY as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(cinfo as j_common_ptr);
+                    .expect("non-null function pointer")(
+                    cinfo as j_common_ptr
+                );
             }
             i += 1
         }
@@ -1515,8 +1613,8 @@ pub unsafe extern "C" fn quantize_trellis(
     norm = 0.0f64 as c_float;
     i = 1i32;
     while i < DCTSIZE2 {
-        norm += ((*qtbl).quantval[i as usize] as c_int * (*qtbl).quantval[i as usize] as c_int)
-            as c_float;
+        norm += ((*qtbl).quantval[i as usize] as c_int
+            * (*qtbl).quantval[i as usize] as c_int) as c_float;
         i += 1
     }
     norm = (norm as c_double / 63.0f64) as c_float;
@@ -1526,7 +1624,8 @@ pub unsafe extern "C" fn quantize_trellis(
         i = 0i32;
         while i < DCTSIZE2 {
             lambda_table[i as usize] = (1.0f64
-                / ((*qtbl).quantval[i as usize] as c_int * (*qtbl).quantval[i as usize] as c_int)
+                / ((*qtbl).quantval[i as usize] as c_int
+                    * (*qtbl).quantval[i as usize] as c_int)
                     as c_double) as c_float;
             i += 1
         }
@@ -1539,15 +1638,20 @@ pub unsafe extern "C" fn quantize_trellis(
         i = 1i32;
         while i < DCTSIZE2 {
             norm += ((*src.offset(bi as isize))[i as usize] as c_int
-                * (*src.offset(bi as isize))[i as usize] as c_int) as c_float;
+                * (*src.offset(bi as isize))[i as usize] as c_int)
+                as c_float;
             i += 1
         }
         norm = (norm as c_double / 63.0f64) as c_float;
         if (*(*cinfo).master).lambda_log_scale2 as c_double > 0.0f64 {
-            lambda = (pow(2.0f64, (*(*cinfo).master).lambda_log_scale1 as c_double)
-                * lambda_base as c_double
-                / (pow(2.0f64, (*(*cinfo).master).lambda_log_scale2 as c_double)
-                    + norm as c_double)) as c_float
+            lambda = (pow(
+                2.0f64,
+                (*(*cinfo).master).lambda_log_scale1 as c_double,
+            ) * lambda_base as c_double
+                / (pow(
+                    2.0f64,
+                    (*(*cinfo).master).lambda_log_scale2 as c_double,
+                ) + norm as c_double)) as c_float
         } else {
             lambda = (pow(
                 2.0f64,
@@ -1559,7 +1663,8 @@ pub unsafe extern "C" fn quantize_trellis(
         accumulated_cost[(Ss - 1i32) as usize] = 0.0f64 as c_float;
         if 0 != (*(*cinfo).master).trellis_quant_dc {
             let mut sign: c_int = (*src.offset(bi as isize))[0usize] as c_int >> 31i32;
-            let mut x: c_int = abs((*src.offset(bi as isize))[0usize] as c_int);
+            let mut x: c_int =
+                abs((*src.offset(bi as isize))[0usize] as c_int);
             let mut q: c_int = 8i32 * (*qtbl).quantval[0usize] as c_int;
             let mut qval: c_int = 0;
             let mut dc_candidate_dist: c_float = 0.;
@@ -1571,7 +1676,9 @@ pub unsafe extern "C" fn quantize_trellis(
                 let mut bits: c_int = 0;
                 *dc_candidate[k as usize].offset(bi as isize) =
                     (qval - dc_trellis_candidates / 2i32 + k) as JCOEF;
-                if *dc_candidate[k as usize].offset(bi as isize) as c_int >= 1i32 << MAX_COEF_BITS {
+                if *dc_candidate[k as usize].offset(bi as isize) as c_int
+                    >= 1i32 << MAX_COEF_BITS
+                {
                     *dc_candidate[k as usize].offset(bi as isize) =
                         ((1i32 << MAX_COEF_BITS) - 1i32) as JCOEF
                 }
@@ -1584,7 +1691,8 @@ pub unsafe extern "C" fn quantize_trellis(
                 delta = *dc_candidate[k as usize].offset(bi as isize) as c_int * q - x;
                 dc_candidate_dist = (delta * delta) as c_float * lambda_dc;
                 let ref mut fresh32 = *dc_candidate[k as usize].offset(bi as isize);
-                *fresh32 = (*fresh32 as c_int * (1i32 + 2i32 * sign)) as JCOEF;
+                *fresh32 =
+                    (*fresh32 as c_int * (1i32 + 2i32 * sign)) as JCOEF;
                 if !coef_blocks_above.is_null()
                     && !src_above.is_null()
                     && (*(*cinfo).master).trellis_delta_dc_weight as c_double > 0.0f64
@@ -1595,7 +1703,8 @@ pub unsafe extern "C" fn quantize_trellis(
                     let mut dc_recon: c_int = 0;
                     let mut vertical_dist: c_float = 0.;
                     dc_above_orig = (*src_above.offset(bi as isize))[0usize] as c_int;
-                    dc_above_recon = (*coef_blocks_above.offset(bi as isize))[0usize] as c_int * q;
+                    dc_above_recon =
+                        (*coef_blocks_above.offset(bi as isize))[0usize] as c_int * q;
                     dc_orig = (*src.offset(bi as isize))[0usize] as c_int;
                     dc_recon = *dc_candidate[k as usize].offset(bi as isize) as c_int * q;
                     delta = dc_above_orig - dc_orig - (dc_above_recon - dc_recon);
@@ -1627,7 +1736,8 @@ pub unsafe extern "C" fn quantize_trellis(
                             dc_delta >>= 1i32;
                             bits += 1
                         }
-                        cost = (bits + (*dctbl).ehufsi[bits as usize] as c_int) as c_float
+                        cost = (bits + (*dctbl).ehufsi[bits as usize] as c_int)
+                            as c_float
                             + dc_candidate_dist
                             + *accumulated_dc_cost[l as usize].offset((bi - 1i32) as isize);
                         if l == 0i32 || cost < *accumulated_dc_cost[k as usize].offset(bi as isize)
@@ -1643,9 +1753,13 @@ pub unsafe extern "C" fn quantize_trellis(
         }
         i = Ss;
         while i <= Se {
-            let mut z: c_int = *jpeg_natural_order.as_ptr().offset(i as isize);
-            let mut sign_0: c_int = (*src.offset(bi as isize))[z as usize] as c_int >> 31i32;
-            let mut x_0: c_int = abs((*src.offset(bi as isize))[z as usize] as c_int);
+            let mut z: c_int = *jpeg_natural_order
+                .as_ptr()
+                .offset(i as isize);
+            let mut sign_0: c_int =
+                (*src.offset(bi as isize))[z as usize] as c_int >> 31i32;
+            let mut x_0: c_int =
+                abs((*src.offset(bi as isize))[z as usize] as c_int);
             let mut q_0: c_int = 8i32 * (*qtbl).quantval[z as usize] as c_int;
             let mut candidate: [c_int; 16] = [0; 16];
             let mut candidate_bits: [c_int; 16] = [0; 16];
@@ -1663,7 +1777,8 @@ pub unsafe extern "C" fn quantize_trellis(
                 if qval_0 >= 1i32 << MAX_COEF_BITS {
                     qval_0 = (1i32 << MAX_COEF_BITS) - 1i32
                 }
-                num_candidates = jpeg_nbits_table[qval_0 as usize] as c_int;
+                num_candidates =
+                    jpeg_nbits_table[qval_0 as usize] as c_int;
                 k = 0i32;
                 while k < num_candidates {
                     let mut delta_0: c_int = 0;
@@ -1674,14 +1789,17 @@ pub unsafe extern "C" fn quantize_trellis(
                     };
                     delta_0 = candidate[k as usize] * q_0 - x_0;
                     candidate_bits[k as usize] = k + 1i32;
-                    candidate_dist[k as usize] =
-                        (delta_0 * delta_0) as c_float * lambda * *lambda_tbl.offset(z as isize);
+                    candidate_dist[k as usize] = (delta_0 * delta_0) as c_float
+                        * lambda
+                        * *lambda_tbl.offset(z as isize);
                     k += 1
                 }
                 accumulated_cost[i as usize] = 1e38f64 as c_float;
                 j = Ss - 1i32;
                 while j < i {
-                    let mut zz: c_int = *jpeg_natural_order.as_ptr().offset(j as isize);
+                    let mut zz: c_int = *jpeg_natural_order
+                        .as_ptr()
+                        .offset(j as isize);
                     if !(j != Ss - 1i32
                         && (*coef_blocks.offset(bi as isize))[zz as usize] as c_int == 0i32)
                     {
@@ -1689,8 +1807,8 @@ pub unsafe extern "C" fn quantize_trellis(
                         if !(0 != zero_run >> 4i32
                             && (*actbl).ehufsi[0xf0i32 as usize] as c_int == 0i32)
                         {
-                            run_bits =
-                                (zero_run >> 4i32) * (*actbl).ehufsi[0xf0i32 as usize] as c_int;
+                            run_bits = (zero_run >> 4i32)
+                                * (*actbl).ehufsi[0xf0i32 as usize] as c_int;
                             zero_run &= 15i32;
                             k = 0i32;
                             while k < num_candidates {
@@ -1705,7 +1823,8 @@ pub unsafe extern "C" fn quantize_trellis(
                                         + accumulated_cost[j as usize];
                                     if cost < accumulated_cost[i as usize] {
                                         (*coef_blocks.offset(bi as isize))[z as usize] =
-                                            ((candidate[k as usize] ^ sign_0) - sign_0) as JCOEF;
+                                            ((candidate[k as usize] ^ sign_0) - sign_0)
+                                                as JCOEF;
                                         accumulated_cost[i as usize] = cost;
                                         run_start[i as usize] = j
                                     }
@@ -1720,13 +1839,15 @@ pub unsafe extern "C" fn quantize_trellis(
             i += 1
         }
         last_coeff_idx = Ss - 1i32;
-        best_cost =
-            accumulated_zero_dist[Se as usize] + (*actbl).ehufsi[0usize] as c_int as c_float;
+        best_cost = accumulated_zero_dist[Se as usize]
+            + (*actbl).ehufsi[0usize] as c_int as c_float;
         cost_all_zeros = accumulated_zero_dist[Se as usize];
         best_cost_skip = cost_all_zeros;
         i = Ss;
         while i <= Se {
-            let mut z_0: c_int = *jpeg_natural_order.as_ptr().offset(i as isize);
+            let mut z_0: c_int = *jpeg_natural_order
+                .as_ptr()
+                .offset(i as isize);
             if (*coef_blocks.offset(bi as isize))[z_0 as usize] as c_int != 0i32 {
                 let mut cost_0: c_float = accumulated_cost[i as usize]
                     + accumulated_zero_dist[Se as usize]
@@ -1743,11 +1864,14 @@ pub unsafe extern "C" fn quantize_trellis(
             }
             i += 1
         }
-        has_eob = (last_coeff_idx < Se) as c_int + (last_coeff_idx == Ss - 1i32) as c_int;
+        has_eob =
+            (last_coeff_idx < Se) as c_int + (last_coeff_idx == Ss - 1i32) as c_int;
         i = Se;
         while i >= Ss {
             while i > last_coeff_idx {
-                let mut z_1: c_int = *jpeg_natural_order.as_ptr().offset(i as isize);
+                let mut z_1: c_int = *jpeg_natural_order
+                    .as_ptr()
+                    .offset(i as isize);
                 (*coef_blocks.offset(bi as isize))[z_1 as usize] = 0i32 as JCOEF;
                 i -= 1
             }
@@ -1772,9 +1896,10 @@ pub unsafe extern "C" fn quantize_trellis(
                         cost_1 -= *accumulated_zero_block_cost.offset(i as isize);
                         cost_1 += *accumulated_block_cost.offset(i as isize);
                         zero_block_run = bi - i + *requires_eob.offset(i as isize);
-                        nbits = jpeg_nbits_table[zero_block_run as usize] as c_int;
-                        cost_1 +=
-                            ((*actbl).ehufsi[(16i32 * nbits) as usize] as c_int + nbits) as c_float;
+                        nbits = jpeg_nbits_table[zero_block_run as usize]
+                            as c_int;
+                        cost_1 += ((*actbl).ehufsi[(16i32 * nbits) as usize] as c_int + nbits)
+                            as c_float;
                         if cost_1 < best_cost {
                             *block_run_start.offset(bi as isize) = i;
                             best_cost = cost_1;
@@ -1802,9 +1927,10 @@ pub unsafe extern "C" fn quantize_trellis(
                     .wrapping_sub(i as c_uint)
                     .wrapping_add(*requires_eob.offset(i as isize) as c_uint)
                     as c_int;
-                nbits_0 = jpeg_nbits_table[zero_block_run_0 as usize] as c_int;
-                cost_2 +=
-                    ((*actbl).ehufsi[(16i32 * nbits_0) as usize] as c_int + nbits_0) as c_float;
+                nbits_0 = jpeg_nbits_table[zero_block_run_0 as usize]
+                    as c_int;
+                cost_2 += ((*actbl).ehufsi[(16i32 * nbits_0) as usize] as c_int + nbits_0)
+                    as c_float;
                 if cost_2 < best_cost {
                     best_cost = cost_2;
                     last_block = i
@@ -1818,8 +1944,11 @@ pub unsafe extern "C" fn quantize_trellis(
             while bi > last_block {
                 j = Ss;
                 while j <= Se {
-                    let mut z_2: c_int = *jpeg_natural_order.as_ptr().offset(j as isize);
-                    (*coef_blocks.offset(bi as isize))[z_2 as usize] = 0i32 as JCOEF;
+                    let mut z_2: c_int = *jpeg_natural_order
+                        .as_ptr()
+                        .offset(j as isize);
+                    (*coef_blocks.offset(bi as isize))[z_2 as usize] =
+                        0i32 as JCOEF;
                     j += 1
                 }
                 bi -= 1
@@ -1837,7 +1966,8 @@ pub unsafe extern "C" fn quantize_trellis(
         while (bi as c_uint) < num_blocks {
             i = 1i32;
             while i < DCTSIZE2 {
-                *norm_src.offset(i as isize) += ((*src.offset(bi as isize))[i as usize] as c_int
+                *norm_src.offset(i as isize) += ((*src.offset(bi as isize))[i as usize]
+                    as c_int
                     * (*coef_blocks.offset(bi as isize))[i as usize] as c_int)
                     as c_double;
                 *norm_coef.offset(i as isize) += (8i32
@@ -1913,9 +2043,15 @@ pub unsafe extern "C" fn jinit_forward_dct(mut cinfo: j_compress_ptr) {
                     ) -> (),
             );
             if 0 != jsimd_can_fdct_islow() {
-                (*fdct).dct = Some(jsimd_fdct_islow as unsafe extern "C" fn(_: *mut DCTELEM) -> ())
+                (*fdct).dct = Some(
+                    jsimd_fdct_islow
+                        as unsafe extern "C" fn(_: *mut DCTELEM) -> (),
+                )
             } else {
-                (*fdct).dct = Some(jpeg_fdct_islow as unsafe extern "C" fn(_: *mut DCTELEM) -> ())
+                (*fdct).dct = Some(
+                    jpeg_fdct_islow
+                        as unsafe extern "C" fn(_: *mut DCTELEM) -> (),
+                )
             }
         }
         1 => {
@@ -1933,9 +2069,15 @@ pub unsafe extern "C" fn jinit_forward_dct(mut cinfo: j_compress_ptr) {
                     ) -> (),
             );
             if 0 != jsimd_can_fdct_ifast() {
-                (*fdct).dct = Some(jsimd_fdct_ifast as unsafe extern "C" fn(_: *mut DCTELEM) -> ())
+                (*fdct).dct = Some(
+                    jsimd_fdct_ifast
+                        as unsafe extern "C" fn(_: *mut DCTELEM) -> (),
+                )
             } else {
-                (*fdct).dct = Some(jpeg_fdct_ifast as unsafe extern "C" fn(_: *mut DCTELEM) -> ())
+                (*fdct).dct = Some(
+                    jpeg_fdct_ifast
+                        as unsafe extern "C" fn(_: *mut DCTELEM) -> (),
+                )
             }
         }
         2 => {
@@ -1953,18 +2095,24 @@ pub unsafe extern "C" fn jinit_forward_dct(mut cinfo: j_compress_ptr) {
                     ) -> (),
             );
             if 0 != jsimd_can_fdct_float() {
-                (*fdct).float_dct =
-                    Some(jsimd_fdct_float as unsafe extern "C" fn(_: *mut c_float) -> ())
+                (*fdct).float_dct = Some(
+                    jsimd_fdct_float
+                        as unsafe extern "C" fn(_: *mut c_float) -> (),
+                )
             } else {
-                (*fdct).float_dct =
-                    Some(jpeg_fdct_float as unsafe extern "C" fn(_: *mut c_float) -> ())
+                (*fdct).float_dct = Some(
+                    jpeg_fdct_float
+                        as unsafe extern "C" fn(_: *mut c_float) -> (),
+                )
             }
         }
         _ => {
             (*(*cinfo).err).msg_code = JERR_NOT_COMPILED as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                cinfo as j_common_ptr
+            );
         }
     }
     match (*cinfo).dct_method as c_uint {
@@ -1991,11 +2139,15 @@ pub unsafe extern "C" fn jinit_forward_dct(mut cinfo: j_compress_ptr) {
             if 0 != (*(*cinfo).master).overshoot_deringing {
                 (*fdct).preprocess = Some(
                     preprocess_deringing
-                        as unsafe extern "C" fn(_: *mut DCTELEM, _: *const JQUANT_TBL) -> (),
+                        as unsafe extern "C" fn(
+                            _: *mut DCTELEM,
+                            _: *const JQUANT_TBL,
+                        ) -> (),
                 )
             } else {
-                (*fdct).preprocess =
-                    ::std::mem::transmute::<intptr_t, preprocess_method_ptr>(NULL as intptr_t)
+                (*fdct).preprocess = ::std::mem::transmute::<intptr_t, preprocess_method_ptr>(
+                    NULL as intptr_t,
+                )
             }
             if 0 != jsimd_can_quantize() {
                 (*fdct).quantize = Some(
@@ -2040,11 +2192,16 @@ pub unsafe extern "C" fn jinit_forward_dct(mut cinfo: j_compress_ptr) {
             if 0 != (*(*cinfo).master).overshoot_deringing {
                 (*fdct).float_preprocess = Some(
                     float_preprocess_deringing
-                        as unsafe extern "C" fn(_: *mut c_float, _: *const JQUANT_TBL) -> (),
+                        as unsafe extern "C" fn(
+                            _: *mut c_float,
+                            _: *const JQUANT_TBL,
+                        ) -> (),
                 )
             } else {
-                (*fdct).float_preprocess =
-                    ::std::mem::transmute::<intptr_t, float_preprocess_method_ptr>(NULL as intptr_t)
+                (*fdct).float_preprocess = ::std::mem::transmute::<
+                    intptr_t,
+                    float_preprocess_method_ptr,
+                >(NULL as intptr_t)
             }
             if 0 != jsimd_can_quantize_float() {
                 (*fdct).float_quantize = Some(
@@ -2070,16 +2227,21 @@ pub unsafe extern "C" fn jinit_forward_dct(mut cinfo: j_compress_ptr) {
             (*(*cinfo).err).msg_code = JERR_NOT_COMPILED as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                cinfo as j_common_ptr
+            );
         }
     }
-    if (*cinfo).dct_method as c_uint == JDCT_FLOAT as c_int as c_uint {
+    if (*cinfo).dct_method as c_uint
+        == JDCT_FLOAT as c_int as c_uint
+    {
         (*fdct).float_workspace = (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer")(
             cinfo as j_common_ptr,
             JPOOL_IMAGE,
-            (::std::mem::size_of::<c_float>() as c_ulong).wrapping_mul(DCTSIZE2 as c_ulong),
+            (::std::mem::size_of::<c_float>() as c_ulong)
+                .wrapping_mul(DCTSIZE2 as c_ulong),
         ) as *mut c_float
     } else {
         (*fdct).workspace = (*(*cinfo).mem)
@@ -2087,7 +2249,8 @@ pub unsafe extern "C" fn jinit_forward_dct(mut cinfo: j_compress_ptr) {
             .expect("non-null function pointer")(
             cinfo as j_common_ptr,
             JPOOL_IMAGE,
-            (::std::mem::size_of::<DCTELEM>() as c_ulong).wrapping_mul(DCTSIZE2 as c_ulong),
+            (::std::mem::size_of::<DCTELEM>() as c_ulong)
+                .wrapping_mul(DCTSIZE2 as c_ulong),
         ) as *mut DCTELEM
     }
     i = 0i32;

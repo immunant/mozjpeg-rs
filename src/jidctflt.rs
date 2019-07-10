@@ -1,8 +1,4 @@
-use libc;
-use libc::c_float;
-use libc::c_int;
-
-pub use crate::jdct_h::FLOAT_MULT_TYPE;
+use libc::c_float;use libc::c_int;pub use crate::jdct_h::FLOAT_MULT_TYPE;
 pub use crate::jdct_h::RANGE_MASK;
 pub use crate::jmorecfg_h::boolean;
 pub use crate::jmorecfg_h::CENTERJSAMPLE;
@@ -47,7 +43,7 @@ pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
-pub use crate::jpeglib_h::C2RustUnnamed_3;
+pub use crate::jpeglib_h::C2RustUnnamed_2;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::DCTSIZE;
 pub use crate::jpeglib_h::JBLOCK;
@@ -85,6 +81,7 @@ pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::jpeglib_h::J_DITHER_MODE;
 pub use crate::stddef_h::size_t;
+use libc;
 /*
  * jidctflt.c
  *
@@ -161,7 +158,8 @@ pub unsafe extern "C" fn jpeg_idct_float(
     let mut z12: c_float = 0.;
     let mut z13: c_float = 0.;
     let mut inptr: JCOEFPTR = 0 as *mut JCOEF;
-    let mut quantptr: *mut FLOAT_MULT_TYPE = 0 as *mut FLOAT_MULT_TYPE;
+    let mut quantptr: *mut FLOAT_MULT_TYPE =
+        0 as *mut FLOAT_MULT_TYPE;
     let mut wsptr: *mut c_float = 0 as *mut c_float;
     let mut outptr: JSAMPROW = 0 as *mut JSAMPLE;
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit;
@@ -191,7 +189,8 @@ pub unsafe extern "C" fn jpeg_idct_float(
         {
             /* AC terms all zero */
             let mut dcval: c_float = *inptr.offset((8i32 * 0i32) as isize) as c_float
-                * (*quantptr.offset((8i32 * 0i32) as isize) * 0.125f64 as FLOAT_MULT_TYPE);
+                * (*quantptr.offset((8i32 * 0i32) as isize)
+                    * 0.125f64 as FLOAT_MULT_TYPE);
             *wsptr.offset((DCTSIZE * 0i32) as isize) = dcval;
             *wsptr.offset((DCTSIZE * 1i32) as isize) = dcval;
             *wsptr.offset((DCTSIZE * 2i32) as isize) = dcval;
@@ -205,13 +204,17 @@ pub unsafe extern "C" fn jpeg_idct_float(
             wsptr = wsptr.offset(1isize)
         } else {
             tmp0 = *inptr.offset((8i32 * 0i32) as isize) as c_float
-                * (*quantptr.offset((8i32 * 0i32) as isize) * 0.125f64 as FLOAT_MULT_TYPE);
+                * (*quantptr.offset((8i32 * 0i32) as isize)
+                    * 0.125f64 as FLOAT_MULT_TYPE);
             tmp1 = *inptr.offset((8i32 * 2i32) as isize) as c_float
-                * (*quantptr.offset((8i32 * 2i32) as isize) * 0.125f64 as FLOAT_MULT_TYPE);
+                * (*quantptr.offset((8i32 * 2i32) as isize)
+                    * 0.125f64 as FLOAT_MULT_TYPE);
             tmp2 = *inptr.offset((8i32 * 4i32) as isize) as c_float
-                * (*quantptr.offset((8i32 * 4i32) as isize) * 0.125f64 as FLOAT_MULT_TYPE);
+                * (*quantptr.offset((8i32 * 4i32) as isize)
+                    * 0.125f64 as FLOAT_MULT_TYPE);
             tmp3 = *inptr.offset((8i32 * 6i32) as isize) as c_float
-                * (*quantptr.offset((8i32 * 6i32) as isize) * 0.125f64 as FLOAT_MULT_TYPE);
+                * (*quantptr.offset((8i32 * 6i32) as isize)
+                    * 0.125f64 as FLOAT_MULT_TYPE);
             tmp10 = tmp0 + tmp2;
             tmp11 = tmp0 - tmp2;
             tmp13 = tmp1 + tmp3;
@@ -221,13 +224,17 @@ pub unsafe extern "C" fn jpeg_idct_float(
             tmp1 = tmp11 + tmp12;
             tmp2 = tmp11 - tmp12;
             tmp4 = *inptr.offset((8i32 * 1i32) as isize) as c_float
-                * (*quantptr.offset((8i32 * 1i32) as isize) * 0.125f64 as FLOAT_MULT_TYPE);
+                * (*quantptr.offset((8i32 * 1i32) as isize)
+                    * 0.125f64 as FLOAT_MULT_TYPE);
             tmp5 = *inptr.offset((8i32 * 3i32) as isize) as c_float
-                * (*quantptr.offset((8i32 * 3i32) as isize) * 0.125f64 as FLOAT_MULT_TYPE);
+                * (*quantptr.offset((8i32 * 3i32) as isize)
+                    * 0.125f64 as FLOAT_MULT_TYPE);
             tmp6 = *inptr.offset((8i32 * 5i32) as isize) as c_float
-                * (*quantptr.offset((8i32 * 5i32) as isize) * 0.125f64 as FLOAT_MULT_TYPE);
+                * (*quantptr.offset((8i32 * 5i32) as isize)
+                    * 0.125f64 as FLOAT_MULT_TYPE);
             tmp7 = *inptr.offset((8i32 * 7i32) as isize) as c_float
-                * (*quantptr.offset((8i32 * 7i32) as isize) * 0.125f64 as FLOAT_MULT_TYPE);
+                * (*quantptr.offset((8i32 * 7i32) as isize)
+                    * 0.125f64 as FLOAT_MULT_TYPE);
             z13 = tmp6 + tmp5;
             z10 = tmp6 - tmp5;
             z11 = tmp4 + tmp7;
@@ -258,11 +265,13 @@ pub unsafe extern "C" fn jpeg_idct_float(
     ctr = 0i32;
     while ctr < DCTSIZE {
         outptr = (*output_buf.offset(ctr as isize)).offset(output_col as isize);
-        z5 = *wsptr.offset(0isize) + (CENTERJSAMPLE as c_float + 0.5f64 as c_float);
+        z5 = *wsptr.offset(0isize)
+            + (CENTERJSAMPLE as c_float + 0.5f64 as c_float);
         tmp10 = z5 + *wsptr.offset(4isize);
         tmp11 = z5 - *wsptr.offset(4isize);
         tmp13 = *wsptr.offset(2isize) + *wsptr.offset(6isize);
-        tmp12 = (*wsptr.offset(2isize) - *wsptr.offset(6isize)) * 1.414213562f64 as c_float - tmp13;
+        tmp12 = (*wsptr.offset(2isize) - *wsptr.offset(6isize)) * 1.414213562f64 as c_float
+            - tmp13;
         tmp0 = tmp10 + tmp13;
         tmp3 = tmp10 - tmp13;
         tmp1 = tmp11 + tmp12;
@@ -279,22 +288,22 @@ pub unsafe extern "C" fn jpeg_idct_float(
         tmp6 = tmp12 - tmp7;
         tmp5 = tmp11 - tmp6;
         tmp4 = tmp10 - tmp5;
-        *outptr.offset(0isize) =
-            *range_limit.offset(((tmp0 + tmp7) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(7isize) =
-            *range_limit.offset(((tmp0 - tmp7) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(1isize) =
-            *range_limit.offset(((tmp1 + tmp6) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(6isize) =
-            *range_limit.offset(((tmp1 - tmp6) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(2isize) =
-            *range_limit.offset(((tmp2 + tmp5) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(5isize) =
-            *range_limit.offset(((tmp2 - tmp5) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(3isize) =
-            *range_limit.offset(((tmp3 + tmp4) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(4isize) =
-            *range_limit.offset(((tmp3 - tmp4) as c_int & RANGE_MASK) as isize);
+        *outptr.offset(0isize) = *range_limit
+            .offset(((tmp0 + tmp7) as c_int & RANGE_MASK) as isize);
+        *outptr.offset(7isize) = *range_limit
+            .offset(((tmp0 - tmp7) as c_int & RANGE_MASK) as isize);
+        *outptr.offset(1isize) = *range_limit
+            .offset(((tmp1 + tmp6) as c_int & RANGE_MASK) as isize);
+        *outptr.offset(6isize) = *range_limit
+            .offset(((tmp1 - tmp6) as c_int & RANGE_MASK) as isize);
+        *outptr.offset(2isize) = *range_limit
+            .offset(((tmp2 + tmp5) as c_int & RANGE_MASK) as isize);
+        *outptr.offset(5isize) = *range_limit
+            .offset(((tmp2 - tmp5) as c_int & RANGE_MASK) as isize);
+        *outptr.offset(3isize) = *range_limit
+            .offset(((tmp3 + tmp4) as c_int & RANGE_MASK) as isize);
+        *outptr.offset(4isize) = *range_limit
+            .offset(((tmp3 - tmp4) as c_int & RANGE_MASK) as isize);
         wsptr = wsptr.offset(DCTSIZE as isize);
         ctr += 1
     }

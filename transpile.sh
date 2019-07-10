@@ -18,7 +18,21 @@ c2rust transpile --output-dir . --emit-build-files --translate-const-macros --ov
 
 # Move binary modules from src/ to bin/
 binary_modules=`grep --recursive --files-with-matches 'pub fn main()' src/`
-new_header="#![allow(dead_code)]\n#![allow(mutable_transmutes)]\n#![allow(non_camel_case_types)]\n#![allow(non_snake_case)]\n#![allow(non_upper_case_globals)]\n#![allow(unused_assignments)]\n#![allow(unused_mut)]\n#![feature(const_raw_ptr_to_usize_cast)]\n#![feature(const_transmute)]\n#![feature(extern_types)]\n#![feature(label_break_value)]\n#![feature(ptr_wrapping_offset_from)]\n\nextern crate libc;\nuse mozjpeg::*;\n"
+new_header="#![allow(dead_code)]
+#![allow(mutable_transmutes)]
+#![allow(non_camel_case_types)]
+#![allow(non_snake_case)]
+#![allow(non_upper_case_globals)]
+#![allow(unused_assignments)]
+#![allow(unused_mut)]
+#![feature(const_raw_ptr_to_usize_cast)]
+#![feature(const_transmute)]
+#![feature(extern_types)]
+#![feature(label_break_value)]
+#![feature(ptr_wrapping_offset_from)]
+
+"
+new_use="extern crate libc;\nuse mozjpeg::*;\n"
 
 mkdir bin || true
 
@@ -31,10 +45,11 @@ do
     sed --in-place -e "$!N;s|^#\[path = \"$path\"\]\npub mod $modname;$||;P;D" lib.rs
 
     # Add header to binary module file
-    sed --in-place "s|use libc;|$new_header|" $path
+    sed --in-place "s|use libc;|$new_use|" "$path"
 
-    # Move into bin/
-    mv $path bin/
+    # Prepend header and move into bin/
+    echo "$new_header" | cat - "$path" > "bin/$filename"
+    rm "$path"
 done
 
 cp -r src bin lib.rs rust-toolchain "$src_dir/"

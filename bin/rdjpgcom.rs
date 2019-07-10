@@ -11,8 +11,6 @@
 #![feature(label_break_value)]
 #![feature(ptr_wrapping_offset_from)]
 
-extern crate libc;
-use mozjpeg::*;
 
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
@@ -56,6 +54,9 @@ pub use crate::stdlib::FILE;
 pub use crate::stdlib::LC_CTYPE;
 pub use crate::stdlib::_IO_FILE;
 pub use crate::stdlib::__LC_CTYPE;
+extern crate libc;
+use mozjpeg::*;
+
 /*
  * rdjpgcom.c
  *

@@ -11,8 +11,6 @@
 #![feature(label_break_value)]
 #![feature(ptr_wrapping_offset_from)]
 
-extern crate libc;
-use mozjpeg::*;
 
 pub use crate::cmyk_h::cmyk_to_rgb;
 pub use crate::cmyk_h::rgb_to_cmyk;
@@ -96,6 +94,9 @@ pub use crate::turbojpeg::TJSAMP_444;
 pub use crate::turbojpeg::TJSAMP_GRAY;
 pub use crate::turbojpeg::TJ_NUMPF;
 pub use crate::turbojpeg::TJ_NUMSAMP;
+extern crate libc;
+use mozjpeg::*;
+
 /*
  * Copyright (C)2009-2014, 2017-2018 D. R. Commander.  All Rights Reserved.
  *

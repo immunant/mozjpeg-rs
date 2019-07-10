@@ -1,8 +1,5 @@
+use libc::c_float;use libc::c_int;pub use crate::jpeglib_h::DCTSIZE;
 use libc;
-use libc::c_float;
-use libc::c_int;
-
-pub use crate::jpeglib_h::DCTSIZE;
 /*
  * jfdctflt.c
  *
@@ -107,22 +104,22 @@ pub unsafe extern "C" fn jpeg_fdct_float(mut data: *mut c_float) {
     dataptr = data;
     ctr = DCTSIZE - 1i32;
     while ctr >= 0i32 {
-        tmp0 =
-            *dataptr.offset((DCTSIZE * 0i32) as isize) + *dataptr.offset((DCTSIZE * 7i32) as isize);
-        tmp7 =
-            *dataptr.offset((DCTSIZE * 0i32) as isize) - *dataptr.offset((DCTSIZE * 7i32) as isize);
-        tmp1 =
-            *dataptr.offset((DCTSIZE * 1i32) as isize) + *dataptr.offset((DCTSIZE * 6i32) as isize);
-        tmp6 =
-            *dataptr.offset((DCTSIZE * 1i32) as isize) - *dataptr.offset((DCTSIZE * 6i32) as isize);
-        tmp2 =
-            *dataptr.offset((DCTSIZE * 2i32) as isize) + *dataptr.offset((DCTSIZE * 5i32) as isize);
-        tmp5 =
-            *dataptr.offset((DCTSIZE * 2i32) as isize) - *dataptr.offset((DCTSIZE * 5i32) as isize);
-        tmp3 =
-            *dataptr.offset((DCTSIZE * 3i32) as isize) + *dataptr.offset((DCTSIZE * 4i32) as isize);
-        tmp4 =
-            *dataptr.offset((DCTSIZE * 3i32) as isize) - *dataptr.offset((DCTSIZE * 4i32) as isize);
+        tmp0 = *dataptr.offset((DCTSIZE * 0i32) as isize)
+            + *dataptr.offset((DCTSIZE * 7i32) as isize);
+        tmp7 = *dataptr.offset((DCTSIZE * 0i32) as isize)
+            - *dataptr.offset((DCTSIZE * 7i32) as isize);
+        tmp1 = *dataptr.offset((DCTSIZE * 1i32) as isize)
+            + *dataptr.offset((DCTSIZE * 6i32) as isize);
+        tmp6 = *dataptr.offset((DCTSIZE * 1i32) as isize)
+            - *dataptr.offset((DCTSIZE * 6i32) as isize);
+        tmp2 = *dataptr.offset((DCTSIZE * 2i32) as isize)
+            + *dataptr.offset((DCTSIZE * 5i32) as isize);
+        tmp5 = *dataptr.offset((DCTSIZE * 2i32) as isize)
+            - *dataptr.offset((DCTSIZE * 5i32) as isize);
+        tmp3 = *dataptr.offset((DCTSIZE * 3i32) as isize)
+            + *dataptr.offset((DCTSIZE * 4i32) as isize);
+        tmp4 = *dataptr.offset((DCTSIZE * 3i32) as isize)
+            - *dataptr.offset((DCTSIZE * 4i32) as isize);
         tmp10 = tmp0 + tmp3;
         tmp13 = tmp0 - tmp3;
         tmp11 = tmp1 + tmp2;

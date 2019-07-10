@@ -1,47 +1,4 @@
-pub use crate::jerror::C2RustUnnamed_4;
-pub use crate::jpeglib_h::C2RustUnnamed_3;
-use libc::c_int;
-use libc::c_long;
-use libc::c_uint;
-use libc::c_ulong;
-pub type my_upsample_ptr = *mut my_upsampler;
-/* Private subobject */
-
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct my_upsampler {
-    pub pub_0: jpeg_upsampler,
-    pub color_buf: [JSAMPARRAY; 10],
-    pub methods: [upsample1_ptr; 10],
-    pub next_row_out: c_int,
-    pub rows_to_go: JDIMENSION,
-    pub rowgroup_height: [c_int; 10],
-    pub h_expand: [UINT8; 10],
-    pub v_expand: [UINT8; 10],
-}
-/*
- * jdsample.h
- *
- * This file was part of the Independent JPEG Group's software:
- * Copyright (C) 1991-1996, Thomas G. Lane.
- * For conditions of distribution and use, see the accompanying README.ijg
- * file.
- */
-/* Pointer to routine to upsample a single component */
-pub type upsample1_ptr = Option<
-    unsafe extern "C" fn(
-        _: j_decompress_ptr,
-        _: *mut jpeg_component_info,
-        _: JSAMPARRAY,
-        _: *mut JSAMPARRAY,
-    ) -> (),
->;
-pub use crate::jpegint_h::jpeg_upsampler;
-pub use crate::jpeglib_h::j_decompress_ptr;
-pub use crate::jpeglib_h::jpeg_component_info;
-pub use crate::jpeglib_h::JSAMPARRAY;
-use libc;
-
+use libc::c_ulong;use libc::c_long;use libc::c_int;use libc::c_uint;pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -193,6 +150,7 @@ pub use crate::jpegint_h::jpeg_entropy_decoder;
 pub use crate::jpegint_h::jpeg_input_controller;
 pub use crate::jpegint_h::jpeg_inverse_dct;
 pub use crate::jpegint_h::jpeg_marker_reader;
+pub use crate::jpegint_h::jpeg_upsampler;
 pub use crate::jpegint_h::jround_up;
 pub use crate::jpegint_h::JBUF_CRANK_DEST;
 pub use crate::jpegint_h::JBUF_PASS_THRU;
@@ -201,7 +159,9 @@ pub use crate::jpegint_h::JBUF_SAVE_AND_PASS;
 pub use crate::jpegint_h::JBUF_SAVE_SOURCE;
 pub use crate::jpegint_h::J_BUF_MODE;
 pub use crate::jpeglib_h::j_common_ptr;
+pub use crate::jpeglib_h::j_decompress_ptr;
 pub use crate::jpeglib_h::jpeg_common_struct;
+pub use crate::jpeglib_h::jpeg_component_info;
 pub use crate::jpeglib_h::jpeg_decompress_struct;
 pub use crate::jpeglib_h::jpeg_error_mgr;
 pub use crate::jpeglib_h::jpeg_marker_parser_method;
@@ -214,6 +174,7 @@ pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
+pub use crate::jpeglib_h::C2RustUnnamed_2;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::JBLOCK;
 pub use crate::jpeglib_h::JBLOCKARRAY;
@@ -244,6 +205,7 @@ pub use crate::jpeglib_h::JDITHER_ORDERED;
 pub use crate::jpeglib_h::JHUFF_TBL;
 pub use crate::jpeglib_h::JPOOL_IMAGE;
 pub use crate::jpeglib_h::JQUANT_TBL;
+pub use crate::jpeglib_h::JSAMPARRAY;
 pub use crate::jpeglib_h::JSAMPIMAGE;
 pub use crate::jpeglib_h::JSAMPROW;
 pub use crate::jpeglib_h::J_COLOR_SPACE;
@@ -259,6 +221,42 @@ use crate::jsimd::jsimd_h2v2_fancy_upsample;
 use crate::jsimd::jsimd_h2v2_upsample;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
+use libc;
+// =============== BEGIN jdsample_h ================
+pub type my_upsample_ptr = *mut my_upsampler;
+/* Private subobject */
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct my_upsampler {
+    pub pub_0: jpeg_upsampler,
+    pub color_buf: [JSAMPARRAY; 10],
+    pub methods: [upsample1_ptr; 10],
+    pub next_row_out: c_int,
+    pub rows_to_go: JDIMENSION,
+    pub rowgroup_height: [c_int; 10],
+    pub h_expand: [UINT8; 10],
+    pub v_expand: [UINT8; 10],
+}
+/*
+ * jdsample.h
+ *
+ * This file was part of the Independent JPEG Group's software:
+ * Copyright (C) 1991-1996, Thomas G. Lane.
+ * For conditions of distribution and use, see the accompanying README.ijg
+ * file.
+ */
+
+/* Pointer to routine to upsample a single component */
+pub type upsample1_ptr = Option<
+    unsafe extern "C" fn(
+        _: j_decompress_ptr,
+        _: *mut jpeg_component_info,
+        _: JSAMPARRAY,
+        _: *mut JSAMPARRAY,
+    ) -> (),
+>;
+// ================ END jdsample_h ================
+
 /*
  * jdsample.c
  *
@@ -284,11 +282,13 @@ pub use crate::stddef_h::NULL;
  *   Digital Image Warping, George Wolberg, 1990.
  *   Pub. by IEEE Computer Society Press, Los Alamitos, CA. ISBN 0-8186-8944-7.
  */
+
 /*
  * Initialize for an upsampling pass.
  */
 unsafe extern "C" fn start_pass_upsample(mut cinfo: j_decompress_ptr) {
-    let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
+    let mut upsample: my_upsample_ptr =
+        (*cinfo).upsample as my_upsample_ptr;
     (*upsample).next_row_out = (*cinfo).max_v_samp_factor;
     (*upsample).rows_to_go = (*cinfo).output_height;
 }
@@ -308,9 +308,11 @@ unsafe extern "C" fn sep_upsample(
     mut out_row_ctr: *mut JDIMENSION,
     mut out_rows_avail: JDIMENSION,
 ) {
-    let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
+    let mut upsample: my_upsample_ptr =
+        (*cinfo).upsample as my_upsample_ptr;
     let mut ci: c_int = 0;
-    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info =
+        0 as *mut jpeg_component_info;
     let mut num_rows: JDIMENSION = 0;
     if (*upsample).next_row_out >= (*cinfo).max_v_samp_factor {
         ci = 0i32;
@@ -331,12 +333,13 @@ unsafe extern "C" fn sep_upsample(
         }
         (*upsample).next_row_out = 0i32
     }
-    num_rows = ((*cinfo).max_v_samp_factor - (*upsample).next_row_out) as JDIMENSION;
+    num_rows =
+        ((*cinfo).max_v_samp_factor - (*upsample).next_row_out) as JDIMENSION;
     if num_rows > (*upsample).rows_to_go {
         num_rows = (*upsample).rows_to_go
     }
-    out_rows_avail =
-        (out_rows_avail as c_uint).wrapping_sub(*out_row_ctr) as JDIMENSION as JDIMENSION;
+    out_rows_avail = (out_rows_avail as c_uint).wrapping_sub(*out_row_ctr)
+        as JDIMENSION as JDIMENSION;
     if num_rows > out_rows_avail {
         num_rows = out_rows_avail
     }
@@ -349,11 +352,13 @@ unsafe extern "C" fn sep_upsample(
         output_buf.offset(*out_row_ctr as isize),
         num_rows as c_int,
     );
-    *out_row_ctr = (*out_row_ctr as c_uint).wrapping_add(num_rows) as JDIMENSION as JDIMENSION;
-    (*upsample).rows_to_go =
-        ((*upsample).rows_to_go as c_uint).wrapping_sub(num_rows) as JDIMENSION as JDIMENSION;
-    (*upsample).next_row_out =
-        ((*upsample).next_row_out as c_uint).wrapping_add(num_rows) as c_int as c_int;
+    *out_row_ctr = (*out_row_ctr as c_uint).wrapping_add(num_rows)
+        as JDIMENSION as JDIMENSION;
+    (*upsample).rows_to_go = ((*upsample).rows_to_go as c_uint).wrapping_sub(num_rows)
+        as JDIMENSION
+        as JDIMENSION;
+    (*upsample).next_row_out = ((*upsample).next_row_out as c_uint).wrapping_add(num_rows)
+        as c_int as c_int;
     if (*upsample).next_row_out >= (*cinfo).max_v_samp_factor {
         *in_row_group_ctr = (*in_row_group_ctr).wrapping_add(1)
     };
@@ -362,6 +367,7 @@ unsafe extern "C" fn sep_upsample(
  * These are the routines invoked by sep_upsample to upsample pixel values
  * of a single component.  One row group is processed per call.
  */
+
 /*
  * For full-size components, we just make color_buf[ci] point at the
  * input buffer, and thus avoid copying any data.  Note that this is
@@ -404,7 +410,8 @@ unsafe extern "C" fn int_upsample(
     mut input_data: JSAMPARRAY,
     mut output_data_ptr: *mut JSAMPARRAY,
 ) {
-    let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
+    let mut upsample: my_upsample_ptr =
+        (*cinfo).upsample as my_upsample_ptr;
     let mut output_data: JSAMPARRAY = *output_data_ptr;
     let mut inptr: JSAMPROW = 0 as *mut JSAMPLE;
     let mut outptr: JSAMPROW = 0 as *mut JSAMPLE;
@@ -568,25 +575,30 @@ unsafe extern "C" fn h2v1_fancy_upsample(
         *fresh9 = invalue as JSAMPLE;
         let fresh10 = outptr;
         outptr = outptr.offset(1);
-        *fresh10 = (invalue * 3i32 + *inptr as c_int + 2i32 >> 2i32) as JSAMPLE;
-        colctr = (*compptr).downsampled_width.wrapping_sub(2i32 as c_uint);
+        *fresh10 =
+            (invalue * 3i32 + *inptr as c_int + 2i32 >> 2i32) as JSAMPLE;
+        colctr = (*compptr)
+            .downsampled_width
+            .wrapping_sub(2i32 as c_uint);
         while colctr > 0i32 as c_uint {
             let fresh11 = inptr;
             inptr = inptr.offset(1);
             invalue = *fresh11 as c_int * 3i32;
             let fresh12 = outptr;
             outptr = outptr.offset(1);
-            *fresh12 = (invalue + *inptr.offset(-2i32 as isize) as c_int + 1i32 >> 2i32) as JSAMPLE;
+            *fresh12 = (invalue + *inptr.offset(-2i32 as isize) as c_int + 1i32 >> 2i32)
+                as JSAMPLE;
             let fresh13 = outptr;
             outptr = outptr.offset(1);
-            *fresh13 = (invalue + *inptr as c_int + 2i32 >> 2i32) as JSAMPLE;
+            *fresh13 =
+                (invalue + *inptr as c_int + 2i32 >> 2i32) as JSAMPLE;
             colctr = colctr.wrapping_sub(1)
         }
         invalue = *inptr as c_int;
         let fresh14 = outptr;
         outptr = outptr.offset(1);
-        *fresh14 =
-            (invalue * 3i32 + *inptr.offset(-1i32 as isize) as c_int + 1i32 >> 2i32) as JSAMPLE;
+        *fresh14 = (invalue * 3i32 + *inptr.offset(-1i32 as isize) as c_int + 1i32 >> 2i32)
+            as JSAMPLE;
         let fresh15 = outptr;
         outptr = outptr.offset(1);
         *fresh15 = invalue as JSAMPLE;
@@ -698,10 +710,13 @@ unsafe extern "C" fn h2v2_fancy_upsample(
             *fresh25 = (thiscolsum * 4i32 + 8i32 >> 4i32) as JSAMPLE;
             let fresh26 = outptr;
             outptr = outptr.offset(1);
-            *fresh26 = (thiscolsum * 3i32 + nextcolsum + 7i32 >> 4i32) as JSAMPLE;
+            *fresh26 =
+                (thiscolsum * 3i32 + nextcolsum + 7i32 >> 4i32) as JSAMPLE;
             lastcolsum = thiscolsum;
             thiscolsum = nextcolsum;
-            colctr = (*compptr).downsampled_width.wrapping_sub(2i32 as c_uint);
+            colctr = (*compptr)
+                .downsampled_width
+                .wrapping_sub(2i32 as c_uint);
             while colctr > 0i32 as c_uint {
                 let fresh27 = inptr0;
                 inptr0 = inptr0.offset(1);
@@ -710,17 +725,20 @@ unsafe extern "C" fn h2v2_fancy_upsample(
                 nextcolsum = *fresh27 as c_int * 3i32 + *fresh28 as c_int;
                 let fresh29 = outptr;
                 outptr = outptr.offset(1);
-                *fresh29 = (thiscolsum * 3i32 + lastcolsum + 8i32 >> 4i32) as JSAMPLE;
+                *fresh29 =
+                    (thiscolsum * 3i32 + lastcolsum + 8i32 >> 4i32) as JSAMPLE;
                 let fresh30 = outptr;
                 outptr = outptr.offset(1);
-                *fresh30 = (thiscolsum * 3i32 + nextcolsum + 7i32 >> 4i32) as JSAMPLE;
+                *fresh30 =
+                    (thiscolsum * 3i32 + nextcolsum + 7i32 >> 4i32) as JSAMPLE;
                 lastcolsum = thiscolsum;
                 thiscolsum = nextcolsum;
                 colctr = colctr.wrapping_sub(1)
             }
             let fresh31 = outptr;
             outptr = outptr.offset(1);
-            *fresh31 = (thiscolsum * 3i32 + lastcolsum + 8i32 >> 4i32) as JSAMPLE;
+            *fresh31 =
+                (thiscolsum * 3i32 + lastcolsum + 8i32 >> 4i32) as JSAMPLE;
             let fresh32 = outptr;
             outptr = outptr.offset(1);
             *fresh32 = (thiscolsum * 4i32 + 7i32 >> 4i32) as JSAMPLE;
@@ -736,7 +754,8 @@ unsafe extern "C" fn h2v2_fancy_upsample(
 pub unsafe extern "C" fn jinit_upsampler(mut cinfo: j_decompress_ptr) {
     let mut upsample: my_upsample_ptr = 0 as *mut my_upsampler;
     let mut ci: c_int = 0;
-    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info =
+        0 as *mut jpeg_component_info;
     let mut need_buffer: boolean = 0;
     let mut do_fancy: boolean = 0;
     let mut h_in_group: c_int = 0;
@@ -752,8 +771,10 @@ pub unsafe extern "C" fn jinit_upsampler(mut cinfo: j_decompress_ptr) {
             ::std::mem::size_of::<my_upsampler>() as c_ulong,
         ) as my_upsample_ptr;
         (*cinfo).upsample = upsample as *mut jpeg_upsampler;
-        (*upsample).pub_0.start_pass =
-            Some(start_pass_upsample as unsafe extern "C" fn(_: j_decompress_ptr) -> ());
+        (*upsample).pub_0.start_pass = Some(
+            start_pass_upsample
+                as unsafe extern "C" fn(_: j_decompress_ptr) -> (),
+        );
         (*upsample).pub_0.upsample = Some(
             sep_upsample
                 as unsafe extern "C" fn(
@@ -776,7 +797,8 @@ pub unsafe extern "C" fn jinit_upsampler(mut cinfo: j_decompress_ptr) {
             .error_exit
             .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
-    do_fancy = (0 != (*cinfo).do_fancy_upsampling && (*cinfo).min_DCT_scaled_size > 1i32) as c_int;
+    do_fancy =
+        (0 != (*cinfo).do_fancy_upsampling && (*cinfo).min_DCT_scaled_size > 1i32) as c_int;
     ci = 0i32;
     compptr = (*cinfo).comp_info;
     while ci < (*cinfo).num_components {
@@ -920,13 +942,17 @@ pub unsafe extern "C" fn jinit_upsampler(mut cinfo: j_decompress_ptr) {
                         _: *mut JSAMPARRAY,
                     ) -> (),
             );
-            (*upsample).h_expand[ci as usize] = (h_out_group / h_in_group) as UINT8;
-            (*upsample).v_expand[ci as usize] = (v_out_group / v_in_group) as UINT8
+            (*upsample).h_expand[ci as usize] =
+                (h_out_group / h_in_group) as UINT8;
+            (*upsample).v_expand[ci as usize] =
+                (v_out_group / v_in_group) as UINT8
         } else {
             (*(*cinfo).err).msg_code = JERR_FRACT_SAMPLE_NOTIMPL as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                cinfo as j_common_ptr
+            );
         }
         if 0 != need_buffer && 0 == (*(*cinfo).master).jinit_upsampler_no_alloc {
             (*upsample).color_buf[ci as usize] = (*(*cinfo).mem)

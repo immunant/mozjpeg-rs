@@ -1,12 +1,5 @@
-use libc;
-use libc::c_float;
-use libc::c_int;
-use libc::c_long;
-use libc::c_uint;
-use libc::c_ulong;
-
-pub use crate::jconfig_h::BITS_IN_JSAMPLE;
-pub use crate::jerror::C2RustUnnamed_4;
+use libc::c_float;use libc::c_int;use libc::c_uint;use libc::c_ulong;use libc::c_long;pub use crate::jconfig_h::BITS_IN_JSAMPLE;
+pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -197,8 +190,8 @@ pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
+pub use crate::jpeglib_h::C2RustUnnamed_1;
 pub use crate::jpeglib_h::C2RustUnnamed_2;
-pub use crate::jpeglib_h::C2RustUnnamed_3;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::DCTSIZE2;
 pub use crate::jpeglib_h::JBLOCK;
@@ -248,6 +241,7 @@ pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 use crate::stdlib::memcpy;
 use crate::stdlib::memset;
+use libc;
 /*
  * jcparam.c
  *
@@ -275,7 +269,8 @@ pub unsafe extern "C" fn jpeg_add_quant_table(
     mut scale_factor: c_int,
     mut force_baseline: boolean,
 ) {
-    let mut qtblptr: *mut *mut JQUANT_TBL = 0 as *mut *mut JQUANT_TBL;
+    let mut qtblptr: *mut *mut JQUANT_TBL =
+        0 as *mut *mut JQUANT_TBL;
     let mut i: c_int = 0;
     let mut temp: c_long = 0;
     if (*cinfo).global_state != CSTATE_START {
@@ -301,8 +296,9 @@ pub unsafe extern "C" fn jpeg_add_quant_table(
     }
     i = 0i32;
     while i < DCTSIZE2 {
-        temp =
-            (*basic_table.offset(i as isize) as c_long * scale_factor as c_long + 50i64) / 100i64;
+        temp = (*basic_table.offset(i as isize) as c_long * scale_factor as c_long
+            + 50i64)
+            / 100i64;
         if temp <= 0i64 {
             temp = 1i64
         }
@@ -1621,8 +1617,9 @@ pub unsafe extern "C" fn jpeg_set_defaults(mut cinfo: j_compress_ptr) {
             .expect("non-null function pointer")(
             cinfo as j_common_ptr,
             JPOOL_PERMANENT,
-            (MAX_COMPONENTS as c_ulong)
-                .wrapping_mul(::std::mem::size_of::<jpeg_component_info>() as c_ulong),
+            (MAX_COMPONENTS as c_ulong).wrapping_mul(
+                ::std::mem::size_of::<jpeg_component_info>() as c_ulong,
+            ),
         ) as *mut jpeg_component_info
     }
     (*cinfo).data_precision = BITS_IN_JSAMPLE;
@@ -1648,8 +1645,9 @@ pub unsafe extern "C" fn jpeg_set_defaults(mut cinfo: j_compress_ptr) {
         (*cinfo).optimize_coding = TRUE
     }
     (*cinfo).CCIR601_sampling = FALSE;
-    (*(*cinfo).master).overshoot_deringing =
-        ((*(*cinfo).master).compress_profile == JCP_MAX_COMPRESSION as c_int) as c_int;
+    (*(*cinfo).master).overshoot_deringing = ((*(*cinfo).master).compress_profile
+        == JCP_MAX_COMPRESSION as c_int)
+        as c_int;
     (*cinfo).smoothing_factor = 0i32;
     (*cinfo).dct_method = JDCT_DEFAULT as J_DCT_METHOD;
     (*cinfo).restart_interval = 0i32 as c_uint;
@@ -1667,16 +1665,18 @@ pub unsafe extern "C" fn jpeg_set_defaults(mut cinfo: j_compress_ptr) {
     } else {
         (*(*cinfo).master).optimize_scans = FALSE
     }
-    (*(*cinfo).master).trellis_quant =
-        ((*(*cinfo).master).compress_profile == JCP_MAX_COMPRESSION as c_int) as c_int;
+    (*(*cinfo).master).trellis_quant = ((*(*cinfo).master).compress_profile
+        == JCP_MAX_COMPRESSION as c_int)
+        as c_int;
     (*(*cinfo).master).lambda_log_scale1 = 14.75f64 as c_float;
     (*(*cinfo).master).lambda_log_scale2 = 16.5f64 as c_float;
-    (*(*cinfo).master).quant_tbl_master_idx =
-        if (*(*cinfo).master).compress_profile == JCP_MAX_COMPRESSION as c_int {
-            3i32
-        } else {
-            0i32
-        };
+    (*(*cinfo).master).quant_tbl_master_idx = if (*(*cinfo).master).compress_profile
+        == JCP_MAX_COMPRESSION as c_int
+    {
+        3i32
+    } else {
+        0i32
+    };
     (*(*cinfo).master).use_lambda_weight_tbl = TRUE;
     (*(*cinfo).master).use_scans_in_trellis = FALSE;
     (*(*cinfo).master).trellis_freq_split = 8i32;
@@ -1713,7 +1713,9 @@ pub unsafe extern "C" fn jpeg_default_colorspace(mut cinfo: j_compress_ptr) {
             (*(*cinfo).err).msg_code = JERR_BAD_IN_COLORSPACE as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                cinfo as j_common_ptr
+            );
         }
     };
 }
@@ -1726,7 +1728,8 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
     mut cinfo: j_compress_ptr,
     mut colorspace: J_COLOR_SPACE,
 ) {
-    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info =
+        0 as *mut jpeg_component_info;
     let mut ci: c_int = 0;
     if (*cinfo).global_state != CSTATE_START {
         (*(*cinfo).err).msg_code = JERR_BAD_STATE as c_int;
@@ -1742,7 +1745,8 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
         1 => {
             (*cinfo).write_JFIF_header = TRUE;
             (*cinfo).num_components = 1i32;
-            compptr = &mut *(*cinfo).comp_info.offset(0isize) as *mut jpeg_component_info;
+            compptr = &mut *(*cinfo).comp_info.offset(0isize)
+                as *mut jpeg_component_info;
             (*compptr).component_id = 1i32;
             (*compptr).h_samp_factor = 1i32;
             (*compptr).v_samp_factor = 1i32;
@@ -1753,21 +1757,24 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
         2 => {
             (*cinfo).write_Adobe_marker = TRUE;
             (*cinfo).num_components = 3i32;
-            compptr = &mut *(*cinfo).comp_info.offset(0isize) as *mut jpeg_component_info;
+            compptr = &mut *(*cinfo).comp_info.offset(0isize)
+                as *mut jpeg_component_info;
             (*compptr).component_id = 0x52i32;
             (*compptr).h_samp_factor = 1i32;
             (*compptr).v_samp_factor = 1i32;
             (*compptr).quant_tbl_no = 0i32;
             (*compptr).dc_tbl_no = 0i32;
             (*compptr).ac_tbl_no = 0i32;
-            compptr = &mut *(*cinfo).comp_info.offset(1isize) as *mut jpeg_component_info;
+            compptr = &mut *(*cinfo).comp_info.offset(1isize)
+                as *mut jpeg_component_info;
             (*compptr).component_id = 0x47i32;
             (*compptr).h_samp_factor = 1i32;
             (*compptr).v_samp_factor = 1i32;
             (*compptr).quant_tbl_no = 0i32;
             (*compptr).dc_tbl_no = 0i32;
             (*compptr).ac_tbl_no = 0i32;
-            compptr = &mut *(*cinfo).comp_info.offset(2isize) as *mut jpeg_component_info;
+            compptr = &mut *(*cinfo).comp_info.offset(2isize)
+                as *mut jpeg_component_info;
             (*compptr).component_id = 0x42i32;
             (*compptr).h_samp_factor = 1i32;
             (*compptr).v_samp_factor = 1i32;
@@ -1778,21 +1785,24 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
         3 => {
             (*cinfo).write_JFIF_header = TRUE;
             (*cinfo).num_components = 3i32;
-            compptr = &mut *(*cinfo).comp_info.offset(0isize) as *mut jpeg_component_info;
+            compptr = &mut *(*cinfo).comp_info.offset(0isize)
+                as *mut jpeg_component_info;
             (*compptr).component_id = 1i32;
             (*compptr).h_samp_factor = 2i32;
             (*compptr).v_samp_factor = 2i32;
             (*compptr).quant_tbl_no = 0i32;
             (*compptr).dc_tbl_no = 0i32;
             (*compptr).ac_tbl_no = 0i32;
-            compptr = &mut *(*cinfo).comp_info.offset(1isize) as *mut jpeg_component_info;
+            compptr = &mut *(*cinfo).comp_info.offset(1isize)
+                as *mut jpeg_component_info;
             (*compptr).component_id = 2i32;
             (*compptr).h_samp_factor = 1i32;
             (*compptr).v_samp_factor = 1i32;
             (*compptr).quant_tbl_no = 1i32;
             (*compptr).dc_tbl_no = 1i32;
             (*compptr).ac_tbl_no = 1i32;
-            compptr = &mut *(*cinfo).comp_info.offset(2isize) as *mut jpeg_component_info;
+            compptr = &mut *(*cinfo).comp_info.offset(2isize)
+                as *mut jpeg_component_info;
             (*compptr).component_id = 3i32;
             (*compptr).h_samp_factor = 1i32;
             (*compptr).v_samp_factor = 1i32;
@@ -1803,28 +1813,32 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
         4 => {
             (*cinfo).write_Adobe_marker = TRUE;
             (*cinfo).num_components = 4i32;
-            compptr = &mut *(*cinfo).comp_info.offset(0isize) as *mut jpeg_component_info;
+            compptr = &mut *(*cinfo).comp_info.offset(0isize)
+                as *mut jpeg_component_info;
             (*compptr).component_id = 0x43i32;
             (*compptr).h_samp_factor = 1i32;
             (*compptr).v_samp_factor = 1i32;
             (*compptr).quant_tbl_no = 0i32;
             (*compptr).dc_tbl_no = 0i32;
             (*compptr).ac_tbl_no = 0i32;
-            compptr = &mut *(*cinfo).comp_info.offset(1isize) as *mut jpeg_component_info;
+            compptr = &mut *(*cinfo).comp_info.offset(1isize)
+                as *mut jpeg_component_info;
             (*compptr).component_id = 0x4di32;
             (*compptr).h_samp_factor = 1i32;
             (*compptr).v_samp_factor = 1i32;
             (*compptr).quant_tbl_no = 0i32;
             (*compptr).dc_tbl_no = 0i32;
             (*compptr).ac_tbl_no = 0i32;
-            compptr = &mut *(*cinfo).comp_info.offset(2isize) as *mut jpeg_component_info;
+            compptr = &mut *(*cinfo).comp_info.offset(2isize)
+                as *mut jpeg_component_info;
             (*compptr).component_id = 0x59i32;
             (*compptr).h_samp_factor = 1i32;
             (*compptr).v_samp_factor = 1i32;
             (*compptr).quant_tbl_no = 0i32;
             (*compptr).dc_tbl_no = 0i32;
             (*compptr).ac_tbl_no = 0i32;
-            compptr = &mut *(*cinfo).comp_info.offset(3isize) as *mut jpeg_component_info;
+            compptr = &mut *(*cinfo).comp_info.offset(3isize)
+                as *mut jpeg_component_info;
             (*compptr).component_id = 0x4bi32;
             (*compptr).h_samp_factor = 1i32;
             (*compptr).v_samp_factor = 1i32;
@@ -1835,28 +1849,32 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
         5 => {
             (*cinfo).write_Adobe_marker = TRUE;
             (*cinfo).num_components = 4i32;
-            compptr = &mut *(*cinfo).comp_info.offset(0isize) as *mut jpeg_component_info;
+            compptr = &mut *(*cinfo).comp_info.offset(0isize)
+                as *mut jpeg_component_info;
             (*compptr).component_id = 1i32;
             (*compptr).h_samp_factor = 2i32;
             (*compptr).v_samp_factor = 2i32;
             (*compptr).quant_tbl_no = 0i32;
             (*compptr).dc_tbl_no = 0i32;
             (*compptr).ac_tbl_no = 0i32;
-            compptr = &mut *(*cinfo).comp_info.offset(1isize) as *mut jpeg_component_info;
+            compptr = &mut *(*cinfo).comp_info.offset(1isize)
+                as *mut jpeg_component_info;
             (*compptr).component_id = 2i32;
             (*compptr).h_samp_factor = 1i32;
             (*compptr).v_samp_factor = 1i32;
             (*compptr).quant_tbl_no = 1i32;
             (*compptr).dc_tbl_no = 1i32;
             (*compptr).ac_tbl_no = 1i32;
-            compptr = &mut *(*cinfo).comp_info.offset(2isize) as *mut jpeg_component_info;
+            compptr = &mut *(*cinfo).comp_info.offset(2isize)
+                as *mut jpeg_component_info;
             (*compptr).component_id = 3i32;
             (*compptr).h_samp_factor = 1i32;
             (*compptr).v_samp_factor = 1i32;
             (*compptr).quant_tbl_no = 1i32;
             (*compptr).dc_tbl_no = 1i32;
             (*compptr).ac_tbl_no = 1i32;
-            compptr = &mut *(*cinfo).comp_info.offset(3isize) as *mut jpeg_component_info;
+            compptr = &mut *(*cinfo).comp_info.offset(3isize)
+                as *mut jpeg_component_info;
             (*compptr).component_id = 4i32;
             (*compptr).h_samp_factor = 2i32;
             (*compptr).v_samp_factor = 2i32;
@@ -1866,17 +1884,22 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
         }
         0 => {
             (*cinfo).num_components = (*cinfo).input_components;
-            if (*cinfo).num_components < 1i32 || (*cinfo).num_components > MAX_COMPONENTS {
+            if (*cinfo).num_components < 1i32
+                || (*cinfo).num_components > MAX_COMPONENTS
+            {
                 (*(*cinfo).err).msg_code = JERR_COMPONENT_COUNT as c_int;
                 (*(*cinfo).err).msg_parm.i[0usize] = (*cinfo).num_components;
                 (*(*cinfo).err).msg_parm.i[1usize] = 10i32;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(cinfo as j_common_ptr);
+                    .expect("non-null function pointer")(
+                    cinfo as j_common_ptr
+                );
             }
             ci = 0i32;
             while ci < (*cinfo).num_components {
-                compptr = &mut *(*cinfo).comp_info.offset(ci as isize) as *mut jpeg_component_info;
+                compptr = &mut *(*cinfo).comp_info.offset(ci as isize)
+                    as *mut jpeg_component_info;
                 (*compptr).component_id = ci;
                 (*compptr).h_samp_factor = 1i32;
                 (*compptr).v_samp_factor = 1i32;
@@ -1890,7 +1913,9 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
             (*(*cinfo).err).msg_code = JERR_BAD_J_COLORSPACE as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                cinfo as j_common_ptr
+            );
         }
     };
 }
@@ -1979,10 +2004,13 @@ unsafe extern "C" fn fill_dc_scans(
  * List of scans to be tested
  * cinfo->num_components and cinfo->jpeg_color_space must be correct.
  */
-unsafe extern "C" fn jpeg_search_progression(mut cinfo: j_compress_ptr) -> boolean {
+unsafe extern "C" fn jpeg_search_progression(
+    mut cinfo: j_compress_ptr,
+) -> boolean {
     let mut ncomps: c_int = (*cinfo).num_components;
     let mut nscans: c_int = 0;
-    let mut scanptr: *mut jpeg_scan_info = 0 as *mut jpeg_scan_info;
+    let mut scanptr: *mut jpeg_scan_info =
+        0 as *mut jpeg_scan_info;
     let mut Al: c_int = 0;
     let mut frequency_split: [c_int; 5] = [2i32, 8i32, 5i32, 12i32, 18i32];
     let mut i: c_int = 0;
@@ -1993,7 +2021,10 @@ unsafe extern "C" fn jpeg_search_progression(mut cinfo: j_compress_ptr) -> boole
             .error_exit
             .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
-    if ncomps == 3i32 && (*cinfo).jpeg_color_space as c_uint == JCS_YCbCr as c_int as c_uint {
+    if ncomps == 3i32
+        && (*cinfo).jpeg_color_space as c_uint
+            == JCS_YCbCr as c_int as c_uint
+    {
         nscans = 64i32
     } else if ncomps == 1i32 {
         nscans = 23i32
@@ -2009,7 +2040,9 @@ unsafe extern "C" fn jpeg_search_progression(mut cinfo: j_compress_ptr) -> boole
             cinfo as j_common_ptr,
             JPOOL_PERMANENT,
             ((*cinfo).script_space_size as c_ulong)
-                .wrapping_mul(::std::mem::size_of::<jpeg_scan_info>() as c_ulong),
+                .wrapping_mul(
+                    ::std::mem::size_of::<jpeg_scan_info>() as c_ulong
+                ),
         ) as *mut jpeg_scan_info
     }
     scanptr = (*cinfo).script_space;
@@ -2107,7 +2140,8 @@ unsafe extern "C" fn jpeg_search_progression(mut cinfo: j_compress_ptr) -> boole
 pub unsafe extern "C" fn jpeg_simple_progression(mut cinfo: j_compress_ptr) {
     let mut ncomps: c_int = 0;
     let mut nscans: c_int = 0;
-    let mut scanptr: *mut jpeg_scan_info = 0 as *mut jpeg_scan_info;
+    let mut scanptr: *mut jpeg_scan_info =
+        0 as *mut jpeg_scan_info;
     if 0 != (*(*cinfo).master).optimize_scans {
         if jpeg_search_progression(cinfo) == TRUE {
             return;
@@ -2121,8 +2155,13 @@ pub unsafe extern "C" fn jpeg_simple_progression(mut cinfo: j_compress_ptr) {
             .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     ncomps = (*cinfo).num_components;
-    if ncomps == 3i32 && (*cinfo).jpeg_color_space as c_uint == JCS_YCbCr as c_int as c_uint {
-        if (*(*cinfo).master).compress_profile == JCP_MAX_COMPRESSION as c_int {
+    if ncomps == 3i32
+        && (*cinfo).jpeg_color_space as c_uint
+            == JCS_YCbCr as c_int as c_uint
+    {
+        if (*(*cinfo).master).compress_profile
+            == JCP_MAX_COMPRESSION as c_int
+        {
             if (*(*cinfo).master).dc_scan_opt_mode == 0i32 {
                 nscans = 9i32
             } else if (*(*cinfo).master).dc_scan_opt_mode == 1i32 {
@@ -2133,7 +2172,9 @@ pub unsafe extern "C" fn jpeg_simple_progression(mut cinfo: j_compress_ptr) {
         } else {
             nscans = 10i32
         }
-    } else if (*(*cinfo).master).compress_profile == JCP_MAX_COMPRESSION as c_int {
+    } else if (*(*cinfo).master).compress_profile
+        == JCP_MAX_COMPRESSION as c_int
+    {
         if ncomps > MAX_COMPS_IN_SCAN {
             nscans = 5i32 * ncomps
         } else {
@@ -2152,14 +2193,21 @@ pub unsafe extern "C" fn jpeg_simple_progression(mut cinfo: j_compress_ptr) {
             cinfo as j_common_ptr,
             JPOOL_PERMANENT,
             ((*cinfo).script_space_size as c_ulong)
-                .wrapping_mul(::std::mem::size_of::<jpeg_scan_info>() as c_ulong),
+                .wrapping_mul(
+                    ::std::mem::size_of::<jpeg_scan_info>() as c_ulong
+                ),
         ) as *mut jpeg_scan_info
     }
     scanptr = (*cinfo).script_space;
     (*cinfo).scan_info = scanptr;
     (*cinfo).num_scans = nscans;
-    if ncomps == 3i32 && (*cinfo).jpeg_color_space as c_uint == JCS_YCbCr as c_int as c_uint {
-        if (*(*cinfo).master).compress_profile == JCP_MAX_COMPRESSION as c_int {
+    if ncomps == 3i32
+        && (*cinfo).jpeg_color_space as c_uint
+            == JCS_YCbCr as c_int as c_uint
+    {
+        if (*(*cinfo).master).compress_profile
+            == JCP_MAX_COMPRESSION as c_int
+        {
             if (*(*cinfo).master).dc_scan_opt_mode == 0i32 {
                 scanptr = fill_dc_scans(scanptr, ncomps, 0i32, 0i32)
             } else if (*(*cinfo).master).dc_scan_opt_mode == 1i32 {
@@ -2190,7 +2238,9 @@ pub unsafe extern "C" fn jpeg_simple_progression(mut cinfo: j_compress_ptr) {
             scanptr = fill_a_scan(scanptr, 1i32, 1i32, 63i32, 1i32, 0i32);
             scanptr = fill_a_scan(scanptr, 0i32, 1i32, 63i32, 1i32, 0i32)
         }
-    } else if (*(*cinfo).master).compress_profile == JCP_MAX_COMPRESSION as c_int {
+    } else if (*(*cinfo).master).compress_profile
+        == JCP_MAX_COMPRESSION as c_int
+    {
         scanptr = fill_dc_scans(scanptr, ncomps, 0i32, 0i32);
         scanptr = fill_scans(scanptr, ncomps, 1i32, 8i32, 0i32, 2i32);
         scanptr = fill_scans(scanptr, ncomps, 9i32, 63i32, 0i32, 2i32);

@@ -1,18 +1,11 @@
-use libc;
-use libc::c_int;
-use libc::c_long;
-use libc::c_uint;
-use libc::c_ulong;
-use libc::c_void;
-
-pub use crate::jcmaster::c_pass_type;
+use libc::c_uint;use libc::c_int;use libc::c_void;use libc::c_ulong;use libc::c_long;pub use crate::jcmaster::c_pass_type;
 pub use crate::jcmaster::huff_opt_pass;
 pub use crate::jcmaster::main_pass;
 pub use crate::jcmaster::my_comp_master;
 pub use crate::jcmaster::output_pass;
 pub use crate::jcmaster::trellis_pass;
 pub use crate::jconfig_h::JPEG_LIB_VERSION;
-pub use crate::jerror::C2RustUnnamed_4;
+pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -188,8 +181,8 @@ pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
+pub use crate::jpeglib_h::C2RustUnnamed_1;
 pub use crate::jpeglib_h::C2RustUnnamed_2;
-pub use crate::jpeglib_h::C2RustUnnamed_3;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::JBLOCK;
 pub use crate::jpeglib_h::JBLOCKARRAY;
@@ -228,6 +221,7 @@ pub use crate::jpeglib_h::NUM_QUANT_TBLS;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 use crate::stdlib::memset;
+use libc;
 /*
  * jcapimin.c
  *
@@ -248,16 +242,16 @@ use crate::stdlib::memset;
  * parameter-setup helper routines, jcomapi.c for routines shared by
  * compression and decompression, and jctrans.c for the transcoding case.
  */
-/*
- * Initialization of a JPEG compression object.
- * The error manager must already be set up (in case memory manager fails).
- */
 /* Initialization of JPEG compression objects.
  * jpeg_create_compress() and jpeg_create_decompress() are the exported
  * names that applications should call.  These expand to calls on
  * jpeg_CreateCompress and jpeg_CreateDecompress with additional information
  * passed for version mismatch checking.
  * NB: you must set up the error-manager BEFORE calling jpeg_create_xxx.
+ */
+/*
+ * Initialization of a JPEG compression object.
+ * The error manager must already be set up (in case memory manager fails).
  */
 #[no_mangle]
 pub unsafe extern "C" fn jpeg_CreateCompress(
@@ -275,10 +269,13 @@ pub unsafe extern "C" fn jpeg_CreateCompress(
             .error_exit
             .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
-    if structsize != ::std::mem::size_of::<jpeg_compress_struct>() as c_ulong {
+    if structsize
+        != ::std::mem::size_of::<jpeg_compress_struct>() as c_ulong
+    {
         (*(*cinfo).err).msg_code = JERR_BAD_STRUCT_SIZE as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] =
-            ::std::mem::size_of::<jpeg_compress_struct>() as c_ulong as c_int;
+        (*(*cinfo).err).msg_parm.i[0usize] = ::std::mem::size_of::<
+            jpeg_compress_struct,
+        >() as c_ulong as c_int;
         (*(*cinfo).err).msg_parm.i[1usize] = structsize as c_int;
         (*(*cinfo).err)
             .error_exit
@@ -300,13 +297,16 @@ pub unsafe extern "C" fn jpeg_CreateCompress(
     (*cinfo).comp_info = NULL as *mut jpeg_component_info;
     i = 0i32;
     while i < NUM_QUANT_TBLS {
-        (*cinfo).quant_tbl_ptrs[i as usize] = NULL as *mut JQUANT_TBL;
+        (*cinfo).quant_tbl_ptrs[i as usize] =
+            NULL as *mut JQUANT_TBL;
         i += 1
     }
     i = 0i32;
     while i < NUM_HUFF_TBLS {
-        (*cinfo).dc_huff_tbl_ptrs[i as usize] = NULL as *mut JHUFF_TBL;
-        (*cinfo).ac_huff_tbl_ptrs[i as usize] = NULL as *mut JHUFF_TBL;
+        (*cinfo).dc_huff_tbl_ptrs[i as usize] =
+            NULL as *mut JHUFF_TBL;
+        (*cinfo).ac_huff_tbl_ptrs[i as usize] =
+            NULL as *mut JHUFF_TBL;
         i += 1
     }
     (*cinfo).script_space = NULL as *mut jpeg_scan_info;
@@ -360,7 +360,10 @@ pub unsafe extern "C" fn jpeg_abort_compress(mut cinfo: j_compress_ptr) {
  * jcparam.o would be linked whether the application used it or not.
  */
 #[no_mangle]
-pub unsafe extern "C" fn jpeg_suppress_tables(mut cinfo: j_compress_ptr, mut suppress: boolean) {
+pub unsafe extern "C" fn jpeg_suppress_tables(
+    mut cinfo: j_compress_ptr,
+    mut suppress: boolean,
+) {
     let mut i: c_int = 0;
     let mut qtbl: *mut JQUANT_TBL = 0 as *mut JQUANT_TBL;
     let mut htbl: *mut JHUFF_TBL = 0 as *mut JHUFF_TBL;
@@ -394,12 +397,16 @@ pub unsafe extern "C" fn jpeg_suppress_tables(mut cinfo: j_compress_ptr, mut sup
 #[no_mangle]
 pub unsafe extern "C" fn jpeg_finish_compress(mut cinfo: j_compress_ptr) {
     let mut iMCU_row: JDIMENSION = 0;
-    if (*cinfo).global_state == CSTATE_SCANNING || (*cinfo).global_state == CSTATE_RAW_OK {
+    if (*cinfo).global_state == CSTATE_SCANNING
+        || (*cinfo).global_state == CSTATE_RAW_OK
+    {
         if (*cinfo).next_scanline < (*cinfo).image_height {
             (*(*cinfo).err).msg_code = JERR_TOO_LITTLE_DATA as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                cinfo as j_common_ptr
+            );
         }
         (*(*cinfo).master)
             .finish_pass
@@ -422,17 +429,22 @@ pub unsafe extern "C" fn jpeg_finish_compress(mut cinfo: j_compress_ptr) {
                 (*(*cinfo).progress).pass_limit = (*cinfo).total_iMCU_rows as c_long;
                 (*(*cinfo).progress)
                     .progress_monitor
-                    .expect("non-null function pointer")(cinfo as j_common_ptr);
+                    .expect("non-null function pointer")(
+                    cinfo as j_common_ptr
+                );
             }
             if 0 == (*(*cinfo).coef)
                 .compress_data
                 .expect("non-null function pointer")(
-                cinfo, NULL as *mut c_void as JSAMPIMAGE
+                cinfo,
+                NULL as *mut c_void as JSAMPIMAGE,
             ) {
                 (*(*cinfo).err).msg_code = JERR_CANT_SUSPEND as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(cinfo as j_common_ptr);
+                    .expect("non-null function pointer")(
+                    cinfo as j_common_ptr
+                );
             }
             iMCU_row = iMCU_row.wrapping_add(1)
         }
@@ -448,13 +460,13 @@ pub unsafe extern "C" fn jpeg_finish_compress(mut cinfo: j_compress_ptr) {
         .expect("non-null function pointer")(cinfo);
     jpeg_abort(cinfo as j_common_ptr);
 }
+/* Write a special marker.  See libjpeg.txt concerning safe usage. */
 /*
  * Write a special marker.
  * This is only recommended for writing COM or APPn markers.
  * Must be called after jpeg_start_compress() and before
  * first call to jpeg_write_scanlines() or jpeg_write_raw_data().
  */
-/* Write a special marker.  See libjpeg.txt concerning safe usage. */
 #[no_mangle]
 pub unsafe extern "C" fn jpeg_write_marker(
     mut cinfo: j_compress_ptr,
@@ -462,8 +474,9 @@ pub unsafe extern "C" fn jpeg_write_marker(
     mut dataptr: *const JOCTET,
     mut datalen: c_uint,
 ) {
-    let mut write_marker_byte: Option<unsafe extern "C" fn(_: j_compress_ptr, _: c_int) -> ()> =
-        None;
+    let mut write_marker_byte: Option<
+        unsafe extern "C" fn(_: j_compress_ptr, _: c_int) -> (),
+    > = None;
     if (*cinfo).next_scanline != 0i32 as c_uint
         || (*cinfo).global_state != CSTATE_SCANNING
             && (*cinfo).global_state != CSTATE_RAW_OK
@@ -513,11 +526,15 @@ pub unsafe extern "C" fn jpeg_write_m_header(
         .expect("non-null function pointer")(cinfo, marker, datalen);
 }
 #[no_mangle]
-pub unsafe extern "C" fn jpeg_write_m_byte(mut cinfo: j_compress_ptr, mut val: c_int) {
+pub unsafe extern "C" fn jpeg_write_m_byte(
+    mut cinfo: j_compress_ptr,
+    mut val: c_int,
+) {
     (*(*cinfo).marker)
         .write_marker_byte
         .expect("non-null function pointer")(cinfo, val);
 }
+/* Alternate compression function: just write an abbreviated table file */
 /*
  * Alternate compression function: just write an abbreviated table file.
  * Before calling this, all parameters and a data destination must be set up.
@@ -538,7 +555,6 @@ pub unsafe extern "C" fn jpeg_write_m_byte(mut cinfo: j_compress_ptr, mut val: c
  * (same as jpeg_suppress_tables(..., TRUE)).  Thus a subsequent start_compress
  * will not re-emit the tables unless it is passed write_all_tables=TRUE.
  */
-/* Alternate compression function: just write an abbreviated table file */
 #[no_mangle]
 pub unsafe extern "C" fn jpeg_write_tables(mut cinfo: j_compress_ptr) {
     if (*cinfo).global_state != CSTATE_START {

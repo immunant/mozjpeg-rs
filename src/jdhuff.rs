@@ -1,540 +1,4 @@
-pub use crate::jerror::C2RustUnnamed_4;
-pub use crate::jpeglib_h::C2RustUnnamed_3;
-use libc::c_char;
-use libc::c_int;
-use libc::c_long;
-use libc::c_uint;
-use libc::c_ulong;
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct d_derived_tbl {
-    pub maxcode: [JLONG; 18],
-    pub valoffset: [JLONG; 18],
-    pub pub_0: *mut JHUFF_TBL,
-    pub lookup: [c_int; 256],
-}
-/* If long is > 32 bits on your machine, and shifting/masking longs is
- * reasonably fast, making bit_buf_type be long and setting BIT_BUF_SIZE
- * appropriately should be a win.  Unfortunately we can't define the size
- * with something like  #define BIT_BUF_SIZE (sizeof(bit_buf_type)*8)
- * because not all machines measure sizeof in 8-bit bytes.
- */
-/* Bitreading state saved across MCUs */
-
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct bitread_perm_state {
-    pub get_buffer: bit_buf_type,
-    pub bits_left: c_int,
-}
-/*
- * Fetching the next N bits from the input stream is a time-critical operation
- * for the Huffman decoders.  We implement it with a combination of inline
- * macros and out-of-line subroutines.  Note that N (the number of bits
- * demanded at one time) never exceeds 15 for JPEG use.
- *
- * We read source bytes into get_buffer and dole out bits as needed.
- * If get_buffer already contains enough bits, they are fetched in-line
- * by the macros CHECK_BIT_BUFFER and GET_BITS.  When there aren't enough
- * bits, jpeg_fill_bit_buffer is called; it will attempt to fill get_buffer
- * as full as possible (not just to the number of bits needed; this
- * prefetching reduces the overhead cost of calling jpeg_fill_bit_buffer).
- * Note that jpeg_fill_bit_buffer may return FALSE to indicate suspension.
- * On TRUE return, jpeg_fill_bit_buffer guarantees that get_buffer contains
- * at least the requested number of bits --- dummy zeroes are inserted if
- * necessary.
- */
-/* type of bit-extraction buffer */
-pub type bit_buf_type = size_t;
-/* Bitreading working state within an MCU */
-
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct bitread_working_state {
-    pub next_input_byte: *const JOCTET,
-    pub bytes_in_buffer: size_t,
-    pub get_buffer: bit_buf_type,
-    pub bits_left: c_int,
-    pub cinfo: j_decompress_ptr,
-}
-pub use crate::jpegint_h::JLONG;
-pub use crate::jpeglib_h::j_decompress_ptr;
-pub use crate::jpeglib_h::JHUFF_TBL;
-use libc;
-
-pub use crate::jmorecfg_h::boolean;
-pub use crate::jmorecfg_h::JCOEF;
-pub use crate::jmorecfg_h::JDIMENSION;
-pub use crate::jmorecfg_h::JOCTET;
-pub use crate::jmorecfg_h::JSAMPLE;
-pub use crate::jmorecfg_h::UINT16;
-pub use crate::jmorecfg_h::UINT8;
-pub use crate::jpegint_h::inverse_DCT_method_ptr;
-pub use crate::jpegint_h::jpeg_c_coef_controller;
-pub use crate::jpegint_h::jpeg_c_main_controller;
-pub use crate::jpegint_h::jpeg_c_prep_controller;
-pub use crate::jpegint_h::jpeg_color_converter;
-pub use crate::jpegint_h::jpeg_color_deconverter;
-pub use crate::jpegint_h::jpeg_color_quantizer;
-pub use crate::jpegint_h::jpeg_comp_master;
-pub use crate::jpegint_h::jpeg_d_coef_controller;
-pub use crate::jpegint_h::jpeg_d_main_controller;
-pub use crate::jpegint_h::jpeg_d_post_controller;
-pub use crate::jpegint_h::jpeg_decomp_master;
-pub use crate::jpegint_h::jpeg_downsampler;
-pub use crate::jpegint_h::jpeg_entropy_decoder;
-pub use crate::jpegint_h::jpeg_entropy_encoder;
-pub use crate::jpegint_h::jpeg_forward_dct;
-pub use crate::jpegint_h::jpeg_input_controller;
-pub use crate::jpegint_h::jpeg_inverse_dct;
-pub use crate::jpegint_h::jpeg_marker_reader;
-pub use crate::jpegint_h::jpeg_marker_writer;
-pub use crate::jpegint_h::jpeg_upsampler;
-pub use crate::jpegint_h::J_BUF_MODE;
-pub use crate::jpeglib_h::j_common_ptr;
-pub use crate::jpeglib_h::j_compress_ptr;
-pub use crate::jpeglib_h::jpeg_common_struct;
-pub use crate::jpeglib_h::jpeg_component_info;
-pub use crate::jpeglib_h::jpeg_compress_struct;
-pub use crate::jpeglib_h::jpeg_decompress_struct;
-pub use crate::jpeglib_h::jpeg_destination_mgr;
-pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_marker_parser_method;
-pub use crate::jpeglib_h::jpeg_marker_struct;
-pub use crate::jpeglib_h::jpeg_memory_mgr;
-pub use crate::jpeglib_h::jpeg_progress_mgr;
-pub use crate::jpeglib_h::jpeg_saved_marker_ptr;
-pub use crate::jpeglib_h::jpeg_scan_info;
-pub use crate::jpeglib_h::jpeg_source_mgr;
-pub use crate::jpeglib_h::jvirt_barray_control;
-pub use crate::jpeglib_h::jvirt_barray_ptr;
-pub use crate::jpeglib_h::jvirt_sarray_control;
-pub use crate::jpeglib_h::jvirt_sarray_ptr;
-pub use crate::jpeglib_h::JBLOCK;
-pub use crate::jpeglib_h::JBLOCKARRAY;
-pub use crate::jpeglib_h::JBLOCKROW;
-pub use crate::jpeglib_h::JCOEFPTR;
-pub use crate::jpeglib_h::JQUANT_TBL;
-pub use crate::jpeglib_h::JSAMPARRAY;
-pub use crate::jpeglib_h::JSAMPIMAGE;
-pub use crate::jpeglib_h::JSAMPROW;
-pub use crate::jpeglib_h::J_COLOR_SPACE;
-pub use crate::jpeglib_h::J_DCT_METHOD;
-pub use crate::jpeglib_h::J_DITHER_MODE;
-pub use crate::stddef_h::size_t;
-pub type huff_entropy_ptr = *mut huff_entropy_decoder;
-/* This macro is to work around compilers with missing or broken
- * structure assignment.  You'll need to fix this code if you have
- * such a compiler and you change MAX_COMPS_IN_SCAN.
- */
-
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct huff_entropy_decoder {
-    pub pub_0: jpeg_entropy_decoder,
-    pub bitstate: bitread_perm_state,
-    pub saved: savable_state,
-    pub restarts_to_go: c_uint,
-    pub dc_derived_tbls: [*mut d_derived_tbl; 4],
-    pub ac_derived_tbls: [*mut d_derived_tbl; 4],
-    pub dc_cur_tbls: [*mut d_derived_tbl; 10],
-    pub ac_cur_tbls: [*mut d_derived_tbl; 10],
-    pub dc_needed: [boolean; 10],
-    pub ac_needed: [boolean; 10],
-}
-/*
- * jdhuff.c
- *
- * This file was part of the Independent JPEG Group's software:
- * Copyright (C) 1991-1997, Thomas G. Lane.
- * libjpeg-turbo Modifications:
- * Copyright (C) 2009-2011, 2016, 2018, D. R. Commander.
- * For conditions of distribution and use, see the accompanying README.ijg
- * file.
- *
- * This file contains Huffman entropy decoding routines.
- *
- * Much of the complexity here has to do with supporting input suspension.
- * If the data source module demands suspension, we want to be able to back
- * up to the start of the current MCU.  To do this, we copy state variables
- * into local working storage, and update them back to the permanent
- * storage only upon successful completion of an MCU.
- *
- * NOTE: All referenced figures are from
- * Recommendation ITU-T T.81 (1992) | ISO/IEC 10918-1:1994.
- */
-/*
- * Expanded entropy decoder object for Huffman decoding.
- *
- * The savable_state subrecord contains fields that change within an MCU,
- * but must not be updated permanently until we complete the MCU.
- */
-
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct savable_state {
-    pub last_dc_val: [c_int; 4],
-}
-/*
- * jdhuff.h
- *
- * This file was part of the Independent JPEG Group's software:
- * Copyright (C) 1991-1997, Thomas G. Lane.
- * libjpeg-turbo Modifications:
- * Copyright (C) 2010-2011, 2015-2016, D. R. Commander.
- * For conditions of distribution and use, see the accompanying README.ijg
- * file.
- *
- * This file contains declarations for Huffman entropy decoding routines
- * that are shared between the sequential decoder (jdhuff.c) and the
- * progressive decoder (jdphuff.c).  No other modules need to see these.
- */
-/* Derived data constructed for each Huffman table */
-/* # of bits of lookahead */
-pub const HUFF_LOOKAHEAD: c_int = 8i32;
-/* size of buffer in bits */
-pub const BIT_BUF_SIZE: c_int = 64i32;
-/*
- * Compute the derived values for a Huffman table.
- * This routine also performs some validation checks on the table.
- *
- * Note this is also used by jdphuff.c.
- */
-/* Expand a Huffman table definition into the derived format */
-#[no_mangle]
-pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
-    mut cinfo: j_decompress_ptr,
-    mut isDC: boolean,
-    mut tblno: c_int,
-    mut pdtbl: *mut *mut d_derived_tbl,
-) {
-    let mut htbl: *mut JHUFF_TBL = 0 as *mut JHUFF_TBL;
-    let mut dtbl: *mut d_derived_tbl = 0 as *mut d_derived_tbl;
-    let mut p: c_int = 0;
-    let mut i: c_int = 0;
-    let mut l: c_int = 0;
-    let mut si: c_int = 0;
-    let mut numsymbols: c_int = 0;
-    let mut lookbits: c_int = 0;
-    let mut ctr: c_int = 0;
-    let mut huffsize: [c_char; 257] = [0; 257];
-    let mut huffcode: [c_uint; 257] = [0; 257];
-    let mut code: c_uint = 0;
-    if tblno < 0i32 || tblno >= NUM_HUFF_TBLS {
-        (*(*cinfo).err).msg_code = JERR_NO_HUFF_TABLE as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] = tblno;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
-    }
-    htbl = if 0 != isDC {
-        (*cinfo).dc_huff_tbl_ptrs[tblno as usize]
-    } else {
-        (*cinfo).ac_huff_tbl_ptrs[tblno as usize]
-    };
-    if htbl.is_null() {
-        (*(*cinfo).err).msg_code = JERR_NO_HUFF_TABLE as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] = tblno;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
-    }
-    if (*pdtbl).is_null() {
-        *pdtbl = (*(*cinfo).mem)
-            .alloc_small
-            .expect("non-null function pointer")(
-            cinfo as j_common_ptr,
-            JPOOL_IMAGE,
-            ::std::mem::size_of::<d_derived_tbl>() as c_ulong,
-        ) as *mut d_derived_tbl
-    }
-    dtbl = *pdtbl;
-    (*dtbl).pub_0 = htbl;
-    p = 0i32;
-    l = 1i32;
-    while l <= 16i32 {
-        i = (*htbl).bits[l as usize] as c_int;
-        if i < 0i32 || p + i > 256i32 {
-            (*(*cinfo).err).msg_code = JERR_BAD_HUFF_TABLE as c_int;
-            (*(*cinfo).err)
-                .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
-        }
-        loop {
-            let fresh0 = i;
-            i = i - 1;
-            if !(0 != fresh0) {
-                break;
-            }
-            let fresh1 = p;
-            p = p + 1;
-            huffsize[fresh1 as usize] = l as c_char
-        }
-        l += 1
-    }
-    huffsize[p as usize] = 0i32 as c_char;
-    numsymbols = p;
-    code = 0i32 as c_uint;
-    si = huffsize[0usize] as c_int;
-    p = 0i32;
-    while 0 != huffsize[p as usize] {
-        while huffsize[p as usize] as c_int == si {
-            let fresh2 = p;
-            p = p + 1;
-            huffcode[fresh2 as usize] = code;
-            code = code.wrapping_add(1)
-        }
-        if code as JLONG >= (1i32 as JLONG) << si {
-            (*(*cinfo).err).msg_code = JERR_BAD_HUFF_TABLE as c_int;
-            (*(*cinfo).err)
-                .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
-        }
-        code <<= 1i32;
-        si += 1
-    }
-    p = 0i32;
-    l = 1i32;
-    while l <= 16i32 {
-        if 0 != (*htbl).bits[l as usize] {
-            (*dtbl).valoffset[l as usize] = p as JLONG - huffcode[p as usize] as JLONG;
-            p += (*htbl).bits[l as usize] as c_int;
-            (*dtbl).maxcode[l as usize] = huffcode[(p - 1i32) as usize] as JLONG
-        } else {
-            (*dtbl).maxcode[l as usize] = -1i32 as JLONG
-        }
-        l += 1
-    }
-    (*dtbl).valoffset[17usize] = 0i32 as JLONG;
-    (*dtbl).maxcode[17usize] = 0xfffffi64;
-    i = 0i32;
-    while i < 1i32 << HUFF_LOOKAHEAD {
-        (*dtbl).lookup[i as usize] = HUFF_LOOKAHEAD + 1i32 << HUFF_LOOKAHEAD;
-        i += 1
-    }
-    p = 0i32;
-    l = 1i32;
-    while l <= HUFF_LOOKAHEAD {
-        i = 1i32;
-        while i <= (*htbl).bits[l as usize] as c_int {
-            lookbits = (huffcode[p as usize] << HUFF_LOOKAHEAD - l) as c_int;
-            ctr = 1i32 << HUFF_LOOKAHEAD - l;
-            while ctr > 0i32 {
-                (*dtbl).lookup[lookbits as usize] =
-                    l << HUFF_LOOKAHEAD | (*htbl).huffval[p as usize] as c_int;
-                lookbits += 1;
-                ctr -= 1
-            }
-            i += 1;
-            p += 1
-        }
-        l += 1
-    }
-    if 0 != isDC {
-        i = 0i32;
-        while i < numsymbols {
-            let mut sym: c_int = (*htbl).huffval[i as usize] as c_int;
-            if sym < 0i32 || sym > 15i32 {
-                (*(*cinfo).err).msg_code = JERR_BAD_HUFF_TABLE as c_int;
-                (*(*cinfo).err)
-                    .error_exit
-                    .expect("non-null function pointer")(cinfo as j_common_ptr);
-            }
-            i += 1
-        }
-    };
-}
-/* Macros to declare and load/save bitread local variables. */
-/*
- * These macros provide the in-line portion of bit fetching.
- * Use CHECK_BIT_BUFFER to ensure there are N bits in get_buffer
- * before using GET_BITS, PEEK_BITS, or DROP_BITS.
- * The variables get_buffer and bits_left are assumed to be locals,
- * but the state struct might not be (jpeg_huff_decode needs this).
- *      CHECK_BIT_BUFFER(state, n, action);
- *              Ensure there are N bits in get_buffer; if suspend, take action.
- *      val = GET_BITS(n);
- *              Fetch next N bits.
- *      val = PEEK_BITS(n);
- *              Fetch next N bits without removing them from the buffer.
- *      DROP_BITS(n);
- *              Discard next N bits.
- * The value N should be a simple variable, not an expression, because it
- * is evaluated multiple times.
- */
-/* Load up the bit buffer to a depth of at least nbits */
-#[no_mangle]
-pub unsafe extern "C" fn jpeg_fill_bit_buffer(
-    mut state: *mut bitread_working_state,
-    mut get_buffer: bit_buf_type,
-    mut bits_left: c_int,
-    mut nbits: c_int,
-) -> boolean {
-    /* Copy heavily used state fields into locals (hopefully registers) */
-    let mut next_input_byte: *const JOCTET = (*state).next_input_byte;
-    let mut bytes_in_buffer: size_t = (*state).bytes_in_buffer;
-    let mut cinfo: j_decompress_ptr = (*state).cinfo;
-    let mut current_block_30: u64;
-    if (*cinfo).unread_marker == 0i32 {
-        /* cannot advance past a marker */
-        loop {
-            if !(bits_left < MIN_GET_BITS) {
-                current_block_30 = 6417057564578538666;
-                break;
-            }
-            let mut c: c_int = 0;
-            if bytes_in_buffer == 0i32 as c_ulong {
-                if 0 == (*(*cinfo).src)
-                    .fill_input_buffer
-                    .expect("non-null function pointer")(cinfo)
-                {
-                    return FALSE;
-                }
-                next_input_byte = (*(*cinfo).src).next_input_byte;
-                bytes_in_buffer = (*(*cinfo).src).bytes_in_buffer
-            }
-            bytes_in_buffer = bytes_in_buffer.wrapping_sub(1);
-            let fresh3 = next_input_byte;
-            next_input_byte = next_input_byte.offset(1);
-            c = *fresh3 as c_int;
-            /* If it's 0xFF, check and discard stuffed zero byte */
-            if c == 0xffi32 {
-                loop {
-                    if bytes_in_buffer == 0i32 as c_ulong {
-                        if 0 == (*(*cinfo).src)
-                            .fill_input_buffer
-                            .expect("non-null function pointer")(
-                            cinfo
-                        ) {
-                            return FALSE;
-                        }
-                        next_input_byte = (*(*cinfo).src).next_input_byte;
-                        bytes_in_buffer = (*(*cinfo).src).bytes_in_buffer
-                    }
-                    bytes_in_buffer = bytes_in_buffer.wrapping_sub(1);
-                    let fresh4 = next_input_byte;
-                    next_input_byte = next_input_byte.offset(1);
-                    c = *fresh4 as c_int;
-                    if !(c == 0xffi32) {
-                        break;
-                    }
-                }
-                if c == 0i32 {
-                    c = 0xffi32
-                } else {
-                    (*cinfo).unread_marker = c;
-                    /* See if we need to insert some fake zero bits. */
-                    current_block_30 = 7022714159392939963;
-                    break;
-                }
-            }
-            get_buffer = get_buffer << 8i32 | c as c_ulong;
-            bits_left += 8i32
-        }
-    } else {
-        /* end while */
-        current_block_30 = 7022714159392939963;
-    }
-    match current_block_30 {
-        7022714159392939963 => {
-            if nbits > bits_left {
-                if 0 == (*(*cinfo).entropy).insufficient_data {
-                    (*(*cinfo).err).msg_code = JWRN_HIT_MARKER as c_int;
-                    (*(*cinfo).err)
-                        .emit_message
-                        .expect("non-null function pointer")(
-                        cinfo as j_common_ptr, -1i32
-                    );
-                    (*(*cinfo).entropy).insufficient_data = TRUE
-                }
-                get_buffer <<= MIN_GET_BITS - bits_left;
-                bits_left = MIN_GET_BITS
-            }
-        }
-        _ => {}
-    }
-    (*state).next_input_byte = next_input_byte;
-    (*state).bytes_in_buffer = bytes_in_buffer;
-    (*state).get_buffer = get_buffer;
-    (*state).bits_left = bits_left;
-    return TRUE;
-}
-/*
- * Code for extracting next Huffman-coded symbol from input bit stream.
- * Again, this is time-critical and we make the main paths be macros.
- *
- * We use a lookahead table to process codes of up to HUFF_LOOKAHEAD bits
- * without looping.  Usually, more than 95% of the Huffman codes will be 8
- * or fewer bits long.  The few overlength codes are handled with a loop,
- * which need not be inline code.
- *
- * Notes about the HUFF_DECODE macro:
- * 1. Near the end of the data segment, we may fail to get enough bits
- *    for a lookahead.  In that case, we do it the hard way.
- * 2. If the lookahead table contains no entry, the next code must be
- *    more than HUFF_LOOKAHEAD bits long.
- * 3. jpeg_huff_decode returns -1 if forced to suspend.
- */
-/* Pre-execute the common case of nb <= HUFF_LOOKAHEAD */
-/* Equivalent of jpeg_huff_decode() */
-/* Don't use GET_BITS() here because we don't want to modify bits_left */
-/* Out-of-line case for Huffman code fetching */
-/* Macro version of the above, which performs much better but does not
-handle markers.  We have to hand off any blocks with markers to the
-slower routines. */
-/* Pre-execute most common case */
-/* Pre-execute case of FF/00, which represents an FF data byte */
-/* Oops, it's actually a marker indicating end of compressed data. */
-/* Back out pre-execution and fill the buffer with zero bits */
-/* Pre-fetch 48 bytes, because the holding register is 64-bit */
-/*
- * Out-of-line code for Huffman code decoding.
- * See jdhuff.h for info about usage.
- */
-#[no_mangle]
-pub unsafe extern "C" fn jpeg_huff_decode(
-    mut state: *mut bitread_working_state,
-    mut get_buffer: bit_buf_type,
-    mut bits_left: c_int,
-    mut htbl: *mut d_derived_tbl,
-    mut min_bits: c_int,
-) -> c_int {
-    let mut l: c_int = min_bits;
-    let mut code: JLONG = 0;
-    if bits_left < l {
-        if 0 == jpeg_fill_bit_buffer(state, get_buffer, bits_left, l) {
-            return -1i32;
-        }
-        get_buffer = (*state).get_buffer;
-        bits_left = (*state).bits_left
-    }
-    bits_left -= l;
-    code = ((get_buffer >> bits_left) as c_int & (1i32 << l) - 1i32) as JLONG;
-    while code > (*htbl).maxcode[l as usize] {
-        code <<= 1i32;
-        if bits_left < 1i32 {
-            if 0 == jpeg_fill_bit_buffer(state, get_buffer, bits_left, 1i32) {
-                return -1i32;
-            }
-            get_buffer = (*state).get_buffer;
-            bits_left = (*state).bits_left
-        }
-        bits_left -= 1i32;
-        code |= ((get_buffer >> bits_left) as c_int & (1i32 << 1i32) - 1i32) as c_long;
-        l += 1
-    }
-    (*state).get_buffer = get_buffer;
-    (*state).bits_left = bits_left;
-    if l > 16i32 {
-        (*(*(*state).cinfo).err).msg_code = JWRN_HUFF_BAD_CODE as c_int;
-        (*(*(*state).cinfo).err)
-            .emit_message
-            .expect("non-null function pointer")((*state).cinfo as j_common_ptr, -1i32);
-        return 0i32;
-    }
-    return (*(*htbl).pub_0).huffval[(code + (*htbl).valoffset[l as usize]) as c_int as usize]
-        as c_int;
-}
+use libc::c_char;use libc::c_int;use libc::c_uint;use libc::c_ulong;use libc::c_long;pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -665,17 +129,72 @@ pub use crate::jerror::JWRN_JPEG_EOF;
 pub use crate::jerror::JWRN_MUST_RESYNC;
 pub use crate::jerror::JWRN_NOT_SEQUENTIAL;
 pub use crate::jerror::JWRN_TOO_MUCH_DATA;
+pub use crate::jmorecfg_h::boolean;
 pub use crate::jmorecfg_h::FALSE;
+pub use crate::jmorecfg_h::JCOEF;
+pub use crate::jmorecfg_h::JDIMENSION;
+pub use crate::jmorecfg_h::JOCTET;
+pub use crate::jmorecfg_h::JSAMPLE;
 pub use crate::jmorecfg_h::TRUE;
+pub use crate::jmorecfg_h::UINT16;
+pub use crate::jmorecfg_h::UINT8;
+pub use crate::jpegint_h::inverse_DCT_method_ptr;
+pub use crate::jpegint_h::jpeg_c_coef_controller;
+pub use crate::jpegint_h::jpeg_c_main_controller;
+pub use crate::jpegint_h::jpeg_c_prep_controller;
+pub use crate::jpegint_h::jpeg_color_converter;
+pub use crate::jpegint_h::jpeg_color_deconverter;
+pub use crate::jpegint_h::jpeg_color_quantizer;
+pub use crate::jpegint_h::jpeg_comp_master;
+pub use crate::jpegint_h::jpeg_d_coef_controller;
+pub use crate::jpegint_h::jpeg_d_main_controller;
+pub use crate::jpegint_h::jpeg_d_post_controller;
+pub use crate::jpegint_h::jpeg_decomp_master;
+pub use crate::jpegint_h::jpeg_downsampler;
+pub use crate::jpegint_h::jpeg_entropy_decoder;
+pub use crate::jpegint_h::jpeg_entropy_encoder;
+pub use crate::jpegint_h::jpeg_forward_dct;
+pub use crate::jpegint_h::jpeg_input_controller;
+pub use crate::jpegint_h::jpeg_inverse_dct;
+pub use crate::jpegint_h::jpeg_marker_reader;
+pub use crate::jpegint_h::jpeg_marker_writer;
 pub use crate::jpegint_h::jpeg_natural_order;
+pub use crate::jpegint_h::jpeg_upsampler;
 pub use crate::jpegint_h::JBUF_CRANK_DEST;
 pub use crate::jpegint_h::JBUF_PASS_THRU;
 pub use crate::jpegint_h::JBUF_REQUANT;
 pub use crate::jpegint_h::JBUF_SAVE_AND_PASS;
 pub use crate::jpegint_h::JBUF_SAVE_SOURCE;
+pub use crate::jpegint_h::JLONG;
+pub use crate::jpegint_h::J_BUF_MODE;
+pub use crate::jpeglib_h::j_common_ptr;
+pub use crate::jpeglib_h::j_compress_ptr;
+pub use crate::jpeglib_h::j_decompress_ptr;
 pub use crate::jpeglib_h::jpeg_alloc_huff_table;
+pub use crate::jpeglib_h::jpeg_common_struct;
+pub use crate::jpeglib_h::jpeg_component_info;
+pub use crate::jpeglib_h::jpeg_compress_struct;
+pub use crate::jpeglib_h::jpeg_decompress_struct;
+pub use crate::jpeglib_h::jpeg_destination_mgr;
+pub use crate::jpeglib_h::jpeg_error_mgr;
+pub use crate::jpeglib_h::jpeg_marker_parser_method;
+pub use crate::jpeglib_h::jpeg_marker_struct;
+pub use crate::jpeglib_h::jpeg_memory_mgr;
+pub use crate::jpeglib_h::jpeg_progress_mgr;
+pub use crate::jpeglib_h::jpeg_saved_marker_ptr;
+pub use crate::jpeglib_h::jpeg_scan_info;
+pub use crate::jpeglib_h::jpeg_source_mgr;
+pub use crate::jpeglib_h::jvirt_barray_control;
+pub use crate::jpeglib_h::jvirt_barray_ptr;
+pub use crate::jpeglib_h::jvirt_sarray_control;
+pub use crate::jpeglib_h::jvirt_sarray_ptr;
+pub use crate::jpeglib_h::C2RustUnnamed_2;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::DCTSIZE2;
+pub use crate::jpeglib_h::JBLOCK;
+pub use crate::jpeglib_h::JBLOCKARRAY;
+pub use crate::jpeglib_h::JBLOCKROW;
+pub use crate::jpeglib_h::JCOEFPTR;
 pub use crate::jpeglib_h::JCS_CMYK;
 pub use crate::jpeglib_h::JCS_EXT_ABGR;
 pub use crate::jpeglib_h::JCS_EXT_ARGB;
@@ -698,13 +217,151 @@ pub use crate::jpeglib_h::JDCT_ISLOW;
 pub use crate::jpeglib_h::JDITHER_FS;
 pub use crate::jpeglib_h::JDITHER_NONE;
 pub use crate::jpeglib_h::JDITHER_ORDERED;
+pub use crate::jpeglib_h::JHUFF_TBL;
 pub use crate::jpeglib_h::JPOOL_IMAGE;
+pub use crate::jpeglib_h::JQUANT_TBL;
+pub use crate::jpeglib_h::JSAMPARRAY;
+pub use crate::jpeglib_h::JSAMPIMAGE;
+pub use crate::jpeglib_h::JSAMPROW;
+pub use crate::jpeglib_h::J_COLOR_SPACE;
+pub use crate::jpeglib_h::J_DCT_METHOD;
+pub use crate::jpeglib_h::J_DITHER_MODE;
 pub use crate::jpeglib_h::NUM_HUFF_TBLS;
 pub use crate::jstdhuff_c::add_huff_table;
 pub use crate::jstdhuff_c::std_huff_tables;
+pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 use crate::stdlib::memcpy;
 use crate::stdlib::memset;
+use libc;
+// =============== BEGIN jdhuff_h ================
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct d_derived_tbl {
+    pub maxcode: [JLONG; 18],
+    pub valoffset: [JLONG; 18],
+    pub pub_0: *mut JHUFF_TBL,
+    pub lookup: [c_int; 256],
+}
+/* If long is > 32 bits on your machine, and shifting/masking longs is
+ * reasonably fast, making bit_buf_type be long and setting BIT_BUF_SIZE
+ * appropriately should be a win.  Unfortunately we can't define the size
+ * with something like  #define BIT_BUF_SIZE (sizeof(bit_buf_type)*8)
+ * because not all machines measure sizeof in 8-bit bytes.
+ */
+
+/* Bitreading state saved across MCUs */
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct bitread_perm_state {
+    pub get_buffer: bit_buf_type,
+    pub bits_left: c_int,
+}
+/*
+ * Fetching the next N bits from the input stream is a time-critical operation
+ * for the Huffman decoders.  We implement it with a combination of inline
+ * macros and out-of-line subroutines.  Note that N (the number of bits
+ * demanded at one time) never exceeds 15 for JPEG use.
+ *
+ * We read source bytes into get_buffer and dole out bits as needed.
+ * If get_buffer already contains enough bits, they are fetched in-line
+ * by the macros CHECK_BIT_BUFFER and GET_BITS.  When there aren't enough
+ * bits, jpeg_fill_bit_buffer is called; it will attempt to fill get_buffer
+ * as full as possible (not just to the number of bits needed; this
+ * prefetching reduces the overhead cost of calling jpeg_fill_bit_buffer).
+ * Note that jpeg_fill_bit_buffer may return FALSE to indicate suspension.
+ * On TRUE return, jpeg_fill_bit_buffer guarantees that get_buffer contains
+ * at least the requested number of bits --- dummy zeroes are inserted if
+ * necessary.
+ */
+
+/* type of bit-extraction buffer */
+pub type bit_buf_type = size_t;
+/* Bitreading working state within an MCU */
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct bitread_working_state {
+    pub next_input_byte: *const JOCTET,
+    pub bytes_in_buffer: size_t,
+    pub get_buffer: bit_buf_type,
+    pub bits_left: c_int,
+    pub cinfo: j_decompress_ptr,
+}
+/*
+ * jdhuff.h
+ *
+ * This file was part of the Independent JPEG Group's software:
+ * Copyright (C) 1991-1997, Thomas G. Lane.
+ * libjpeg-turbo Modifications:
+ * Copyright (C) 2010-2011, 2015-2016, D. R. Commander.
+ * For conditions of distribution and use, see the accompanying README.ijg
+ * file.
+ *
+ * This file contains declarations for Huffman entropy decoding routines
+ * that are shared between the sequential decoder (jdhuff.c) and the
+ * progressive decoder (jdphuff.c).  No other modules need to see these.
+ */
+
+/* Derived data constructed for each Huffman table */
+
+/* # of bits of lookahead */
+pub const HUFF_LOOKAHEAD: c_int = 8i32;
+/* size of buffer in bits */
+pub const BIT_BUF_SIZE: c_int = 64i32;
+// ================ END jdhuff_h ================
+
+/*
+ * jdhuff.c
+ *
+ * This file was part of the Independent JPEG Group's software:
+ * Copyright (C) 1991-1997, Thomas G. Lane.
+ * libjpeg-turbo Modifications:
+ * Copyright (C) 2009-2011, 2016, 2018, D. R. Commander.
+ * For conditions of distribution and use, see the accompanying README.ijg
+ * file.
+ *
+ * This file contains Huffman entropy decoding routines.
+ *
+ * Much of the complexity here has to do with supporting input suspension.
+ * If the data source module demands suspension, we want to be able to back
+ * up to the start of the current MCU.  To do this, we copy state variables
+ * into local working storage, and update them back to the permanent
+ * storage only upon successful completion of an MCU.
+ *
+ * NOTE: All referenced figures are from
+ * Recommendation ITU-T T.81 (1992) | ISO/IEC 10918-1:1994.
+ */
+
+/*
+ * Expanded entropy decoder object for Huffman decoding.
+ *
+ * The savable_state subrecord contains fields that change within an MCU,
+ * but must not be updated permanently until we complete the MCU.
+ */
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct savable_state {
+    pub last_dc_val: [c_int; 4],
+}
+/* This macro is to work around compilers with missing or broken
+ * structure assignment.  You'll need to fix this code if you have
+ * such a compiler and you change MAX_COMPS_IN_SCAN.
+ */
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct huff_entropy_decoder {
+    pub pub_0: jpeg_entropy_decoder,
+    pub bitstate: bitread_perm_state,
+    pub saved: savable_state,
+    pub restarts_to_go: c_uint,
+    pub dc_derived_tbls: [*mut d_derived_tbl; 4],
+    pub ac_derived_tbls: [*mut d_derived_tbl; 4],
+    pub dc_cur_tbls: [*mut d_derived_tbl; 10],
+    pub ac_cur_tbls: [*mut d_derived_tbl; 10],
+    pub dc_needed: [boolean; 10],
+    pub ac_needed: [boolean; 10],
+}
+pub type huff_entropy_ptr = *mut huff_entropy_decoder;
 /*
  * Initialize for a Huffman-compressed scan.
  */
@@ -714,8 +371,10 @@ unsafe extern "C" fn start_pass_huff_decoder(mut cinfo: j_decompress_ptr) {
     let mut blkn: c_int = 0;
     let mut dctbl: c_int = 0;
     let mut actbl: c_int = 0;
-    let mut pdtbl: *mut *mut d_derived_tbl = 0 as *mut *mut d_derived_tbl;
-    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
+    let mut pdtbl: *mut *mut d_derived_tbl =
+        0 as *mut *mut d_derived_tbl;
+    let mut compptr: *mut jpeg_component_info =
+        0 as *mut jpeg_component_info;
     if (*cinfo).Ss != 0i32
         || (*cinfo).Se != DCTSIZE2 - 1i32
         || (*cinfo).Ah != 0i32
@@ -724,7 +383,9 @@ unsafe extern "C" fn start_pass_huff_decoder(mut cinfo: j_decompress_ptr) {
         (*(*cinfo).err).msg_code = JWRN_NOT_SEQUENTIAL as c_int;
         (*(*cinfo).err)
             .emit_message
-            .expect("non-null function pointer")(cinfo as j_common_ptr, -1i32);
+            .expect("non-null function pointer")(
+            cinfo as j_common_ptr, -1i32
+        );
     }
     ci = 0i32;
     while ci < (*cinfo).comps_in_scan {
@@ -766,6 +427,165 @@ unsafe extern "C" fn start_pass_huff_decoder(mut cinfo: j_decompress_ptr) {
     (*entropy).pub_0.insufficient_data = FALSE;
     (*entropy).restarts_to_go = (*cinfo).restart_interval;
 }
+/* Expand a Huffman table definition into the derived format */
+
+/*
+ * Compute the derived values for a Huffman table.
+ * This routine also performs some validation checks on the table.
+ *
+ * Note this is also used by jdphuff.c.
+ */
+#[no_mangle]
+pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
+    mut cinfo: j_decompress_ptr,
+    mut isDC: boolean,
+    mut tblno: c_int,
+    mut pdtbl: *mut *mut d_derived_tbl,
+) {
+    let mut htbl: *mut JHUFF_TBL = 0 as *mut JHUFF_TBL;
+    let mut dtbl: *mut d_derived_tbl = 0 as *mut d_derived_tbl;
+    let mut p: c_int = 0;
+    let mut i: c_int = 0;
+    let mut l: c_int = 0;
+    let mut si: c_int = 0;
+    let mut numsymbols: c_int = 0;
+    let mut lookbits: c_int = 0;
+    let mut ctr: c_int = 0;
+    let mut huffsize: [c_char; 257] = [0; 257];
+    let mut huffcode: [c_uint; 257] = [0; 257];
+    let mut code: c_uint = 0;
+    if tblno < 0i32 || tblno >= NUM_HUFF_TBLS {
+        (*(*cinfo).err).msg_code = JERR_NO_HUFF_TABLE as c_int;
+        (*(*cinfo).err).msg_parm.i[0usize] = tblno;
+        (*(*cinfo).err)
+            .error_exit
+            .expect("non-null function pointer")(cinfo as j_common_ptr);
+    }
+    htbl = if 0 != isDC {
+        (*cinfo).dc_huff_tbl_ptrs[tblno as usize]
+    } else {
+        (*cinfo).ac_huff_tbl_ptrs[tblno as usize]
+    };
+    if htbl.is_null() {
+        (*(*cinfo).err).msg_code = JERR_NO_HUFF_TABLE as c_int;
+        (*(*cinfo).err).msg_parm.i[0usize] = tblno;
+        (*(*cinfo).err)
+            .error_exit
+            .expect("non-null function pointer")(cinfo as j_common_ptr);
+    }
+    if (*pdtbl).is_null() {
+        *pdtbl = (*(*cinfo).mem)
+            .alloc_small
+            .expect("non-null function pointer")(
+            cinfo as j_common_ptr,
+            JPOOL_IMAGE,
+            ::std::mem::size_of::<d_derived_tbl>() as c_ulong,
+        ) as *mut d_derived_tbl
+    }
+    dtbl = *pdtbl;
+    (*dtbl).pub_0 = htbl;
+    p = 0i32;
+    l = 1i32;
+    while l <= 16i32 {
+        i = (*htbl).bits[l as usize] as c_int;
+        if i < 0i32 || p + i > 256i32 {
+            (*(*cinfo).err).msg_code = JERR_BAD_HUFF_TABLE as c_int;
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer")(
+                cinfo as j_common_ptr
+            );
+        }
+        loop {
+            let fresh0 = i;
+            i = i - 1;
+            if !(0 != fresh0) {
+                break;
+            }
+            let fresh1 = p;
+            p = p + 1;
+            huffsize[fresh1 as usize] = l as c_char
+        }
+        l += 1
+    }
+    huffsize[p as usize] = 0i32 as c_char;
+    numsymbols = p;
+    code = 0i32 as c_uint;
+    si = huffsize[0usize] as c_int;
+    p = 0i32;
+    while 0 != huffsize[p as usize] {
+        while huffsize[p as usize] as c_int == si {
+            let fresh2 = p;
+            p = p + 1;
+            huffcode[fresh2 as usize] = code;
+            code = code.wrapping_add(1)
+        }
+        if code as JLONG >= (1i32 as JLONG) << si {
+            (*(*cinfo).err).msg_code = JERR_BAD_HUFF_TABLE as c_int;
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer")(
+                cinfo as j_common_ptr
+            );
+        }
+        code <<= 1i32;
+        si += 1
+    }
+    p = 0i32;
+    l = 1i32;
+    while l <= 16i32 {
+        if 0 != (*htbl).bits[l as usize] {
+            (*dtbl).valoffset[l as usize] =
+                p as JLONG - huffcode[p as usize] as JLONG;
+            p += (*htbl).bits[l as usize] as c_int;
+            (*dtbl).maxcode[l as usize] = huffcode[(p - 1i32) as usize] as JLONG
+        } else {
+            (*dtbl).maxcode[l as usize] = -1i32 as JLONG
+        }
+        l += 1
+    }
+    (*dtbl).valoffset[17usize] = 0i32 as JLONG;
+    (*dtbl).maxcode[17usize] = 0xfffffi64;
+    i = 0i32;
+    while i < 1i32 << HUFF_LOOKAHEAD {
+        (*dtbl).lookup[i as usize] =
+            HUFF_LOOKAHEAD + 1i32 << HUFF_LOOKAHEAD;
+        i += 1
+    }
+    p = 0i32;
+    l = 1i32;
+    while l <= HUFF_LOOKAHEAD {
+        i = 1i32;
+        while i <= (*htbl).bits[l as usize] as c_int {
+            lookbits = (huffcode[p as usize] << HUFF_LOOKAHEAD - l) as c_int;
+            ctr = 1i32 << HUFF_LOOKAHEAD - l;
+            while ctr > 0i32 {
+                (*dtbl).lookup[lookbits as usize] =
+                    l << HUFF_LOOKAHEAD | (*htbl).huffval[p as usize] as c_int;
+                lookbits += 1;
+                ctr -= 1
+            }
+            i += 1;
+            p += 1
+        }
+        l += 1
+    }
+    if 0 != isDC {
+        i = 0i32;
+        while i < numsymbols {
+            let mut sym: c_int = (*htbl).huffval[i as usize] as c_int;
+            if sym < 0i32 || sym > 15i32 {
+                (*(*cinfo).err).msg_code = JERR_BAD_HUFF_TABLE as c_int;
+                (*(*cinfo).err)
+                    .error_exit
+                    .expect("non-null function pointer")(
+                    cinfo as j_common_ptr
+                );
+            }
+            i += 1
+        }
+    };
+}
 /*
  * Out-of-line code for bit fetching (shared with jdphuff.c).
  * See jdhuff.h for info about usage.
@@ -781,12 +601,224 @@ unsafe extern "C" fn start_pass_huff_decoder(mut cinfo: j_decompress_ptr) {
  * average shift distance at the cost of more calls to jpeg_fill_bit_buffer.
  */
 pub const MIN_GET_BITS: c_int = BIT_BUF_SIZE - 7i32;
+/* Macros to declare and load/save bitread local variables. */
+
+/*
+ * These macros provide the in-line portion of bit fetching.
+ * Use CHECK_BIT_BUFFER to ensure there are N bits in get_buffer
+ * before using GET_BITS, PEEK_BITS, or DROP_BITS.
+ * The variables get_buffer and bits_left are assumed to be locals,
+ * but the state struct might not be (jpeg_huff_decode needs this).
+ *      CHECK_BIT_BUFFER(state, n, action);
+ *              Ensure there are N bits in get_buffer; if suspend, take action.
+ *      val = GET_BITS(n);
+ *              Fetch next N bits.
+ *      val = PEEK_BITS(n);
+ *              Fetch next N bits without removing them from the buffer.
+ *      DROP_BITS(n);
+ *              Discard next N bits.
+ * The value N should be a simple variable, not an expression, because it
+ * is evaluated multiple times.
+ */
+
+/* Load up the bit buffer to a depth of at least nbits */
+#[no_mangle]
+pub unsafe extern "C" fn jpeg_fill_bit_buffer(
+    mut state: *mut bitread_working_state,
+    mut get_buffer: bit_buf_type,
+    mut bits_left: c_int,
+    mut nbits: c_int,
+) -> boolean {
+    /* Copy heavily used state fields into locals (hopefully registers) */
+    let mut next_input_byte: *const JOCTET = (*state).next_input_byte;
+    let mut bytes_in_buffer: size_t = (*state).bytes_in_buffer;
+    let mut cinfo: j_decompress_ptr = (*state).cinfo;
+    let mut current_block_30: u64;
+    if (*cinfo).unread_marker == 0i32 {
+        /* cannot advance past a marker */
+        loop {
+            if !(bits_left < MIN_GET_BITS) {
+                current_block_30 = 6417057564578538666;
+                break;
+            }
+            let mut c: c_int = 0;
+            if bytes_in_buffer == 0i32 as c_ulong {
+                if 0 == (*(*cinfo).src)
+                    .fill_input_buffer
+                    .expect("non-null function pointer")(cinfo)
+                {
+                    return FALSE;
+                }
+                next_input_byte = (*(*cinfo).src).next_input_byte;
+                bytes_in_buffer = (*(*cinfo).src).bytes_in_buffer
+            }
+            bytes_in_buffer = bytes_in_buffer.wrapping_sub(1);
+            let fresh3 = next_input_byte;
+            next_input_byte = next_input_byte.offset(1);
+            c = *fresh3 as c_int;
+            /* If it's 0xFF, check and discard stuffed zero byte */
+            if c == 0xffi32 {
+                loop {
+                    if bytes_in_buffer == 0i32 as c_ulong {
+                        if 0 == (*(*cinfo).src)
+                            .fill_input_buffer
+                            .expect("non-null function pointer")(
+                            cinfo
+                        ) {
+                            return FALSE;
+                        }
+                        next_input_byte = (*(*cinfo).src).next_input_byte;
+                        bytes_in_buffer = (*(*cinfo).src).bytes_in_buffer
+                    }
+                    bytes_in_buffer = bytes_in_buffer.wrapping_sub(1);
+                    let fresh4 = next_input_byte;
+                    next_input_byte = next_input_byte.offset(1);
+                    c = *fresh4 as c_int;
+                    if !(c == 0xffi32) {
+                        break;
+                    }
+                }
+                if c == 0i32 {
+                    c = 0xffi32
+                } else {
+                    (*cinfo).unread_marker = c;
+                    /* See if we need to insert some fake zero bits. */
+                    current_block_30 = 7022714159392939963;
+                    break;
+                }
+            }
+            get_buffer = get_buffer << 8i32 | c as c_ulong;
+            bits_left += 8i32
+        }
+    } else {
+        /* end while */
+        current_block_30 = 7022714159392939963;
+    }
+    match current_block_30 {
+        7022714159392939963 => {
+            if nbits > bits_left {
+                if 0 == (*(*cinfo).entropy).insufficient_data {
+                    (*(*cinfo).err).msg_code = JWRN_HIT_MARKER as c_int;
+                    (*(*cinfo).err)
+                        .emit_message
+                        .expect("non-null function pointer")(
+                        cinfo as j_common_ptr,
+                        -1i32,
+                    );
+                    (*(*cinfo).entropy).insufficient_data = TRUE
+                }
+                get_buffer <<= MIN_GET_BITS - bits_left;
+                bits_left = MIN_GET_BITS
+            }
+        }
+        _ => {}
+    }
+    (*state).next_input_byte = next_input_byte;
+    (*state).bytes_in_buffer = bytes_in_buffer;
+    (*state).get_buffer = get_buffer;
+    (*state).bits_left = bits_left;
+    return TRUE;
+}
+/*
+ * Code for extracting next Huffman-coded symbol from input bit stream.
+ * Again, this is time-critical and we make the main paths be macros.
+ *
+ * We use a lookahead table to process codes of up to HUFF_LOOKAHEAD bits
+ * without looping.  Usually, more than 95% of the Huffman codes will be 8
+ * or fewer bits long.  The few overlength codes are handled with a loop,
+ * which need not be inline code.
+ *
+ * Notes about the HUFF_DECODE macro:
+ * 1. Near the end of the data segment, we may fail to get enough bits
+ *    for a lookahead.  In that case, we do it the hard way.
+ * 2. If the lookahead table contains no entry, the next code must be
+ *    more than HUFF_LOOKAHEAD bits long.
+ * 3. jpeg_huff_decode returns -1 if forced to suspend.
+ */
+
+/* Pre-execute the common case of nb <= HUFF_LOOKAHEAD */
+
+/* Equivalent of jpeg_huff_decode() */
+
+/* Don't use GET_BITS() here because we don't want to modify bits_left */
+
+/* Out-of-line case for Huffman code fetching */
+
+/* Macro version of the above, which performs much better but does not
+handle markers.  We have to hand off any blocks with markers to the
+slower routines. */
+
+/* Pre-execute most common case */
+
+/* Pre-execute case of FF/00, which represents an FF data byte */
+
+/* Oops, it's actually a marker indicating end of compressed data. */
+
+/* Back out pre-execution and fill the buffer with zero bits */
+
+/* Pre-fetch 48 bytes, because the holding register is 64-bit */
+
+/*
+ * Out-of-line code for Huffman code decoding.
+ * See jdhuff.h for info about usage.
+ */
+#[no_mangle]
+pub unsafe extern "C" fn jpeg_huff_decode(
+    mut state: *mut bitread_working_state,
+    mut get_buffer: bit_buf_type,
+    mut bits_left: c_int,
+    mut htbl: *mut d_derived_tbl,
+    mut min_bits: c_int,
+) -> c_int {
+    let mut l: c_int = min_bits;
+    let mut code: JLONG = 0;
+    if bits_left < l {
+        if 0 == jpeg_fill_bit_buffer(state, get_buffer, bits_left, l) {
+            return -1i32;
+        }
+        get_buffer = (*state).get_buffer;
+        bits_left = (*state).bits_left
+    }
+    bits_left -= l;
+    code =
+        ((get_buffer >> bits_left) as c_int & (1i32 << l) - 1i32) as JLONG;
+    while code > (*htbl).maxcode[l as usize] {
+        code <<= 1i32;
+        if bits_left < 1i32 {
+            if 0 == jpeg_fill_bit_buffer(state, get_buffer, bits_left, 1i32) {
+                return -1i32;
+            }
+            get_buffer = (*state).get_buffer;
+            bits_left = (*state).bits_left
+        }
+        bits_left -= 1i32;
+        code |= ((get_buffer >> bits_left) as c_int & (1i32 << 1i32) - 1i32) as c_long;
+        l += 1
+    }
+    (*state).get_buffer = get_buffer;
+    (*state).bits_left = bits_left;
+    if l > 16i32 {
+        (*(*(*state).cinfo).err).msg_code = JWRN_HUFF_BAD_CODE as c_int;
+        (*(*(*state).cinfo).err)
+            .emit_message
+            .expect("non-null function pointer")(
+            (*state).cinfo as j_common_ptr,
+            -1i32,
+        );
+        return 0i32;
+    }
+    return (*(*htbl).pub_0).huffval[(code + (*htbl).valoffset[l as usize]) as c_int as usize]
+        as c_int;
+}
 /* AVOID_TABLES */
+
 /*
  * Check for a restart marker & resynchronize decoder.
  * Returns FALSE if must suspend.
  */
-unsafe extern "C" fn process_restart(mut cinfo: j_decompress_ptr) -> boolean {
+unsafe extern "C" fn process_restart(
+    mut cinfo: j_decompress_ptr,
+) -> boolean {
     let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
     let mut ci: c_int = 0;
     (*(*cinfo).marker).discarded_bytes = (*(*cinfo).marker)
@@ -817,13 +849,11 @@ unsafe extern "C" fn decode_mcu_slow(
     let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
     let mut get_buffer: bit_buf_type = 0;
     let mut bits_left: c_int = 0;
-    let mut br_state: bitread_working_state = bitread_working_state {
-        next_input_byte: 0 as *const JOCTET,
-        bytes_in_buffer: 0,
-        get_buffer: 0,
-        bits_left: 0,
-        cinfo: 0 as *mut jpeg_decompress_struct,
-    };
+    let mut br_state: bitread_working_state = bitread_working_state{next_input_byte:  0 as *const JOCTET,
+                      bytes_in_buffer:  0,
+                      get_buffer:  0,
+                      bits_left:  0,
+                      cinfo:  0 as *mut jpeg_decompress_struct,};
     let mut blkn: c_int = 0;
     let mut state: savable_state = savable_state {
         last_dc_val: [0; 4],
@@ -870,7 +900,8 @@ unsafe extern "C" fn decode_mcu_slow(
                 nb = (*dctbl).lookup[look as usize] >> HUFF_LOOKAHEAD;
                 if nb <= HUFF_LOOKAHEAD {
                     bits_left -= nb;
-                    s = (*dctbl).lookup[look as usize] & (1i32 << HUFF_LOOKAHEAD) - 1i32;
+                    s = (*dctbl).lookup[look as usize]
+                        & (1i32 << HUFF_LOOKAHEAD) - 1i32;
                     current_block_22 = 652864300344834934;
                 } else {
                     current_block_22 = 6603671518751921130;
@@ -935,11 +966,13 @@ unsafe extern "C" fn decode_mcu_slow(
                 }
                 match current_block_60 {
                     3580086814630675314 => {
-                        look_0 = (get_buffer >> bits_left - 8i32) as c_int & (1i32 << 8i32) - 1i32;
+                        look_0 =
+                            (get_buffer >> bits_left - 8i32) as c_int & (1i32 << 8i32) - 1i32;
                         nb_0 = (*actbl).lookup[look_0 as usize] >> HUFF_LOOKAHEAD;
                         if nb_0 <= HUFF_LOOKAHEAD {
                             bits_left -= nb_0;
-                            s = (*actbl).lookup[look_0 as usize] & (1i32 << HUFF_LOOKAHEAD) - 1i32;
+                            s = (*actbl).lookup[look_0 as usize]
+                                & (1i32 << HUFF_LOOKAHEAD) - 1i32;
                             current_block_60 = 7385833325316299293;
                         } else {
                             current_block_60 = 276222993270550982;
@@ -975,7 +1008,9 @@ unsafe extern "C" fn decode_mcu_slow(
                         (r - (1i32 << s - 1i32) >> 31i32) as c_uint
                             & ((-1i32 as c_uint) << s).wrapping_add(1i32 as c_uint),
                     ) as c_int;
-                    (*block)[*jpeg_natural_order.as_ptr().offset(k as isize) as usize] = s as JCOEF
+                    (*block)[*jpeg_natural_order
+                        .as_ptr()
+                        .offset(k as isize) as usize] = s as JCOEF
                 } else {
                     if r != 15i32 {
                         break;
@@ -1007,11 +1042,13 @@ unsafe extern "C" fn decode_mcu_slow(
                 }
                 match current_block_97 {
                     9521147444787763968 => {
-                        look_1 = (get_buffer >> bits_left - 8i32) as c_int & (1i32 << 8i32) - 1i32;
+                        look_1 =
+                            (get_buffer >> bits_left - 8i32) as c_int & (1i32 << 8i32) - 1i32;
                         nb_1 = (*actbl).lookup[look_1 as usize] >> HUFF_LOOKAHEAD;
                         if nb_1 <= HUFF_LOOKAHEAD {
                             bits_left -= nb_1;
-                            s = (*actbl).lookup[look_1 as usize] & (1i32 << HUFF_LOOKAHEAD) - 1i32;
+                            s = (*actbl).lookup[look_1 as usize]
+                                & (1i32 << HUFF_LOOKAHEAD) - 1i32;
                             current_block_97 = 16375338222180917333;
                         } else {
                             current_block_97 = 6072411194766323756;
@@ -1067,13 +1104,11 @@ unsafe extern "C" fn decode_mcu_fast(
     let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
     let mut get_buffer: bit_buf_type = 0;
     let mut bits_left: c_int = 0;
-    let mut br_state: bitread_working_state = bitread_working_state {
-        next_input_byte: 0 as *const JOCTET,
-        bytes_in_buffer: 0,
-        get_buffer: 0,
-        bits_left: 0,
-        cinfo: 0 as *mut jpeg_decompress_struct,
-    };
+    let mut br_state: bitread_working_state = bitread_working_state{next_input_byte:  0 as *const JOCTET,
+                      bytes_in_buffer:  0,
+                      get_buffer:  0,
+                      bits_left:  0,
+                      cinfo:  0 as *mut jpeg_decompress_struct,};
     let mut buffer: *mut JOCTET = 0 as *mut JOCTET;
     let mut blkn: c_int = 0;
     let mut state: savable_state = savable_state {
@@ -1210,9 +1245,9 @@ unsafe extern "C" fn decode_mcu_fast(
                 s |= (get_buffer >> bits_left) as c_int & (1i32 << 1i32) - 1i32;
                 l += 1
             }
-            s = (*(*dctbl).pub_0).huffval
-                [((s as c_long + (*dctbl).valoffset[l as usize]) as c_int & 0xffi32) as usize]
+            s = (*(*dctbl).pub_0).huffval[((s as c_long + (*dctbl).valoffset[l as usize])
                 as c_int
+                & 0xffi32) as usize] as c_int
         }
         if 0 != s {
             if bits_left <= 16i32 {
@@ -1435,14 +1470,16 @@ unsafe extern "C" fn decode_mcu_fast(
                 bits_left -= l;
                 s = s & (1i32 << HUFF_LOOKAHEAD) - 1i32;
                 if l > HUFF_LOOKAHEAD {
-                    s = (get_buffer >> bits_left & ((1i32 << l) - 1i32) as c_ulong) as c_int;
+                    s = (get_buffer >> bits_left & ((1i32 << l) - 1i32) as c_ulong)
+                        as c_int;
                     while s as c_long > (*actbl).maxcode[l as usize] {
                         s <<= 1i32;
                         bits_left -= 1i32;
                         s |= (get_buffer >> bits_left) as c_int & (1i32 << 1i32) - 1i32;
                         l += 1
                     }
-                    s = (*(*actbl).pub_0).huffval[((s as c_long + (*actbl).valoffset[l as usize])
+                    s = (*(*actbl).pub_0).huffval[((s as c_long
+                        + (*actbl).valoffset[l as usize])
                         as c_int
                         & 0xffi32) as usize] as c_int
                 }
@@ -1554,7 +1591,9 @@ unsafe extern "C" fn decode_mcu_fast(
                         (r - (1i32 << s - 1i32) >> 31i32) as c_uint
                             & ((-1i32 as c_uint) << s).wrapping_add(1i32 as c_uint),
                     ) as c_int;
-                    (*block)[*jpeg_natural_order.as_ptr().offset(k as isize) as usize] = s as JCOEF
+                    (*block)[*jpeg_natural_order
+                        .as_ptr()
+                        .offset(k as isize) as usize] = s as JCOEF
                 } else {
                     if r != 15i32 {
                         break;
@@ -1670,14 +1709,16 @@ unsafe extern "C" fn decode_mcu_fast(
                 bits_left -= l;
                 s = s & (1i32 << HUFF_LOOKAHEAD) - 1i32;
                 if l > HUFF_LOOKAHEAD {
-                    s = (get_buffer >> bits_left & ((1i32 << l) - 1i32) as c_ulong) as c_int;
+                    s = (get_buffer >> bits_left & ((1i32 << l) - 1i32) as c_ulong)
+                        as c_int;
                     while s as c_long > (*actbl).maxcode[l as usize] {
                         s <<= 1i32;
                         bits_left -= 1i32;
                         s |= (get_buffer >> bits_left) as c_int & (1i32 << 1i32) - 1i32;
                         l += 1
                     }
-                    s = (*(*actbl).pub_0).huffval[((s as c_long + (*actbl).valoffset[l as usize])
+                    s = (*(*actbl).pub_0).huffval[((s as c_long
+                        + (*actbl).valoffset[l as usize])
                         as c_int
                         & 0xffi32) as usize] as c_int
                 }
@@ -1799,9 +1840,9 @@ unsafe extern "C" fn decode_mcu_fast(
         (*cinfo).unread_marker = 0i32;
         return FALSE;
     }
-    br_state.bytes_in_buffer = (br_state.bytes_in_buffer as c_ulong)
-        .wrapping_sub(buffer.wrapping_offset_from(br_state.next_input_byte) as c_long as c_ulong)
-        as size_t as size_t;
+    br_state.bytes_in_buffer = (br_state.bytes_in_buffer as c_ulong).wrapping_sub(
+        buffer.wrapping_offset_from(br_state.next_input_byte) as c_long as c_ulong,
+    ) as size_t as size_t;
     br_state.next_input_byte = buffer;
     (*(*cinfo).src).next_input_byte = br_state.next_input_byte;
     (*(*cinfo).src).bytes_in_buffer = br_state.bytes_in_buffer;
@@ -1884,13 +1925,21 @@ pub unsafe extern "C" fn jinit_huff_decoder(mut cinfo: j_decompress_ptr) {
         ::std::mem::size_of::<huff_entropy_decoder>() as c_ulong,
     ) as huff_entropy_ptr;
     (*cinfo).entropy = entropy as *mut jpeg_entropy_decoder;
-    (*entropy).pub_0.start_pass =
-        Some(start_pass_huff_decoder as unsafe extern "C" fn(_: j_decompress_ptr) -> ());
-    (*entropy).pub_0.decode_mcu =
-        Some(decode_mcu as unsafe extern "C" fn(_: j_decompress_ptr, _: *mut JBLOCKROW) -> boolean);
+    (*entropy).pub_0.start_pass = Some(
+        start_pass_huff_decoder
+            as unsafe extern "C" fn(_: j_decompress_ptr) -> (),
+    );
+    (*entropy).pub_0.decode_mcu = Some(
+        decode_mcu
+            as unsafe extern "C" fn(
+                _: j_decompress_ptr,
+                _: *mut JBLOCKROW,
+            ) -> boolean,
+    );
     i = 0i32;
     while i < NUM_HUFF_TBLS {
-        (*entropy).ac_derived_tbls[i as usize] = NULL as *mut d_derived_tbl;
+        (*entropy).ac_derived_tbls[i as usize] =
+            NULL as *mut d_derived_tbl;
         (*entropy).dc_derived_tbls[i as usize] = (*entropy).ac_derived_tbls[i as usize];
         i += 1
     }

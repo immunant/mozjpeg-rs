@@ -1,11 +1,4 @@
-use libc;
-use libc::c_int;
-use libc::c_long;
-use libc::c_uint;
-use libc::c_ulong;
-use libc::c_void;
-
-pub use crate::jerror::C2RustUnnamed_4;
+use libc::c_void;use libc::c_int;use libc::c_uint;use libc::c_ulong;use libc::c_long;pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -173,7 +166,7 @@ pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
-pub use crate::jpeglib_h::C2RustUnnamed_3;
+pub use crate::jpeglib_h::C2RustUnnamed_2;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::DCTSIZE;
 pub use crate::jpeglib_h::JBLOCK;
@@ -208,6 +201,7 @@ pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::stddef_h::size_t;
 use crate::stdlib::memcpy;
+use libc;
 pub type my_prep_ptr = *mut my_prep_controller;
 /*
  * jcprepct.c
@@ -250,7 +244,6 @@ pub type my_prep_ptr = *mut my_prep_controller;
  * trouble on the compression side.
  */
 /* Private buffer controller object */
-
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct my_prep_controller {
@@ -264,9 +257,13 @@ pub struct my_prep_controller {
 /*
  * Initialize for a processing pass.
  */
-unsafe extern "C" fn start_pass_prep(mut cinfo: j_compress_ptr, mut pass_mode: J_BUF_MODE) {
+unsafe extern "C" fn start_pass_prep(
+    mut cinfo: j_compress_ptr,
+    mut pass_mode: J_BUF_MODE,
+) {
     let mut prep: my_prep_ptr = (*cinfo).prep as my_prep_ptr;
-    if pass_mode as c_uint != JBUF_PASS_THRU as c_int as c_uint {
+    if pass_mode as c_uint != JBUF_PASS_THRU as c_int as c_uint
+    {
         (*(*cinfo).err).msg_code = JERR_BAD_BUFFER_MODE as c_int;
         (*(*cinfo).err)
             .error_exit
@@ -322,7 +319,8 @@ unsafe extern "C" fn pre_process_data(
     let mut numrows: c_int = 0;
     let mut ci: c_int = 0;
     let mut inrows: JDIMENSION = 0;
-    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info =
+        0 as *mut jpeg_component_info;
     while *in_row_ctr < in_rows_avail && *out_row_group_ctr < out_row_groups_avail {
         inrows = in_rows_avail.wrapping_sub(*in_row_ctr);
         numrows = (*cinfo).max_v_samp_factor - (*prep).next_buf_row;
@@ -340,12 +338,14 @@ unsafe extern "C" fn pre_process_data(
             (*prep).next_buf_row as JDIMENSION,
             numrows,
         );
-        *in_row_ctr =
-            (*in_row_ctr as c_uint).wrapping_add(numrows as c_uint) as JDIMENSION as JDIMENSION;
-        (*prep).next_buf_row += numrows;
-        (*prep).rows_to_go = ((*prep).rows_to_go as c_uint).wrapping_sub(numrows as c_uint)
+        *in_row_ctr = (*in_row_ctr as c_uint).wrapping_add(numrows as c_uint)
             as JDIMENSION as JDIMENSION;
-        if (*prep).rows_to_go == 0i32 as c_uint && (*prep).next_buf_row < (*cinfo).max_v_samp_factor
+        (*prep).next_buf_row += numrows;
+        (*prep).rows_to_go =
+            ((*prep).rows_to_go as c_uint).wrapping_sub(numrows as c_uint)
+                as JDIMENSION as JDIMENSION;
+        if (*prep).rows_to_go == 0i32 as c_uint
+            && (*prep).next_buf_row < (*cinfo).max_v_samp_factor
         {
             ci = 0i32;
             while ci < (*cinfo).num_components {
@@ -375,7 +375,9 @@ unsafe extern "C" fn pre_process_data(
         /* If at bottom of image, pad the output to a full iMCU height.
          * Note we assume the caller is providing a one-iMCU-height output buffer!
          */
-        if !((*prep).rows_to_go == 0i32 as c_uint && *out_row_group_ctr < out_row_groups_avail) {
+        if !((*prep).rows_to_go == 0i32 as c_uint
+            && *out_row_group_ctr < out_row_groups_avail)
+        {
             continue;
         }
         ci = 0i32;
@@ -383,9 +385,13 @@ unsafe extern "C" fn pre_process_data(
         while ci < (*cinfo).num_components {
             expand_bottom_edge(
                 *output_buf.offset(ci as isize),
-                (*compptr).width_in_blocks.wrapping_mul(DCTSIZE as c_uint),
-                (*out_row_group_ctr).wrapping_mul((*compptr).v_samp_factor as c_uint) as c_int,
-                out_row_groups_avail.wrapping_mul((*compptr).v_samp_factor as c_uint) as c_int,
+                (*compptr)
+                    .width_in_blocks
+                    .wrapping_mul(DCTSIZE as c_uint),
+                (*out_row_group_ctr).wrapping_mul((*compptr).v_samp_factor as c_uint)
+                    as c_int,
+                out_row_groups_avail.wrapping_mul((*compptr).v_samp_factor as c_uint)
+                    as c_int,
             );
             ci += 1;
             compptr = compptr.offset(1isize)
@@ -449,11 +455,14 @@ unsafe extern "C" fn pre_process_context(
                     ci += 1
                 }
             }
-            *in_row_ctr =
-                (*in_row_ctr as c_uint).wrapping_add(numrows as c_uint) as JDIMENSION as JDIMENSION;
+            *in_row_ctr = (*in_row_ctr as c_uint).wrapping_add(numrows as c_uint)
+                as JDIMENSION
+                as JDIMENSION;
             (*prep).next_buf_row += numrows;
-            (*prep).rows_to_go = ((*prep).rows_to_go as c_uint).wrapping_sub(numrows as c_uint)
-                as JDIMENSION as JDIMENSION
+            (*prep).rows_to_go = ((*prep).rows_to_go as c_uint)
+                .wrapping_sub(numrows as c_uint)
+                as JDIMENSION
+                as JDIMENSION
         } else {
             /* Return for more data, unless we are at the bottom of the image. */
             if (*prep).rows_to_go != 0i32 as c_uint {
@@ -503,7 +512,8 @@ unsafe extern "C" fn create_context_buffer(mut cinfo: j_compress_ptr) {
     let mut rgroup_height: c_int = (*cinfo).max_v_samp_factor;
     let mut ci: c_int = 0;
     let mut i: c_int = 0;
-    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info =
+        0 as *mut jpeg_component_info;
     let mut true_buffer: JSAMPARRAY = 0 as *mut JSAMPROW;
     let mut fake_buffer: JSAMPARRAY = 0 as *mut JSAMPROW;
     fake_buffer = (*(*cinfo).mem)
@@ -525,7 +535,8 @@ unsafe extern "C" fn create_context_buffer(mut cinfo: j_compress_ptr) {
             ((*compptr).width_in_blocks as c_long
                 * DCTSIZE as c_long
                 * (*cinfo).max_h_samp_factor as c_long
-                / (*compptr).h_samp_factor as c_long) as JDIMENSION,
+                / (*compptr).h_samp_factor as c_long)
+                as JDIMENSION,
             (3i32 * rgroup_height) as JDIMENSION,
         );
         memcpy(
@@ -559,7 +570,8 @@ pub unsafe extern "C" fn jinit_c_prep_controller(
 ) {
     let mut prep: my_prep_ptr = 0 as *mut my_prep_controller;
     let mut ci: c_int = 0;
-    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info =
+        0 as *mut jpeg_component_info;
     if 0 != need_full_buffer {
         (*(*cinfo).err).msg_code = JERR_BAD_BUFFER_MODE as c_int;
         (*(*cinfo).err)
@@ -574,8 +586,13 @@ pub unsafe extern "C" fn jinit_c_prep_controller(
         ::std::mem::size_of::<my_prep_controller>() as c_ulong,
     ) as my_prep_ptr;
     (*cinfo).prep = prep as *mut jpeg_c_prep_controller;
-    (*prep).pub_0.start_pass =
-        Some(start_pass_prep as unsafe extern "C" fn(_: j_compress_ptr, _: J_BUF_MODE) -> ());
+    (*prep).pub_0.start_pass = Some(
+        start_pass_prep
+            as unsafe extern "C" fn(
+                _: j_compress_ptr,
+                _: J_BUF_MODE,
+            ) -> (),
+    );
     if 0 != (*(*cinfo).downsample).need_context_rows {
         (*prep).pub_0.pre_process_data = Some(
             pre_process_context
@@ -614,7 +631,8 @@ pub unsafe extern "C" fn jinit_c_prep_controller(
                 ((*compptr).width_in_blocks as c_long
                     * DCTSIZE as c_long
                     * (*cinfo).max_h_samp_factor as c_long
-                    / (*compptr).h_samp_factor as c_long) as JDIMENSION,
+                    / (*compptr).h_samp_factor as c_long)
+                    as JDIMENSION,
                 (*cinfo).max_v_samp_factor as JDIMENSION,
             );
             ci += 1;

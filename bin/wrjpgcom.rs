@@ -11,8 +11,6 @@
 #![feature(label_break_value)]
 #![feature(ptr_wrapping_offset_from)]
 
-extern crate libc;
-use mozjpeg::*;
 
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
@@ -57,6 +55,9 @@ pub use crate::stdlib::EXIT_FAILURE;
 pub use crate::stdlib::EXIT_SUCCESS;
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::_IO_FILE;
+extern crate libc;
+use mozjpeg::*;
+
 /*
  * wrjpgcom.c
  *

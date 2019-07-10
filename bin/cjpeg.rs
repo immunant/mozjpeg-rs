@@ -11,10 +11,8 @@
 #![feature(label_break_value)]
 #![feature(ptr_wrapping_offset_from)]
 
-extern crate libc;
-use mozjpeg::*;
 
-pub use crate::cderror_h::C2RustUnnamed_92;
+pub use crate::cderror_h::C2RustUnnamed_91;
 pub use crate::cderror_h::JERR_BAD_CMAP_FILE;
 pub use crate::cderror_h::JERR_BMP_BADCMAP;
 pub use crate::cderror_h::JERR_BMP_BADDEPTH;
@@ -84,7 +82,7 @@ pub use crate::jconfig_h::JPEG_LIB_VERSION;
 pub use crate::jconfigint_h::BUILD;
 pub use crate::jconfigint_h::PACKAGE_NAME;
 pub use crate::jconfigint_h::VERSION;
-pub use crate::jerror::C2RustUnnamed_4;
+pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -268,8 +266,8 @@ pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
+pub use crate::jpeglib_h::C2RustUnnamed_1;
 pub use crate::jpeglib_h::C2RustUnnamed_2;
-pub use crate::jpeglib_h::C2RustUnnamed_3;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::JBLOCK;
 pub use crate::jpeglib_h::JBLOCKARRAY;
@@ -359,6 +357,9 @@ pub use crate::stdlib::FILE;
 pub use crate::stdlib::SEEK_END;
 pub use crate::stdlib::SEEK_SET;
 pub use crate::stdlib::_IO_FILE;
+extern crate libc;
+use mozjpeg::*;
+
 /*
  * cjpeg.c
  *
@@ -1638,7 +1639,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         format_message: None,
         reset_error_mgr: None,
         msg_code: 0,
-        msg_parm: crate::jpeglib_h::C2RustUnnamed_3 { i: [0; 8] },
+        msg_parm: crate::jpeglib_h::C2RustUnnamed_2 { i: [0; 8] },
         trace_level: 0,
         num_warnings: 0,
         jpeg_message_table: 0 as *const *const libc::c_char,

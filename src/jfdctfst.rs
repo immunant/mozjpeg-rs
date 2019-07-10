@@ -1,10 +1,7 @@
-use libc;
-use libc::c_int;
-use libc::c_long;
-
-pub use crate::jdct_h::DCTELEM;
+use libc::c_int;use libc::c_long;pub use crate::jdct_h::DCTELEM;
 pub use crate::jpegint_h::JLONG;
 pub use crate::jpeglib_h::DCTSIZE;
+use libc;
 /*
  * jfdctfst.c
  *
@@ -105,38 +102,61 @@ pub unsafe extern "C" fn jpeg_fdct_ifast(mut data: *mut DCTELEM) {
     dataptr = data;
     ctr = DCTSIZE - 1i32;
     while ctr >= 0i32 {
-        tmp0 = (*dataptr.offset(0isize) as c_int + *dataptr.offset(7isize) as c_int) as DCTELEM;
-        tmp7 = (*dataptr.offset(0isize) as c_int - *dataptr.offset(7isize) as c_int) as DCTELEM;
-        tmp1 = (*dataptr.offset(1isize) as c_int + *dataptr.offset(6isize) as c_int) as DCTELEM;
-        tmp6 = (*dataptr.offset(1isize) as c_int - *dataptr.offset(6isize) as c_int) as DCTELEM;
-        tmp2 = (*dataptr.offset(2isize) as c_int + *dataptr.offset(5isize) as c_int) as DCTELEM;
-        tmp5 = (*dataptr.offset(2isize) as c_int - *dataptr.offset(5isize) as c_int) as DCTELEM;
-        tmp3 = (*dataptr.offset(3isize) as c_int + *dataptr.offset(4isize) as c_int) as DCTELEM;
-        tmp4 = (*dataptr.offset(3isize) as c_int - *dataptr.offset(4isize) as c_int) as DCTELEM;
+        tmp0 = (*dataptr.offset(0isize) as c_int + *dataptr.offset(7isize) as c_int)
+            as DCTELEM;
+        tmp7 = (*dataptr.offset(0isize) as c_int - *dataptr.offset(7isize) as c_int)
+            as DCTELEM;
+        tmp1 = (*dataptr.offset(1isize) as c_int + *dataptr.offset(6isize) as c_int)
+            as DCTELEM;
+        tmp6 = (*dataptr.offset(1isize) as c_int - *dataptr.offset(6isize) as c_int)
+            as DCTELEM;
+        tmp2 = (*dataptr.offset(2isize) as c_int + *dataptr.offset(5isize) as c_int)
+            as DCTELEM;
+        tmp5 = (*dataptr.offset(2isize) as c_int - *dataptr.offset(5isize) as c_int)
+            as DCTELEM;
+        tmp3 = (*dataptr.offset(3isize) as c_int + *dataptr.offset(4isize) as c_int)
+            as DCTELEM;
+        tmp4 = (*dataptr.offset(3isize) as c_int - *dataptr.offset(4isize) as c_int)
+            as DCTELEM;
         tmp10 = (tmp0 as c_int + tmp3 as c_int) as DCTELEM;
         tmp13 = (tmp0 as c_int - tmp3 as c_int) as DCTELEM;
         tmp11 = (tmp1 as c_int + tmp2 as c_int) as DCTELEM;
         tmp12 = (tmp1 as c_int - tmp2 as c_int) as DCTELEM;
-        *dataptr.offset(0isize) = (tmp10 as c_int + tmp11 as c_int) as DCTELEM;
-        *dataptr.offset(4isize) = (tmp10 as c_int - tmp11 as c_int) as DCTELEM;
-        z1 = ((tmp12 as c_int + tmp13 as c_int) as c_long * 181i32 as JLONG >> 8i32) as DCTELEM;
-        *dataptr.offset(2isize) = (tmp13 as c_int + z1 as c_int) as DCTELEM;
-        *dataptr.offset(6isize) = (tmp13 as c_int - z1 as c_int) as DCTELEM;
+        *dataptr.offset(0isize) =
+            (tmp10 as c_int + tmp11 as c_int) as DCTELEM;
+        *dataptr.offset(4isize) =
+            (tmp10 as c_int - tmp11 as c_int) as DCTELEM;
+        z1 = ((tmp12 as c_int + tmp13 as c_int) as c_long
+            * 181i32 as JLONG
+            >> 8i32) as DCTELEM;
+        *dataptr.offset(2isize) =
+            (tmp13 as c_int + z1 as c_int) as DCTELEM;
+        *dataptr.offset(6isize) =
+            (tmp13 as c_int - z1 as c_int) as DCTELEM;
         tmp10 = (tmp4 as c_int + tmp5 as c_int) as DCTELEM;
         tmp11 = (tmp5 as c_int + tmp6 as c_int) as DCTELEM;
         tmp12 = (tmp6 as c_int + tmp7 as c_int) as DCTELEM;
-        z5 = ((tmp10 as c_int - tmp12 as c_int) as c_long * 98i32 as JLONG >> 8i32) as DCTELEM;
-        z2 = ((tmp10 as c_long * 139i32 as JLONG >> 8i32) as DCTELEM as c_int + z5 as c_int)
+        z5 = ((tmp10 as c_int - tmp12 as c_int) as c_long
+            * 98i32 as JLONG
+            >> 8i32) as DCTELEM;
+        z2 = ((tmp10 as c_long * 139i32 as JLONG >> 8i32)
+            as DCTELEM as c_int
+            + z5 as c_int) as DCTELEM;
+        z4 = ((tmp12 as c_long * 334i32 as JLONG >> 8i32)
+            as DCTELEM as c_int
+            + z5 as c_int) as DCTELEM;
+        z3 = (tmp11 as c_long * 181i32 as JLONG >> 8i32)
             as DCTELEM;
-        z4 = ((tmp12 as c_long * 334i32 as JLONG >> 8i32) as DCTELEM as c_int + z5 as c_int)
-            as DCTELEM;
-        z3 = (tmp11 as c_long * 181i32 as JLONG >> 8i32) as DCTELEM;
         z11 = (tmp7 as c_int + z3 as c_int) as DCTELEM;
         z13 = (tmp7 as c_int - z3 as c_int) as DCTELEM;
-        *dataptr.offset(5isize) = (z13 as c_int + z2 as c_int) as DCTELEM;
-        *dataptr.offset(3isize) = (z13 as c_int - z2 as c_int) as DCTELEM;
-        *dataptr.offset(1isize) = (z11 as c_int + z4 as c_int) as DCTELEM;
-        *dataptr.offset(7isize) = (z11 as c_int - z4 as c_int) as DCTELEM;
+        *dataptr.offset(5isize) =
+            (z13 as c_int + z2 as c_int) as DCTELEM;
+        *dataptr.offset(3isize) =
+            (z13 as c_int - z2 as c_int) as DCTELEM;
+        *dataptr.offset(1isize) =
+            (z11 as c_int + z4 as c_int) as DCTELEM;
+        *dataptr.offset(7isize) =
+            (z11 as c_int - z4 as c_int) as DCTELEM;
         dataptr = dataptr.offset(DCTSIZE as isize);
         ctr -= 1
     }
@@ -144,45 +164,68 @@ pub unsafe extern "C" fn jpeg_fdct_ifast(mut data: *mut DCTELEM) {
     ctr = DCTSIZE - 1i32;
     while ctr >= 0i32 {
         tmp0 = (*dataptr.offset((DCTSIZE * 0i32) as isize) as c_int
-            + *dataptr.offset((DCTSIZE * 7i32) as isize) as c_int) as DCTELEM;
+            + *dataptr.offset((DCTSIZE * 7i32) as isize) as c_int)
+            as DCTELEM;
         tmp7 = (*dataptr.offset((DCTSIZE * 0i32) as isize) as c_int
-            - *dataptr.offset((DCTSIZE * 7i32) as isize) as c_int) as DCTELEM;
+            - *dataptr.offset((DCTSIZE * 7i32) as isize) as c_int)
+            as DCTELEM;
         tmp1 = (*dataptr.offset((DCTSIZE * 1i32) as isize) as c_int
-            + *dataptr.offset((DCTSIZE * 6i32) as isize) as c_int) as DCTELEM;
+            + *dataptr.offset((DCTSIZE * 6i32) as isize) as c_int)
+            as DCTELEM;
         tmp6 = (*dataptr.offset((DCTSIZE * 1i32) as isize) as c_int
-            - *dataptr.offset((DCTSIZE * 6i32) as isize) as c_int) as DCTELEM;
+            - *dataptr.offset((DCTSIZE * 6i32) as isize) as c_int)
+            as DCTELEM;
         tmp2 = (*dataptr.offset((DCTSIZE * 2i32) as isize) as c_int
-            + *dataptr.offset((DCTSIZE * 5i32) as isize) as c_int) as DCTELEM;
+            + *dataptr.offset((DCTSIZE * 5i32) as isize) as c_int)
+            as DCTELEM;
         tmp5 = (*dataptr.offset((DCTSIZE * 2i32) as isize) as c_int
-            - *dataptr.offset((DCTSIZE * 5i32) as isize) as c_int) as DCTELEM;
+            - *dataptr.offset((DCTSIZE * 5i32) as isize) as c_int)
+            as DCTELEM;
         tmp3 = (*dataptr.offset((DCTSIZE * 3i32) as isize) as c_int
-            + *dataptr.offset((DCTSIZE * 4i32) as isize) as c_int) as DCTELEM;
+            + *dataptr.offset((DCTSIZE * 4i32) as isize) as c_int)
+            as DCTELEM;
         tmp4 = (*dataptr.offset((DCTSIZE * 3i32) as isize) as c_int
-            - *dataptr.offset((DCTSIZE * 4i32) as isize) as c_int) as DCTELEM;
+            - *dataptr.offset((DCTSIZE * 4i32) as isize) as c_int)
+            as DCTELEM;
         tmp10 = (tmp0 as c_int + tmp3 as c_int) as DCTELEM;
         tmp13 = (tmp0 as c_int - tmp3 as c_int) as DCTELEM;
         tmp11 = (tmp1 as c_int + tmp2 as c_int) as DCTELEM;
         tmp12 = (tmp1 as c_int - tmp2 as c_int) as DCTELEM;
-        *dataptr.offset((DCTSIZE * 0i32) as isize) = (tmp10 as c_int + tmp11 as c_int) as DCTELEM;
-        *dataptr.offset((DCTSIZE * 4i32) as isize) = (tmp10 as c_int - tmp11 as c_int) as DCTELEM;
-        z1 = ((tmp12 as c_int + tmp13 as c_int) as c_long * 181i32 as JLONG >> 8i32) as DCTELEM;
-        *dataptr.offset((DCTSIZE * 2i32) as isize) = (tmp13 as c_int + z1 as c_int) as DCTELEM;
-        *dataptr.offset((DCTSIZE * 6i32) as isize) = (tmp13 as c_int - z1 as c_int) as DCTELEM;
+        *dataptr.offset((DCTSIZE * 0i32) as isize) =
+            (tmp10 as c_int + tmp11 as c_int) as DCTELEM;
+        *dataptr.offset((DCTSIZE * 4i32) as isize) =
+            (tmp10 as c_int - tmp11 as c_int) as DCTELEM;
+        z1 = ((tmp12 as c_int + tmp13 as c_int) as c_long
+            * 181i32 as JLONG
+            >> 8i32) as DCTELEM;
+        *dataptr.offset((DCTSIZE * 2i32) as isize) =
+            (tmp13 as c_int + z1 as c_int) as DCTELEM;
+        *dataptr.offset((DCTSIZE * 6i32) as isize) =
+            (tmp13 as c_int - z1 as c_int) as DCTELEM;
         tmp10 = (tmp4 as c_int + tmp5 as c_int) as DCTELEM;
         tmp11 = (tmp5 as c_int + tmp6 as c_int) as DCTELEM;
         tmp12 = (tmp6 as c_int + tmp7 as c_int) as DCTELEM;
-        z5 = ((tmp10 as c_int - tmp12 as c_int) as c_long * 98i32 as JLONG >> 8i32) as DCTELEM;
-        z2 = ((tmp10 as c_long * 139i32 as JLONG >> 8i32) as DCTELEM as c_int + z5 as c_int)
+        z5 = ((tmp10 as c_int - tmp12 as c_int) as c_long
+            * 98i32 as JLONG
+            >> 8i32) as DCTELEM;
+        z2 = ((tmp10 as c_long * 139i32 as JLONG >> 8i32)
+            as DCTELEM as c_int
+            + z5 as c_int) as DCTELEM;
+        z4 = ((tmp12 as c_long * 334i32 as JLONG >> 8i32)
+            as DCTELEM as c_int
+            + z5 as c_int) as DCTELEM;
+        z3 = (tmp11 as c_long * 181i32 as JLONG >> 8i32)
             as DCTELEM;
-        z4 = ((tmp12 as c_long * 334i32 as JLONG >> 8i32) as DCTELEM as c_int + z5 as c_int)
-            as DCTELEM;
-        z3 = (tmp11 as c_long * 181i32 as JLONG >> 8i32) as DCTELEM;
         z11 = (tmp7 as c_int + z3 as c_int) as DCTELEM;
         z13 = (tmp7 as c_int - z3 as c_int) as DCTELEM;
-        *dataptr.offset((DCTSIZE * 5i32) as isize) = (z13 as c_int + z2 as c_int) as DCTELEM;
-        *dataptr.offset((DCTSIZE * 3i32) as isize) = (z13 as c_int - z2 as c_int) as DCTELEM;
-        *dataptr.offset((DCTSIZE * 1i32) as isize) = (z11 as c_int + z4 as c_int) as DCTELEM;
-        *dataptr.offset((DCTSIZE * 7i32) as isize) = (z11 as c_int - z4 as c_int) as DCTELEM;
+        *dataptr.offset((DCTSIZE * 5i32) as isize) =
+            (z13 as c_int + z2 as c_int) as DCTELEM;
+        *dataptr.offset((DCTSIZE * 3i32) as isize) =
+            (z13 as c_int - z2 as c_int) as DCTELEM;
+        *dataptr.offset((DCTSIZE * 1i32) as isize) =
+            (z11 as c_int + z4 as c_int) as DCTELEM;
+        *dataptr.offset((DCTSIZE * 7i32) as isize) =
+            (z11 as c_int - z4 as c_int) as DCTELEM;
         dataptr = dataptr.offset(1isize);
         ctr -= 1
     }

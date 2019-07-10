@@ -1,11 +1,4 @@
-use libc;
-use libc::c_char;
-use libc::c_double;
-use libc::c_int;
-use libc::c_uint;
-use libc::c_ulong;
-
-pub use crate::jdmrg565_c::h2v1_merged_upsample_565D_be;
+use libc::c_double;use libc::c_char;use libc::c_int;use libc::c_uint;use libc::c_ulong;pub use crate::jdmrg565_c::h2v1_merged_upsample_565D_be;
 pub use crate::jdmrg565_c::h2v1_merged_upsample_565D_le;
 pub use crate::jdmrg565_c::h2v1_merged_upsample_565_be;
 pub use crate::jdmrg565_c::h2v1_merged_upsample_565_le;
@@ -103,7 +96,7 @@ pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
-pub use crate::jpeglib_h::C2RustUnnamed_3;
+pub use crate::jpeglib_h::C2RustUnnamed_2;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::JBLOCK;
 pub use crate::jpeglib_h::JBLOCKARRAY;
@@ -146,6 +139,7 @@ use crate::jsimd::jsimd_h2v1_merged_upsample;
 use crate::jsimd::jsimd_h2v2_merged_upsample;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
+use libc;
 pub type my_upsample_ptr = *mut my_upsampler;
 /*
  * jdmerge.c
@@ -186,7 +180,6 @@ pub type my_upsample_ptr = *mut my_upsampler;
  * general code in jdsample.c and jdcolor.c.)
  */
 /* Private subobject */
-
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct my_upsampler {
@@ -253,44 +246,55 @@ unsafe extern "C" fn build_ycc_rgb_table(mut cinfo: j_decompress_ptr) {
         .expect("non-null function pointer")(
         cinfo as j_common_ptr,
         JPOOL_IMAGE,
-        ((MAXJSAMPLE + 1i32) as c_ulong).wrapping_mul(::std::mem::size_of::<c_int>() as c_ulong),
+        ((MAXJSAMPLE + 1i32) as c_ulong)
+            .wrapping_mul(::std::mem::size_of::<c_int>() as c_ulong),
     ) as *mut c_int;
     (*upsample).Cb_b_tab = (*(*cinfo).mem)
         .alloc_small
         .expect("non-null function pointer")(
         cinfo as j_common_ptr,
         JPOOL_IMAGE,
-        ((MAXJSAMPLE + 1i32) as c_ulong).wrapping_mul(::std::mem::size_of::<c_int>() as c_ulong),
+        ((MAXJSAMPLE + 1i32) as c_ulong)
+            .wrapping_mul(::std::mem::size_of::<c_int>() as c_ulong),
     ) as *mut c_int;
     (*upsample).Cr_g_tab = (*(*cinfo).mem)
         .alloc_small
         .expect("non-null function pointer")(
         cinfo as j_common_ptr,
         JPOOL_IMAGE,
-        ((MAXJSAMPLE + 1i32) as c_ulong).wrapping_mul(::std::mem::size_of::<JLONG>() as c_ulong),
+        ((MAXJSAMPLE + 1i32) as c_ulong)
+            .wrapping_mul(::std::mem::size_of::<JLONG>() as c_ulong),
     ) as *mut JLONG;
     (*upsample).Cb_g_tab = (*(*cinfo).mem)
         .alloc_small
         .expect("non-null function pointer")(
         cinfo as j_common_ptr,
         JPOOL_IMAGE,
-        ((MAXJSAMPLE + 1i32) as c_ulong).wrapping_mul(::std::mem::size_of::<JLONG>() as c_ulong),
+        ((MAXJSAMPLE + 1i32) as c_ulong)
+            .wrapping_mul(::std::mem::size_of::<JLONG>() as c_ulong),
     ) as *mut JLONG;
     i = 0i32;
     x = -CENTERJSAMPLE as JLONG;
     while i <= MAXJSAMPLE {
         *(*upsample).Cr_r_tab.offset(i as isize) =
-            ((1.40200f64 * (1i64 << 16i32) as c_double + 0.5f64) as JLONG * x
+            ((1.40200f64 * (1i64 << 16i32) as c_double + 0.5f64) as JLONG
+                * x
                 + ((1i32 as JLONG) << 16i32 - 1i32)
                 >> 16i32) as c_int;
         *(*upsample).Cb_b_tab.offset(i as isize) =
-            ((1.77200f64 * (1i64 << 16i32) as c_double + 0.5f64) as JLONG * x
+            ((1.77200f64 * (1i64 << 16i32) as c_double + 0.5f64) as JLONG
+                * x
                 + ((1i32 as JLONG) << 16i32 - 1i32)
                 >> 16i32) as c_int;
         *(*upsample).Cr_g_tab.offset(i as isize) =
-            -((0.71414f64 * (1i64 << SCALEBITS) as c_double + 0.5f64) as JLONG) * x;
+            -((0.71414f64 * (1i64 << SCALEBITS) as c_double + 0.5f64)
+                as JLONG)
+                * x;
         *(*upsample).Cb_g_tab.offset(i as isize) =
-            -((0.34414f64 * (1i64 << SCALEBITS) as c_double + 0.5f64) as JLONG) * x + ONE_HALF;
+            -((0.34414f64 * (1i64 << SCALEBITS) as c_double + 0.5f64)
+                as JLONG)
+                * x
+                + ONE_HALF;
         i += 1;
         x += 1
     }
@@ -323,7 +327,9 @@ unsafe extern "C" fn merged_2v_upsample(
     let mut num_rows: JDIMENSION = 0;
     if 0 != (*upsample).spare_full {
         let mut size: JDIMENSION = (*upsample).out_row_width;
-        if (*cinfo).out_color_space as c_uint == JCS_RGB565 as c_int as c_uint {
+        if (*cinfo).out_color_space as c_uint
+            == JCS_RGB565 as c_int as c_uint
+        {
             size = (*cinfo).output_width.wrapping_mul(2i32 as c_uint)
         }
         jcopy_sample_rows(
@@ -341,8 +347,9 @@ unsafe extern "C" fn merged_2v_upsample(
         if num_rows > (*upsample).rows_to_go {
             num_rows = (*upsample).rows_to_go
         }
-        out_rows_avail =
-            (out_rows_avail as c_uint).wrapping_sub(*out_row_ctr) as JDIMENSION as JDIMENSION;
+        out_rows_avail = (out_rows_avail as c_uint).wrapping_sub(*out_row_ctr)
+            as JDIMENSION
+            as JDIMENSION;
         if num_rows > out_rows_avail {
             num_rows = out_rows_avail
         }
@@ -361,9 +368,11 @@ unsafe extern "C" fn merged_2v_upsample(
             work_ptrs.as_mut_ptr(),
         );
     }
-    *out_row_ctr = (*out_row_ctr as c_uint).wrapping_add(num_rows) as JDIMENSION as JDIMENSION;
-    (*upsample).rows_to_go =
-        ((*upsample).rows_to_go as c_uint).wrapping_sub(num_rows) as JDIMENSION as JDIMENSION;
+    *out_row_ctr = (*out_row_ctr as c_uint).wrapping_add(num_rows)
+        as JDIMENSION as JDIMENSION;
+    (*upsample).rows_to_go = ((*upsample).rows_to_go as c_uint).wrapping_sub(num_rows)
+        as JDIMENSION
+        as JDIMENSION;
     if 0 == (*upsample).spare_full {
         *in_row_group_ctr = (*in_row_group_ctr).wrapping_add(1)
     };
@@ -406,25 +415,60 @@ unsafe extern "C" fn h2v1_merged_upsample(
 ) {
     match (*cinfo).out_color_space as c_uint {
         6 => {
-            extrgb_h2v1_merged_upsample_internal(cinfo, input_buf, in_row_group_ctr, output_buf);
+            extrgb_h2v1_merged_upsample_internal(
+                cinfo,
+                input_buf,
+                in_row_group_ctr,
+                output_buf,
+            );
         }
         7 | 12 => {
-            extrgbx_h2v1_merged_upsample_internal(cinfo, input_buf, in_row_group_ctr, output_buf);
+            extrgbx_h2v1_merged_upsample_internal(
+                cinfo,
+                input_buf,
+                in_row_group_ctr,
+                output_buf,
+            );
         }
         8 => {
-            extbgr_h2v1_merged_upsample_internal(cinfo, input_buf, in_row_group_ctr, output_buf);
+            extbgr_h2v1_merged_upsample_internal(
+                cinfo,
+                input_buf,
+                in_row_group_ctr,
+                output_buf,
+            );
         }
         9 | 13 => {
-            extbgrx_h2v1_merged_upsample_internal(cinfo, input_buf, in_row_group_ctr, output_buf);
+            extbgrx_h2v1_merged_upsample_internal(
+                cinfo,
+                input_buf,
+                in_row_group_ctr,
+                output_buf,
+            );
         }
         10 | 14 => {
-            extxbgr_h2v1_merged_upsample_internal(cinfo, input_buf, in_row_group_ctr, output_buf);
+            extxbgr_h2v1_merged_upsample_internal(
+                cinfo,
+                input_buf,
+                in_row_group_ctr,
+                output_buf,
+            );
         }
         11 | 15 => {
-            extxrgb_h2v1_merged_upsample_internal(cinfo, input_buf, in_row_group_ctr, output_buf);
+            extxrgb_h2v1_merged_upsample_internal(
+                cinfo,
+                input_buf,
+                in_row_group_ctr,
+                output_buf,
+            );
         }
         _ => {
-            h2v1_merged_upsample_internal(cinfo, input_buf, in_row_group_ctr, output_buf);
+            h2v1_merged_upsample_internal(
+                cinfo,
+                input_buf,
+                in_row_group_ctr,
+                output_buf,
+            );
         }
     };
 }
@@ -439,25 +483,60 @@ unsafe extern "C" fn h2v2_merged_upsample(
 ) {
     match (*cinfo).out_color_space as c_uint {
         6 => {
-            extrgb_h2v2_merged_upsample_internal(cinfo, input_buf, in_row_group_ctr, output_buf);
+            extrgb_h2v2_merged_upsample_internal(
+                cinfo,
+                input_buf,
+                in_row_group_ctr,
+                output_buf,
+            );
         }
         7 | 12 => {
-            extrgbx_h2v2_merged_upsample_internal(cinfo, input_buf, in_row_group_ctr, output_buf);
+            extrgbx_h2v2_merged_upsample_internal(
+                cinfo,
+                input_buf,
+                in_row_group_ctr,
+                output_buf,
+            );
         }
         8 => {
-            extbgr_h2v2_merged_upsample_internal(cinfo, input_buf, in_row_group_ctr, output_buf);
+            extbgr_h2v2_merged_upsample_internal(
+                cinfo,
+                input_buf,
+                in_row_group_ctr,
+                output_buf,
+            );
         }
         9 | 13 => {
-            extbgrx_h2v2_merged_upsample_internal(cinfo, input_buf, in_row_group_ctr, output_buf);
+            extbgrx_h2v2_merged_upsample_internal(
+                cinfo,
+                input_buf,
+                in_row_group_ctr,
+                output_buf,
+            );
         }
         10 | 14 => {
-            extxbgr_h2v2_merged_upsample_internal(cinfo, input_buf, in_row_group_ctr, output_buf);
+            extxbgr_h2v2_merged_upsample_internal(
+                cinfo,
+                input_buf,
+                in_row_group_ctr,
+                output_buf,
+            );
         }
         11 | 15 => {
-            extxrgb_h2v2_merged_upsample_internal(cinfo, input_buf, in_row_group_ctr, output_buf);
+            extxrgb_h2v2_merged_upsample_internal(
+                cinfo,
+                input_buf,
+                in_row_group_ctr,
+                output_buf,
+            );
         }
         _ => {
-            h2v2_merged_upsample_internal(cinfo, input_buf, in_row_group_ctr, output_buf);
+            h2v2_merged_upsample_internal(
+                cinfo,
+                input_buf,
+                in_row_group_ctr,
+                output_buf,
+            );
         }
     };
 }
@@ -492,9 +571,19 @@ unsafe extern "C" fn h2v1_merged_upsample_565(
     mut output_buf: JSAMPARRAY,
 ) {
     if 0 != is_big_endian() {
-        h2v1_merged_upsample_565_be(cinfo, input_buf, in_row_group_ctr, output_buf);
+        h2v1_merged_upsample_565_be(
+            cinfo,
+            input_buf,
+            in_row_group_ctr,
+            output_buf,
+        );
     } else {
-        h2v1_merged_upsample_565_le(cinfo, input_buf, in_row_group_ctr, output_buf);
+        h2v1_merged_upsample_565_le(
+            cinfo,
+            input_buf,
+            in_row_group_ctr,
+            output_buf,
+        );
     };
 }
 unsafe extern "C" fn h2v1_merged_upsample_565D(
@@ -504,9 +593,19 @@ unsafe extern "C" fn h2v1_merged_upsample_565D(
     mut output_buf: JSAMPARRAY,
 ) {
     if 0 != is_big_endian() {
-        h2v1_merged_upsample_565D_be(cinfo, input_buf, in_row_group_ctr, output_buf);
+        h2v1_merged_upsample_565D_be(
+            cinfo,
+            input_buf,
+            in_row_group_ctr,
+            output_buf,
+        );
     } else {
-        h2v1_merged_upsample_565D_le(cinfo, input_buf, in_row_group_ctr, output_buf);
+        h2v1_merged_upsample_565D_le(
+            cinfo,
+            input_buf,
+            in_row_group_ctr,
+            output_buf,
+        );
     };
 }
 unsafe extern "C" fn h2v2_merged_upsample_565(
@@ -516,9 +615,19 @@ unsafe extern "C" fn h2v2_merged_upsample_565(
     mut output_buf: JSAMPARRAY,
 ) {
     if 0 != is_big_endian() {
-        h2v2_merged_upsample_565_be(cinfo, input_buf, in_row_group_ctr, output_buf);
+        h2v2_merged_upsample_565_be(
+            cinfo,
+            input_buf,
+            in_row_group_ctr,
+            output_buf,
+        );
     } else {
-        h2v2_merged_upsample_565_le(cinfo, input_buf, in_row_group_ctr, output_buf);
+        h2v2_merged_upsample_565_le(
+            cinfo,
+            input_buf,
+            in_row_group_ctr,
+            output_buf,
+        );
     };
 }
 unsafe extern "C" fn h2v2_merged_upsample_565D(
@@ -528,9 +637,19 @@ unsafe extern "C" fn h2v2_merged_upsample_565D(
     mut output_buf: JSAMPARRAY,
 ) {
     if 0 != is_big_endian() {
-        h2v2_merged_upsample_565D_be(cinfo, input_buf, in_row_group_ctr, output_buf);
+        h2v2_merged_upsample_565D_be(
+            cinfo,
+            input_buf,
+            in_row_group_ctr,
+            output_buf,
+        );
     } else {
-        h2v2_merged_upsample_565D_le(cinfo, input_buf, in_row_group_ctr, output_buf);
+        h2v2_merged_upsample_565D_le(
+            cinfo,
+            input_buf,
+            in_row_group_ctr,
+            output_buf,
+        );
     };
 }
 /*
@@ -551,8 +670,10 @@ pub unsafe extern "C" fn jinit_merged_upsampler(mut cinfo: j_decompress_ptr) {
         ::std::mem::size_of::<my_upsampler>() as c_ulong,
     ) as my_upsample_ptr;
     (*cinfo).upsample = upsample as *mut jpeg_upsampler;
-    (*upsample).pub_0.start_pass =
-        Some(start_pass_merged_upsample as unsafe extern "C" fn(_: j_decompress_ptr) -> ());
+    (*upsample).pub_0.start_pass = Some(
+        start_pass_merged_upsample
+            as unsafe extern "C" fn(_: j_decompress_ptr) -> (),
+    );
     (*upsample).pub_0.need_context_rows = FALSE;
     (*upsample).out_row_width = (*cinfo)
         .output_width
@@ -591,8 +712,12 @@ pub unsafe extern "C" fn jinit_merged_upsampler(mut cinfo: j_decompress_ptr) {
                     ) -> (),
             )
         }
-        if (*cinfo).out_color_space as c_uint == JCS_RGB565 as c_int as c_uint {
-            if (*cinfo).dither_mode as c_uint != JDITHER_NONE as c_int as c_uint {
+        if (*cinfo).out_color_space as c_uint
+            == JCS_RGB565 as c_int as c_uint
+        {
+            if (*cinfo).dither_mode as c_uint
+                != JDITHER_NONE as c_int as c_uint
+            {
                 (*upsample).upmethod = Some(
                     h2v2_merged_upsample_565D
                         as unsafe extern "C" fn(
@@ -656,8 +781,12 @@ pub unsafe extern "C" fn jinit_merged_upsampler(mut cinfo: j_decompress_ptr) {
                     ) -> (),
             )
         }
-        if (*cinfo).out_color_space as c_uint == JCS_RGB565 as c_int as c_uint {
-            if (*cinfo).dither_mode as c_uint != JDITHER_NONE as c_int as c_uint {
+        if (*cinfo).out_color_space as c_uint
+            == JCS_RGB565 as c_int as c_uint
+        {
+            if (*cinfo).dither_mode as c_uint
+                != JDITHER_NONE as c_int as c_uint
+            {
                 (*upsample).upmethod = Some(
                     h2v1_merged_upsample_565D
                         as unsafe extern "C" fn(

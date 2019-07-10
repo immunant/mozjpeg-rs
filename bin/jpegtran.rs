@@ -11,8 +11,6 @@
 #![feature(label_break_value)]
 #![feature(ptr_wrapping_offset_from)]
 
-extern crate libc;
-use mozjpeg::*;
 
 pub use crate::cdjpeg::keymatch;
 pub use crate::cdjpeg::read_scan_script;
@@ -94,8 +92,8 @@ pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
+pub use crate::jpeglib_h::C2RustUnnamed_1;
 pub use crate::jpeglib_h::C2RustUnnamed_2;
-pub use crate::jpeglib_h::C2RustUnnamed_3;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::JBLOCK;
 pub use crate::jpeglib_h::JBLOCKARRAY;
@@ -206,6 +204,9 @@ pub use crate::transupp::JXFORM_ROT_270;
 pub use crate::transupp::JXFORM_ROT_90;
 pub use crate::transupp::JXFORM_TRANSPOSE;
 pub use crate::transupp::JXFORM_TRANSVERSE;
+extern crate libc;
+use mozjpeg::*;
+
 /*
  * jpegtran.c
  *
@@ -1027,7 +1028,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         format_message: None,
         reset_error_mgr: None,
         msg_code: 0,
-        msg_parm: crate::jpeglib_h::C2RustUnnamed_3 { i: [0; 8] },
+        msg_parm: crate::jpeglib_h::C2RustUnnamed_2 { i: [0; 8] },
         trace_level: 0,
         num_warnings: 0,
         jpeg_message_table: 0 as *const *const libc::c_char,
@@ -1043,7 +1044,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         format_message: None,
         reset_error_mgr: None,
         msg_code: 0,
-        msg_parm: crate::jpeglib_h::C2RustUnnamed_3 { i: [0; 8] },
+        msg_parm: crate::jpeglib_h::C2RustUnnamed_2 { i: [0; 8] },
         trace_level: 0,
         num_warnings: 0,
         jpeg_message_table: 0 as *const *const libc::c_char,

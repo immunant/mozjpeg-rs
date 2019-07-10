@@ -1,11 +1,4 @@
-use libc;
-use libc::c_double;
-use libc::c_int;
-use libc::c_uint;
-use libc::c_ulong;
-use libc::intptr_t;
-
-pub use crate::jdct_h::jpeg_idct_10x10;
+use libc::c_double;use libc::c_int;use libc::c_uint;use libc::c_ulong;use libc::intptr_t;pub use crate::jdct_h::jpeg_idct_10x10;
 pub use crate::jdct_h::jpeg_idct_11x11;
 pub use crate::jdct_h::jpeg_idct_12x12;
 pub use crate::jdct_h::jpeg_idct_13x13;
@@ -28,7 +21,7 @@ pub use crate::jdct_h::IFAST_MULT_TYPE;
 pub use crate::jdct_h::ISLOW_MULT_TYPE;
 pub use crate::jdmaster::my_decomp_master;
 pub use crate::jdmaster::my_master_ptr;
-pub use crate::jerror::C2RustUnnamed_4;
+pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -204,7 +197,7 @@ pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
-pub use crate::jpeglib_h::C2RustUnnamed_3;
+pub use crate::jpeglib_h::C2RustUnnamed_2;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::DCTSIZE2;
 pub use crate::jpeglib_h::JBLOCK;
@@ -255,6 +248,7 @@ use crate::jsimd::jsimd_idct_islow;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 use crate::stdlib::memset;
+use libc;
 pub type my_idct_ptr = *mut my_idct_controller;
 /*
  * jddctmgr.c
@@ -294,7 +288,6 @@ pub type my_idct_ptr = *mut my_idct_controller;
  * to zeroes; the result of the IDCT will be a neutral gray level.
  */
 /* Private subobject for this module */
-
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct my_idct_controller {
@@ -302,7 +295,6 @@ pub struct my_idct_controller {
     pub cur_method: [c_int; 10],
 }
 /* Allocated multiplier tables: big enough for any supported variant */
-
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub union multiplier_table {
@@ -310,20 +302,21 @@ pub union multiplier_table {
     pub ifast_array: [IFAST_MULT_TYPE; 64],
     pub float_array: [FLOAT_MULT_TYPE; 64],
 }
-/* The current scaled-IDCT routines require ISLOW-style multiplier tables,
- * so be sure to compile that code if either ISLOW or SCALING is requested.
- */
 /*
  * Permit users to replace the IDCT method dynamically.
  * The selector callback is called after the default idct implementation was choosen,
  * and is able to override it.
+ */
+/* The current scaled-IDCT routines require ISLOW-style multiplier tables,
+ * so be sure to compile that code if either ISLOW or SCALING is requested.
  */
 #[no_mangle]
 pub unsafe extern "C" fn jpeg_set_idct_method_selector(
     mut cinfo: j_decompress_ptr,
     mut selector: jpeg_idct_method_selector,
 ) {
-    let mut master: my_master_ptr = (*cinfo).master as my_master_ptr;
+    let mut master: my_master_ptr =
+        (*cinfo).master as my_master_ptr;
     (*master).custom_idct_selector = selector;
 }
 /*
@@ -335,10 +328,13 @@ unsafe extern "C" fn start_pass(mut cinfo: j_decompress_ptr) {
     let mut idct: my_idct_ptr = (*cinfo).idct as my_idct_ptr;
     let mut ci: c_int = 0;
     let mut i: c_int = 0;
-    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info =
+        0 as *mut jpeg_component_info;
     let mut method: c_int = 0i32;
     let mut method_ptr: inverse_DCT_method_ptr =
-        ::std::mem::transmute::<intptr_t, inverse_DCT_method_ptr>(NULL as intptr_t);
+        ::std::mem::transmute::<intptr_t, inverse_DCT_method_ptr>(
+            NULL as intptr_t,
+        );
     let mut qtbl: *mut JQUANT_TBL = 0 as *mut JQUANT_TBL;
     let mut master: my_master_ptr = 0 as *mut my_decomp_master;
     ci = 0i32;
@@ -546,7 +542,7 @@ unsafe extern "C" fn start_pass(mut cinfo: j_decompress_ptr) {
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer")(
-                        cinfo as j_common_ptr
+                        cinfo as j_common_ptr,
                     );
                 }
             },
@@ -659,7 +655,9 @@ unsafe extern "C" fn start_pass(mut cinfo: j_decompress_ptr) {
                 (*(*cinfo).err).msg_parm.i[0usize] = (*compptr).DCT_scaled_size;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(cinfo as j_common_ptr);
+                    .expect("non-null function pointer")(
+                    cinfo as j_common_ptr
+                );
             }
         }
         master = (*cinfo).master as my_master_ptr;
@@ -765,7 +763,8 @@ unsafe extern "C" fn start_pass(mut cinfo: j_decompress_ptr) {
                         ];
                         i = 0i32;
                         while i < DCTSIZE2 {
-                            *ifmtbl.offset(i as isize) = ((*qtbl).quantval[i as usize] as JLONG
+                            *ifmtbl.offset(i as isize) = ((*qtbl).quantval[i as usize]
+                                as JLONG
                                 * aanscales[i as usize] as JLONG
                                 + ((1i32 as JLONG) << 14i32 - 2i32 - 1i32)
                                 >> 14i32 - 2i32)
@@ -809,7 +808,7 @@ unsafe extern "C" fn start_pass(mut cinfo: j_decompress_ptr) {
                         (*(*cinfo).err)
                             .error_exit
                             .expect("non-null function pointer")(
-                            cinfo as j_common_ptr
+                            cinfo as j_common_ptr,
                         );
                     }
                 }
@@ -826,7 +825,8 @@ unsafe extern "C" fn start_pass(mut cinfo: j_decompress_ptr) {
 pub unsafe extern "C" fn jinit_inverse_dct(mut cinfo: j_decompress_ptr) {
     let mut idct: my_idct_ptr = 0 as *mut my_idct_controller;
     let mut ci: c_int = 0;
-    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info =
+        0 as *mut jpeg_component_info;
     idct = (*(*cinfo).mem)
         .alloc_small
         .expect("non-null function pointer")(
@@ -835,7 +835,8 @@ pub unsafe extern "C" fn jinit_inverse_dct(mut cinfo: j_decompress_ptr) {
         ::std::mem::size_of::<my_idct_controller>() as c_ulong,
     ) as my_idct_ptr;
     (*cinfo).idct = idct as *mut jpeg_inverse_dct;
-    (*idct).pub_0.start_pass = Some(start_pass as unsafe extern "C" fn(_: j_decompress_ptr) -> ());
+    (*idct).pub_0.start_pass =
+        Some(start_pass as unsafe extern "C" fn(_: j_decompress_ptr) -> ());
     ci = 0i32;
     compptr = (*cinfo).comp_info;
     while ci < (*cinfo).num_components {

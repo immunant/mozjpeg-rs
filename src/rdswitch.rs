@@ -1,14 +1,4 @@
-use libc;
-use libc::c_char;
-use libc::c_float;
-use libc::c_int;
-use libc::c_long;
-use libc::c_uint;
-use libc::c_ulong;
-use libc::c_ushort;
-use libc::c_void;
-
-pub use crate::jmorecfg_h::boolean;
+use libc::c_char;use libc::c_void;use libc::c_int;use libc::c_uint;use libc::c_ulong;use libc::c_ushort;use libc::c_long;use libc::c_float;pub use crate::jmorecfg_h::boolean;
 pub use crate::jmorecfg_h::FALSE;
 pub use crate::jmorecfg_h::JCOEF;
 pub use crate::jmorecfg_h::JDIMENSION;
@@ -46,7 +36,7 @@ pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
-pub use crate::jpeglib_h::C2RustUnnamed_3;
+pub use crate::jpeglib_h::C2RustUnnamed_2;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::DCTSIZE2;
 pub use crate::jpeglib_h::JBLOCK;
@@ -128,6 +118,7 @@ pub use crate::stdlib::ungetc;
 pub use crate::stdlib::EOF;
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::_IO_FILE;
+use libc;
 /*
  * rdswitch.c
  *
@@ -314,15 +305,14 @@ pub unsafe extern "C" fn read_scan_script(
     let mut ncomps: c_int = 0;
     let mut termchar: c_int = 0;
     let mut val: c_long = 0;
-    let mut scanptr: *mut jpeg_scan_info = 0 as *mut jpeg_scan_info;
-    let mut scans: [jpeg_scan_info; 100] = [jpeg_scan_info {
-        comps_in_scan: 0,
-        component_index: [0; 4],
-        Ss: 0,
-        Se: 0,
-        Ah: 0,
-        Al: 0,
-    }; 100];
+    let mut scanptr: *mut jpeg_scan_info =
+        0 as *mut jpeg_scan_info;
+    let mut scans: [jpeg_scan_info; 100] = [jpeg_scan_info{comps_in_scan:  0,
+               component_index:  [0; 4],
+               Ss:  0,
+               Se:  0,
+               Ah:  0,
+               Al:  0,}; 100];
     fp = fopen(filename, b"r\x00" as *const u8 as *const c_char);
     if fp.is_null() {
         fprintf(
@@ -362,7 +352,7 @@ pub unsafe extern "C" fn read_scan_script(
                 return FALSE;
             }
             if 0 == read_scan_integer(fp, &mut val, &mut termchar) {
-                current_block = 8777696405609929030;
+                current_block = 9520589643232431964;
                 break;
             }
             (*scanptr).component_index[ncomps as usize] = val as c_int;
@@ -374,23 +364,23 @@ pub unsafe extern "C" fn read_scan_script(
                 if termchar == ':' as i32 {
                     if 0 == read_scan_integer(fp, &mut val, &mut termchar) || termchar != ' ' as i32
                     {
-                        current_block = 8777696405609929030;
+                        current_block = 9520589643232431964;
                     } else {
                         (*scanptr).Ss = val as c_int;
                         if 0 == read_scan_integer(fp, &mut val, &mut termchar)
                             || termchar != ' ' as i32
                         {
-                            current_block = 8777696405609929030;
+                            current_block = 9520589643232431964;
                         } else {
                             (*scanptr).Se = val as c_int;
                             if 0 == read_scan_integer(fp, &mut val, &mut termchar)
                                 || termchar != ' ' as i32
                             {
-                                current_block = 8777696405609929030;
+                                current_block = 9520589643232431964;
                             } else {
                                 (*scanptr).Ah = val as c_int;
                                 if 0 == read_scan_integer(fp, &mut val, &mut termchar) {
-                                    current_block = 8777696405609929030;
+                                    current_block = 9520589643232431964;
                                 } else {
                                     (*scanptr).Al = val as c_int;
                                     current_block = 8845338526596852646;
@@ -406,7 +396,7 @@ pub unsafe extern "C" fn read_scan_script(
                     current_block = 8845338526596852646;
                 }
                 match current_block {
-                    8777696405609929030 => {}
+                    9520589643232431964 => {}
                     _ => {
                         if !(termchar != ';' as i32 && termchar != EOF) {
                             scanptr = scanptr.offset(1isize);
@@ -441,16 +431,24 @@ pub unsafe extern "C" fn read_scan_script(
             .expect("non-null function pointer")(
             cinfo as j_common_ptr,
             JPOOL_IMAGE,
-            (scanno as c_ulong).wrapping_mul(::std::mem::size_of::<jpeg_scan_info>() as c_ulong),
+            (scanno as c_ulong).wrapping_mul(::std::mem::size_of::<
+                jpeg_scan_info,
+            >() as c_ulong),
         ) as *mut jpeg_scan_info;
         memcpy(
             scanptr as *mut c_void,
             scans.as_mut_ptr() as *const c_void,
-            (scanno as c_ulong).wrapping_mul(::std::mem::size_of::<jpeg_scan_info>() as c_ulong),
+            (scanno as c_ulong).wrapping_mul(::std::mem::size_of::<
+                jpeg_scan_info,
+            >() as c_ulong),
         );
         (*cinfo).scan_info = scanptr;
         (*cinfo).num_scans = scanno;
-        jpeg_c_set_bool_param(cinfo, JBOOLEAN_OPTIMIZE_SCANS, FALSE);
+        jpeg_c_set_bool_param(
+            cinfo,
+            JBOOLEAN_OPTIMIZE_SCANS,
+            FALSE,
+        );
     }
     fclose(fp);
     return TRUE;
@@ -1687,10 +1685,17 @@ static mut std_chrominance_quant_tbl: [[c_uint; 64]; 9] = [
 /* An improved detection model for DCT coefficient quantization (1993) Peterson, Ahumada and Watson
  * Copied from luma
  */
-unsafe extern "C" fn jpeg_default_qtables(mut cinfo: j_compress_ptr, mut force_baseline: boolean) {
+unsafe extern "C" fn jpeg_default_qtables(
+    mut cinfo: j_compress_ptr,
+    mut force_baseline: boolean,
+) {
     let mut quant_tbl_master_idx: c_int = 0i32;
-    if 0 != jpeg_c_int_param_supported(cinfo, JINT_BASE_QUANT_TBL_IDX) {
-        quant_tbl_master_idx = jpeg_c_get_int_param(cinfo, JINT_BASE_QUANT_TBL_IDX)
+    if 0 != jpeg_c_int_param_supported(
+        cinfo,
+        JINT_BASE_QUANT_TBL_IDX,
+    ) {
+        quant_tbl_master_idx =
+            jpeg_c_get_int_param(cinfo, JINT_BASE_QUANT_TBL_IDX)
     }
     jpeg_add_quant_table(
         cinfo,
@@ -1733,14 +1738,16 @@ pub unsafe extern "C" fn set_quality_ratings(
             if ch as c_int != ',' as i32 {
                 return FALSE;
             }
-            q_scale_factor[tblno as usize] = jpeg_float_quality_scaling(val) as c_int;
+            q_scale_factor[tblno as usize] =
+                jpeg_float_quality_scaling(val) as c_int;
             while 0 != *arg as c_int && {
                 let fresh0 = arg;
                 arg = arg.offset(1);
                 *fresh0 as c_int != ',' as i32
             } {}
         } else {
-            q_scale_factor[tblno as usize] = jpeg_float_quality_scaling(val) as c_int
+            q_scale_factor[tblno as usize] =
+                jpeg_float_quality_scaling(val) as c_int
         }
         tblno += 1
     }

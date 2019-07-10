@@ -11,8 +11,6 @@
 #![feature(label_break_value)]
 #![feature(ptr_wrapping_offset_from)]
 
-extern crate libc;
-use mozjpeg::*;
 
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
@@ -100,6 +98,9 @@ pub use crate::turbojpeg::TJXOP_ROT90;
 pub use crate::turbojpeg::TJXOP_TRANSPOSE;
 pub use crate::turbojpeg::TJXOP_TRANSVERSE;
 pub use crate::turbojpeg::TJXOP_VFLIP;
+extern crate libc;
+use mozjpeg::*;
+
 /*
  * Copyright (C)2011-2012, 2014-2015, 2017 D. R. Commander.
  *                                         All Rights Reserved.

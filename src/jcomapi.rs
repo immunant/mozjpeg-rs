@@ -1,8 +1,4 @@
-use libc;
-use libc::c_int;
-use libc::c_ulong;
-
-pub use crate::jmorecfg_h::boolean;
+use libc::c_int;use libc::c_ulong;pub use crate::jmorecfg_h::boolean;
 pub use crate::jmorecfg_h::FALSE;
 pub use crate::jmorecfg_h::JCOEF;
 pub use crate::jmorecfg_h::JDIMENSION;
@@ -46,7 +42,7 @@ pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
-pub use crate::jpeglib_h::C2RustUnnamed_3;
+pub use crate::jpeglib_h::C2RustUnnamed_2;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::JBLOCK;
 pub use crate::jpeglib_h::JBLOCKARRAY;
@@ -86,9 +82,7 @@ pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::jpeglib_h::J_DITHER_MODE;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
-/* Generic versions of jpeg_abort and jpeg_destroy that work on either
- * flavor of JPEG object.  These may be more convenient in some places.
- */
+use libc;
 /*
  * jcomapi.c
  *
@@ -101,6 +95,9 @@ pub use crate::stddef_h::NULL;
  *
  * This file contains application interface routines that are used for both
  * compression and decompression.
+ */
+/* Generic versions of jpeg_abort and jpeg_destroy that work on either
+ * flavor of JPEG object.  These may be more convenient in some places.
  */
 /*
  * Abort processing of a JPEG compression or decompression operation,
@@ -158,7 +155,9 @@ pub unsafe extern "C" fn jpeg_destroy(mut cinfo: j_common_ptr) {
  * (Would jutils.c be a more reasonable place to put these?)
  */
 #[no_mangle]
-pub unsafe extern "C" fn jpeg_alloc_quant_table(mut cinfo: j_common_ptr) -> *mut JQUANT_TBL {
+pub unsafe extern "C" fn jpeg_alloc_quant_table(
+    mut cinfo: j_common_ptr,
+) -> *mut JQUANT_TBL {
     let mut tbl: *mut JQUANT_TBL = 0 as *mut JQUANT_TBL;
     tbl = (*(*cinfo).mem)
         .alloc_small
@@ -171,7 +170,9 @@ pub unsafe extern "C" fn jpeg_alloc_quant_table(mut cinfo: j_common_ptr) -> *mut
     return tbl;
 }
 #[no_mangle]
-pub unsafe extern "C" fn jpeg_alloc_huff_table(mut cinfo: j_common_ptr) -> *mut JHUFF_TBL {
+pub unsafe extern "C" fn jpeg_alloc_huff_table(
+    mut cinfo: j_common_ptr,
+) -> *mut JHUFF_TBL {
     let mut tbl: *mut JHUFF_TBL = 0 as *mut JHUFF_TBL;
     tbl = (*(*cinfo).mem)
         .alloc_small

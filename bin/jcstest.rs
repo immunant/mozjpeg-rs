@@ -11,8 +11,6 @@
 #![feature(label_break_value)]
 #![feature(ptr_wrapping_offset_from)]
 
-extern crate libc;
-use mozjpeg::*;
 
 pub use crate::jconfig_h::JPEG_LIB_VERSION;
 pub use crate::jmorecfg_h::boolean;
@@ -50,7 +48,7 @@ pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
-pub use crate::jpeglib_h::C2RustUnnamed_3;
+pub use crate::jpeglib_h::C2RustUnnamed_2;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::JBLOCK;
 pub use crate::jpeglib_h::JBLOCKARRAY;
@@ -88,6 +86,8 @@ pub use crate::stdlib::_setjmp;
 pub use crate::stdlib::jmp_buf;
 pub use crate::stdlib::longjmp;
 use crate::stdlib::printf;
+extern crate libc;
+use mozjpeg::*;
 
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -225,7 +225,7 @@ unsafe fn main_0() -> libc::c_int {
             format_message: None,
             reset_error_mgr: None,
             msg_code: 0,
-            msg_parm: crate::jpeglib_h::C2RustUnnamed_3 { i: [0; 8] },
+            msg_parm: crate::jpeglib_h::C2RustUnnamed_2 { i: [0; 8] },
             trace_level: 0,
             num_warnings: 0,
             jpeg_message_table: 0 as *const *const libc::c_char,

@@ -1,12 +1,4 @@
-use libc;
-use libc::c_int;
-use libc::c_long;
-use libc::c_uchar;
-use libc::c_uint;
-use libc::c_ulong;
-use libc::c_void;
-
-pub use crate::cderror_h::C2RustUnnamed_92;
+use libc::c_long;use libc::c_void;use libc::c_int;use libc::c_uint;use libc::c_ulong;use libc::c_uchar;pub use crate::cderror_h::C2RustUnnamed_91;
 pub use crate::cderror_h::JERR_BAD_CMAP_FILE;
 pub use crate::cderror_h::JERR_BMP_BADCMAP;
 pub use crate::cderror_h::JERR_BMP_BADDEPTH;
@@ -58,7 +50,7 @@ pub use crate::cdjpeg::cd_progress_ptr;
 pub use crate::cdjpeg::cdjpeg_progress_mgr;
 pub use crate::cdjpeg::cjpeg_source_ptr;
 pub use crate::cdjpeg::cjpeg_source_struct;
-pub use crate::jerror::C2RustUnnamed_4;
+pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -223,7 +215,7 @@ pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
-pub use crate::jpeglib_h::C2RustUnnamed_3;
+pub use crate::jpeglib_h::C2RustUnnamed_2;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::JBLOCK;
 pub use crate::jpeglib_h::JBLOCKARRAY;
@@ -267,11 +259,11 @@ pub use crate::stdlib::getc;
 pub use crate::stdlib::EOF;
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::_IO_FILE;
+use libc;
 /* !HAVE_UNSIGNED_CHAR */
 /* HAVE_UNSIGNED_CHAR */
 /* Private version of data source object */
 pub type tga_source_ptr = *mut _tga_source_struct;
-
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct _tga_source_struct {
@@ -285,8 +277,12 @@ pub struct _tga_source_struct {
     pub pixel_size: c_int,
     pub block_count: c_int,
     pub dup_pixel_count: c_int,
-    pub get_pixel_rows:
-        Option<unsafe extern "C" fn(_: j_compress_ptr, _: cjpeg_source_ptr) -> JDIMENSION>,
+    pub get_pixel_rows: Option<
+        unsafe extern "C" fn(
+            _: j_compress_ptr,
+            _: cjpeg_source_ptr,
+        ) -> JDIMENSION,
+    >,
 }
 /*
  * rdtarga.c
@@ -355,7 +351,9 @@ unsafe extern "C" fn read_byte(mut sinfo: tga_source_ptr) -> c_int {
         (*(*(*sinfo).cinfo).err).msg_code = JERR_INPUT_EOF as c_int;
         (*(*(*sinfo).cinfo).err)
             .error_exit
-            .expect("non-null function pointer")((*sinfo).cinfo as j_common_ptr);
+            .expect("non-null function pointer")(
+            (*sinfo).cinfo as j_common_ptr
+        );
     }
     return c;
 }
@@ -369,13 +367,18 @@ unsafe extern "C" fn read_colormap(
         (*(*(*sinfo).cinfo).err).msg_code = JERR_TGA_BADCMAP as c_int;
         (*(*(*sinfo).cinfo).err)
             .error_exit
-            .expect("non-null function pointer")((*sinfo).cinfo as j_common_ptr);
+            .expect("non-null function pointer")(
+            (*sinfo).cinfo as j_common_ptr
+        );
     }
     i = 0i32;
     while i < cmaplen {
-        *(*(*sinfo).colormap.offset(2isize)).offset(i as isize) = read_byte(sinfo) as JSAMPLE;
-        *(*(*sinfo).colormap.offset(1isize)).offset(i as isize) = read_byte(sinfo) as JSAMPLE;
-        *(*(*sinfo).colormap.offset(0isize)).offset(i as isize) = read_byte(sinfo) as JSAMPLE;
+        *(*(*sinfo).colormap.offset(2isize)).offset(i as isize) =
+            read_byte(sinfo) as JSAMPLE;
+        *(*(*sinfo).colormap.offset(1isize)).offset(i as isize) =
+            read_byte(sinfo) as JSAMPLE;
+        *(*(*sinfo).colormap.offset(0isize)).offset(i as isize) =
+            read_byte(sinfo) as JSAMPLE;
         i += 1
     }
 }
@@ -558,7 +561,8 @@ unsafe extern "C" fn preload_image(
 ) -> JDIMENSION {
     let mut source: tga_source_ptr = sinfo as tga_source_ptr;
     let mut row: JDIMENSION = 0;
-    let mut progress: cd_progress_ptr = (*cinfo).progress as cd_progress_ptr;
+    let mut progress: cd_progress_ptr =
+        (*cinfo).progress as cd_progress_ptr;
     row = 0i32 as JDIMENSION;
     while row < (*cinfo).image_height {
         if !progress.is_null() {
@@ -567,7 +571,9 @@ unsafe extern "C" fn preload_image(
             (*progress)
                 .pub_0
                 .progress_monitor
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                cinfo as j_common_ptr
+            );
         }
         (*source).pub_0.buffer = (*(*cinfo).mem)
             .access_virt_sarray
@@ -586,7 +592,10 @@ unsafe extern "C" fn preload_image(
     }
     (*source).pub_0.get_pixel_rows = Some(
         get_memory_row
-            as unsafe extern "C" fn(_: j_compress_ptr, _: cjpeg_source_ptr) -> JDIMENSION,
+            as unsafe extern "C" fn(
+                _: j_compress_ptr,
+                _: cjpeg_source_ptr,
+            ) -> JDIMENSION,
     );
     (*source).current_row = 0i32 as JDIMENSION;
     return get_memory_row(cinfo, sinfo);
@@ -594,7 +603,10 @@ unsafe extern "C" fn preload_image(
 /*
  * Read the file header; return image size and component count.
  */
-unsafe extern "C" fn start_input_tga(mut cinfo: j_compress_ptr, mut sinfo: cjpeg_source_ptr) {
+unsafe extern "C" fn start_input_tga(
+    mut cinfo: j_compress_ptr,
+    mut sinfo: cjpeg_source_ptr,
+) {
     let mut source: tga_source_ptr = sinfo as tga_source_ptr;
     let mut targaheader: [U_CHAR; 18] = [0; 18];
     let mut idlen: c_int = 0;
@@ -627,10 +639,12 @@ unsafe extern "C" fn start_input_tga(mut cinfo: j_compress_ptr, mut sinfo: cjpeg
     subtype = targaheader[2usize] as c_int;
     maplen = (targaheader[5usize] as c_int as c_uint)
         .wrapping_add((targaheader[(5i32 + 1i32) as usize] as c_int as c_uint) << 8i32);
-    width = (targaheader[12usize] as c_int as c_uint)
-        .wrapping_add((targaheader[(12i32 + 1i32) as usize] as c_int as c_uint) << 8i32);
-    height = (targaheader[14usize] as c_int as c_uint)
-        .wrapping_add((targaheader[(14i32 + 1i32) as usize] as c_int as c_uint) << 8i32);
+    width = (targaheader[12usize] as c_int as c_uint).wrapping_add(
+        (targaheader[(12i32 + 1i32) as usize] as c_int as c_uint) << 8i32,
+    );
+    height = (targaheader[14usize] as c_int as c_uint).wrapping_add(
+        (targaheader[(14i32 + 1i32) as usize] as c_int as c_uint) << 8i32,
+    );
     (*source).pixel_size = targaheader[16usize] as c_int >> 3i32;
     flags = targaheader[17usize] as c_int;
     is_bottom_up = (flags & 0x20i32 == 0i32) as c_int;
@@ -668,20 +682,25 @@ unsafe extern "C" fn start_input_tga(mut cinfo: j_compress_ptr, mut sinfo: cjpeg
                         as unsafe extern "C" fn(
                             _: j_compress_ptr,
                             _: cjpeg_source_ptr,
-                        ) -> JDIMENSION,
+                        )
+                            -> JDIMENSION,
                 )
             } else {
                 (*(*cinfo).err).msg_code = JERR_TGA_BADPARMS as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(cinfo as j_common_ptr);
+                    .expect("non-null function pointer")(
+                    cinfo as j_common_ptr
+                );
             }
             (*(*cinfo).err).msg_code = JTRC_TGA_MAPPED as c_int;
             (*(*cinfo).err).msg_parm.i[0usize] = width as c_int;
             (*(*cinfo).err).msg_parm.i[1usize] = height as c_int;
             (*(*cinfo).err)
                 .emit_message
-                .expect("non-null function pointer")(cinfo as j_common_ptr, 1i32);
+                .expect("non-null function pointer")(
+                cinfo as j_common_ptr, 1i32
+            );
         }
         2 => {
             match (*source).pixel_size {
@@ -691,7 +710,8 @@ unsafe extern "C" fn start_input_tga(mut cinfo: j_compress_ptr, mut sinfo: cjpeg
                             as unsafe extern "C" fn(
                                 _: j_compress_ptr,
                                 _: cjpeg_source_ptr,
-                            ) -> JDIMENSION,
+                            )
+                                -> JDIMENSION,
                     )
                 }
                 3 => {
@@ -700,7 +720,8 @@ unsafe extern "C" fn start_input_tga(mut cinfo: j_compress_ptr, mut sinfo: cjpeg
                             as unsafe extern "C" fn(
                                 _: j_compress_ptr,
                                 _: cjpeg_source_ptr,
-                            ) -> JDIMENSION,
+                            )
+                                -> JDIMENSION,
                     )
                 }
                 4 => (*source).get_pixel_rows = Some(get_32bit_row),
@@ -709,7 +730,7 @@ unsafe extern "C" fn start_input_tga(mut cinfo: j_compress_ptr, mut sinfo: cjpeg
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer")(
-                        cinfo as j_common_ptr
+                        cinfo as j_common_ptr,
                     );
                 }
             }
@@ -718,7 +739,9 @@ unsafe extern "C" fn start_input_tga(mut cinfo: j_compress_ptr, mut sinfo: cjpeg
             (*(*cinfo).err).msg_parm.i[1usize] = height as c_int;
             (*(*cinfo).err)
                 .emit_message
-                .expect("non-null function pointer")(cinfo as j_common_ptr, 1i32);
+                .expect("non-null function pointer")(
+                cinfo as j_common_ptr, 1i32
+            );
         }
         3 => {
             components = 1i32;
@@ -729,26 +752,33 @@ unsafe extern "C" fn start_input_tga(mut cinfo: j_compress_ptr, mut sinfo: cjpeg
                         as unsafe extern "C" fn(
                             _: j_compress_ptr,
                             _: cjpeg_source_ptr,
-                        ) -> JDIMENSION,
+                        )
+                            -> JDIMENSION,
                 )
             } else {
                 (*(*cinfo).err).msg_code = JERR_TGA_BADPARMS as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(cinfo as j_common_ptr);
+                    .expect("non-null function pointer")(
+                    cinfo as j_common_ptr
+                );
             }
             (*(*cinfo).err).msg_code = JTRC_TGA_GRAY as c_int;
             (*(*cinfo).err).msg_parm.i[0usize] = width as c_int;
             (*(*cinfo).err).msg_parm.i[1usize] = height as c_int;
             (*(*cinfo).err)
                 .emit_message
-                .expect("non-null function pointer")(cinfo as j_common_ptr, 1i32);
+                .expect("non-null function pointer")(
+                cinfo as j_common_ptr, 1i32
+            );
         }
         _ => {
             (*(*cinfo).err).msg_code = JERR_TGA_BADPARMS as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                cinfo as j_common_ptr
+            );
         }
     }
     if 0 != is_bottom_up {
@@ -763,13 +793,17 @@ unsafe extern "C" fn start_input_tga(mut cinfo: j_compress_ptr, mut sinfo: cjpeg
             1i32 as JDIMENSION,
         );
         if !(*cinfo).progress.is_null() {
-            let mut progress: cd_progress_ptr = (*cinfo).progress as cd_progress_ptr;
+            let mut progress: cd_progress_ptr =
+                (*cinfo).progress as cd_progress_ptr;
             (*progress).total_extra_passes += 1
         }
         (*source).pub_0.buffer_height = 1i32 as JDIMENSION;
         (*source).pub_0.get_pixel_rows = Some(
             preload_image
-                as unsafe extern "C" fn(_: j_compress_ptr, _: cjpeg_source_ptr) -> JDIMENSION,
+                as unsafe extern "C" fn(
+                    _: j_compress_ptr,
+                    _: cjpeg_source_ptr,
+                ) -> JDIMENSION,
         )
     } else {
         (*source).whole_image = NULL as jvirt_sarray_ptr;
@@ -794,14 +828,16 @@ unsafe extern "C" fn start_input_tga(mut cinfo: j_compress_ptr, mut sinfo: cjpeg
     }
     if maplen > 0i32 as c_uint {
         if maplen > 256i32 as c_uint
-            || (targaheader[3usize] as c_int as c_uint)
-                .wrapping_add((targaheader[(3i32 + 1i32) as usize] as c_int as c_uint) << 8i32)
-                != 0i32 as c_uint
+            || (targaheader[3usize] as c_int as c_uint).wrapping_add(
+                (targaheader[(3i32 + 1i32) as usize] as c_int as c_uint) << 8i32,
+            ) != 0i32 as c_uint
         {
             (*(*cinfo).err).msg_code = JERR_TGA_BADCMAP as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                cinfo as j_common_ptr
+            );
         }
         (*source).colormap = (*(*cinfo).mem)
             .alloc_sarray
@@ -811,13 +847,19 @@ unsafe extern "C" fn start_input_tga(mut cinfo: j_compress_ptr, mut sinfo: cjpeg
             maplen,
             3i32 as JDIMENSION,
         );
-        read_colormap(source, maplen as c_int, targaheader[7usize] as c_int);
+        read_colormap(
+            source,
+            maplen as c_int,
+            targaheader[7usize] as c_int,
+        );
     } else {
         if 0 != cmaptype {
             (*(*cinfo).err).msg_code = JERR_TGA_BADPARMS as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                cinfo as j_common_ptr
+            );
         }
         (*source).colormap = NULL as JSAMPARRAY
     }
@@ -829,13 +871,19 @@ unsafe extern "C" fn start_input_tga(mut cinfo: j_compress_ptr, mut sinfo: cjpeg
 /*
  * Finish up at the end of the file.
  */
-unsafe extern "C" fn finish_input_tga(mut cinfo: j_compress_ptr, mut sinfo: cjpeg_source_ptr) {}
+unsafe extern "C" fn finish_input_tga(
+    mut cinfo: j_compress_ptr,
+    mut sinfo: cjpeg_source_ptr,
+) {
+}
 /* no work */
 /*
  * The module selection routine for Targa format input.
  */
 #[no_mangle]
-pub unsafe extern "C" fn jinit_read_targa(mut cinfo: j_compress_ptr) -> cjpeg_source_ptr {
+pub unsafe extern "C" fn jinit_read_targa(
+    mut cinfo: j_compress_ptr,
+) -> cjpeg_source_ptr {
     let mut source: tga_source_ptr = 0 as *mut _tga_source_struct;
     source = (*(*cinfo).mem)
         .alloc_small
@@ -845,10 +893,19 @@ pub unsafe extern "C" fn jinit_read_targa(mut cinfo: j_compress_ptr) -> cjpeg_so
         ::std::mem::size_of::<tga_source_struct>() as c_ulong,
     ) as tga_source_ptr;
     (*source).cinfo = cinfo;
-    (*source).pub_0.start_input =
-        Some(start_input_tga as unsafe extern "C" fn(_: j_compress_ptr, _: cjpeg_source_ptr) -> ());
+    (*source).pub_0.start_input = Some(
+        start_input_tga
+            as unsafe extern "C" fn(
+                _: j_compress_ptr,
+                _: cjpeg_source_ptr,
+            ) -> (),
+    );
     (*source).pub_0.finish_input = Some(
-        finish_input_tga as unsafe extern "C" fn(_: j_compress_ptr, _: cjpeg_source_ptr) -> (),
+        finish_input_tga
+            as unsafe extern "C" fn(
+                _: j_compress_ptr,
+                _: cjpeg_source_ptr,
+            ) -> (),
     );
     return source as cjpeg_source_ptr;
 }

@@ -1,7 +1,4 @@
-use libc;
-use libc::c_int;
-
-pub use crate::jerror::C2RustUnnamed_4;
+use libc::c_int;pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -179,7 +176,7 @@ pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
-pub use crate::jpeglib_h::C2RustUnnamed_3;
+pub use crate::jpeglib_h::C2RustUnnamed_2;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::JBLOCK;
 pub use crate::jpeglib_h::JBLOCKARRAY;
@@ -211,6 +208,7 @@ pub use crate::jpeglib_h::JSAMPROW;
 pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::stddef_h::size_t;
+use libc;
 /*
  * jcinit.c
  *
@@ -229,11 +227,6 @@ pub use crate::stddef_h::size_t;
  * For a transcoding-only application, we want to be able to use jcmaster.c
  * without linking in the whole library.
  */
-/*
- * Master selection of compression modules.
- * This is done once at the start of processing an image.  We determine
- * which modules will be used and give them appropriate initialization calls.
- */
 /* Miscellaneous useful macros */
 /* We assume that right shift corresponds to signed division by 2 with
  * rounding towards minus infinity.  This is correct for typical "arithmetic
@@ -245,6 +238,11 @@ pub use crate::stddef_h::size_t;
  * included in the variables of any routine using RIGHT_SHIFT.
  */
 /* Compression module initialization routines */
+/*
+ * Master selection of compression modules.
+ * This is done once at the start of processing an image.  We determine
+ * which modules will be used and give them appropriate initialization calls.
+ */
 #[no_mangle]
 pub unsafe extern "C" fn jinit_compress_master(mut cinfo: j_compress_ptr) {
     jinit_c_master_control(cinfo, FALSE);

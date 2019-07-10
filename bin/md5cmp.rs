@@ -11,8 +11,6 @@
 #![feature(label_break_value)]
 #![feature(ptr_wrapping_offset_from)]
 
-extern crate libc;
-use mozjpeg::*;
 
 use crate::md5::MD5File;
 pub use crate::stddef_h::size_t;
@@ -30,6 +28,9 @@ use crate::stdlib::strcasecmp;
 use crate::stdlib::strlen;
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::_IO_FILE;
+extern crate libc;
+use mozjpeg::*;
+
 /*
  * Copyright (C)2013, 2016 D. R. Commander.  All Rights Reserved.
  *

@@ -1,29 +1,40 @@
-use libc::c_char;
-use libc::c_int;
-use libc::c_ulong;
-use libc::c_ushort;
-extern "C" {
+use libc::c_char;use libc::c_ushort;use libc::c_int;use libc::c_ulong;extern "C" {
     #[no_mangle]
-    pub fn jinit_read_bmp(cinfo: j_compress_ptr, use_inversion_array: boolean) -> cjpeg_source_ptr;
-    #[no_mangle]
-    pub fn jinit_write_bmp(
-        cinfo: j_decompress_ptr,
-        is_os2: boolean,
-        use_inversion_array: boolean,
-    ) -> djpeg_dest_ptr;
-    #[no_mangle]
-    pub fn jinit_read_ppm(cinfo: j_compress_ptr) -> cjpeg_source_ptr;
-    #[no_mangle]
-    pub fn jinit_write_ppm(cinfo: j_decompress_ptr) -> djpeg_dest_ptr;
+    pub fn read_scan_script(
+        cinfo: j_compress_ptr,
+        filename: *mut c_char,
+    ) -> boolean;
 
+    #[no_mangle]
+    pub fn jinit_write_gif(
+        cinfo: j_decompress_ptr,
+    ) -> djpeg_dest_ptr;
+
+    #[no_mangle]
+    pub fn jinit_write_targa(
+        cinfo: j_decompress_ptr,
+    ) -> djpeg_dest_ptr;
+    /* djpeg support routines (in rdcolmap.c) */
+    #[no_mangle]
+    pub fn read_color_map(
+        cinfo: j_decompress_ptr,
+        infile: *mut FILE,
+    );
     /* Module selection routines for I/O modules. */
     #[no_mangle]
-    pub fn jinit_read_jpeg(cinfo: j_compress_ptr) -> cjpeg_source_ptr;
-    #[no_mangle]
-    pub fn jinit_read_gif(cinfo: j_compress_ptr) -> cjpeg_source_ptr;
-    #[no_mangle]
-    pub fn jinit_read_targa(cinfo: j_compress_ptr) -> cjpeg_source_ptr;
+    pub fn jinit_read_jpeg(
+        cinfo: j_compress_ptr,
+    ) -> cjpeg_source_ptr;
 
+    #[no_mangle]
+    pub fn jinit_read_gif(
+        cinfo: j_compress_ptr,
+    ) -> cjpeg_source_ptr;
+
+    #[no_mangle]
+    pub fn jinit_read_targa(
+        cinfo: j_compress_ptr,
+    ) -> cjpeg_source_ptr;
     /* cjpeg support routines (in rdswitch.c) */
     #[no_mangle]
     pub fn read_quant_tables(
@@ -31,28 +42,59 @@ extern "C" {
         filename: *mut c_char,
         force_baseline: boolean,
     ) -> boolean;
-    #[no_mangle]
-    pub fn read_scan_script(cinfo: j_compress_ptr, filename: *mut c_char) -> boolean;
+
     #[no_mangle]
     pub fn set_quality_ratings(
         cinfo: j_compress_ptr,
         arg: *mut c_char,
         force_baseline: boolean,
     ) -> boolean;
-    #[no_mangle]
-    pub fn set_quant_slots(cinfo: j_compress_ptr, arg: *mut c_char) -> boolean;
-    #[no_mangle]
-    pub fn set_sample_factors(cinfo: j_compress_ptr, arg: *mut c_char) -> boolean;
-    #[no_mangle]
-    pub fn jinit_write_gif(cinfo: j_decompress_ptr) -> djpeg_dest_ptr;
-    #[no_mangle]
-    pub fn jinit_write_targa(cinfo: j_decompress_ptr) -> djpeg_dest_ptr;
 
-    /* djpeg support routines (in rdcolmap.c) */
     #[no_mangle]
-    pub fn read_color_map(cinfo: j_decompress_ptr, infile: *mut FILE);
+    pub fn set_quant_slots(
+        cinfo: j_compress_ptr,
+        arg: *mut c_char,
+    ) -> boolean;
+
+    #[no_mangle]
+    pub fn set_sample_factors(
+        cinfo: j_compress_ptr,
+        arg: *mut c_char,
+    ) -> boolean;
+
+    #[no_mangle]
+    pub fn jinit_read_bmp(
+        cinfo: j_compress_ptr,
+        use_inversion_array: boolean,
+    ) -> cjpeg_source_ptr;
+
+    #[no_mangle]
+    pub fn jinit_read_ppm(
+        cinfo: j_compress_ptr,
+    ) -> cjpeg_source_ptr;
+
+    #[no_mangle]
+    pub fn jinit_write_bmp(
+        cinfo: j_decompress_ptr,
+        is_os2: boolean,
+        use_inversion_array: boolean,
+    ) -> djpeg_dest_ptr;
+
+    #[no_mangle]
+    pub fn jinit_write_ppm(
+        cinfo: j_decompress_ptr,
+    ) -> djpeg_dest_ptr;
 }
 pub use crate::stdlib::C2RustUnnamed_0;
+// =============== BEGIN cdjpeg_h ================
+use crate::jmorecfg_h::JDIMENSION;
+use crate::jpeglib_h::j_compress_ptr;
+use crate::jpeglib_h::j_decompress_ptr;
+use crate::jpeglib_h::jpeg_compress_struct;
+use crate::jpeglib_h::jpeg_decompress_struct;
+use crate::jpeglib_h::jpeg_progress_mgr;
+use crate::jpeglib_h::jpeg_saved_marker_ptr;
+use crate::jpeglib_h::JSAMPARRAY;
 /*
  * cdjpeg.h
  *
@@ -67,8 +109,11 @@ pub use crate::stdlib::C2RustUnnamed_0;
  * This file contains common declarations for the sample applications
  * cjpeg and djpeg.  It is NOT used by the core JPEG library.
  */
+
 /* define proper options in jconfig.h */
+
 /* cjpeg.c,djpeg.c need to see xxx_SUPPORTED */
+
 /*
  * Object interface for cjpeg's source file decoding modules
  */
@@ -76,10 +121,24 @@ pub type cjpeg_source_ptr = *mut cjpeg_source_struct;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct cjpeg_source_struct {
-    pub start_input: Option<unsafe extern "C" fn(_: j_compress_ptr, _: cjpeg_source_ptr) -> ()>,
-    pub get_pixel_rows:
-        Option<unsafe extern "C" fn(_: j_compress_ptr, _: cjpeg_source_ptr) -> JDIMENSION>,
-    pub finish_input: Option<unsafe extern "C" fn(_: j_compress_ptr, _: cjpeg_source_ptr) -> ()>,
+    pub start_input: Option<
+        unsafe extern "C" fn(
+            _: j_compress_ptr,
+            _: cjpeg_source_ptr,
+        ) -> (),
+    >,
+    pub get_pixel_rows: Option<
+        unsafe extern "C" fn(
+            _: j_compress_ptr,
+            _: cjpeg_source_ptr,
+        ) -> JDIMENSION,
+    >,
+    pub finish_input: Option<
+        unsafe extern "C" fn(
+            _: j_compress_ptr,
+            _: cjpeg_source_ptr,
+        ) -> (),
+    >,
     pub input_file: *mut FILE,
     pub buffer: JSAMPARRAY,
     pub buffer_height: JDIMENSION,
@@ -92,25 +151,40 @@ pub type djpeg_dest_ptr = *mut djpeg_dest_struct;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct djpeg_dest_struct {
-    pub start_output: Option<unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> ()>,
-    pub put_pixel_rows:
-        Option<unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr, _: JDIMENSION) -> ()>,
-    pub finish_output: Option<unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> ()>,
-    pub calc_buffer_dimensions:
-        Option<unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> ()>,
+    pub start_output: Option<
+        unsafe extern "C" fn(
+            _: j_decompress_ptr,
+            _: djpeg_dest_ptr,
+        ) -> (),
+    >,
+    pub put_pixel_rows: Option<
+        unsafe extern "C" fn(
+            _: j_decompress_ptr,
+            _: djpeg_dest_ptr,
+            _: JDIMENSION,
+        ) -> (),
+    >,
+    pub finish_output: Option<
+        unsafe extern "C" fn(
+            _: j_decompress_ptr,
+            _: djpeg_dest_ptr,
+        ) -> (),
+    >,
+    pub calc_buffer_dimensions: Option<
+        unsafe extern "C" fn(
+            _: j_decompress_ptr,
+            _: djpeg_dest_ptr,
+        ) -> (),
+    >,
     pub output_file: *mut FILE,
     pub buffer: JSAMPARRAY,
     pub buffer_height: JDIMENSION,
 }
+// ================ END cdjpeg_h ================
 pub use crate::jmorecfg_h::boolean;
-use crate::jmorecfg_h::JDIMENSION;
-use crate::jpeglib_h::j_compress_ptr;
-use crate::jpeglib_h::j_decompress_ptr;
-use crate::jpeglib_h::jpeg_compress_struct;
-use crate::jpeglib_h::jpeg_decompress_struct;
-use crate::jpeglib_h::jpeg_saved_marker_ptr;
-use crate::jpeglib_h::JSAMPARRAY;
 pub use crate::stdlib::FILE;
+// =============== BEGIN cdjpeg_h ================
+
 /*
  * cjpeg/djpeg may need to perform extra passes to convert to or from
  * the source/destination file format.  The JPEG library does not know
@@ -118,7 +192,6 @@ pub use crate::stdlib::FILE;
  * monitor.  We use an expanded progress monitor object to hold the
  * additional pass count.
  */
-
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct cdjpeg_progress_mgr {
@@ -128,9 +201,7 @@ pub struct cdjpeg_progress_mgr {
     pub percent_done: c_int,
 }
 pub type cd_progress_ptr = *mut cdjpeg_progress_mgr;
-use crate::jpeglib_h::jpeg_progress_mgr;
-use libc;
-
+// ================ END cdjpeg_h ================
 pub use crate::stddef_h::size_t;
 pub use crate::stdlib::_IO_codecvt;
 pub use crate::stdlib::_IO_lock_t;
@@ -140,7 +211,11 @@ pub use crate::stdlib::__int32_t;
 pub use crate::stdlib::__off64_t;
 pub use crate::stdlib::__off_t;
 pub use crate::stdlib::_IO_FILE;
+use libc;
+// =============== BEGIN cdjpeg_h ================
+
 /* miscellaneous useful macros */
+
 /* define mode parameters for fopen() */
 pub const READ_BINARY: [c_char; 3] =
     unsafe { *::std::mem::transmute::<&[u8; 3], &[c_char; 3]>(b"rb\x00") };
@@ -148,6 +223,26 @@ pub const WRITE_BINARY: [c_char; 3] =
     unsafe { *::std::mem::transmute::<&[u8; 3], &[c_char; 3]>(b"wb\x00") };
 /* define exit() codes if not provided */
 pub const EXIT_WARNING: c_int = 2i32;
+// ================ END cdjpeg_h ================
+pub use crate::jmorecfg_h::FALSE;
+pub use crate::jmorecfg_h::TRUE;
+pub use crate::stdlib::_ISalnum;
+pub use crate::stdlib::_ISalpha;
+pub use crate::stdlib::_ISblank;
+pub use crate::stdlib::_IScntrl;
+pub use crate::stdlib::_ISdigit;
+pub use crate::stdlib::_ISgraph;
+pub use crate::stdlib::_ISlower;
+pub use crate::stdlib::_ISprint;
+pub use crate::stdlib::_ISpunct;
+pub use crate::stdlib::_ISspace;
+pub use crate::stdlib::_ISupper;
+pub use crate::stdlib::_ISxdigit;
+pub use crate::stdlib::__ctype_b_loc;
+pub use crate::stdlib::__ctype_tolower_loc;
+use crate::stdlib::stdin;
+use crate::stdlib::stdout;
+pub use crate::stdlib::tolower;
 /*
  * cdjpeg.c
  *
@@ -161,10 +256,13 @@ pub const EXIT_WARNING: c_int = 2i32;
  * This file contains common support routines used by the IJG application
  * programs (cjpeg, djpeg, jpegtran).
  */
+
 /* to declare isupper(), tolower() */
+
 /*
  * Optional progress monitor: display a percent-done figure on stderr.
  */
+
 /*
  * Case-insensitive matching of possibly-abbreviated keyword switches.
  * keyword is the constant keyword (must be lower case already),
@@ -238,22 +336,3 @@ pub unsafe extern "C" fn write_stdout() -> *mut FILE {
     let mut output_file: *mut FILE = stdout;
     return output_file;
 }
-pub use crate::jmorecfg_h::FALSE;
-pub use crate::jmorecfg_h::TRUE;
-pub use crate::stdlib::_ISalnum;
-pub use crate::stdlib::_ISalpha;
-pub use crate::stdlib::_ISblank;
-pub use crate::stdlib::_IScntrl;
-pub use crate::stdlib::_ISdigit;
-pub use crate::stdlib::_ISgraph;
-pub use crate::stdlib::_ISlower;
-pub use crate::stdlib::_ISprint;
-pub use crate::stdlib::_ISpunct;
-pub use crate::stdlib::_ISspace;
-pub use crate::stdlib::_ISupper;
-pub use crate::stdlib::_ISxdigit;
-pub use crate::stdlib::__ctype_b_loc;
-pub use crate::stdlib::__ctype_tolower_loc;
-use crate::stdlib::stdin;
-use crate::stdlib::stdout;
-pub use crate::stdlib::tolower;

@@ -1,12 +1,6 @@
-use libc;
-use libc::c_int;
-use libc::c_uint;
-use libc::c_ulong;
-use libc::c_void;
-
-pub use crate::jconfig_h::JPEG_LIB_VERSION;
+use libc::c_ulong;use libc::c_uint;use libc::c_int;use libc::c_void;pub use crate::jconfig_h::JPEG_LIB_VERSION;
 pub use crate::jdmaster::my_decomp_master;
-pub use crate::jerror::C2RustUnnamed_4;
+pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -187,7 +181,7 @@ pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
-pub use crate::jpeglib_h::C2RustUnnamed_3;
+pub use crate::jpeglib_h::C2RustUnnamed_2;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::JBLOCK;
 pub use crate::jpeglib_h::JBLOCKARRAY;
@@ -232,6 +226,7 @@ pub use crate::jpeglib_h::NUM_QUANT_TBLS;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 use crate::stdlib::memset;
+use libc;
 /*
  * jdapimin.c
  *
@@ -272,10 +267,13 @@ pub unsafe extern "C" fn jpeg_CreateDecompress(
             .error_exit
             .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
-    if structsize != ::std::mem::size_of::<jpeg_decompress_struct>() as c_ulong {
+    if structsize
+        != ::std::mem::size_of::<jpeg_decompress_struct>() as c_ulong
+    {
         (*(*cinfo).err).msg_code = JERR_BAD_STRUCT_SIZE as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] =
-            ::std::mem::size_of::<jpeg_decompress_struct>() as c_ulong as c_int;
+        (*(*cinfo).err).msg_parm.i[0usize] = ::std::mem::size_of::<
+            jpeg_decompress_struct,
+        >() as c_ulong as c_int;
         (*(*cinfo).err).msg_parm.i[1usize] = structsize as c_int;
         (*(*cinfo).err)
             .error_exit
@@ -296,13 +294,16 @@ pub unsafe extern "C" fn jpeg_CreateDecompress(
     (*cinfo).src = NULL as *mut jpeg_source_mgr;
     i = 0i32;
     while i < NUM_QUANT_TBLS {
-        (*cinfo).quant_tbl_ptrs[i as usize] = NULL as *mut JQUANT_TBL;
+        (*cinfo).quant_tbl_ptrs[i as usize] =
+            NULL as *mut JQUANT_TBL;
         i += 1
     }
     i = 0i32;
     while i < NUM_HUFF_TBLS {
-        (*cinfo).dc_huff_tbl_ptrs[i as usize] = NULL as *mut JHUFF_TBL;
-        (*cinfo).ac_huff_tbl_ptrs[i as usize] = NULL as *mut JHUFF_TBL;
+        (*cinfo).dc_huff_tbl_ptrs[i as usize] =
+            NULL as *mut JHUFF_TBL;
+        (*cinfo).ac_huff_tbl_ptrs[i as usize] =
+            NULL as *mut JHUFF_TBL;
         i += 1
     }
     (*cinfo).marker_list = NULL as jpeg_saved_marker_ptr;
@@ -355,11 +356,13 @@ unsafe extern "C" fn default_decompress_parms(mut cinfo: j_decompress_ptr) {
                     1 => (*cinfo).jpeg_color_space = JCS_YCbCr,
                     _ => {
                         (*(*cinfo).err).msg_code = JWRN_ADOBE_XFORM as c_int;
-                        (*(*cinfo).err).msg_parm.i[0usize] = (*cinfo).Adobe_transform as c_int;
+                        (*(*cinfo).err).msg_parm.i[0usize] =
+                            (*cinfo).Adobe_transform as c_int;
                         (*(*cinfo).err)
                             .emit_message
                             .expect("non-null function pointer")(
-                            cinfo as j_common_ptr, -1i32
+                            cinfo as j_common_ptr,
+                            -1i32,
                         );
                         (*cinfo).jpeg_color_space = JCS_YCbCr
                     }
@@ -381,7 +384,8 @@ unsafe extern "C" fn default_decompress_parms(mut cinfo: j_decompress_ptr) {
                     (*(*cinfo).err)
                         .emit_message
                         .expect("non-null function pointer")(
-                        cinfo as j_common_ptr, 1i32
+                        cinfo as j_common_ptr,
+                        1i32,
                     );
                     (*cinfo).jpeg_color_space = JCS_YCbCr
                 }
@@ -395,11 +399,13 @@ unsafe extern "C" fn default_decompress_parms(mut cinfo: j_decompress_ptr) {
                     2 => (*cinfo).jpeg_color_space = JCS_YCCK,
                     _ => {
                         (*(*cinfo).err).msg_code = JWRN_ADOBE_XFORM as c_int;
-                        (*(*cinfo).err).msg_parm.i[0usize] = (*cinfo).Adobe_transform as c_int;
+                        (*(*cinfo).err).msg_parm.i[0usize] =
+                            (*cinfo).Adobe_transform as c_int;
                         (*(*cinfo).err)
                             .emit_message
                             .expect("non-null function pointer")(
-                            cinfo as j_common_ptr, -1i32
+                            cinfo as j_common_ptr,
+                            -1i32,
                         );
                         (*cinfo).jpeg_color_space = JCS_YCCK
                     }
@@ -431,6 +437,7 @@ unsafe extern "C" fn default_decompress_parms(mut cinfo: j_decompress_ptr) {
     (*cinfo).enable_external_quant = FALSE;
     (*cinfo).enable_2pass_quant = FALSE;
 }
+/* Decompression startup: read start of JPEG datastream to see what's there */
 /*
  * Decompression startup: read start of JPEG datastream to see what's there.
  * Need only initialize JPEG object and supply a data source before calling.
@@ -457,7 +464,6 @@ unsafe extern "C" fn default_decompress_parms(mut cinfo: j_decompress_ptr) {
  * This routine is now just a front end to jpeg_consume_input, with some
  * extra error checking.
  */
-/* Decompression startup: read start of JPEG datastream to see what's there */
 #[no_mangle]
 pub unsafe extern "C" fn jpeg_read_header(
     mut cinfo: j_decompress_ptr,
@@ -479,7 +485,9 @@ pub unsafe extern "C" fn jpeg_read_header(
                 (*(*cinfo).err).msg_code = JERR_NO_IMAGE as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(cinfo as j_common_ptr);
+                    .expect("non-null function pointer")(
+                    cinfo as j_common_ptr
+                );
             }
             jpeg_abort(cinfo as j_common_ptr);
             retcode = JPEG_HEADER_TABLES_ONLY
@@ -501,7 +509,9 @@ pub unsafe extern "C" fn jpeg_read_header(
  * method.
  */
 #[no_mangle]
-pub unsafe extern "C" fn jpeg_consume_input(mut cinfo: j_decompress_ptr) -> c_int {
+pub unsafe extern "C" fn jpeg_consume_input(
+    mut cinfo: j_decompress_ptr,
+) -> c_int {
     let mut retcode: c_int = 0i32;
     let mut current_block_10: u64;
     match (*cinfo).global_state {
@@ -534,7 +544,9 @@ pub unsafe extern "C" fn jpeg_consume_input(mut cinfo: j_decompress_ptr) -> c_in
             (*(*cinfo).err).msg_parm.i[0usize] = (*cinfo).global_state;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                cinfo as j_common_ptr
+            );
             current_block_10 = 7149356873433890176;
         }
     }
@@ -556,7 +568,9 @@ pub unsafe extern "C" fn jpeg_consume_input(mut cinfo: j_decompress_ptr) -> c_in
  * Have we finished reading the input file?
  */
 #[no_mangle]
-pub unsafe extern "C" fn jpeg_input_complete(cinfo: j_decompress_ptr) -> boolean {
+pub unsafe extern "C" fn jpeg_input_complete(
+    cinfo: j_decompress_ptr,
+) -> boolean {
     if (*cinfo).global_state < 200i32 || (*cinfo).global_state > 210i32 {
         (*(*cinfo).err).msg_code = JERR_BAD_STATE as c_int;
         (*(*cinfo).err).msg_parm.i[0usize] = (*cinfo).global_state;
@@ -571,7 +585,9 @@ pub unsafe extern "C" fn jpeg_input_complete(cinfo: j_decompress_ptr) -> boolean
  * Is there more than one scan?
  */
 #[no_mangle]
-pub unsafe extern "C" fn jpeg_has_multiple_scans(cinfo: j_decompress_ptr) -> boolean {
+pub unsafe extern "C" fn jpeg_has_multiple_scans(
+    cinfo: j_decompress_ptr,
+) -> boolean {
     if (*cinfo).global_state < 202i32 || (*cinfo).global_state > 210i32 {
         (*(*cinfo).err).msg_code = JERR_BAD_STATE as c_int;
         (*(*cinfo).err).msg_parm.i[0usize] = (*cinfo).global_state;
@@ -590,7 +606,9 @@ pub unsafe extern "C" fn jpeg_has_multiple_scans(cinfo: j_decompress_ptr) -> boo
  * a suspending data source is used.
  */
 #[no_mangle]
-pub unsafe extern "C" fn jpeg_finish_decompress(mut cinfo: j_decompress_ptr) -> boolean {
+pub unsafe extern "C" fn jpeg_finish_decompress(
+    mut cinfo: j_decompress_ptr,
+) -> boolean {
     if ((*cinfo).global_state == 205i32 || (*cinfo).global_state == 206i32)
         && 0 == (*cinfo).buffered_image
     {
@@ -598,7 +616,9 @@ pub unsafe extern "C" fn jpeg_finish_decompress(mut cinfo: j_decompress_ptr) -> 
             (*(*cinfo).err).msg_code = JERR_TOO_LITTLE_DATA as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                cinfo as j_common_ptr
+            );
         }
         (*(*cinfo).master)
             .finish_output_pass

@@ -22,6 +22,8 @@ pub mod cdjpeg;
 #[path = "src/cmyk_h.rs"]
 pub mod cmyk_h;
 
+#[path = "src/internal.rs"]
+pub mod internal;
 #[path = "src/jcapimin.rs"]
 pub mod jcapimin;
 #[path = "src/jcapistd.rs"]
@@ -184,6 +186,8 @@ pub mod rdtarga;
 pub mod stddef_h;
 #[path = "src/stdlib.rs"]
 pub mod stdlib;
+
+
 
 #[path = "src/tjutil.rs"]
 pub mod tjutil;

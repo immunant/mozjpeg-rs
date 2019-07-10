@@ -1,3 +1,43 @@
+use libc::c_char;use libc::c_long;use libc::c_int;use libc::c_uint;pub use crate::jmorecfg_h::boolean;
+pub use crate::jmorecfg_h::FALSE;
+pub use crate::jmorecfg_h::JCOEF;
+pub use crate::jmorecfg_h::JDIMENSION;
+pub use crate::jmorecfg_h::JSAMPLE;
+pub use crate::jmorecfg_h::TRUE;
+pub use crate::jpeglib_h::j_common_ptr;
+pub use crate::jpeglib_h::jpeg_common_struct;
+pub use crate::jpeglib_h::jpeg_destroy;
+pub use crate::jpeglib_h::jpeg_error_mgr;
+pub use crate::jpeglib_h::jpeg_memory_mgr;
+pub use crate::jpeglib_h::jpeg_progress_mgr;
+pub use crate::jpeglib_h::jvirt_barray_control;
+pub use crate::jpeglib_h::jvirt_barray_ptr;
+pub use crate::jpeglib_h::jvirt_sarray_control;
+pub use crate::jpeglib_h::jvirt_sarray_ptr;
+pub use crate::jpeglib_h::C2RustUnnamed_2;
+pub use crate::jpeglib_h::JBLOCK;
+pub use crate::jpeglib_h::JBLOCKARRAY;
+pub use crate::jpeglib_h::JBLOCKROW;
+pub use crate::jpeglib_h::JSAMPARRAY;
+pub use crate::jpeglib_h::JSAMPROW;
+pub use crate::stddef_h::size_t;
+pub use crate::stddef_h::NULL;
+pub use crate::stdlib::_IO_codecvt;
+pub use crate::stdlib::_IO_lock_t;
+pub use crate::stdlib::_IO_marker;
+pub use crate::stdlib::_IO_wide_data;
+pub use crate::stdlib::__off64_t;
+pub use crate::stdlib::__off_t;
+pub use crate::stdlib::exit;
+use crate::stdlib::fprintf;
+use crate::stdlib::sprintf;
+use crate::stdlib::stderr;
+pub use crate::stdlib::EXIT_FAILURE;
+pub use crate::stdlib::FILE;
+pub use crate::stdlib::_IO_FILE;
+use libc;
+// =============== BEGIN jerror_h ================
+
 /*
  * jerror.h
  *
@@ -16,191 +56,155 @@
  * the JPEG library may wish to include this file to get the error codes
  * and/or the macros.
  */
+
 /*
  * To define the enum list of message codes, include this file without
  * defining macro JMESSAGE.  To create a message string table, include it
  * again with a suitable JMESSAGE definition (see jerror.c for an example).
  */
-/* First time through, define the enum list */
-/* JERROR_H */
-/* JMESSAGE */
-use libc::c_char;
-use libc::c_int;
-use libc::c_long;
-use libc::c_uint;
-pub type C2RustUnnamed_4 = c_uint;
-pub use crate::jpeglib_h::C2RustUnnamed_3;
-use libc;
 
-pub use crate::jmorecfg_h::boolean;
-pub use crate::jmorecfg_h::JCOEF;
-pub use crate::jmorecfg_h::JDIMENSION;
-pub use crate::jmorecfg_h::JSAMPLE;
-pub use crate::jpeglib_h::j_common_ptr;
-pub use crate::jpeglib_h::jpeg_common_struct;
-pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_memory_mgr;
-pub use crate::jpeglib_h::jpeg_progress_mgr;
-pub use crate::jpeglib_h::jvirt_barray_control;
-pub use crate::jpeglib_h::jvirt_barray_ptr;
-pub use crate::jpeglib_h::jvirt_sarray_control;
-pub use crate::jpeglib_h::jvirt_sarray_ptr;
-pub use crate::jpeglib_h::JBLOCK;
-pub use crate::jpeglib_h::JBLOCKARRAY;
-pub use crate::jpeglib_h::JBLOCKROW;
-pub use crate::jpeglib_h::JSAMPARRAY;
-pub use crate::jpeglib_h::JSAMPROW;
-pub use crate::stddef_h::size_t;
-pub use crate::stdlib::_IO_codecvt;
-pub use crate::stdlib::_IO_lock_t;
-pub use crate::stdlib::_IO_marker;
-pub use crate::stdlib::_IO_wide_data;
-pub use crate::stdlib::__off64_t;
-pub use crate::stdlib::__off_t;
-pub use crate::stdlib::FILE;
-pub use crate::stdlib::_IO_FILE;
-pub const JERR_BAD_STRUCT_SIZE: C2RustUnnamed_4 = 21;
-pub const JERR_BAD_LIB_VERSION: C2RustUnnamed_4 = 12;
-pub const JERR_CANT_SUSPEND: C2RustUnnamed_4 = 24;
-pub const JERR_BAD_STATE: C2RustUnnamed_4 = 20;
-pub const JERR_TOO_LITTLE_DATA: C2RustUnnamed_4 = 67;
-pub const JMSG_LASTMSGCODE: C2RustUnnamed_4 = 129;
-pub const JWRN_BOGUS_ICC: C2RustUnnamed_4 = 128;
-pub const JERR_UNSUPPORTED_SUSPEND: C2RustUnnamed_4 = 127;
-pub const JERR_BAD_PARAM_VALUE: C2RustUnnamed_4 = 126;
-pub const JERR_BAD_PARAM: C2RustUnnamed_4 = 125;
-pub const JERR_BAD_CROP_SPEC: C2RustUnnamed_4 = 124;
-pub const JWRN_TOO_MUCH_DATA: C2RustUnnamed_4 = 123;
-pub const JWRN_NOT_SEQUENTIAL: C2RustUnnamed_4 = 122;
-pub const JWRN_MUST_RESYNC: C2RustUnnamed_4 = 121;
-pub const JWRN_JPEG_EOF: C2RustUnnamed_4 = 120;
-pub const JWRN_JFIF_MAJOR: C2RustUnnamed_4 = 119;
-pub const JWRN_HUFF_BAD_CODE: C2RustUnnamed_4 = 118;
-pub const JWRN_HIT_MARKER: C2RustUnnamed_4 = 117;
-pub const JWRN_EXTRANEOUS_DATA: C2RustUnnamed_4 = 116;
-pub const JWRN_BOGUS_PROGRESSION: C2RustUnnamed_4 = 115;
-pub const JWRN_ADOBE_XFORM: C2RustUnnamed_4 = 114;
-pub const JTRC_XMS_OPEN: C2RustUnnamed_4 = 113;
-pub const JTRC_XMS_CLOSE: C2RustUnnamed_4 = 112;
-pub const JTRC_UNKNOWN_IDS: C2RustUnnamed_4 = 111;
-pub const JTRC_THUMB_RGB: C2RustUnnamed_4 = 110;
-pub const JTRC_THUMB_PALETTE: C2RustUnnamed_4 = 109;
-pub const JTRC_THUMB_JPEG: C2RustUnnamed_4 = 108;
-pub const JTRC_TFILE_OPEN: C2RustUnnamed_4 = 107;
-pub const JTRC_TFILE_CLOSE: C2RustUnnamed_4 = 106;
-pub const JTRC_SOS_PARAMS: C2RustUnnamed_4 = 105;
-pub const JTRC_SOS_COMPONENT: C2RustUnnamed_4 = 104;
-pub const JTRC_SOS: C2RustUnnamed_4 = 103;
-pub const JTRC_SOI: C2RustUnnamed_4 = 102;
-pub const JTRC_SOF_COMPONENT: C2RustUnnamed_4 = 101;
-pub const JTRC_SOF: C2RustUnnamed_4 = 100;
-pub const JTRC_SMOOTH_NOTIMPL: C2RustUnnamed_4 = 99;
-pub const JTRC_RST: C2RustUnnamed_4 = 98;
-pub const JTRC_RECOVERY_ACTION: C2RustUnnamed_4 = 97;
-pub const JTRC_QUANT_SELECTED: C2RustUnnamed_4 = 96;
-pub const JTRC_QUANT_NCOLORS: C2RustUnnamed_4 = 95;
-pub const JTRC_QUANT_3_NCOLORS: C2RustUnnamed_4 = 94;
-pub const JTRC_QUANTVALS: C2RustUnnamed_4 = 93;
-pub const JTRC_PARMLESS_MARKER: C2RustUnnamed_4 = 92;
-pub const JTRC_MISC_MARKER: C2RustUnnamed_4 = 91;
-pub const JTRC_JFIF_THUMBNAIL: C2RustUnnamed_4 = 90;
-pub const JTRC_JFIF_EXTENSION: C2RustUnnamed_4 = 89;
-pub const JTRC_JFIF_BADTHUMBNAILSIZE: C2RustUnnamed_4 = 88;
-pub const JTRC_JFIF: C2RustUnnamed_4 = 87;
-pub const JTRC_HUFFBITS: C2RustUnnamed_4 = 86;
-pub const JTRC_EOI: C2RustUnnamed_4 = 85;
-pub const JTRC_EMS_OPEN: C2RustUnnamed_4 = 84;
-pub const JTRC_EMS_CLOSE: C2RustUnnamed_4 = 83;
-pub const JTRC_DRI: C2RustUnnamed_4 = 82;
-pub const JTRC_DQT: C2RustUnnamed_4 = 81;
-pub const JTRC_DHT: C2RustUnnamed_4 = 80;
-pub const JTRC_DAC: C2RustUnnamed_4 = 79;
-pub const JTRC_APP14: C2RustUnnamed_4 = 78;
-pub const JTRC_APP0: C2RustUnnamed_4 = 77;
-pub const JTRC_ADOBE: C2RustUnnamed_4 = 76;
-pub const JTRC_16BIT_TABLES: C2RustUnnamed_4 = 75;
-pub const JMSG_VERSION: C2RustUnnamed_4 = 74;
-pub const JMSG_COPYRIGHT: C2RustUnnamed_4 = 73;
-pub const JERR_XMS_WRITE: C2RustUnnamed_4 = 72;
-pub const JERR_XMS_READ: C2RustUnnamed_4 = 71;
-pub const JERR_WIDTH_OVERFLOW: C2RustUnnamed_4 = 70;
-pub const JERR_VIRTUAL_BUG: C2RustUnnamed_4 = 69;
-pub const JERR_UNKNOWN_MARKER: C2RustUnnamed_4 = 68;
-pub const JERR_TFILE_WRITE: C2RustUnnamed_4 = 66;
-pub const JERR_TFILE_SEEK: C2RustUnnamed_4 = 65;
-pub const JERR_TFILE_READ: C2RustUnnamed_4 = 64;
-pub const JERR_TFILE_CREATE: C2RustUnnamed_4 = 63;
-pub const JERR_SOS_NO_SOF: C2RustUnnamed_4 = 62;
-pub const JERR_SOI_DUPLICATE: C2RustUnnamed_4 = 61;
-pub const JERR_SOF_UNSUPPORTED: C2RustUnnamed_4 = 60;
-pub const JERR_SOF_NO_SOS: C2RustUnnamed_4 = 59;
-pub const JERR_SOF_DUPLICATE: C2RustUnnamed_4 = 58;
-pub const JERR_QUANT_MANY_COLORS: C2RustUnnamed_4 = 57;
-pub const JERR_QUANT_FEW_COLORS: C2RustUnnamed_4 = 56;
-pub const JERR_QUANT_COMPONENTS: C2RustUnnamed_4 = 55;
-pub const JERR_OUT_OF_MEMORY: C2RustUnnamed_4 = 54;
-pub const JERR_NO_SOI: C2RustUnnamed_4 = 53;
-pub const JERR_NO_QUANT_TABLE: C2RustUnnamed_4 = 52;
-pub const JERR_NO_IMAGE: C2RustUnnamed_4 = 51;
-pub const JERR_NO_HUFF_TABLE: C2RustUnnamed_4 = 50;
-pub const JERR_NO_BACKING_STORE: C2RustUnnamed_4 = 49;
-pub const JERR_NOT_COMPILED: C2RustUnnamed_4 = 48;
-pub const JERR_NOTIMPL: C2RustUnnamed_4 = 47;
-pub const JERR_MODE_CHANGE: C2RustUnnamed_4 = 46;
-pub const JERR_MISSING_DATA: C2RustUnnamed_4 = 45;
-pub const JERR_MISMATCHED_QUANT_TABLE: C2RustUnnamed_4 = 44;
-pub const JERR_INPUT_EOF: C2RustUnnamed_4 = 43;
-pub const JERR_INPUT_EMPTY: C2RustUnnamed_4 = 42;
-pub const JERR_IMAGE_TOO_BIG: C2RustUnnamed_4 = 41;
-pub const JERR_HUFF_MISSING_CODE: C2RustUnnamed_4 = 40;
-pub const JERR_HUFF_CLEN_OVERFLOW: C2RustUnnamed_4 = 39;
-pub const JERR_FRACT_SAMPLE_NOTIMPL: C2RustUnnamed_4 = 38;
-pub const JERR_FILE_WRITE: C2RustUnnamed_4 = 37;
-pub const JERR_FILE_READ: C2RustUnnamed_4 = 36;
-pub const JERR_EOI_EXPECTED: C2RustUnnamed_4 = 35;
-pub const JERR_EMS_WRITE: C2RustUnnamed_4 = 34;
-pub const JERR_EMS_READ: C2RustUnnamed_4 = 33;
-pub const JERR_EMPTY_IMAGE: C2RustUnnamed_4 = 32;
-pub const JERR_DQT_INDEX: C2RustUnnamed_4 = 31;
-pub const JERR_DHT_INDEX: C2RustUnnamed_4 = 30;
-pub const JERR_DAC_VALUE: C2RustUnnamed_4 = 29;
-pub const JERR_DAC_INDEX: C2RustUnnamed_4 = 28;
-pub const JERR_CONVERSION_NOTIMPL: C2RustUnnamed_4 = 27;
-pub const JERR_COMPONENT_COUNT: C2RustUnnamed_4 = 26;
-pub const JERR_CCIR601_NOTIMPL: C2RustUnnamed_4 = 25;
-pub const JERR_BUFFER_SIZE: C2RustUnnamed_4 = 23;
-pub const JERR_BAD_VIRTUAL_ACCESS: C2RustUnnamed_4 = 22;
-pub const JERR_BAD_SCAN_SCRIPT: C2RustUnnamed_4 = 19;
-pub const JERR_BAD_SAMPLING: C2RustUnnamed_4 = 18;
-pub const JERR_BAD_PROG_SCRIPT: C2RustUnnamed_4 = 17;
-pub const JERR_BAD_PROGRESSION: C2RustUnnamed_4 = 16;
-pub const JERR_BAD_PRECISION: C2RustUnnamed_4 = 15;
-pub const JERR_BAD_POOL_ID: C2RustUnnamed_4 = 14;
-pub const JERR_BAD_MCU_SIZE: C2RustUnnamed_4 = 13;
-pub const JERR_BAD_LENGTH: C2RustUnnamed_4 = 11;
-pub const JERR_BAD_J_COLORSPACE: C2RustUnnamed_4 = 10;
-pub const JERR_BAD_IN_COLORSPACE: C2RustUnnamed_4 = 9;
-pub const JERR_BAD_HUFF_TABLE: C2RustUnnamed_4 = 8;
-pub const JERR_BAD_DCTSIZE: C2RustUnnamed_4 = 7;
-pub const JERR_BAD_DCT_COEF: C2RustUnnamed_4 = 6;
-pub const JERR_BAD_COMPONENT_ID: C2RustUnnamed_4 = 5;
-pub const JERR_BAD_BUFFER_MODE: C2RustUnnamed_4 = 4;
-pub const JERR_BAD_ALLOC_CHUNK: C2RustUnnamed_4 = 3;
-pub const JERR_BAD_ALIGN_TYPE: C2RustUnnamed_4 = 2;
+/* First time through, define the enum list */
+
+/* JERROR_H */
+
+/* JMESSAGE */
+pub type C2RustUnnamed_3 = c_uint;
+pub const JERR_BAD_STRUCT_SIZE: C2RustUnnamed_3 = 21;
+pub const JERR_BAD_LIB_VERSION: C2RustUnnamed_3 = 12;
+pub const JERR_CANT_SUSPEND: C2RustUnnamed_3 = 24;
+pub const JERR_BAD_STATE: C2RustUnnamed_3 = 20;
+pub const JERR_TOO_LITTLE_DATA: C2RustUnnamed_3 = 67;
+pub const JMSG_LASTMSGCODE: C2RustUnnamed_3 = 129;
+pub const JWRN_BOGUS_ICC: C2RustUnnamed_3 = 128;
+pub const JERR_UNSUPPORTED_SUSPEND: C2RustUnnamed_3 = 127;
+pub const JERR_BAD_PARAM_VALUE: C2RustUnnamed_3 = 126;
+pub const JERR_BAD_PARAM: C2RustUnnamed_3 = 125;
+pub const JERR_BAD_CROP_SPEC: C2RustUnnamed_3 = 124;
+pub const JWRN_TOO_MUCH_DATA: C2RustUnnamed_3 = 123;
+pub const JWRN_NOT_SEQUENTIAL: C2RustUnnamed_3 = 122;
+pub const JWRN_MUST_RESYNC: C2RustUnnamed_3 = 121;
+pub const JWRN_JPEG_EOF: C2RustUnnamed_3 = 120;
+pub const JWRN_JFIF_MAJOR: C2RustUnnamed_3 = 119;
+pub const JWRN_HUFF_BAD_CODE: C2RustUnnamed_3 = 118;
+pub const JWRN_HIT_MARKER: C2RustUnnamed_3 = 117;
+pub const JWRN_EXTRANEOUS_DATA: C2RustUnnamed_3 = 116;
+pub const JWRN_BOGUS_PROGRESSION: C2RustUnnamed_3 = 115;
+pub const JWRN_ADOBE_XFORM: C2RustUnnamed_3 = 114;
+pub const JTRC_XMS_OPEN: C2RustUnnamed_3 = 113;
+pub const JTRC_XMS_CLOSE: C2RustUnnamed_3 = 112;
+pub const JTRC_UNKNOWN_IDS: C2RustUnnamed_3 = 111;
+pub const JTRC_THUMB_RGB: C2RustUnnamed_3 = 110;
+pub const JTRC_THUMB_PALETTE: C2RustUnnamed_3 = 109;
+pub const JTRC_THUMB_JPEG: C2RustUnnamed_3 = 108;
+pub const JTRC_TFILE_OPEN: C2RustUnnamed_3 = 107;
+pub const JTRC_TFILE_CLOSE: C2RustUnnamed_3 = 106;
+pub const JTRC_SOS_PARAMS: C2RustUnnamed_3 = 105;
+pub const JTRC_SOS_COMPONENT: C2RustUnnamed_3 = 104;
+pub const JTRC_SOS: C2RustUnnamed_3 = 103;
+pub const JTRC_SOI: C2RustUnnamed_3 = 102;
+pub const JTRC_SOF_COMPONENT: C2RustUnnamed_3 = 101;
+pub const JTRC_SOF: C2RustUnnamed_3 = 100;
+pub const JTRC_SMOOTH_NOTIMPL: C2RustUnnamed_3 = 99;
+pub const JTRC_RST: C2RustUnnamed_3 = 98;
+pub const JTRC_RECOVERY_ACTION: C2RustUnnamed_3 = 97;
+pub const JTRC_QUANT_SELECTED: C2RustUnnamed_3 = 96;
+pub const JTRC_QUANT_NCOLORS: C2RustUnnamed_3 = 95;
+pub const JTRC_QUANT_3_NCOLORS: C2RustUnnamed_3 = 94;
+pub const JTRC_QUANTVALS: C2RustUnnamed_3 = 93;
+pub const JTRC_PARMLESS_MARKER: C2RustUnnamed_3 = 92;
+pub const JTRC_MISC_MARKER: C2RustUnnamed_3 = 91;
+pub const JTRC_JFIF_THUMBNAIL: C2RustUnnamed_3 = 90;
+pub const JTRC_JFIF_EXTENSION: C2RustUnnamed_3 = 89;
+pub const JTRC_JFIF_BADTHUMBNAILSIZE: C2RustUnnamed_3 = 88;
+pub const JTRC_JFIF: C2RustUnnamed_3 = 87;
+pub const JTRC_HUFFBITS: C2RustUnnamed_3 = 86;
+pub const JTRC_EOI: C2RustUnnamed_3 = 85;
+pub const JTRC_EMS_OPEN: C2RustUnnamed_3 = 84;
+pub const JTRC_EMS_CLOSE: C2RustUnnamed_3 = 83;
+pub const JTRC_DRI: C2RustUnnamed_3 = 82;
+pub const JTRC_DQT: C2RustUnnamed_3 = 81;
+pub const JTRC_DHT: C2RustUnnamed_3 = 80;
+pub const JTRC_DAC: C2RustUnnamed_3 = 79;
+pub const JTRC_APP14: C2RustUnnamed_3 = 78;
+pub const JTRC_APP0: C2RustUnnamed_3 = 77;
+pub const JTRC_ADOBE: C2RustUnnamed_3 = 76;
+pub const JTRC_16BIT_TABLES: C2RustUnnamed_3 = 75;
+pub const JMSG_VERSION: C2RustUnnamed_3 = 74;
+pub const JMSG_COPYRIGHT: C2RustUnnamed_3 = 73;
+pub const JERR_XMS_WRITE: C2RustUnnamed_3 = 72;
+pub const JERR_XMS_READ: C2RustUnnamed_3 = 71;
+pub const JERR_WIDTH_OVERFLOW: C2RustUnnamed_3 = 70;
+pub const JERR_VIRTUAL_BUG: C2RustUnnamed_3 = 69;
+pub const JERR_UNKNOWN_MARKER: C2RustUnnamed_3 = 68;
+pub const JERR_TFILE_WRITE: C2RustUnnamed_3 = 66;
+pub const JERR_TFILE_SEEK: C2RustUnnamed_3 = 65;
+pub const JERR_TFILE_READ: C2RustUnnamed_3 = 64;
+pub const JERR_TFILE_CREATE: C2RustUnnamed_3 = 63;
+pub const JERR_SOS_NO_SOF: C2RustUnnamed_3 = 62;
+pub const JERR_SOI_DUPLICATE: C2RustUnnamed_3 = 61;
+pub const JERR_SOF_UNSUPPORTED: C2RustUnnamed_3 = 60;
+pub const JERR_SOF_NO_SOS: C2RustUnnamed_3 = 59;
+pub const JERR_SOF_DUPLICATE: C2RustUnnamed_3 = 58;
+pub const JERR_QUANT_MANY_COLORS: C2RustUnnamed_3 = 57;
+pub const JERR_QUANT_FEW_COLORS: C2RustUnnamed_3 = 56;
+pub const JERR_QUANT_COMPONENTS: C2RustUnnamed_3 = 55;
+pub const JERR_OUT_OF_MEMORY: C2RustUnnamed_3 = 54;
+pub const JERR_NO_SOI: C2RustUnnamed_3 = 53;
+pub const JERR_NO_QUANT_TABLE: C2RustUnnamed_3 = 52;
+pub const JERR_NO_IMAGE: C2RustUnnamed_3 = 51;
+pub const JERR_NO_HUFF_TABLE: C2RustUnnamed_3 = 50;
+pub const JERR_NO_BACKING_STORE: C2RustUnnamed_3 = 49;
+pub const JERR_NOT_COMPILED: C2RustUnnamed_3 = 48;
+pub const JERR_NOTIMPL: C2RustUnnamed_3 = 47;
+pub const JERR_MODE_CHANGE: C2RustUnnamed_3 = 46;
+pub const JERR_MISSING_DATA: C2RustUnnamed_3 = 45;
+pub const JERR_MISMATCHED_QUANT_TABLE: C2RustUnnamed_3 = 44;
+pub const JERR_INPUT_EOF: C2RustUnnamed_3 = 43;
+pub const JERR_INPUT_EMPTY: C2RustUnnamed_3 = 42;
+pub const JERR_IMAGE_TOO_BIG: C2RustUnnamed_3 = 41;
+pub const JERR_HUFF_MISSING_CODE: C2RustUnnamed_3 = 40;
+pub const JERR_HUFF_CLEN_OVERFLOW: C2RustUnnamed_3 = 39;
+pub const JERR_FRACT_SAMPLE_NOTIMPL: C2RustUnnamed_3 = 38;
+pub const JERR_FILE_WRITE: C2RustUnnamed_3 = 37;
+pub const JERR_FILE_READ: C2RustUnnamed_3 = 36;
+pub const JERR_EOI_EXPECTED: C2RustUnnamed_3 = 35;
+pub const JERR_EMS_WRITE: C2RustUnnamed_3 = 34;
+pub const JERR_EMS_READ: C2RustUnnamed_3 = 33;
+pub const JERR_EMPTY_IMAGE: C2RustUnnamed_3 = 32;
+pub const JERR_DQT_INDEX: C2RustUnnamed_3 = 31;
+pub const JERR_DHT_INDEX: C2RustUnnamed_3 = 30;
+pub const JERR_DAC_VALUE: C2RustUnnamed_3 = 29;
+pub const JERR_DAC_INDEX: C2RustUnnamed_3 = 28;
+pub const JERR_CONVERSION_NOTIMPL: C2RustUnnamed_3 = 27;
+pub const JERR_COMPONENT_COUNT: C2RustUnnamed_3 = 26;
+pub const JERR_CCIR601_NOTIMPL: C2RustUnnamed_3 = 25;
+pub const JERR_BUFFER_SIZE: C2RustUnnamed_3 = 23;
+pub const JERR_BAD_VIRTUAL_ACCESS: C2RustUnnamed_3 = 22;
+pub const JERR_BAD_SCAN_SCRIPT: C2RustUnnamed_3 = 19;
+pub const JERR_BAD_SAMPLING: C2RustUnnamed_3 = 18;
+pub const JERR_BAD_PROG_SCRIPT: C2RustUnnamed_3 = 17;
+pub const JERR_BAD_PROGRESSION: C2RustUnnamed_3 = 16;
+pub const JERR_BAD_PRECISION: C2RustUnnamed_3 = 15;
+pub const JERR_BAD_POOL_ID: C2RustUnnamed_3 = 14;
+pub const JERR_BAD_MCU_SIZE: C2RustUnnamed_3 = 13;
+pub const JERR_BAD_LENGTH: C2RustUnnamed_3 = 11;
+pub const JERR_BAD_J_COLORSPACE: C2RustUnnamed_3 = 10;
+pub const JERR_BAD_IN_COLORSPACE: C2RustUnnamed_3 = 9;
+pub const JERR_BAD_HUFF_TABLE: C2RustUnnamed_3 = 8;
+pub const JERR_BAD_DCTSIZE: C2RustUnnamed_3 = 7;
+pub const JERR_BAD_DCT_COEF: C2RustUnnamed_3 = 6;
+pub const JERR_BAD_COMPONENT_ID: C2RustUnnamed_3 = 5;
+pub const JERR_BAD_BUFFER_MODE: C2RustUnnamed_3 = 4;
+pub const JERR_BAD_ALLOC_CHUNK: C2RustUnnamed_3 = 3;
+pub const JERR_BAD_ALIGN_TYPE: C2RustUnnamed_3 = 2;
 /* For maintenance convenience, list is alphabetical by message code name */
-pub const JERR_ARITH_NOTIMPL: C2RustUnnamed_4 = 1;
+pub const JERR_ARITH_NOTIMPL: C2RustUnnamed_3 = 1;
 /* JMAKE_ENUM_LIST */
+
 /* Must be first entry! */
-pub const JMSG_NOMESSAGE: C2RustUnnamed_4 = 0;
-pub use crate::jmorecfg_h::FALSE;
-pub use crate::jmorecfg_h::TRUE;
-pub use crate::jpeglib_h::jpeg_destroy;
-pub use crate::stddef_h::NULL;
-pub use crate::stdlib::exit;
-use crate::stdlib::fprintf;
-use crate::stdlib::sprintf;
-use crate::stdlib::stderr;
-pub use crate::stdlib::EXIT_FAILURE;
+pub const JMSG_NOMESSAGE: C2RustUnnamed_3 = 0;
+// ================ END jerror_h ================
+
 /*
  * jerror.c
  *
@@ -223,8 +227,11 @@ pub use crate::stdlib::EXIT_FAILURE;
  *
  * These routines are used by both the compression and decompression code.
  */
+
 /* this is not a core library module, so it doesn't define JPEG_INTERNALS */
+
 /* define exit() codes if not provided */
+
 /*
  * Create the message string table.
  * We do this from the master message list in jerror.h by re-reading
@@ -251,8 +258,10 @@ pub static mut jpeg_std_message_table: [*const c_char; 130] = [
     b"Sampling factors too large for interleaved scan\x00" as *const u8 as *const c_char,
     b"Invalid memory pool code %d\x00" as *const u8 as *const c_char,
     b"Unsupported JPEG data precision %d\x00" as *const u8 as *const c_char,
-    b"Invalid progressive parameters Ss=%d Se=%d Ah=%d Al=%d\x00" as *const u8 as *const c_char,
-    b"Invalid progressive parameters at scan script entry %d\x00" as *const u8 as *const c_char,
+    b"Invalid progressive parameters Ss=%d Se=%d Ah=%d Al=%d\x00" as *const u8
+        as *const c_char,
+    b"Invalid progressive parameters at scan script entry %d\x00" as *const u8
+        as *const c_char,
     b"Bogus sampling factors\x00" as *const u8 as *const c_char,
     b"Invalid scan script at entry %d\x00" as *const u8 as *const c_char,
     b"Improper call to JPEG library in state %d\x00" as *const u8 as *const c_char,
@@ -303,7 +312,8 @@ pub static mut jpeg_std_message_table: [*const c_char; 130] = [
     b"Failed to create temporary file %s\x00" as *const u8 as *const c_char,
     b"Read failed on temporary file\x00" as *const u8 as *const c_char,
     b"Seek failed on temporary file\x00" as *const u8 as *const c_char,
-    b"Write failed on temporary file --- out of disk space?\x00" as *const u8 as *const c_char,
+    b"Write failed on temporary file --- out of disk space?\x00" as *const u8
+        as *const c_char,
     b"Application transferred too few scanlines\x00" as *const u8 as *const c_char,
     b"Unsupported marker type 0x%02x\x00" as *const u8 as *const c_char,
     b"Virtual array controller messed up\x00" as *const u8 as *const c_char,
@@ -340,8 +350,10 @@ pub static mut jpeg_std_message_table: [*const c_char; 130] = [
     b"Selected %d colors for quantization\x00" as *const u8 as *const c_char,
     b"At marker 0x%02x, recovery action %d\x00" as *const u8 as *const c_char,
     b"RST%d\x00" as *const u8 as *const c_char,
-    b"Smoothing not supported with nonstandard sampling ratios\x00" as *const u8 as *const c_char,
-    b"Start Of Frame 0x%02x: width=%u, height=%u, components=%d\x00" as *const u8 as *const c_char,
+    b"Smoothing not supported with nonstandard sampling ratios\x00" as *const u8
+        as *const c_char,
+    b"Start Of Frame 0x%02x: width=%u, height=%u, components=%d\x00" as *const u8
+        as *const c_char,
     b"    Component %d: %dhx%dv q=%d\x00" as *const u8 as *const c_char,
     b"Start of Image\x00" as *const u8 as *const c_char,
     b"Start Of Scan: %d components\x00" as *const u8 as *const c_char,
@@ -351,8 +363,10 @@ pub static mut jpeg_std_message_table: [*const c_char; 130] = [
     b"Opened temporary file %s\x00" as *const u8 as *const c_char,
     b"JFIF extension marker: JPEG-compressed thumbnail image, length %u\x00" as *const u8
         as *const c_char,
-    b"JFIF extension marker: palette thumbnail image, length %u\x00" as *const u8 as *const c_char,
-    b"JFIF extension marker: RGB thumbnail image, length %u\x00" as *const u8 as *const c_char,
+    b"JFIF extension marker: palette thumbnail image, length %u\x00" as *const u8
+        as *const c_char,
+    b"JFIF extension marker: RGB thumbnail image, length %u\x00" as *const u8
+        as *const c_char,
     b"Unrecognized component IDs %d %d %d, assuming YCbCr\x00" as *const u8 as *const c_char,
     b"Freed XMS handle %u\x00" as *const u8 as *const c_char,
     b"Obtained XMS handle %u\x00" as *const u8 as *const c_char,
@@ -365,7 +379,8 @@ pub static mut jpeg_std_message_table: [*const c_char; 130] = [
     b"Corrupt JPEG data: bad Huffman code\x00" as *const u8 as *const c_char,
     b"Warning: unknown JFIF revision number %d.%02d\x00" as *const u8 as *const c_char,
     b"Premature end of JPEG file\x00" as *const u8 as *const c_char,
-    b"Corrupt JPEG data: found marker 0x%02x instead of RST%d\x00" as *const u8 as *const c_char,
+    b"Corrupt JPEG data: found marker 0x%02x instead of RST%d\x00" as *const u8
+        as *const c_char,
     b"Invalid SOS parameters for sequential JPEG\x00" as *const u8 as *const c_char,
     b"Application transferred too many scanlines\x00" as *const u8 as *const c_char,
     b"Invalid crop request\x00" as *const u8 as *const c_char,
@@ -429,7 +444,10 @@ unsafe extern "C" fn output_message(mut cinfo: j_common_ptr) {
  * An application might override this method if it wanted to abort on warnings
  * or change the policy about which messages to display.
  */
-unsafe extern "C" fn emit_message(mut cinfo: j_common_ptr, mut msg_level: c_int) {
+unsafe extern "C" fn emit_message(
+    mut cinfo: j_common_ptr,
+    mut msg_level: c_int,
+) {
     let mut err: *mut jpeg_error_mgr = (*cinfo).err;
     if msg_level < 0i32 {
         if (*err).num_warnings == 0i32 as c_long || (*err).trace_level >= 3i32 {
@@ -446,7 +464,10 @@ unsafe extern "C" fn emit_message(mut cinfo: j_common_ptr, mut msg_level: c_int)
  * characters.  Note that no '\n' character is added to the string.
  * Few applications should need to override this method.
  */
-unsafe extern "C" fn format_message(mut cinfo: j_common_ptr, mut buffer: *mut c_char) {
+unsafe extern "C" fn format_message(
+    mut cinfo: j_common_ptr,
+    mut buffer: *mut c_char,
+) {
     let mut err: *mut jpeg_error_mgr = (*cinfo).err;
     let mut msg_code: c_int = (*err).msg_code;
     let mut msgtext: *const c_char = NULL as *const c_char;
@@ -518,7 +539,9 @@ unsafe extern "C" fn reset_error_mgr(mut cinfo: j_common_ptr) {
  * non-ANSI compilers, but the macro is still included because there is some
  * software out there that uses it.
  */
+
 /* Default error-management setup */
+
 /*
  * Fill in the standard error-handling methods in a jpeg_error_mgr object.
  * Typical call is:
@@ -529,14 +552,23 @@ unsafe extern "C" fn reset_error_mgr(mut cinfo: j_common_ptr) {
  * after which the application may override some of the methods.
  */
 #[no_mangle]
-pub unsafe extern "C" fn jpeg_std_error(mut err: *mut jpeg_error_mgr) -> *mut jpeg_error_mgr {
-    (*err).error_exit = Some(error_exit as unsafe extern "C" fn(_: j_common_ptr) -> ());
-    (*err).emit_message =
-        Some(emit_message as unsafe extern "C" fn(_: j_common_ptr, _: c_int) -> ());
-    (*err).output_message = Some(output_message as unsafe extern "C" fn(_: j_common_ptr) -> ());
-    (*err).format_message =
-        Some(format_message as unsafe extern "C" fn(_: j_common_ptr, _: *mut c_char) -> ());
-    (*err).reset_error_mgr = Some(reset_error_mgr as unsafe extern "C" fn(_: j_common_ptr) -> ());
+pub unsafe extern "C" fn jpeg_std_error(
+    mut err: *mut jpeg_error_mgr,
+) -> *mut jpeg_error_mgr {
+    (*err).error_exit =
+        Some(error_exit as unsafe extern "C" fn(_: j_common_ptr) -> ());
+    (*err).emit_message = Some(
+        emit_message
+            as unsafe extern "C" fn(_: j_common_ptr, _: c_int) -> (),
+    );
+    (*err).output_message =
+        Some(output_message as unsafe extern "C" fn(_: j_common_ptr) -> ());
+    (*err).format_message = Some(
+        format_message
+            as unsafe extern "C" fn(_: j_common_ptr, _: *mut c_char) -> (),
+    );
+    (*err).reset_error_mgr =
+        Some(reset_error_mgr as unsafe extern "C" fn(_: j_common_ptr) -> ());
     (*err).trace_level = 0i32;
     (*err).num_warnings = 0i32 as c_long;
     (*err).msg_code = 0i32;
