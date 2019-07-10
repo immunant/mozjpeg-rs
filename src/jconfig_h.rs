@@ -1,4 +1,5 @@
-use libc::c_int;use ::libc;
+use ::libc;
+use libc::c_int;
 /* Version ID for the JPEG library.
  * Might be useful for tests like "#if JPEG_LIB_VERSION >= 60".
  */

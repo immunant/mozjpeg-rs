@@ -1,4 +1,4 @@
-use libc::c_ulong;use libc::c_int;use libc::c_long;use libc::c_void;pub use crate::jerror::C2RustUnnamed_3;
+pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -162,6 +162,10 @@ use crate::stdlib::malloc;
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::_IO_FILE;
 use libc;
+use libc::c_int;
+use libc::c_long;
+use libc::c_ulong;
+use libc::c_void;
 /*
  * jmemnobs.c
  *
@@ -299,8 +303,7 @@ pub unsafe extern "C" fn jpeg_mem_available(
 ) -> size_t {
     if 0 != (*(*cinfo).mem).max_memory_to_use {
         if (*(*cinfo).mem).max_memory_to_use as size_t > already_allocated {
-            return ((*(*cinfo).mem).max_memory_to_use as c_ulong)
-                .wrapping_sub(already_allocated);
+            return ((*(*cinfo).mem).max_memory_to_use as c_ulong).wrapping_sub(already_allocated);
         } else {
             return 0i32 as size_t;
         }

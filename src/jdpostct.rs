@@ -1,4 +1,4 @@
-use libc::c_uint;use libc::c_int;use libc::c_void;use libc::c_ulong;use libc::c_long;pub use crate::jerror::C2RustUnnamed_3;
+pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -213,6 +213,11 @@ pub use crate::jpeglib_h::J_DITHER_MODE;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 use libc;
+use libc::c_int;
+use libc::c_long;
+use libc::c_uint;
+use libc::c_ulong;
+use libc::c_void;
 pub type my_post_ptr = *mut my_post_controller;
 /*
  * jdpostct.c
@@ -248,10 +253,7 @@ pub struct my_post_controller {
 /*
  * Initialize for a processing pass.
  */
-unsafe extern "C" fn start_pass_dpost(
-    mut cinfo: j_decompress_ptr,
-    mut pass_mode: J_BUF_MODE,
-) {
+unsafe extern "C" fn start_pass_dpost(mut cinfo: j_decompress_ptr, mut pass_mode: J_BUF_MODE) {
     let mut post: my_post_ptr = (*cinfo).post as my_post_ptr;
     match pass_mode as c_uint {
         0 => {
@@ -288,9 +290,7 @@ unsafe extern "C" fn start_pass_dpost(
                 (*(*cinfo).err).msg_code = JERR_BAD_BUFFER_MODE as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             (*post).pub_0.post_process_data = Some(
                 post_process_prepass
@@ -310,9 +310,7 @@ unsafe extern "C" fn start_pass_dpost(
                 (*(*cinfo).err).msg_code = JERR_BAD_BUFFER_MODE as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             (*post).pub_0.post_process_data = Some(
                 post_process_2pass
@@ -331,9 +329,7 @@ unsafe extern "C" fn start_pass_dpost(
             (*(*cinfo).err).msg_code = JERR_BAD_BUFFER_MODE as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
     }
     (*post).next_row = 0i32 as JDIMENSION;
@@ -380,8 +376,7 @@ unsafe extern "C" fn post_process_1pass(
         output_buf.offset(*out_row_ctr as isize),
         num_rows as c_int,
     );
-    *out_row_ctr = (*out_row_ctr as c_uint).wrapping_add(num_rows)
-        as JDIMENSION as JDIMENSION;
+    *out_row_ctr = (*out_row_ctr as c_uint).wrapping_add(num_rows) as JDIMENSION as JDIMENSION;
 }
 /*
  * Process some data in the first pass of 2-pass quantization.
@@ -431,13 +426,11 @@ unsafe extern "C" fn post_process_prepass(
             NULL as *mut c_void as JSAMPARRAY,
             num_rows as c_int,
         );
-        *out_row_ctr = (*out_row_ctr as c_uint).wrapping_add(num_rows)
-            as JDIMENSION as JDIMENSION
+        *out_row_ctr = (*out_row_ctr as c_uint).wrapping_add(num_rows) as JDIMENSION as JDIMENSION
     }
     if (*post).next_row >= (*post).strip_height {
-        (*post).starting_row =
-            ((*post).starting_row as c_uint).wrapping_add((*post).strip_height)
-                as JDIMENSION as JDIMENSION;
+        (*post).starting_row = ((*post).starting_row as c_uint).wrapping_add((*post).strip_height)
+            as JDIMENSION as JDIMENSION;
         (*post).next_row = 0i32 as JDIMENSION
     };
 }
@@ -484,14 +477,12 @@ unsafe extern "C" fn post_process_2pass(
         output_buf.offset(*out_row_ctr as isize),
         num_rows as c_int,
     );
-    *out_row_ctr = (*out_row_ctr as c_uint).wrapping_add(num_rows)
-        as JDIMENSION as JDIMENSION;
-    (*post).next_row = ((*post).next_row as c_uint).wrapping_add(num_rows)
-        as JDIMENSION as JDIMENSION;
+    *out_row_ctr = (*out_row_ctr as c_uint).wrapping_add(num_rows) as JDIMENSION as JDIMENSION;
+    (*post).next_row =
+        ((*post).next_row as c_uint).wrapping_add(num_rows) as JDIMENSION as JDIMENSION;
     if (*post).next_row >= (*post).strip_height {
-        (*post).starting_row =
-            ((*post).starting_row as c_uint).wrapping_add((*post).strip_height)
-                as JDIMENSION as JDIMENSION;
+        (*post).starting_row = ((*post).starting_row as c_uint).wrapping_add((*post).strip_height)
+            as JDIMENSION as JDIMENSION;
         (*post).next_row = 0i32 as JDIMENSION
     };
 }
@@ -513,13 +504,8 @@ pub unsafe extern "C" fn jinit_d_post_controller(
         ::std::mem::size_of::<my_post_controller>() as c_ulong,
     ) as my_post_ptr;
     (*cinfo).post = post as *mut jpeg_d_post_controller;
-    (*post).pub_0.start_pass = Some(
-        start_pass_dpost
-            as unsafe extern "C" fn(
-                _: j_decompress_ptr,
-                _: J_BUF_MODE,
-            ) -> (),
-    );
+    (*post).pub_0.start_pass =
+        Some(start_pass_dpost as unsafe extern "C" fn(_: j_decompress_ptr, _: J_BUF_MODE) -> ());
     (*post).whole_image = NULL as jvirt_sarray_ptr;
     (*post).buffer = NULL as JSAMPARRAY;
     if 0 != (*cinfo).quantize_colors {

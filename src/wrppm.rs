@@ -1,4 +1,10 @@
-use libc::c_char;use libc::c_void;use libc::c_int;use libc::c_uint;use libc::c_ulong;use libc::c_long;use libc;
+use libc;
+use libc::c_char;
+use libc::c_int;
+use libc::c_long;
+use libc::c_uint;
+use libc::c_ulong;
+use libc::c_void;
 #[header_src = "/home/sjcrane/projects/c2rust/mozjpeg-rs/mozjpeg-c/jmorecfg.h:22"]
 pub mod jmorecfg_h {
     /*
@@ -159,7 +165,15 @@ pub mod jmorecfg_h {
      * listed above, changing these values will also break the SIMD extensions and
      * the regression tests.
      */
-    use crate::jmorecfg_h::EXT_XBGR_PIXELSIZE;use crate::jmorecfg_h::EXT_RGBX_PIXELSIZE;use libc::c_int;use crate::jmorecfg_h::RGB_PIXELSIZE;use crate::jmorecfg_h::EXT_XRGB_PIXELSIZE;use crate::jmorecfg_h::EXT_BGRX_PIXELSIZE;use crate::jmorecfg_h::EXT_BGR_PIXELSIZE;use crate::jmorecfg_h::EXT_RGB_PIXELSIZE;pub static mut rgb_pixelsize: [c_int; 17] = [
+    use crate::jmorecfg_h::EXT_BGRX_PIXELSIZE;
+    use crate::jmorecfg_h::EXT_BGR_PIXELSIZE;
+    use crate::jmorecfg_h::EXT_RGBX_PIXELSIZE;
+    use crate::jmorecfg_h::EXT_RGB_PIXELSIZE;
+    use crate::jmorecfg_h::EXT_XBGR_PIXELSIZE;
+    use crate::jmorecfg_h::EXT_XRGB_PIXELSIZE;
+    use crate::jmorecfg_h::RGB_PIXELSIZE;
+    use libc::c_int;
+    pub static mut rgb_pixelsize: [c_int; 17] = [
         -1i32,
         -1i32,
         RGB_PIXELSIZE,
@@ -728,8 +742,7 @@ unsafe extern "C" fn put_demapped_gray(
         bufferptr = bufferptr.offset(1);
         let fresh14 = ptr;
         ptr = ptr.offset(1);
-        *fresh15 =
-            *color_map.offset(*fresh14 as c_int as isize) as c_int as c_char;
+        *fresh15 = *color_map.offset(*fresh14 as c_int as isize) as c_int as c_char;
         col = col.wrapping_sub(1)
     }
     fwrite(
@@ -742,10 +755,7 @@ unsafe extern "C" fn put_demapped_gray(
 /*
  * Startup: write the file header.
  */
-unsafe extern "C" fn start_output_ppm(
-    mut cinfo: j_decompress_ptr,
-    mut dinfo: djpeg_dest_ptr,
-) {
+unsafe extern "C" fn start_output_ppm(mut cinfo: j_decompress_ptr, mut dinfo: djpeg_dest_ptr) {
     let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
     match (*cinfo).out_color_space as c_uint {
         1 => {
@@ -770,19 +780,14 @@ unsafe extern "C" fn start_output_ppm(
             (*(*cinfo).err).msg_code = JERR_PPM_COLORSPACE as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
     };
 }
 /*
  * Finish up at the end of the file.
  */
-unsafe extern "C" fn finish_output_ppm(
-    mut cinfo: j_decompress_ptr,
-    mut dinfo: djpeg_dest_ptr,
-) {
+unsafe extern "C" fn finish_output_ppm(mut cinfo: j_decompress_ptr, mut dinfo: djpeg_dest_ptr) {
     fflush((*dinfo).output_file);
     if 0 != ferror((*dinfo).output_file) {
         (*(*cinfo).err).msg_code = JERR_FILE_WRITE as c_int;
@@ -799,9 +804,7 @@ unsafe extern "C" fn calc_buffer_dimensions_ppm(
     mut dinfo: djpeg_dest_ptr,
 ) {
     let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
-    if (*cinfo).out_color_space as c_uint
-        == JCS_GRAYSCALE as c_int as c_uint
-    {
+    if (*cinfo).out_color_space as c_uint == JCS_GRAYSCALE as c_int as c_uint {
         (*dest).samples_per_row = (*cinfo)
             .output_width
             .wrapping_mul((*cinfo).out_color_components as c_uint)
@@ -809,17 +812,14 @@ unsafe extern "C" fn calc_buffer_dimensions_ppm(
         (*dest).samples_per_row = (*cinfo).output_width.wrapping_mul(3i32 as c_uint)
     }
     (*dest).buffer_width = ((*dest).samples_per_row as c_ulong).wrapping_mul(
-        (BYTESPERSAMPLE as c_ulong)
-            .wrapping_mul(::std::mem::size_of::<c_char>() as c_ulong),
+        (BYTESPERSAMPLE as c_ulong).wrapping_mul(::std::mem::size_of::<c_char>() as c_ulong),
     );
 }
 /*
  * The module selection routine for PPM format output.
  */
 #[no_mangle]
-pub unsafe extern "C" fn jinit_write_ppm(
-    mut cinfo: j_decompress_ptr,
-) -> djpeg_dest_ptr {
+pub unsafe extern "C" fn jinit_write_ppm(mut cinfo: j_decompress_ptr) -> djpeg_dest_ptr {
     let mut dest: ppm_dest_ptr = 0 as *mut ppm_dest_struct;
     dest = (*(*cinfo).mem)
         .alloc_small
@@ -829,25 +829,14 @@ pub unsafe extern "C" fn jinit_write_ppm(
         ::std::mem::size_of::<ppm_dest_struct>() as c_ulong,
     ) as ppm_dest_ptr;
     (*dest).pub_0.start_output = Some(
-        start_output_ppm
-            as unsafe extern "C" fn(
-                _: j_decompress_ptr,
-                _: djpeg_dest_ptr,
-            ) -> (),
+        start_output_ppm as unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> (),
     );
     (*dest).pub_0.finish_output = Some(
-        finish_output_ppm
-            as unsafe extern "C" fn(
-                _: j_decompress_ptr,
-                _: djpeg_dest_ptr,
-            ) -> (),
+        finish_output_ppm as unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> (),
     );
     (*dest).pub_0.calc_buffer_dimensions = Some(
         calc_buffer_dimensions_ppm
-            as unsafe extern "C" fn(
-                _: j_decompress_ptr,
-                _: djpeg_dest_ptr,
-            ) -> (),
+            as unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> (),
     );
     jpeg_calc_output_dimensions(cinfo);
     (*dest)
@@ -863,12 +852,9 @@ pub unsafe extern "C" fn jinit_write_ppm(
     ) as *mut c_char;
     if 0 != (*cinfo).quantize_colors
         || BITS_IN_JSAMPLE != 8i32
-        || ::std::mem::size_of::<JSAMPLE>() as c_ulong
-            != ::std::mem::size_of::<c_char>() as c_ulong
-        || (*cinfo).out_color_space as c_uint
-            != JCS_EXT_RGB as c_int as c_uint
-            && (*cinfo).out_color_space as c_uint
-                != JCS_RGB as c_int as c_uint
+        || ::std::mem::size_of::<JSAMPLE>() as c_ulong != ::std::mem::size_of::<c_char>() as c_ulong
+        || (*cinfo).out_color_space as c_uint != JCS_EXT_RGB as c_int as c_uint
+            && (*cinfo).out_color_space as c_uint != JCS_RGB as c_int as c_uint
     {
         (*dest).pub_0.buffer = (*(*cinfo).mem)
             .alloc_sarray
@@ -881,12 +867,9 @@ pub unsafe extern "C" fn jinit_write_ppm(
             1i32 as JDIMENSION,
         );
         (*dest).pub_0.buffer_height = 1i32 as JDIMENSION;
-        if (*cinfo).out_color_space as c_uint
-            == JCS_RGB as c_int as c_uint
-            || (*cinfo).out_color_space as c_uint
-                >= JCS_EXT_RGB as c_int as c_uint
-                && (*cinfo).out_color_space as c_uint
-                    <= JCS_EXT_ARGB as c_int as c_uint
+        if (*cinfo).out_color_space as c_uint == JCS_RGB as c_int as c_uint
+            || (*cinfo).out_color_space as c_uint >= JCS_EXT_RGB as c_int as c_uint
+                && (*cinfo).out_color_space as c_uint <= JCS_EXT_ARGB as c_int as c_uint
         {
             (*dest).pub_0.put_pixel_rows = Some(
                 put_rgb
@@ -896,9 +879,7 @@ pub unsafe extern "C" fn jinit_write_ppm(
                         _: JDIMENSION,
                     ) -> (),
             )
-        } else if (*cinfo).out_color_space as c_uint
-            == JCS_CMYK as c_int as c_uint
-        {
+        } else if (*cinfo).out_color_space as c_uint == JCS_CMYK as c_int as c_uint {
             (*dest).pub_0.put_pixel_rows = Some(
                 put_cmyk
                     as unsafe extern "C" fn(
@@ -916,9 +897,7 @@ pub unsafe extern "C" fn jinit_write_ppm(
                         _: JDIMENSION,
                     ) -> (),
             )
-        } else if (*cinfo).out_color_space as c_uint
-            == JCS_GRAYSCALE as c_int as c_uint
-        {
+        } else if (*cinfo).out_color_space as c_uint == JCS_GRAYSCALE as c_int as c_uint {
             (*dest).pub_0.put_pixel_rows = Some(
                 put_demapped_gray
                     as unsafe extern "C" fn(

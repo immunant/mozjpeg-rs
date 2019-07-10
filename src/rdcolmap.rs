@@ -1,4 +1,4 @@
-use libc::c_int;use libc::c_uint;pub use crate::cderror_h::C2RustUnnamed_91;
+pub use crate::cderror_h::C2RustUnnamed_91;
 pub use crate::cderror_h::JERR_BAD_CMAP_FILE;
 pub use crate::cderror_h::JERR_BMP_BADCMAP;
 pub use crate::cderror_h::JERR_BMP_BADDEPTH;
@@ -259,6 +259,8 @@ pub use crate::stdlib::EOF;
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::_IO_FILE;
 use libc;
+use libc::c_int;
+use libc::c_uint;
 /*
  * rdcolmap.c
  *
@@ -333,10 +335,7 @@ unsafe extern "C" fn add_map_entry(
 /*
  * Extract color map from a GIF file.
  */
-unsafe extern "C" fn read_gif_map(
-    mut cinfo: j_decompress_ptr,
-    mut infile: *mut FILE,
-) {
+unsafe extern "C" fn read_gif_map(mut cinfo: j_decompress_ptr, mut infile: *mut FILE) {
     let mut header: [c_int; 13] = [0; 13];
     let mut i: c_int = 0;
     let mut colormaplen: c_int = 0;
@@ -350,9 +349,7 @@ unsafe extern "C" fn read_gif_map(
             (*(*cinfo).err).msg_code = JERR_BAD_CMAP_FILE as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         i += 1
     }
@@ -378,9 +375,7 @@ unsafe extern "C" fn read_gif_map(
             (*(*cinfo).err).msg_code = JERR_BAD_CMAP_FILE as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         add_map_entry(
             cinfo,
@@ -417,9 +412,7 @@ unsafe extern "C" fn read_pbm_integer(
             (*(*cinfo).err).msg_code = JERR_BAD_CMAP_FILE as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         if !(ch == ' ' as i32 || ch == '\t' as i32 || ch == '\n' as i32 || ch == '\r' as i32) {
             break;
@@ -445,10 +438,7 @@ unsafe extern "C" fn read_pbm_integer(
 /*
  * Extract color map from a PPM file.
  */
-unsafe extern "C" fn read_ppm_map(
-    mut cinfo: j_decompress_ptr,
-    mut infile: *mut FILE,
-) {
+unsafe extern "C" fn read_ppm_map(mut cinfo: j_decompress_ptr, mut infile: *mut FILE) {
     let mut c: c_int = 0;
     let mut w: c_uint = 0;
     let mut h: c_uint = 0;
@@ -497,14 +487,12 @@ unsafe extern "C" fn read_ppm_map(
                     R = getc(infile);
                     G = getc(infile);
                     B = getc(infile);
-                    if R == EOF || G == EOF || B == EOF
-                    {
-                        (*(*cinfo).err).msg_code =
-                            JERR_BAD_CMAP_FILE as c_int;
+                    if R == EOF || G == EOF || B == EOF {
+                        (*(*cinfo).err).msg_code = JERR_BAD_CMAP_FILE as c_int;
                         (*(*cinfo).err)
                             .error_exit
                             .expect("non-null function pointer")(
-                            cinfo as j_common_ptr,
+                            cinfo as j_common_ptr
                         );
                     }
                     add_map_entry(cinfo, R, G, B);
@@ -517,9 +505,7 @@ unsafe extern "C" fn read_ppm_map(
             (*(*cinfo).err).msg_code = JERR_BAD_CMAP_FILE as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
     };
 }
@@ -530,10 +516,7 @@ unsafe extern "C" fn read_ppm_map(
  *  Output: colormap and actual_number_of_colors fields are set in cinfo.
  */
 #[no_mangle]
-pub unsafe extern "C" fn read_color_map(
-    mut cinfo: j_decompress_ptr,
-    mut infile: *mut FILE,
-) {
+pub unsafe extern "C" fn read_color_map(mut cinfo: j_decompress_ptr, mut infile: *mut FILE) {
     (*cinfo).colormap = (*(*cinfo).mem)
         .alloc_sarray
         .expect("non-null function pointer")(
@@ -554,9 +537,7 @@ pub unsafe extern "C" fn read_color_map(
             (*(*cinfo).err).msg_code = JERR_BAD_CMAP_FILE as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
     };
 }

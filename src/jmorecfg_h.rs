@@ -1,4 +1,10 @@
-use libc::c_short;use libc::c_uchar;use libc::c_int;use libc::c_uint;use libc::c_ushort;use libc::c_long;pub const EXT_BGR_GREEN: c_int = 1i32;
+use libc::c_int;
+use libc::c_long;
+use libc::c_short;
+use libc::c_uchar;
+use libc::c_uint;
+use libc::c_ushort;
+pub const EXT_BGR_GREEN: c_int = 1i32;
 pub const EXT_RGB_GREEN: c_int = 1i32;
 /* Offset of Green */
 pub const RGB_GREEN: c_int = 1i32;

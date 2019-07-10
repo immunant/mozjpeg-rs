@@ -11,7 +11,6 @@
 #![feature(label_break_value)]
 #![feature(ptr_wrapping_offset_from)]
 
-
 pub use crate::cmyk_h::cmyk_to_rgb;
 pub use crate::cmyk_h::rgb_to_cmyk;
 pub use crate::jmorecfg_h::JSAMPLE;

@@ -1,4 +1,6 @@
-use libc::c_int;use libc::c_char;pub const SIZEOF_SIZE_T: c_int = 8i32;
+use libc::c_char;
+use libc::c_int;
+pub const SIZEOF_SIZE_T: c_int = 8i32;
 use ::libc;
 /* libjpeg-turbo build number */
 pub const BUILD: [c_char; 9] =

@@ -1,4 +1,4 @@
-use libc::c_void;use libc::c_int;use libc::c_uint;use libc::c_ulong;use libc::c_long;pub use crate::jconfig_h::BITS_IN_JSAMPLE;
+pub use crate::jconfig_h::BITS_IN_JSAMPLE;
 pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
@@ -223,6 +223,11 @@ pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 use crate::stdlib::memcpy;
 use libc;
+use libc::c_int;
+use libc::c_long;
+use libc::c_uint;
+use libc::c_ulong;
+use libc::c_void;
 pub type my_inputctl_ptr = *mut my_input_controller;
 /*
  * jdinput.c
@@ -252,8 +257,7 @@ pub struct my_input_controller {
  */
 unsafe extern "C" fn initial_setup(mut cinfo: j_decompress_ptr) {
     let mut ci: c_int = 0;
-    let mut compptr: *mut jpeg_component_info =
-        0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
     if (*cinfo).image_height as c_long > JPEG_MAX_DIMENSION
         || (*cinfo).image_width as c_long > JPEG_MAX_DIMENSION
     {
@@ -291,9 +295,7 @@ unsafe extern "C" fn initial_setup(mut cinfo: j_decompress_ptr) {
             (*(*cinfo).err).msg_code = JERR_BAD_SAMPLING as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         (*cinfo).max_h_samp_factor = if (*cinfo).max_h_samp_factor > (*compptr).h_samp_factor {
             (*cinfo).max_h_samp_factor
@@ -322,9 +324,8 @@ unsafe extern "C" fn initial_setup(mut cinfo: j_decompress_ptr) {
             ((*cinfo).max_v_samp_factor * DCTSIZE) as c_long,
         ) as JDIMENSION;
         (*(*cinfo).master).first_MCU_col[ci as usize] = 0i32 as JDIMENSION;
-        (*(*cinfo).master).last_MCU_col[ci as usize] = (*compptr)
-            .width_in_blocks
-            .wrapping_sub(1i32 as c_uint);
+        (*(*cinfo).master).last_MCU_col[ci as usize] =
+            (*compptr).width_in_blocks.wrapping_sub(1i32 as c_uint);
         (*compptr).downsampled_width = jdiv_round_up(
             (*cinfo).image_width as c_long * (*compptr).h_samp_factor as c_long,
             (*cinfo).max_h_samp_factor as c_long,
@@ -352,8 +353,7 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: j_decompress_ptr) {
     let mut ci: c_int = 0;
     let mut mcublks: c_int = 0;
     let mut tmp: c_int = 0;
-    let mut compptr: *mut jpeg_component_info =
-        0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
     if (*cinfo).comps_in_scan == 1i32 {
         compptr = (*cinfo).cur_comp_info[0usize];
         (*cinfo).MCUs_per_row = (*compptr).width_in_blocks;
@@ -373,17 +373,13 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: j_decompress_ptr) {
         (*cinfo).blocks_in_MCU = 1i32;
         (*cinfo).MCU_membership[0usize] = 0i32
     } else {
-        if (*cinfo).comps_in_scan <= 0i32
-            || (*cinfo).comps_in_scan > MAX_COMPS_IN_SCAN
-        {
+        if (*cinfo).comps_in_scan <= 0i32 || (*cinfo).comps_in_scan > MAX_COMPS_IN_SCAN {
             (*(*cinfo).err).msg_code = JERR_COMPONENT_COUNT as c_int;
             (*(*cinfo).err).msg_parm.i[0usize] = (*cinfo).comps_in_scan;
             (*(*cinfo).err).msg_parm.i[1usize] = 4i32;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         (*cinfo).MCUs_per_row = jdiv_round_up(
             (*cinfo).image_width as c_long,
@@ -403,16 +399,14 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: j_decompress_ptr) {
             (*compptr).MCU_sample_width = (*compptr).MCU_width * (*compptr).DCT_scaled_size;
             tmp = (*compptr)
                 .width_in_blocks
-                .wrapping_rem((*compptr).MCU_width as c_uint)
-                as c_int;
+                .wrapping_rem((*compptr).MCU_width as c_uint) as c_int;
             if tmp == 0i32 {
                 tmp = (*compptr).MCU_width
             }
             (*compptr).last_col_width = tmp;
             tmp = (*compptr)
                 .height_in_blocks
-                .wrapping_rem((*compptr).MCU_height as c_uint)
-                as c_int;
+                .wrapping_rem((*compptr).MCU_height as c_uint) as c_int;
             if tmp == 0i32 {
                 tmp = (*compptr).MCU_height
             }
@@ -422,9 +416,7 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: j_decompress_ptr) {
                 (*(*cinfo).err).msg_code = JERR_BAD_MCU_SIZE as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             loop {
                 let fresh0 = mcublks;
@@ -463,8 +455,7 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: j_decompress_ptr) {
 unsafe extern "C" fn latch_quant_tables(mut cinfo: j_decompress_ptr) {
     let mut ci: c_int = 0;
     let mut qtblno: c_int = 0;
-    let mut compptr: *mut jpeg_component_info =
-        0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
     let mut qtbl: *mut JQUANT_TBL = 0 as *mut JQUANT_TBL;
     ci = 0i32;
     while ci < (*cinfo).comps_in_scan {
@@ -480,9 +471,7 @@ unsafe extern "C" fn latch_quant_tables(mut cinfo: j_decompress_ptr) {
                 (*(*cinfo).err).msg_parm.i[0usize] = qtblno;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             qtbl = (*(*cinfo).mem)
                 .alloc_small
@@ -524,10 +513,8 @@ unsafe extern "C" fn start_input_pass(mut cinfo: j_decompress_ptr) {
  * the expected data of the scan.
  */
 unsafe extern "C" fn finish_input_pass(mut cinfo: j_decompress_ptr) {
-    (*(*cinfo).inputctl).consume_input = Some(
-        consume_markers
-            as unsafe extern "C" fn(_: j_decompress_ptr) -> c_int,
-    );
+    (*(*cinfo).inputctl).consume_input =
+        Some(consume_markers as unsafe extern "C" fn(_: j_decompress_ptr) -> c_int);
 }
 /* Forward declarations */
 /*
@@ -559,7 +546,7 @@ unsafe extern "C" fn consume_markers(mut cinfo: j_decompress_ptr) -> c_int {
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer")(
-                        cinfo as j_common_ptr,
+                        cinfo as j_common_ptr
                     );
                 }
                 start_input_pass(cinfo);
@@ -573,7 +560,7 @@ unsafe extern "C" fn consume_markers(mut cinfo: j_decompress_ptr) -> c_int {
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer")(
-                        cinfo as j_common_ptr,
+                        cinfo as j_common_ptr
                     );
                 }
             } else if (*cinfo).output_scan_number > (*cinfo).input_scan_number {
@@ -589,10 +576,8 @@ unsafe extern "C" fn consume_markers(mut cinfo: j_decompress_ptr) -> c_int {
  */
 unsafe extern "C" fn reset_input_controller(mut cinfo: j_decompress_ptr) {
     let mut inputctl: my_inputctl_ptr = (*cinfo).inputctl as my_inputctl_ptr;
-    (*inputctl).pub_0.consume_input = Some(
-        consume_markers
-            as unsafe extern "C" fn(_: j_decompress_ptr) -> c_int,
-    );
+    (*inputctl).pub_0.consume_input =
+        Some(consume_markers as unsafe extern "C" fn(_: j_decompress_ptr) -> c_int);
     (*inputctl).pub_0.has_multiple_scans = FALSE;
     (*inputctl).pub_0.eoi_reached = FALSE;
     (*inputctl).inheaders = TRUE;
@@ -619,18 +604,14 @@ pub unsafe extern "C" fn jinit_input_controller(mut cinfo: j_decompress_ptr) {
         ::std::mem::size_of::<my_input_controller>() as c_ulong,
     ) as my_inputctl_ptr;
     (*cinfo).inputctl = inputctl as *mut jpeg_input_controller;
-    (*inputctl).pub_0.consume_input = Some(
-        consume_markers
-            as unsafe extern "C" fn(_: j_decompress_ptr) -> c_int,
-    );
-    (*inputctl).pub_0.reset_input_controller = Some(
-        reset_input_controller as unsafe extern "C" fn(_: j_decompress_ptr) -> (),
-    );
+    (*inputctl).pub_0.consume_input =
+        Some(consume_markers as unsafe extern "C" fn(_: j_decompress_ptr) -> c_int);
+    (*inputctl).pub_0.reset_input_controller =
+        Some(reset_input_controller as unsafe extern "C" fn(_: j_decompress_ptr) -> ());
     (*inputctl).pub_0.start_input_pass =
         Some(start_input_pass as unsafe extern "C" fn(_: j_decompress_ptr) -> ());
-    (*inputctl).pub_0.finish_input_pass = Some(
-        finish_input_pass as unsafe extern "C" fn(_: j_decompress_ptr) -> (),
-    );
+    (*inputctl).pub_0.finish_input_pass =
+        Some(finish_input_pass as unsafe extern "C" fn(_: j_decompress_ptr) -> ());
     (*inputctl).pub_0.has_multiple_scans = FALSE;
     (*inputctl).pub_0.eoi_reached = FALSE;
     (*inputctl).inheaders = TRUE;

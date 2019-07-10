@@ -1,4 +1,9 @@
-use libc::c_float;use libc::c_int;use libc::c_uint;use libc::c_ushort;use libc::c_short;extern "C" {
+use libc::c_float;
+use libc::c_int;
+use libc::c_short;
+use libc::c_uint;
+use libc::c_ushort;
+extern "C" {
     #[no_mangle]
     pub fn jpeg_fdct_islow(data: *mut DCTELEM);
 

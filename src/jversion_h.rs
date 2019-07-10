@@ -1,4 +1,5 @@
-use libc::c_char;use ::libc;
+use ::libc;
+use libc::c_char;
 /*
  * jversion.h
  *

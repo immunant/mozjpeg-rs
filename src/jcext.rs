@@ -1,4 +1,4 @@
-use libc::c_float;use libc::c_int;use libc::c_uint;pub use crate::jerror::C2RustUnnamed_3;
+pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -222,6 +222,9 @@ pub use crate::jpeglib_h::J_FLOAT_PARAM;
 pub use crate::jpeglib_h::J_INT_PARAM;
 pub use crate::stddef_h::size_t;
 use libc;
+use libc::c_float;
+use libc::c_int;
+use libc::c_uint;
 /*
  * jcext.c
  *
@@ -265,9 +268,7 @@ pub unsafe extern "C" fn jpeg_c_set_bool_param(
             (*(*cinfo).err).msg_code = JERR_BAD_PARAM as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
     };
 }
@@ -289,9 +290,7 @@ pub unsafe extern "C" fn jpeg_c_get_bool_param(
             (*(*cinfo).err).msg_code = JERR_BAD_PARAM as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
     }
     return FALSE;
@@ -321,9 +320,7 @@ pub unsafe extern "C" fn jpeg_c_set_float_param(
             (*(*cinfo).err).msg_code = JERR_BAD_PARAM as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
     };
 }
@@ -340,9 +337,7 @@ pub unsafe extern "C" fn jpeg_c_get_float_param(
             (*(*cinfo).err).msg_code = JERR_BAD_PARAM as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
     }
     return -1i32 as c_float;
@@ -353,9 +348,7 @@ pub unsafe extern "C" fn jpeg_c_int_param_supported(
     mut param: J_INT_PARAM,
 ) -> boolean {
     match param as c_uint {
-        3918628389 | 1873801511 | 3057565497 | 1145645745 | 199732540 => {
-            return TRUE
-        }
+        3918628389 | 1873801511 | 3057565497 | 1145645745 | 199732540 => return TRUE,
         _ => {}
     }
     return FALSE;
@@ -373,9 +366,7 @@ pub unsafe extern "C" fn jpeg_c_set_int_param(
                 (*(*cinfo).err).msg_code = JERR_BAD_PARAM_VALUE as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
         },
         1873801511 => (*(*cinfo).master).trellis_freq_split = value,
@@ -390,9 +381,7 @@ pub unsafe extern "C" fn jpeg_c_set_int_param(
             (*(*cinfo).err).msg_code = JERR_BAD_PARAM as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
     };
 }
@@ -411,9 +400,7 @@ pub unsafe extern "C" fn jpeg_c_get_int_param(
             (*(*cinfo).err).msg_code = JERR_BAD_PARAM as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
     }
     return -1i32;

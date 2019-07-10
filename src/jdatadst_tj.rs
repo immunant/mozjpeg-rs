@@ -1,4 +1,4 @@
-use libc::c_ulong;use libc::c_int;use libc::c_uchar;use libc::c_void;pub use crate::jerror::C2RustUnnamed_3;
+pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -198,6 +198,10 @@ use crate::stdlib::free;
 use crate::stdlib::malloc;
 use crate::stdlib::memcpy;
 use libc;
+use libc::c_int;
+use libc::c_uchar;
+use libc::c_ulong;
+use libc::c_void;
 /* Expanded data destination object for memory output */
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -262,9 +266,7 @@ unsafe extern "C" fn init_mem_destination(mut cinfo: j_compress_ptr) {}
  * Data beyond this point will be regenerated after resumption, so do not
  * write it out when emptying the buffer externally.
  */
-unsafe extern "C" fn empty_mem_output_buffer(
-    mut cinfo: j_compress_ptr,
-) -> boolean {
+unsafe extern "C" fn empty_mem_output_buffer(mut cinfo: j_compress_ptr) -> boolean {
     let mut nextsize: size_t = 0;
     let mut nextbuffer: *mut JOCTET = 0 as *mut JOCTET;
     let mut dest: my_mem_dest_ptr = (*cinfo).dest as my_mem_dest_ptr;
@@ -350,9 +352,7 @@ pub unsafe extern "C" fn jpeg_mem_dest_tj(
         (*dest).newbuffer = NULL as *mut c_uchar;
         (*dest).buffer = NULL as *mut JOCTET
     } else if (*(*cinfo).dest).init_destination
-        != Some(
-            init_mem_destination as unsafe extern "C" fn(_: j_compress_ptr) -> (),
-        )
+        != Some(init_mem_destination as unsafe extern "C" fn(_: j_compress_ptr) -> ())
     {
         (*(*cinfo).err).msg_code = JERR_BUFFER_SIZE as c_int;
         (*(*cinfo).err)
@@ -360,18 +360,12 @@ pub unsafe extern "C" fn jpeg_mem_dest_tj(
             .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     dest = (*cinfo).dest as my_mem_dest_ptr;
-    (*dest).pub_0.init_destination = Some(
-        init_mem_destination as unsafe extern "C" fn(_: j_compress_ptr) -> (),
-    );
-    (*dest).pub_0.empty_output_buffer = Some(
-        empty_mem_output_buffer
-            as unsafe extern "C" fn(
-                _: j_compress_ptr,
-            ) -> boolean,
-    );
-    (*dest).pub_0.term_destination = Some(
-        term_mem_destination as unsafe extern "C" fn(_: j_compress_ptr) -> (),
-    );
+    (*dest).pub_0.init_destination =
+        Some(init_mem_destination as unsafe extern "C" fn(_: j_compress_ptr) -> ());
+    (*dest).pub_0.empty_output_buffer =
+        Some(empty_mem_output_buffer as unsafe extern "C" fn(_: j_compress_ptr) -> boolean);
+    (*dest).pub_0.term_destination =
+        Some(term_mem_destination as unsafe extern "C" fn(_: j_compress_ptr) -> ());
     if (*dest).buffer == *outbuffer && !(*outbuffer).is_null() && 0 != alloc {
         reused = TRUE
     }
@@ -380,26 +374,21 @@ pub unsafe extern "C" fn jpeg_mem_dest_tj(
     (*dest).alloc = alloc;
     if (*outbuffer).is_null() || *outsize == 0i32 as c_ulong {
         if 0 != alloc {
-            *outbuffer =
-                malloc(OUTPUT_BUF_SIZE as c_ulong) as *mut c_uchar;
+            *outbuffer = malloc(OUTPUT_BUF_SIZE as c_ulong) as *mut c_uchar;
             (*dest).newbuffer = *outbuffer;
             if (*dest).newbuffer.is_null() {
                 (*(*cinfo).err).msg_code = JERR_OUT_OF_MEMORY as c_int;
                 (*(*cinfo).err).msg_parm.i[0usize] = 10i32;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             *outsize = OUTPUT_BUF_SIZE as c_ulong
         } else {
             (*(*cinfo).err).msg_code = JERR_BUFFER_SIZE as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
     }
     (*dest).buffer = *outbuffer;

@@ -1,4 +1,4 @@
-use libc::c_int;use crate::jccolor::my_cconvert_ptr;
+use crate::jccolor::my_cconvert_ptr;
 use crate::jccolor::my_color_converter;
 use crate::jmorecfg_h::JDIMENSION;
 use crate::jmorecfg_h::JSAMPLE;
@@ -9,6 +9,7 @@ use crate::jpeglib_h::JSAMPARRAY;
 use crate::jpeglib_h::JSAMPIMAGE;
 use crate::jpeglib_h::JSAMPROW;
 use ::libc;
+use libc::c_int;
 /*
  * jccolext.c
  *
@@ -75,18 +76,15 @@ pub unsafe extern "C" fn extxbgr_ycc_convert_internal(
             *outptr0.offset(col as isize) = (*ctab.offset((r + R_Y_OFF) as isize)
                 + *ctab.offset((g + G_Y_OFF) as isize)
                 + *ctab.offset((b + B_Y_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             *outptr1.offset(col as isize) = (*ctab.offset((r + R_CB_OFF) as isize)
                 + *ctab.offset((g + G_CB_OFF) as isize)
                 + *ctab.offset((b + B_CB_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             *outptr2.offset(col as isize) = (*ctab.offset((r + R_CR_OFF) as isize)
                 + *ctab.offset((g + G_CR_OFF) as isize)
                 + *ctab.offset((b + B_CR_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             col = col.wrapping_add(1)
         }
     }
@@ -157,18 +155,15 @@ pub unsafe extern "C" fn extxrgb_ycc_convert_internal(
             *outptr0.offset(col as isize) = (*ctab.offset((r + R_Y_OFF) as isize)
                 + *ctab.offset((g + G_Y_OFF) as isize)
                 + *ctab.offset((b + B_Y_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             *outptr1.offset(col as isize) = (*ctab.offset((r + R_CB_OFF) as isize)
                 + *ctab.offset((g + G_CB_OFF) as isize)
                 + *ctab.offset((b + B_CB_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             *outptr2.offset(col as isize) = (*ctab.offset((r + R_CR_OFF) as isize)
                 + *ctab.offset((g + G_CR_OFF) as isize)
                 + *ctab.offset((b + B_CR_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             col = col.wrapping_add(1)
         }
     }
@@ -239,18 +234,15 @@ pub unsafe extern "C" fn extrgb_ycc_convert_internal(
             *outptr0.offset(col as isize) = (*ctab.offset((r + R_Y_OFF) as isize)
                 + *ctab.offset((g + G_Y_OFF) as isize)
                 + *ctab.offset((b + B_Y_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             *outptr1.offset(col as isize) = (*ctab.offset((r + R_CB_OFF) as isize)
                 + *ctab.offset((g + G_CB_OFF) as isize)
                 + *ctab.offset((b + B_CB_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             *outptr2.offset(col as isize) = (*ctab.offset((r + R_CR_OFF) as isize)
                 + *ctab.offset((g + G_CR_OFF) as isize)
                 + *ctab.offset((b + B_CR_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             col = col.wrapping_add(1)
         }
     }
@@ -321,18 +313,15 @@ pub unsafe extern "C" fn extrgbx_ycc_convert_internal(
             *outptr0.offset(col as isize) = (*ctab.offset((r + R_Y_OFF) as isize)
                 + *ctab.offset((g + G_Y_OFF) as isize)
                 + *ctab.offset((b + B_Y_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             *outptr1.offset(col as isize) = (*ctab.offset((r + R_CB_OFF) as isize)
                 + *ctab.offset((g + G_CB_OFF) as isize)
                 + *ctab.offset((b + B_CB_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             *outptr2.offset(col as isize) = (*ctab.offset((r + R_CR_OFF) as isize)
                 + *ctab.offset((g + G_CR_OFF) as isize)
                 + *ctab.offset((b + B_CR_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             col = col.wrapping_add(1)
         }
     }
@@ -403,18 +392,15 @@ pub unsafe extern "C" fn extbgr_ycc_convert_internal(
             *outptr0.offset(col as isize) = (*ctab.offset((r + R_Y_OFF) as isize)
                 + *ctab.offset((g + G_Y_OFF) as isize)
                 + *ctab.offset((b + B_Y_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             *outptr1.offset(col as isize) = (*ctab.offset((r + R_CB_OFF) as isize)
                 + *ctab.offset((g + G_CB_OFF) as isize)
                 + *ctab.offset((b + B_CB_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             *outptr2.offset(col as isize) = (*ctab.offset((r + R_CR_OFF) as isize)
                 + *ctab.offset((g + G_CR_OFF) as isize)
                 + *ctab.offset((b + B_CR_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             col = col.wrapping_add(1)
         }
     }
@@ -485,18 +471,15 @@ pub unsafe extern "C" fn extbgrx_ycc_convert_internal(
             *outptr0.offset(col as isize) = (*ctab.offset((r + R_Y_OFF) as isize)
                 + *ctab.offset((g + G_Y_OFF) as isize)
                 + *ctab.offset((b + B_Y_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             *outptr1.offset(col as isize) = (*ctab.offset((r + R_CB_OFF) as isize)
                 + *ctab.offset((g + G_CB_OFF) as isize)
                 + *ctab.offset((b + B_CB_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             *outptr2.offset(col as isize) = (*ctab.offset((r + R_CR_OFF) as isize)
                 + *ctab.offset((g + G_CR_OFF) as isize)
                 + *ctab.offset((b + B_CR_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             col = col.wrapping_add(1)
         }
     }
@@ -567,18 +550,15 @@ pub unsafe extern "C" fn rgb_ycc_convert_internal(
             *outptr0.offset(col as isize) = (*ctab.offset((r + R_Y_OFF) as isize)
                 + *ctab.offset((g + G_Y_OFF) as isize)
                 + *ctab.offset((b + B_Y_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             *outptr1.offset(col as isize) = (*ctab.offset((r + R_CB_OFF) as isize)
                 + *ctab.offset((g + G_CB_OFF) as isize)
                 + *ctab.offset((b + B_CB_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             *outptr2.offset(col as isize) = (*ctab.offset((r + R_CR_OFF) as isize)
                 + *ctab.offset((g + G_CR_OFF) as isize)
                 + *ctab.offset((b + B_CR_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             col = col.wrapping_add(1)
         }
     }
@@ -627,8 +607,7 @@ pub unsafe extern "C" fn rgb_gray_convert_internal(
             *outptr.offset(col as isize) = (*ctab.offset((r + R_Y_OFF) as isize)
                 + *ctab.offset((g + G_Y_OFF) as isize)
                 + *ctab.offset((b + B_Y_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             col = col.wrapping_add(1)
         }
     }
@@ -677,8 +656,7 @@ pub unsafe extern "C" fn extxrgb_gray_convert_internal(
             *outptr.offset(col as isize) = (*ctab.offset((r + R_Y_OFF) as isize)
                 + *ctab.offset((g + G_Y_OFF) as isize)
                 + *ctab.offset((b + B_Y_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             col = col.wrapping_add(1)
         }
     }
@@ -727,8 +705,7 @@ pub unsafe extern "C" fn extrgb_gray_convert_internal(
             *outptr.offset(col as isize) = (*ctab.offset((r + R_Y_OFF) as isize)
                 + *ctab.offset((g + G_Y_OFF) as isize)
                 + *ctab.offset((b + B_Y_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             col = col.wrapping_add(1)
         }
     }
@@ -777,8 +754,7 @@ pub unsafe extern "C" fn extrgbx_gray_convert_internal(
             *outptr.offset(col as isize) = (*ctab.offset((r + R_Y_OFF) as isize)
                 + *ctab.offset((g + G_Y_OFF) as isize)
                 + *ctab.offset((b + B_Y_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             col = col.wrapping_add(1)
         }
     }
@@ -827,8 +803,7 @@ pub unsafe extern "C" fn extbgr_gray_convert_internal(
             *outptr.offset(col as isize) = (*ctab.offset((r + R_Y_OFF) as isize)
                 + *ctab.offset((g + G_Y_OFF) as isize)
                 + *ctab.offset((b + B_Y_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             col = col.wrapping_add(1)
         }
     }
@@ -877,8 +852,7 @@ pub unsafe extern "C" fn extbgrx_gray_convert_internal(
             *outptr.offset(col as isize) = (*ctab.offset((r + R_Y_OFF) as isize)
                 + *ctab.offset((g + G_Y_OFF) as isize)
                 + *ctab.offset((b + B_Y_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             col = col.wrapping_add(1)
         }
     }
@@ -927,8 +901,7 @@ pub unsafe extern "C" fn extxbgr_gray_convert_internal(
             *outptr.offset(col as isize) = (*ctab.offset((r + R_Y_OFF) as isize)
                 + *ctab.offset((g + G_Y_OFF) as isize)
                 + *ctab.offset((b + B_Y_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             col = col.wrapping_add(1)
         }
     }
@@ -965,12 +938,9 @@ pub unsafe extern "C" fn extrgb_rgb_convert_internal(
         output_row = output_row.wrapping_add(1);
         col = 0i32 as JDIMENSION;
         while col < num_cols {
-            *outptr0.offset(col as isize) =
-                *inptr.offset(0isize) as c_int as JSAMPLE;
-            *outptr1.offset(col as isize) =
-                *inptr.offset(1isize) as c_int as JSAMPLE;
-            *outptr2.offset(col as isize) =
-                *inptr.offset(2isize) as c_int as JSAMPLE;
+            *outptr0.offset(col as isize) = *inptr.offset(0isize) as c_int as JSAMPLE;
+            *outptr1.offset(col as isize) = *inptr.offset(1isize) as c_int as JSAMPLE;
+            *outptr2.offset(col as isize) = *inptr.offset(2isize) as c_int as JSAMPLE;
             inptr = inptr.offset(RGB_PIXELSIZE_4 as isize);
             col = col.wrapping_add(1)
         }
@@ -1008,12 +978,9 @@ pub unsafe extern "C" fn rgb_rgb_convert_internal(
         output_row = output_row.wrapping_add(1);
         col = 0i32 as JDIMENSION;
         while col < num_cols {
-            *outptr0.offset(col as isize) =
-                *inptr.offset(0isize) as c_int as JSAMPLE;
-            *outptr1.offset(col as isize) =
-                *inptr.offset(1isize) as c_int as JSAMPLE;
-            *outptr2.offset(col as isize) =
-                *inptr.offset(2isize) as c_int as JSAMPLE;
+            *outptr0.offset(col as isize) = *inptr.offset(0isize) as c_int as JSAMPLE;
+            *outptr1.offset(col as isize) = *inptr.offset(1isize) as c_int as JSAMPLE;
+            *outptr2.offset(col as isize) = *inptr.offset(2isize) as c_int as JSAMPLE;
             inptr = inptr.offset(RGB_PIXELSIZE_5 as isize);
             col = col.wrapping_add(1)
         }
@@ -1051,12 +1018,9 @@ pub unsafe extern "C" fn extxrgb_rgb_convert_internal(
         output_row = output_row.wrapping_add(1);
         col = 0i32 as JDIMENSION;
         while col < num_cols {
-            *outptr0.offset(col as isize) =
-                *inptr.offset(1isize) as c_int as JSAMPLE;
-            *outptr1.offset(col as isize) =
-                *inptr.offset(2isize) as c_int as JSAMPLE;
-            *outptr2.offset(col as isize) =
-                *inptr.offset(3isize) as c_int as JSAMPLE;
+            *outptr0.offset(col as isize) = *inptr.offset(1isize) as c_int as JSAMPLE;
+            *outptr1.offset(col as isize) = *inptr.offset(2isize) as c_int as JSAMPLE;
+            *outptr2.offset(col as isize) = *inptr.offset(3isize) as c_int as JSAMPLE;
             inptr = inptr.offset(RGB_PIXELSIZE as isize);
             col = col.wrapping_add(1)
         }
@@ -1094,12 +1058,9 @@ pub unsafe extern "C" fn extxbgr_rgb_convert_internal(
         output_row = output_row.wrapping_add(1);
         col = 0i32 as JDIMENSION;
         while col < num_cols {
-            *outptr0.offset(col as isize) =
-                *inptr.offset(3isize) as c_int as JSAMPLE;
-            *outptr1.offset(col as isize) =
-                *inptr.offset(2isize) as c_int as JSAMPLE;
-            *outptr2.offset(col as isize) =
-                *inptr.offset(1isize) as c_int as JSAMPLE;
+            *outptr0.offset(col as isize) = *inptr.offset(3isize) as c_int as JSAMPLE;
+            *outptr1.offset(col as isize) = *inptr.offset(2isize) as c_int as JSAMPLE;
+            *outptr2.offset(col as isize) = *inptr.offset(1isize) as c_int as JSAMPLE;
             inptr = inptr.offset(RGB_PIXELSIZE_0 as isize);
             col = col.wrapping_add(1)
         }
@@ -1137,12 +1098,9 @@ pub unsafe extern "C" fn extbgrx_rgb_convert_internal(
         output_row = output_row.wrapping_add(1);
         col = 0i32 as JDIMENSION;
         while col < num_cols {
-            *outptr0.offset(col as isize) =
-                *inptr.offset(2isize) as c_int as JSAMPLE;
-            *outptr1.offset(col as isize) =
-                *inptr.offset(1isize) as c_int as JSAMPLE;
-            *outptr2.offset(col as isize) =
-                *inptr.offset(0isize) as c_int as JSAMPLE;
+            *outptr0.offset(col as isize) = *inptr.offset(2isize) as c_int as JSAMPLE;
+            *outptr1.offset(col as isize) = *inptr.offset(1isize) as c_int as JSAMPLE;
+            *outptr2.offset(col as isize) = *inptr.offset(0isize) as c_int as JSAMPLE;
             inptr = inptr.offset(RGB_PIXELSIZE_1 as isize);
             col = col.wrapping_add(1)
         }
@@ -1180,12 +1138,9 @@ pub unsafe extern "C" fn extbgr_rgb_convert_internal(
         output_row = output_row.wrapping_add(1);
         col = 0i32 as JDIMENSION;
         while col < num_cols {
-            *outptr0.offset(col as isize) =
-                *inptr.offset(2isize) as c_int as JSAMPLE;
-            *outptr1.offset(col as isize) =
-                *inptr.offset(1isize) as c_int as JSAMPLE;
-            *outptr2.offset(col as isize) =
-                *inptr.offset(0isize) as c_int as JSAMPLE;
+            *outptr0.offset(col as isize) = *inptr.offset(2isize) as c_int as JSAMPLE;
+            *outptr1.offset(col as isize) = *inptr.offset(1isize) as c_int as JSAMPLE;
+            *outptr2.offset(col as isize) = *inptr.offset(0isize) as c_int as JSAMPLE;
             inptr = inptr.offset(RGB_PIXELSIZE_3 as isize);
             col = col.wrapping_add(1)
         }
@@ -1223,12 +1178,9 @@ pub unsafe extern "C" fn extrgbx_rgb_convert_internal(
         output_row = output_row.wrapping_add(1);
         col = 0i32 as JDIMENSION;
         while col < num_cols {
-            *outptr0.offset(col as isize) =
-                *inptr.offset(0isize) as c_int as JSAMPLE;
-            *outptr1.offset(col as isize) =
-                *inptr.offset(1isize) as c_int as JSAMPLE;
-            *outptr2.offset(col as isize) =
-                *inptr.offset(2isize) as c_int as JSAMPLE;
+            *outptr0.offset(col as isize) = *inptr.offset(0isize) as c_int as JSAMPLE;
+            *outptr1.offset(col as isize) = *inptr.offset(1isize) as c_int as JSAMPLE;
+            *outptr2.offset(col as isize) = *inptr.offset(2isize) as c_int as JSAMPLE;
             inptr = inptr.offset(RGB_PIXELSIZE_2 as isize);
             col = col.wrapping_add(1)
         }

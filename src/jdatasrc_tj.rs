@@ -1,4 +1,4 @@
-use libc::c_ulong;use libc::c_long;use libc::c_int;use libc::c_uchar;pub use crate::jerror::C2RustUnnamed_3;
+pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -203,6 +203,10 @@ pub use crate::jpeglib_h::J_DITHER_MODE;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 use libc;
+use libc::c_int;
+use libc::c_long;
+use libc::c_uchar;
+use libc::c_ulong;
 /*
  * jdatasrc-tj.c
  *
@@ -261,9 +265,7 @@ unsafe extern "C" fn init_mem_source(mut cinfo: j_decompress_ptr) {}
  * Data beyond this point must be rescanned after resumption, so move it to
  * the front of the buffer rather than discarding it.
  */
-unsafe extern "C" fn fill_mem_input_buffer(
-    mut cinfo: j_decompress_ptr,
-) -> boolean {
+unsafe extern "C" fn fill_mem_input_buffer(mut cinfo: j_decompress_ptr) -> boolean {
     static mut mybuffer: [JOCTET; 4] = [
         0xffi32 as JOCTET,
         JPEG_EOI as JOCTET,
@@ -289,22 +291,16 @@ unsafe extern "C" fn fill_mem_input_buffer(
  * Arranging for additional bytes to be discarded before reloading the input
  * buffer is the application writer's problem.
  */
-unsafe extern "C" fn skip_input_data(
-    mut cinfo: j_decompress_ptr,
-    mut num_bytes: c_long,
-) {
+unsafe extern "C" fn skip_input_data(mut cinfo: j_decompress_ptr, mut num_bytes: c_long) {
     let mut src: *mut jpeg_source_mgr = (*cinfo).src;
     if num_bytes > 0i32 as c_long {
         while num_bytes > (*src).bytes_in_buffer as c_long {
             num_bytes -= (*src).bytes_in_buffer as c_long;
             (*src).fill_input_buffer.expect("non-null function pointer")(cinfo);
         }
-        (*src).next_input_byte = (*src)
-            .next_input_byte
-            .offset(num_bytes as size_t as isize);
+        (*src).next_input_byte = (*src).next_input_byte.offset(num_bytes as size_t as isize);
         (*src).bytes_in_buffer = ((*src).bytes_in_buffer as c_ulong)
-            .wrapping_sub(num_bytes as size_t)
-            as size_t as size_t
+            .wrapping_sub(num_bytes as size_t) as size_t as size_t
     };
 }
 /*
@@ -334,8 +330,7 @@ pub unsafe extern "C" fn jpeg_mem_src_tj(
     mut inbuffer: *const c_uchar,
     mut insize: c_ulong,
 ) {
-    let mut src: *mut jpeg_source_mgr =
-        0 as *mut jpeg_source_mgr;
+    let mut src: *mut jpeg_source_mgr = 0 as *mut jpeg_source_mgr;
     if inbuffer.is_null() || insize == 0i32 as c_ulong {
         (*(*cinfo).err).msg_code = JERR_INPUT_EMPTY as c_int;
         (*(*cinfo).err)
@@ -351,9 +346,7 @@ pub unsafe extern "C" fn jpeg_mem_src_tj(
             ::std::mem::size_of::<jpeg_source_mgr>() as c_ulong,
         ) as *mut jpeg_source_mgr
     } else if (*(*cinfo).src).init_source
-        != Some(
-            init_mem_source as unsafe extern "C" fn(_: j_decompress_ptr) -> (),
-        )
+        != Some(init_mem_source as unsafe extern "C" fn(_: j_decompress_ptr) -> ())
     {
         (*(*cinfo).err).msg_code = JERR_BUFFER_SIZE as c_int;
         (*(*cinfo).err)
@@ -361,27 +354,15 @@ pub unsafe extern "C" fn jpeg_mem_src_tj(
             .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     src = (*cinfo).src;
-    (*src).init_source =
-        Some(init_mem_source as unsafe extern "C" fn(_: j_decompress_ptr) -> ());
-    (*src).fill_input_buffer = Some(
-        fill_mem_input_buffer
-            as unsafe extern "C" fn(
-                _: j_decompress_ptr,
-            ) -> boolean,
-    );
-    (*src).skip_input_data = Some(
-        skip_input_data
-            as unsafe extern "C" fn(_: j_decompress_ptr, _: c_long) -> (),
-    );
+    (*src).init_source = Some(init_mem_source as unsafe extern "C" fn(_: j_decompress_ptr) -> ());
+    (*src).fill_input_buffer =
+        Some(fill_mem_input_buffer as unsafe extern "C" fn(_: j_decompress_ptr) -> boolean);
+    (*src).skip_input_data =
+        Some(skip_input_data as unsafe extern "C" fn(_: j_decompress_ptr, _: c_long) -> ());
     (*src).resync_to_restart = Some(
-        jpeg_resync_to_restart
-            as unsafe extern "C" fn(
-                _: j_decompress_ptr,
-                _: c_int,
-            ) -> boolean,
+        jpeg_resync_to_restart as unsafe extern "C" fn(_: j_decompress_ptr, _: c_int) -> boolean,
     );
-    (*src).term_source =
-        Some(term_source as unsafe extern "C" fn(_: j_decompress_ptr) -> ());
+    (*src).term_source = Some(term_source as unsafe extern "C" fn(_: j_decompress_ptr) -> ());
     (*src).bytes_in_buffer = insize;
     (*src).next_input_byte = inbuffer as *const JOCTET;
 }

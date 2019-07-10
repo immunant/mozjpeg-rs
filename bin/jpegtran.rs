@@ -11,7 +11,6 @@
 #![feature(label_break_value)]
 #![feature(ptr_wrapping_offset_from)]
 
-
 pub use crate::cdjpeg::keymatch;
 pub use crate::cdjpeg::read_scan_script;
 pub use crate::cdjpeg::read_stdin;

@@ -1,4 +1,4 @@
-use libc::c_double;use libc::c_int;use libc::c_uint;use libc::c_ulong;use libc::c_long;pub use crate::jccolext_c::extbgr_gray_convert_internal;
+pub use crate::jccolext_c::extbgr_gray_convert_internal;
 pub use crate::jccolext_c::extbgr_rgb_convert_internal;
 pub use crate::jccolext_c::extbgr_ycc_convert_internal;
 pub use crate::jccolext_c::extbgrx_gray_convert_internal;
@@ -259,6 +259,11 @@ use crate::jsimd::jsimd_rgb_gray_convert;
 use crate::jsimd::jsimd_rgb_ycc_convert;
 pub use crate::stddef_h::size_t;
 use libc;
+use libc::c_double;
+use libc::c_int;
+use libc::c_long;
+use libc::c_uint;
+use libc::c_ulong;
 pub type my_cconvert_ptr = *mut my_color_converter;
 /*
  * jccolor.c
@@ -311,8 +316,7 @@ pub struct my_color_converter {
  */
 /* speediest right-shift on some machines */
 pub const SCALEBITS: c_int = 16i32;
-pub const CBCR_OFFSET: JLONG =
-    (CENTERJSAMPLE as JLONG) << SCALEBITS;
+pub const CBCR_OFFSET: JLONG = (CENTERJSAMPLE as JLONG) << SCALEBITS;
 pub const ONE_HALF: JLONG = (1i32 as JLONG) << SCALEBITS - 1i32;
 /* We allocate one big table and divide it up into eight parts, instead of
  * doing eight alloc_small requests.  This lets us use a single table base
@@ -352,48 +356,30 @@ unsafe extern "C" fn rgb_ycc_start(mut cinfo: j_compress_ptr) {
         .expect("non-null function pointer")(
         cinfo as j_common_ptr,
         JPOOL_IMAGE,
-        (TABLE_SIZE as c_ulong)
-            .wrapping_mul(::std::mem::size_of::<JLONG>() as c_ulong),
+        (TABLE_SIZE as c_ulong).wrapping_mul(::std::mem::size_of::<JLONG>() as c_ulong),
     ) as *mut JLONG;
     (*cconvert).rgb_ycc_tab = rgb_ycc_tab;
     i = 0i32 as JLONG;
     while i <= MAXJSAMPLE as c_long {
         *rgb_ycc_tab.offset((i + R_Y_OFF as c_long) as isize) =
-            (0.29900f64 * (1i64 << SCALEBITS) as c_double + 0.5f64)
-                as JLONG
-                * i;
+            (0.29900f64 * (1i64 << SCALEBITS) as c_double + 0.5f64) as JLONG * i;
         *rgb_ycc_tab.offset((i + G_Y_OFF as c_long) as isize) =
-            (0.58700f64 * (1i64 << SCALEBITS) as c_double + 0.5f64)
-                as JLONG
-                * i;
+            (0.58700f64 * (1i64 << SCALEBITS) as c_double + 0.5f64) as JLONG * i;
         *rgb_ycc_tab.offset((i + B_Y_OFF as c_long) as isize) =
-            (0.11400f64 * (1i64 << SCALEBITS) as c_double + 0.5f64)
-                as JLONG
-                * i
-                + ONE_HALF;
+            (0.11400f64 * (1i64 << SCALEBITS) as c_double + 0.5f64) as JLONG * i + ONE_HALF;
         *rgb_ycc_tab.offset((i + R_CB_OFF as c_long) as isize) =
-            -((0.16874f64 * (1i64 << SCALEBITS) as c_double + 0.5f64)
-                as JLONG)
-                * i;
+            -((0.16874f64 * (1i64 << SCALEBITS) as c_double + 0.5f64) as JLONG) * i;
         *rgb_ycc_tab.offset((i + G_CB_OFF as c_long) as isize) =
-            -((0.33126f64 * (1i64 << SCALEBITS) as c_double + 0.5f64)
-                as JLONG)
-                * i;
+            -((0.33126f64 * (1i64 << SCALEBITS) as c_double + 0.5f64) as JLONG) * i;
         *rgb_ycc_tab.offset((i + B_CB_OFF as c_long) as isize) =
-            (0.50000f64 * (1i64 << SCALEBITS) as c_double + 0.5f64)
-                as JLONG
-                * i
+            (0.50000f64 * (1i64 << SCALEBITS) as c_double + 0.5f64) as JLONG * i
                 + CBCR_OFFSET
                 + ONE_HALF
                 - 1i32 as c_long;
         *rgb_ycc_tab.offset((i + G_CR_OFF as c_long) as isize) =
-            -((0.41869f64 * (1i64 << SCALEBITS) as c_double + 0.5f64)
-                as JLONG)
-                * i;
+            -((0.41869f64 * (1i64 << SCALEBITS) as c_double + 0.5f64) as JLONG) * i;
         *rgb_ycc_tab.offset((i + B_CR_OFF as c_long) as isize) =
-            -((0.08131f64 * (1i64 << SCALEBITS) as c_double + 0.5f64)
-                as JLONG)
-                * i;
+            -((0.08131f64 * (1i64 << SCALEBITS) as c_double + 0.5f64) as JLONG) * i;
         i += 1
     }
 }
@@ -409,39 +395,25 @@ unsafe extern "C" fn rgb_ycc_convert(
 ) {
     match (*cinfo).in_color_space as c_uint {
         6 => {
-            extrgb_ycc_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extrgb_ycc_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         7 | 12 => {
-            extrgbx_ycc_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extrgbx_ycc_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         8 => {
-            extbgr_ycc_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extbgr_ycc_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         9 | 13 => {
-            extbgrx_ycc_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extbgrx_ycc_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         10 | 14 => {
-            extxbgr_ycc_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extxbgr_ycc_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         11 | 15 => {
-            extxrgb_ycc_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extxrgb_ycc_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         _ => {
-            rgb_ycc_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            rgb_ycc_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
     };
 }
@@ -458,39 +430,25 @@ unsafe extern "C" fn rgb_gray_convert(
 ) {
     match (*cinfo).in_color_space as c_uint {
         6 => {
-            extrgb_gray_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extrgb_gray_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         7 | 12 => {
-            extrgbx_gray_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extrgbx_gray_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         8 => {
-            extbgr_gray_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extbgr_gray_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         9 | 13 => {
-            extbgrx_gray_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extbgrx_gray_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         10 | 14 => {
-            extxbgr_gray_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extxbgr_gray_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         11 | 15 => {
-            extxrgb_gray_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extxrgb_gray_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         _ => {
-            rgb_gray_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            rgb_gray_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
     };
 }
@@ -506,39 +464,25 @@ unsafe extern "C" fn rgb_rgb_convert(
 ) {
     match (*cinfo).in_color_space as c_uint {
         6 => {
-            extrgb_rgb_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extrgb_rgb_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         7 | 12 => {
-            extrgbx_rgb_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extrgbx_rgb_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         8 => {
-            extbgr_rgb_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extbgr_rgb_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         9 | 13 => {
-            extbgrx_rgb_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extbgrx_rgb_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         10 | 14 => {
-            extxbgr_rgb_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extxbgr_rgb_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         11 | 15 => {
-            extxrgb_rgb_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extxrgb_rgb_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         _ => {
-            rgb_rgb_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            rgb_rgb_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
     };
 }
@@ -591,18 +535,15 @@ unsafe extern "C" fn cmyk_ycck_convert(
             *outptr0.offset(col as isize) = (*ctab.offset((r + R_Y_OFF) as isize)
                 + *ctab.offset((g + G_Y_OFF) as isize)
                 + *ctab.offset((b + B_Y_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             *outptr1.offset(col as isize) = (*ctab.offset((r + R_CB_OFF) as isize)
                 + *ctab.offset((g + G_CB_OFF) as isize)
                 + *ctab.offset((b + B_CB_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             *outptr2.offset(col as isize) = (*ctab.offset((r + R_CR_OFF) as isize)
                 + *ctab.offset((g + G_CR_OFF) as isize)
                 + *ctab.offset((b + B_CR_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             col = col.wrapping_add(1)
         }
     }
@@ -772,21 +713,15 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                 (*(*cinfo).err).msg_code = JERR_BAD_IN_COLORSPACE as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
         }
         2 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 => {
-            if (*cinfo).input_components
-                != rgb_pixelsize[(*cinfo).in_color_space as usize]
-            {
+            if (*cinfo).input_components != rgb_pixelsize[(*cinfo).in_color_space as usize] {
                 (*(*cinfo).err).msg_code = JERR_BAD_IN_COLORSPACE as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
         }
         3 => {
@@ -794,9 +729,7 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                 (*(*cinfo).err).msg_code = JERR_BAD_IN_COLORSPACE as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
         }
         4 | 5 => {
@@ -804,9 +737,7 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                 (*(*cinfo).err).msg_code = JERR_BAD_IN_COLORSPACE as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
         }
         _ => {
@@ -814,9 +745,7 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                 (*(*cinfo).err).msg_code = JERR_BAD_IN_COLORSPACE as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
         }
     }
@@ -826,13 +755,9 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                 (*(*cinfo).err).msg_code = JERR_BAD_J_COLORSPACE as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
-            if (*cinfo).in_color_space as c_uint
-                == JCS_GRAYSCALE as c_int as c_uint
-            {
+            if (*cinfo).in_color_space as c_uint == JCS_GRAYSCALE as c_int as c_uint {
                 (*cconvert).pub_0.color_convert = Some(
                     grayscale_convert
                         as unsafe extern "C" fn(
@@ -843,28 +768,17 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                             _: c_int,
                         ) -> (),
                 )
-            } else if (*cinfo).in_color_space as c_uint
-                == JCS_RGB as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_RGB as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_RGBX as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_BGR as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_BGRX as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_XBGR as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_XRGB as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_RGBA as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_BGRA as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_ABGR as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_ARGB as c_int as c_uint
+            } else if (*cinfo).in_color_space as c_uint == JCS_RGB as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_RGB as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_RGBX as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_BGR as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_BGRX as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_XBGR as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_XRGB as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_RGBA as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_BGRA as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_ABGR as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_ARGB as c_int as c_uint
             {
                 if 0 != jsimd_can_rgb_gray() {
                     (*cconvert).pub_0.color_convert = Some(
@@ -878,10 +792,8 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                             ) -> (),
                     )
                 } else {
-                    (*cconvert).pub_0.start_pass = Some(
-                        rgb_ycc_start
-                            as unsafe extern "C" fn(_: j_compress_ptr) -> (),
-                    );
+                    (*cconvert).pub_0.start_pass =
+                        Some(rgb_ycc_start as unsafe extern "C" fn(_: j_compress_ptr) -> ());
                     (*cconvert).pub_0.color_convert = Some(
                         rgb_gray_convert
                             as unsafe extern "C" fn(
@@ -893,9 +805,7 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                             ) -> (),
                     )
                 }
-            } else if (*cinfo).in_color_space as c_uint
-                == JCS_YCbCr as c_int as c_uint
-            {
+            } else if (*cinfo).in_color_space as c_uint == JCS_YCbCr as c_int as c_uint {
                 (*cconvert).pub_0.color_convert = Some(
                     grayscale_convert
                         as unsafe extern "C" fn(
@@ -910,9 +820,7 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                 (*(*cinfo).err).msg_code = JERR_CONVERSION_NOTIMPL as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
         }
         2 => {
@@ -920,9 +828,7 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                 (*(*cinfo).err).msg_code = JERR_BAD_J_COLORSPACE as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             if rgb_red[(*cinfo).in_color_space as usize] == 0i32
                 && rgb_green[(*cinfo).in_color_space as usize] == 1i32
@@ -939,28 +845,17 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                             _: c_int,
                         ) -> (),
                 )
-            } else if (*cinfo).in_color_space as c_uint
-                == JCS_RGB as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_RGB as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_RGBX as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_BGR as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_BGRX as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_XBGR as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_XRGB as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_RGBA as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_BGRA as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_ABGR as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_ARGB as c_int as c_uint
+            } else if (*cinfo).in_color_space as c_uint == JCS_RGB as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_RGB as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_RGBX as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_BGR as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_BGRX as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_XBGR as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_XRGB as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_RGBA as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_BGRA as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_ABGR as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_ARGB as c_int as c_uint
             {
                 (*cconvert).pub_0.color_convert = Some(
                     rgb_rgb_convert
@@ -976,9 +871,7 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                 (*(*cinfo).err).msg_code = JERR_CONVERSION_NOTIMPL as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
         }
         3 => {
@@ -986,32 +879,19 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                 (*(*cinfo).err).msg_code = JERR_BAD_J_COLORSPACE as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
-            if (*cinfo).in_color_space as c_uint
-                == JCS_RGB as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_RGB as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_RGBX as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_BGR as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_BGRX as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_XBGR as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_XRGB as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_RGBA as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_BGRA as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_ABGR as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    == JCS_EXT_ARGB as c_int as c_uint
+            if (*cinfo).in_color_space as c_uint == JCS_RGB as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_RGB as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_RGBX as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_BGR as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_BGRX as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_XBGR as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_XRGB as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_RGBA as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_BGRA as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_ABGR as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint == JCS_EXT_ARGB as c_int as c_uint
             {
                 if 0 != jsimd_can_rgb_ycc() {
                     (*cconvert).pub_0.color_convert = Some(
@@ -1025,10 +905,8 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                             ) -> (),
                     )
                 } else {
-                    (*cconvert).pub_0.start_pass = Some(
-                        rgb_ycc_start
-                            as unsafe extern "C" fn(_: j_compress_ptr) -> (),
-                    );
+                    (*cconvert).pub_0.start_pass =
+                        Some(rgb_ycc_start as unsafe extern "C" fn(_: j_compress_ptr) -> ());
                     (*cconvert).pub_0.color_convert = Some(
                         rgb_ycc_convert
                             as unsafe extern "C" fn(
@@ -1040,9 +918,7 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                             ) -> (),
                     )
                 }
-            } else if (*cinfo).in_color_space as c_uint
-                == JCS_YCbCr as c_int as c_uint
-            {
+            } else if (*cinfo).in_color_space as c_uint == JCS_YCbCr as c_int as c_uint {
                 (*cconvert).pub_0.color_convert = Some(
                     null_convert
                         as unsafe extern "C" fn(
@@ -1057,9 +933,7 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                 (*(*cinfo).err).msg_code = JERR_CONVERSION_NOTIMPL as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
         }
         4 => {
@@ -1067,13 +941,9 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                 (*(*cinfo).err).msg_code = JERR_BAD_J_COLORSPACE as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
-            if (*cinfo).in_color_space as c_uint
-                == JCS_CMYK as c_int as c_uint
-            {
+            if (*cinfo).in_color_space as c_uint == JCS_CMYK as c_int as c_uint {
                 (*cconvert).pub_0.color_convert = Some(
                     null_convert
                         as unsafe extern "C" fn(
@@ -1088,9 +958,7 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                 (*(*cinfo).err).msg_code = JERR_CONVERSION_NOTIMPL as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
         }
         5 => {
@@ -1098,17 +966,11 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                 (*(*cinfo).err).msg_code = JERR_BAD_J_COLORSPACE as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
-            if (*cinfo).in_color_space as c_uint
-                == JCS_CMYK as c_int as c_uint
-            {
-                (*cconvert).pub_0.start_pass = Some(
-                    rgb_ycc_start
-                        as unsafe extern "C" fn(_: j_compress_ptr) -> (),
-                );
+            if (*cinfo).in_color_space as c_uint == JCS_CMYK as c_int as c_uint {
+                (*cconvert).pub_0.start_pass =
+                    Some(rgb_ycc_start as unsafe extern "C" fn(_: j_compress_ptr) -> ());
                 (*cconvert).pub_0.color_convert = Some(
                     cmyk_ycck_convert
                         as unsafe extern "C" fn(
@@ -1119,9 +981,7 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                             _: c_int,
                         ) -> (),
                 )
-            } else if (*cinfo).in_color_space as c_uint
-                == JCS_YCCK as c_int as c_uint
-            {
+            } else if (*cinfo).in_color_space as c_uint == JCS_YCCK as c_int as c_uint {
                 (*cconvert).pub_0.color_convert = Some(
                     null_convert
                         as unsafe extern "C" fn(
@@ -1136,9 +996,7 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                 (*(*cinfo).err).msg_code = JERR_CONVERSION_NOTIMPL as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
         }
         _ => {
@@ -1148,9 +1006,7 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                 (*(*cinfo).err).msg_code = JERR_CONVERSION_NOTIMPL as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             (*cconvert).pub_0.color_convert = Some(
                 null_convert

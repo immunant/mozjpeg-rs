@@ -1,4 +1,4 @@
-use libc::c_char;use libc::c_long;use libc::c_int;use libc::c_uint;pub use crate::jmorecfg_h::boolean;
+pub use crate::jmorecfg_h::boolean;
 pub use crate::jmorecfg_h::FALSE;
 pub use crate::jmorecfg_h::JCOEF;
 pub use crate::jmorecfg_h::JDIMENSION;
@@ -36,6 +36,10 @@ pub use crate::stdlib::EXIT_FAILURE;
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::_IO_FILE;
 use libc;
+use libc::c_char;
+use libc::c_int;
+use libc::c_long;
+use libc::c_uint;
 // =============== BEGIN jerror_h ================
 
 /*
@@ -258,10 +262,8 @@ pub static mut jpeg_std_message_table: [*const c_char; 130] = [
     b"Sampling factors too large for interleaved scan\x00" as *const u8 as *const c_char,
     b"Invalid memory pool code %d\x00" as *const u8 as *const c_char,
     b"Unsupported JPEG data precision %d\x00" as *const u8 as *const c_char,
-    b"Invalid progressive parameters Ss=%d Se=%d Ah=%d Al=%d\x00" as *const u8
-        as *const c_char,
-    b"Invalid progressive parameters at scan script entry %d\x00" as *const u8
-        as *const c_char,
+    b"Invalid progressive parameters Ss=%d Se=%d Ah=%d Al=%d\x00" as *const u8 as *const c_char,
+    b"Invalid progressive parameters at scan script entry %d\x00" as *const u8 as *const c_char,
     b"Bogus sampling factors\x00" as *const u8 as *const c_char,
     b"Invalid scan script at entry %d\x00" as *const u8 as *const c_char,
     b"Improper call to JPEG library in state %d\x00" as *const u8 as *const c_char,
@@ -312,8 +314,7 @@ pub static mut jpeg_std_message_table: [*const c_char; 130] = [
     b"Failed to create temporary file %s\x00" as *const u8 as *const c_char,
     b"Read failed on temporary file\x00" as *const u8 as *const c_char,
     b"Seek failed on temporary file\x00" as *const u8 as *const c_char,
-    b"Write failed on temporary file --- out of disk space?\x00" as *const u8
-        as *const c_char,
+    b"Write failed on temporary file --- out of disk space?\x00" as *const u8 as *const c_char,
     b"Application transferred too few scanlines\x00" as *const u8 as *const c_char,
     b"Unsupported marker type 0x%02x\x00" as *const u8 as *const c_char,
     b"Virtual array controller messed up\x00" as *const u8 as *const c_char,
@@ -350,10 +351,8 @@ pub static mut jpeg_std_message_table: [*const c_char; 130] = [
     b"Selected %d colors for quantization\x00" as *const u8 as *const c_char,
     b"At marker 0x%02x, recovery action %d\x00" as *const u8 as *const c_char,
     b"RST%d\x00" as *const u8 as *const c_char,
-    b"Smoothing not supported with nonstandard sampling ratios\x00" as *const u8
-        as *const c_char,
-    b"Start Of Frame 0x%02x: width=%u, height=%u, components=%d\x00" as *const u8
-        as *const c_char,
+    b"Smoothing not supported with nonstandard sampling ratios\x00" as *const u8 as *const c_char,
+    b"Start Of Frame 0x%02x: width=%u, height=%u, components=%d\x00" as *const u8 as *const c_char,
     b"    Component %d: %dhx%dv q=%d\x00" as *const u8 as *const c_char,
     b"Start of Image\x00" as *const u8 as *const c_char,
     b"Start Of Scan: %d components\x00" as *const u8 as *const c_char,
@@ -363,10 +362,8 @@ pub static mut jpeg_std_message_table: [*const c_char; 130] = [
     b"Opened temporary file %s\x00" as *const u8 as *const c_char,
     b"JFIF extension marker: JPEG-compressed thumbnail image, length %u\x00" as *const u8
         as *const c_char,
-    b"JFIF extension marker: palette thumbnail image, length %u\x00" as *const u8
-        as *const c_char,
-    b"JFIF extension marker: RGB thumbnail image, length %u\x00" as *const u8
-        as *const c_char,
+    b"JFIF extension marker: palette thumbnail image, length %u\x00" as *const u8 as *const c_char,
+    b"JFIF extension marker: RGB thumbnail image, length %u\x00" as *const u8 as *const c_char,
     b"Unrecognized component IDs %d %d %d, assuming YCbCr\x00" as *const u8 as *const c_char,
     b"Freed XMS handle %u\x00" as *const u8 as *const c_char,
     b"Obtained XMS handle %u\x00" as *const u8 as *const c_char,
@@ -379,8 +376,7 @@ pub static mut jpeg_std_message_table: [*const c_char; 130] = [
     b"Corrupt JPEG data: bad Huffman code\x00" as *const u8 as *const c_char,
     b"Warning: unknown JFIF revision number %d.%02d\x00" as *const u8 as *const c_char,
     b"Premature end of JPEG file\x00" as *const u8 as *const c_char,
-    b"Corrupt JPEG data: found marker 0x%02x instead of RST%d\x00" as *const u8
-        as *const c_char,
+    b"Corrupt JPEG data: found marker 0x%02x instead of RST%d\x00" as *const u8 as *const c_char,
     b"Invalid SOS parameters for sequential JPEG\x00" as *const u8 as *const c_char,
     b"Application transferred too many scanlines\x00" as *const u8 as *const c_char,
     b"Invalid crop request\x00" as *const u8 as *const c_char,
@@ -444,10 +440,7 @@ unsafe extern "C" fn output_message(mut cinfo: j_common_ptr) {
  * An application might override this method if it wanted to abort on warnings
  * or change the policy about which messages to display.
  */
-unsafe extern "C" fn emit_message(
-    mut cinfo: j_common_ptr,
-    mut msg_level: c_int,
-) {
+unsafe extern "C" fn emit_message(mut cinfo: j_common_ptr, mut msg_level: c_int) {
     let mut err: *mut jpeg_error_mgr = (*cinfo).err;
     if msg_level < 0i32 {
         if (*err).num_warnings == 0i32 as c_long || (*err).trace_level >= 3i32 {
@@ -464,10 +457,7 @@ unsafe extern "C" fn emit_message(
  * characters.  Note that no '\n' character is added to the string.
  * Few applications should need to override this method.
  */
-unsafe extern "C" fn format_message(
-    mut cinfo: j_common_ptr,
-    mut buffer: *mut c_char,
-) {
+unsafe extern "C" fn format_message(mut cinfo: j_common_ptr, mut buffer: *mut c_char) {
     let mut err: *mut jpeg_error_mgr = (*cinfo).err;
     let mut msg_code: c_int = (*err).msg_code;
     let mut msgtext: *const c_char = NULL as *const c_char;
@@ -552,23 +542,14 @@ unsafe extern "C" fn reset_error_mgr(mut cinfo: j_common_ptr) {
  * after which the application may override some of the methods.
  */
 #[no_mangle]
-pub unsafe extern "C" fn jpeg_std_error(
-    mut err: *mut jpeg_error_mgr,
-) -> *mut jpeg_error_mgr {
-    (*err).error_exit =
-        Some(error_exit as unsafe extern "C" fn(_: j_common_ptr) -> ());
-    (*err).emit_message = Some(
-        emit_message
-            as unsafe extern "C" fn(_: j_common_ptr, _: c_int) -> (),
-    );
-    (*err).output_message =
-        Some(output_message as unsafe extern "C" fn(_: j_common_ptr) -> ());
-    (*err).format_message = Some(
-        format_message
-            as unsafe extern "C" fn(_: j_common_ptr, _: *mut c_char) -> (),
-    );
-    (*err).reset_error_mgr =
-        Some(reset_error_mgr as unsafe extern "C" fn(_: j_common_ptr) -> ());
+pub unsafe extern "C" fn jpeg_std_error(mut err: *mut jpeg_error_mgr) -> *mut jpeg_error_mgr {
+    (*err).error_exit = Some(error_exit as unsafe extern "C" fn(_: j_common_ptr) -> ());
+    (*err).emit_message =
+        Some(emit_message as unsafe extern "C" fn(_: j_common_ptr, _: c_int) -> ());
+    (*err).output_message = Some(output_message as unsafe extern "C" fn(_: j_common_ptr) -> ());
+    (*err).format_message =
+        Some(format_message as unsafe extern "C" fn(_: j_common_ptr, _: *mut c_char) -> ());
+    (*err).reset_error_mgr = Some(reset_error_mgr as unsafe extern "C" fn(_: j_common_ptr) -> ());
     (*err).trace_level = 0i32;
     (*err).num_warnings = 0i32 as c_long;
     (*err).msg_code = 0i32;

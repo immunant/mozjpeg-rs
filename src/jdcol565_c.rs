@@ -1,4 +1,4 @@
-use libc::c_ulong;use libc::c_long;use libc::c_int;use libc::c_uint;use crate::jdcolor::my_cconvert_ptr;
+use crate::jdcolor::my_cconvert_ptr;
 use crate::jdcolor::my_color_deconverter;
 use crate::jmorecfg_h::INT16;
 use crate::jmorecfg_h::JDIMENSION;
@@ -11,6 +11,10 @@ use crate::jpeglib_h::JSAMPIMAGE;
 use crate::jpeglib_h::JSAMPROW;
 use crate::stddef_h::size_t;
 use ::libc;
+use libc::c_int;
+use libc::c_long;
+use libc::c_uint;
+use libc::c_ulong;
 /*
  * jdcol565.c
  *
@@ -78,15 +82,14 @@ pub unsafe extern "C" fn ycc_rgb565_convert_be(
             cr = *fresh56 as c_int;
             r = *range_limit.offset((y + *Crrtab.offset(cr as isize)) as isize) as c_uint;
             g = *range_limit.offset(
-                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as isize,
+                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as isize,
             ) as c_uint;
             b = *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize) as c_uint;
             rgb = (r & 0xf8i32 as c_uint
                 | g >> 5i32
                 | g << 11i32 & 0xe000i32 as c_uint
-                | b << 5i32 & 0x1f00i32 as c_uint)
-                as JLONG;
+                | b << 5i32 & 0x1f00i32 as c_uint) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16;
             outptr = outptr.offset(2isize);
             num_cols = num_cols.wrapping_sub(1)
@@ -104,15 +107,14 @@ pub unsafe extern "C" fn ycc_rgb565_convert_be(
             cr = *fresh59 as c_int;
             r = *range_limit.offset((y + *Crrtab.offset(cr as isize)) as isize) as c_uint;
             g = *range_limit.offset(
-                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as isize,
+                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as isize,
             ) as c_uint;
             b = *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize) as c_uint;
             rgb = (r & 0xf8i32 as c_uint
                 | g >> 5i32
                 | g << 11i32 & 0xe000i32 as c_uint
-                | b << 5i32 & 0x1f00i32 as c_uint)
-                as JLONG;
+                | b << 5i32 & 0x1f00i32 as c_uint) as JLONG;
             let fresh60 = inptr0;
             inptr0 = inptr0.offset(1);
             y = *fresh60 as c_int;
@@ -124,8 +126,8 @@ pub unsafe extern "C" fn ycc_rgb565_convert_be(
             cr = *fresh62 as c_int;
             r = *range_limit.offset((y + *Crrtab.offset(cr as isize)) as isize) as c_uint;
             g = *range_limit.offset(
-                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as isize,
+                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as isize,
             ) as c_uint;
             b = *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize) as c_uint;
             rgb = rgb << 16i32
@@ -143,15 +145,14 @@ pub unsafe extern "C" fn ycc_rgb565_convert_be(
             cr = *inptr2 as c_int;
             r = *range_limit.offset((y + *Crrtab.offset(cr as isize)) as isize) as c_uint;
             g = *range_limit.offset(
-                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as isize,
+                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as isize,
             ) as c_uint;
             b = *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize) as c_uint;
             rgb = (r & 0xf8i32 as c_uint
                 | g >> 5i32
                 | g << 11i32 & 0xe000i32 as c_uint
-                | b << 5i32 & 0x1f00i32 as c_uint)
-                as JLONG;
+                | b << 5i32 & 0x1f00i32 as c_uint) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16
         }
     }
@@ -223,13 +224,12 @@ pub unsafe extern "C" fn ycc_rgb565_convert_le(
             cr = *fresh66 as c_int;
             r = *range_limit.offset((y + *Crrtab.offset(cr as isize)) as isize) as c_uint;
             g = *range_limit.offset(
-                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as isize,
+                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as isize,
             ) as c_uint;
             b = *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize) as c_uint;
-            rgb = (r << 8i32 & 0xf800i32 as c_uint
-                | g << 3i32 & 0x7e0i32 as c_uint
-                | b >> 3i32) as JLONG;
+            rgb = (r << 8i32 & 0xf800i32 as c_uint | g << 3i32 & 0x7e0i32 as c_uint | b >> 3i32)
+                as JLONG;
             *(outptr as *mut INT16) = rgb as INT16;
             outptr = outptr.offset(2isize);
             num_cols = num_cols.wrapping_sub(1)
@@ -247,13 +247,12 @@ pub unsafe extern "C" fn ycc_rgb565_convert_le(
             cr = *fresh69 as c_int;
             r = *range_limit.offset((y + *Crrtab.offset(cr as isize)) as isize) as c_uint;
             g = *range_limit.offset(
-                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as isize,
+                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as isize,
             ) as c_uint;
             b = *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize) as c_uint;
-            rgb = (r << 8i32 & 0xf800i32 as c_uint
-                | g << 3i32 & 0x7e0i32 as c_uint
-                | b >> 3i32) as JLONG;
+            rgb = (r << 8i32 & 0xf800i32 as c_uint | g << 3i32 & 0x7e0i32 as c_uint | b >> 3i32)
+                as JLONG;
             let fresh70 = inptr0;
             inptr0 = inptr0.offset(1);
             y = *fresh70 as c_int;
@@ -265,13 +264,11 @@ pub unsafe extern "C" fn ycc_rgb565_convert_le(
             cr = *fresh72 as c_int;
             r = *range_limit.offset((y + *Crrtab.offset(cr as isize)) as isize) as c_uint;
             g = *range_limit.offset(
-                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as isize,
+                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as isize,
             ) as c_uint;
             b = *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize) as c_uint;
-            rgb = ((r << 8i32 & 0xf800i32 as c_uint
-                | g << 3i32 & 0x7e0i32 as c_uint
-                | b >> 3i32)
+            rgb = ((r << 8i32 & 0xf800i32 as c_uint | g << 3i32 & 0x7e0i32 as c_uint | b >> 3i32)
                 << 16i32) as c_long
                 | rgb;
             *(outptr as *mut c_int) = rgb as c_int;
@@ -284,13 +281,12 @@ pub unsafe extern "C" fn ycc_rgb565_convert_le(
             cr = *inptr2 as c_int;
             r = *range_limit.offset((y + *Crrtab.offset(cr as isize)) as isize) as c_uint;
             g = *range_limit.offset(
-                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as isize,
+                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as isize,
             ) as c_uint;
             b = *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize) as c_uint;
-            rgb = (r << 8i32 & 0xf800i32 as c_uint
-                | g << 3i32 & 0x7e0i32 as c_uint
-                | b >> 3i32) as JLONG;
+            rgb = (r << 8i32 & 0xf800i32 as c_uint | g << 3i32 & 0x7e0i32 as c_uint | b >> 3i32)
+                as JLONG;
             *(outptr as *mut INT16) = rgb as INT16
         }
     }
@@ -319,8 +315,7 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_le(
     let mut Cbbtab: *mut c_int = (*cconvert).Cb_b_tab;
     let mut Crgtab: *mut JLONG = (*cconvert).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*cconvert).Cb_g_tab;
-    let mut d0: JLONG =
-        dither_matrix[((*cinfo).output_scanline & DITHER_MASK as c_uint) as usize];
+    let mut d0: JLONG = dither_matrix[((*cinfo).output_scanline & DITHER_MASK as c_uint) as usize];
     loop {
         num_rows -= 1;
         if !(num_rows >= 0i32) {
@@ -348,21 +343,18 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_le(
             inptr2 = inptr2.offset(1);
             cr = *fresh76 as c_int;
             r = *range_limit.offset(
-                ((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
+                ((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi32 as c_long)) as isize,
             ) as c_uint;
             g = *range_limit.offset(
-                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as c_long
+                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as c_long
                     + ((d0 & 0xffi32 as c_long) >> 1i32)) as isize,
             ) as c_uint;
             b = *range_limit.offset(
-                ((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
+                ((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi32 as c_long)) as isize,
             ) as c_uint;
-            rgb = (r << 8i32 & 0xf800i32 as c_uint
-                | g << 3i32 & 0x7e0i32 as c_uint
-                | b >> 3i32) as JLONG;
+            rgb = (r << 8i32 & 0xf800i32 as c_uint | g << 3i32 & 0x7e0i32 as c_uint | b >> 3i32)
+                as JLONG;
             *(outptr as *mut INT16) = rgb as INT16;
             outptr = outptr.offset(2isize);
             num_cols = num_cols.wrapping_sub(1)
@@ -379,22 +371,19 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_le(
             inptr2 = inptr2.offset(1);
             cr = *fresh79 as c_int;
             r = *range_limit.offset(
-                ((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
+                ((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi32 as c_long)) as isize,
             ) as c_uint;
             g = *range_limit.offset(
-                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as c_long
+                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as c_long
                     + ((d0 & 0xffi32 as c_long) >> 1i32)) as isize,
             ) as c_uint;
             b = *range_limit.offset(
-                ((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
+                ((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi32 as c_long)) as isize,
             ) as c_uint;
             d0 = (d0 & 0xffi32 as c_long) << 24i32 | d0 >> 8i32 & 0xffffffi32 as c_long;
-            rgb = (r << 8i32 & 0xf800i32 as c_uint
-                | g << 3i32 & 0x7e0i32 as c_uint
-                | b >> 3i32) as JLONG;
+            rgb = (r << 8i32 & 0xf800i32 as c_uint | g << 3i32 & 0x7e0i32 as c_uint | b >> 3i32)
+                as JLONG;
             let fresh80 = inptr0;
             inptr0 = inptr0.offset(1);
             y = *fresh80 as c_int;
@@ -405,22 +394,18 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_le(
             inptr2 = inptr2.offset(1);
             cr = *fresh82 as c_int;
             r = *range_limit.offset(
-                ((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
+                ((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi32 as c_long)) as isize,
             ) as c_uint;
             g = *range_limit.offset(
-                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as c_long
+                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as c_long
                     + ((d0 & 0xffi32 as c_long) >> 1i32)) as isize,
             ) as c_uint;
             b = *range_limit.offset(
-                ((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
+                ((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi32 as c_long)) as isize,
             ) as c_uint;
             d0 = (d0 & 0xffi32 as c_long) << 24i32 | d0 >> 8i32 & 0xffffffi32 as c_long;
-            rgb = ((r << 8i32 & 0xf800i32 as c_uint
-                | g << 3i32 & 0x7e0i32 as c_uint
-                | b >> 3i32)
+            rgb = ((r << 8i32 & 0xf800i32 as c_uint | g << 3i32 & 0x7e0i32 as c_uint | b >> 3i32)
                 << 16i32) as c_long
                 | rgb;
             *(outptr as *mut c_int) = rgb as c_int;
@@ -432,21 +417,18 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_le(
             cb = *inptr1 as c_int;
             cr = *inptr2 as c_int;
             r = *range_limit.offset(
-                ((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
+                ((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi32 as c_long)) as isize,
             ) as c_uint;
             g = *range_limit.offset(
-                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as c_long
+                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as c_long
                     + ((d0 & 0xffi32 as c_long) >> 1i32)) as isize,
             ) as c_uint;
             b = *range_limit.offset(
-                ((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
+                ((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi32 as c_long)) as isize,
             ) as c_uint;
-            rgb = (r << 8i32 & 0xf800i32 as c_uint
-                | g << 3i32 & 0x7e0i32 as c_uint
-                | b >> 3i32) as JLONG;
+            rgb = (r << 8i32 & 0xf800i32 as c_uint | g << 3i32 & 0x7e0i32 as c_uint | b >> 3i32)
+                as JLONG;
             *(outptr as *mut INT16) = rgb as INT16
         }
     }
@@ -475,8 +457,7 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_be(
     let mut Cbbtab: *mut c_int = (*cconvert).Cb_b_tab;
     let mut Crgtab: *mut JLONG = (*cconvert).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*cconvert).Cb_g_tab;
-    let mut d0: JLONG =
-        dither_matrix[((*cinfo).output_scanline & DITHER_MASK as c_uint) as usize];
+    let mut d0: JLONG = dither_matrix[((*cinfo).output_scanline & DITHER_MASK as c_uint) as usize];
     loop {
         num_rows -= 1;
         if !(num_rows >= 0i32) {
@@ -504,23 +485,20 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_be(
             inptr2 = inptr2.offset(1);
             cr = *fresh86 as c_int;
             r = *range_limit.offset(
-                ((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
+                ((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi32 as c_long)) as isize,
             ) as c_uint;
             g = *range_limit.offset(
-                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as c_long
+                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as c_long
                     + ((d0 & 0xffi32 as c_long) >> 1i32)) as isize,
             ) as c_uint;
             b = *range_limit.offset(
-                ((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
+                ((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi32 as c_long)) as isize,
             ) as c_uint;
             rgb = (r & 0xf8i32 as c_uint
                 | g >> 5i32
                 | g << 11i32 & 0xe000i32 as c_uint
-                | b << 5i32 & 0x1f00i32 as c_uint)
-                as JLONG;
+                | b << 5i32 & 0x1f00i32 as c_uint) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16;
             outptr = outptr.offset(2isize);
             num_cols = num_cols.wrapping_sub(1)
@@ -537,24 +515,21 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_be(
             inptr2 = inptr2.offset(1);
             cr = *fresh89 as c_int;
             r = *range_limit.offset(
-                ((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
+                ((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi32 as c_long)) as isize,
             ) as c_uint;
             g = *range_limit.offset(
-                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as c_long
+                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as c_long
                     + ((d0 & 0xffi32 as c_long) >> 1i32)) as isize,
             ) as c_uint;
             b = *range_limit.offset(
-                ((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
+                ((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi32 as c_long)) as isize,
             ) as c_uint;
             d0 = (d0 & 0xffi32 as c_long) << 24i32 | d0 >> 8i32 & 0xffffffi32 as c_long;
             rgb = (r & 0xf8i32 as c_uint
                 | g >> 5i32
                 | g << 11i32 & 0xe000i32 as c_uint
-                | b << 5i32 & 0x1f00i32 as c_uint)
-                as JLONG;
+                | b << 5i32 & 0x1f00i32 as c_uint) as JLONG;
             let fresh90 = inptr0;
             inptr0 = inptr0.offset(1);
             y = *fresh90 as c_int;
@@ -565,17 +540,15 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_be(
             inptr2 = inptr2.offset(1);
             cr = *fresh92 as c_int;
             r = *range_limit.offset(
-                ((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
+                ((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi32 as c_long)) as isize,
             ) as c_uint;
             g = *range_limit.offset(
-                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as c_long
+                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as c_long
                     + ((d0 & 0xffi32 as c_long) >> 1i32)) as isize,
             ) as c_uint;
             b = *range_limit.offset(
-                ((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
+                ((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi32 as c_long)) as isize,
             ) as c_uint;
             d0 = (d0 & 0xffi32 as c_long) << 24i32 | d0 >> 8i32 & 0xffffffi32 as c_long;
             rgb = rgb << 16i32
@@ -592,23 +565,20 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_be(
             cb = *inptr1 as c_int;
             cr = *inptr2 as c_int;
             r = *range_limit.offset(
-                ((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
+                ((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi32 as c_long)) as isize,
             ) as c_uint;
             g = *range_limit.offset(
-                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as c_long
+                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as c_long
                     + ((d0 & 0xffi32 as c_long) >> 1i32)) as isize,
             ) as c_uint;
             b = *range_limit.offset(
-                ((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
+                ((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi32 as c_long)) as isize,
             ) as c_uint;
             rgb = (r & 0xf8i32 as c_uint
                 | g >> 5i32
                 | g << 11i32 & 0xe000i32 as c_uint
-                | b << 5i32 & 0x1f00i32 as c_uint)
-                as JLONG;
+                | b << 5i32 & 0x1f00i32 as c_uint) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16
         }
     }
@@ -656,8 +626,7 @@ pub unsafe extern "C" fn rgb_rgb565_convert_be(
             rgb = (r & 0xf8i32 as c_uint
                 | g >> 5i32
                 | g << 11i32 & 0xe000i32 as c_uint
-                | b << 5i32 & 0x1f00i32 as c_uint)
-                as JLONG;
+                | b << 5i32 & 0x1f00i32 as c_uint) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16;
             outptr = outptr.offset(2isize);
             num_cols = num_cols.wrapping_sub(1)
@@ -676,8 +645,7 @@ pub unsafe extern "C" fn rgb_rgb565_convert_be(
             rgb = (r & 0xf8i32 as c_uint
                 | g >> 5i32
                 | g << 11i32 & 0xe000i32 as c_uint
-                | b << 5i32 & 0x1f00i32 as c_uint)
-                as JLONG;
+                | b << 5i32 & 0x1f00i32 as c_uint) as JLONG;
             let fresh100 = inptr0;
             inptr0 = inptr0.offset(1);
             r = *fresh100 as c_int as c_uint;
@@ -703,8 +671,7 @@ pub unsafe extern "C" fn rgb_rgb565_convert_be(
             rgb = (r & 0xf8i32 as c_uint
                 | g >> 5i32
                 | g << 11i32 & 0xe000i32 as c_uint
-                | b << 5i32 & 0x1f00i32 as c_uint)
-                as JLONG;
+                | b << 5i32 & 0x1f00i32 as c_uint) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16
         }
     }
@@ -749,9 +716,8 @@ pub unsafe extern "C" fn rgb_rgb565_convert_le(
             let fresh106 = inptr2;
             inptr2 = inptr2.offset(1);
             b = *fresh106 as c_int as c_uint;
-            rgb = (r << 8i32 & 0xf800i32 as c_uint
-                | g << 3i32 & 0x7e0i32 as c_uint
-                | b >> 3i32) as JLONG;
+            rgb = (r << 8i32 & 0xf800i32 as c_uint | g << 3i32 & 0x7e0i32 as c_uint | b >> 3i32)
+                as JLONG;
             *(outptr as *mut INT16) = rgb as INT16;
             outptr = outptr.offset(2isize);
             num_cols = num_cols.wrapping_sub(1)
@@ -767,9 +733,8 @@ pub unsafe extern "C" fn rgb_rgb565_convert_le(
             let fresh109 = inptr2;
             inptr2 = inptr2.offset(1);
             b = *fresh109 as c_int as c_uint;
-            rgb = (r << 8i32 & 0xf800i32 as c_uint
-                | g << 3i32 & 0x7e0i32 as c_uint
-                | b >> 3i32) as JLONG;
+            rgb = (r << 8i32 & 0xf800i32 as c_uint | g << 3i32 & 0x7e0i32 as c_uint | b >> 3i32)
+                as JLONG;
             let fresh110 = inptr0;
             inptr0 = inptr0.offset(1);
             r = *fresh110 as c_int as c_uint;
@@ -779,9 +744,7 @@ pub unsafe extern "C" fn rgb_rgb565_convert_le(
             let fresh112 = inptr2;
             inptr2 = inptr2.offset(1);
             b = *fresh112 as c_int as c_uint;
-            rgb = ((r << 8i32 & 0xf800i32 as c_uint
-                | g << 3i32 & 0x7e0i32 as c_uint
-                | b >> 3i32)
+            rgb = ((r << 8i32 & 0xf800i32 as c_uint | g << 3i32 & 0x7e0i32 as c_uint | b >> 3i32)
                 << 16i32) as c_long
                 | rgb;
             *(outptr as *mut c_int) = rgb as c_int;
@@ -792,9 +755,8 @@ pub unsafe extern "C" fn rgb_rgb565_convert_le(
             r = *inptr0 as c_int as c_uint;
             g = *inptr1 as c_int as c_uint;
             b = *inptr2 as c_int as c_uint;
-            rgb = (r << 8i32 & 0xf800i32 as c_uint
-                | g << 3i32 & 0x7e0i32 as c_uint
-                | b >> 3i32) as JLONG;
+            rgb = (r << 8i32 & 0xf800i32 as c_uint | g << 3i32 & 0x7e0i32 as c_uint | b >> 3i32)
+                as JLONG;
             *(outptr as *mut INT16) = rgb as INT16
         }
     }
@@ -814,8 +776,7 @@ pub unsafe extern "C" fn rgb_rgb565D_convert_be(
     let mut col: JDIMENSION = 0;
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit;
     let mut num_cols: JDIMENSION = (*cinfo).output_width;
-    let mut d0: JLONG =
-        dither_matrix[((*cinfo).output_scanline & DITHER_MASK as c_uint) as usize];
+    let mut d0: JLONG = dither_matrix[((*cinfo).output_scanline & DITHER_MASK as c_uint) as usize];
     loop {
         num_rows -= 1;
         if !(num_rows >= 0i32) {
@@ -835,27 +796,23 @@ pub unsafe extern "C" fn rgb_rgb565D_convert_be(
         if 0 != outptr as size_t & 3i32 as c_ulong {
             let fresh114 = inptr0;
             inptr0 = inptr0.offset(1);
-            r = *range_limit.offset(
-                (*fresh114 as c_int as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
-            ) as c_uint;
+            r = *range_limit
+                .offset((*fresh114 as c_int as c_long + (d0 & 0xffi32 as c_long)) as isize)
+                as c_uint;
             let fresh115 = inptr1;
             inptr1 = inptr1.offset(1);
             g = *range_limit.offset(
-                (*fresh115 as c_int as c_long
-                    + ((d0 & 0xffi32 as c_long) >> 1i32)) as isize,
+                (*fresh115 as c_int as c_long + ((d0 & 0xffi32 as c_long) >> 1i32)) as isize,
             ) as c_uint;
             let fresh116 = inptr2;
             inptr2 = inptr2.offset(1);
-            b = *range_limit.offset(
-                (*fresh116 as c_int as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
-            ) as c_uint;
+            b = *range_limit
+                .offset((*fresh116 as c_int as c_long + (d0 & 0xffi32 as c_long)) as isize)
+                as c_uint;
             rgb = (r & 0xf8i32 as c_uint
                 | g >> 5i32
                 | g << 11i32 & 0xe000i32 as c_uint
-                | b << 5i32 & 0x1f00i32 as c_uint)
-                as JLONG;
+                | b << 5i32 & 0x1f00i32 as c_uint) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16;
             outptr = outptr.offset(2isize);
             num_cols = num_cols.wrapping_sub(1)
@@ -864,46 +821,39 @@ pub unsafe extern "C" fn rgb_rgb565D_convert_be(
         while col < num_cols >> 1i32 {
             let fresh117 = inptr0;
             inptr0 = inptr0.offset(1);
-            r = *range_limit.offset(
-                (*fresh117 as c_int as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
-            ) as c_uint;
+            r = *range_limit
+                .offset((*fresh117 as c_int as c_long + (d0 & 0xffi32 as c_long)) as isize)
+                as c_uint;
             let fresh118 = inptr1;
             inptr1 = inptr1.offset(1);
             g = *range_limit.offset(
-                (*fresh118 as c_int as c_long
-                    + ((d0 & 0xffi32 as c_long) >> 1i32)) as isize,
+                (*fresh118 as c_int as c_long + ((d0 & 0xffi32 as c_long) >> 1i32)) as isize,
             ) as c_uint;
             let fresh119 = inptr2;
             inptr2 = inptr2.offset(1);
-            b = *range_limit.offset(
-                (*fresh119 as c_int as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
-            ) as c_uint;
+            b = *range_limit
+                .offset((*fresh119 as c_int as c_long + (d0 & 0xffi32 as c_long)) as isize)
+                as c_uint;
             d0 = (d0 & 0xffi32 as c_long) << 24i32 | d0 >> 8i32 & 0xffffffi32 as c_long;
             rgb = (r & 0xf8i32 as c_uint
                 | g >> 5i32
                 | g << 11i32 & 0xe000i32 as c_uint
-                | b << 5i32 & 0x1f00i32 as c_uint)
-                as JLONG;
+                | b << 5i32 & 0x1f00i32 as c_uint) as JLONG;
             let fresh120 = inptr0;
             inptr0 = inptr0.offset(1);
-            r = *range_limit.offset(
-                (*fresh120 as c_int as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
-            ) as c_uint;
+            r = *range_limit
+                .offset((*fresh120 as c_int as c_long + (d0 & 0xffi32 as c_long)) as isize)
+                as c_uint;
             let fresh121 = inptr1;
             inptr1 = inptr1.offset(1);
             g = *range_limit.offset(
-                (*fresh121 as c_int as c_long
-                    + ((d0 & 0xffi32 as c_long) >> 1i32)) as isize,
+                (*fresh121 as c_int as c_long + ((d0 & 0xffi32 as c_long) >> 1i32)) as isize,
             ) as c_uint;
             let fresh122 = inptr2;
             inptr2 = inptr2.offset(1);
-            b = *range_limit.offset(
-                (*fresh122 as c_int as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
-            ) as c_uint;
+            b = *range_limit
+                .offset((*fresh122 as c_int as c_long + (d0 & 0xffi32 as c_long)) as isize)
+                as c_uint;
             d0 = (d0 & 0xffi32 as c_long) << 24i32 | d0 >> 8i32 & 0xffffffi32 as c_long;
             rgb = rgb << 16i32
                 | (r & 0xf8i32 as c_uint
@@ -915,21 +865,19 @@ pub unsafe extern "C" fn rgb_rgb565D_convert_be(
             col = col.wrapping_add(1)
         }
         if 0 != num_cols & 1i32 as c_uint {
-            r = *range_limit.offset(
-                (*inptr0 as c_int as c_long + (d0 & 0xffi32 as c_long)) as isize,
-            ) as c_uint;
-            g = *range_limit.offset(
-                (*inptr1 as c_int as c_long + ((d0 & 0xffi32 as c_long) >> 1i32))
-                    as isize,
-            ) as c_uint;
-            b = *range_limit.offset(
-                (*inptr2 as c_int as c_long + (d0 & 0xffi32 as c_long)) as isize,
-            ) as c_uint;
+            r = *range_limit
+                .offset((*inptr0 as c_int as c_long + (d0 & 0xffi32 as c_long)) as isize)
+                as c_uint;
+            g = *range_limit
+                .offset((*inptr1 as c_int as c_long + ((d0 & 0xffi32 as c_long) >> 1i32)) as isize)
+                as c_uint;
+            b = *range_limit
+                .offset((*inptr2 as c_int as c_long + (d0 & 0xffi32 as c_long)) as isize)
+                as c_uint;
             rgb = (r & 0xf8i32 as c_uint
                 | g >> 5i32
                 | g << 11i32 & 0xe000i32 as c_uint
-                | b << 5i32 & 0x1f00i32 as c_uint)
-                as JLONG;
+                | b << 5i32 & 0x1f00i32 as c_uint) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16
         }
     }
@@ -949,8 +897,7 @@ pub unsafe extern "C" fn rgb_rgb565D_convert_le(
     let mut col: JDIMENSION = 0;
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit;
     let mut num_cols: JDIMENSION = (*cinfo).output_width;
-    let mut d0: JLONG =
-        dither_matrix[((*cinfo).output_scanline & DITHER_MASK as c_uint) as usize];
+    let mut d0: JLONG = dither_matrix[((*cinfo).output_scanline & DITHER_MASK as c_uint) as usize];
     loop {
         num_rows -= 1;
         if !(num_rows >= 0i32) {
@@ -970,25 +917,21 @@ pub unsafe extern "C" fn rgb_rgb565D_convert_le(
         if 0 != outptr as size_t & 3i32 as c_ulong {
             let fresh124 = inptr0;
             inptr0 = inptr0.offset(1);
-            r = *range_limit.offset(
-                (*fresh124 as c_int as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
-            ) as c_uint;
+            r = *range_limit
+                .offset((*fresh124 as c_int as c_long + (d0 & 0xffi32 as c_long)) as isize)
+                as c_uint;
             let fresh125 = inptr1;
             inptr1 = inptr1.offset(1);
             g = *range_limit.offset(
-                (*fresh125 as c_int as c_long
-                    + ((d0 & 0xffi32 as c_long) >> 1i32)) as isize,
+                (*fresh125 as c_int as c_long + ((d0 & 0xffi32 as c_long) >> 1i32)) as isize,
             ) as c_uint;
             let fresh126 = inptr2;
             inptr2 = inptr2.offset(1);
-            b = *range_limit.offset(
-                (*fresh126 as c_int as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
-            ) as c_uint;
-            rgb = (r << 8i32 & 0xf800i32 as c_uint
-                | g << 3i32 & 0x7e0i32 as c_uint
-                | b >> 3i32) as JLONG;
+            b = *range_limit
+                .offset((*fresh126 as c_int as c_long + (d0 & 0xffi32 as c_long)) as isize)
+                as c_uint;
+            rgb = (r << 8i32 & 0xf800i32 as c_uint | g << 3i32 & 0x7e0i32 as c_uint | b >> 3i32)
+                as JLONG;
             *(outptr as *mut INT16) = rgb as INT16;
             outptr = outptr.offset(2isize);
             num_cols = num_cols.wrapping_sub(1)
@@ -997,48 +940,39 @@ pub unsafe extern "C" fn rgb_rgb565D_convert_le(
         while col < num_cols >> 1i32 {
             let fresh127 = inptr0;
             inptr0 = inptr0.offset(1);
-            r = *range_limit.offset(
-                (*fresh127 as c_int as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
-            ) as c_uint;
+            r = *range_limit
+                .offset((*fresh127 as c_int as c_long + (d0 & 0xffi32 as c_long)) as isize)
+                as c_uint;
             let fresh128 = inptr1;
             inptr1 = inptr1.offset(1);
             g = *range_limit.offset(
-                (*fresh128 as c_int as c_long
-                    + ((d0 & 0xffi32 as c_long) >> 1i32)) as isize,
+                (*fresh128 as c_int as c_long + ((d0 & 0xffi32 as c_long) >> 1i32)) as isize,
             ) as c_uint;
             let fresh129 = inptr2;
             inptr2 = inptr2.offset(1);
-            b = *range_limit.offset(
-                (*fresh129 as c_int as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
-            ) as c_uint;
+            b = *range_limit
+                .offset((*fresh129 as c_int as c_long + (d0 & 0xffi32 as c_long)) as isize)
+                as c_uint;
             d0 = (d0 & 0xffi32 as c_long) << 24i32 | d0 >> 8i32 & 0xffffffi32 as c_long;
-            rgb = (r << 8i32 & 0xf800i32 as c_uint
-                | g << 3i32 & 0x7e0i32 as c_uint
-                | b >> 3i32) as JLONG;
+            rgb = (r << 8i32 & 0xf800i32 as c_uint | g << 3i32 & 0x7e0i32 as c_uint | b >> 3i32)
+                as JLONG;
             let fresh130 = inptr0;
             inptr0 = inptr0.offset(1);
-            r = *range_limit.offset(
-                (*fresh130 as c_int as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
-            ) as c_uint;
+            r = *range_limit
+                .offset((*fresh130 as c_int as c_long + (d0 & 0xffi32 as c_long)) as isize)
+                as c_uint;
             let fresh131 = inptr1;
             inptr1 = inptr1.offset(1);
             g = *range_limit.offset(
-                (*fresh131 as c_int as c_long
-                    + ((d0 & 0xffi32 as c_long) >> 1i32)) as isize,
+                (*fresh131 as c_int as c_long + ((d0 & 0xffi32 as c_long) >> 1i32)) as isize,
             ) as c_uint;
             let fresh132 = inptr2;
             inptr2 = inptr2.offset(1);
-            b = *range_limit.offset(
-                (*fresh132 as c_int as c_long + (d0 & 0xffi32 as c_long))
-                    as isize,
-            ) as c_uint;
+            b = *range_limit
+                .offset((*fresh132 as c_int as c_long + (d0 & 0xffi32 as c_long)) as isize)
+                as c_uint;
             d0 = (d0 & 0xffi32 as c_long) << 24i32 | d0 >> 8i32 & 0xffffffi32 as c_long;
-            rgb = ((r << 8i32 & 0xf800i32 as c_uint
-                | g << 3i32 & 0x7e0i32 as c_uint
-                | b >> 3i32)
+            rgb = ((r << 8i32 & 0xf800i32 as c_uint | g << 3i32 & 0x7e0i32 as c_uint | b >> 3i32)
                 << 16i32) as c_long
                 | rgb;
             *(outptr as *mut c_int) = rgb as c_int;
@@ -1046,19 +980,17 @@ pub unsafe extern "C" fn rgb_rgb565D_convert_le(
             col = col.wrapping_add(1)
         }
         if 0 != num_cols & 1i32 as c_uint {
-            r = *range_limit.offset(
-                (*inptr0 as c_int as c_long + (d0 & 0xffi32 as c_long)) as isize,
-            ) as c_uint;
-            g = *range_limit.offset(
-                (*inptr1 as c_int as c_long + ((d0 & 0xffi32 as c_long) >> 1i32))
-                    as isize,
-            ) as c_uint;
-            b = *range_limit.offset(
-                (*inptr2 as c_int as c_long + (d0 & 0xffi32 as c_long)) as isize,
-            ) as c_uint;
-            rgb = (r << 8i32 & 0xf800i32 as c_uint
-                | g << 3i32 & 0x7e0i32 as c_uint
-                | b >> 3i32) as JLONG;
+            r = *range_limit
+                .offset((*inptr0 as c_int as c_long + (d0 & 0xffi32 as c_long)) as isize)
+                as c_uint;
+            g = *range_limit
+                .offset((*inptr1 as c_int as c_long + ((d0 & 0xffi32 as c_long) >> 1i32)) as isize)
+                as c_uint;
+            b = *range_limit
+                .offset((*inptr2 as c_int as c_long + (d0 & 0xffi32 as c_long)) as isize)
+                as c_uint;
+            rgb = (r << 8i32 & 0xf800i32 as c_uint | g << 3i32 & 0x7e0i32 as c_uint | b >> 3i32)
+                as JLONG;
             *(outptr as *mut INT16) = rgb as INT16
         }
     }
@@ -1095,8 +1027,7 @@ pub unsafe extern "C" fn gray_rgb565_convert_be(
             rgb = (g & 0xf8i32 as c_uint
                 | g >> 5i32
                 | g << 11i32 & 0xe000i32 as c_uint
-                | g << 5i32 & 0x1f00i32 as c_uint)
-                as JLONG;
+                | g << 5i32 & 0x1f00i32 as c_uint) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16;
             outptr = outptr.offset(2isize);
             num_cols = num_cols.wrapping_sub(1)
@@ -1109,8 +1040,7 @@ pub unsafe extern "C" fn gray_rgb565_convert_be(
             rgb = (g & 0xf8i32 as c_uint
                 | g >> 5i32
                 | g << 11i32 & 0xe000i32 as c_uint
-                | g << 5i32 & 0x1f00i32 as c_uint)
-                as JLONG;
+                | g << 5i32 & 0x1f00i32 as c_uint) as JLONG;
             let fresh137 = inptr;
             inptr = inptr.offset(1);
             g = *fresh137 as c_uint;
@@ -1128,8 +1058,7 @@ pub unsafe extern "C" fn gray_rgb565_convert_be(
             rgb = (g & 0xf8i32 as c_uint
                 | g >> 5i32
                 | g << 11i32 & 0xe000i32 as c_uint
-                | g << 5i32 & 0x1f00i32 as c_uint)
-                as JLONG;
+                | g << 5i32 & 0x1f00i32 as c_uint) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16
         }
     }
@@ -1163,9 +1092,8 @@ pub unsafe extern "C" fn gray_rgb565_convert_le(
             let fresh140 = inptr;
             inptr = inptr.offset(1);
             g = *fresh140 as c_uint;
-            rgb = (g << 8i32 & 0xf800i32 as c_uint
-                | g << 3i32 & 0x7e0i32 as c_uint
-                | g >> 3i32) as JLONG;
+            rgb = (g << 8i32 & 0xf800i32 as c_uint | g << 3i32 & 0x7e0i32 as c_uint | g >> 3i32)
+                as JLONG;
             *(outptr as *mut INT16) = rgb as INT16;
             outptr = outptr.offset(2isize);
             num_cols = num_cols.wrapping_sub(1)
@@ -1175,15 +1103,12 @@ pub unsafe extern "C" fn gray_rgb565_convert_le(
             let fresh141 = inptr;
             inptr = inptr.offset(1);
             g = *fresh141 as c_uint;
-            rgb = (g << 8i32 & 0xf800i32 as c_uint
-                | g << 3i32 & 0x7e0i32 as c_uint
-                | g >> 3i32) as JLONG;
+            rgb = (g << 8i32 & 0xf800i32 as c_uint | g << 3i32 & 0x7e0i32 as c_uint | g >> 3i32)
+                as JLONG;
             let fresh142 = inptr;
             inptr = inptr.offset(1);
             g = *fresh142 as c_uint;
-            rgb = ((g << 8i32 & 0xf800i32 as c_uint
-                | g << 3i32 & 0x7e0i32 as c_uint
-                | g >> 3i32)
+            rgb = ((g << 8i32 & 0xf800i32 as c_uint | g << 3i32 & 0x7e0i32 as c_uint | g >> 3i32)
                 << 16i32) as c_long
                 | rgb;
             *(outptr as *mut c_int) = rgb as c_int;
@@ -1192,9 +1117,8 @@ pub unsafe extern "C" fn gray_rgb565_convert_le(
         }
         if 0 != num_cols & 1i32 as c_uint {
             g = *inptr as c_uint;
-            rgb = (g << 8i32 & 0xf800i32 as c_uint
-                | g << 3i32 & 0x7e0i32 as c_uint
-                | g >> 3i32) as JLONG;
+            rgb = (g << 8i32 & 0xf800i32 as c_uint | g << 3i32 & 0x7e0i32 as c_uint | g >> 3i32)
+                as JLONG;
             *(outptr as *mut INT16) = rgb as INT16
         }
     }
@@ -1212,8 +1136,7 @@ pub unsafe extern "C" fn gray_rgb565D_convert_le(
     let mut col: JDIMENSION = 0;
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit;
     let mut num_cols: JDIMENSION = (*cinfo).output_width;
-    let mut d0: JLONG =
-        dither_matrix[((*cinfo).output_scanline & DITHER_MASK as c_uint) as usize];
+    let mut d0: JLONG = dither_matrix[((*cinfo).output_scanline & DITHER_MASK as c_uint) as usize];
     loop {
         num_rows -= 1;
         if !(num_rows >= 0i32) {
@@ -1231,11 +1154,9 @@ pub unsafe extern "C" fn gray_rgb565D_convert_le(
             let fresh145 = inptr;
             inptr = inptr.offset(1);
             g = *fresh145 as c_uint;
-            g = *range_limit.offset((g as c_long + (d0 & 0xffi32 as c_long)) as isize)
-                as c_uint;
-            rgb = (g << 8i32 & 0xf800i32 as c_uint
-                | g << 3i32 & 0x7e0i32 as c_uint
-                | g >> 3i32) as JLONG;
+            g = *range_limit.offset((g as c_long + (d0 & 0xffi32 as c_long)) as isize) as c_uint;
+            rgb = (g << 8i32 & 0xf800i32 as c_uint | g << 3i32 & 0x7e0i32 as c_uint | g >> 3i32)
+                as JLONG;
             *(outptr as *mut INT16) = rgb as INT16;
             outptr = outptr.offset(2isize);
             num_cols = num_cols.wrapping_sub(1)
@@ -1245,20 +1166,15 @@ pub unsafe extern "C" fn gray_rgb565D_convert_le(
             let fresh146 = inptr;
             inptr = inptr.offset(1);
             g = *fresh146 as c_uint;
-            g = *range_limit.offset((g as c_long + (d0 & 0xffi32 as c_long)) as isize)
-                as c_uint;
-            rgb = (g << 8i32 & 0xf800i32 as c_uint
-                | g << 3i32 & 0x7e0i32 as c_uint
-                | g >> 3i32) as JLONG;
+            g = *range_limit.offset((g as c_long + (d0 & 0xffi32 as c_long)) as isize) as c_uint;
+            rgb = (g << 8i32 & 0xf800i32 as c_uint | g << 3i32 & 0x7e0i32 as c_uint | g >> 3i32)
+                as JLONG;
             d0 = (d0 & 0xffi32 as c_long) << 24i32 | d0 >> 8i32 & 0xffffffi32 as c_long;
             let fresh147 = inptr;
             inptr = inptr.offset(1);
             g = *fresh147 as c_uint;
-            g = *range_limit.offset((g as c_long + (d0 & 0xffi32 as c_long)) as isize)
-                as c_uint;
-            rgb = ((g << 8i32 & 0xf800i32 as c_uint
-                | g << 3i32 & 0x7e0i32 as c_uint
-                | g >> 3i32)
+            g = *range_limit.offset((g as c_long + (d0 & 0xffi32 as c_long)) as isize) as c_uint;
+            rgb = ((g << 8i32 & 0xf800i32 as c_uint | g << 3i32 & 0x7e0i32 as c_uint | g >> 3i32)
                 << 16i32) as c_long
                 | rgb;
             d0 = (d0 & 0xffi32 as c_long) << 24i32 | d0 >> 8i32 & 0xffffffi32 as c_long;
@@ -1268,11 +1184,9 @@ pub unsafe extern "C" fn gray_rgb565D_convert_le(
         }
         if 0 != num_cols & 1i32 as c_uint {
             g = *inptr as c_uint;
-            g = *range_limit.offset((g as c_long + (d0 & 0xffi32 as c_long)) as isize)
-                as c_uint;
-            rgb = (g << 8i32 & 0xf800i32 as c_uint
-                | g << 3i32 & 0x7e0i32 as c_uint
-                | g >> 3i32) as JLONG;
+            g = *range_limit.offset((g as c_long + (d0 & 0xffi32 as c_long)) as isize) as c_uint;
+            rgb = (g << 8i32 & 0xf800i32 as c_uint | g << 3i32 & 0x7e0i32 as c_uint | g >> 3i32)
+                as JLONG;
             *(outptr as *mut INT16) = rgb as INT16
         }
     }
@@ -1290,8 +1204,7 @@ pub unsafe extern "C" fn gray_rgb565D_convert_be(
     let mut col: JDIMENSION = 0;
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit;
     let mut num_cols: JDIMENSION = (*cinfo).output_width;
-    let mut d0: JLONG =
-        dither_matrix[((*cinfo).output_scanline & DITHER_MASK as c_uint) as usize];
+    let mut d0: JLONG = dither_matrix[((*cinfo).output_scanline & DITHER_MASK as c_uint) as usize];
     loop {
         num_rows -= 1;
         if !(num_rows >= 0i32) {
@@ -1309,13 +1222,11 @@ pub unsafe extern "C" fn gray_rgb565D_convert_be(
             let fresh150 = inptr;
             inptr = inptr.offset(1);
             g = *fresh150 as c_uint;
-            g = *range_limit.offset((g as c_long + (d0 & 0xffi32 as c_long)) as isize)
-                as c_uint;
+            g = *range_limit.offset((g as c_long + (d0 & 0xffi32 as c_long)) as isize) as c_uint;
             rgb = (g & 0xf8i32 as c_uint
                 | g >> 5i32
                 | g << 11i32 & 0xe000i32 as c_uint
-                | g << 5i32 & 0x1f00i32 as c_uint)
-                as JLONG;
+                | g << 5i32 & 0x1f00i32 as c_uint) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16;
             outptr = outptr.offset(2isize);
             num_cols = num_cols.wrapping_sub(1)
@@ -1325,19 +1236,16 @@ pub unsafe extern "C" fn gray_rgb565D_convert_be(
             let fresh151 = inptr;
             inptr = inptr.offset(1);
             g = *fresh151 as c_uint;
-            g = *range_limit.offset((g as c_long + (d0 & 0xffi32 as c_long)) as isize)
-                as c_uint;
+            g = *range_limit.offset((g as c_long + (d0 & 0xffi32 as c_long)) as isize) as c_uint;
             rgb = (g & 0xf8i32 as c_uint
                 | g >> 5i32
                 | g << 11i32 & 0xe000i32 as c_uint
-                | g << 5i32 & 0x1f00i32 as c_uint)
-                as JLONG;
+                | g << 5i32 & 0x1f00i32 as c_uint) as JLONG;
             d0 = (d0 & 0xffi32 as c_long) << 24i32 | d0 >> 8i32 & 0xffffffi32 as c_long;
             let fresh152 = inptr;
             inptr = inptr.offset(1);
             g = *fresh152 as c_uint;
-            g = *range_limit.offset((g as c_long + (d0 & 0xffi32 as c_long)) as isize)
-                as c_uint;
+            g = *range_limit.offset((g as c_long + (d0 & 0xffi32 as c_long)) as isize) as c_uint;
             rgb = rgb << 16i32
                 | (g & 0xf8i32 as c_uint
                     | g >> 5i32
@@ -1350,13 +1258,11 @@ pub unsafe extern "C" fn gray_rgb565D_convert_be(
         }
         if 0 != num_cols & 1i32 as c_uint {
             g = *inptr as c_uint;
-            g = *range_limit.offset((g as c_long + (d0 & 0xffi32 as c_long)) as isize)
-                as c_uint;
+            g = *range_limit.offset((g as c_long + (d0 & 0xffi32 as c_long)) as isize) as c_uint;
             rgb = (g & 0xf8i32 as c_uint
                 | g >> 5i32
                 | g << 11i32 & 0xe000i32 as c_uint
-                | g << 5i32 & 0x1f00i32 as c_uint)
-                as JLONG;
+                | g << 5i32 & 0x1f00i32 as c_uint) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16
         }
     }

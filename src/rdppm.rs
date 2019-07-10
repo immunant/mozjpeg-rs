@@ -1,4 +1,10 @@
-use libc::c_uint;use libc::c_long;use libc::c_int;use libc::c_void;use libc::c_ulong;use libc::c_uchar;use libc;
+use libc;
+use libc::c_int;
+use libc::c_long;
+use libc::c_uchar;
+use libc::c_uint;
+use libc::c_ulong;
+use libc::c_void;
 #[header_src = "/home/sjcrane/projects/c2rust/mozjpeg-rs/mozjpeg-c/jmorecfg.h:25"]
 pub mod jmorecfg_h {
     /*
@@ -155,7 +161,15 @@ pub mod jmorecfg_h {
      * listed above, changing these values will also break the SIMD extensions and
      * the regression tests.
      */
-    use crate::jmorecfg_h::EXT_XBGR_PIXELSIZE;use crate::jmorecfg_h::EXT_RGBX_PIXELSIZE;use libc::c_int;use crate::jmorecfg_h::RGB_PIXELSIZE;use crate::jmorecfg_h::EXT_XRGB_PIXELSIZE;use crate::jmorecfg_h::EXT_BGRX_PIXELSIZE;use crate::jmorecfg_h::EXT_BGR_PIXELSIZE;use crate::jmorecfg_h::EXT_RGB_PIXELSIZE;pub static mut rgb_pixelsize: [c_int; 17] = [
+    use crate::jmorecfg_h::EXT_BGRX_PIXELSIZE;
+    use crate::jmorecfg_h::EXT_BGR_PIXELSIZE;
+    use crate::jmorecfg_h::EXT_RGBX_PIXELSIZE;
+    use crate::jmorecfg_h::EXT_RGB_PIXELSIZE;
+    use crate::jmorecfg_h::EXT_XBGR_PIXELSIZE;
+    use crate::jmorecfg_h::EXT_XRGB_PIXELSIZE;
+    use crate::jmorecfg_h::RGB_PIXELSIZE;
+    use libc::c_int;
+    pub static mut rgb_pixelsize: [c_int; 17] = [
         -1i32,
         -1i32,
         RGB_PIXELSIZE,
@@ -462,7 +476,6 @@ pub use crate::jpeglib_h::JSAMPIMAGE;
 pub use crate::jpeglib_h::JSAMPROW;
 pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
-pub use jmorecfg_h::rgb_pixelsize;
 pub use crate::stddef_h::size_t;
 pub use crate::stdlib::_IO_codecvt;
 pub use crate::stdlib::_IO_lock_t;
@@ -475,6 +488,7 @@ pub use crate::stdlib::getc;
 pub use crate::stdlib::EOF;
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::_IO_FILE;
+pub use jmorecfg_h::rgb_pixelsize;
 pub type ppm_source_ptr = *mut ppm_source_struct;
 /* Private version of data source object */
 #[repr(C)]
@@ -555,9 +569,7 @@ unsafe extern "C" fn read_pbm_integer(
             (*(*cinfo).err).msg_code = JERR_INPUT_EOF as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         if !(ch == ' ' as i32 || ch == '\t' as i32 || ch == '\n' as i32 || ch == '\r' as i32) {
             break;
@@ -696,8 +708,7 @@ unsafe extern "C" fn get_text_gray_cmyk_row(
     if maxval == MAXJSAMPLE as c_uint {
         col = (*cinfo).image_width;
         while col > 0i32 as c_uint {
-            let mut gray: JSAMPLE =
-                read_pbm_integer(cinfo, infile, maxval) as JSAMPLE;
+            let mut gray: JSAMPLE = read_pbm_integer(cinfo, infile, maxval) as JSAMPLE;
             rgb_to_cmyk(
                 gray,
                 gray,
@@ -750,12 +761,9 @@ unsafe extern "C" fn get_text_rgb_row(
         if aindex >= 0i32 {
             col = (*cinfo).image_width;
             while col > 0i32 as c_uint {
-                *ptr.offset(rindex as isize) =
-                    read_pbm_integer(cinfo, infile, maxval) as JSAMPLE;
-                *ptr.offset(gindex as isize) =
-                    read_pbm_integer(cinfo, infile, maxval) as JSAMPLE;
-                *ptr.offset(bindex as isize) =
-                    read_pbm_integer(cinfo, infile, maxval) as JSAMPLE;
+                *ptr.offset(rindex as isize) = read_pbm_integer(cinfo, infile, maxval) as JSAMPLE;
+                *ptr.offset(gindex as isize) = read_pbm_integer(cinfo, infile, maxval) as JSAMPLE;
+                *ptr.offset(bindex as isize) = read_pbm_integer(cinfo, infile, maxval) as JSAMPLE;
                 *ptr.offset(aindex as isize) = 0xffi32 as JSAMPLE;
                 ptr = ptr.offset(ps as isize);
                 col = col.wrapping_sub(1)
@@ -763,12 +771,9 @@ unsafe extern "C" fn get_text_rgb_row(
         } else {
             col = (*cinfo).image_width;
             while col > 0i32 as c_uint {
-                *ptr.offset(rindex as isize) =
-                    read_pbm_integer(cinfo, infile, maxval) as JSAMPLE;
-                *ptr.offset(gindex as isize) =
-                    read_pbm_integer(cinfo, infile, maxval) as JSAMPLE;
-                *ptr.offset(bindex as isize) =
-                    read_pbm_integer(cinfo, infile, maxval) as JSAMPLE;
+                *ptr.offset(rindex as isize) = read_pbm_integer(cinfo, infile, maxval) as JSAMPLE;
+                *ptr.offset(gindex as isize) = read_pbm_integer(cinfo, infile, maxval) as JSAMPLE;
+                *ptr.offset(bindex as isize) = read_pbm_integer(cinfo, infile, maxval) as JSAMPLE;
                 ptr = ptr.offset(ps as isize);
                 col = col.wrapping_sub(1)
             }
@@ -815,12 +820,9 @@ unsafe extern "C" fn get_text_rgb_cmyk_row(
     if maxval == MAXJSAMPLE as c_uint {
         col = (*cinfo).image_width;
         while col > 0i32 as c_uint {
-            let mut r: JSAMPLE =
-                read_pbm_integer(cinfo, infile, maxval) as JSAMPLE;
-            let mut g: JSAMPLE =
-                read_pbm_integer(cinfo, infile, maxval) as JSAMPLE;
-            let mut b: JSAMPLE =
-                read_pbm_integer(cinfo, infile, maxval) as JSAMPLE;
+            let mut r: JSAMPLE = read_pbm_integer(cinfo, infile, maxval) as JSAMPLE;
+            let mut g: JSAMPLE = read_pbm_integer(cinfo, infile, maxval) as JSAMPLE;
+            let mut b: JSAMPLE = read_pbm_integer(cinfo, infile, maxval) as JSAMPLE;
             rgb_to_cmyk(
                 r,
                 g,
@@ -1026,8 +1028,7 @@ unsafe extern "C" fn get_gray_cmyk_row(
         while col > 0i32 as c_uint {
             let fresh24 = bufferptr;
             bufferptr = bufferptr.offset(1);
-            let mut gray_0: JSAMPLE =
-                *rescale.offset(*fresh24 as c_int as isize);
+            let mut gray_0: JSAMPLE = *rescale.offset(*fresh24 as c_int as isize);
             rgb_to_cmyk(
                 gray_0,
                 gray_0,
@@ -1192,16 +1193,13 @@ unsafe extern "C" fn get_rgb_cmyk_row(
         while col > 0i32 as c_uint {
             let fresh40 = bufferptr;
             bufferptr = bufferptr.offset(1);
-            let mut r_0: JSAMPLE =
-                *rescale.offset(*fresh40 as c_int as isize);
+            let mut r_0: JSAMPLE = *rescale.offset(*fresh40 as c_int as isize);
             let fresh41 = bufferptr;
             bufferptr = bufferptr.offset(1);
-            let mut g_0: JSAMPLE =
-                *rescale.offset(*fresh41 as c_int as isize);
+            let mut g_0: JSAMPLE = *rescale.offset(*fresh41 as c_int as isize);
             let fresh42 = bufferptr;
             bufferptr = bufferptr.offset(1);
-            let mut b_0: JSAMPLE =
-                *rescale.offset(*fresh42 as c_int as isize);
+            let mut b_0: JSAMPLE = *rescale.offset(*fresh42 as c_int as isize);
             rgb_to_cmyk(
                 r_0,
                 g_0,
@@ -1273,9 +1271,7 @@ unsafe extern "C" fn get_word_gray_row(
             (*(*cinfo).err).msg_code = JERR_PPM_OUTOFRANGE as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         let fresh45 = ptr;
         ptr = ptr.offset(1);
@@ -1321,9 +1317,7 @@ unsafe extern "C" fn get_word_rgb_row(
             (*(*cinfo).err).msg_code = JERR_PPM_OUTOFRANGE as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         let fresh48 = ptr;
         ptr = ptr.offset(1);
@@ -1338,9 +1332,7 @@ unsafe extern "C" fn get_word_rgb_row(
             (*(*cinfo).err).msg_code = JERR_PPM_OUTOFRANGE as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         let fresh51 = ptr;
         ptr = ptr.offset(1);
@@ -1355,9 +1347,7 @@ unsafe extern "C" fn get_word_rgb_row(
             (*(*cinfo).err).msg_code = JERR_PPM_OUTOFRANGE as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         let fresh54 = ptr;
         ptr = ptr.offset(1);
@@ -1369,10 +1359,7 @@ unsafe extern "C" fn get_word_rgb_row(
 /*
  * Read the file header; return image size and component count.
  */
-unsafe extern "C" fn start_input_ppm(
-    mut cinfo: j_compress_ptr,
-    mut sinfo: cjpeg_source_ptr,
-) {
+unsafe extern "C" fn start_input_ppm(mut cinfo: j_compress_ptr, mut sinfo: cjpeg_source_ptr) {
     let mut source: ppm_source_ptr = sinfo as ppm_source_ptr;
     let mut c: c_int = 0;
     let mut w: c_uint = 0;
@@ -1407,9 +1394,7 @@ unsafe extern "C" fn start_input_ppm(
             (*(*cinfo).err).msg_code = JERR_PPM_NOT as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             current_block_3 = 13513818773234778473;
         }
     }
@@ -1442,9 +1427,7 @@ unsafe extern "C" fn start_input_ppm(
     need_rescale = TRUE;
     match c {
         50 => {
-            if (*cinfo).in_color_space as c_uint
-                == JCS_UNKNOWN as c_int as c_uint
-            {
+            if (*cinfo).in_color_space as c_uint == JCS_UNKNOWN as c_int as c_uint {
                 (*cinfo).in_color_space = JCS_GRAYSCALE
             }
             (*(*cinfo).err).msg_code = JTRC_PGM_TEXT as c_int;
@@ -1452,60 +1435,44 @@ unsafe extern "C" fn start_input_ppm(
             (*(*cinfo).err).msg_parm.i[1usize] = h as c_int;
             (*(*cinfo).err)
                 .emit_message
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr, 1i32
-            );
-            if (*cinfo).in_color_space as c_uint
-                == JCS_GRAYSCALE as c_int as c_uint
-            {
+                .expect("non-null function pointer")(cinfo as j_common_ptr, 1i32);
+            if (*cinfo).in_color_space as c_uint == JCS_GRAYSCALE as c_int as c_uint {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_text_gray_row
                         as unsafe extern "C" fn(
                             _: j_compress_ptr,
                             _: cjpeg_source_ptr,
-                        )
-                            -> JDIMENSION,
+                        ) -> JDIMENSION,
                 )
-            } else if (*cinfo).in_color_space as c_uint
-                == JCS_RGB as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    >= JCS_EXT_RGB as c_int as c_uint
-                    && (*cinfo).in_color_space as c_uint
-                        <= JCS_EXT_ARGB as c_int as c_uint
+            } else if (*cinfo).in_color_space as c_uint == JCS_RGB as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint >= JCS_EXT_RGB as c_int as c_uint
+                    && (*cinfo).in_color_space as c_uint <= JCS_EXT_ARGB as c_int as c_uint
             {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_text_gray_rgb_row
                         as unsafe extern "C" fn(
                             _: j_compress_ptr,
                             _: cjpeg_source_ptr,
-                        )
-                            -> JDIMENSION,
+                        ) -> JDIMENSION,
                 )
-            } else if (*cinfo).in_color_space as c_uint
-                == JCS_CMYK as c_int as c_uint
-            {
+            } else if (*cinfo).in_color_space as c_uint == JCS_CMYK as c_int as c_uint {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_text_gray_cmyk_row
                         as unsafe extern "C" fn(
                             _: j_compress_ptr,
                             _: cjpeg_source_ptr,
-                        )
-                            -> JDIMENSION,
+                        ) -> JDIMENSION,
                 )
             } else {
                 (*(*cinfo).err).msg_code = JERR_BAD_IN_COLORSPACE as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             need_iobuffer = FALSE
         }
         51 => {
-            if (*cinfo).in_color_space as c_uint
-                == JCS_UNKNOWN as c_int as c_uint
-            {
+            if (*cinfo).in_color_space as c_uint == JCS_UNKNOWN as c_int as c_uint {
                 (*cinfo).in_color_space = JCS_EXT_RGB
             }
             (*(*cinfo).err).msg_code = JTRC_PPM_TEXT as c_int;
@@ -1513,49 +1480,36 @@ unsafe extern "C" fn start_input_ppm(
             (*(*cinfo).err).msg_parm.i[1usize] = h as c_int;
             (*(*cinfo).err)
                 .emit_message
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr, 1i32
-            );
-            if (*cinfo).in_color_space as c_uint
-                == JCS_RGB as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    >= JCS_EXT_RGB as c_int as c_uint
-                    && (*cinfo).in_color_space as c_uint
-                        <= JCS_EXT_ARGB as c_int as c_uint
+                .expect("non-null function pointer")(cinfo as j_common_ptr, 1i32);
+            if (*cinfo).in_color_space as c_uint == JCS_RGB as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint >= JCS_EXT_RGB as c_int as c_uint
+                    && (*cinfo).in_color_space as c_uint <= JCS_EXT_ARGB as c_int as c_uint
             {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_text_rgb_row
                         as unsafe extern "C" fn(
                             _: j_compress_ptr,
                             _: cjpeg_source_ptr,
-                        )
-                            -> JDIMENSION,
+                        ) -> JDIMENSION,
                 )
-            } else if (*cinfo).in_color_space as c_uint
-                == JCS_CMYK as c_int as c_uint
-            {
+            } else if (*cinfo).in_color_space as c_uint == JCS_CMYK as c_int as c_uint {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_text_rgb_cmyk_row
                         as unsafe extern "C" fn(
                             _: j_compress_ptr,
                             _: cjpeg_source_ptr,
-                        )
-                            -> JDIMENSION,
+                        ) -> JDIMENSION,
                 )
             } else {
                 (*(*cinfo).err).msg_code = JERR_BAD_IN_COLORSPACE as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             need_iobuffer = FALSE
         }
         53 => {
-            if (*cinfo).in_color_space as c_uint
-                == JCS_UNKNOWN as c_int as c_uint
-            {
+            if (*cinfo).in_color_space as c_uint == JCS_UNKNOWN as c_int as c_uint {
                 (*cinfo).in_color_space = JCS_GRAYSCALE
             }
             (*(*cinfo).err).msg_code = JTRC_PGM as c_int;
@@ -1563,84 +1517,65 @@ unsafe extern "C" fn start_input_ppm(
             (*(*cinfo).err).msg_parm.i[1usize] = h as c_int;
             (*(*cinfo).err)
                 .emit_message
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr, 1i32
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr, 1i32);
             if maxval > 255i32 as c_uint {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_word_gray_row
                         as unsafe extern "C" fn(
                             _: j_compress_ptr,
                             _: cjpeg_source_ptr,
-                        )
-                            -> JDIMENSION,
+                        ) -> JDIMENSION,
                 )
             } else if maxval == MAXJSAMPLE as c_uint
                 && ::std::mem::size_of::<JSAMPLE>() as c_ulong
                     == ::std::mem::size_of::<U_CHAR>() as c_ulong
-                && (*cinfo).in_color_space as c_uint
-                    == JCS_GRAYSCALE as c_int as c_uint
+                && (*cinfo).in_color_space as c_uint == JCS_GRAYSCALE as c_int as c_uint
             {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_raw_row
                         as unsafe extern "C" fn(
                             _: j_compress_ptr,
                             _: cjpeg_source_ptr,
-                        )
-                            -> JDIMENSION,
+                        ) -> JDIMENSION,
                 );
                 use_raw_buffer = TRUE;
                 need_rescale = FALSE
-            } else if (*cinfo).in_color_space as c_uint
-                == JCS_GRAYSCALE as c_int as c_uint
-            {
+            } else if (*cinfo).in_color_space as c_uint == JCS_GRAYSCALE as c_int as c_uint {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_scaled_gray_row
                         as unsafe extern "C" fn(
                             _: j_compress_ptr,
                             _: cjpeg_source_ptr,
-                        )
-                            -> JDIMENSION,
+                        ) -> JDIMENSION,
                 )
-            } else if (*cinfo).in_color_space as c_uint
-                == JCS_RGB as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    >= JCS_EXT_RGB as c_int as c_uint
-                    && (*cinfo).in_color_space as c_uint
-                        <= JCS_EXT_ARGB as c_int as c_uint
+            } else if (*cinfo).in_color_space as c_uint == JCS_RGB as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint >= JCS_EXT_RGB as c_int as c_uint
+                    && (*cinfo).in_color_space as c_uint <= JCS_EXT_ARGB as c_int as c_uint
             {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_gray_rgb_row
                         as unsafe extern "C" fn(
                             _: j_compress_ptr,
                             _: cjpeg_source_ptr,
-                        )
-                            -> JDIMENSION,
+                        ) -> JDIMENSION,
                 )
-            } else if (*cinfo).in_color_space as c_uint
-                == JCS_CMYK as c_int as c_uint
-            {
+            } else if (*cinfo).in_color_space as c_uint == JCS_CMYK as c_int as c_uint {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_gray_cmyk_row
                         as unsafe extern "C" fn(
                             _: j_compress_ptr,
                             _: cjpeg_source_ptr,
-                        )
-                            -> JDIMENSION,
+                        ) -> JDIMENSION,
                 )
             } else {
                 (*(*cinfo).err).msg_code = JERR_BAD_IN_COLORSPACE as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
         }
         54 => {
-            if (*cinfo).in_color_space as c_uint
-                == JCS_UNKNOWN as c_int as c_uint
-            {
+            if (*cinfo).in_color_space as c_uint == JCS_UNKNOWN as c_int as c_uint {
                 (*cinfo).in_color_space = JCS_EXT_RGB
             }
             (*(*cinfo).err).msg_code = JTRC_PPM as c_int;
@@ -1648,109 +1583,83 @@ unsafe extern "C" fn start_input_ppm(
             (*(*cinfo).err).msg_parm.i[1usize] = h as c_int;
             (*(*cinfo).err)
                 .emit_message
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr, 1i32
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr, 1i32);
             if maxval > 255i32 as c_uint {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_word_rgb_row
                         as unsafe extern "C" fn(
                             _: j_compress_ptr,
                             _: cjpeg_source_ptr,
-                        )
-                            -> JDIMENSION,
+                        ) -> JDIMENSION,
                 )
             } else if maxval == MAXJSAMPLE as c_uint
                 && ::std::mem::size_of::<JSAMPLE>() as c_ulong
                     == ::std::mem::size_of::<U_CHAR>() as c_ulong
-                && ((*cinfo).in_color_space as c_uint
-                    == JCS_EXT_RGB as c_int as c_uint
-                    || (*cinfo).in_color_space as c_uint
-                        == JCS_RGB as c_int as c_uint)
+                && ((*cinfo).in_color_space as c_uint == JCS_EXT_RGB as c_int as c_uint
+                    || (*cinfo).in_color_space as c_uint == JCS_RGB as c_int as c_uint)
             {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_raw_row
                         as unsafe extern "C" fn(
                             _: j_compress_ptr,
                             _: cjpeg_source_ptr,
-                        )
-                            -> JDIMENSION,
+                        ) -> JDIMENSION,
                 );
                 use_raw_buffer = TRUE;
                 need_rescale = FALSE
-            } else if (*cinfo).in_color_space as c_uint
-                == JCS_RGB as c_int as c_uint
-                || (*cinfo).in_color_space as c_uint
-                    >= JCS_EXT_RGB as c_int as c_uint
-                    && (*cinfo).in_color_space as c_uint
-                        <= JCS_EXT_ARGB as c_int as c_uint
+            } else if (*cinfo).in_color_space as c_uint == JCS_RGB as c_int as c_uint
+                || (*cinfo).in_color_space as c_uint >= JCS_EXT_RGB as c_int as c_uint
+                    && (*cinfo).in_color_space as c_uint <= JCS_EXT_ARGB as c_int as c_uint
             {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_rgb_row
                         as unsafe extern "C" fn(
                             _: j_compress_ptr,
                             _: cjpeg_source_ptr,
-                        )
-                            -> JDIMENSION,
+                        ) -> JDIMENSION,
                 )
-            } else if (*cinfo).in_color_space as c_uint
-                == JCS_CMYK as c_int as c_uint
-            {
+            } else if (*cinfo).in_color_space as c_uint == JCS_CMYK as c_int as c_uint {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_rgb_cmyk_row
                         as unsafe extern "C" fn(
                             _: j_compress_ptr,
                             _: cjpeg_source_ptr,
-                        )
-                            -> JDIMENSION,
+                        ) -> JDIMENSION,
                 )
             } else {
                 (*(*cinfo).err).msg_code = JERR_BAD_IN_COLORSPACE as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
         }
         _ => {}
     }
-    if (*cinfo).in_color_space as c_uint
-        == JCS_RGB as c_int as c_uint
-        || (*cinfo).in_color_space as c_uint
-            >= JCS_EXT_RGB as c_int as c_uint
-            && (*cinfo).in_color_space as c_uint
-                <= JCS_EXT_ARGB as c_int as c_uint
+    if (*cinfo).in_color_space as c_uint == JCS_RGB as c_int as c_uint
+        || (*cinfo).in_color_space as c_uint >= JCS_EXT_RGB as c_int as c_uint
+            && (*cinfo).in_color_space as c_uint <= JCS_EXT_ARGB as c_int as c_uint
     {
         (*cinfo).input_components = rgb_pixelsize[(*cinfo).in_color_space as usize]
-    } else if (*cinfo).in_color_space as c_uint
-        == JCS_GRAYSCALE as c_int as c_uint
-    {
+    } else if (*cinfo).in_color_space as c_uint == JCS_GRAYSCALE as c_int as c_uint {
         (*cinfo).input_components = 1i32
-    } else if (*cinfo).in_color_space as c_uint
-        == JCS_CMYK as c_int as c_uint
-    {
+    } else if (*cinfo).in_color_space as c_uint == JCS_CMYK as c_int as c_uint {
         (*cinfo).input_components = 4i32
     }
     if 0 != need_iobuffer {
         if c == '6' as i32 {
-            (*source).buffer_width = (w as size_t)
-                .wrapping_mul(3i32 as c_ulong)
-                .wrapping_mul(
-                    (if maxval <= 255i32 as c_uint {
-                        ::std::mem::size_of::<U_CHAR>() as c_ulong
-                    } else {
-                        (2i32 as c_ulong)
-                            .wrapping_mul(::std::mem::size_of::<U_CHAR>() as c_ulong)
-                    }),
-                )
+            (*source).buffer_width = (w as size_t).wrapping_mul(3i32 as c_ulong).wrapping_mul(
+                (if maxval <= 255i32 as c_uint {
+                    ::std::mem::size_of::<U_CHAR>() as c_ulong
+                } else {
+                    (2i32 as c_ulong).wrapping_mul(::std::mem::size_of::<U_CHAR>() as c_ulong)
+                }),
+            )
         } else {
             (*source).buffer_width = (w as size_t).wrapping_mul(
                 (if maxval <= 255i32 as c_uint {
                     ::std::mem::size_of::<U_CHAR>() as c_ulong
                 } else {
-                    (2i32 as c_ulong)
-                        .wrapping_mul(::std::mem::size_of::<U_CHAR>() as c_ulong)
+                    (2i32 as c_ulong).wrapping_mul(::std::mem::size_of::<U_CHAR>() as c_ulong)
                 }),
             )
         }
@@ -1792,8 +1701,7 @@ unsafe extern "C" fn start_input_ppm(
         val = 0i32 as c_long;
         while val <= maxval as c_long {
             *(*source).rescale.offset(val as isize) =
-                ((val * MAXJSAMPLE as c_long + half_maxval)
-                    / maxval as c_long) as JSAMPLE;
+                ((val * MAXJSAMPLE as c_long + half_maxval) / maxval as c_long) as JSAMPLE;
             val += 1
         }
     };
@@ -1801,19 +1709,13 @@ unsafe extern "C" fn start_input_ppm(
 /*
  * Finish up at the end of the file.
  */
-unsafe extern "C" fn finish_input_ppm(
-    mut cinfo: j_compress_ptr,
-    mut sinfo: cjpeg_source_ptr,
-) {
-}
+unsafe extern "C" fn finish_input_ppm(mut cinfo: j_compress_ptr, mut sinfo: cjpeg_source_ptr) {}
 /* no work */
 /*
  * The module selection routine for PPM format input.
  */
 #[no_mangle]
-pub unsafe extern "C" fn jinit_read_ppm(
-    mut cinfo: j_compress_ptr,
-) -> cjpeg_source_ptr {
+pub unsafe extern "C" fn jinit_read_ppm(mut cinfo: j_compress_ptr) -> cjpeg_source_ptr {
     let mut source: ppm_source_ptr = 0 as *mut ppm_source_struct;
     source = (*(*cinfo).mem)
         .alloc_small
@@ -1822,19 +1724,10 @@ pub unsafe extern "C" fn jinit_read_ppm(
         JPOOL_IMAGE,
         ::std::mem::size_of::<ppm_source_struct>() as c_ulong,
     ) as ppm_source_ptr;
-    (*source).pub_0.start_input = Some(
-        start_input_ppm
-            as unsafe extern "C" fn(
-                _: j_compress_ptr,
-                _: cjpeg_source_ptr,
-            ) -> (),
-    );
+    (*source).pub_0.start_input =
+        Some(start_input_ppm as unsafe extern "C" fn(_: j_compress_ptr, _: cjpeg_source_ptr) -> ());
     (*source).pub_0.finish_input = Some(
-        finish_input_ppm
-            as unsafe extern "C" fn(
-                _: j_compress_ptr,
-                _: cjpeg_source_ptr,
-            ) -> (),
+        finish_input_ppm as unsafe extern "C" fn(_: j_compress_ptr, _: cjpeg_source_ptr) -> (),
     );
     return source as cjpeg_source_ptr;
 }

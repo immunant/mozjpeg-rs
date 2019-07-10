@@ -1,4 +1,4 @@
-use libc::c_ulong;use libc::c_long;use libc::c_int;use libc::c_void;pub use crate::jmorecfg_h::JCOEF;
+pub use crate::jmorecfg_h::JCOEF;
 pub use crate::jmorecfg_h::JDIMENSION;
 pub use crate::jmorecfg_h::JSAMPLE;
 pub use crate::jpeglib_h::JBLOCK;
@@ -9,6 +9,10 @@ pub use crate::stddef_h::size_t;
 use crate::stdlib::memcpy;
 use crate::stdlib::memset;
 use libc;
+use libc::c_int;
+use libc::c_long;
+use libc::c_ulong;
+use libc::c_void;
 /*
  * jutils.c
  *
@@ -76,8 +80,8 @@ pub unsafe extern "C" fn jcopy_sample_rows(
 ) {
     let mut inptr: JSAMPROW = 0 as *mut JSAMPLE;
     let mut outptr: JSAMPROW = 0 as *mut JSAMPLE;
-    let mut count: size_t = (num_cols as c_ulong)
-        .wrapping_mul(::std::mem::size_of::<JSAMPLE>() as c_ulong);
+    let mut count: size_t =
+        (num_cols as c_ulong).wrapping_mul(::std::mem::size_of::<JSAMPLE>() as c_ulong);
     let mut row: c_int = 0;
     input_array = input_array.offset(source_row as isize);
     output_array = output_array.offset(dest_row as isize);
@@ -89,11 +93,7 @@ pub unsafe extern "C" fn jcopy_sample_rows(
         let fresh1 = output_array;
         output_array = output_array.offset(1);
         outptr = *fresh1;
-        memcpy(
-            outptr as *mut c_void,
-            inptr as *const c_void,
-            count,
-        );
+        memcpy(outptr as *mut c_void, inptr as *const c_void, count);
         row -= 1
     }
 }
@@ -107,15 +107,11 @@ pub unsafe extern "C" fn jcopy_block_row(
         output_row as *mut c_void,
         input_row as *const c_void,
         (num_blocks as c_ulong).wrapping_mul(
-            (64i32 as c_ulong)
-                .wrapping_mul(::std::mem::size_of::<JCOEF>() as c_ulong),
+            (64i32 as c_ulong).wrapping_mul(::std::mem::size_of::<JCOEF>() as c_ulong),
         ),
     );
 }
 #[no_mangle]
-pub unsafe extern "C" fn jzero_far(
-    mut target: *mut c_void,
-    mut bytestozero: size_t,
-) {
+pub unsafe extern "C" fn jzero_far(mut target: *mut c_void, mut bytestozero: size_t) {
     memset(target, 0i32, bytestozero);
 }

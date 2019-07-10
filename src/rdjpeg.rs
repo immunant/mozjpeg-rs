@@ -1,4 +1,4 @@
-use libc::c_ulong;use libc::c_int;use libc::c_uint;pub use crate::cdjpeg::cjpeg_source_ptr;
+pub use crate::cdjpeg::cjpeg_source_ptr;
 pub use crate::cdjpeg::cjpeg_source_struct;
 pub use crate::jconfig_h::JPEG_LIB_VERSION;
 pub use crate::jmorecfg_h::boolean;
@@ -105,6 +105,9 @@ pub use crate::stdlib::__off_t;
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::_IO_FILE;
 use libc;
+use libc::c_int;
+use libc::c_uint;
+use libc::c_ulong;
 /*
  * rdjpeg.c
  *
@@ -140,10 +143,7 @@ unsafe extern "C" fn get_rows(
 /*
  * Read the file header; return image size and component count.
  */
-unsafe extern "C" fn start_input_jpeg(
-    mut cinfo: j_compress_ptr,
-    mut sinfo: cjpeg_source_ptr,
-) {
+unsafe extern "C" fn start_input_jpeg(mut cinfo: j_compress_ptr, mut sinfo: cjpeg_source_ptr) {
     let mut m: c_int = 0;
     let mut source: jpeg_source_ptr = sinfo as jpeg_source_ptr;
     (*source).dinfo.err = jpeg_std_error(&mut (*source).jerr);
@@ -153,18 +153,10 @@ unsafe extern "C" fn start_input_jpeg(
         ::std::mem::size_of::<jpeg_decompress_struct>() as c_ulong,
     );
     jpeg_stdio_src(&mut (*source).dinfo, (*source).pub_0.input_file);
-    jpeg_save_markers(
-        &mut (*source).dinfo,
-        JPEG_COM,
-        0xffffi32 as c_uint,
-    );
+    jpeg_save_markers(&mut (*source).dinfo, JPEG_COM, 0xffffi32 as c_uint);
     m = 0i32;
     while m < 16i32 {
-        jpeg_save_markers(
-            &mut (*source).dinfo,
-            JPEG_APP0 + m,
-            0xffffi32 as c_uint,
-        );
+        jpeg_save_markers(&mut (*source).dinfo, JPEG_APP0 + m, 0xffffi32 as c_uint);
         m += 1
     }
     jpeg_read_header(&mut (*source).dinfo, TRUE);
@@ -189,20 +181,13 @@ unsafe extern "C" fn start_input_jpeg(
     );
     (*source).pub_0.buffer_height = 1i32 as JDIMENSION;
     (*source).pub_0.get_pixel_rows = Some(
-        get_rows
-            as unsafe extern "C" fn(
-                _: j_compress_ptr,
-                _: cjpeg_source_ptr,
-            ) -> JDIMENSION,
+        get_rows as unsafe extern "C" fn(_: j_compress_ptr, _: cjpeg_source_ptr) -> JDIMENSION,
     );
 }
 /*
  * Finish up at the end of the file.
  */
-unsafe extern "C" fn finish_input_jpeg(
-    mut cinfo: j_compress_ptr,
-    mut sinfo: cjpeg_source_ptr,
-) {
+unsafe extern "C" fn finish_input_jpeg(mut cinfo: j_compress_ptr, mut sinfo: cjpeg_source_ptr) {
     let mut source: jpeg_source_ptr = sinfo as jpeg_source_ptr;
     jpeg_finish_decompress(&mut (*source).dinfo);
     jpeg_destroy_decompress(&mut (*source).dinfo);
@@ -212,9 +197,7 @@ unsafe extern "C" fn finish_input_jpeg(
  * The module selection routine for JPEG format input.
  */
 #[no_mangle]
-pub unsafe extern "C" fn jinit_read_jpeg(
-    mut cinfo: j_compress_ptr,
-) -> cjpeg_source_ptr {
+pub unsafe extern "C" fn jinit_read_jpeg(mut cinfo: j_compress_ptr) -> cjpeg_source_ptr {
     let mut source: jpeg_source_ptr = 0 as *mut _jpeg_source_struct;
     source = (*(*cinfo).mem)
         .alloc_small
@@ -225,18 +208,10 @@ pub unsafe extern "C" fn jinit_read_jpeg(
     ) as jpeg_source_ptr;
     (*source).cinfo = cinfo;
     (*source).pub_0.start_input = Some(
-        start_input_jpeg
-            as unsafe extern "C" fn(
-                _: j_compress_ptr,
-                _: cjpeg_source_ptr,
-            ) -> (),
+        start_input_jpeg as unsafe extern "C" fn(_: j_compress_ptr, _: cjpeg_source_ptr) -> (),
     );
     (*source).pub_0.finish_input = Some(
-        finish_input_jpeg
-            as unsafe extern "C" fn(
-                _: j_compress_ptr,
-                _: cjpeg_source_ptr,
-            ) -> (),
+        finish_input_jpeg as unsafe extern "C" fn(_: j_compress_ptr, _: cjpeg_source_ptr) -> (),
     );
     return source as cjpeg_source_ptr;
 }

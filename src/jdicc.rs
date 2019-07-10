@@ -1,4 +1,4 @@
-use libc::c_char;use libc::c_ulong;use libc::c_int;use libc::c_uint;pub use crate::jerror::C2RustUnnamed_3;
+pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -214,6 +214,10 @@ pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 use crate::stdlib::malloc;
 use libc;
+use libc::c_char;
+use libc::c_int;
+use libc::c_uint;
+use libc::c_ulong;
 /*
  * jdicc.c
  *
@@ -236,9 +240,7 @@ pub const ICC_OVERHEAD_LEN: c_int = 14i32;
 /*
  * Handy subroutine to test whether a saved marker is an ICC profile marker.
  */
-unsafe extern "C" fn marker_is_icc(
-    mut marker: jpeg_saved_marker_ptr,
-) -> boolean {
+unsafe extern "C" fn marker_is_icc(mut marker: jpeg_saved_marker_ptr) -> boolean {
     return ((*marker).marker as c_int == ICC_MARKER
         && (*marker).data_length >= ICC_OVERHEAD_LEN as c_uint
         && *(*marker).data.offset(0isize) as c_int == 0x49i32
@@ -278,8 +280,7 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
     mut icc_data_ptr: *mut *mut JOCTET,
     mut icc_data_len: *mut c_uint,
 ) -> boolean {
-    let mut marker: jpeg_saved_marker_ptr =
-        0 as *mut jpeg_marker_struct;
+    let mut marker: jpeg_saved_marker_ptr = 0 as *mut jpeg_marker_struct;
     let mut num_markers: c_int = 0i32;
     let mut seq_no: c_int = 0;
     let mut icc_data: *mut JOCTET = 0 as *mut JOCTET;
@@ -320,8 +321,7 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
                 (*(*cinfo).err)
                     .emit_message
                     .expect("non-null function pointer")(
-                    cinfo as j_common_ptr,
-                    -1i32,
+                    cinfo as j_common_ptr, -1i32
                 );
                 return FALSE;
             }
@@ -331,8 +331,7 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
                 (*(*cinfo).err)
                     .emit_message
                     .expect("non-null function pointer")(
-                    cinfo as j_common_ptr,
-                    -1i32,
+                    cinfo as j_common_ptr, -1i32
                 );
                 return FALSE;
             }
@@ -341,8 +340,7 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
                 (*(*cinfo).err)
                     .emit_message
                     .expect("non-null function pointer")(
-                    cinfo as j_common_ptr,
-                    -1i32,
+                    cinfo as j_common_ptr, -1i32
                 );
                 return FALSE;
             }
@@ -363,10 +361,7 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
             (*(*cinfo).err).msg_code = JWRN_BOGUS_ICC as c_int;
             (*(*cinfo).err)
                 .emit_message
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr,
-                -1i32,
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr, -1i32);
             return FALSE;
         }
         data_offset[seq_no as usize] = total_length;
@@ -377,15 +372,12 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
         (*(*cinfo).err).msg_code = JWRN_BOGUS_ICC as c_int;
         (*(*cinfo).err)
             .emit_message
-            .expect("non-null function pointer")(
-            cinfo as j_common_ptr, -1i32
-        );
+            .expect("non-null function pointer")(cinfo as j_common_ptr, -1i32);
         return FALSE;
     }
-    icc_data = malloc(
-        (total_length as c_ulong)
-            .wrapping_mul(::std::mem::size_of::<JOCTET>() as c_ulong),
-    ) as *mut JOCTET;
+    icc_data =
+        malloc((total_length as c_ulong).wrapping_mul(::std::mem::size_of::<JOCTET>() as c_ulong))
+            as *mut JOCTET;
     if icc_data.is_null() {
         (*(*cinfo).err).msg_code = JERR_OUT_OF_MEMORY as c_int;
         (*(*cinfo).err).msg_parm.i[0usize] = 11i32;

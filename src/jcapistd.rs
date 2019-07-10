@@ -1,4 +1,4 @@
-use libc::c_long;use libc::c_int;use libc::c_uint;pub use crate::jerror::C2RustUnnamed_3;
+pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -206,6 +206,9 @@ pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 use libc;
+use libc::c_int;
+use libc::c_long;
+use libc::c_uint;
 /*
  * jcapistd.c
  *
@@ -309,9 +312,7 @@ pub unsafe extern "C" fn jpeg_write_scanlines(
         (*(*cinfo).err).msg_code = JWRN_TOO_MUCH_DATA as c_int;
         (*(*cinfo).err)
             .emit_message
-            .expect("non-null function pointer")(
-            cinfo as j_common_ptr, -1i32
-        );
+            .expect("non-null function pointer")(cinfo as j_common_ptr, -1i32);
     }
     if !(*cinfo).progress.is_null() {
         (*(*cinfo).progress).pass_counter = (*cinfo).next_scanline as c_long;
@@ -333,9 +334,8 @@ pub unsafe extern "C" fn jpeg_write_scanlines(
     (*(*cinfo).main)
         .process_data
         .expect("non-null function pointer")(cinfo, scanlines, &mut row_ctr, num_lines);
-    (*cinfo).next_scanline = ((*cinfo).next_scanline as c_uint).wrapping_add(row_ctr)
-        as JDIMENSION
-        as JDIMENSION;
+    (*cinfo).next_scanline =
+        ((*cinfo).next_scanline as c_uint).wrapping_add(row_ctr) as JDIMENSION as JDIMENSION;
     return row_ctr;
 }
 /* Replaces jpeg_write_scanlines when writing raw downsampled data. */
@@ -361,9 +361,7 @@ pub unsafe extern "C" fn jpeg_write_raw_data(
         (*(*cinfo).err).msg_code = JWRN_TOO_MUCH_DATA as c_int;
         (*(*cinfo).err)
             .emit_message
-            .expect("non-null function pointer")(
-            cinfo as j_common_ptr, -1i32
-        );
+            .expect("non-null function pointer")(cinfo as j_common_ptr, -1i32);
         return 0i32 as JDIMENSION;
     }
     if !(*cinfo).progress.is_null() {
@@ -378,8 +376,7 @@ pub unsafe extern "C" fn jpeg_write_raw_data(
             .pass_startup
             .expect("non-null function pointer")(cinfo);
     }
-    lines_per_iMCU_row =
-        ((*cinfo).max_v_samp_factor * DCTSIZE) as JDIMENSION;
+    lines_per_iMCU_row = ((*cinfo).max_v_samp_factor * DCTSIZE) as JDIMENSION;
     if num_lines < lines_per_iMCU_row {
         (*(*cinfo).err).msg_code = JERR_BUFFER_SIZE as c_int;
         (*(*cinfo).err)
@@ -392,8 +389,7 @@ pub unsafe extern "C" fn jpeg_write_raw_data(
     {
         return 0i32 as JDIMENSION;
     }
-    (*cinfo).next_scanline =
-        ((*cinfo).next_scanline as c_uint).wrapping_add(lines_per_iMCU_row)
-            as JDIMENSION as JDIMENSION;
+    (*cinfo).next_scanline = ((*cinfo).next_scanline as c_uint).wrapping_add(lines_per_iMCU_row)
+        as JDIMENSION as JDIMENSION;
     return lines_per_iMCU_row;
 }

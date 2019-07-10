@@ -1,40 +1,28 @@
-use libc::c_char;use libc::c_ushort;use libc::c_int;use libc::c_ulong;extern "C" {
+use libc::c_char;
+use libc::c_int;
+use libc::c_ulong;
+use libc::c_ushort;
+extern "C" {
     #[no_mangle]
-    pub fn read_scan_script(
-        cinfo: j_compress_ptr,
-        filename: *mut c_char,
-    ) -> boolean;
+    pub fn read_scan_script(cinfo: j_compress_ptr, filename: *mut c_char) -> boolean;
 
     #[no_mangle]
-    pub fn jinit_write_gif(
-        cinfo: j_decompress_ptr,
-    ) -> djpeg_dest_ptr;
+    pub fn jinit_write_gif(cinfo: j_decompress_ptr) -> djpeg_dest_ptr;
 
     #[no_mangle]
-    pub fn jinit_write_targa(
-        cinfo: j_decompress_ptr,
-    ) -> djpeg_dest_ptr;
+    pub fn jinit_write_targa(cinfo: j_decompress_ptr) -> djpeg_dest_ptr;
     /* djpeg support routines (in rdcolmap.c) */
     #[no_mangle]
-    pub fn read_color_map(
-        cinfo: j_decompress_ptr,
-        infile: *mut FILE,
-    );
+    pub fn read_color_map(cinfo: j_decompress_ptr, infile: *mut FILE);
     /* Module selection routines for I/O modules. */
     #[no_mangle]
-    pub fn jinit_read_jpeg(
-        cinfo: j_compress_ptr,
-    ) -> cjpeg_source_ptr;
+    pub fn jinit_read_jpeg(cinfo: j_compress_ptr) -> cjpeg_source_ptr;
 
     #[no_mangle]
-    pub fn jinit_read_gif(
-        cinfo: j_compress_ptr,
-    ) -> cjpeg_source_ptr;
+    pub fn jinit_read_gif(cinfo: j_compress_ptr) -> cjpeg_source_ptr;
 
     #[no_mangle]
-    pub fn jinit_read_targa(
-        cinfo: j_compress_ptr,
-    ) -> cjpeg_source_ptr;
+    pub fn jinit_read_targa(cinfo: j_compress_ptr) -> cjpeg_source_ptr;
     /* cjpeg support routines (in rdswitch.c) */
     #[no_mangle]
     pub fn read_quant_tables(
@@ -51,27 +39,16 @@ use libc::c_char;use libc::c_ushort;use libc::c_int;use libc::c_ulong;extern "C"
     ) -> boolean;
 
     #[no_mangle]
-    pub fn set_quant_slots(
-        cinfo: j_compress_ptr,
-        arg: *mut c_char,
-    ) -> boolean;
+    pub fn set_quant_slots(cinfo: j_compress_ptr, arg: *mut c_char) -> boolean;
 
     #[no_mangle]
-    pub fn set_sample_factors(
-        cinfo: j_compress_ptr,
-        arg: *mut c_char,
-    ) -> boolean;
+    pub fn set_sample_factors(cinfo: j_compress_ptr, arg: *mut c_char) -> boolean;
 
     #[no_mangle]
-    pub fn jinit_read_bmp(
-        cinfo: j_compress_ptr,
-        use_inversion_array: boolean,
-    ) -> cjpeg_source_ptr;
+    pub fn jinit_read_bmp(cinfo: j_compress_ptr, use_inversion_array: boolean) -> cjpeg_source_ptr;
 
     #[no_mangle]
-    pub fn jinit_read_ppm(
-        cinfo: j_compress_ptr,
-    ) -> cjpeg_source_ptr;
+    pub fn jinit_read_ppm(cinfo: j_compress_ptr) -> cjpeg_source_ptr;
 
     #[no_mangle]
     pub fn jinit_write_bmp(
@@ -81,9 +58,7 @@ use libc::c_char;use libc::c_ushort;use libc::c_int;use libc::c_ulong;extern "C"
     ) -> djpeg_dest_ptr;
 
     #[no_mangle]
-    pub fn jinit_write_ppm(
-        cinfo: j_decompress_ptr,
-    ) -> djpeg_dest_ptr;
+    pub fn jinit_write_ppm(cinfo: j_decompress_ptr) -> djpeg_dest_ptr;
 }
 pub use crate::stdlib::C2RustUnnamed_0;
 // =============== BEGIN cdjpeg_h ================
@@ -121,24 +96,10 @@ pub type cjpeg_source_ptr = *mut cjpeg_source_struct;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct cjpeg_source_struct {
-    pub start_input: Option<
-        unsafe extern "C" fn(
-            _: j_compress_ptr,
-            _: cjpeg_source_ptr,
-        ) -> (),
-    >,
-    pub get_pixel_rows: Option<
-        unsafe extern "C" fn(
-            _: j_compress_ptr,
-            _: cjpeg_source_ptr,
-        ) -> JDIMENSION,
-    >,
-    pub finish_input: Option<
-        unsafe extern "C" fn(
-            _: j_compress_ptr,
-            _: cjpeg_source_ptr,
-        ) -> (),
-    >,
+    pub start_input: Option<unsafe extern "C" fn(_: j_compress_ptr, _: cjpeg_source_ptr) -> ()>,
+    pub get_pixel_rows:
+        Option<unsafe extern "C" fn(_: j_compress_ptr, _: cjpeg_source_ptr) -> JDIMENSION>,
+    pub finish_input: Option<unsafe extern "C" fn(_: j_compress_ptr, _: cjpeg_source_ptr) -> ()>,
     pub input_file: *mut FILE,
     pub buffer: JSAMPARRAY,
     pub buffer_height: JDIMENSION,
@@ -151,31 +112,12 @@ pub type djpeg_dest_ptr = *mut djpeg_dest_struct;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct djpeg_dest_struct {
-    pub start_output: Option<
-        unsafe extern "C" fn(
-            _: j_decompress_ptr,
-            _: djpeg_dest_ptr,
-        ) -> (),
-    >,
-    pub put_pixel_rows: Option<
-        unsafe extern "C" fn(
-            _: j_decompress_ptr,
-            _: djpeg_dest_ptr,
-            _: JDIMENSION,
-        ) -> (),
-    >,
-    pub finish_output: Option<
-        unsafe extern "C" fn(
-            _: j_decompress_ptr,
-            _: djpeg_dest_ptr,
-        ) -> (),
-    >,
-    pub calc_buffer_dimensions: Option<
-        unsafe extern "C" fn(
-            _: j_decompress_ptr,
-            _: djpeg_dest_ptr,
-        ) -> (),
-    >,
+    pub start_output: Option<unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> ()>,
+    pub put_pixel_rows:
+        Option<unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr, _: JDIMENSION) -> ()>,
+    pub finish_output: Option<unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> ()>,
+    pub calc_buffer_dimensions:
+        Option<unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> ()>,
     pub output_file: *mut FILE,
     pub buffer: JSAMPARRAY,
     pub buffer_height: JDIMENSION,

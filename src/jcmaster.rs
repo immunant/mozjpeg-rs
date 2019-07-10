@@ -1,4 +1,4 @@
-use libc::c_char;use libc::c_long;use libc::c_int;use libc::c_uint;use libc::c_ulong;use libc::c_void;use libc::c_uchar;pub use crate::jconfig_h::BITS_IN_JSAMPLE;
+pub use crate::jconfig_h::BITS_IN_JSAMPLE;
 pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
@@ -225,6 +225,13 @@ use crate::stdlib::stderr;
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::_IO_FILE;
 use libc;
+use libc::c_char;
+use libc::c_int;
+use libc::c_long;
+use libc::c_uchar;
+use libc::c_uint;
+use libc::c_ulong;
+use libc::c_void;
 // =============== BEGIN jcmaster_h ================
 pub type my_master_ptr = *mut my_comp_master;
 #[repr(C)]
@@ -293,13 +300,9 @@ pub const main_pass: c_pass_type = 0;
 /*
  * Support routines that do various essential calculations.
  */
-unsafe extern "C" fn initial_setup(
-    mut cinfo: j_compress_ptr,
-    mut transcode_only: boolean,
-) {
+unsafe extern "C" fn initial_setup(mut cinfo: j_compress_ptr, mut transcode_only: boolean) {
     let mut ci: c_int = 0;
-    let mut compptr: *mut jpeg_component_info =
-        0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
     let mut samplesperrow: c_long = 0;
     let mut jd_samplesperrow: JDIMENSION = 0;
     if (*cinfo).image_height <= 0i32 as c_uint
@@ -321,8 +324,7 @@ unsafe extern "C" fn initial_setup(
             .error_exit
             .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
-    samplesperrow =
-        (*cinfo).image_width as c_long * (*cinfo).input_components as c_long;
+    samplesperrow = (*cinfo).image_width as c_long * (*cinfo).input_components as c_long;
     jd_samplesperrow = samplesperrow as JDIMENSION;
     if jd_samplesperrow as c_long != samplesperrow {
         (*(*cinfo).err).msg_code = JERR_WIDTH_OVERFLOW as c_int;
@@ -358,9 +360,7 @@ unsafe extern "C" fn initial_setup(
             (*(*cinfo).err).msg_code = JERR_BAD_SAMPLING as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         (*cinfo).max_h_samp_factor = if (*cinfo).max_h_samp_factor > (*compptr).h_samp_factor {
             (*cinfo).max_h_samp_factor
@@ -406,8 +406,7 @@ unsafe extern "C" fn initial_setup(
     ) as JDIMENSION;
 }
 unsafe extern "C" fn validate_script(mut cinfo: j_compress_ptr) {
-    let mut scanptr: *const jpeg_scan_info =
-        0 as *const jpeg_scan_info;
+    let mut scanptr: *const jpeg_scan_info = 0 as *const jpeg_scan_info;
     let mut scanno: c_int = 0;
     let mut ncomps: c_int = 0;
     let mut ci: c_int = 0;
@@ -465,9 +464,7 @@ unsafe extern "C" fn validate_script(mut cinfo: j_compress_ptr) {
             (*(*cinfo).err).msg_parm.i[1usize] = 4i32;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         ci = 0i32;
         while ci < ncomps {
@@ -477,18 +474,14 @@ unsafe extern "C" fn validate_script(mut cinfo: j_compress_ptr) {
                 (*(*cinfo).err).msg_parm.i[0usize] = scanno;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             if ci > 0i32 && thisi <= (*scanptr).component_index[(ci - 1i32) as usize] {
                 (*(*cinfo).err).msg_code = JERR_BAD_SCAN_SCRIPT as c_int;
                 (*(*cinfo).err).msg_parm.i[0usize] = scanno;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             ci += 1
         }
@@ -510,9 +503,7 @@ unsafe extern "C" fn validate_script(mut cinfo: j_compress_ptr) {
                 (*(*cinfo).err).msg_parm.i[0usize] = scanno;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             if Ss == 0i32 {
                 if Se != 0i32 {
@@ -521,7 +512,7 @@ unsafe extern "C" fn validate_script(mut cinfo: j_compress_ptr) {
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer")(
-                        cinfo as j_common_ptr,
+                        cinfo as j_common_ptr
                     );
                 }
             } else if ncomps != 1i32 {
@@ -529,9 +520,7 @@ unsafe extern "C" fn validate_script(mut cinfo: j_compress_ptr) {
                 (*(*cinfo).err).msg_parm.i[0usize] = scanno;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             ci = 0i32;
             while ci < ncomps {
@@ -546,30 +535,28 @@ unsafe extern "C" fn validate_script(mut cinfo: j_compress_ptr) {
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer")(
-                        cinfo as j_common_ptr,
+                        cinfo as j_common_ptr
                     );
                 }
                 coefi = Ss;
                 while coefi <= Se {
                     if *last_bitpos_ptr.offset(coefi as isize) < 0i32 {
                         if Ah != 0i32 {
-                            (*(*cinfo).err).msg_code =
-                                JERR_BAD_PROG_SCRIPT as c_int;
+                            (*(*cinfo).err).msg_code = JERR_BAD_PROG_SCRIPT as c_int;
                             (*(*cinfo).err).msg_parm.i[0usize] = scanno;
                             (*(*cinfo).err)
                                 .error_exit
                                 .expect("non-null function pointer")(
-                                cinfo as j_common_ptr,
+                                cinfo as j_common_ptr
                             );
                         }
                     } else if Ah != *last_bitpos_ptr.offset(coefi as isize) || Al != Ah - 1i32 {
-                        (*(*cinfo).err).msg_code =
-                            JERR_BAD_PROG_SCRIPT as c_int;
+                        (*(*cinfo).err).msg_code = JERR_BAD_PROG_SCRIPT as c_int;
                         (*(*cinfo).err).msg_parm.i[0usize] = scanno;
                         (*(*cinfo).err)
                             .error_exit
                             .expect("non-null function pointer")(
-                            cinfo as j_common_ptr,
+                            cinfo as j_common_ptr
                         );
                     }
                     *last_bitpos_ptr.offset(coefi as isize) = Al;
@@ -583,9 +570,7 @@ unsafe extern "C" fn validate_script(mut cinfo: j_compress_ptr) {
                 (*(*cinfo).err).msg_parm.i[0usize] = scanno;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             ci = 0i32;
             while ci < ncomps {
@@ -596,7 +581,7 @@ unsafe extern "C" fn validate_script(mut cinfo: j_compress_ptr) {
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer")(
-                        cinfo as j_common_ptr,
+                        cinfo as j_common_ptr
                     );
                 }
                 component_sent[thisi as usize] = TRUE;
@@ -613,9 +598,7 @@ unsafe extern "C" fn validate_script(mut cinfo: j_compress_ptr) {
                 (*(*cinfo).err).msg_code = JERR_MISSING_DATA as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             ci += 1
         }
@@ -626,9 +609,7 @@ unsafe extern "C" fn validate_script(mut cinfo: j_compress_ptr) {
                 (*(*cinfo).err).msg_code = JERR_MISSING_DATA as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             ci += 1
         }
@@ -645,15 +626,13 @@ pub const MAX_AH_AL: c_int = 10i32;
 /* C_MULTISCAN_FILES_SUPPORTED */
 unsafe extern "C" fn select_scan_parameters(mut cinfo: j_compress_ptr) {
     let mut ci: c_int = 0;
-    let mut master: my_master_ptr =
-        (*cinfo).master as my_master_ptr;
+    let mut master: my_master_ptr = (*cinfo).master as my_master_ptr;
     if (*master).pass_number < (*master).pass_number_scan_opt_base {
         (*cinfo).comps_in_scan = 1i32;
         if 0 != (*(*cinfo).master).use_scans_in_trellis {
             (*cinfo).cur_comp_info[0usize] = &mut *(*cinfo).comp_info.offset(
                 ((*master).pass_number / (4i32 * (*(*cinfo).master).trellis_num_loops)) as isize,
-            )
-                as *mut jpeg_component_info;
+            ) as *mut jpeg_component_info;
             (*cinfo).Ss = if (*master).pass_number % 4i32 < 2i32 {
                 1i32
             } else {
@@ -667,8 +646,7 @@ unsafe extern "C" fn select_scan_parameters(mut cinfo: j_compress_ptr) {
         } else {
             (*cinfo).cur_comp_info[0usize] = &mut *(*cinfo).comp_info.offset(
                 ((*master).pass_number / (2i32 * (*(*cinfo).master).trellis_num_loops)) as isize,
-            )
-                as *mut jpeg_component_info;
+            ) as *mut jpeg_component_info;
             (*cinfo).Ss = 1i32;
             (*cinfo).Se = DCTSIZE2 - 1i32
         }
@@ -714,15 +692,13 @@ unsafe extern "C" fn select_scan_parameters(mut cinfo: j_compress_ptr) {
             (*(*cinfo).err).msg_parm.i[1usize] = 4i32;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         (*cinfo).comps_in_scan = (*cinfo).num_components;
         ci = 0i32;
         while ci < (*cinfo).num_components {
-            (*cinfo).cur_comp_info[ci as usize] = &mut *(*cinfo).comp_info.offset(ci as isize)
-                as *mut jpeg_component_info;
+            (*cinfo).cur_comp_info[ci as usize] =
+                &mut *(*cinfo).comp_info.offset(ci as isize) as *mut jpeg_component_info;
             ci += 1
         }
         (*cinfo).Ss = 0i32;
@@ -735,8 +711,7 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: j_compress_ptr) {
     let mut ci: c_int = 0;
     let mut mcublks: c_int = 0;
     let mut tmp: c_int = 0;
-    let mut compptr: *mut jpeg_component_info =
-        0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
     if (*cinfo).comps_in_scan == 1i32 {
         compptr = (*cinfo).cur_comp_info[0usize];
         (*cinfo).MCUs_per_row = (*compptr).width_in_blocks;
@@ -756,17 +731,13 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: j_compress_ptr) {
         (*cinfo).blocks_in_MCU = 1i32;
         (*cinfo).MCU_membership[0usize] = 0i32
     } else {
-        if (*cinfo).comps_in_scan <= 0i32
-            || (*cinfo).comps_in_scan > MAX_COMPS_IN_SCAN
-        {
+        if (*cinfo).comps_in_scan <= 0i32 || (*cinfo).comps_in_scan > MAX_COMPS_IN_SCAN {
             (*(*cinfo).err).msg_code = JERR_COMPONENT_COUNT as c_int;
             (*(*cinfo).err).msg_parm.i[0usize] = (*cinfo).comps_in_scan;
             (*(*cinfo).err).msg_parm.i[1usize] = 4i32;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         (*cinfo).MCUs_per_row = jdiv_round_up(
             (*cinfo).image_width as c_long,
@@ -786,16 +757,14 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: j_compress_ptr) {
             (*compptr).MCU_sample_width = (*compptr).MCU_width * DCTSIZE;
             tmp = (*compptr)
                 .width_in_blocks
-                .wrapping_rem((*compptr).MCU_width as c_uint)
-                as c_int;
+                .wrapping_rem((*compptr).MCU_width as c_uint) as c_int;
             if tmp == 0i32 {
                 tmp = (*compptr).MCU_width
             }
             (*compptr).last_col_width = tmp;
             tmp = (*compptr)
                 .height_in_blocks
-                .wrapping_rem((*compptr).MCU_height as c_uint)
-                as c_int;
+                .wrapping_rem((*compptr).MCU_height as c_uint) as c_int;
             if tmp == 0i32 {
                 tmp = (*compptr).MCU_height
             }
@@ -805,9 +774,7 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: j_compress_ptr) {
                 (*(*cinfo).err).msg_code = JERR_BAD_MCU_SIZE as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             loop {
                 let fresh1 = mcublks;
@@ -840,8 +807,7 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: j_compress_ptr) {
  * required.
  */
 unsafe extern "C" fn prepare_for_pass(mut cinfo: j_compress_ptr) {
-    let mut master: my_master_ptr =
-        (*cinfo).master as my_master_ptr;
+    let mut master: my_master_ptr = (*cinfo).master as my_master_ptr;
     (*(*cinfo).master).trellis_passes =
         ((*master).pass_number < (*master).pass_number_scan_opt_base) as c_int;
     let mut current_block_54: u64;
@@ -858,9 +824,7 @@ unsafe extern "C" fn prepare_for_pass(mut cinfo: j_compress_ptr) {
                     .expect("non-null function pointer")(cinfo);
                 (*(*cinfo).prep)
                     .start_pass
-                    .expect("non-null function pointer")(
-                    cinfo, JBUF_PASS_THRU
-                );
+                    .expect("non-null function pointer")(cinfo, JBUF_PASS_THRU);
             }
             (*(*cinfo).fdct)
                 .start_pass
@@ -884,9 +848,7 @@ unsafe extern "C" fn prepare_for_pass(mut cinfo: j_compress_ptr) {
             );
             (*(*cinfo).main)
                 .start_pass
-                .expect("non-null function pointer")(
-                cinfo, JBUF_PASS_THRU
-            );
+                .expect("non-null function pointer")(cinfo, JBUF_PASS_THRU);
             if 0 != (*cinfo).optimize_coding || 0 != (*(*cinfo).master).trellis_quant {
                 (*master).pub_0.call_pass_startup = FALSE
             } else {
@@ -900,14 +862,10 @@ unsafe extern "C" fn prepare_for_pass(mut cinfo: j_compress_ptr) {
             if (*cinfo).Ss != 0i32 || (*cinfo).Ah == 0i32 || 0 != (*cinfo).arith_code {
                 (*(*cinfo).entropy)
                     .start_pass
-                    .expect("non-null function pointer")(
-                    cinfo, TRUE
-                );
+                    .expect("non-null function pointer")(cinfo, TRUE);
                 (*(*cinfo).coef)
                     .start_pass
-                    .expect("non-null function pointer")(
-                    cinfo, JBUF_CRANK_DEST
-                );
+                    .expect("non-null function pointer")(cinfo, JBUF_CRANK_DEST);
                 (*master).pub_0.call_pass_startup = FALSE;
                 current_block_54 = 2500484646272006982;
             } else {
@@ -947,14 +905,11 @@ unsafe extern "C" fn prepare_for_pass(mut cinfo: j_compress_ptr) {
             (*(*cinfo).entropy)
                 .start_pass
                 .expect("non-null function pointer")(
-                cinfo,
-                (0 == (*cinfo).arith_code) as c_int,
+                cinfo, (0 == (*cinfo).arith_code) as c_int
             );
             (*(*cinfo).coef)
                 .start_pass
-                .expect("non-null function pointer")(
-                cinfo, JBUF_REQUANT
-            );
+                .expect("non-null function pointer")(cinfo, JBUF_REQUANT);
             (*master).pub_0.call_pass_startup = FALSE;
             current_block_54 = 2500484646272006982;
         }
@@ -962,9 +917,7 @@ unsafe extern "C" fn prepare_for_pass(mut cinfo: j_compress_ptr) {
             (*(*cinfo).err).msg_code = JERR_NOT_COMPILED as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             current_block_54 = 2500484646272006982;
         }
     }
@@ -976,8 +929,7 @@ unsafe extern "C" fn prepare_for_pass(mut cinfo: j_compress_ptr) {
             }
             if 0 != (*(*cinfo).master).optimize_scans {
                 (*master).saved_dest = (*cinfo).dest;
-                (*cinfo).dest =
-                    NULL as *mut jpeg_destination_mgr;
+                (*cinfo).dest = NULL as *mut jpeg_destination_mgr;
                 (*master).scan_size[(*master).scan_number as usize] = 0i32 as c_ulong;
                 jpeg_mem_dest_internal(
                     cinfo,
@@ -1000,9 +952,7 @@ unsafe extern "C" fn prepare_for_pass(mut cinfo: j_compress_ptr) {
                 .expect("non-null function pointer")(cinfo, FALSE);
             (*(*cinfo).coef)
                 .start_pass
-                .expect("non-null function pointer")(
-                cinfo, JBUF_CRANK_DEST
-            );
+                .expect("non-null function pointer")(cinfo, JBUF_CRANK_DEST);
             if (*master).scan_number == 0i32 {
                 (*(*cinfo).marker)
                     .write_frame_header
@@ -1040,20 +990,13 @@ unsafe extern "C" fn pass_startup(mut cinfo: j_compress_ptr) {
         .write_scan_header
         .expect("non-null function pointer")(cinfo);
 }
-unsafe extern "C" fn copy_buffer(
-    mut cinfo: j_compress_ptr,
-    mut scan_idx: c_int,
-) {
-    let mut master: my_master_ptr =
-        (*cinfo).master as my_master_ptr;
+unsafe extern "C" fn copy_buffer(mut cinfo: j_compress_ptr, mut scan_idx: c_int) {
+    let mut master: my_master_ptr = (*cinfo).master as my_master_ptr;
     let mut size: c_ulong = (*master).scan_size[scan_idx as usize];
     let mut src: *mut c_uchar = (*master).scan_buffer[scan_idx as usize];
     let mut i: c_int = 0;
     if (*(*cinfo).err).trace_level > 0i32 {
-        fprintf(
-            stderr,
-            b"SCAN \x00" as *const u8 as *const c_char,
-        );
+        fprintf(stderr, b"SCAN \x00" as *const u8 as *const c_char);
         i = 0i32;
         while i < (*(*cinfo).scan_info.offset(scan_idx as isize)).comps_in_scan {
             fprintf(
@@ -1080,10 +1023,7 @@ unsafe extern "C" fn copy_buffer(
             (*(*cinfo).scan_info.offset(scan_idx as isize)).Ah,
             (*master).actual_Al[scan_idx as usize],
         );
-        fprintf(
-            stderr,
-            b"\n\x00" as *const u8 as *const c_char,
-        );
+        fprintf(stderr, b"\n\x00" as *const u8 as *const c_char);
     }
     while size >= (*(*cinfo).dest).free_in_buffer {
         memcpy(
@@ -1104,9 +1044,7 @@ unsafe extern "C" fn copy_buffer(
             (*(*cinfo).err).msg_code = JERR_UNSUPPORTED_SUSPEND as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
     }
     memcpy(
@@ -1115,16 +1053,11 @@ unsafe extern "C" fn copy_buffer(
         size,
     );
     (*(*cinfo).dest).next_output_byte = (*(*cinfo).dest).next_output_byte.offset(size as isize);
-    (*(*cinfo).dest).free_in_buffer = ((*(*cinfo).dest).free_in_buffer as c_ulong)
-        .wrapping_sub(size) as size_t
-        as size_t;
+    (*(*cinfo).dest).free_in_buffer =
+        ((*(*cinfo).dest).free_in_buffer as c_ulong).wrapping_sub(size) as size_t as size_t;
 }
-unsafe extern "C" fn select_scans(
-    mut cinfo: j_compress_ptr,
-    mut next_scan_number: c_int,
-) {
-    let mut master: my_master_ptr =
-        (*cinfo).master as my_master_ptr;
+unsafe extern "C" fn select_scans(mut cinfo: j_compress_ptr, mut next_scan_number: c_int) {
+    let mut master: my_master_ptr = (*cinfo).master as my_master_ptr;
     let mut base_scan_idx: c_int = 0i32;
     let mut luma_freq_split_scan_start: c_int =
         (*(*cinfo).master).num_scans_luma_dc + 3i32 * (*(*cinfo).master).Al_max_luma + 2i32;
@@ -1239,8 +1172,7 @@ unsafe extern "C" fn select_scans(
                     .best_cost
                     .wrapping_add((*master).scan_size[(next_scan_number - 1i32) as usize])
             } else if (next_scan_number - chroma_freq_split_scan_start) % 4i32 == 2i32 {
-                let mut idx_0: c_int =
-                    next_scan_number - chroma_freq_split_scan_start >> 2i32;
+                let mut idx_0: c_int = next_scan_number - chroma_freq_split_scan_start >> 2i32;
                 let mut cost_2: c_ulong = 0i32 as c_ulong;
                 cost_2 =
                     cost_2.wrapping_add((*master).scan_size[(next_scan_number - 4i32) as usize]);
@@ -1369,8 +1301,7 @@ unsafe extern "C" fn select_scans(
  * Finish up at end of pass.
  */
 unsafe extern "C" fn finish_pass_master(mut cinfo: j_compress_ptr) {
-    let mut master: my_master_ptr =
-        (*cinfo).master as my_master_ptr;
+    let mut master: my_master_ptr = (*cinfo).master as my_master_ptr;
     (*(*cinfo).entropy)
         .finish_pass
         .expect("non-null function pointer")(cinfo);
@@ -1434,10 +1365,9 @@ unsafe extern "C" fn finish_pass_master(mut cinfo: j_compress_ptr) {
                     j = 1i32;
                     while j < DCTSIZE2 {
                         if (*(*cinfo).master).norm_coef[i as usize][j as usize] != 0.0f64 {
-                            let mut q: c_int =
-                                ((*(*cinfo).master).norm_src[i as usize][j as usize]
-                                    / (*(*cinfo).master).norm_coef[i as usize][j as usize]
-                                    + 0.5f64) as c_int;
+                            let mut q: c_int = ((*(*cinfo).master).norm_src[i as usize][j as usize]
+                                / (*(*cinfo).master).norm_coef[i as usize][j as usize]
+                                + 0.5f64) as c_int;
                             if q > 254i32 {
                                 q = 254i32
                             }
@@ -1465,8 +1395,7 @@ pub unsafe extern "C" fn jinit_c_master_control(
     mut cinfo: j_compress_ptr,
     mut transcode_only: boolean,
 ) {
-    let mut master: my_master_ptr =
-        (*cinfo).master as my_master_ptr;
+    let mut master: my_master_ptr = (*cinfo).master as my_master_ptr;
     (*master).pub_0.prepare_for_pass =
         Some(prepare_for_pass as unsafe extern "C" fn(_: j_compress_ptr) -> ());
     (*master).pub_0.pass_startup =

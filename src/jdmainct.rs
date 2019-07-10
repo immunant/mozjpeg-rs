@@ -1,4 +1,4 @@
-use libc::c_ulong;use libc::c_void;use libc::c_int;use libc::c_uint;pub use crate::jerror::C2RustUnnamed_3;
+pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -212,6 +212,10 @@ pub use crate::jpeglib_h::J_DITHER_MODE;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 use libc;
+use libc::c_int;
+use libc::c_uint;
+use libc::c_ulong;
+use libc::c_void;
 // =============== BEGIN jdmainct_h ================
 pub type my_main_ptr = *mut my_main_controller;
 /*
@@ -246,8 +250,7 @@ pub unsafe extern "C" fn set_wraparound_pointers(mut cinfo: j_decompress_ptr) {
     let mut i: c_int = 0;
     let mut rgroup: c_int = 0;
     let mut M: c_int = (*cinfo).min_DCT_scaled_size;
-    let mut compptr: *mut jpeg_component_info =
-        0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
     let mut xbuf0: JSAMPARRAY = 0 as *mut JSAMPROW;
     let mut xbuf1: JSAMPARRAY = 0 as *mut JSAMPROW;
     ci = 0i32;
@@ -283,8 +286,7 @@ unsafe extern "C" fn alloc_funny_pointers(mut cinfo: j_decompress_ptr) {
     let mut ci: c_int = 0;
     let mut rgroup: c_int = 0;
     let mut M: c_int = (*cinfo).min_DCT_scaled_size;
-    let mut compptr: *mut jpeg_component_info =
-        0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
     let mut xbuf: JSAMPARRAY = 0 as *mut JSAMPROW;
     (*main_ptr).xbuffer[0usize] = (*(*cinfo).mem)
         .alloc_small
@@ -325,8 +327,7 @@ unsafe extern "C" fn make_funny_pointers(mut cinfo: j_decompress_ptr) {
     let mut i: c_int = 0;
     let mut rgroup: c_int = 0;
     let mut M: c_int = (*cinfo).min_DCT_scaled_size;
-    let mut compptr: *mut jpeg_component_info =
-        0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
     let mut buf: JSAMPARRAY = 0 as *mut JSAMPROW;
     let mut xbuf0: JSAMPARRAY = 0 as *mut JSAMPROW;
     let mut xbuf1: JSAMPARRAY = 0 as *mut JSAMPROW;
@@ -371,8 +372,7 @@ unsafe extern "C" fn set_bottom_pointers(mut cinfo: j_decompress_ptr) {
     let mut rgroup: c_int = 0;
     let mut iMCUheight: c_int = 0;
     let mut rows_left: c_int = 0;
-    let mut compptr: *mut jpeg_component_info =
-        0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
     let mut xbuf: JSAMPARRAY = 0 as *mut JSAMPROW;
     ci = 0i32;
     compptr = (*cinfo).comp_info;
@@ -381,14 +381,12 @@ unsafe extern "C" fn set_bottom_pointers(mut cinfo: j_decompress_ptr) {
         rgroup = iMCUheight / (*cinfo).min_DCT_scaled_size;
         rows_left = (*compptr)
             .downsampled_height
-            .wrapping_rem(iMCUheight as JDIMENSION)
-            as c_int;
+            .wrapping_rem(iMCUheight as JDIMENSION) as c_int;
         if rows_left == 0i32 {
             rows_left = iMCUheight
         }
         if ci == 0i32 {
-            (*main_ptr).rowgroups_avail =
-                ((rows_left - 1i32) / rgroup + 1i32) as JDIMENSION
+            (*main_ptr).rowgroups_avail = ((rows_left - 1i32) / rgroup + 1i32) as JDIMENSION
         }
         xbuf = *(*main_ptr).xbuffer[(*main_ptr).whichptr as usize].offset(ci as isize);
         i = 0i32;
@@ -404,10 +402,7 @@ unsafe extern "C" fn set_bottom_pointers(mut cinfo: j_decompress_ptr) {
 /*
  * Initialize for a processing pass.
  */
-unsafe extern "C" fn start_pass_main(
-    mut cinfo: j_decompress_ptr,
-    mut pass_mode: J_BUF_MODE,
-) {
+unsafe extern "C" fn start_pass_main(mut cinfo: j_decompress_ptr, mut pass_mode: J_BUF_MODE) {
     let mut main_ptr: my_main_ptr = (*cinfo).main as my_main_ptr;
     match pass_mode as c_uint {
         0 => {
@@ -454,9 +449,7 @@ unsafe extern "C" fn start_pass_main(
             (*(*cinfo).err).msg_code = JERR_BAD_BUFFER_MODE as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
     };
 }
@@ -669,8 +662,7 @@ unsafe extern "C" fn process_data_context_main(
     match current_block_26 {
         10531413684724535507 => {
             (*main_ptr).rowgroup_ctr = 0i32 as JDIMENSION;
-            (*main_ptr).rowgroups_avail =
-                ((*cinfo).min_DCT_scaled_size - 1i32) as JDIMENSION;
+            (*main_ptr).rowgroups_avail = ((*cinfo).min_DCT_scaled_size - 1i32) as JDIMENSION;
             if (*main_ptr).iMCU_row_ctr == (*cinfo).total_iMCU_rows {
                 set_bottom_pointers(cinfo);
             }
@@ -701,10 +693,8 @@ unsafe extern "C" fn process_data_context_main(
             }
             (*main_ptr).whichptr ^= 1i32;
             (*main_ptr).buffer_full = FALSE;
-            (*main_ptr).rowgroup_ctr =
-                ((*cinfo).min_DCT_scaled_size + 1i32) as JDIMENSION;
-            (*main_ptr).rowgroups_avail =
-                ((*cinfo).min_DCT_scaled_size + 2i32) as JDIMENSION;
+            (*main_ptr).rowgroup_ctr = ((*cinfo).min_DCT_scaled_size + 1i32) as JDIMENSION;
+            (*main_ptr).rowgroups_avail = ((*cinfo).min_DCT_scaled_size + 2i32) as JDIMENSION;
             (*main_ptr).context_state = 2i32
         }
         _ => {}
@@ -747,8 +737,7 @@ pub unsafe extern "C" fn jinit_d_main_controller(
     let mut ci: c_int = 0;
     let mut rgroup: c_int = 0;
     let mut ngroups: c_int = 0;
-    let mut compptr: *mut jpeg_component_info =
-        0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
     main_ptr = (*(*cinfo).mem)
         .alloc_small
         .expect("non-null function pointer")(
@@ -757,13 +746,8 @@ pub unsafe extern "C" fn jinit_d_main_controller(
         ::std::mem::size_of::<my_main_controller>() as c_ulong,
     ) as my_main_ptr;
     (*cinfo).main = main_ptr as *mut jpeg_d_main_controller;
-    (*main_ptr).pub_0.start_pass = Some(
-        start_pass_main
-            as unsafe extern "C" fn(
-                _: j_decompress_ptr,
-                _: J_BUF_MODE,
-            ) -> (),
-    );
+    (*main_ptr).pub_0.start_pass =
+        Some(start_pass_main as unsafe extern "C" fn(_: j_decompress_ptr, _: J_BUF_MODE) -> ());
     if 0 != need_full_buffer {
         (*(*cinfo).err).msg_code = JERR_BAD_BUFFER_MODE as c_int;
         (*(*cinfo).err)
@@ -775,9 +759,7 @@ pub unsafe extern "C" fn jinit_d_main_controller(
             (*(*cinfo).err).msg_code = JERR_NOTIMPL as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         alloc_funny_pointers(cinfo);
         ngroups = (*cinfo).min_DCT_scaled_size + 2i32

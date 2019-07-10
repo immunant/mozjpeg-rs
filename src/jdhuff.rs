@@ -1,4 +1,4 @@
-use libc::c_char;use libc::c_int;use libc::c_uint;use libc::c_ulong;use libc::c_long;pub use crate::jerror::C2RustUnnamed_3;
+pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -234,6 +234,11 @@ pub use crate::stddef_h::NULL;
 use crate::stdlib::memcpy;
 use crate::stdlib::memset;
 use libc;
+use libc::c_char;
+use libc::c_int;
+use libc::c_long;
+use libc::c_uint;
+use libc::c_ulong;
 // =============== BEGIN jdhuff_h ================
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -371,10 +376,8 @@ unsafe extern "C" fn start_pass_huff_decoder(mut cinfo: j_decompress_ptr) {
     let mut blkn: c_int = 0;
     let mut dctbl: c_int = 0;
     let mut actbl: c_int = 0;
-    let mut pdtbl: *mut *mut d_derived_tbl =
-        0 as *mut *mut d_derived_tbl;
-    let mut compptr: *mut jpeg_component_info =
-        0 as *mut jpeg_component_info;
+    let mut pdtbl: *mut *mut d_derived_tbl = 0 as *mut *mut d_derived_tbl;
+    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
     if (*cinfo).Ss != 0i32
         || (*cinfo).Se != DCTSIZE2 - 1i32
         || (*cinfo).Ah != 0i32
@@ -383,9 +386,7 @@ unsafe extern "C" fn start_pass_huff_decoder(mut cinfo: j_decompress_ptr) {
         (*(*cinfo).err).msg_code = JWRN_NOT_SEQUENTIAL as c_int;
         (*(*cinfo).err)
             .emit_message
-            .expect("non-null function pointer")(
-            cinfo as j_common_ptr, -1i32
-        );
+            .expect("non-null function pointer")(cinfo as j_common_ptr, -1i32);
     }
     ci = 0i32;
     while ci < (*cinfo).comps_in_scan {
@@ -492,9 +493,7 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
             (*(*cinfo).err).msg_code = JERR_BAD_HUFF_TABLE as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         loop {
             let fresh0 = i;
@@ -524,9 +523,7 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
             (*(*cinfo).err).msg_code = JERR_BAD_HUFF_TABLE as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         code <<= 1i32;
         si += 1
@@ -535,8 +532,7 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
     l = 1i32;
     while l <= 16i32 {
         if 0 != (*htbl).bits[l as usize] {
-            (*dtbl).valoffset[l as usize] =
-                p as JLONG - huffcode[p as usize] as JLONG;
+            (*dtbl).valoffset[l as usize] = p as JLONG - huffcode[p as usize] as JLONG;
             p += (*htbl).bits[l as usize] as c_int;
             (*dtbl).maxcode[l as usize] = huffcode[(p - 1i32) as usize] as JLONG
         } else {
@@ -548,8 +544,7 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
     (*dtbl).maxcode[17usize] = 0xfffffi64;
     i = 0i32;
     while i < 1i32 << HUFF_LOOKAHEAD {
-        (*dtbl).lookup[i as usize] =
-            HUFF_LOOKAHEAD + 1i32 << HUFF_LOOKAHEAD;
+        (*dtbl).lookup[i as usize] = HUFF_LOOKAHEAD + 1i32 << HUFF_LOOKAHEAD;
         i += 1
     }
     p = 0i32;
@@ -578,9 +573,7 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
                 (*(*cinfo).err).msg_code = JERR_BAD_HUFF_TABLE as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             i += 1
         }
@@ -702,8 +695,7 @@ pub unsafe extern "C" fn jpeg_fill_bit_buffer(
                     (*(*cinfo).err)
                         .emit_message
                         .expect("non-null function pointer")(
-                        cinfo as j_common_ptr,
-                        -1i32,
+                        cinfo as j_common_ptr, -1i32
                     );
                     (*(*cinfo).entropy).insufficient_data = TRUE
                 }
@@ -780,8 +772,7 @@ pub unsafe extern "C" fn jpeg_huff_decode(
         bits_left = (*state).bits_left
     }
     bits_left -= l;
-    code =
-        ((get_buffer >> bits_left) as c_int & (1i32 << l) - 1i32) as JLONG;
+    code = ((get_buffer >> bits_left) as c_int & (1i32 << l) - 1i32) as JLONG;
     while code > (*htbl).maxcode[l as usize] {
         code <<= 1i32;
         if bits_left < 1i32 {
@@ -801,10 +792,7 @@ pub unsafe extern "C" fn jpeg_huff_decode(
         (*(*(*state).cinfo).err).msg_code = JWRN_HUFF_BAD_CODE as c_int;
         (*(*(*state).cinfo).err)
             .emit_message
-            .expect("non-null function pointer")(
-            (*state).cinfo as j_common_ptr,
-            -1i32,
-        );
+            .expect("non-null function pointer")((*state).cinfo as j_common_ptr, -1i32);
         return 0i32;
     }
     return (*(*htbl).pub_0).huffval[(code + (*htbl).valoffset[l as usize]) as c_int as usize]
@@ -816,9 +804,7 @@ pub unsafe extern "C" fn jpeg_huff_decode(
  * Check for a restart marker & resynchronize decoder.
  * Returns FALSE if must suspend.
  */
-unsafe extern "C" fn process_restart(
-    mut cinfo: j_decompress_ptr,
-) -> boolean {
+unsafe extern "C" fn process_restart(mut cinfo: j_decompress_ptr) -> boolean {
     let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
     let mut ci: c_int = 0;
     (*(*cinfo).marker).discarded_bytes = (*(*cinfo).marker)
@@ -849,11 +835,13 @@ unsafe extern "C" fn decode_mcu_slow(
     let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
     let mut get_buffer: bit_buf_type = 0;
     let mut bits_left: c_int = 0;
-    let mut br_state: bitread_working_state = bitread_working_state{next_input_byte:  0 as *const JOCTET,
-                      bytes_in_buffer:  0,
-                      get_buffer:  0,
-                      bits_left:  0,
-                      cinfo:  0 as *mut jpeg_decompress_struct,};
+    let mut br_state: bitread_working_state = bitread_working_state {
+        next_input_byte: 0 as *const JOCTET,
+        bytes_in_buffer: 0,
+        get_buffer: 0,
+        bits_left: 0,
+        cinfo: 0 as *mut jpeg_decompress_struct,
+    };
     let mut blkn: c_int = 0;
     let mut state: savable_state = savable_state {
         last_dc_val: [0; 4],
@@ -900,8 +888,7 @@ unsafe extern "C" fn decode_mcu_slow(
                 nb = (*dctbl).lookup[look as usize] >> HUFF_LOOKAHEAD;
                 if nb <= HUFF_LOOKAHEAD {
                     bits_left -= nb;
-                    s = (*dctbl).lookup[look as usize]
-                        & (1i32 << HUFF_LOOKAHEAD) - 1i32;
+                    s = (*dctbl).lookup[look as usize] & (1i32 << HUFF_LOOKAHEAD) - 1i32;
                     current_block_22 = 652864300344834934;
                 } else {
                     current_block_22 = 6603671518751921130;
@@ -966,13 +953,11 @@ unsafe extern "C" fn decode_mcu_slow(
                 }
                 match current_block_60 {
                     3580086814630675314 => {
-                        look_0 =
-                            (get_buffer >> bits_left - 8i32) as c_int & (1i32 << 8i32) - 1i32;
+                        look_0 = (get_buffer >> bits_left - 8i32) as c_int & (1i32 << 8i32) - 1i32;
                         nb_0 = (*actbl).lookup[look_0 as usize] >> HUFF_LOOKAHEAD;
                         if nb_0 <= HUFF_LOOKAHEAD {
                             bits_left -= nb_0;
-                            s = (*actbl).lookup[look_0 as usize]
-                                & (1i32 << HUFF_LOOKAHEAD) - 1i32;
+                            s = (*actbl).lookup[look_0 as usize] & (1i32 << HUFF_LOOKAHEAD) - 1i32;
                             current_block_60 = 7385833325316299293;
                         } else {
                             current_block_60 = 276222993270550982;
@@ -1008,9 +993,7 @@ unsafe extern "C" fn decode_mcu_slow(
                         (r - (1i32 << s - 1i32) >> 31i32) as c_uint
                             & ((-1i32 as c_uint) << s).wrapping_add(1i32 as c_uint),
                     ) as c_int;
-                    (*block)[*jpeg_natural_order
-                        .as_ptr()
-                        .offset(k as isize) as usize] = s as JCOEF
+                    (*block)[*jpeg_natural_order.as_ptr().offset(k as isize) as usize] = s as JCOEF
                 } else {
                     if r != 15i32 {
                         break;
@@ -1042,13 +1025,11 @@ unsafe extern "C" fn decode_mcu_slow(
                 }
                 match current_block_97 {
                     9521147444787763968 => {
-                        look_1 =
-                            (get_buffer >> bits_left - 8i32) as c_int & (1i32 << 8i32) - 1i32;
+                        look_1 = (get_buffer >> bits_left - 8i32) as c_int & (1i32 << 8i32) - 1i32;
                         nb_1 = (*actbl).lookup[look_1 as usize] >> HUFF_LOOKAHEAD;
                         if nb_1 <= HUFF_LOOKAHEAD {
                             bits_left -= nb_1;
-                            s = (*actbl).lookup[look_1 as usize]
-                                & (1i32 << HUFF_LOOKAHEAD) - 1i32;
+                            s = (*actbl).lookup[look_1 as usize] & (1i32 << HUFF_LOOKAHEAD) - 1i32;
                             current_block_97 = 16375338222180917333;
                         } else {
                             current_block_97 = 6072411194766323756;
@@ -1104,11 +1085,13 @@ unsafe extern "C" fn decode_mcu_fast(
     let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
     let mut get_buffer: bit_buf_type = 0;
     let mut bits_left: c_int = 0;
-    let mut br_state: bitread_working_state = bitread_working_state{next_input_byte:  0 as *const JOCTET,
-                      bytes_in_buffer:  0,
-                      get_buffer:  0,
-                      bits_left:  0,
-                      cinfo:  0 as *mut jpeg_decompress_struct,};
+    let mut br_state: bitread_working_state = bitread_working_state {
+        next_input_byte: 0 as *const JOCTET,
+        bytes_in_buffer: 0,
+        get_buffer: 0,
+        bits_left: 0,
+        cinfo: 0 as *mut jpeg_decompress_struct,
+    };
     let mut buffer: *mut JOCTET = 0 as *mut JOCTET;
     let mut blkn: c_int = 0;
     let mut state: savable_state = savable_state {
@@ -1245,9 +1228,9 @@ unsafe extern "C" fn decode_mcu_fast(
                 s |= (get_buffer >> bits_left) as c_int & (1i32 << 1i32) - 1i32;
                 l += 1
             }
-            s = (*(*dctbl).pub_0).huffval[((s as c_long + (*dctbl).valoffset[l as usize])
+            s = (*(*dctbl).pub_0).huffval
+                [((s as c_long + (*dctbl).valoffset[l as usize]) as c_int & 0xffi32) as usize]
                 as c_int
-                & 0xffi32) as usize] as c_int
         }
         if 0 != s {
             if bits_left <= 16i32 {
@@ -1470,16 +1453,14 @@ unsafe extern "C" fn decode_mcu_fast(
                 bits_left -= l;
                 s = s & (1i32 << HUFF_LOOKAHEAD) - 1i32;
                 if l > HUFF_LOOKAHEAD {
-                    s = (get_buffer >> bits_left & ((1i32 << l) - 1i32) as c_ulong)
-                        as c_int;
+                    s = (get_buffer >> bits_left & ((1i32 << l) - 1i32) as c_ulong) as c_int;
                     while s as c_long > (*actbl).maxcode[l as usize] {
                         s <<= 1i32;
                         bits_left -= 1i32;
                         s |= (get_buffer >> bits_left) as c_int & (1i32 << 1i32) - 1i32;
                         l += 1
                     }
-                    s = (*(*actbl).pub_0).huffval[((s as c_long
-                        + (*actbl).valoffset[l as usize])
+                    s = (*(*actbl).pub_0).huffval[((s as c_long + (*actbl).valoffset[l as usize])
                         as c_int
                         & 0xffi32) as usize] as c_int
                 }
@@ -1591,9 +1572,7 @@ unsafe extern "C" fn decode_mcu_fast(
                         (r - (1i32 << s - 1i32) >> 31i32) as c_uint
                             & ((-1i32 as c_uint) << s).wrapping_add(1i32 as c_uint),
                     ) as c_int;
-                    (*block)[*jpeg_natural_order
-                        .as_ptr()
-                        .offset(k as isize) as usize] = s as JCOEF
+                    (*block)[*jpeg_natural_order.as_ptr().offset(k as isize) as usize] = s as JCOEF
                 } else {
                     if r != 15i32 {
                         break;
@@ -1709,16 +1688,14 @@ unsafe extern "C" fn decode_mcu_fast(
                 bits_left -= l;
                 s = s & (1i32 << HUFF_LOOKAHEAD) - 1i32;
                 if l > HUFF_LOOKAHEAD {
-                    s = (get_buffer >> bits_left & ((1i32 << l) - 1i32) as c_ulong)
-                        as c_int;
+                    s = (get_buffer >> bits_left & ((1i32 << l) - 1i32) as c_ulong) as c_int;
                     while s as c_long > (*actbl).maxcode[l as usize] {
                         s <<= 1i32;
                         bits_left -= 1i32;
                         s |= (get_buffer >> bits_left) as c_int & (1i32 << 1i32) - 1i32;
                         l += 1
                     }
-                    s = (*(*actbl).pub_0).huffval[((s as c_long
-                        + (*actbl).valoffset[l as usize])
+                    s = (*(*actbl).pub_0).huffval[((s as c_long + (*actbl).valoffset[l as usize])
                         as c_int
                         & 0xffi32) as usize] as c_int
                 }
@@ -1840,9 +1817,9 @@ unsafe extern "C" fn decode_mcu_fast(
         (*cinfo).unread_marker = 0i32;
         return FALSE;
     }
-    br_state.bytes_in_buffer = (br_state.bytes_in_buffer as c_ulong).wrapping_sub(
-        buffer.wrapping_offset_from(br_state.next_input_byte) as c_long as c_ulong,
-    ) as size_t as size_t;
+    br_state.bytes_in_buffer = (br_state.bytes_in_buffer as c_ulong)
+        .wrapping_sub(buffer.wrapping_offset_from(br_state.next_input_byte) as c_long as c_ulong)
+        as size_t as size_t;
     br_state.next_input_byte = buffer;
     (*(*cinfo).src).next_input_byte = br_state.next_input_byte;
     (*(*cinfo).src).bytes_in_buffer = br_state.bytes_in_buffer;
@@ -1925,21 +1902,13 @@ pub unsafe extern "C" fn jinit_huff_decoder(mut cinfo: j_decompress_ptr) {
         ::std::mem::size_of::<huff_entropy_decoder>() as c_ulong,
     ) as huff_entropy_ptr;
     (*cinfo).entropy = entropy as *mut jpeg_entropy_decoder;
-    (*entropy).pub_0.start_pass = Some(
-        start_pass_huff_decoder
-            as unsafe extern "C" fn(_: j_decompress_ptr) -> (),
-    );
-    (*entropy).pub_0.decode_mcu = Some(
-        decode_mcu
-            as unsafe extern "C" fn(
-                _: j_decompress_ptr,
-                _: *mut JBLOCKROW,
-            ) -> boolean,
-    );
+    (*entropy).pub_0.start_pass =
+        Some(start_pass_huff_decoder as unsafe extern "C" fn(_: j_decompress_ptr) -> ());
+    (*entropy).pub_0.decode_mcu =
+        Some(decode_mcu as unsafe extern "C" fn(_: j_decompress_ptr, _: *mut JBLOCKROW) -> boolean);
     i = 0i32;
     while i < NUM_HUFF_TBLS {
-        (*entropy).ac_derived_tbls[i as usize] =
-            NULL as *mut d_derived_tbl;
+        (*entropy).ac_derived_tbls[i as usize] = NULL as *mut d_derived_tbl;
         (*entropy).dc_derived_tbls[i as usize] = (*entropy).ac_derived_tbls[i as usize];
         i += 1
     }

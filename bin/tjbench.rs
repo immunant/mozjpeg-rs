@@ -11,7 +11,6 @@
 #![feature(label_break_value)]
 #![feature(ptr_wrapping_offset_from)]
 
-
 pub use crate::jpeglib_h::JMSG_LENGTH_MAX;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;

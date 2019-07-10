@@ -11,7 +11,6 @@
 #![feature(label_break_value)]
 #![feature(ptr_wrapping_offset_from)]
 
-
 pub use crate::jconfig_h::JPEG_LIB_VERSION;
 pub use crate::jmorecfg_h::boolean;
 pub use crate::jmorecfg_h::JCOEF;

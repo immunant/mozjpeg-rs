@@ -187,8 +187,6 @@ pub mod stddef_h;
 #[path = "src/stdlib.rs"]
 pub mod stdlib;
 
-
-
 #[path = "src/tjutil.rs"]
 pub mod tjutil;
 #[path = "src/transupp.rs"]

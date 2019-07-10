@@ -1,4 +1,4 @@
-use libc::c_int;use libc::c_long;pub use crate::jerror::C2RustUnnamed_3;
+pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -221,6 +221,8 @@ pub use crate::jpeglib_h::J_DITHER_MODE;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 use libc;
+use libc::c_int;
+use libc::c_long;
 /* Read or write raw DCT coefficients --- useful for lossless transcoding. */
 /*
  * Read the coefficient arrays from a JPEG file.
@@ -257,9 +259,7 @@ pub unsafe extern "C" fn jpeg_read_coefficients(
             if !(*cinfo).progress.is_null() {
                 (*(*cinfo).progress)
                     .progress_monitor
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             retcode = (*(*cinfo).inputctl)
                 .consume_input
@@ -271,8 +271,7 @@ pub unsafe extern "C" fn jpeg_read_coefficients(
                 break;
             }
             if !(*cinfo).progress.is_null()
-                && (retcode == JPEG_ROW_COMPLETED
-                    || retcode == JPEG_REACHED_SOS)
+                && (retcode == JPEG_ROW_COMPLETED || retcode == JPEG_REACHED_SOS)
             {
                 (*(*cinfo).progress).pass_counter += 1;
                 if (*(*cinfo).progress).pass_counter >= (*(*cinfo).progress).pass_limit {
@@ -282,8 +281,7 @@ pub unsafe extern "C" fn jpeg_read_coefficients(
         }
         (*cinfo).global_state = DSTATE_STOPPING
     }
-    if ((*cinfo).global_state == DSTATE_STOPPING
-        || (*cinfo).global_state == DSTATE_BUFIMAGE)
+    if ((*cinfo).global_state == DSTATE_STOPPING || (*cinfo).global_state == DSTATE_BUFIMAGE)
         && 0 != (*cinfo).buffered_image
     {
         return (*(*cinfo).coef).coef_arrays;
@@ -343,8 +341,7 @@ unsafe extern "C" fn transdecode_master_selection(mut cinfo: j_decompress_ptr) {
             nscans = 1i32
         }
         (*(*cinfo).progress).pass_counter = 0i64;
-        (*(*cinfo).progress).pass_limit =
-            (*cinfo).total_iMCU_rows as c_long * nscans as c_long;
+        (*(*cinfo).progress).pass_limit = (*cinfo).total_iMCU_rows as c_long * nscans as c_long;
         (*(*cinfo).progress).completed_passes = 0i32;
         (*(*cinfo).progress).total_passes = 1i32
     };

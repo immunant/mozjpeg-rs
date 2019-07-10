@@ -1,4 +1,4 @@
-use libc::c_int;use libc::c_long;pub use crate::jdct_h::DCTELEM;
+pub use crate::jdct_h::DCTELEM;
 pub use crate::jdct_h::IFAST_MULT_TYPE;
 pub use crate::jdct_h::RANGE_MASK;
 pub use crate::jmorecfg_h::boolean;
@@ -84,6 +84,8 @@ pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::jpeglib_h::J_DITHER_MODE;
 pub use crate::stddef_h::size_t;
 use libc;
+use libc::c_int;
+use libc::c_long;
 /*
  * jidctfst.c
  *
@@ -200,13 +202,10 @@ pub unsafe extern "C" fn jpeg_idct_ifast(
     let mut z12: DCTELEM = 0;
     let mut z13: DCTELEM = 0;
     let mut inptr: JCOEFPTR = 0 as *mut JCOEF;
-    let mut quantptr: *mut IFAST_MULT_TYPE =
-        0 as *mut IFAST_MULT_TYPE;
+    let mut quantptr: *mut IFAST_MULT_TYPE = 0 as *mut IFAST_MULT_TYPE;
     let mut wsptr: *mut c_int = 0 as *mut c_int;
     let mut outptr: JSAMPROW = 0 as *mut JSAMPLE;
-    let mut range_limit: *mut JSAMPLE = (*cinfo)
-        .sample_range_limit
-        .offset(CENTERJSAMPLE as isize);
+    let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit.offset(CENTERJSAMPLE as isize);
     let mut ctr: c_int = 0;
     /* buffers data between passes */
     let mut workspace: [c_int; 64] = [0; 64];
@@ -247,76 +246,53 @@ pub unsafe extern "C" fn jpeg_idct_ifast(
             wsptr = wsptr.offset(1isize)
         } else {
             tmp0 = (*inptr.offset((8i32 * 0i32) as isize) as c_int
-                * *quantptr.offset((8i32 * 0i32) as isize) as c_int)
-                as DCTELEM;
+                * *quantptr.offset((8i32 * 0i32) as isize) as c_int) as DCTELEM;
             tmp1 = (*inptr.offset((8i32 * 2i32) as isize) as c_int
-                * *quantptr.offset((8i32 * 2i32) as isize) as c_int)
-                as DCTELEM;
+                * *quantptr.offset((8i32 * 2i32) as isize) as c_int) as DCTELEM;
             tmp2 = (*inptr.offset((8i32 * 4i32) as isize) as c_int
-                * *quantptr.offset((8i32 * 4i32) as isize) as c_int)
-                as DCTELEM;
+                * *quantptr.offset((8i32 * 4i32) as isize) as c_int) as DCTELEM;
             tmp3 = (*inptr.offset((8i32 * 6i32) as isize) as c_int
-                * *quantptr.offset((8i32 * 6i32) as isize) as c_int)
-                as DCTELEM;
+                * *quantptr.offset((8i32 * 6i32) as isize) as c_int) as DCTELEM;
             tmp10 = (tmp0 as c_int + tmp2 as c_int) as DCTELEM;
             tmp11 = (tmp0 as c_int - tmp2 as c_int) as DCTELEM;
             tmp13 = (tmp1 as c_int + tmp3 as c_int) as DCTELEM;
-            tmp12 = (((tmp1 as c_int - tmp3 as c_int) as c_long
-                * 362i32 as JLONG
-                >> 8i32) as DCTELEM as c_int
+            tmp12 = (((tmp1 as c_int - tmp3 as c_int) as c_long * 362i32 as JLONG >> 8i32)
+                as DCTELEM as c_int
                 - tmp13 as c_int) as DCTELEM;
             tmp0 = (tmp10 as c_int + tmp13 as c_int) as DCTELEM;
             tmp3 = (tmp10 as c_int - tmp13 as c_int) as DCTELEM;
             tmp1 = (tmp11 as c_int + tmp12 as c_int) as DCTELEM;
             tmp2 = (tmp11 as c_int - tmp12 as c_int) as DCTELEM;
             tmp4 = (*inptr.offset((8i32 * 1i32) as isize) as c_int
-                * *quantptr.offset((8i32 * 1i32) as isize) as c_int)
-                as DCTELEM;
+                * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as DCTELEM;
             tmp5 = (*inptr.offset((8i32 * 3i32) as isize) as c_int
-                * *quantptr.offset((8i32 * 3i32) as isize) as c_int)
-                as DCTELEM;
+                * *quantptr.offset((8i32 * 3i32) as isize) as c_int) as DCTELEM;
             tmp6 = (*inptr.offset((8i32 * 5i32) as isize) as c_int
-                * *quantptr.offset((8i32 * 5i32) as isize) as c_int)
-                as DCTELEM;
+                * *quantptr.offset((8i32 * 5i32) as isize) as c_int) as DCTELEM;
             tmp7 = (*inptr.offset((8i32 * 7i32) as isize) as c_int
-                * *quantptr.offset((8i32 * 7i32) as isize) as c_int)
-                as DCTELEM;
+                * *quantptr.offset((8i32 * 7i32) as isize) as c_int) as DCTELEM;
             z13 = (tmp6 as c_int + tmp5 as c_int) as DCTELEM;
             z10 = (tmp6 as c_int - tmp5 as c_int) as DCTELEM;
             z11 = (tmp4 as c_int + tmp7 as c_int) as DCTELEM;
             z12 = (tmp4 as c_int - tmp7 as c_int) as DCTELEM;
             tmp7 = (z11 as c_int + z13 as c_int) as DCTELEM;
-            tmp11 = ((z11 as c_int - z13 as c_int) as c_long
-                * 362i32 as JLONG
-                >> 8i32) as DCTELEM;
-            z5 = ((z10 as c_int + z12 as c_int) as c_long
-                * 473i32 as JLONG
-                >> 8i32) as DCTELEM;
-            tmp10 = ((z12 as c_long * 277i32 as JLONG >> 8i32)
-                as DCTELEM as c_int
-                - z5 as c_int) as DCTELEM;
-            tmp12 = ((z10 as c_long * -(669i32 as JLONG) >> 8i32)
-                as DCTELEM as c_int
-                + z5 as c_int) as DCTELEM;
+            tmp11 = ((z11 as c_int - z13 as c_int) as c_long * 362i32 as JLONG >> 8i32) as DCTELEM;
+            z5 = ((z10 as c_int + z12 as c_int) as c_long * 473i32 as JLONG >> 8i32) as DCTELEM;
+            tmp10 = ((z12 as c_long * 277i32 as JLONG >> 8i32) as DCTELEM as c_int - z5 as c_int)
+                as DCTELEM;
+            tmp12 = ((z10 as c_long * -(669i32 as JLONG) >> 8i32) as DCTELEM as c_int + z5 as c_int)
+                as DCTELEM;
             tmp6 = (tmp12 as c_int - tmp7 as c_int) as DCTELEM;
             tmp5 = (tmp11 as c_int - tmp6 as c_int) as DCTELEM;
             tmp4 = (tmp10 as c_int + tmp5 as c_int) as DCTELEM;
-            *wsptr.offset((DCTSIZE * 0i32) as isize) =
-                tmp0 as c_int + tmp7 as c_int;
-            *wsptr.offset((DCTSIZE * 7i32) as isize) =
-                tmp0 as c_int - tmp7 as c_int;
-            *wsptr.offset((DCTSIZE * 1i32) as isize) =
-                tmp1 as c_int + tmp6 as c_int;
-            *wsptr.offset((DCTSIZE * 6i32) as isize) =
-                tmp1 as c_int - tmp6 as c_int;
-            *wsptr.offset((DCTSIZE * 2i32) as isize) =
-                tmp2 as c_int + tmp5 as c_int;
-            *wsptr.offset((DCTSIZE * 5i32) as isize) =
-                tmp2 as c_int - tmp5 as c_int;
-            *wsptr.offset((DCTSIZE * 4i32) as isize) =
-                tmp3 as c_int + tmp4 as c_int;
-            *wsptr.offset((DCTSIZE * 3i32) as isize) =
-                tmp3 as c_int - tmp4 as c_int;
+            *wsptr.offset((DCTSIZE * 0i32) as isize) = tmp0 as c_int + tmp7 as c_int;
+            *wsptr.offset((DCTSIZE * 7i32) as isize) = tmp0 as c_int - tmp7 as c_int;
+            *wsptr.offset((DCTSIZE * 1i32) as isize) = tmp1 as c_int + tmp6 as c_int;
+            *wsptr.offset((DCTSIZE * 6i32) as isize) = tmp1 as c_int - tmp6 as c_int;
+            *wsptr.offset((DCTSIZE * 2i32) as isize) = tmp2 as c_int + tmp5 as c_int;
+            *wsptr.offset((DCTSIZE * 5i32) as isize) = tmp2 as c_int - tmp5 as c_int;
+            *wsptr.offset((DCTSIZE * 4i32) as isize) = tmp3 as c_int + tmp4 as c_int;
+            *wsptr.offset((DCTSIZE * 3i32) as isize) = tmp3 as c_int - tmp4 as c_int;
             inptr = inptr.offset(1isize);
             quantptr = quantptr.offset(1isize);
             wsptr = wsptr.offset(1isize)
@@ -343,9 +319,8 @@ pub unsafe extern "C" fn jpeg_idct_ifast(
             && *wsptr.offset(7isize) == 0i32
         {
             /* AC terms all zero */
-            let mut dcval_0: JSAMPLE = *range_limit.offset(
-                (*wsptr.offset(0isize) >> 2i32 + 3i32 & RANGE_MASK) as isize,
-            );
+            let mut dcval_0: JSAMPLE =
+                *range_limit.offset((*wsptr.offset(0isize) >> 2i32 + 3i32 & RANGE_MASK) as isize);
             *outptr.offset(0isize) = dcval_0;
             *outptr.offset(1isize) = dcval_0;
             *outptr.offset(2isize) = dcval_0;
@@ -357,17 +332,13 @@ pub unsafe extern "C" fn jpeg_idct_ifast(
             wsptr = wsptr.offset(DCTSIZE as isize)
         } else {
             tmp10 = (*wsptr.offset(0isize) as DCTELEM as c_int
-                + *wsptr.offset(4isize) as DCTELEM as c_int)
-                as DCTELEM;
+                + *wsptr.offset(4isize) as DCTELEM as c_int) as DCTELEM;
             tmp11 = (*wsptr.offset(0isize) as DCTELEM as c_int
-                - *wsptr.offset(4isize) as DCTELEM as c_int)
-                as DCTELEM;
+                - *wsptr.offset(4isize) as DCTELEM as c_int) as DCTELEM;
             tmp13 = (*wsptr.offset(2isize) as DCTELEM as c_int
-                + *wsptr.offset(6isize) as DCTELEM as c_int)
-                as DCTELEM;
+                + *wsptr.offset(6isize) as DCTELEM as c_int) as DCTELEM;
             tmp12 = (((*wsptr.offset(2isize) as DCTELEM as c_int
-                - *wsptr.offset(6isize) as DCTELEM as c_int)
-                as c_long
+                - *wsptr.offset(6isize) as DCTELEM as c_int) as c_long
                 * 362i32 as JLONG
                 >> 8i32) as DCTELEM as c_int
                 - tmp13 as c_int) as DCTELEM;
@@ -376,65 +347,39 @@ pub unsafe extern "C" fn jpeg_idct_ifast(
             tmp1 = (tmp11 as c_int + tmp12 as c_int) as DCTELEM;
             tmp2 = (tmp11 as c_int - tmp12 as c_int) as DCTELEM;
             z13 = (*wsptr.offset(5isize) as DCTELEM as c_int
-                + *wsptr.offset(3isize) as DCTELEM as c_int)
-                as DCTELEM;
+                + *wsptr.offset(3isize) as DCTELEM as c_int) as DCTELEM;
             z10 = (*wsptr.offset(5isize) as DCTELEM as c_int
-                - *wsptr.offset(3isize) as DCTELEM as c_int)
-                as DCTELEM;
+                - *wsptr.offset(3isize) as DCTELEM as c_int) as DCTELEM;
             z11 = (*wsptr.offset(1isize) as DCTELEM as c_int
-                + *wsptr.offset(7isize) as DCTELEM as c_int)
-                as DCTELEM;
+                + *wsptr.offset(7isize) as DCTELEM as c_int) as DCTELEM;
             z12 = (*wsptr.offset(1isize) as DCTELEM as c_int
-                - *wsptr.offset(7isize) as DCTELEM as c_int)
-                as DCTELEM;
+                - *wsptr.offset(7isize) as DCTELEM as c_int) as DCTELEM;
             tmp7 = (z11 as c_int + z13 as c_int) as DCTELEM;
-            tmp11 = ((z11 as c_int - z13 as c_int) as c_long
-                * 362i32 as JLONG
-                >> 8i32) as DCTELEM;
-            z5 = ((z10 as c_int + z12 as c_int) as c_long
-                * 473i32 as JLONG
-                >> 8i32) as DCTELEM;
-            tmp10 = ((z12 as c_long * 277i32 as JLONG >> 8i32)
-                as DCTELEM as c_int
-                - z5 as c_int) as DCTELEM;
-            tmp12 = ((z10 as c_long * -(669i32 as JLONG) >> 8i32)
-                as DCTELEM as c_int
-                + z5 as c_int) as DCTELEM;
+            tmp11 = ((z11 as c_int - z13 as c_int) as c_long * 362i32 as JLONG >> 8i32) as DCTELEM;
+            z5 = ((z10 as c_int + z12 as c_int) as c_long * 473i32 as JLONG >> 8i32) as DCTELEM;
+            tmp10 = ((z12 as c_long * 277i32 as JLONG >> 8i32) as DCTELEM as c_int - z5 as c_int)
+                as DCTELEM;
+            tmp12 = ((z10 as c_long * -(669i32 as JLONG) >> 8i32) as DCTELEM as c_int + z5 as c_int)
+                as DCTELEM;
             tmp6 = (tmp12 as c_int - tmp7 as c_int) as DCTELEM;
             tmp5 = (tmp11 as c_int - tmp6 as c_int) as DCTELEM;
             tmp4 = (tmp10 as c_int + tmp5 as c_int) as DCTELEM;
-            *outptr.offset(0isize) = *range_limit.offset(
-                (tmp0 as c_int + tmp7 as c_int >> 2i32 + 3i32
-                    & RANGE_MASK) as isize,
-            );
-            *outptr.offset(7isize) = *range_limit.offset(
-                (tmp0 as c_int - tmp7 as c_int >> 2i32 + 3i32
-                    & RANGE_MASK) as isize,
-            );
-            *outptr.offset(1isize) = *range_limit.offset(
-                (tmp1 as c_int + tmp6 as c_int >> 2i32 + 3i32
-                    & RANGE_MASK) as isize,
-            );
-            *outptr.offset(6isize) = *range_limit.offset(
-                (tmp1 as c_int - tmp6 as c_int >> 2i32 + 3i32
-                    & RANGE_MASK) as isize,
-            );
-            *outptr.offset(2isize) = *range_limit.offset(
-                (tmp2 as c_int + tmp5 as c_int >> 2i32 + 3i32
-                    & RANGE_MASK) as isize,
-            );
-            *outptr.offset(5isize) = *range_limit.offset(
-                (tmp2 as c_int - tmp5 as c_int >> 2i32 + 3i32
-                    & RANGE_MASK) as isize,
-            );
-            *outptr.offset(4isize) = *range_limit.offset(
-                (tmp3 as c_int + tmp4 as c_int >> 2i32 + 3i32
-                    & RANGE_MASK) as isize,
-            );
-            *outptr.offset(3isize) = *range_limit.offset(
-                (tmp3 as c_int - tmp4 as c_int >> 2i32 + 3i32
-                    & RANGE_MASK) as isize,
-            );
+            *outptr.offset(0isize) = *range_limit
+                .offset((tmp0 as c_int + tmp7 as c_int >> 2i32 + 3i32 & RANGE_MASK) as isize);
+            *outptr.offset(7isize) = *range_limit
+                .offset((tmp0 as c_int - tmp7 as c_int >> 2i32 + 3i32 & RANGE_MASK) as isize);
+            *outptr.offset(1isize) = *range_limit
+                .offset((tmp1 as c_int + tmp6 as c_int >> 2i32 + 3i32 & RANGE_MASK) as isize);
+            *outptr.offset(6isize) = *range_limit
+                .offset((tmp1 as c_int - tmp6 as c_int >> 2i32 + 3i32 & RANGE_MASK) as isize);
+            *outptr.offset(2isize) = *range_limit
+                .offset((tmp2 as c_int + tmp5 as c_int >> 2i32 + 3i32 & RANGE_MASK) as isize);
+            *outptr.offset(5isize) = *range_limit
+                .offset((tmp2 as c_int - tmp5 as c_int >> 2i32 + 3i32 & RANGE_MASK) as isize);
+            *outptr.offset(4isize) = *range_limit
+                .offset((tmp3 as c_int + tmp4 as c_int >> 2i32 + 3i32 & RANGE_MASK) as isize);
+            *outptr.offset(3isize) = *range_limit
+                .offset((tmp3 as c_int - tmp4 as c_int >> 2i32 + 3i32 & RANGE_MASK) as isize);
             wsptr = wsptr.offset(DCTSIZE as isize)
         }
         ctr += 1

@@ -1,4 +1,12 @@
-use libc::c_char;use libc::c_uint;use libc::c_int;use libc::c_void;use libc::c_ulong;use libc::c_ushort;use libc::c_long;use libc::intptr_t;use libc;
+use libc;
+use libc::c_char;
+use libc::c_int;
+use libc::c_long;
+use libc::c_uint;
+use libc::c_ulong;
+use libc::c_ushort;
+use libc::c_void;
+use libc::intptr_t;
 #[header_src = "/home/sjcrane/projects/c2rust/mozjpeg-rs/mozjpeg-c/jmorecfg.h:24"]
 pub mod jmorecfg_h {
     /*
@@ -157,7 +165,15 @@ pub mod jmorecfg_h {
      * listed above, changing these values will also break the SIMD extensions and
      * the regression tests.
      */
-    use crate::jmorecfg_h::EXT_XBGR_PIXELSIZE;use crate::jmorecfg_h::EXT_RGBX_PIXELSIZE;use libc::c_int;use crate::jmorecfg_h::RGB_PIXELSIZE;use crate::jmorecfg_h::EXT_XRGB_PIXELSIZE;use crate::jmorecfg_h::EXT_BGRX_PIXELSIZE;use crate::jmorecfg_h::EXT_BGR_PIXELSIZE;use crate::jmorecfg_h::EXT_RGB_PIXELSIZE;pub static mut rgb_pixelsize: [c_int; 17] = [
+    use crate::jmorecfg_h::EXT_BGRX_PIXELSIZE;
+    use crate::jmorecfg_h::EXT_BGR_PIXELSIZE;
+    use crate::jmorecfg_h::EXT_RGBX_PIXELSIZE;
+    use crate::jmorecfg_h::EXT_RGB_PIXELSIZE;
+    use crate::jmorecfg_h::EXT_XBGR_PIXELSIZE;
+    use crate::jmorecfg_h::EXT_XRGB_PIXELSIZE;
+    use crate::jmorecfg_h::RGB_PIXELSIZE;
+    use libc::c_int;
+    pub static mut rgb_pixelsize: [c_int; 17] = [
         -1i32,
         -1i32,
         RGB_PIXELSIZE,
@@ -577,45 +593,34 @@ unsafe extern "C" fn put_pixel_rows(
         outptr = (*dest).iobuffer
     }
     inptr = *(*dest).pub_0.buffer.offset(0isize);
-    if (*cinfo).out_color_space as c_uint
-        == JCS_EXT_BGR as c_int as c_uint
-    {
+    if (*cinfo).out_color_space as c_uint == JCS_EXT_BGR as c_int as c_uint {
         memcpy(
             outptr as *mut c_void,
             inptr as *const c_void,
             (*dest).row_width as size_t,
         );
         outptr = outptr.offset((*cinfo).output_width.wrapping_mul(3i32 as c_uint) as isize)
-    } else if (*cinfo).out_color_space as c_uint
-        == JCS_RGB565 as c_int as c_uint
-    {
+    } else if (*cinfo).out_color_space as c_uint == JCS_RGB565 as c_int as c_uint {
         let mut big_endian: boolean = is_big_endian();
         let mut inptr2: *mut c_ushort = inptr as *mut c_ushort;
         col = (*cinfo).output_width;
         while col > 0i32 as c_uint {
             if 0 != big_endian {
-                *outptr.offset(0isize) =
-                    (*inptr2 as c_int >> 5i32 & 0xf8i32) as JSAMPLE;
+                *outptr.offset(0isize) = (*inptr2 as c_int >> 5i32 & 0xf8i32) as JSAMPLE;
                 *outptr.offset(1isize) = ((*inptr2 as c_int) << 5i32 & 0xe0i32
                     | *inptr2 as c_int >> 11i32 & 0x1ci32)
                     as JSAMPLE;
-                *outptr.offset(2isize) =
-                    (*inptr2 as c_int & 0xf8i32) as JSAMPLE
+                *outptr.offset(2isize) = (*inptr2 as c_int & 0xf8i32) as JSAMPLE
             } else {
-                *outptr.offset(0isize) =
-                    ((*inptr2 as c_int) << 3i32 & 0xf8i32) as JSAMPLE;
-                *outptr.offset(1isize) =
-                    (*inptr2 as c_int >> 3i32 & 0xfci32) as JSAMPLE;
-                *outptr.offset(2isize) =
-                    (*inptr2 as c_int >> 8i32 & 0xf8i32) as JSAMPLE
+                *outptr.offset(0isize) = ((*inptr2 as c_int) << 3i32 & 0xf8i32) as JSAMPLE;
+                *outptr.offset(1isize) = (*inptr2 as c_int >> 3i32 & 0xfci32) as JSAMPLE;
+                *outptr.offset(2isize) = (*inptr2 as c_int >> 8i32 & 0xf8i32) as JSAMPLE
             }
             outptr = outptr.offset(3isize);
             inptr2 = inptr2.offset(1isize);
             col = col.wrapping_sub(1)
         }
-    } else if (*cinfo).out_color_space as c_uint
-        == JCS_CMYK as c_int as c_uint
-    {
+    } else if (*cinfo).out_color_space as c_uint == JCS_CMYK as c_int as c_uint {
         col = (*cinfo).output_width;
         while col > 0i32 as c_uint {
             let fresh0 = inptr;
@@ -644,10 +649,8 @@ unsafe extern "C" fn put_pixel_rows(
         }
     } else {
         let mut rindex: c_int = rgb_red[(*cinfo).out_color_space as usize];
-        let mut gindex: c_int =
-            rgb_green[(*cinfo).out_color_space as usize];
-        let mut bindex: c_int =
-            rgb_blue[(*cinfo).out_color_space as usize];
+        let mut gindex: c_int = rgb_green[(*cinfo).out_color_space as usize];
+        let mut bindex: c_int = rgb_blue[(*cinfo).out_color_space as usize];
         let mut ps: c_int = rgb_pixelsize[(*cinfo).out_color_space as usize];
         col = (*cinfo).output_width;
         while col > 0i32 as c_uint {
@@ -736,22 +739,16 @@ unsafe extern "C" fn put_gray_rows(
  *
  * First, routines to write the Windows and OS/2 variants of the file header.
  */
-unsafe extern "C" fn write_bmp_header(
-    mut cinfo: j_decompress_ptr,
-    mut dest: bmp_dest_ptr,
-) {
+unsafe extern "C" fn write_bmp_header(mut cinfo: j_decompress_ptr, mut dest: bmp_dest_ptr) {
     let mut bmpfileheader: [c_char; 14] = [0; 14];
     let mut bmpinfoheader: [c_char; 40] = [0; 40];
     let mut headersize: c_long = 0;
     let mut bfSize: c_long = 0;
     let mut bits_per_pixel: c_int = 0;
     let mut cmap_entries: c_int = 0;
-    if (*cinfo).out_color_space as c_uint
-        == JCS_RGB as c_int as c_uint
-        || (*cinfo).out_color_space as c_uint
-            >= JCS_EXT_RGB as c_int as c_uint
-            && (*cinfo).out_color_space as c_uint
-                <= JCS_EXT_ARGB as c_int as c_uint
+    if (*cinfo).out_color_space as c_uint == JCS_RGB as c_int as c_uint
+        || (*cinfo).out_color_space as c_uint >= JCS_EXT_RGB as c_int as c_uint
+            && (*cinfo).out_color_space as c_uint <= JCS_EXT_ARGB as c_int as c_uint
     {
         if 0 != (*cinfo).quantize_colors {
             bits_per_pixel = 8i32;
@@ -760,10 +757,8 @@ unsafe extern "C" fn write_bmp_header(
             bits_per_pixel = 24i32;
             cmap_entries = 0i32
         }
-    } else if (*cinfo).out_color_space as c_uint
-        == JCS_RGB565 as c_int as c_uint
-        || (*cinfo).out_color_space as c_uint
-            == JCS_CMYK as c_int as c_uint
+    } else if (*cinfo).out_color_space as c_uint == JCS_RGB565 as c_int as c_uint
+        || (*cinfo).out_color_space as c_uint == JCS_CMYK as c_int as c_uint
     {
         bits_per_pixel = 24i32;
         cmap_entries = 0i32
@@ -772,8 +767,7 @@ unsafe extern "C" fn write_bmp_header(
         cmap_entries = 256i32
     }
     headersize = (14i32 + 40i32 + cmap_entries * 4i32) as c_long;
-    bfSize =
-        headersize + (*dest).row_width as c_long * (*cinfo).output_height as c_long;
+    bfSize = headersize + (*dest).row_width as c_long * (*cinfo).output_height as c_long;
     memset(
         bmpfileheader.as_mut_ptr() as *mut c_void,
         0i32,
@@ -787,19 +781,13 @@ unsafe extern "C" fn write_bmp_header(
     bmpfileheader[0usize] = 0x42i32 as c_char;
     bmpfileheader[1usize] = 0x4di32 as c_char;
     bmpfileheader[2usize] = (bfSize & 0xffi32 as c_long) as c_char;
-    bmpfileheader[(2i32 + 1i32) as usize] =
-        (bfSize >> 8i32 & 0xffi32 as c_long) as c_char;
-    bmpfileheader[(2i32 + 2i32) as usize] =
-        (bfSize >> 16i32 & 0xffi32 as c_long) as c_char;
-    bmpfileheader[(2i32 + 3i32) as usize] =
-        (bfSize >> 24i32 & 0xffi32 as c_long) as c_char;
+    bmpfileheader[(2i32 + 1i32) as usize] = (bfSize >> 8i32 & 0xffi32 as c_long) as c_char;
+    bmpfileheader[(2i32 + 2i32) as usize] = (bfSize >> 16i32 & 0xffi32 as c_long) as c_char;
+    bmpfileheader[(2i32 + 3i32) as usize] = (bfSize >> 24i32 & 0xffi32 as c_long) as c_char;
     bmpfileheader[10usize] = (headersize & 0xffi32 as c_long) as c_char;
-    bmpfileheader[(10i32 + 1i32) as usize] =
-        (headersize >> 8i32 & 0xffi32 as c_long) as c_char;
-    bmpfileheader[(10i32 + 2i32) as usize] =
-        (headersize >> 16i32 & 0xffi32 as c_long) as c_char;
-    bmpfileheader[(10i32 + 3i32) as usize] =
-        (headersize >> 24i32 & 0xffi32 as c_long) as c_char;
+    bmpfileheader[(10i32 + 1i32) as usize] = (headersize >> 8i32 & 0xffi32 as c_long) as c_char;
+    bmpfileheader[(10i32 + 2i32) as usize] = (headersize >> 16i32 & 0xffi32 as c_long) as c_char;
+    bmpfileheader[(10i32 + 3i32) as usize] = (headersize >> 24i32 & 0xffi32 as c_long) as c_char;
     bmpinfoheader[0usize] = (40i32 & 0xffi32) as c_char;
     bmpinfoheader[(0i32 + 1i32) as usize] = (40i32 >> 8i32 & 0xffi32) as c_char;
     bmpinfoheader[4usize] = ((*cinfo).output_width & 0xffi32 as c_uint) as c_char;
@@ -821,28 +809,28 @@ unsafe extern "C" fn write_bmp_header(
     bmpinfoheader[14usize] = (bits_per_pixel & 0xffi32) as c_char;
     bmpinfoheader[(14i32 + 1i32) as usize] = (bits_per_pixel >> 8i32 & 0xffi32) as c_char;
     if (*cinfo).density_unit as c_int == 2i32 {
-        bmpinfoheader[24usize] = (((*cinfo).X_density as c_int * 100i32) as c_long
+        bmpinfoheader[24usize] =
+            (((*cinfo).X_density as c_int * 100i32) as c_long & 0xffi32 as c_long) as c_char;
+        bmpinfoheader[(24i32 + 1i32) as usize] = (((*cinfo).X_density as c_int * 100i32) as c_long
+            >> 8i32
             & 0xffi32 as c_long) as c_char;
-        bmpinfoheader[(24i32 + 1i32) as usize] =
-            (((*cinfo).X_density as c_int * 100i32) as c_long >> 8i32
-                & 0xffi32 as c_long) as c_char;
-        bmpinfoheader[(24i32 + 2i32) as usize] =
-            (((*cinfo).X_density as c_int * 100i32) as c_long >> 16i32
-                & 0xffi32 as c_long) as c_char;
-        bmpinfoheader[(24i32 + 3i32) as usize] =
-            (((*cinfo).X_density as c_int * 100i32) as c_long >> 24i32
-                & 0xffi32 as c_long) as c_char;
-        bmpinfoheader[28usize] = (((*cinfo).Y_density as c_int * 100i32) as c_long
+        bmpinfoheader[(24i32 + 2i32) as usize] = (((*cinfo).X_density as c_int * 100i32) as c_long
+            >> 16i32
             & 0xffi32 as c_long) as c_char;
-        bmpinfoheader[(28i32 + 1i32) as usize] =
-            (((*cinfo).Y_density as c_int * 100i32) as c_long >> 8i32
-                & 0xffi32 as c_long) as c_char;
-        bmpinfoheader[(28i32 + 2i32) as usize] =
-            (((*cinfo).Y_density as c_int * 100i32) as c_long >> 16i32
-                & 0xffi32 as c_long) as c_char;
-        bmpinfoheader[(28i32 + 3i32) as usize] =
-            (((*cinfo).Y_density as c_int * 100i32) as c_long >> 24i32
-                & 0xffi32 as c_long) as c_char
+        bmpinfoheader[(24i32 + 3i32) as usize] = (((*cinfo).X_density as c_int * 100i32) as c_long
+            >> 24i32
+            & 0xffi32 as c_long) as c_char;
+        bmpinfoheader[28usize] =
+            (((*cinfo).Y_density as c_int * 100i32) as c_long & 0xffi32 as c_long) as c_char;
+        bmpinfoheader[(28i32 + 1i32) as usize] = (((*cinfo).Y_density as c_int * 100i32) as c_long
+            >> 8i32
+            & 0xffi32 as c_long) as c_char;
+        bmpinfoheader[(28i32 + 2i32) as usize] = (((*cinfo).Y_density as c_int * 100i32) as c_long
+            >> 16i32
+            & 0xffi32 as c_long) as c_char;
+        bmpinfoheader[(28i32 + 3i32) as usize] = (((*cinfo).Y_density as c_int * 100i32) as c_long
+            >> 24i32
+            & 0xffi32 as c_long) as c_char
     }
     bmpinfoheader[32usize] = (cmap_entries & 0xffi32) as c_char;
     bmpinfoheader[(32i32 + 1i32) as usize] = (cmap_entries >> 8i32 & 0xffi32) as c_char;
@@ -874,22 +862,16 @@ unsafe extern "C" fn write_bmp_header(
         write_colormap(cinfo, dest, cmap_entries, 4i32);
     };
 }
-unsafe extern "C" fn write_os2_header(
-    mut cinfo: j_decompress_ptr,
-    mut dest: bmp_dest_ptr,
-) {
+unsafe extern "C" fn write_os2_header(mut cinfo: j_decompress_ptr, mut dest: bmp_dest_ptr) {
     let mut bmpfileheader: [c_char; 14] = [0; 14];
     let mut bmpcoreheader: [c_char; 12] = [0; 12];
     let mut headersize: c_long = 0;
     let mut bfSize: c_long = 0;
     let mut bits_per_pixel: c_int = 0;
     let mut cmap_entries: c_int = 0;
-    if (*cinfo).out_color_space as c_uint
-        == JCS_RGB as c_int as c_uint
-        || (*cinfo).out_color_space as c_uint
-            >= JCS_EXT_RGB as c_int as c_uint
-            && (*cinfo).out_color_space as c_uint
-                <= JCS_EXT_ARGB as c_int as c_uint
+    if (*cinfo).out_color_space as c_uint == JCS_RGB as c_int as c_uint
+        || (*cinfo).out_color_space as c_uint >= JCS_EXT_RGB as c_int as c_uint
+            && (*cinfo).out_color_space as c_uint <= JCS_EXT_ARGB as c_int as c_uint
     {
         if 0 != (*cinfo).quantize_colors {
             bits_per_pixel = 8i32;
@@ -898,10 +880,8 @@ unsafe extern "C" fn write_os2_header(
             bits_per_pixel = 24i32;
             cmap_entries = 0i32
         }
-    } else if (*cinfo).out_color_space as c_uint
-        == JCS_RGB565 as c_int as c_uint
-        || (*cinfo).out_color_space as c_uint
-            == JCS_CMYK as c_int as c_uint
+    } else if (*cinfo).out_color_space as c_uint == JCS_RGB565 as c_int as c_uint
+        || (*cinfo).out_color_space as c_uint == JCS_CMYK as c_int as c_uint
     {
         bits_per_pixel = 24i32;
         cmap_entries = 0i32
@@ -910,8 +890,7 @@ unsafe extern "C" fn write_os2_header(
         cmap_entries = 256i32
     }
     headersize = (14i32 + 12i32 + cmap_entries * 3i32) as c_long;
-    bfSize =
-        headersize + (*dest).row_width as c_long * (*cinfo).output_height as c_long;
+    bfSize = headersize + (*dest).row_width as c_long * (*cinfo).output_height as c_long;
     memset(
         bmpfileheader.as_mut_ptr() as *mut c_void,
         0i32,
@@ -925,19 +904,13 @@ unsafe extern "C" fn write_os2_header(
     bmpfileheader[0usize] = 0x42i32 as c_char;
     bmpfileheader[1usize] = 0x4di32 as c_char;
     bmpfileheader[2usize] = (bfSize & 0xffi32 as c_long) as c_char;
-    bmpfileheader[(2i32 + 1i32) as usize] =
-        (bfSize >> 8i32 & 0xffi32 as c_long) as c_char;
-    bmpfileheader[(2i32 + 2i32) as usize] =
-        (bfSize >> 16i32 & 0xffi32 as c_long) as c_char;
-    bmpfileheader[(2i32 + 3i32) as usize] =
-        (bfSize >> 24i32 & 0xffi32 as c_long) as c_char;
+    bmpfileheader[(2i32 + 1i32) as usize] = (bfSize >> 8i32 & 0xffi32 as c_long) as c_char;
+    bmpfileheader[(2i32 + 2i32) as usize] = (bfSize >> 16i32 & 0xffi32 as c_long) as c_char;
+    bmpfileheader[(2i32 + 3i32) as usize] = (bfSize >> 24i32 & 0xffi32 as c_long) as c_char;
     bmpfileheader[10usize] = (headersize & 0xffi32 as c_long) as c_char;
-    bmpfileheader[(10i32 + 1i32) as usize] =
-        (headersize >> 8i32 & 0xffi32 as c_long) as c_char;
-    bmpfileheader[(10i32 + 2i32) as usize] =
-        (headersize >> 16i32 & 0xffi32 as c_long) as c_char;
-    bmpfileheader[(10i32 + 3i32) as usize] =
-        (headersize >> 24i32 & 0xffi32 as c_long) as c_char;
+    bmpfileheader[(10i32 + 1i32) as usize] = (headersize >> 8i32 & 0xffi32 as c_long) as c_char;
+    bmpfileheader[(10i32 + 2i32) as usize] = (headersize >> 16i32 & 0xffi32 as c_long) as c_char;
+    bmpfileheader[(10i32 + 3i32) as usize] = (headersize >> 24i32 & 0xffi32 as c_long) as c_char;
     bmpcoreheader[0usize] = (12i32 & 0xffi32) as c_char;
     bmpcoreheader[(0i32 + 1i32) as usize] = (12i32 >> 8i32 & 0xffi32) as c_char;
     bmpcoreheader[4usize] = ((*cinfo).output_width & 0xffi32 as c_uint) as c_char;
@@ -1067,10 +1040,7 @@ unsafe extern "C" fn write_colormap(
 /*
  * Startup: write the file header unless the inversion array is being used.
  */
-unsafe extern "C" fn start_output_bmp(
-    mut cinfo: j_decompress_ptr,
-    mut dinfo: djpeg_dest_ptr,
-) {
+unsafe extern "C" fn start_output_bmp(mut cinfo: j_decompress_ptr, mut dinfo: djpeg_dest_ptr) {
     let mut dest: bmp_dest_ptr = dinfo as bmp_dest_ptr;
     if 0 == (*dest).use_inversion_array {
         if 0 != (*dest).is_os2 {
@@ -1080,18 +1050,14 @@ unsafe extern "C" fn start_output_bmp(
         }
     };
 }
-unsafe extern "C" fn finish_output_bmp(
-    mut cinfo: j_decompress_ptr,
-    mut dinfo: djpeg_dest_ptr,
-) {
+unsafe extern "C" fn finish_output_bmp(mut cinfo: j_decompress_ptr, mut dinfo: djpeg_dest_ptr) {
     let mut dest: bmp_dest_ptr = dinfo as bmp_dest_ptr;
     let mut outfile: *mut FILE = (*dest).pub_0.output_file;
     let mut image_ptr: JSAMPARRAY = 0 as *mut JSAMPROW;
     let mut data_ptr: JSAMPROW = 0 as *mut JSAMPLE;
     let mut row: JDIMENSION = 0;
     let mut col: JDIMENSION = 0;
-    let mut progress: cd_progress_ptr =
-        (*cinfo).progress as cd_progress_ptr;
+    let mut progress: cd_progress_ptr = (*cinfo).progress as cd_progress_ptr;
     if 0 != (*dest).use_inversion_array {
         if 0 != (*dest).is_os2 {
             write_os2_header(cinfo, dest);
@@ -1101,15 +1067,12 @@ unsafe extern "C" fn finish_output_bmp(
         row = (*cinfo).output_height;
         while row > 0i32 as c_uint {
             if !progress.is_null() {
-                (*progress).pub_0.pass_counter =
-                    (*cinfo).output_height.wrapping_sub(row) as c_long;
+                (*progress).pub_0.pass_counter = (*cinfo).output_height.wrapping_sub(row) as c_long;
                 (*progress).pub_0.pass_limit = (*cinfo).output_height as c_long;
                 (*progress)
                     .pub_0
                     .progress_monitor
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             image_ptr = (*(*cinfo).mem)
                 .access_virt_sarray
@@ -1160,32 +1123,17 @@ pub unsafe extern "C" fn jinit_write_bmp(
         ::std::mem::size_of::<bmp_dest_struct>() as c_ulong,
     ) as bmp_dest_ptr;
     (*dest).pub_0.start_output = Some(
-        start_output_bmp
-            as unsafe extern "C" fn(
-                _: j_decompress_ptr,
-                _: djpeg_dest_ptr,
-            ) -> (),
+        start_output_bmp as unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> (),
     );
     (*dest).pub_0.finish_output = Some(
-        finish_output_bmp
-            as unsafe extern "C" fn(
-                _: j_decompress_ptr,
-                _: djpeg_dest_ptr,
-            ) -> (),
+        finish_output_bmp as unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> (),
     );
     (*dest).pub_0.calc_buffer_dimensions = ::std::mem::transmute::<
         intptr_t,
-        Option<
-            unsafe extern "C" fn(
-                _: j_decompress_ptr,
-                _: djpeg_dest_ptr,
-            ) -> (),
-        >,
+        Option<unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> ()>,
     >(NULL as intptr_t);
     (*dest).is_os2 = is_os2;
-    if (*cinfo).out_color_space as c_uint
-        == JCS_GRAYSCALE as c_int as c_uint
-    {
+    if (*cinfo).out_color_space as c_uint == JCS_GRAYSCALE as c_int as c_uint {
         (*dest).pub_0.put_pixel_rows = Some(
             put_gray_rows
                 as unsafe extern "C" fn(
@@ -1194,12 +1142,9 @@ pub unsafe extern "C" fn jinit_write_bmp(
                     _: JDIMENSION,
                 ) -> (),
         )
-    } else if (*cinfo).out_color_space as c_uint
-        == JCS_RGB as c_int as c_uint
-        || (*cinfo).out_color_space as c_uint
-            >= JCS_EXT_RGB as c_int as c_uint
-            && (*cinfo).out_color_space as c_uint
-                <= JCS_EXT_ARGB as c_int as c_uint
+    } else if (*cinfo).out_color_space as c_uint == JCS_RGB as c_int as c_uint
+        || (*cinfo).out_color_space as c_uint >= JCS_EXT_RGB as c_int as c_uint
+            && (*cinfo).out_color_space as c_uint <= JCS_EXT_ARGB as c_int as c_uint
     {
         if 0 != (*cinfo).quantize_colors {
             (*dest).pub_0.put_pixel_rows = Some(
@@ -1220,10 +1165,8 @@ pub unsafe extern "C" fn jinit_write_bmp(
                     ) -> (),
             )
         }
-    } else if (*cinfo).out_color_space as c_uint
-        == JCS_RGB565 as c_int as c_uint
-        || (*cinfo).out_color_space as c_uint
-            == JCS_CMYK as c_int as c_uint
+    } else if (*cinfo).out_color_space as c_uint == JCS_RGB565 as c_int as c_uint
+        || (*cinfo).out_color_space as c_uint == JCS_CMYK as c_int as c_uint
     {
         (*dest).pub_0.put_pixel_rows = Some(
             put_pixel_rows
@@ -1240,9 +1183,7 @@ pub unsafe extern "C" fn jinit_write_bmp(
             .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     jpeg_calc_output_dimensions(cinfo);
-    if (*cinfo).out_color_space as c_uint
-        == JCS_RGB565 as c_int as c_uint
-    {
+    if (*cinfo).out_color_space as c_uint == JCS_RGB565 as c_int as c_uint {
         row_width = (*cinfo).output_width.wrapping_mul(2i32 as c_uint);
         (*dest).data_width = (*cinfo).output_width.wrapping_mul(3i32 as c_uint);
         (*dest).row_width = (*dest).data_width;
@@ -1250,14 +1191,10 @@ pub unsafe extern "C" fn jinit_write_bmp(
             row_width = row_width.wrapping_add(1)
         }
     } else if 0 == (*cinfo).quantize_colors
-        && ((*cinfo).out_color_space as c_uint
-            == JCS_RGB as c_int as c_uint
-            || (*cinfo).out_color_space as c_uint
-                >= JCS_EXT_RGB as c_int as c_uint
-                && (*cinfo).out_color_space as c_uint
-                    <= JCS_EXT_ARGB as c_int as c_uint
-            || (*cinfo).out_color_space as c_uint
-                == JCS_CMYK as c_int as c_uint)
+        && ((*cinfo).out_color_space as c_uint == JCS_RGB as c_int as c_uint
+            || (*cinfo).out_color_space as c_uint >= JCS_EXT_RGB as c_int as c_uint
+                && (*cinfo).out_color_space as c_uint <= JCS_EXT_ARGB as c_int as c_uint
+            || (*cinfo).out_color_space as c_uint == JCS_CMYK as c_int as c_uint)
     {
         row_width = (*cinfo)
             .output_width
@@ -1288,8 +1225,7 @@ pub unsafe extern "C" fn jinit_write_bmp(
         );
         (*dest).cur_output_row = 0i32 as JDIMENSION;
         if !(*cinfo).progress.is_null() {
-            let mut progress: cd_progress_ptr =
-                (*cinfo).progress as cd_progress_ptr;
+            let mut progress: cd_progress_ptr = (*cinfo).progress as cd_progress_ptr;
             (*progress).total_extra_passes += 1
         }
     } else {

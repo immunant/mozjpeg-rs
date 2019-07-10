@@ -11,7 +11,6 @@
 #![feature(label_break_value)]
 #![feature(ptr_wrapping_offset_from)]
 
-
 pub use crate::cderror_h::C2RustUnnamed_91;
 pub use crate::cderror_h::JERR_BAD_CMAP_FILE;
 pub use crate::cderror_h::JERR_BMP_BADCMAP;

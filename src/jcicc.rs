@@ -1,4 +1,4 @@
-use libc::c_int;use libc::c_uint;pub use crate::jerror::C2RustUnnamed_3;
+pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -203,6 +203,8 @@ pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 use libc;
+use libc::c_int;
+use libc::c_uint;
 /*
  * jcicc.c
  *

@@ -1,4 +1,9 @@
-use libc::c_char;use libc::c_uint;use libc::c_void;use libc::c_ulong;use libc::c_uchar;extern "C" {
+use libc::c_char;
+use libc::c_uchar;
+use libc::c_uint;
+use libc::c_ulong;
+use libc::c_void;
+extern "C" {
     #[no_mangle]
     pub fn MD5File(_: *const c_char, _: *mut c_char) -> *mut c_char;
 }
@@ -127,25 +132,17 @@ pub unsafe extern "C" fn MD5Update(
     if (*ctx).bits[0usize] < t {
         (*ctx).bits[1usize] = (*ctx).bits[1usize].wrapping_add(1)
     }
-    (*ctx).bits[1usize] = ((*ctx).bits[1usize] as c_uint).wrapping_add(len >> 29i32)
-        as uint32 as uint32;
+    (*ctx).bits[1usize] =
+        ((*ctx).bits[1usize] as c_uint).wrapping_add(len >> 29i32) as uint32 as uint32;
     t = t >> 3i32 & 0x3fi32 as c_uint;
     if 0 != t {
         let mut p: *mut c_uchar = (*ctx).in_0.as_mut_ptr().offset(t as isize);
         t = (64i32 as c_uint).wrapping_sub(t);
         if len < t {
-            memcpy(
-                p as *mut c_void,
-                buf as *const c_void,
-                len as c_ulong,
-            );
+            memcpy(p as *mut c_void, buf as *const c_void, len as c_ulong);
             return;
         }
-        memcpy(
-            p as *mut c_void,
-            buf as *const c_void,
-            t as c_ulong,
-        );
+        memcpy(p as *mut c_void, buf as *const c_void, t as c_ulong);
         MD5Transform(
             (*ctx).buf.as_mut_ptr(),
             (*ctx).in_0.as_mut_ptr() as *mut uint32,
@@ -177,10 +174,7 @@ pub unsafe extern "C" fn MD5Update(
  * 1 0* (64-bit count of bits processed, MSB-first)
  */
 #[no_mangle]
-pub unsafe extern "C" fn MD5Final(
-    mut digest: *mut c_uchar,
-    mut ctx: *mut MD5Context,
-) {
+pub unsafe extern "C" fn MD5Final(mut digest: *mut c_uchar, mut ctx: *mut MD5Context) {
     let mut count: c_uint = 0;
     let mut p: *mut c_uchar = 0 as *mut c_uchar;
     let mut in32: *mut uint32 = (*ctx).in_0.as_mut_ptr() as *mut uint32;
@@ -237,10 +231,7 @@ pub unsafe extern "C" fn MD5Final(
  * the data and converts bytes into longwords for this routine.
  */
 #[no_mangle]
-pub unsafe extern "C" fn MD5Transform(
-    mut buf: *mut uint32,
-    mut in_0: *mut uint32,
-) {
+pub unsafe extern "C" fn MD5Transform(mut buf: *mut uint32, mut in_0: *mut uint32) {
     let mut a: uint32 = 0;
     let mut b: uint32 = 0;
     let mut c: uint32 = 0;

@@ -91,7 +91,8 @@ fn main() {
         panic!("Unsupported target architecture");
     };
 
-    let sources = sources.into_iter()
+    let sources = sources
+        .into_iter()
         .map(|src| format!("{}/{}/{}", SIMD_PATH, arch, src))
         .collect::<Vec<_>>();
 

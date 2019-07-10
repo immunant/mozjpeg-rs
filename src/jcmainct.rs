@@ -1,4 +1,4 @@
-use libc::c_ulong;use libc::c_int;use libc::c_uint;pub use crate::jerror::C2RustUnnamed_3;
+pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -202,6 +202,9 @@ pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::stddef_h::size_t;
 use libc;
+use libc::c_int;
+use libc::c_uint;
+use libc::c_ulong;
 pub type my_main_ptr = *mut my_main_controller;
 /*
  * jcmainct.c
@@ -231,16 +234,12 @@ pub struct my_main_controller {
 /*
  * Initialize for a processing pass.
  */
-unsafe extern "C" fn start_pass_main(
-    mut cinfo: j_compress_ptr,
-    mut pass_mode: J_BUF_MODE,
-) {
+unsafe extern "C" fn start_pass_main(mut cinfo: j_compress_ptr, mut pass_mode: J_BUF_MODE) {
     let mut main_ptr: my_main_ptr = (*cinfo).main as my_main_ptr;
     if 0 != (*cinfo).raw_data_in {
         return;
     }
-    if pass_mode as c_uint != JBUF_PASS_THRU as c_int as c_uint
-    {
+    if pass_mode as c_uint != JBUF_PASS_THRU as c_int as c_uint {
         (*(*cinfo).err).msg_code = JERR_BAD_BUFFER_MODE as c_int;
         (*(*cinfo).err)
             .error_exit
@@ -319,8 +318,7 @@ pub unsafe extern "C" fn jinit_c_main_controller(
 ) {
     let mut main_ptr: my_main_ptr = 0 as *mut my_main_controller;
     let mut ci: c_int = 0;
-    let mut compptr: *mut jpeg_component_info =
-        0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
     main_ptr = (*(*cinfo).mem)
         .alloc_small
         .expect("non-null function pointer")(
@@ -329,13 +327,8 @@ pub unsafe extern "C" fn jinit_c_main_controller(
         ::std::mem::size_of::<my_main_controller>() as c_ulong,
     ) as my_main_ptr;
     (*cinfo).main = main_ptr as *mut jpeg_c_main_controller;
-    (*main_ptr).pub_0.start_pass = Some(
-        start_pass_main
-            as unsafe extern "C" fn(
-                _: j_compress_ptr,
-                _: J_BUF_MODE,
-            ) -> (),
-    );
+    (*main_ptr).pub_0.start_pass =
+        Some(start_pass_main as unsafe extern "C" fn(_: j_compress_ptr, _: J_BUF_MODE) -> ());
     if 0 != (*cinfo).raw_data_in {
         return;
     }
@@ -353,11 +346,8 @@ pub unsafe extern "C" fn jinit_c_main_controller(
                 .expect("non-null function pointer")(
                 cinfo as j_common_ptr,
                 JPOOL_IMAGE,
-                (*compptr)
-                    .width_in_blocks
-                    .wrapping_mul(DCTSIZE as c_uint),
-                ((*compptr).v_samp_factor * DCTSIZE)
-                    as JDIMENSION,
+                (*compptr).width_in_blocks.wrapping_mul(DCTSIZE as c_uint),
+                ((*compptr).v_samp_factor * DCTSIZE) as JDIMENSION,
             );
             ci += 1;
             compptr = compptr.offset(1isize)

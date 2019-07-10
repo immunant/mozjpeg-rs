@@ -1,4 +1,5 @@
-use libc::c_uint;use ::libc;
+use ::libc;
+use libc::c_uint;
 pub const JTRC_TGA_MAPPED: C2RustUnnamed_91 = 1040;
 pub const JTRC_TGA_GRAY: C2RustUnnamed_91 = 1039;
 pub const JTRC_TGA: C2RustUnnamed_91 = 1038;

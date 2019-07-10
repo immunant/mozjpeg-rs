@@ -1,4 +1,7 @@
-use libc::c_ulong;use libc::c_int;use libc::c_void;pub unsafe extern "C" fn add_huff_table(
+use libc::c_int;
+use libc::c_ulong;
+use libc::c_void;
+pub unsafe extern "C" fn add_huff_table(
     mut cinfo: j_common_ptr,
     mut htblptr: *mut *mut JHUFF_TBL,
     mut bits: *const UINT8,
@@ -31,23 +34,19 @@ use libc::c_ulong;use libc::c_int;use libc::c_void;pub unsafe extern "C" fn add_
     memcpy(
         (**htblptr).huffval.as_mut_ptr() as *mut c_void,
         val as *const c_void,
-        (nsymbols as c_ulong)
-            .wrapping_mul(::std::mem::size_of::<UINT8>() as c_ulong),
+        (nsymbols as c_ulong).wrapping_mul(::std::mem::size_of::<UINT8>() as c_ulong),
     );
     memset(
-        &mut *(**htblptr).huffval.as_mut_ptr().offset(nsymbols as isize)
-            as *mut UINT8 as *mut c_void,
+        &mut *(**htblptr).huffval.as_mut_ptr().offset(nsymbols as isize) as *mut UINT8
+            as *mut c_void,
         0i32,
-        ((256i32 - nsymbols) as c_ulong)
-            .wrapping_mul(::std::mem::size_of::<UINT8>() as c_ulong),
+        ((256i32 - nsymbols) as c_ulong).wrapping_mul(::std::mem::size_of::<UINT8>() as c_ulong),
     );
     (**htblptr).sent_table = FALSE;
 }
 pub unsafe extern "C" fn std_huff_tables(mut cinfo: j_common_ptr) {
-    let mut dc_huff_tbl_ptrs: *mut *mut JHUFF_TBL =
-        0 as *mut *mut JHUFF_TBL;
-    let mut ac_huff_tbl_ptrs: *mut *mut JHUFF_TBL =
-        0 as *mut *mut JHUFF_TBL;
+    let mut dc_huff_tbl_ptrs: *mut *mut JHUFF_TBL = 0 as *mut *mut JHUFF_TBL;
+    let mut ac_huff_tbl_ptrs: *mut *mut JHUFF_TBL = 0 as *mut *mut JHUFF_TBL;
     pub static mut bits_dc_luminance: [UINT8; 17] = [
         0i32 as UINT8,
         0i32 as UINT8,
@@ -485,19 +484,11 @@ pub unsafe extern "C" fn std_huff_tables(mut cinfo: j_common_ptr) {
         0xfai32 as UINT8,
     ];
     if 0 != (*cinfo).is_decompressor {
-        dc_huff_tbl_ptrs = (*(cinfo as j_decompress_ptr))
-            .dc_huff_tbl_ptrs
-            .as_mut_ptr();
-        ac_huff_tbl_ptrs = (*(cinfo as j_decompress_ptr))
-            .ac_huff_tbl_ptrs
-            .as_mut_ptr()
+        dc_huff_tbl_ptrs = (*(cinfo as j_decompress_ptr)).dc_huff_tbl_ptrs.as_mut_ptr();
+        ac_huff_tbl_ptrs = (*(cinfo as j_decompress_ptr)).ac_huff_tbl_ptrs.as_mut_ptr()
     } else {
-        dc_huff_tbl_ptrs = (*(cinfo as j_compress_ptr))
-            .dc_huff_tbl_ptrs
-            .as_mut_ptr();
-        ac_huff_tbl_ptrs = (*(cinfo as j_compress_ptr))
-            .ac_huff_tbl_ptrs
-            .as_mut_ptr()
+        dc_huff_tbl_ptrs = (*(cinfo as j_compress_ptr)).dc_huff_tbl_ptrs.as_mut_ptr();
+        ac_huff_tbl_ptrs = (*(cinfo as j_compress_ptr)).ac_huff_tbl_ptrs.as_mut_ptr()
     }
     add_huff_table(
         cinfo,

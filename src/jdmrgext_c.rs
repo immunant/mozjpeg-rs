@@ -1,4 +1,4 @@
-use libc::c_int;use libc::c_uint;use crate::jdmerge::my_upsample_ptr;
+use crate::jdmerge::my_upsample_ptr;
 use crate::jdmerge::my_upsampler;
 use crate::jmorecfg_h::JDIMENSION;
 use crate::jmorecfg_h::JSAMPLE;
@@ -9,6 +9,8 @@ use crate::jpeglib_h::JSAMPARRAY;
 use crate::jpeglib_h::JSAMPIMAGE;
 use crate::jpeglib_h::JSAMPROW;
 use ::libc;
+use libc::c_int;
+use libc::c_uint;
 /*
  * jdmrgext.c
  *
@@ -65,8 +67,7 @@ pub unsafe extern "C" fn extbgr_h2v1_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh1 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh2 = inptr0;
         inptr0 = inptr0.offset(1);
@@ -88,8 +89,7 @@ pub unsafe extern "C" fn extbgr_h2v1_merged_upsample_internal(
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr0 as c_int;
         *outptr.offset(RGB_RED_3 as isize) = *range_limit.offset((y + cred) as isize);
@@ -153,28 +153,21 @@ pub unsafe extern "C" fn h2v1_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh5 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh6 = inptr0;
         inptr0 = inptr0.offset(1);
         y = *fresh6 as c_int;
-        *outptr.offset(RGB_RED_5 as isize) =
-            *range_limit.offset((y + cred) as isize);
-        *outptr.offset(RGB_GREEN_5 as isize) =
-            *range_limit.offset((y + cgreen) as isize);
-        *outptr.offset(RGB_BLUE_5 as isize) =
-            *range_limit.offset((y + cblue) as isize);
+        *outptr.offset(RGB_RED_5 as isize) = *range_limit.offset((y + cred) as isize);
+        *outptr.offset(RGB_GREEN_5 as isize) = *range_limit.offset((y + cgreen) as isize);
+        *outptr.offset(RGB_BLUE_5 as isize) = *range_limit.offset((y + cblue) as isize);
         outptr = outptr.offset(RGB_PIXELSIZE_5 as isize);
         let fresh7 = inptr0;
         inptr0 = inptr0.offset(1);
         y = *fresh7 as c_int;
-        *outptr.offset(RGB_RED_5 as isize) =
-            *range_limit.offset((y + cred) as isize);
-        *outptr.offset(RGB_GREEN_5 as isize) =
-            *range_limit.offset((y + cgreen) as isize);
-        *outptr.offset(RGB_BLUE_5 as isize) =
-            *range_limit.offset((y + cblue) as isize);
+        *outptr.offset(RGB_RED_5 as isize) = *range_limit.offset((y + cred) as isize);
+        *outptr.offset(RGB_GREEN_5 as isize) = *range_limit.offset((y + cgreen) as isize);
+        *outptr.offset(RGB_BLUE_5 as isize) = *range_limit.offset((y + cblue) as isize);
         outptr = outptr.offset(RGB_PIXELSIZE_5 as isize);
         col = col.wrapping_sub(1)
     }
@@ -182,16 +175,12 @@ pub unsafe extern "C" fn h2v1_merged_upsample_internal(
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr0 as c_int;
-        *outptr.offset(RGB_RED_5 as isize) =
-            *range_limit.offset((y + cred) as isize);
-        *outptr.offset(RGB_GREEN_5 as isize) =
-            *range_limit.offset((y + cgreen) as isize);
-        *outptr.offset(RGB_BLUE_5 as isize) =
-            *range_limit.offset((y + cblue) as isize)
+        *outptr.offset(RGB_RED_5 as isize) = *range_limit.offset((y + cred) as isize);
+        *outptr.offset(RGB_GREEN_5 as isize) = *range_limit.offset((y + cgreen) as isize);
+        *outptr.offset(RGB_BLUE_5 as isize) = *range_limit.offset((y + cblue) as isize)
     };
 }
 /*
@@ -250,8 +239,7 @@ pub unsafe extern "C" fn extrgbx_h2v1_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh9 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh10 = inptr0;
         inptr0 = inptr0.offset(1);
@@ -275,8 +263,7 @@ pub unsafe extern "C" fn extrgbx_h2v1_merged_upsample_internal(
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr0 as c_int;
         *outptr.offset(RGB_RED_2 as isize) = *range_limit.offset((y + cred) as isize);
@@ -341,8 +328,7 @@ pub unsafe extern "C" fn extrgb_h2v1_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh13 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh14 = inptr0;
         inptr0 = inptr0.offset(1);
@@ -364,8 +350,7 @@ pub unsafe extern "C" fn extrgb_h2v1_merged_upsample_internal(
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr0 as c_int;
         *outptr.offset(RGB_RED_4 as isize) = *range_limit.offset((y + cred) as isize);
@@ -429,8 +414,7 @@ pub unsafe extern "C" fn extxrgb_h2v1_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh17 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh18 = inptr0;
         inptr0 = inptr0.offset(1);
@@ -454,8 +438,7 @@ pub unsafe extern "C" fn extxrgb_h2v1_merged_upsample_internal(
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr0 as c_int;
         *outptr.offset(RGB_RED as isize) = *range_limit.offset((y + cred) as isize);
@@ -520,8 +503,7 @@ pub unsafe extern "C" fn extxbgr_h2v1_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh21 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh22 = inptr0;
         inptr0 = inptr0.offset(1);
@@ -545,8 +527,7 @@ pub unsafe extern "C" fn extxbgr_h2v1_merged_upsample_internal(
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr0 as c_int;
         *outptr.offset(RGB_RED_0 as isize) = *range_limit.offset((y + cred) as isize);
@@ -611,8 +592,7 @@ pub unsafe extern "C" fn extbgrx_h2v1_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh25 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh26 = inptr0;
         inptr0 = inptr0.offset(1);
@@ -636,8 +616,7 @@ pub unsafe extern "C" fn extbgrx_h2v1_merged_upsample_internal(
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr0 as c_int;
         *outptr.offset(RGB_RED_1 as isize) = *range_limit.offset((y + cred) as isize);
@@ -676,8 +655,8 @@ pub unsafe extern "C" fn h2v2_merged_upsample_internal(
     let mut Cbbtab: *mut c_int = (*upsample).Cb_b_tab;
     let mut Crgtab: *mut JLONG = (*upsample).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*upsample).Cb_g_tab;
-    inptr00 = *(*input_buf.offset(0isize))
-        .offset(in_row_group_ctr.wrapping_mul(2i32 as c_uint) as isize);
+    inptr00 =
+        *(*input_buf.offset(0isize)).offset(in_row_group_ctr.wrapping_mul(2i32 as c_uint) as isize);
     inptr01 = *(*input_buf.offset(0isize)).offset(
         in_row_group_ctr
             .wrapping_mul(2i32 as c_uint)
@@ -696,48 +675,35 @@ pub unsafe extern "C" fn h2v2_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh29 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh30 = inptr00;
         inptr00 = inptr00.offset(1);
         y = *fresh30 as c_int;
-        *outptr0.offset(RGB_RED_5 as isize) =
-            *range_limit.offset((y + cred) as isize);
-        *outptr0.offset(RGB_GREEN_5 as isize) =
-            *range_limit.offset((y + cgreen) as isize);
-        *outptr0.offset(RGB_BLUE_5 as isize) =
-            *range_limit.offset((y + cblue) as isize);
+        *outptr0.offset(RGB_RED_5 as isize) = *range_limit.offset((y + cred) as isize);
+        *outptr0.offset(RGB_GREEN_5 as isize) = *range_limit.offset((y + cgreen) as isize);
+        *outptr0.offset(RGB_BLUE_5 as isize) = *range_limit.offset((y + cblue) as isize);
         outptr0 = outptr0.offset(RGB_PIXELSIZE_5 as isize);
         let fresh31 = inptr00;
         inptr00 = inptr00.offset(1);
         y = *fresh31 as c_int;
-        *outptr0.offset(RGB_RED_5 as isize) =
-            *range_limit.offset((y + cred) as isize);
-        *outptr0.offset(RGB_GREEN_5 as isize) =
-            *range_limit.offset((y + cgreen) as isize);
-        *outptr0.offset(RGB_BLUE_5 as isize) =
-            *range_limit.offset((y + cblue) as isize);
+        *outptr0.offset(RGB_RED_5 as isize) = *range_limit.offset((y + cred) as isize);
+        *outptr0.offset(RGB_GREEN_5 as isize) = *range_limit.offset((y + cgreen) as isize);
+        *outptr0.offset(RGB_BLUE_5 as isize) = *range_limit.offset((y + cblue) as isize);
         outptr0 = outptr0.offset(RGB_PIXELSIZE_5 as isize);
         let fresh32 = inptr01;
         inptr01 = inptr01.offset(1);
         y = *fresh32 as c_int;
-        *outptr1.offset(RGB_RED_5 as isize) =
-            *range_limit.offset((y + cred) as isize);
-        *outptr1.offset(RGB_GREEN_5 as isize) =
-            *range_limit.offset((y + cgreen) as isize);
-        *outptr1.offset(RGB_BLUE_5 as isize) =
-            *range_limit.offset((y + cblue) as isize);
+        *outptr1.offset(RGB_RED_5 as isize) = *range_limit.offset((y + cred) as isize);
+        *outptr1.offset(RGB_GREEN_5 as isize) = *range_limit.offset((y + cgreen) as isize);
+        *outptr1.offset(RGB_BLUE_5 as isize) = *range_limit.offset((y + cblue) as isize);
         outptr1 = outptr1.offset(RGB_PIXELSIZE_5 as isize);
         let fresh33 = inptr01;
         inptr01 = inptr01.offset(1);
         y = *fresh33 as c_int;
-        *outptr1.offset(RGB_RED_5 as isize) =
-            *range_limit.offset((y + cred) as isize);
-        *outptr1.offset(RGB_GREEN_5 as isize) =
-            *range_limit.offset((y + cgreen) as isize);
-        *outptr1.offset(RGB_BLUE_5 as isize) =
-            *range_limit.offset((y + cblue) as isize);
+        *outptr1.offset(RGB_RED_5 as isize) = *range_limit.offset((y + cred) as isize);
+        *outptr1.offset(RGB_GREEN_5 as isize) = *range_limit.offset((y + cgreen) as isize);
+        *outptr1.offset(RGB_BLUE_5 as isize) = *range_limit.offset((y + cblue) as isize);
         outptr1 = outptr1.offset(RGB_PIXELSIZE_5 as isize);
         col = col.wrapping_sub(1)
     }
@@ -745,23 +711,16 @@ pub unsafe extern "C" fn h2v2_merged_upsample_internal(
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr00 as c_int;
-        *outptr0.offset(RGB_RED_5 as isize) =
-            *range_limit.offset((y + cred) as isize);
-        *outptr0.offset(RGB_GREEN_5 as isize) =
-            *range_limit.offset((y + cgreen) as isize);
-        *outptr0.offset(RGB_BLUE_5 as isize) =
-            *range_limit.offset((y + cblue) as isize);
+        *outptr0.offset(RGB_RED_5 as isize) = *range_limit.offset((y + cred) as isize);
+        *outptr0.offset(RGB_GREEN_5 as isize) = *range_limit.offset((y + cgreen) as isize);
+        *outptr0.offset(RGB_BLUE_5 as isize) = *range_limit.offset((y + cblue) as isize);
         y = *inptr01 as c_int;
-        *outptr1.offset(RGB_RED_5 as isize) =
-            *range_limit.offset((y + cred) as isize);
-        *outptr1.offset(RGB_GREEN_5 as isize) =
-            *range_limit.offset((y + cgreen) as isize);
-        *outptr1.offset(RGB_BLUE_5 as isize) =
-            *range_limit.offset((y + cblue) as isize)
+        *outptr1.offset(RGB_RED_5 as isize) = *range_limit.offset((y + cred) as isize);
+        *outptr1.offset(RGB_GREEN_5 as isize) = *range_limit.offset((y + cgreen) as isize);
+        *outptr1.offset(RGB_BLUE_5 as isize) = *range_limit.offset((y + cblue) as isize)
     };
 }
 /*
@@ -794,8 +753,8 @@ pub unsafe extern "C" fn extxrgb_h2v2_merged_upsample_internal(
     let mut Cbbtab: *mut c_int = (*upsample).Cb_b_tab;
     let mut Crgtab: *mut JLONG = (*upsample).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*upsample).Cb_g_tab;
-    inptr00 = *(*input_buf.offset(0isize))
-        .offset(in_row_group_ctr.wrapping_mul(2i32 as c_uint) as isize);
+    inptr00 =
+        *(*input_buf.offset(0isize)).offset(in_row_group_ctr.wrapping_mul(2i32 as c_uint) as isize);
     inptr01 = *(*input_buf.offset(0isize)).offset(
         in_row_group_ctr
             .wrapping_mul(2i32 as c_uint)
@@ -814,8 +773,7 @@ pub unsafe extern "C" fn extxrgb_h2v2_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh35 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh36 = inptr00;
         inptr00 = inptr00.offset(1);
@@ -855,8 +813,7 @@ pub unsafe extern "C" fn extxrgb_h2v2_merged_upsample_internal(
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr00 as c_int;
         *outptr0.offset(RGB_RED as isize) = *range_limit.offset((y + cred) as isize);
@@ -900,8 +857,8 @@ pub unsafe extern "C" fn extbgrx_h2v2_merged_upsample_internal(
     let mut Cbbtab: *mut c_int = (*upsample).Cb_b_tab;
     let mut Crgtab: *mut JLONG = (*upsample).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*upsample).Cb_g_tab;
-    inptr00 = *(*input_buf.offset(0isize))
-        .offset(in_row_group_ctr.wrapping_mul(2i32 as c_uint) as isize);
+    inptr00 =
+        *(*input_buf.offset(0isize)).offset(in_row_group_ctr.wrapping_mul(2i32 as c_uint) as isize);
     inptr01 = *(*input_buf.offset(0isize)).offset(
         in_row_group_ctr
             .wrapping_mul(2i32 as c_uint)
@@ -920,8 +877,7 @@ pub unsafe extern "C" fn extbgrx_h2v2_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh41 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh42 = inptr00;
         inptr00 = inptr00.offset(1);
@@ -961,8 +917,7 @@ pub unsafe extern "C" fn extbgrx_h2v2_merged_upsample_internal(
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr00 as c_int;
         *outptr0.offset(RGB_RED_1 as isize) = *range_limit.offset((y + cred) as isize);
@@ -1006,8 +961,8 @@ pub unsafe extern "C" fn extbgr_h2v2_merged_upsample_internal(
     let mut Cbbtab: *mut c_int = (*upsample).Cb_b_tab;
     let mut Crgtab: *mut JLONG = (*upsample).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*upsample).Cb_g_tab;
-    inptr00 = *(*input_buf.offset(0isize))
-        .offset(in_row_group_ctr.wrapping_mul(2i32 as c_uint) as isize);
+    inptr00 =
+        *(*input_buf.offset(0isize)).offset(in_row_group_ctr.wrapping_mul(2i32 as c_uint) as isize);
     inptr01 = *(*input_buf.offset(0isize)).offset(
         in_row_group_ctr
             .wrapping_mul(2i32 as c_uint)
@@ -1026,8 +981,7 @@ pub unsafe extern "C" fn extbgr_h2v2_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh47 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh48 = inptr00;
         inptr00 = inptr00.offset(1);
@@ -1063,8 +1017,7 @@ pub unsafe extern "C" fn extbgr_h2v2_merged_upsample_internal(
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr00 as c_int;
         *outptr0.offset(RGB_RED_3 as isize) = *range_limit.offset((y + cred) as isize);
@@ -1106,8 +1059,8 @@ pub unsafe extern "C" fn extrgbx_h2v2_merged_upsample_internal(
     let mut Cbbtab: *mut c_int = (*upsample).Cb_b_tab;
     let mut Crgtab: *mut JLONG = (*upsample).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*upsample).Cb_g_tab;
-    inptr00 = *(*input_buf.offset(0isize))
-        .offset(in_row_group_ctr.wrapping_mul(2i32 as c_uint) as isize);
+    inptr00 =
+        *(*input_buf.offset(0isize)).offset(in_row_group_ctr.wrapping_mul(2i32 as c_uint) as isize);
     inptr01 = *(*input_buf.offset(0isize)).offset(
         in_row_group_ctr
             .wrapping_mul(2i32 as c_uint)
@@ -1126,8 +1079,7 @@ pub unsafe extern "C" fn extrgbx_h2v2_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh53 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh54 = inptr00;
         inptr00 = inptr00.offset(1);
@@ -1167,8 +1119,7 @@ pub unsafe extern "C" fn extrgbx_h2v2_merged_upsample_internal(
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr00 as c_int;
         *outptr0.offset(RGB_RED_2 as isize) = *range_limit.offset((y + cred) as isize);
@@ -1212,8 +1163,8 @@ pub unsafe extern "C" fn extrgb_h2v2_merged_upsample_internal(
     let mut Cbbtab: *mut c_int = (*upsample).Cb_b_tab;
     let mut Crgtab: *mut JLONG = (*upsample).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*upsample).Cb_g_tab;
-    inptr00 = *(*input_buf.offset(0isize))
-        .offset(in_row_group_ctr.wrapping_mul(2i32 as c_uint) as isize);
+    inptr00 =
+        *(*input_buf.offset(0isize)).offset(in_row_group_ctr.wrapping_mul(2i32 as c_uint) as isize);
     inptr01 = *(*input_buf.offset(0isize)).offset(
         in_row_group_ctr
             .wrapping_mul(2i32 as c_uint)
@@ -1232,8 +1183,7 @@ pub unsafe extern "C" fn extrgb_h2v2_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh59 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh60 = inptr00;
         inptr00 = inptr00.offset(1);
@@ -1269,8 +1219,7 @@ pub unsafe extern "C" fn extrgb_h2v2_merged_upsample_internal(
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr00 as c_int;
         *outptr0.offset(RGB_RED_4 as isize) = *range_limit.offset((y + cred) as isize);
@@ -1312,8 +1261,8 @@ pub unsafe extern "C" fn extxbgr_h2v2_merged_upsample_internal(
     let mut Cbbtab: *mut c_int = (*upsample).Cb_b_tab;
     let mut Crgtab: *mut JLONG = (*upsample).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*upsample).Cb_g_tab;
-    inptr00 = *(*input_buf.offset(0isize))
-        .offset(in_row_group_ctr.wrapping_mul(2i32 as c_uint) as isize);
+    inptr00 =
+        *(*input_buf.offset(0isize)).offset(in_row_group_ctr.wrapping_mul(2i32 as c_uint) as isize);
     inptr01 = *(*input_buf.offset(0isize)).offset(
         in_row_group_ctr
             .wrapping_mul(2i32 as c_uint)
@@ -1332,8 +1281,7 @@ pub unsafe extern "C" fn extxbgr_h2v2_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh65 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh66 = inptr00;
         inptr00 = inptr00.offset(1);
@@ -1373,8 +1321,7 @@ pub unsafe extern "C" fn extxbgr_h2v2_merged_upsample_internal(
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr00 as c_int;
         *outptr0.offset(RGB_RED_0 as isize) = *range_limit.offset((y + cred) as isize);

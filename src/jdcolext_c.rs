@@ -1,4 +1,4 @@
-use libc::c_int;use crate::jdcolor::my_cconvert_ptr;
+use crate::jdcolor::my_cconvert_ptr;
 use crate::jdcolor::my_color_deconverter;
 use crate::jmorecfg_h::JDIMENSION;
 use crate::jmorecfg_h::JSAMPLE;
@@ -9,6 +9,7 @@ use crate::jpeglib_h::JSAMPARRAY;
 use crate::jpeglib_h::JSAMPIMAGE;
 use crate::jpeglib_h::JSAMPROW;
 use ::libc;
+use libc::c_int;
 /*
  * jdcolext.c
  *
@@ -78,8 +79,8 @@ pub unsafe extern "C" fn ycc_extrgb_convert_internal(
             *outptr.offset(RGB_RED_4 as isize) =
                 *range_limit.offset((y + *Crrtab.offset(cr as isize)) as isize);
             *outptr.offset(RGB_GREEN_4 as isize) = *range_limit.offset(
-                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as isize,
+                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as isize,
             );
             *outptr.offset(RGB_BLUE_4 as isize) =
                 *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize);
@@ -157,8 +158,8 @@ pub unsafe extern "C" fn ycc_extxbgr_convert_internal(
             *outptr.offset(RGB_RED_0 as isize) =
                 *range_limit.offset((y + *Crrtab.offset(cr as isize)) as isize);
             *outptr.offset(RGB_GREEN_0 as isize) = *range_limit.offset(
-                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as isize,
+                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as isize,
             );
             *outptr.offset(RGB_BLUE_0 as isize) =
                 *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize);
@@ -237,8 +238,8 @@ pub unsafe extern "C" fn ycc_rgb_convert_internal(
             *outptr.offset(RGB_RED_5 as isize) =
                 *range_limit.offset((y + *Crrtab.offset(cr as isize)) as isize);
             *outptr.offset(RGB_GREEN_5 as isize) = *range_limit.offset(
-                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as isize,
+                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as isize,
             );
             *outptr.offset(RGB_BLUE_5 as isize) =
                 *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize);
@@ -316,8 +317,8 @@ pub unsafe extern "C" fn ycc_extxrgb_convert_internal(
             *outptr.offset(RGB_RED as isize) =
                 *range_limit.offset((y + *Crrtab.offset(cr as isize)) as isize);
             *outptr.offset(RGB_GREEN as isize) = *range_limit.offset(
-                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as isize,
+                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as isize,
             );
             *outptr.offset(RGB_BLUE as isize) =
                 *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize);
@@ -396,8 +397,8 @@ pub unsafe extern "C" fn ycc_extbgr_convert_internal(
             *outptr.offset(RGB_RED_3 as isize) =
                 *range_limit.offset((y + *Crrtab.offset(cr as isize)) as isize);
             *outptr.offset(RGB_GREEN_3 as isize) = *range_limit.offset(
-                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as isize,
+                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as isize,
             );
             *outptr.offset(RGB_BLUE_3 as isize) =
                 *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize);
@@ -475,8 +476,8 @@ pub unsafe extern "C" fn ycc_extrgbx_convert_internal(
             *outptr.offset(RGB_RED_2 as isize) =
                 *range_limit.offset((y + *Crrtab.offset(cr as isize)) as isize);
             *outptr.offset(RGB_GREEN_2 as isize) = *range_limit.offset(
-                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as isize,
+                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as isize,
             );
             *outptr.offset(RGB_BLUE_2 as isize) =
                 *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize);
@@ -555,8 +556,8 @@ pub unsafe extern "C" fn ycc_extbgrx_convert_internal(
             *outptr.offset(RGB_RED_1 as isize) =
                 *range_limit.offset((y + *Crrtab.offset(cr as isize)) as isize);
             *outptr.offset(RGB_GREEN_1 as isize) = *range_limit.offset(
-                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as isize,
+                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as isize,
             );
             *outptr.offset(RGB_BLUE_1 as isize) =
                 *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize);

@@ -1,4 +1,4 @@
-use libc::c_ulong;use libc::c_int;use libc::c_uchar;use libc::c_void;pub use crate::jerror::C2RustUnnamed_3;
+pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -216,6 +216,10 @@ use crate::stdlib::memcpy;
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::_IO_FILE;
 use libc;
+use libc::c_int;
+use libc::c_uchar;
+use libc::c_ulong;
+use libc::c_void;
 pub type my_dest_ptr = *mut my_destination_mgr;
 /*
  * jdatadst.c
@@ -271,8 +275,7 @@ unsafe extern "C" fn init_destination(mut cinfo: j_compress_ptr) {
         .expect("non-null function pointer")(
         cinfo as j_common_ptr,
         JPOOL_IMAGE,
-        (OUTPUT_BUF_SIZE as c_ulong)
-            .wrapping_mul(::std::mem::size_of::<JOCTET>() as c_ulong),
+        (OUTPUT_BUF_SIZE as c_ulong).wrapping_mul(::std::mem::size_of::<JOCTET>() as c_ulong),
     ) as *mut JOCTET;
     (*dest).pub_0.next_output_byte = (*dest).buffer;
     (*dest).pub_0.free_in_buffer = OUTPUT_BUF_SIZE as size_t;
@@ -301,9 +304,7 @@ unsafe extern "C" fn init_mem_destination(mut cinfo: j_compress_ptr) {}
  * Data beyond this point will be regenerated after resumption, so do not
  * write it out when emptying the buffer externally.
  */
-unsafe extern "C" fn empty_output_buffer(
-    mut cinfo: j_compress_ptr,
-) -> boolean {
+unsafe extern "C" fn empty_output_buffer(mut cinfo: j_compress_ptr) -> boolean {
     let mut dest: my_dest_ptr = (*cinfo).dest as my_dest_ptr;
     if fwrite(
         (*dest).buffer as *const c_void,
@@ -321,9 +322,7 @@ unsafe extern "C" fn empty_output_buffer(
     (*dest).pub_0.free_in_buffer = OUTPUT_BUF_SIZE as size_t;
     return TRUE;
 }
-unsafe extern "C" fn empty_mem_output_buffer(
-    mut cinfo: j_compress_ptr,
-) -> boolean {
+unsafe extern "C" fn empty_mem_output_buffer(mut cinfo: j_compress_ptr) -> boolean {
     let mut nextsize: size_t = 0;
     let mut nextbuffer: *mut JOCTET = 0 as *mut JOCTET;
     let mut dest: my_mem_dest_ptr = (*cinfo).dest as my_mem_dest_ptr;
@@ -374,9 +373,7 @@ unsafe extern "C" fn term_destination(mut cinfo: j_compress_ptr) {
             (*(*cinfo).err).msg_code = JERR_FILE_WRITE as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
     }
     fflush((*dest).outfile);
@@ -400,10 +397,7 @@ unsafe extern "C" fn term_mem_destination(mut cinfo: j_compress_ptr) {
  * for closing it after finishing compression.
  */
 #[no_mangle]
-pub unsafe extern "C" fn jpeg_stdio_dest(
-    mut cinfo: j_compress_ptr,
-    mut outfile: *mut FILE,
-) {
+pub unsafe extern "C" fn jpeg_stdio_dest(mut cinfo: j_compress_ptr, mut outfile: *mut FILE) {
     let mut dest: my_dest_ptr = 0 as *mut my_destination_mgr;
     if (*cinfo).dest.is_null() {
         (*cinfo).dest = (*(*cinfo).mem)
@@ -424,12 +418,8 @@ pub unsafe extern "C" fn jpeg_stdio_dest(
     dest = (*cinfo).dest as my_dest_ptr;
     (*dest).pub_0.init_destination =
         Some(init_destination as unsafe extern "C" fn(_: j_compress_ptr) -> ());
-    (*dest).pub_0.empty_output_buffer = Some(
-        empty_output_buffer
-            as unsafe extern "C" fn(
-                _: j_compress_ptr,
-            ) -> boolean,
-    );
+    (*dest).pub_0.empty_output_buffer =
+        Some(empty_output_buffer as unsafe extern "C" fn(_: j_compress_ptr) -> boolean);
     (*dest).pub_0.term_destination =
         Some(term_destination as unsafe extern "C" fn(_: j_compress_ptr) -> ());
     (*dest).outfile = outfile;
@@ -470,9 +460,7 @@ pub unsafe extern "C" fn jpeg_mem_dest_internal(
             ::std::mem::size_of::<my_mem_destination_mgr>() as c_ulong,
         ) as *mut jpeg_destination_mgr
     } else if (*(*cinfo).dest).init_destination
-        != Some(
-            init_mem_destination as unsafe extern "C" fn(_: j_compress_ptr) -> (),
-        )
+        != Some(init_mem_destination as unsafe extern "C" fn(_: j_compress_ptr) -> ())
     {
         (*(*cinfo).err).msg_code = JERR_BUFFER_SIZE as c_int;
         (*(*cinfo).err)
@@ -480,18 +468,12 @@ pub unsafe extern "C" fn jpeg_mem_dest_internal(
             .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     dest = (*cinfo).dest as my_mem_dest_ptr;
-    (*dest).pub_0.init_destination = Some(
-        init_mem_destination as unsafe extern "C" fn(_: j_compress_ptr) -> (),
-    );
-    (*dest).pub_0.empty_output_buffer = Some(
-        empty_mem_output_buffer
-            as unsafe extern "C" fn(
-                _: j_compress_ptr,
-            ) -> boolean,
-    );
-    (*dest).pub_0.term_destination = Some(
-        term_mem_destination as unsafe extern "C" fn(_: j_compress_ptr) -> (),
-    );
+    (*dest).pub_0.init_destination =
+        Some(init_mem_destination as unsafe extern "C" fn(_: j_compress_ptr) -> ());
+    (*dest).pub_0.empty_output_buffer =
+        Some(empty_mem_output_buffer as unsafe extern "C" fn(_: j_compress_ptr) -> boolean);
+    (*dest).pub_0.term_destination =
+        Some(term_mem_destination as unsafe extern "C" fn(_: j_compress_ptr) -> ());
     (*dest).outbuffer = outbuffer;
     (*dest).outsize = outsize;
     (*dest).newbuffer = NULL as *mut c_uchar;
@@ -503,9 +485,7 @@ pub unsafe extern "C" fn jpeg_mem_dest_internal(
             (*(*cinfo).err).msg_parm.i[0usize] = 10i32;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         *outsize = OUTPUT_BUF_SIZE as c_ulong
     }

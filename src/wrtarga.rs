@@ -1,4 +1,4 @@
-use libc::c_char;use libc::c_uint;use libc::c_int;use libc::c_void;use libc::c_ulong;pub use crate::cderror_h::C2RustUnnamed_91;
+pub use crate::cderror_h::C2RustUnnamed_91;
 pub use crate::cderror_h::JERR_BAD_CMAP_FILE;
 pub use crate::cderror_h::JERR_BMP_BADCMAP;
 pub use crate::cderror_h::JERR_BMP_BADDEPTH;
@@ -263,6 +263,11 @@ use crate::stdlib::putc;
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::_IO_FILE;
 use libc;
+use libc::c_char;
+use libc::c_int;
+use libc::c_uint;
+use libc::c_ulong;
+use libc::c_void;
 pub type tga_dest_ptr = *mut tga_dest_struct;
 /*
  * wrtarga.c
@@ -316,9 +321,7 @@ unsafe extern "C" fn write_header(
     targaheader[14usize] = ((*cinfo).output_height & 0xffi32 as c_uint) as c_char;
     targaheader[15usize] = ((*cinfo).output_height >> 8i32) as c_char;
     targaheader[17usize] = 0x20i32 as c_char;
-    if (*cinfo).out_color_space as c_uint
-        == JCS_GRAYSCALE as c_int as c_uint
-    {
+    if (*cinfo).out_color_space as c_uint == JCS_GRAYSCALE as c_int as c_uint {
         targaheader[2usize] = 3i32 as c_char;
         targaheader[16usize] = 8i32 as c_char
     } else if num_colors > 0i32 {
@@ -421,8 +424,7 @@ unsafe extern "C" fn put_demapped_gray(
         outptr = outptr.offset(1);
         let fresh2 = inptr;
         inptr = inptr.offset(1);
-        *fresh3 =
-            *color_map0.offset(*fresh2 as c_int as isize) as c_int as c_char;
+        *fresh3 = *color_map0.offset(*fresh2 as c_int as isize) as c_int as c_char;
         col = col.wrapping_sub(1)
     }
     fwrite(
@@ -435,17 +437,12 @@ unsafe extern "C" fn put_demapped_gray(
 /*
  * Startup: write the file header.
  */
-unsafe extern "C" fn start_output_tga(
-    mut cinfo: j_decompress_ptr,
-    mut dinfo: djpeg_dest_ptr,
-) {
+unsafe extern "C" fn start_output_tga(mut cinfo: j_decompress_ptr, mut dinfo: djpeg_dest_ptr) {
     let mut dest: tga_dest_ptr = dinfo as tga_dest_ptr;
     let mut num_colors: c_int = 0;
     let mut i: c_int = 0;
     let mut outfile: *mut FILE = 0 as *mut FILE;
-    if (*cinfo).out_color_space as c_uint
-        == JCS_GRAYSCALE as c_int as c_uint
-    {
+    if (*cinfo).out_color_space as c_uint == JCS_GRAYSCALE as c_int as c_uint {
         write_header(cinfo, dinfo, 0i32);
         if 0 != (*cinfo).quantize_colors {
             (*dest).pub_0.put_pixel_rows = Some(
@@ -466,9 +463,7 @@ unsafe extern "C" fn start_output_tga(
                     ) -> (),
             )
         }
-    } else if (*cinfo).out_color_space as c_uint
-        == JCS_RGB as c_int as c_uint
-    {
+    } else if (*cinfo).out_color_space as c_uint == JCS_RGB as c_int as c_uint {
         if 0 != (*cinfo).quantize_colors {
             num_colors = (*cinfo).actual_number_of_colors;
             if num_colors > 256i32 {
@@ -476,9 +471,7 @@ unsafe extern "C" fn start_output_tga(
                 (*(*cinfo).err).msg_parm.i[0usize] = num_colors;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             write_header(cinfo, dinfo, num_colors);
             outfile = (*dest).pub_0.output_file;
@@ -527,10 +520,7 @@ unsafe extern "C" fn start_output_tga(
 /*
  * Finish up at the end of the file.
  */
-unsafe extern "C" fn finish_output_tga(
-    mut cinfo: j_decompress_ptr,
-    mut dinfo: djpeg_dest_ptr,
-) {
+unsafe extern "C" fn finish_output_tga(mut cinfo: j_decompress_ptr, mut dinfo: djpeg_dest_ptr) {
     fflush((*dinfo).output_file);
     if 0 != ferror((*dinfo).output_file) {
         (*(*cinfo).err).msg_code = JERR_FILE_WRITE as c_int;
@@ -555,9 +545,7 @@ unsafe extern "C" fn calc_buffer_dimensions_tga(
  * The module selection routine for Targa format output.
  */
 #[no_mangle]
-pub unsafe extern "C" fn jinit_write_targa(
-    mut cinfo: j_decompress_ptr,
-) -> djpeg_dest_ptr {
+pub unsafe extern "C" fn jinit_write_targa(mut cinfo: j_decompress_ptr) -> djpeg_dest_ptr {
     let mut dest: tga_dest_ptr = 0 as *mut tga_dest_struct;
     dest = (*(*cinfo).mem)
         .alloc_small
@@ -567,25 +555,14 @@ pub unsafe extern "C" fn jinit_write_targa(
         ::std::mem::size_of::<tga_dest_struct>() as c_ulong,
     ) as tga_dest_ptr;
     (*dest).pub_0.start_output = Some(
-        start_output_tga
-            as unsafe extern "C" fn(
-                _: j_decompress_ptr,
-                _: djpeg_dest_ptr,
-            ) -> (),
+        start_output_tga as unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> (),
     );
     (*dest).pub_0.finish_output = Some(
-        finish_output_tga
-            as unsafe extern "C" fn(
-                _: j_decompress_ptr,
-                _: djpeg_dest_ptr,
-            ) -> (),
+        finish_output_tga as unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> (),
     );
     (*dest).pub_0.calc_buffer_dimensions = Some(
         calc_buffer_dimensions_tga
-            as unsafe extern "C" fn(
-                _: j_decompress_ptr,
-                _: djpeg_dest_ptr,
-            ) -> (),
+            as unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> (),
     );
     jpeg_calc_output_dimensions(cinfo);
     (*dest)
@@ -597,8 +574,7 @@ pub unsafe extern "C" fn jinit_write_targa(
         .expect("non-null function pointer")(
         cinfo as j_common_ptr,
         JPOOL_IMAGE,
-        ((*dest).buffer_width as c_ulong)
-            .wrapping_mul(::std::mem::size_of::<c_char>() as c_ulong),
+        ((*dest).buffer_width as c_ulong).wrapping_mul(::std::mem::size_of::<c_char>() as c_ulong),
     ) as *mut c_char;
     (*dest).pub_0.buffer = (*(*cinfo).mem)
         .alloc_sarray

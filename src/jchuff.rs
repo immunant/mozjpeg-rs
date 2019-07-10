@@ -1,4 +1,11 @@
-use libc::c_double;use libc::c_char;use libc::c_int;use libc::c_uint;use libc::c_ulong;use libc::c_void;use libc::c_long;extern "C" {
+use libc::c_char;
+use libc::c_double;
+use libc::c_int;
+use libc::c_long;
+use libc::c_uint;
+use libc::c_ulong;
+use libc::c_void;
+extern "C" {
     #[no_mangle]
     pub fn quantize_trellis(
         cinfo: j_compress_ptr,
@@ -372,38 +379,26 @@ pub struct working_state {
  * If gather_statistics is TRUE, we do not output anything during the scan,
  * just count the Huffman symbols used and generate Huffman code tables.
  */
-unsafe extern "C" fn start_pass_huff(
-    mut cinfo: j_compress_ptr,
-    mut gather_statistics: boolean,
-) {
+unsafe extern "C" fn start_pass_huff(mut cinfo: j_compress_ptr, mut gather_statistics: boolean) {
     let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
     let mut ci: c_int = 0;
     let mut dctbl: c_int = 0;
     let mut actbl: c_int = 0;
-    let mut compptr: *mut jpeg_component_info =
-        0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
     if 0 != gather_statistics {
         (*entropy).pub_0.encode_mcu = Some(
             encode_mcu_gather
-                as unsafe extern "C" fn(
-                    _: j_compress_ptr,
-                    _: *mut JBLOCKROW,
-                ) -> boolean,
+                as unsafe extern "C" fn(_: j_compress_ptr, _: *mut JBLOCKROW) -> boolean,
         );
-        (*entropy).pub_0.finish_pass = Some(
-            finish_pass_gather as unsafe extern "C" fn(_: j_compress_ptr) -> (),
-        )
+        (*entropy).pub_0.finish_pass =
+            Some(finish_pass_gather as unsafe extern "C" fn(_: j_compress_ptr) -> ())
     } else {
         (*entropy).pub_0.encode_mcu = Some(
             encode_mcu_huff
-                as unsafe extern "C" fn(
-                    _: j_compress_ptr,
-                    _: *mut JBLOCKROW,
-                ) -> boolean,
+                as unsafe extern "C" fn(_: j_compress_ptr, _: *mut JBLOCKROW) -> boolean,
         );
-        (*entropy).pub_0.finish_pass = Some(
-            finish_pass_huff as unsafe extern "C" fn(_: j_compress_ptr) -> (),
-        )
+        (*entropy).pub_0.finish_pass =
+            Some(finish_pass_huff as unsafe extern "C" fn(_: j_compress_ptr) -> ())
     }
     (*entropy).simd = jsimd_can_huff_encode_one_block();
     ci = 0i32;
@@ -417,18 +412,14 @@ unsafe extern "C" fn start_pass_huff(
                 (*(*cinfo).err).msg_parm.i[0usize] = dctbl;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             if actbl < 0i32 || actbl >= NUM_HUFF_TBLS {
                 (*(*cinfo).err).msg_code = JERR_NO_HUFF_TABLE as c_int;
                 (*(*cinfo).err).msg_parm.i[0usize] = actbl;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             if (*entropy).dc_count_ptrs[dctbl as usize].is_null() {
                 (*entropy).dc_count_ptrs[dctbl as usize] = (*(*cinfo).mem)
@@ -436,15 +427,13 @@ unsafe extern "C" fn start_pass_huff(
                     .expect("non-null function pointer")(
                     cinfo as j_common_ptr,
                     JPOOL_IMAGE,
-                    (257i32 as c_ulong)
-                        .wrapping_mul(::std::mem::size_of::<c_long>() as c_ulong),
+                    (257i32 as c_ulong).wrapping_mul(::std::mem::size_of::<c_long>() as c_ulong),
                 ) as *mut c_long
             }
             memset(
                 (*entropy).dc_count_ptrs[dctbl as usize] as *mut c_void,
                 0i32,
-                (257i32 as c_ulong)
-                    .wrapping_mul(::std::mem::size_of::<c_long>() as c_ulong),
+                (257i32 as c_ulong).wrapping_mul(::std::mem::size_of::<c_long>() as c_ulong),
             );
             if (*entropy).ac_count_ptrs[actbl as usize].is_null() {
                 (*entropy).ac_count_ptrs[actbl as usize] = (*(*cinfo).mem)
@@ -452,15 +441,13 @@ unsafe extern "C" fn start_pass_huff(
                     .expect("non-null function pointer")(
                     cinfo as j_common_ptr,
                     JPOOL_IMAGE,
-                    (257i32 as c_ulong)
-                        .wrapping_mul(::std::mem::size_of::<c_long>() as c_ulong),
+                    (257i32 as c_ulong).wrapping_mul(::std::mem::size_of::<c_long>() as c_ulong),
                 ) as *mut c_long
             }
             memset(
                 (*entropy).ac_count_ptrs[actbl as usize] as *mut c_void,
                 0i32,
-                (257i32 as c_ulong)
-                    .wrapping_mul(::std::mem::size_of::<c_long>() as c_ulong),
+                (257i32 as c_ulong).wrapping_mul(::std::mem::size_of::<c_long>() as c_ulong),
             );
         } else {
             jpeg_make_c_derived_tbl(
@@ -553,9 +540,7 @@ pub unsafe extern "C" fn jpeg_make_c_derived_tbl(
             (*(*cinfo).err).msg_code = JERR_BAD_HUFF_TABLE as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         loop {
             let fresh0 = i;
@@ -585,9 +570,7 @@ pub unsafe extern "C" fn jpeg_make_c_derived_tbl(
             (*(*cinfo).err).msg_code = JERR_BAD_HUFF_TABLE as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         code <<= 1i32;
         si += 1
@@ -605,9 +588,7 @@ pub unsafe extern "C" fn jpeg_make_c_derived_tbl(
             (*(*cinfo).err).msg_code = JERR_BAD_HUFF_TABLE as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         (*dtbl).ehufco[i as usize] = huffcode[p as usize];
         (*dtbl).ehufsi[i as usize] = huffsize[p as usize];
@@ -685,8 +666,7 @@ unsafe extern "C" fn flush_bits(mut state: *mut working_state) -> boolean {
     (*state).cur.put_buffer = 0i32 as size_t;
     (*state).cur.put_bits = 0i32;
     if 0 != localbuf {
-        bytes = buffer.wrapping_offset_from(_buffer.as_mut_ptr()) as c_long
-            as size_t;
+        bytes = buffer.wrapping_offset_from(_buffer.as_mut_ptr()) as c_long as size_t;
         buffer = _buffer.as_mut_ptr();
         while bytes > 0i32 as c_ulong {
             bytestocopy = if bytes < (*state).free_in_buffer {
@@ -702,15 +682,13 @@ unsafe extern "C" fn flush_bits(mut state: *mut working_state) -> boolean {
             (*state).next_output_byte = (*state).next_output_byte.offset(bytestocopy as isize);
             buffer = buffer.offset(bytestocopy as isize);
             (*state).free_in_buffer =
-                ((*state).free_in_buffer as c_ulong).wrapping_sub(bytestocopy)
-                    as size_t as size_t;
+                ((*state).free_in_buffer as c_ulong).wrapping_sub(bytestocopy) as size_t as size_t;
             if (*state).free_in_buffer == 0i32 as c_ulong {
                 if 0 == dump_buffer(state) {
                     return FALSE;
                 }
             }
-            bytes = (bytes as c_ulong).wrapping_sub(bytestocopy) as size_t
-                as size_t
+            bytes = (bytes as c_ulong).wrapping_sub(bytestocopy) as size_t as size_t
         }
     } else {
         (*state).free_in_buffer = ((*state).free_in_buffer as c_ulong).wrapping_sub(
@@ -748,8 +726,7 @@ unsafe extern "C" fn encode_one_block_simd(
         actbl,
     );
     if 0 != localbuf {
-        bytes = buffer.wrapping_offset_from(_buffer.as_mut_ptr()) as c_long
-            as size_t;
+        bytes = buffer.wrapping_offset_from(_buffer.as_mut_ptr()) as c_long as size_t;
         buffer = _buffer.as_mut_ptr();
         while bytes > 0i32 as c_ulong {
             bytestocopy = if bytes < (*state).free_in_buffer {
@@ -765,15 +742,13 @@ unsafe extern "C" fn encode_one_block_simd(
             (*state).next_output_byte = (*state).next_output_byte.offset(bytestocopy as isize);
             buffer = buffer.offset(bytestocopy as isize);
             (*state).free_in_buffer =
-                ((*state).free_in_buffer as c_ulong).wrapping_sub(bytestocopy)
-                    as size_t as size_t;
+                ((*state).free_in_buffer as c_ulong).wrapping_sub(bytestocopy) as size_t as size_t;
             if (*state).free_in_buffer == 0i32 as c_ulong {
                 if 0 == dump_buffer(state) {
                     return FALSE;
                 }
             }
-            bytes = (bytes as c_ulong).wrapping_sub(bytestocopy) as size_t
-                as size_t
+            bytes = (bytes as c_ulong).wrapping_sub(bytestocopy) as size_t as size_t
         }
     } else {
         (*state).free_in_buffer = ((*state).free_in_buffer as c_ulong).wrapping_sub(
@@ -896,9 +871,7 @@ unsafe extern "C" fn encode_one_block(
     }
     put_bits += size;
     put_buffer = put_buffer << size | code as c_ulong;
-    temp2 = (temp2 as c_long
-        & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-        as c_int;
+    temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
     if put_bits > 47i32 {
         let mut c_5: JOCTET = 0;
         put_bits -= 8i32;
@@ -1059,9 +1032,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_17: JOCTET = 0;
             put_bits -= 8i32;
@@ -1203,9 +1174,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_27: JOCTET = 0;
             put_bits -= 8i32;
@@ -1347,9 +1316,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_37: JOCTET = 0;
             put_bits -= 8i32;
@@ -1491,9 +1458,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_47: JOCTET = 0;
             put_bits -= 8i32;
@@ -1635,9 +1600,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_57: JOCTET = 0;
             put_bits -= 8i32;
@@ -1779,9 +1742,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_67: JOCTET = 0;
             put_bits -= 8i32;
@@ -1923,9 +1884,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_77: JOCTET = 0;
             put_bits -= 8i32;
@@ -2067,9 +2026,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_87: JOCTET = 0;
             put_bits -= 8i32;
@@ -2211,9 +2168,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_97: JOCTET = 0;
             put_bits -= 8i32;
@@ -2355,9 +2310,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_107: JOCTET = 0;
             put_bits -= 8i32;
@@ -2499,9 +2452,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_117: JOCTET = 0;
             put_bits -= 8i32;
@@ -2643,9 +2594,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_127: JOCTET = 0;
             put_bits -= 8i32;
@@ -2787,9 +2736,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_137: JOCTET = 0;
             put_bits -= 8i32;
@@ -2931,9 +2878,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_147: JOCTET = 0;
             put_bits -= 8i32;
@@ -3075,9 +3020,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_157: JOCTET = 0;
             put_bits -= 8i32;
@@ -3219,9 +3162,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_167: JOCTET = 0;
             put_bits -= 8i32;
@@ -3363,9 +3304,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_177: JOCTET = 0;
             put_bits -= 8i32;
@@ -3507,9 +3446,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_187: JOCTET = 0;
             put_bits -= 8i32;
@@ -3651,9 +3588,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_197: JOCTET = 0;
             put_bits -= 8i32;
@@ -3795,9 +3730,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_207: JOCTET = 0;
             put_bits -= 8i32;
@@ -3939,9 +3872,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_217: JOCTET = 0;
             put_bits -= 8i32;
@@ -4083,9 +4014,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_227: JOCTET = 0;
             put_bits -= 8i32;
@@ -4227,9 +4156,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_237: JOCTET = 0;
             put_bits -= 8i32;
@@ -4371,9 +4298,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_247: JOCTET = 0;
             put_bits -= 8i32;
@@ -4515,9 +4440,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_257: JOCTET = 0;
             put_bits -= 8i32;
@@ -4659,9 +4582,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_267: JOCTET = 0;
             put_bits -= 8i32;
@@ -4803,9 +4724,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_277: JOCTET = 0;
             put_bits -= 8i32;
@@ -4947,9 +4866,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_287: JOCTET = 0;
             put_bits -= 8i32;
@@ -5091,9 +5008,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_297: JOCTET = 0;
             put_bits -= 8i32;
@@ -5235,9 +5150,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_307: JOCTET = 0;
             put_bits -= 8i32;
@@ -5379,9 +5292,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_317: JOCTET = 0;
             put_bits -= 8i32;
@@ -5523,9 +5434,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_327: JOCTET = 0;
             put_bits -= 8i32;
@@ -5667,9 +5576,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_337: JOCTET = 0;
             put_bits -= 8i32;
@@ -5811,9 +5718,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_347: JOCTET = 0;
             put_bits -= 8i32;
@@ -5955,9 +5860,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_357: JOCTET = 0;
             put_bits -= 8i32;
@@ -6099,9 +6002,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_367: JOCTET = 0;
             put_bits -= 8i32;
@@ -6243,9 +6144,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_377: JOCTET = 0;
             put_bits -= 8i32;
@@ -6387,9 +6286,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_387: JOCTET = 0;
             put_bits -= 8i32;
@@ -6531,9 +6428,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_397: JOCTET = 0;
             put_bits -= 8i32;
@@ -6675,9 +6570,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_407: JOCTET = 0;
             put_bits -= 8i32;
@@ -6819,9 +6712,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_417: JOCTET = 0;
             put_bits -= 8i32;
@@ -6963,9 +6854,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_427: JOCTET = 0;
             put_bits -= 8i32;
@@ -7107,9 +6996,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_437: JOCTET = 0;
             put_bits -= 8i32;
@@ -7251,9 +7138,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_447: JOCTET = 0;
             put_bits -= 8i32;
@@ -7395,9 +7280,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_457: JOCTET = 0;
             put_bits -= 8i32;
@@ -7539,9 +7422,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_467: JOCTET = 0;
             put_bits -= 8i32;
@@ -7683,9 +7564,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_477: JOCTET = 0;
             put_bits -= 8i32;
@@ -7827,9 +7706,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_487: JOCTET = 0;
             put_bits -= 8i32;
@@ -7971,9 +7848,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_497: JOCTET = 0;
             put_bits -= 8i32;
@@ -8115,9 +7990,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_507: JOCTET = 0;
             put_bits -= 8i32;
@@ -8259,9 +8132,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_517: JOCTET = 0;
             put_bits -= 8i32;
@@ -8403,9 +8274,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_527: JOCTET = 0;
             put_bits -= 8i32;
@@ -8547,9 +8416,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_537: JOCTET = 0;
             put_bits -= 8i32;
@@ -8691,9 +8558,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_547: JOCTET = 0;
             put_bits -= 8i32;
@@ -8835,9 +8700,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_557: JOCTET = 0;
             put_bits -= 8i32;
@@ -8979,9 +8842,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_567: JOCTET = 0;
             put_bits -= 8i32;
@@ -9123,9 +8984,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_577: JOCTET = 0;
             put_bits -= 8i32;
@@ -9267,9 +9126,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_587: JOCTET = 0;
             put_bits -= 8i32;
@@ -9411,9 +9268,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_597: JOCTET = 0;
             put_bits -= 8i32;
@@ -9555,9 +9410,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_607: JOCTET = 0;
             put_bits -= 8i32;
@@ -9699,9 +9552,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_617: JOCTET = 0;
             put_bits -= 8i32;
@@ -9843,9 +9694,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_627: JOCTET = 0;
             put_bits -= 8i32;
@@ -9987,9 +9836,7 @@ unsafe extern "C" fn encode_one_block(
         temp3 = (r << 4i32) + nbits;
         code = (*actbl).ehufco[temp3 as usize] as c_int;
         size = (*actbl).ehufsi[temp3 as usize] as c_int;
-        temp2 = (temp2 as c_long
-            & ((1i32 as JLONG) << nbits) - 1i32 as c_long)
-            as c_int;
+        temp2 = (temp2 as c_long & ((1i32 as JLONG) << nbits) - 1i32 as c_long) as c_int;
         if put_bits > 31i32 {
             let mut c_637: JOCTET = 0;
             put_bits -= 8i32;
@@ -10119,8 +9966,7 @@ unsafe extern "C" fn encode_one_block(
     (*state).cur.put_buffer = put_buffer;
     (*state).cur.put_bits = put_bits;
     if 0 != localbuf {
-        bytes = buffer.wrapping_offset_from(_buffer.as_mut_ptr()) as c_long
-            as size_t;
+        bytes = buffer.wrapping_offset_from(_buffer.as_mut_ptr()) as c_long as size_t;
         buffer = _buffer.as_mut_ptr();
         while bytes > 0i32 as c_ulong {
             bytestocopy = if bytes < (*state).free_in_buffer {
@@ -10136,15 +9982,13 @@ unsafe extern "C" fn encode_one_block(
             (*state).next_output_byte = (*state).next_output_byte.offset(bytestocopy as isize);
             buffer = buffer.offset(bytestocopy as isize);
             (*state).free_in_buffer =
-                ((*state).free_in_buffer as c_ulong).wrapping_sub(bytestocopy)
-                    as size_t as size_t;
+                ((*state).free_in_buffer as c_ulong).wrapping_sub(bytestocopy) as size_t as size_t;
             if (*state).free_in_buffer == 0i32 as c_ulong {
                 if 0 == dump_buffer(state) {
                     return FALSE;
                 }
             }
-            bytes = (bytes as c_ulong).wrapping_sub(bytestocopy) as size_t
-                as size_t
+            bytes = (bytes as c_ulong).wrapping_sub(bytestocopy) as size_t as size_t
         }
     } else {
         (*state).free_in_buffer = ((*state).free_in_buffer as c_ulong).wrapping_sub(
@@ -10212,8 +10056,7 @@ unsafe extern "C" fn encode_mcu_huff(
     };
     let mut blkn: c_int = 0;
     let mut ci: c_int = 0;
-    let mut compptr: *mut jpeg_component_info =
-        0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
     state.next_output_byte = (*(*cinfo).dest).next_output_byte;
     state.free_in_buffer = (*(*cinfo).dest).free_in_buffer;
     state.cur = (*entropy).saved;
@@ -10347,11 +10190,7 @@ unsafe extern "C" fn htest_one_block(
     r = 0i32;
     k = 1i32;
     while k < DCTSIZE2 {
-        temp = *block.offset(
-            *jpeg_natural_order
-                .as_ptr()
-                .offset(k as isize) as isize,
-        ) as c_int;
+        temp = *block.offset(*jpeg_natural_order.as_ptr().offset(k as isize) as isize) as c_int;
         if temp == 0i32 {
             r += 1
         } else {
@@ -10375,9 +10214,7 @@ unsafe extern "C" fn htest_one_block(
                 (*(*cinfo).err).msg_code = JERR_BAD_DCT_COEF as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             let ref mut fresh1305 = *ac_counts.offset(((r << 4i32) + nbits) as isize);
             *fresh1305 += 1;
@@ -10401,8 +10238,7 @@ unsafe extern "C" fn encode_mcu_gather(
     let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
     let mut blkn: c_int = 0;
     let mut ci: c_int = 0;
-    let mut compptr: *mut jpeg_component_info =
-        0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
     if 0 != (*cinfo).restart_interval {
         if (*entropy).restarts_to_go == 0i32 as c_uint {
             ci = 0i32;
@@ -10541,9 +10377,7 @@ pub unsafe extern "C" fn jpeg_gen_optimal_table(
                 (*(*cinfo).err).msg_code = JERR_HUFF_CLEN_OVERFLOW as c_int;
                 (*(*cinfo).err)
                     .error_exit
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                    .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             bits[codesize[i as usize] as usize] =
                 bits[codesize[i as usize] as usize].wrapping_add(1)
@@ -10559,8 +10393,7 @@ pub unsafe extern "C" fn jpeg_gen_optimal_table(
             }
             bits[i as usize] = (bits[i as usize] as c_int - 2i32) as UINT8;
             bits[(i - 1i32) as usize] = bits[(i - 1i32) as usize].wrapping_add(1);
-            bits[(j + 1i32) as usize] =
-                (bits[(j + 1i32) as usize] as c_int + 2i32) as UINT8;
+            bits[(j + 1i32) as usize] = (bits[(j + 1i32) as usize] as c_int + 2i32) as UINT8;
             bits[j as usize] = bits[j as usize].wrapping_sub(1)
         }
         i -= 1
@@ -10599,10 +10432,8 @@ unsafe extern "C" fn finish_pass_gather(mut cinfo: j_compress_ptr) {
     let mut ci: c_int = 0;
     let mut dctbl: c_int = 0;
     let mut actbl: c_int = 0;
-    let mut compptr: *mut jpeg_component_info =
-        0 as *mut jpeg_component_info;
-    let mut htblptr: *mut *mut JHUFF_TBL =
-        0 as *mut *mut JHUFF_TBL;
+    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
+    let mut htblptr: *mut *mut JHUFF_TBL = 0 as *mut *mut JHUFF_TBL;
     let mut did_dc: [boolean; 4] = [0; 4];
     let mut did_ac: [boolean; 4] = [0; 4];
     memset(
@@ -10624,11 +10455,9 @@ unsafe extern "C" fn finish_pass_gather(mut cinfo: j_compress_ptr) {
             htblptr = &mut *(*cinfo)
                 .dc_huff_tbl_ptrs
                 .as_mut_ptr()
-                .offset(dctbl as isize)
-                as *mut *mut JHUFF_TBL;
+                .offset(dctbl as isize) as *mut *mut JHUFF_TBL;
             if (*htblptr).is_null() {
-                *htblptr =
-                    jpeg_alloc_huff_table(cinfo as j_common_ptr)
+                *htblptr = jpeg_alloc_huff_table(cinfo as j_common_ptr)
             }
             jpeg_gen_optimal_table(cinfo, *htblptr, (*entropy).dc_count_ptrs[dctbl as usize]);
             did_dc[dctbl as usize] = TRUE
@@ -10637,11 +10466,9 @@ unsafe extern "C" fn finish_pass_gather(mut cinfo: j_compress_ptr) {
             htblptr = &mut *(*cinfo)
                 .ac_huff_tbl_ptrs
                 .as_mut_ptr()
-                .offset(actbl as isize)
-                as *mut *mut JHUFF_TBL;
+                .offset(actbl as isize) as *mut *mut JHUFF_TBL;
             if (*htblptr).is_null() {
-                *htblptr =
-                    jpeg_alloc_huff_table(cinfo as j_common_ptr)
+                *htblptr = jpeg_alloc_huff_table(cinfo as j_common_ptr)
             }
             jpeg_gen_optimal_table(cinfo, *htblptr, (*entropy).ac_count_ptrs[actbl as usize]);
             did_ac[actbl as usize] = TRUE
@@ -10666,17 +10493,11 @@ pub unsafe extern "C" fn jinit_huff_encoder(mut cinfo: j_compress_ptr) {
         ::std::mem::size_of::<huff_entropy_encoder>() as c_ulong,
     ) as huff_entropy_ptr;
     (*cinfo).entropy = entropy as *mut jpeg_entropy_encoder;
-    (*entropy).pub_0.start_pass = Some(
-        start_pass_huff
-            as unsafe extern "C" fn(
-                _: j_compress_ptr,
-                _: boolean,
-            ) -> (),
-    );
+    (*entropy).pub_0.start_pass =
+        Some(start_pass_huff as unsafe extern "C" fn(_: j_compress_ptr, _: boolean) -> ());
     i = 0i32;
     while i < NUM_HUFF_TBLS {
-        (*entropy).ac_derived_tbls[i as usize] =
-            NULL as *mut c_derived_tbl;
+        (*entropy).ac_derived_tbls[i as usize] = NULL as *mut c_derived_tbl;
         (*entropy).dc_derived_tbls[i as usize] = (*entropy).ac_derived_tbls[i as usize];
         (*entropy).ac_count_ptrs[i as usize] = NULL as *mut c_long;
         (*entropy).dc_count_ptrs[i as usize] = (*entropy).ac_count_ptrs[i as usize];

@@ -1,4 +1,4 @@
-use libc::c_ulong;use libc::c_long;use libc::c_int;use libc::c_uint;pub use crate::jerror::C2RustUnnamed_3;
+pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -208,6 +208,10 @@ use crate::jsimd::jsimd_h2v1_downsample;
 use crate::jsimd::jsimd_h2v2_downsample;
 pub use crate::stddef_h::size_t;
 use libc;
+use libc::c_int;
+use libc::c_long;
+use libc::c_uint;
+use libc::c_ulong;
 /*
  * jcsample.c
  *
@@ -326,17 +330,15 @@ unsafe extern "C" fn sep_downsample(
 ) {
     let mut downsample: my_downsample_ptr = (*cinfo).downsample as my_downsample_ptr;
     let mut ci: c_int = 0;
-    let mut compptr: *mut jpeg_component_info =
-        0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
     let mut in_ptr: JSAMPARRAY = 0 as *mut JSAMPROW;
     let mut out_ptr: JSAMPARRAY = 0 as *mut JSAMPROW;
     ci = 0i32;
     compptr = (*cinfo).comp_info;
     while ci < (*cinfo).num_components {
         in_ptr = (*input_buf.offset(ci as isize)).offset(in_row_index as isize);
-        out_ptr = (*output_buf.offset(ci as isize)).offset(
-            out_row_group_index.wrapping_mul((*compptr).v_samp_factor as c_uint) as isize,
-        );
+        out_ptr = (*output_buf.offset(ci as isize))
+            .offset(out_row_group_index.wrapping_mul((*compptr).v_samp_factor as c_uint) as isize);
         (*downsample).methods[ci as usize].expect("non-null function pointer")(
             cinfo, compptr, in_ptr, out_ptr,
         );
@@ -367,9 +369,7 @@ unsafe extern "C" fn int_downsample(
     /* outcol_h == outcol*h_expand */
     let mut outcol: JDIMENSION = 0;
     let mut outcol_h: JDIMENSION = 0;
-    let mut output_cols: JDIMENSION = (*compptr)
-        .width_in_blocks
-        .wrapping_mul(DCTSIZE as c_uint);
+    let mut output_cols: JDIMENSION = (*compptr).width_in_blocks.wrapping_mul(DCTSIZE as c_uint);
     let mut inptr: JSAMPROW = 0 as *mut JSAMPLE;
     let mut outptr: JSAMPROW = 0 as *mut JSAMPLE;
     let mut outvalue: JLONG = 0;
@@ -405,12 +405,10 @@ unsafe extern "C" fn int_downsample(
             }
             let fresh2 = outptr;
             outptr = outptr.offset(1);
-            *fresh2 = ((outvalue + numpix2 as c_long) / numpix as c_long)
-                as JSAMPLE;
+            *fresh2 = ((outvalue + numpix2 as c_long) / numpix as c_long) as JSAMPLE;
             outcol = outcol.wrapping_add(1);
-            outcol_h = (outcol_h as c_uint).wrapping_add(h_expand as c_uint)
-                as JDIMENSION
-                as JDIMENSION
+            outcol_h =
+                (outcol_h as c_uint).wrapping_add(h_expand as c_uint) as JDIMENSION as JDIMENSION
         }
         inrow += v_expand;
         outrow += 1
@@ -439,9 +437,7 @@ unsafe extern "C" fn fullsize_downsample(
         output_data,
         (*cinfo).max_v_samp_factor,
         (*cinfo).image_width,
-        (*compptr)
-            .width_in_blocks
-            .wrapping_mul(DCTSIZE as c_uint),
+        (*compptr).width_in_blocks.wrapping_mul(DCTSIZE as c_uint),
     );
 }
 /*
@@ -463,9 +459,7 @@ unsafe extern "C" fn h2v1_downsample(
 ) {
     let mut outrow: c_int = 0;
     let mut outcol: JDIMENSION = 0;
-    let mut output_cols: JDIMENSION = (*compptr)
-        .width_in_blocks
-        .wrapping_mul(DCTSIZE as c_uint);
+    let mut output_cols: JDIMENSION = (*compptr).width_in_blocks.wrapping_mul(DCTSIZE as c_uint);
     let mut inptr: JSAMPROW = 0 as *mut JSAMPLE;
     let mut outptr: JSAMPROW = 0 as *mut JSAMPLE;
     let mut bias: c_int = 0;
@@ -484,8 +478,7 @@ unsafe extern "C" fn h2v1_downsample(
         while outcol < output_cols {
             let fresh3 = outptr;
             outptr = outptr.offset(1);
-            *fresh3 = (*inptr as c_int + *inptr.offset(1isize) as c_int + bias >> 1i32)
-                as JSAMPLE;
+            *fresh3 = (*inptr as c_int + *inptr.offset(1isize) as c_int + bias >> 1i32) as JSAMPLE;
             bias ^= 1i32;
             inptr = inptr.offset(2isize);
             outcol = outcol.wrapping_add(1)
@@ -507,9 +500,7 @@ unsafe extern "C" fn h2v2_downsample(
     let mut inrow: c_int = 0;
     let mut outrow: c_int = 0;
     let mut outcol: JDIMENSION = 0;
-    let mut output_cols: JDIMENSION = (*compptr)
-        .width_in_blocks
-        .wrapping_mul(DCTSIZE as c_uint);
+    let mut output_cols: JDIMENSION = (*compptr).width_in_blocks.wrapping_mul(DCTSIZE as c_uint);
     let mut inptr0: JSAMPROW = 0 as *mut JSAMPLE;
     let mut inptr1: JSAMPROW = 0 as *mut JSAMPLE;
     let mut outptr: JSAMPROW = 0 as *mut JSAMPLE;
@@ -560,9 +551,7 @@ unsafe extern "C" fn h2v2_smooth_downsample(
     let mut inrow: c_int = 0;
     let mut outrow: c_int = 0;
     let mut colctr: JDIMENSION = 0;
-    let mut output_cols: JDIMENSION = (*compptr)
-        .width_in_blocks
-        .wrapping_mul(DCTSIZE as c_uint);
+    let mut output_cols: JDIMENSION = (*compptr).width_in_blocks.wrapping_mul(DCTSIZE as c_uint);
     let mut inptr0: JSAMPROW = 0 as *mut JSAMPLE;
     let mut inptr1: JSAMPROW = 0 as *mut JSAMPLE;
     let mut above_ptr: JSAMPROW = 0 as *mut JSAMPLE;
@@ -618,8 +607,7 @@ unsafe extern "C" fn h2v2_smooth_downsample(
             membersum = (*inptr0 as c_int
                 + *inptr0.offset(1isize) as c_int
                 + *inptr1 as c_int
-                + *inptr1.offset(1isize) as c_int)
-                as JLONG;
+                + *inptr1.offset(1isize) as c_int) as JLONG;
             neighsum = (*above_ptr as c_int
                 + *above_ptr.offset(1isize) as c_int
                 + *below_ptr as c_int
@@ -627,8 +615,7 @@ unsafe extern "C" fn h2v2_smooth_downsample(
                 + *inptr0.offset(-1i32 as isize) as c_int
                 + *inptr0.offset(2isize) as c_int
                 + *inptr1.offset(-1i32 as isize) as c_int
-                + *inptr1.offset(2isize) as c_int)
-                as JLONG;
+                + *inptr1.offset(2isize) as c_int) as JLONG;
             neighsum += neighsum;
             neighsum += (*above_ptr.offset(-1i32 as isize) as c_int
                 + *above_ptr.offset(2isize) as c_int
@@ -680,9 +667,7 @@ unsafe extern "C" fn fullsize_smooth_downsample(
 ) {
     let mut outrow: c_int = 0;
     let mut colctr: JDIMENSION = 0;
-    let mut output_cols: JDIMENSION = (*compptr)
-        .width_in_blocks
-        .wrapping_mul(DCTSIZE as c_uint);
+    let mut output_cols: JDIMENSION = (*compptr).width_in_blocks.wrapping_mul(DCTSIZE as c_uint);
     let mut inptr: JSAMPROW = 0 as *mut JSAMPLE;
     let mut above_ptr: JSAMPROW = 0 as *mut JSAMPLE;
     let mut below_ptr: JSAMPROW = 0 as *mut JSAMPLE;
@@ -717,9 +702,7 @@ unsafe extern "C" fn fullsize_smooth_downsample(
         inptr = inptr.offset(1);
         membersum = *fresh9 as c_int as JLONG;
         nextcolsum = *above_ptr as c_int + *below_ptr as c_int + *inptr as c_int;
-        neighsum = colsum as c_long
-            + (colsum as c_long - membersum)
-            + nextcolsum as c_long;
+        neighsum = colsum as c_long + (colsum as c_long - membersum) + nextcolsum as c_long;
         membersum = membersum * memberscale + neighsum * neighscale;
         let fresh10 = outptr;
         outptr = outptr.offset(1);
@@ -733,24 +716,18 @@ unsafe extern "C" fn fullsize_smooth_downsample(
             membersum = *fresh11 as c_int as JLONG;
             above_ptr = above_ptr.offset(1isize);
             below_ptr = below_ptr.offset(1isize);
-            nextcolsum =
-                *above_ptr as c_int + *below_ptr as c_int + *inptr as c_int;
-            neighsum = lastcolsum as c_long
-                + (colsum as c_long - membersum)
-                + nextcolsum as c_long;
+            nextcolsum = *above_ptr as c_int + *below_ptr as c_int + *inptr as c_int;
+            neighsum = lastcolsum as c_long + (colsum as c_long - membersum) + nextcolsum as c_long;
             membersum = membersum * memberscale + neighsum * neighscale;
             let fresh12 = outptr;
             outptr = outptr.offset(1);
-            *fresh12 =
-                (membersum + 32768i32 as c_long >> 16i32) as JSAMPLE;
+            *fresh12 = (membersum + 32768i32 as c_long >> 16i32) as JSAMPLE;
             lastcolsum = colsum;
             colsum = nextcolsum;
             colctr = colctr.wrapping_sub(1)
         }
         membersum = *inptr as c_int as JLONG;
-        neighsum = lastcolsum as c_long
-            + (colsum as c_long - membersum)
-            + colsum as c_long;
+        neighsum = lastcolsum as c_long + (colsum as c_long - membersum) + colsum as c_long;
         membersum = membersum * memberscale + neighsum * neighscale;
         *outptr = (membersum + 32768i32 as c_long >> 16i32) as JSAMPLE;
         outrow += 1
@@ -765,8 +742,7 @@ unsafe extern "C" fn fullsize_smooth_downsample(
 pub unsafe extern "C" fn jinit_downsampler(mut cinfo: j_compress_ptr) {
     let mut downsample: my_downsample_ptr = 0 as *mut my_downsampler;
     let mut ci: c_int = 0;
-    let mut compptr: *mut jpeg_component_info =
-        0 as *mut jpeg_component_info;
+    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
     let mut smoothok: boolean = TRUE;
     downsample = (*(*cinfo).mem)
         .alloc_small
@@ -776,9 +752,8 @@ pub unsafe extern "C" fn jinit_downsampler(mut cinfo: j_compress_ptr) {
         ::std::mem::size_of::<my_downsampler>() as c_ulong,
     ) as my_downsample_ptr;
     (*cinfo).downsample = downsample as *mut jpeg_downsampler;
-    (*downsample).pub_0.start_pass = Some(
-        start_pass_downsample as unsafe extern "C" fn(_: j_compress_ptr) -> (),
-    );
+    (*downsample).pub_0.start_pass =
+        Some(start_pass_downsample as unsafe extern "C" fn(_: j_compress_ptr) -> ());
     (*downsample).pub_0.downsample = Some(
         sep_downsample
             as unsafe extern "C" fn(
@@ -901,9 +876,7 @@ pub unsafe extern "C" fn jinit_downsampler(mut cinfo: j_compress_ptr) {
             (*(*cinfo).err).msg_code = JERR_FRACT_SAMPLE_NOTIMPL as c_int;
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         ci += 1;
         compptr = compptr.offset(1isize)
@@ -912,8 +885,6 @@ pub unsafe extern "C" fn jinit_downsampler(mut cinfo: j_compress_ptr) {
         (*(*cinfo).err).msg_code = JTRC_SMOOTH_NOTIMPL as c_int;
         (*(*cinfo).err)
             .emit_message
-            .expect("non-null function pointer")(
-            cinfo as j_common_ptr, 0i32
-        );
+            .expect("non-null function pointer")(cinfo as j_common_ptr, 0i32);
     };
 }

@@ -1,4 +1,4 @@
-use libc::c_char;pub use crate::cdjpeg::cjpeg_source_ptr;
+pub use crate::cdjpeg::cjpeg_source_ptr;
 pub use crate::cdjpeg::cjpeg_source_struct;
 pub use crate::jmorecfg_h::boolean;
 pub use crate::jmorecfg_h::JCOEF;
@@ -77,6 +77,7 @@ pub use crate::stdlib::EXIT_FAILURE;
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::_IO_FILE;
 use libc;
+use libc::c_char;
 /*
  * rdgif.c
  *
@@ -102,13 +103,10 @@ use libc;
  * The module selection routine for GIF format input.
  */
 #[no_mangle]
-pub unsafe extern "C" fn jinit_read_gif(
-    mut cinfo: j_compress_ptr,
-) -> cjpeg_source_ptr {
+pub unsafe extern "C" fn jinit_read_gif(mut cinfo: j_compress_ptr) -> cjpeg_source_ptr {
     fprintf(
         stderr,
-        b"GIF input is unsupported for legal reasons.  Sorry.\n\x00" as *const u8
-            as *const c_char,
+        b"GIF input is unsupported for legal reasons.  Sorry.\n\x00" as *const u8 as *const c_char,
     );
     exit(EXIT_FAILURE);
 }
