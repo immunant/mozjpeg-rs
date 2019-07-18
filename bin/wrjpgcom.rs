@@ -327,7 +327,6 @@ unsafe extern "C" fn scan_JPEG_header(mut keep_COM: libc::c_int) -> libc::c_int 
                         b"SOS without prior SOFn\x00" as *const u8 as *const libc::c_char,
                     );
                     crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
-                    current_block_14 = 11584701595673473500;
                 }
                 217 => return marker,
                 254 => {

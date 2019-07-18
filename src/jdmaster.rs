@@ -10,37 +10,6 @@ use libc::c_long;
 use libc::c_uint;
 use libc::c_ulong;
 use libc::c_void;
-#[header_src = "/home/sjcrane/projects/c2rust/mozjpeg-rs/mozjpeg-c/jmorecfg.h:22"]
-pub mod jmorecfg_h {
-
-    use crate::jmorecfg_h::EXT_BGRX_PIXELSIZE;
-    use crate::jmorecfg_h::EXT_BGR_PIXELSIZE;
-    use crate::jmorecfg_h::EXT_RGBX_PIXELSIZE;
-    use crate::jmorecfg_h::EXT_RGB_PIXELSIZE;
-    use crate::jmorecfg_h::EXT_XBGR_PIXELSIZE;
-    use crate::jmorecfg_h::EXT_XRGB_PIXELSIZE;
-    use crate::jmorecfg_h::RGB_PIXELSIZE;
-    use libc::c_int;
-    pub static mut rgb_pixelsize: [c_int; 17] = [
-        -1i32,
-        -1i32,
-        RGB_PIXELSIZE,
-        -1i32,
-        -1i32,
-        -1i32,
-        EXT_RGB_PIXELSIZE,
-        EXT_RGBX_PIXELSIZE,
-        EXT_BGR_PIXELSIZE,
-        EXT_BGRX_PIXELSIZE,
-        EXT_XBGR_PIXELSIZE,
-        EXT_XRGB_PIXELSIZE,
-        EXT_RGBX_PIXELSIZE,
-        EXT_BGRX_PIXELSIZE,
-        EXT_XBGR_PIXELSIZE,
-        EXT_XRGB_PIXELSIZE,
-        -1i32,
-    ];
-}
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -279,7 +248,7 @@ pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 use crate::stdlib::memcpy;
 use crate::stdlib::memset;
-pub use jmorecfg_h::rgb_pixelsize;
+pub use crate::jmorecfg_h::rgb_pixelsize;
 // =============== BEGIN jdmaster_h ================
 
 /*
