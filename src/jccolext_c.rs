@@ -1203,10 +1203,4 @@ use crate::jccolor::R_CR_OFF;
 use crate::jccolor::R_Y_OFF;
 use crate::jccolor::SCALEBITS;
 
-
-
-
-
-
-
 use crate::jmorecfg_h::RGB_PIXELSIZE_5;

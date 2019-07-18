@@ -26,16 +26,11 @@ pub use crate::stdlib::__off64_t;
 pub use crate::stdlib::__off_t;
 pub use crate::stdlib::exit;
 
-
 pub use crate::stdlib::free;
 
 pub use crate::stdlib::malloc;
 
-
 pub use crate::stdlib::random;
-
-
-
 
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::RAND_MAX;

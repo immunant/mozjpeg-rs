@@ -1,12 +1,3 @@
-use libc;
-use libc::c_int;
-use libc::c_long;
-use libc::c_uchar;
-use libc::c_uint;
-use libc::c_ulong;
-use libc::c_ulonglong;
-use libc::c_ushort;
-use libc::c_void;
 pub use crate::cderror_h::C2RustUnnamed_91;
 pub use crate::cderror_h::JERR_BAD_CMAP_FILE;
 pub use crate::cderror_h::JERR_BMP_BADCMAP;
@@ -194,6 +185,7 @@ pub use crate::jerror::JWRN_TOO_MUCH_DATA;
 pub use crate::jmorecfg_h::boolean;
 pub use crate::jmorecfg_h::rgb_blue;
 pub use crate::jmorecfg_h::rgb_green;
+pub use crate::jmorecfg_h::rgb_pixelsize;
 pub use crate::jmorecfg_h::rgb_red;
 pub use crate::jmorecfg_h::EXT_BGRX_BLUE;
 pub use crate::jmorecfg_h::EXT_BGRX_GREEN;
@@ -309,7 +301,15 @@ use crate::stdlib::memcpy;
 pub use crate::stdlib::EOF;
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::_IO_FILE;
-pub use crate::jmorecfg_h::rgb_pixelsize;
+use libc;
+use libc::c_int;
+use libc::c_long;
+use libc::c_uchar;
+use libc::c_uint;
+use libc::c_ulong;
+use libc::c_ulonglong;
+use libc::c_ushort;
+use libc::c_void;
 /* Private version of data source object */
 pub type bmp_source_ptr = *mut _bmp_source_struct;
 #[repr(C)]

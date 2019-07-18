@@ -46,8 +46,6 @@ pub use crate::stdlib::stderr;
 pub use crate::stdlib::stdin;
 pub use crate::stdlib::stdout;
 
-
-
 pub use crate::stdlib::tolower;
 pub use crate::stdlib::EOF;
 pub use crate::stdlib::EXIT_FAILURE;

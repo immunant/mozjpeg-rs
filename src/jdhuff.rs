@@ -232,7 +232,6 @@ pub use crate::jstdhuff_c::std_huff_tables;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 
-
 use libc;
 use libc::c_char;
 use libc::c_int;

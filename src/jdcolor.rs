@@ -1,10 +1,3 @@
-use libc;
-use libc::c_char;
-use libc::c_double;
-use libc::c_int;
-use libc::c_long;
-use libc::c_uint;
-use libc::c_ulong;
 pub use crate::jdcol565_c::gray_rgb565D_convert_be;
 pub use crate::jdcol565_c::gray_rgb565D_convert_le;
 pub use crate::jdcol565_c::gray_rgb565_convert_be;
@@ -170,7 +163,10 @@ pub use crate::jerror::JWRN_MUST_RESYNC;
 pub use crate::jerror::JWRN_NOT_SEQUENTIAL;
 pub use crate::jerror::JWRN_TOO_MUCH_DATA;
 pub use crate::jmorecfg_h::boolean;
+pub use crate::jmorecfg_h::rgb_blue;
+pub use crate::jmorecfg_h::rgb_green;
 pub use crate::jmorecfg_h::rgb_pixelsize;
+pub use crate::jmorecfg_h::rgb_red;
 pub use crate::jmorecfg_h::CENTERJSAMPLE;
 pub use crate::jmorecfg_h::EXT_BGRX_BLUE;
 pub use crate::jmorecfg_h::EXT_BGRX_GREEN;
@@ -288,9 +284,13 @@ use crate::jsimd::jsimd_can_ycc_rgb565;
 use crate::jsimd::jsimd_ycc_rgb565_convert;
 use crate::jsimd::jsimd_ycc_rgb_convert;
 pub use crate::stddef_h::size_t;
-pub use crate::jmorecfg_h::rgb_blue;
-pub use crate::jmorecfg_h::rgb_green;
-pub use crate::jmorecfg_h::rgb_red;
+use libc;
+use libc::c_char;
+use libc::c_double;
+use libc::c_int;
+use libc::c_long;
+use libc::c_uint;
+use libc::c_ulong;
 pub type my_cconvert_ptr = *mut my_color_deconverter;
 /*
  * jdcolor.c

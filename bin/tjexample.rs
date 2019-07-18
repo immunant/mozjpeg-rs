@@ -33,10 +33,6 @@ pub use crate::stdlib::fwrite;
 pub use crate::stdlib::printf;
 pub use crate::stdlib::sscanf;
 
-
-
-
-
 pub use crate::stdlib::strtol;
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::SEEK_END;

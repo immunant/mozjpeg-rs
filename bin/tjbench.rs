@@ -40,17 +40,10 @@ pub use crate::stdlib::fwrite;
 
 pub use crate::stdlib::malloc;
 
-
 pub use crate::stdlib::printf;
 pub use crate::stdlib::puts;
 pub use crate::stdlib::snprintf;
 pub use crate::stdlib::sscanf;
-
-
-
-
-
-
 
 pub use crate::stdlib::strtod;
 pub use crate::stdlib::strtol;
@@ -3002,11 +2995,7 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                         if 0 == xformOpt & crate::turbojpeg::TJXOPT_NOOUTPUT {
                                             if decomp(
                                                 crate::stddef_h::NULL_0 as *mut libc::c_uchar,
-                                                if 0 != decompsrc {
-                                                    &mut srcBuf
-                                                } else {
-                                                    jpegBuf
-                                                },
+                                                if 0 != decompsrc { &mut srcBuf } else { jpegBuf },
                                                 if 0 != decompsrc {
                                                     &mut srcSize
                                                 } else {

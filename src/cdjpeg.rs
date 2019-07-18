@@ -66,7 +66,6 @@ use crate::jmorecfg_h::JDIMENSION;
 use crate::jpeglib_h::j_compress_ptr;
 use crate::jpeglib_h::j_decompress_ptr;
 
-
 use crate::jpeglib_h::jpeg_progress_mgr;
 use crate::jpeglib_h::jpeg_saved_marker_ptr;
 use crate::jpeglib_h::JSAMPARRAY;

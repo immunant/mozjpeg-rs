@@ -1,4 +1,3 @@
-pub use crate::__INT_MAX__;
 pub use crate::jdhuff::bit_buf_type;
 pub use crate::jdhuff::bitread_perm_state;
 pub use crate::jdhuff::bitread_working_state;
@@ -226,6 +225,7 @@ pub use crate::limits_h::INT_MAX;
 pub use crate::limits_h::INT_MIN;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
+pub use crate::__INT_MAX__;
 use libc;
 use libc::c_int;
 use libc::c_uint;

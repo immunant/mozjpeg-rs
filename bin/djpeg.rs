@@ -307,15 +307,9 @@ pub use crate::stdlib::__off64_t;
 pub use crate::stdlib::__off_t;
 pub use crate::stdlib::exit;
 
-
-
-
-
 pub use crate::stdlib::free;
 
-
 pub use crate::stdlib::realloc;
-
 
 pub use crate::stdlib::C2RustUnnamed_0;
 pub use crate::stdlib::_ISalnum;
@@ -331,7 +325,6 @@ pub use crate::stdlib::_ISspace;
 pub use crate::stdlib::_ISupper;
 pub use crate::stdlib::_ISxdigit;
 pub use crate::stdlib::__ctype_b_loc;
-
 
 pub use crate::stdlib::EXIT_FAILURE;
 pub use crate::stdlib::EXIT_SUCCESS;

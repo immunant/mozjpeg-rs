@@ -1364,29 +1364,6 @@ use crate::jdmerge::RGB_RED_2;
 use crate::jdmerge::RGB_RED_3;
 use crate::jdmerge::RGB_RED_4;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 use crate::jmorecfg_h::RGB_BLUE_5;
 use crate::jmorecfg_h::RGB_GREEN_5;
 use crate::jmorecfg_h::RGB_PIXELSIZE_5;

@@ -531,7 +531,6 @@ pub struct jpeg_comp_master {
 }
 use crate::jpeglib_h::j_common_ptr;
 
-
 /* Requantize */
 pub const JBUF_REQUANT: J_BUF_MODE = 4;
 /* Run both subobjects, save output */
@@ -554,7 +553,5 @@ pub const CSTATE_WRCOEFS: c_int = 103i32;
 
 /* after create_compress */
 pub const CSTATE_START: c_int = 100i32;
-
-
 
 use crate::stddef_h::size_t;

@@ -1,4 +1,3 @@
-pub use crate::__CHAR_BIT__;
 pub use crate::jchuff::c_derived_tbl;
 pub use crate::jchuff::jpeg_gen_optimal_table;
 pub use crate::jchuff::jpeg_make_c_derived_tbl;
@@ -216,6 +215,7 @@ pub use crate::limits_h::CHAR_BIT;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 use crate::stdlib::memset;
+pub use crate::__CHAR_BIT__;
 use libc;
 use libc::c_char;
 use libc::c_int;

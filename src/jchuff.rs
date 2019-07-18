@@ -22,7 +22,6 @@ extern "C" {
         src_above: JBLOCKROW,
     );
 }
-pub use crate::__CHAR_BIT__;
 pub use crate::jerror::C2RustUnnamed_3;
 pub use crate::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::jerror::JERR_BAD_ALIGN_TYPE;
@@ -238,6 +237,7 @@ pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 use crate::stdlib::memcpy;
 use crate::stdlib::memset;
+pub use crate::__CHAR_BIT__;
 use libc;
 // =============== BEGIN jchuff_h ================
 

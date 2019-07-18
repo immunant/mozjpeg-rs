@@ -1,10 +1,3 @@
-use libc;
-use libc::c_int;
-use libc::c_long;
-use libc::c_uchar;
-use libc::c_uint;
-use libc::c_ulong;
-use libc::c_void;
 pub use crate::cderror_h::C2RustUnnamed_91;
 pub use crate::cderror_h::JERR_BAD_CMAP_FILE;
 pub use crate::cderror_h::JERR_BMP_BADCMAP;
@@ -191,6 +184,7 @@ pub use crate::jerror::JWRN_TOO_MUCH_DATA;
 pub use crate::jmorecfg_h::boolean;
 pub use crate::jmorecfg_h::rgb_blue;
 pub use crate::jmorecfg_h::rgb_green;
+pub use crate::jmorecfg_h::rgb_pixelsize;
 pub use crate::jmorecfg_h::rgb_red;
 pub use crate::jmorecfg_h::EXT_BGRX_BLUE;
 pub use crate::jmorecfg_h::EXT_BGRX_GREEN;
@@ -304,7 +298,13 @@ pub use crate::stdlib::getc;
 pub use crate::stdlib::EOF;
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::_IO_FILE;
-pub use crate::jmorecfg_h::rgb_pixelsize;
+use libc;
+use libc::c_int;
+use libc::c_long;
+use libc::c_uchar;
+use libc::c_uint;
+use libc::c_ulong;
+use libc::c_void;
 pub type ppm_source_ptr = *mut ppm_source_struct;
 /* Private version of data source object */
 #[repr(C)]
@@ -1471,13 +1471,11 @@ unsafe extern "C" fn start_input_ppm(mut cinfo: j_compress_ptr, mut sinfo: cjpeg
                 },
             )
         } else {
-            (*source).buffer_width = (w as size_t).wrapping_mul(
-                if maxval <= 255i32 as c_uint {
-                    ::std::mem::size_of::<U_CHAR>() as c_ulong
-                } else {
-                    (2i32 as c_ulong).wrapping_mul(::std::mem::size_of::<U_CHAR>() as c_ulong)
-                },
-            )
+            (*source).buffer_width = (w as size_t).wrapping_mul(if maxval <= 255i32 as c_uint {
+                ::std::mem::size_of::<U_CHAR>() as c_ulong
+            } else {
+                (2i32 as c_ulong).wrapping_mul(::std::mem::size_of::<U_CHAR>() as c_ulong)
+            })
         }
         (*source).iobuffer = (*(*cinfo).mem)
             .alloc_small
