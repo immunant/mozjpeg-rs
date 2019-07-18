@@ -739,7 +739,7 @@ unsafe extern "C" fn compress_trellis_pass(
  */
 unsafe extern "C" fn compress_output(
     mut cinfo: j_compress_ptr,
-    mut input_buf: JSAMPIMAGE,
+    mut _input_buf: JSAMPIMAGE,
 ) -> boolean {
     let mut coef: my_coef_ptr = (*cinfo).coef as my_coef_ptr;
     /* index of current MCU within row */

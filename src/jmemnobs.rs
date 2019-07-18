@@ -221,16 +221,16 @@ use libc::c_void;
  */
 #[no_mangle]
 pub unsafe extern "C" fn jpeg_get_small(
-    mut cinfo: j_common_ptr,
+    mut _cinfo: j_common_ptr,
     mut sizeofobject: size_t,
 ) -> *mut c_void {
     return malloc(sizeofobject);
 }
 #[no_mangle]
 pub unsafe extern "C" fn jpeg_free_small(
-    mut cinfo: j_common_ptr,
+    mut _cinfo: j_common_ptr,
     mut object: *mut c_void,
-    mut sizeofobject: size_t,
+    mut _sizeofobject: size_t,
 ) {
     free(object);
 }
@@ -246,16 +246,16 @@ pub unsafe extern "C" fn jpeg_free_small(
  */
 #[no_mangle]
 pub unsafe extern "C" fn jpeg_get_large(
-    mut cinfo: j_common_ptr,
+    mut _cinfo: j_common_ptr,
     mut sizeofobject: size_t,
 ) -> *mut c_void {
     return malloc(sizeofobject);
 }
 #[no_mangle]
 pub unsafe extern "C" fn jpeg_free_large(
-    mut cinfo: j_common_ptr,
+    mut _cinfo: j_common_ptr,
     mut object: *mut c_void,
-    mut sizeofobject: size_t,
+    mut _sizeofobject: size_t,
 ) {
     free(object);
 }
@@ -297,7 +297,7 @@ pub unsafe extern "C" fn jpeg_free_large(
 #[no_mangle]
 pub unsafe extern "C" fn jpeg_mem_available(
     mut cinfo: j_common_ptr,
-    mut min_bytes_needed: size_t,
+    mut _min_bytes_needed: size_t,
     mut max_bytes_needed: size_t,
     mut already_allocated: size_t,
 ) -> size_t {
@@ -326,8 +326,8 @@ pub unsafe extern "C" fn jpeg_mem_available(
 #[no_mangle]
 pub unsafe extern "C" fn jpeg_open_backing_store(
     mut cinfo: j_common_ptr,
-    mut info: backing_store_ptr,
-    mut total_bytes_needed: c_long,
+    mut _info: backing_store_ptr,
+    mut _total_bytes_needed: c_long,
 ) {
     (*(*cinfo).err).msg_code = JERR_NO_BACKING_STORE as c_int;
     (*(*cinfo).err)
@@ -350,8 +350,8 @@ pub unsafe extern "C" fn jpeg_open_backing_store(
  * cleanup required.  Here, there isn't any.
  */
 #[no_mangle]
-pub unsafe extern "C" fn jpeg_mem_init(mut cinfo: j_common_ptr) -> c_long {
+pub unsafe extern "C" fn jpeg_mem_init(mut _cinfo: j_common_ptr) -> c_long {
     return 0i32 as c_long;
 }
 #[no_mangle]
-pub unsafe extern "C" fn jpeg_mem_term(mut cinfo: j_common_ptr) {}
+pub unsafe extern "C" fn jpeg_mem_term(mut _cinfo: j_common_ptr) {}

@@ -569,7 +569,7 @@ unsafe extern "C" fn is_big_endian() -> boolean {
 unsafe extern "C" fn put_pixel_rows(
     mut cinfo: j_decompress_ptr,
     mut dinfo: djpeg_dest_ptr,
-    mut rows_supplied: JDIMENSION,
+    mut _rows_supplied: JDIMENSION,
 ) {
     let mut dest: bmp_dest_ptr = dinfo as bmp_dest_ptr;
     let mut image_ptr: JSAMPARRAY = 0 as *mut JSAMPROW;
@@ -684,7 +684,7 @@ unsafe extern "C" fn put_pixel_rows(
 unsafe extern "C" fn put_gray_rows(
     mut cinfo: j_decompress_ptr,
     mut dinfo: djpeg_dest_ptr,
-    mut rows_supplied: JDIMENSION,
+    mut _rows_supplied: JDIMENSION,
 ) {
     let mut dest: bmp_dest_ptr = dinfo as bmp_dest_ptr;
     let mut image_ptr: JSAMPARRAY = 0 as *mut JSAMPROW;

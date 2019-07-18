@@ -231,8 +231,8 @@ pub use crate::jstdhuff_c::add_huff_table;
 pub use crate::jstdhuff_c::std_huff_tables;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
-use crate::stdlib::memcpy;
-use crate::stdlib::memset;
+
+
 use libc;
 use libc::c_char;
 use libc::c_int;

@@ -300,7 +300,7 @@ pub const main_pass: c_pass_type = 0;
 /*
  * Support routines that do various essential calculations.
  */
-unsafe extern "C" fn initial_setup(mut cinfo: j_compress_ptr, mut transcode_only: boolean) {
+unsafe extern "C" fn initial_setup(mut cinfo: j_compress_ptr, mut _transcode_only: boolean) {
     let mut ci: c_int = 0;
     let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
     let mut samplesperrow: c_long = 0;

@@ -258,7 +258,7 @@ unsafe extern "C" fn init_source(mut cinfo: j_decompress_ptr) {
     let mut src: my_src_ptr = (*cinfo).src as my_src_ptr;
     (*src).start_of_file = TRUE;
 }
-unsafe extern "C" fn init_mem_source(mut cinfo: j_decompress_ptr) {}
+unsafe extern "C" fn init_mem_source(mut _cinfo: j_decompress_ptr) {}
 /* no work necessary here */
 /*
  * Fill the input buffer --- called whenever buffer is emptied.
@@ -374,7 +374,7 @@ unsafe extern "C" fn skip_input_data(mut cinfo: j_decompress_ptr, mut num_bytes:
  * application must deal with any cleanup that should happen even
  * for error exit.
  */
-unsafe extern "C" fn term_source(mut cinfo: j_decompress_ptr) {}
+unsafe extern "C" fn term_source(mut _cinfo: j_decompress_ptr) {}
 /* no work necessary here */
 /*
  * Prepare for input from a stdio stream.

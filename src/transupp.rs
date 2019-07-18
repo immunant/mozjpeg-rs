@@ -2564,7 +2564,7 @@ pub unsafe extern "C" fn jcopy_markers_setup(
 pub unsafe extern "C" fn jcopy_markers_execute(
     mut srcinfo: j_decompress_ptr,
     mut dstinfo: j_compress_ptr,
-    mut option: JCOPY_OPTION,
+    mut _option: JCOPY_OPTION,
 ) {
     let mut marker: jpeg_saved_marker_ptr = 0 as *mut jpeg_marker_struct;
     marker = (*srcinfo).marker_list;

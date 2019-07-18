@@ -351,7 +351,7 @@ unsafe extern "C" fn write_header(
 unsafe extern "C" fn put_pixel_rows(
     mut cinfo: j_decompress_ptr,
     mut dinfo: djpeg_dest_ptr,
-    mut rows_supplied: JDIMENSION,
+    mut _rows_supplied: JDIMENSION,
 ) {
     let mut dest: tga_dest_ptr = dinfo as tga_dest_ptr;
     let mut inptr: JSAMPROW = 0 as *mut JSAMPLE;
@@ -378,7 +378,7 @@ unsafe extern "C" fn put_pixel_rows(
 unsafe extern "C" fn put_gray_rows(
     mut cinfo: j_decompress_ptr,
     mut dinfo: djpeg_dest_ptr,
-    mut rows_supplied: JDIMENSION,
+    mut _rows_supplied: JDIMENSION,
 ) {
     let mut dest: tga_dest_ptr = dinfo as tga_dest_ptr;
     let mut inptr: JSAMPROW = 0 as *mut JSAMPLE;
@@ -409,7 +409,7 @@ unsafe extern "C" fn put_gray_rows(
 unsafe extern "C" fn put_demapped_gray(
     mut cinfo: j_decompress_ptr,
     mut dinfo: djpeg_dest_ptr,
-    mut rows_supplied: JDIMENSION,
+    mut _rows_supplied: JDIMENSION,
 ) {
     let mut dest: tga_dest_ptr = dinfo as tga_dest_ptr;
     let mut inptr: JSAMPROW = 0 as *mut JSAMPLE;

@@ -1,10 +1,10 @@
 use crate::jccolor::my_cconvert_ptr;
-use crate::jccolor::my_color_converter;
+
 use crate::jmorecfg_h::JDIMENSION;
 use crate::jmorecfg_h::JSAMPLE;
 use crate::jpegint_h::JLONG;
 use crate::jpeglib_h::j_compress_ptr;
-use crate::jpeglib_h::jpeg_compress_struct;
+
 use crate::jpeglib_h::JSAMPARRAY;
 use crate::jpeglib_h::JSAMPIMAGE;
 use crate::jpeglib_h::JSAMPROW;
@@ -1202,11 +1202,11 @@ use crate::jccolor::R_CB_OFF;
 use crate::jccolor::R_CR_OFF;
 use crate::jccolor::R_Y_OFF;
 use crate::jccolor::SCALEBITS;
-use crate::jmorecfg_h::EXT_BGRX_PIXELSIZE;
-use crate::jmorecfg_h::EXT_BGR_PIXELSIZE;
-use crate::jmorecfg_h::EXT_RGBX_PIXELSIZE;
-use crate::jmorecfg_h::EXT_RGB_PIXELSIZE;
-use crate::jmorecfg_h::EXT_XBGR_PIXELSIZE;
-use crate::jmorecfg_h::EXT_XRGB_PIXELSIZE;
-use crate::jmorecfg_h::MAXJSAMPLE;
+
+
+
+
+
+
+
 use crate::jmorecfg_h::RGB_PIXELSIZE_5;

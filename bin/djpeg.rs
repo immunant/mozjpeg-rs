@@ -306,17 +306,17 @@ pub use crate::stdlib::_IO_wide_data;
 pub use crate::stdlib::__off64_t;
 pub use crate::stdlib::__off_t;
 pub use crate::stdlib::exit;
-use crate::stdlib::fclose;
-use crate::stdlib::ferror;
-use crate::stdlib::fopen;
-use crate::stdlib::fprintf;
-use crate::stdlib::fread;
+
+
+
+
+
 pub use crate::stdlib::free;
-use crate::stdlib::fwrite;
-use crate::stdlib::putc;
+
+
 pub use crate::stdlib::realloc;
-use crate::stdlib::sscanf;
-use crate::stdlib::stderr;
+
+
 pub use crate::stdlib::C2RustUnnamed_0;
 pub use crate::stdlib::_ISalnum;
 pub use crate::stdlib::_ISalpha;
@@ -331,8 +331,8 @@ pub use crate::stdlib::_ISspace;
 pub use crate::stdlib::_ISupper;
 pub use crate::stdlib::_ISxdigit;
 pub use crate::stdlib::__ctype_b_loc;
-use crate::stdlib::stdin;
-use crate::stdlib::stdout;
+
+
 pub use crate::stdlib::EXIT_FAILURE;
 pub use crate::stdlib::EXIT_SUCCESS;
 pub use crate::stdlib::FILE;

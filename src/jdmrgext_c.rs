@@ -1,10 +1,10 @@
 use crate::jdmerge::my_upsample_ptr;
-use crate::jdmerge::my_upsampler;
+
 use crate::jmorecfg_h::JDIMENSION;
 use crate::jmorecfg_h::JSAMPLE;
 use crate::jpegint_h::JLONG;
 use crate::jpeglib_h::j_decompress_ptr;
-use crate::jpeglib_h::jpeg_decompress_struct;
+
 use crate::jpeglib_h::JSAMPARRAY;
 use crate::jpeglib_h::JSAMPIMAGE;
 use crate::jpeglib_h::JSAMPROW;
@@ -1363,30 +1363,30 @@ use crate::jdmerge::RGB_RED_1;
 use crate::jdmerge::RGB_RED_2;
 use crate::jdmerge::RGB_RED_3;
 use crate::jdmerge::RGB_RED_4;
-use crate::jmorecfg_h::EXT_BGRX_BLUE;
-use crate::jmorecfg_h::EXT_BGRX_GREEN;
-use crate::jmorecfg_h::EXT_BGRX_PIXELSIZE;
-use crate::jmorecfg_h::EXT_BGRX_RED;
-use crate::jmorecfg_h::EXT_BGR_BLUE;
-use crate::jmorecfg_h::EXT_BGR_GREEN;
-use crate::jmorecfg_h::EXT_BGR_PIXELSIZE;
-use crate::jmorecfg_h::EXT_BGR_RED;
-use crate::jmorecfg_h::EXT_RGBX_BLUE;
-use crate::jmorecfg_h::EXT_RGBX_GREEN;
-use crate::jmorecfg_h::EXT_RGBX_PIXELSIZE;
-use crate::jmorecfg_h::EXT_RGBX_RED;
-use crate::jmorecfg_h::EXT_RGB_BLUE;
-use crate::jmorecfg_h::EXT_RGB_GREEN;
-use crate::jmorecfg_h::EXT_RGB_PIXELSIZE;
-use crate::jmorecfg_h::EXT_RGB_RED;
-use crate::jmorecfg_h::EXT_XBGR_BLUE;
-use crate::jmorecfg_h::EXT_XBGR_GREEN;
-use crate::jmorecfg_h::EXT_XBGR_PIXELSIZE;
-use crate::jmorecfg_h::EXT_XBGR_RED;
-use crate::jmorecfg_h::EXT_XRGB_BLUE;
-use crate::jmorecfg_h::EXT_XRGB_GREEN;
-use crate::jmorecfg_h::EXT_XRGB_PIXELSIZE;
-use crate::jmorecfg_h::EXT_XRGB_RED;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 use crate::jmorecfg_h::RGB_BLUE_5;
 use crate::jmorecfg_h::RGB_GREEN_5;
 use crate::jmorecfg_h::RGB_PIXELSIZE_5;

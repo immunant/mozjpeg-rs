@@ -1,11 +1,11 @@
 use crate::jdcolor::my_cconvert_ptr;
-use crate::jdcolor::my_color_deconverter;
+
 use crate::jmorecfg_h::INT16;
 use crate::jmorecfg_h::JDIMENSION;
 use crate::jmorecfg_h::JSAMPLE;
 use crate::jpegint_h::JLONG;
 use crate::jpeglib_h::j_decompress_ptr;
-use crate::jpeglib_h::jpeg_decompress_struct;
+
 use crate::jpeglib_h::JSAMPARRAY;
 use crate::jpeglib_h::JSAMPIMAGE;
 use crate::jpeglib_h::JSAMPROW;

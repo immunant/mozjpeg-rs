@@ -306,7 +306,7 @@ unsafe extern "C" fn sep_upsample(
     mut cinfo: j_decompress_ptr,
     mut input_buf: JSAMPIMAGE,
     mut in_row_group_ctr: *mut JDIMENSION,
-    mut in_row_groups_avail: JDIMENSION,
+    mut _in_row_groups_avail: JDIMENSION,
     mut output_buf: JSAMPARRAY,
     mut out_row_ctr: *mut JDIMENSION,
     mut out_rows_avail: JDIMENSION,
@@ -373,8 +373,8 @@ unsafe extern "C" fn sep_upsample(
  * "consumed" until we are done color converting and emitting it.
  */
 unsafe extern "C" fn fullsize_upsample(
-    mut cinfo: j_decompress_ptr,
-    mut compptr: *mut jpeg_component_info,
+    mut _cinfo: j_decompress_ptr,
+    mut _compptr: *mut jpeg_component_info,
     mut input_data: JSAMPARRAY,
     mut output_data_ptr: *mut JSAMPARRAY,
 ) {
@@ -385,9 +385,9 @@ unsafe extern "C" fn fullsize_upsample(
  * These components will not be referenced by color conversion.
  */
 unsafe extern "C" fn noop_upsample(
-    mut cinfo: j_decompress_ptr,
-    mut compptr: *mut jpeg_component_info,
-    mut input_data: JSAMPARRAY,
+    mut _cinfo: j_decompress_ptr,
+    mut _compptr: *mut jpeg_component_info,
+    mut _input_data: JSAMPARRAY,
     mut output_data_ptr: *mut JSAMPARRAY,
 ) {
     *output_data_ptr = NULL as JSAMPARRAY;
@@ -459,7 +459,7 @@ unsafe extern "C" fn int_upsample(
  */
 unsafe extern "C" fn h2v1_upsample(
     mut cinfo: j_decompress_ptr,
-    mut compptr: *mut jpeg_component_info,
+    mut _compptr: *mut jpeg_component_info,
     mut input_data: JSAMPARRAY,
     mut output_data_ptr: *mut JSAMPARRAY,
 ) {
@@ -494,7 +494,7 @@ unsafe extern "C" fn h2v1_upsample(
  */
 unsafe extern "C" fn h2v2_upsample(
     mut cinfo: j_decompress_ptr,
-    mut compptr: *mut jpeg_component_info,
+    mut _compptr: *mut jpeg_component_info,
     mut input_data: JSAMPARRAY,
     mut output_data_ptr: *mut JSAMPARRAY,
 ) {

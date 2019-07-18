@@ -65,8 +65,8 @@ pub use crate::stdlib::C2RustUnnamed_0;
 use crate::jmorecfg_h::JDIMENSION;
 use crate::jpeglib_h::j_compress_ptr;
 use crate::jpeglib_h::j_decompress_ptr;
-use crate::jpeglib_h::jpeg_compress_struct;
-use crate::jpeglib_h::jpeg_decompress_struct;
+
+
 use crate::jpeglib_h::jpeg_progress_mgr;
 use crate::jpeglib_h::jpeg_saved_marker_ptr;
 use crate::jpeglib_h::JSAMPARRAY;
@@ -235,7 +235,7 @@ pub unsafe extern "C" fn keymatch(
         if 0 != *(*__ctype_b_loc()).offset(ca as isize) as c_int
             & _ISupper as c_int as c_ushort as c_int
         {
-            ca = ({
+            ca = {
                 let mut __res: c_int = 0;
                 if ::std::mem::size_of::<c_int>() as c_ulong > 1i32 as c_ulong {
                     if 0 != 0 {
@@ -252,7 +252,7 @@ pub unsafe extern "C" fn keymatch(
                     __res = *(*__ctype_tolower_loc()).offset(ca as isize)
                 }
                 __res
-            })
+            }
         }
         if ca != ck {
             return FALSE;

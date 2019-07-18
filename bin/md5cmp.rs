@@ -11,7 +11,7 @@
 #![feature(label_break_value)]
 #![feature(ptr_wrapping_offset_from)]
 
-use crate::md5::MD5File;
+
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 pub use crate::stdlib::_IO_codecvt;
@@ -20,11 +20,11 @@ pub use crate::stdlib::_IO_marker;
 pub use crate::stdlib::_IO_wide_data;
 pub use crate::stdlib::__off64_t;
 pub use crate::stdlib::__off_t;
-use crate::stdlib::fprintf;
-use crate::stdlib::perror;
-use crate::stdlib::stderr;
-use crate::stdlib::strcasecmp;
-use crate::stdlib::strlen;
+
+
+
+
+
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::_IO_FILE;
 extern crate libc;

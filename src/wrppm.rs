@@ -555,9 +555,9 @@ pub const PPM_MAXVAL: c_int = 255i32;
  * output buffer is physically the same as the fwrite buffer.
  */
 unsafe extern "C" fn put_pixel_rows(
-    mut cinfo: j_decompress_ptr,
+    mut _cinfo: j_decompress_ptr,
     mut dinfo: djpeg_dest_ptr,
-    mut rows_supplied: JDIMENSION,
+    mut _rows_supplied: JDIMENSION,
 ) {
     let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
     fwrite(
@@ -572,9 +572,9 @@ unsafe extern "C" fn put_pixel_rows(
  * format translation.  Typically this only happens in 12-bit mode.
  */
 unsafe extern "C" fn copy_pixel_rows(
-    mut cinfo: j_decompress_ptr,
+    mut _cinfo: j_decompress_ptr,
     mut dinfo: djpeg_dest_ptr,
-    mut rows_supplied: JDIMENSION,
+    mut _rows_supplied: JDIMENSION,
 ) {
     let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
     let mut bufferptr: *mut c_char = 0 as *mut c_char;
@@ -599,7 +599,7 @@ unsafe extern "C" fn copy_pixel_rows(
 unsafe extern "C" fn put_rgb(
     mut cinfo: j_decompress_ptr,
     mut dinfo: djpeg_dest_ptr,
-    mut rows_supplied: JDIMENSION,
+    mut _rows_supplied: JDIMENSION,
 ) {
     let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
     let mut bufferptr: *mut c_char = 0 as *mut c_char;
@@ -638,7 +638,7 @@ unsafe extern "C" fn put_rgb(
 unsafe extern "C" fn put_cmyk(
     mut cinfo: j_decompress_ptr,
     mut dinfo: djpeg_dest_ptr,
-    mut rows_supplied: JDIMENSION,
+    mut _rows_supplied: JDIMENSION,
 ) {
     let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
     let mut bufferptr: *mut c_char = 0 as *mut c_char;
@@ -689,7 +689,7 @@ unsafe extern "C" fn put_cmyk(
 unsafe extern "C" fn put_demapped_rgb(
     mut cinfo: j_decompress_ptr,
     mut dinfo: djpeg_dest_ptr,
-    mut rows_supplied: JDIMENSION,
+    mut _rows_supplied: JDIMENSION,
 ) {
     let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
     let mut bufferptr: *mut c_char = 0 as *mut c_char;
@@ -727,7 +727,7 @@ unsafe extern "C" fn put_demapped_rgb(
 unsafe extern "C" fn put_demapped_gray(
     mut cinfo: j_decompress_ptr,
     mut dinfo: djpeg_dest_ptr,
-    mut rows_supplied: JDIMENSION,
+    mut _rows_supplied: JDIMENSION,
 ) {
     let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
     let mut bufferptr: *mut c_char = 0 as *mut c_char;

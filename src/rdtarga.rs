@@ -827,7 +827,7 @@ unsafe extern "C" fn start_input_tga(mut cinfo: j_compress_ptr, mut sinfo: cjpeg
 /*
  * Finish up at the end of the file.
  */
-unsafe extern "C" fn finish_input_tga(mut cinfo: j_compress_ptr, mut sinfo: cjpeg_source_ptr) {}
+unsafe extern "C" fn finish_input_tga(mut _cinfo: j_compress_ptr, mut _sinfo: cjpeg_source_ptr) {}
 /* no work */
 /*
  * The module selection routine for Targa format input.

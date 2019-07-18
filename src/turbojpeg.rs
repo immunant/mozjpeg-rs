@@ -1231,11 +1231,11 @@ unsafe extern "C" fn setCompDefaults(
                 if ::std::mem::size_of::<c_char>() as c_ulong > 1i32 as c_ulong {
                     if 0 != 0 {
                         let mut __c: c_int = tempc as c_int;
-                        __res = (if __c < -128i32 || __c > 255i32 {
+                        __res = if __c < -128i32 || __c > 255i32 {
                             __c
                         } else {
                             *(*__ctype_toupper_loc()).offset(__c as isize)
-                        })
+                        }
                     } else {
                         __res = toupper(tempc as c_int)
                     }
@@ -4095,9 +4095,9 @@ pub unsafe extern "C" fn tjDecompress(
 }
 unsafe extern "C" fn setDecodeDefaults(
     mut dinfo: *mut jpeg_decompress_struct,
-    mut pixelFormat: c_int,
+    mut _pixelFormat: c_int,
     mut subsamp: c_int,
-    mut flags: c_int,
+    mut _flags: c_int,
 ) -> c_int {
     let mut i: c_int = 0;
     (*dinfo).scale_denom = 1i32 as c_uint;
@@ -4152,11 +4152,11 @@ unsafe extern "C" fn setDecodeDefaults(
     return 0i32;
 }
 #[no_mangle]
-pub unsafe extern "C" fn my_read_markers(mut dinfo: j_decompress_ptr) -> c_int {
+pub unsafe extern "C" fn my_read_markers(mut _dinfo: j_decompress_ptr) -> c_int {
     return JPEG_REACHED_SOS;
 }
 #[no_mangle]
-pub unsafe extern "C" fn my_reset_marker_reader(mut dinfo: j_decompress_ptr) {}
+pub unsafe extern "C" fn my_reset_marker_reader(mut _dinfo: j_decompress_ptr) {}
 /* *
  * Decode a set of Y, U (Cb), and V (Cr) image planes into an RGB or grayscale
  * image.  This function uses the accelerated color conversion routines in the

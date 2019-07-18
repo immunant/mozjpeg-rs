@@ -1151,7 +1151,7 @@ unsafe extern "C" fn gray_rgb565D_convert(
 /*
  * Empty method for start_pass.
  */
-unsafe extern "C" fn start_pass_dcolor(mut cinfo: j_decompress_ptr) {}
+unsafe extern "C" fn start_pass_dcolor(mut _cinfo: j_decompress_ptr) {}
 /* no work needed */
 /*
  * Module initialization routine for output colorspace conversion.

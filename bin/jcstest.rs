@@ -84,7 +84,7 @@ pub use crate::stdlib::__sigset_t;
 pub use crate::stdlib::_setjmp;
 pub use crate::stdlib::jmp_buf;
 pub use crate::stdlib::longjmp;
-use crate::stdlib::printf;
+
 extern crate libc;
 use mozjpeg::*;
 

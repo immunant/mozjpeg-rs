@@ -739,8 +739,8 @@ unsafe extern "C" fn select_ncolors(mut cinfo: j_decompress_ptr, mut Ncolors: *m
     return total_colors;
 }
 unsafe extern "C" fn output_value(
-    mut cinfo: j_decompress_ptr,
-    mut ci: c_int,
+    mut _cinfo: j_decompress_ptr,
+    mut _ci: c_int,
     mut j: c_int,
     mut maxj: c_int,
 ) -> c_int {
@@ -748,8 +748,8 @@ unsafe extern "C" fn output_value(
         as c_int;
 }
 unsafe extern "C" fn largest_input_value(
-    mut cinfo: j_decompress_ptr,
-    mut ci: c_int,
+    mut _cinfo: j_decompress_ptr,
+    mut _ci: c_int,
     mut j: c_int,
     mut maxj: c_int,
 ) -> c_int {
@@ -1266,7 +1266,7 @@ unsafe extern "C" fn alloc_fs_workspace(mut cinfo: j_decompress_ptr) {
 /*
  * Initialize for one-pass color quantization.
  */
-unsafe extern "C" fn start_pass_1_quant(mut cinfo: j_decompress_ptr, mut is_pre_scan: boolean) {
+unsafe extern "C" fn start_pass_1_quant(mut cinfo: j_decompress_ptr, mut _is_pre_scan: boolean) {
     let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr;
     let mut arraysize: size_t = 0;
     let mut i: c_int = 0;
@@ -1359,7 +1359,7 @@ unsafe extern "C" fn start_pass_1_quant(mut cinfo: j_decompress_ptr, mut is_pre_
 /*
  * Finish up at the end of the pass.
  */
-unsafe extern "C" fn finish_pass_1_quant(mut cinfo: j_decompress_ptr) {}
+unsafe extern "C" fn finish_pass_1_quant(mut _cinfo: j_decompress_ptr) {}
 /* no work in 1-pass case */
 /*
  * Switch to a new external colormap between output passes.

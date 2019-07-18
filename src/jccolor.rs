@@ -689,7 +689,7 @@ unsafe extern "C" fn null_convert(
 /*
  * Empty method for start_pass.
  */
-unsafe extern "C" fn null_method(mut cinfo: j_compress_ptr) {}
+unsafe extern "C" fn null_method(mut _cinfo: j_compress_ptr) {}
 /* no work needed */
 /*
  * Module initialization routine for input colorspace conversion.

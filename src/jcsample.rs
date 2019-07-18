@@ -283,7 +283,7 @@ pub struct my_downsampler {
 /*
  * Initialize for a downsampling pass.
  */
-unsafe extern "C" fn start_pass_downsample(mut cinfo: j_compress_ptr) {}
+unsafe extern "C" fn start_pass_downsample(mut _cinfo: j_compress_ptr) {}
 /* no work for now */
 /*
  * Expand a component horizontally from width input_cols to width output_cols,

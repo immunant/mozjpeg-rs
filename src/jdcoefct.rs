@@ -308,7 +308,7 @@ unsafe extern "C" fn decompress_onepass(
 /*
  * Dummy consume-input routine for single-pass operation.
  */
-unsafe extern "C" fn dummy_consume_data(mut cinfo: j_decompress_ptr) -> c_int {
+unsafe extern "C" fn dummy_consume_data(mut _cinfo: j_decompress_ptr) -> c_int {
     return JPEG_SUSPENDED;
 }
 /*

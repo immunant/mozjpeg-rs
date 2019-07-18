@@ -310,7 +310,7 @@ unsafe extern "C" fn merged_2v_upsample(
     mut cinfo: j_decompress_ptr,
     mut input_buf: JSAMPIMAGE,
     mut in_row_group_ctr: *mut JDIMENSION,
-    mut in_row_groups_avail: JDIMENSION,
+    mut _in_row_groups_avail: JDIMENSION,
     mut output_buf: JSAMPARRAY,
     mut out_row_ctr: *mut JDIMENSION,
     mut out_rows_avail: JDIMENSION,
@@ -370,10 +370,10 @@ unsafe extern "C" fn merged_1v_upsample(
     mut cinfo: j_decompress_ptr,
     mut input_buf: JSAMPIMAGE,
     mut in_row_group_ctr: *mut JDIMENSION,
-    mut in_row_groups_avail: JDIMENSION,
+    mut _in_row_groups_avail: JDIMENSION,
     mut output_buf: JSAMPARRAY,
     mut out_row_ctr: *mut JDIMENSION,
-    mut out_rows_avail: JDIMENSION,
+    mut _out_rows_avail: JDIMENSION,
 ) {
     let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
     (*upsample).upmethod.expect("non-null function pointer")(

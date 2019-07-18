@@ -103,7 +103,7 @@ use libc::c_char;
  * The module selection routine for GIF format input.
  */
 #[no_mangle]
-pub unsafe extern "C" fn jinit_read_gif(mut cinfo: j_compress_ptr) -> cjpeg_source_ptr {
+pub unsafe extern "C" fn jinit_read_gif(mut _cinfo: j_compress_ptr) -> cjpeg_source_ptr {
     fprintf(
         stderr,
         b"GIF input is unsupported for legal reasons.  Sorry.\n\x00" as *const u8 as *const c_char,

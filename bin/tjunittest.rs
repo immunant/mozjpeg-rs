@@ -14,29 +14,29 @@
 pub use crate::cmyk_h::cmyk_to_rgb;
 pub use crate::cmyk_h::rgb_to_cmyk;
 pub use crate::jmorecfg_h::JSAMPLE;
-use crate::md5::MD5File;
+
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 pub use crate::stdlib::_IO_codecvt;
 pub use crate::stdlib::_IO_lock_t;
 pub use crate::stdlib::_IO_marker;
 pub use crate::stdlib::_IO_wide_data;
-use crate::stdlib::__errno_location;
+
 pub use crate::stdlib::__off64_t;
 pub use crate::stdlib::__off_t;
 pub use crate::stdlib::exit;
-use crate::stdlib::fclose;
-use crate::stdlib::fopen;
+
+
 pub use crate::stdlib::free;
-use crate::stdlib::fwrite;
+
 pub use crate::stdlib::malloc;
-use crate::stdlib::memset;
-use crate::stdlib::printf;
+
+
 pub use crate::stdlib::random;
-use crate::stdlib::snprintf;
-use crate::stdlib::strcasecmp;
-use crate::stdlib::strerror;
-use crate::stdlib::unlink;
+
+
+
+
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::RAND_MAX;
 pub use crate::stdlib::_IO_FILE;
@@ -1269,7 +1269,7 @@ pub unsafe extern "C" fn _decompTest(
     mut w: libc::c_int,
     mut h: libc::c_int,
     mut pf: libc::c_int,
-    mut basename: *mut libc::c_char,
+    mut _basename: *mut libc::c_char,
     mut subsamp: libc::c_int,
     mut flags: libc::c_int,
     mut sf: crate::turbojpeg::tjscalingfactor,
@@ -1760,7 +1760,7 @@ pub unsafe extern "C" fn bufSizeTest() {
                             &mut dstSize,
                             subsamp,
                             100i32,
-                            (if 0 != alloc { 0i32 } else { 1024i32 }),
+                            if 0 != alloc { 0i32 } else { 1024i32 },
                         ) == -1i32
                         {
                             crate::stdlib::printf(
@@ -1852,7 +1852,7 @@ pub unsafe extern "C" fn bufSizeTest() {
                                 &mut dstSize,
                                 subsamp,
                                 100i32,
-                                (if 0 != alloc { 0i32 } else { 1024i32 }),
+                                if 0 != alloc { 0i32 } else { 1024i32 },
                             ) == -1i32
                             {
                                 crate::stdlib::printf(

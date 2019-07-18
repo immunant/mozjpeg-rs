@@ -622,7 +622,7 @@ unsafe extern "C" fn emit_multi_dht(mut cinfo: j_compress_ptr) -> boolean {
     }
     return TRUE;
 }
-unsafe extern "C" fn emit_dac(mut cinfo: j_compress_ptr) {}
+unsafe extern "C" fn emit_dac(mut _cinfo: j_compress_ptr) {}
 /* C_ARITH_CODING_SUPPORTED */
 unsafe extern "C" fn emit_dri(mut cinfo: j_compress_ptr) {
     emit_marker(cinfo, M_DRI);

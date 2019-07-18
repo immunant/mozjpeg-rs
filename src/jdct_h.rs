@@ -239,15 +239,15 @@ pub type IFAST_MULT_TYPE = c_short;
 
 /* short or int, whichever is faster */
 pub type ISLOW_MULT_TYPE = c_short;
-use crate::jmorecfg_h::JCOEF;
+
 use crate::jmorecfg_h::JDIMENSION;
 use crate::jmorecfg_h::MAXJSAMPLE;
 use crate::jpeglib_h::j_decompress_ptr;
 use crate::jpeglib_h::jpeg_component_info;
-use crate::jpeglib_h::jpeg_decompress_struct;
+
 use crate::jpeglib_h::JCOEFPTR;
 use crate::jpeglib_h::JSAMPARRAY;
-use crate::jpeglib_h::JSAMPROW;
+
 /*
  * Each IDCT routine is responsible for range-limiting its results and
  * converting them to unsigned form (0..MAXJSAMPLE).  The raw outputs could

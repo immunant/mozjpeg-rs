@@ -516,14 +516,14 @@ pub unsafe extern "C" fn std_huff_tables(mut cinfo: j_common_ptr) {
     );
 }
 use crate::jerror::JERR_BAD_HUFF_TABLE;
-use crate::jmorecfg_h::boolean;
+
 use crate::jmorecfg_h::FALSE;
 use crate::jmorecfg_h::UINT8;
 use crate::jpeglib_h::j_common_ptr;
 use crate::jpeglib_h::j_compress_ptr;
 use crate::jpeglib_h::j_decompress_ptr;
 use crate::jpeglib_h::jpeg_alloc_huff_table;
-use crate::jpeglib_h::jpeg_common_struct;
+
 use crate::jpeglib_h::JHUFF_TBL;
 use crate::stdlib::memcpy;
 use crate::stdlib::memset;

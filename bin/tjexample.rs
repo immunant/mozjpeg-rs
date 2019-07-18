@@ -18,7 +18,7 @@ pub use crate::stdlib::_IO_codecvt;
 pub use crate::stdlib::_IO_lock_t;
 pub use crate::stdlib::_IO_marker;
 pub use crate::stdlib::_IO_wide_data;
-use crate::stdlib::__errno_location;
+
 pub use crate::stdlib::__off64_t;
 pub use crate::stdlib::__off_t;
 pub use crate::stdlib::atoi;
@@ -29,14 +29,14 @@ pub use crate::stdlib::fread;
 pub use crate::stdlib::fseek;
 pub use crate::stdlib::ftell;
 pub use crate::stdlib::fwrite;
-use crate::stdlib::memset;
+
 pub use crate::stdlib::printf;
 pub use crate::stdlib::sscanf;
-use crate::stdlib::strcasecmp;
-use crate::stdlib::strerror;
-use crate::stdlib::strlen;
-use crate::stdlib::strncasecmp;
-use crate::stdlib::strrchr;
+
+
+
+
+
 pub use crate::stdlib::strtol;
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::SEEK_END;
@@ -161,10 +161,10 @@ pub static mut numScalingFactors: libc::c_int = 0i32;
 pub unsafe extern "C" fn customFilter(
     mut coeffs: *mut libc::c_short,
     mut arrayRegion: crate::turbojpeg::tjregion,
-    mut planeRegion: crate::turbojpeg::tjregion,
-    mut componentIndex: libc::c_int,
-    mut transformIndex: libc::c_int,
-    mut transform: *mut crate::turbojpeg::tjtransform,
+    mut _planeRegion: crate::turbojpeg::tjregion,
+    mut _componentIndex: libc::c_int,
+    mut _transformIndex: libc::c_int,
+    mut _transform: *mut crate::turbojpeg::tjtransform,
 ) -> libc::c_int {
     let mut i: libc::c_int = 0;
     i = 0i32;

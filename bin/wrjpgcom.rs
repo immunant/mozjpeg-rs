@@ -45,9 +45,9 @@ pub use crate::stdlib::putc;
 pub use crate::stdlib::stderr;
 pub use crate::stdlib::stdin;
 pub use crate::stdlib::stdout;
-use crate::stdlib::strcat;
-use crate::stdlib::strcpy;
-use crate::stdlib::strlen;
+
+
+
 pub use crate::stdlib::tolower;
 pub use crate::stdlib::EOF;
 pub use crate::stdlib::EXIT_FAILURE;
@@ -530,7 +530,7 @@ unsafe extern "C" fn keymatch(
         if 0 != *(*crate::stdlib::__ctype_b_loc()).offset(ca as isize) as libc::c_int
             & crate::stdlib::_ISupper as libc::c_int as libc::c_ushort as libc::c_int
         {
-            ca = ({
+            ca = {
                 let mut __res: libc::c_int = 0;
                 if ::std::mem::size_of::<libc::c_int>() as libc::c_ulong > 1i32 as libc::c_ulong {
                     if 0 != 0 {
@@ -547,7 +547,7 @@ unsafe extern "C" fn keymatch(
                     __res = *(*crate::stdlib::__ctype_tolower_loc()).offset(ca as isize)
                 }
                 __res
-            })
+            }
         }
         if ca != ck {
             return 0i32;

@@ -1648,19 +1648,19 @@ unsafe extern "C" fn start_input_ppm(mut cinfo: j_compress_ptr, mut sinfo: cjpeg
     if 0 != need_iobuffer {
         if c == '6' as i32 {
             (*source).buffer_width = (w as size_t).wrapping_mul(3i32 as c_ulong).wrapping_mul(
-                (if maxval <= 255i32 as c_uint {
+                if maxval <= 255i32 as c_uint {
                     ::std::mem::size_of::<U_CHAR>() as c_ulong
                 } else {
                     (2i32 as c_ulong).wrapping_mul(::std::mem::size_of::<U_CHAR>() as c_ulong)
-                }),
+                },
             )
         } else {
             (*source).buffer_width = (w as size_t).wrapping_mul(
-                (if maxval <= 255i32 as c_uint {
+                if maxval <= 255i32 as c_uint {
                     ::std::mem::size_of::<U_CHAR>() as c_ulong
                 } else {
                     (2i32 as c_ulong).wrapping_mul(::std::mem::size_of::<U_CHAR>() as c_ulong)
-                }),
+                },
             )
         }
         (*source).iobuffer = (*(*cinfo).mem)
@@ -1709,7 +1709,7 @@ unsafe extern "C" fn start_input_ppm(mut cinfo: j_compress_ptr, mut sinfo: cjpeg
 /*
  * Finish up at the end of the file.
  */
-unsafe extern "C" fn finish_input_ppm(mut cinfo: j_compress_ptr, mut sinfo: cjpeg_source_ptr) {}
+unsafe extern "C" fn finish_input_ppm(mut _cinfo: j_compress_ptr, mut _sinfo: cjpeg_source_ptr) {}
 /* no work */
 /*
  * The module selection routine for PPM format input.
