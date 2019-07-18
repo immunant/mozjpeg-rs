@@ -137,8 +137,6 @@ pub unsafe extern "C" fn start_iMCU_row(mut cinfo: j_decompress_ptr) {
 }
 /* we save coef_bits[0..5] */
 pub const SAVED_COEFS: c_int = 6i32;
-// ================ END jdcoefct_h ================
-
 /*
  * Initialize for an input processing pass.
  */

@@ -292,8 +292,6 @@ pub struct c_derived_tbl {
  * Hence the magnitude should always fit in 10 or 14 bits respectively.
  */
 pub const MAX_COEF_BITS: c_int = 10i32;
-// ================ END jchuff_h ================
-
 /*
  * jchuff.c
  *

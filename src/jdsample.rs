@@ -259,8 +259,6 @@ pub type upsample1_ptr = Option<
         _: *mut JSAMPARRAY,
     ) -> (),
 >;
-// ================ END jdsample_h ================
-
 /*
  * jdsample.c
  *

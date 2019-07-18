@@ -312,8 +312,6 @@ pub struct bitread_working_state {
 pub const HUFF_LOOKAHEAD: c_int = 8i32;
 /* size of buffer in bits */
 pub const BIT_BUF_SIZE: c_int = 64i32;
-// ================ END jdhuff_h ================
-
 /*
  * jdhuff.c
  *

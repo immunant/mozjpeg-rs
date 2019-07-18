@@ -277,8 +277,6 @@ pub const output_pass: c_pass_type = 2;
 pub const huff_opt_pass: c_pass_type = 1;
 /* input data, also do first output step */
 pub const main_pass: c_pass_type = 0;
-// ================ END jcmaster_h ================
-
 /*
  * jcmaster.c
  *
@@ -1431,7 +1429,7 @@ pub unsafe extern "C" fn jinit_c_master_control(
         (*master).total_passes = (*cinfo).num_scans
     }
     (*master).jpeg_version =
-        b"mozjpeg version 4.0.0 (build 20190709)\x00" as *const u8 as *const c_char;
+        b"mozjpeg version 4.0.0 (build 20190718)\x00" as *const u8 as *const c_char;
     (*master).pass_number_scan_opt_base = 0i32;
     if 0 != (*(*cinfo).master).trellis_quant {
         if 0 != (*cinfo).optimize_coding {

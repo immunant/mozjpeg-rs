@@ -950,8 +950,6 @@ pub const TJ_420: c_int = TJSAMP_420 as c_int;
 pub const TJ_BGR: c_int = 1i32;
 pub const TJ_ALPHAFIRST: c_int = 64i32;
 pub const TJ_YUV: c_int = 512i32;
-// ================ END turbojpeg_h ================
-
 /* Error handling (based on example in example.txt) */
 static mut errStr: [c_char; 200] = [
     78, 111, 32, 101, 114, 114, 111, 114, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

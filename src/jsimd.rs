@@ -1033,8 +1033,6 @@ use libc;
 pub const JSIMD_SSE: c_int = 0x4i32;
 pub const JSIMD_SSE2: c_int = 0x8i32;
 pub const JSIMD_AVX2: c_int = 0x80i32;
-// ================ END jsimd_h ================
-
 /*
  * jsimd_x86_64.c
  *

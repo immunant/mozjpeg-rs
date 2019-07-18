@@ -52,8 +52,6 @@ pub struct MD5Context {
     pub in_0: [c_uchar; 64],
 }
 pub type MD5_CTX = MD5Context;
-// ================ END md5_h ================
-
 /*
  * This code implements the MD5 message-digest algorithm.
  * The algorithm is due to Ron Rivest.  This code was

@@ -425,8 +425,6 @@ pub const jtransform_execute_transformation: unsafe extern "C" fn(
     _: *mut jvirt_barray_ptr,
     _: *mut jpeg_transform_info,
 ) -> () = jtransform_execute_transform;
-// ================ END transupp_h ================
-
 /*
  * transupp.c
  *

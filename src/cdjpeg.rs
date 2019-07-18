@@ -45,10 +45,10 @@ extern "C" {
     pub fn set_sample_factors(cinfo: j_compress_ptr, arg: *mut c_char) -> boolean;
 
     #[no_mangle]
-    pub fn jinit_read_bmp(cinfo: j_compress_ptr, use_inversion_array: boolean) -> cjpeg_source_ptr;
+    pub fn jinit_read_ppm(cinfo: j_compress_ptr) -> cjpeg_source_ptr;
 
     #[no_mangle]
-    pub fn jinit_read_ppm(cinfo: j_compress_ptr) -> cjpeg_source_ptr;
+    pub fn jinit_read_bmp(cinfo: j_compress_ptr, use_inversion_array: boolean) -> cjpeg_source_ptr;
 
     #[no_mangle]
     pub fn jinit_write_bmp(
@@ -69,6 +69,23 @@ use crate::jpeglib_h::j_decompress_ptr;
 use crate::jpeglib_h::jpeg_progress_mgr;
 use crate::jpeglib_h::jpeg_saved_marker_ptr;
 use crate::jpeglib_h::JSAMPARRAY;
+/*
+ * Object interface for djpeg's output file encoding modules
+ */
+pub type djpeg_dest_ptr = *mut djpeg_dest_struct;
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct djpeg_dest_struct {
+    pub start_output: Option<unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> ()>,
+    pub put_pixel_rows:
+        Option<unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr, _: JDIMENSION) -> ()>,
+    pub finish_output: Option<unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> ()>,
+    pub calc_buffer_dimensions:
+        Option<unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> ()>,
+    pub output_file: *mut FILE,
+    pub buffer: JSAMPARRAY,
+    pub buffer_height: JDIMENSION,
+}
 /*
  * cdjpeg.h
  *
@@ -104,28 +121,8 @@ pub struct cjpeg_source_struct {
     pub buffer_height: JDIMENSION,
     pub marker_list: jpeg_saved_marker_ptr,
 }
-/*
- * Object interface for djpeg's output file encoding modules
- */
-pub type djpeg_dest_ptr = *mut djpeg_dest_struct;
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct djpeg_dest_struct {
-    pub start_output: Option<unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> ()>,
-    pub put_pixel_rows:
-        Option<unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr, _: JDIMENSION) -> ()>,
-    pub finish_output: Option<unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> ()>,
-    pub calc_buffer_dimensions:
-        Option<unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> ()>,
-    pub output_file: *mut FILE,
-    pub buffer: JSAMPARRAY,
-    pub buffer_height: JDIMENSION,
-}
-// ================ END cdjpeg_h ================
 pub use crate::jmorecfg_h::boolean;
 pub use crate::stdlib::FILE;
-// =============== BEGIN cdjpeg_h ================
-
 /*
  * cjpeg/djpeg may need to perform extra passes to convert to or from
  * the source/destination file format.  The JPEG library does not know
@@ -142,7 +139,6 @@ pub struct cdjpeg_progress_mgr {
     pub percent_done: c_int,
 }
 pub type cd_progress_ptr = *mut cdjpeg_progress_mgr;
-// ================ END cdjpeg_h ================
 pub use crate::stddef_h::size_t;
 pub use crate::stdlib::_IO_codecvt;
 pub use crate::stdlib::_IO_lock_t;
@@ -153,8 +149,6 @@ pub use crate::stdlib::__off64_t;
 pub use crate::stdlib::__off_t;
 pub use crate::stdlib::_IO_FILE;
 use libc;
-// =============== BEGIN cdjpeg_h ================
-
 /* miscellaneous useful macros */
 
 /* define mode parameters for fopen() */
@@ -164,7 +158,6 @@ pub const WRITE_BINARY: [c_char; 3] =
     unsafe { *::std::mem::transmute::<&[u8; 3], &[c_char; 3]>(b"wb\x00") };
 /* define exit() codes if not provided */
 pub const EXIT_WARNING: c_int = 2i32;
-// ================ END cdjpeg_h ================
 pub use crate::jmorecfg_h::FALSE;
 pub use crate::jmorecfg_h::TRUE;
 pub use crate::stdlib::_ISalnum;

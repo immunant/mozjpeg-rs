@@ -4,7 +4,7 @@ pub const SIZEOF_SIZE_T: c_int = 8i32;
 use ::libc;
 /* libjpeg-turbo build number */
 pub const BUILD: [c_char; 9] =
-    unsafe { *::std::mem::transmute::<&[u8; 9], &[c_char; 9]>(b"20190709\x00") };
+    unsafe { *::std::mem::transmute::<&[u8; 9], &[c_char; 9]>(b"20190718\x00") };
 /* Compiler's inline keyword */
 
 /* How to obtain function inlining. */

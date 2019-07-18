@@ -207,8 +207,6 @@ pub const JERR_ARITH_NOTIMPL: C2RustUnnamed_3 = 1;
 
 /* Must be first entry! */
 pub const JMSG_NOMESSAGE: C2RustUnnamed_3 = 0;
-// ================ END jerror_h ================
-
 /*
  * jerror.c
  *

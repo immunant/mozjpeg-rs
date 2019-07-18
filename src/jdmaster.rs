@@ -274,8 +274,6 @@ pub struct my_decomp_master {
     pub custom_idct_selector: jpeg_idct_method_selector,
 }
 pub type my_master_ptr = *mut my_decomp_master;
-// ================ END jdmaster_h ================
-
 /*
  * jdmaster.c
  *

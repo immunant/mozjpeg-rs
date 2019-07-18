@@ -280,7 +280,6 @@ pub unsafe extern "C" fn set_wraparound_pointers(mut cinfo: j_decompress_ptr) {
 
 /* need to prepare for MCU row */
 pub const CTX_PREPARE_FOR_IMCU: c_int = 0i32;
-// ================ END jdmainct_h ================
 unsafe extern "C" fn alloc_funny_pointers(mut cinfo: j_decompress_ptr) {
     let mut main_ptr: my_main_ptr = (*cinfo).main as my_main_ptr;
     let mut ci: c_int = 0;
