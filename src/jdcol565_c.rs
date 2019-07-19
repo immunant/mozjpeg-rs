@@ -1,20 +1,9 @@
 use crate::jdcolor::my_cconvert_ptr;
-
-use crate::jmorecfg_h::INT16;
-use crate::jmorecfg_h::JDIMENSION;
-use crate::jmorecfg_h::JSAMPLE;
+use crate::jmorecfg_h::{INT16, JDIMENSION, JSAMPLE};
 use crate::jpegint_h::JLONG;
-use crate::jpeglib_h::j_decompress_ptr;
-
-use crate::jpeglib_h::JSAMPARRAY;
-use crate::jpeglib_h::JSAMPIMAGE;
-use crate::jpeglib_h::JSAMPROW;
+use crate::jpeglib_h::{j_decompress_ptr, JSAMPARRAY, JSAMPIMAGE, JSAMPROW};
 use crate::stddef_h::size_t;
-use ::libc;
-use libc::c_int;
-use libc::c_long;
-use libc::c_uint;
-use libc::c_ulong;
+use libc::{self, c_int, c_long, c_uint, c_ulong};
 /*
  * jdcol565.c
  *
@@ -1267,5 +1256,4 @@ pub unsafe extern "C" fn gray_rgb565D_convert_be(
         }
     }
 }
-use crate::jdcolor::dither_matrix;
-use crate::jdcolor::DITHER_MASK;
+use crate::jdcolor::{dither_matrix, DITHER_MASK};

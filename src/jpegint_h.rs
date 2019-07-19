@@ -1,11 +1,4 @@
-use libc::c_double;
-use libc::c_float;
-use libc::c_int;
-use libc::c_long;
-use libc::c_uchar;
-use libc::c_uint;
-use libc::c_ulong;
-use libc::c_void;
+use libc::{c_double, c_float, c_int, c_long, c_uchar, c_uint, c_ulong, c_void};
 extern "C" {
     #[no_mangle]
     pub fn jround_up(a: c_long, b: c_long) -> c_long;
@@ -316,18 +309,12 @@ pub const DSTATE_STOPPING: c_int = 210i32;
 
 /* reading file in jpeg_read_coefficients */
 pub const DSTATE_RDCOEFS: c_int = 209i32;
-use crate::jmorecfg_h::boolean;
-use crate::jmorecfg_h::JDIMENSION;
-use crate::jpeglib_h::j_compress_ptr;
-use crate::jpeglib_h::j_decompress_ptr;
-use crate::jpeglib_h::jpeg_component_info;
-use crate::jpeglib_h::jpeg_marker_parser_method;
-use crate::jpeglib_h::jvirt_barray_ptr;
-use crate::jpeglib_h::JBLOCKROW;
-use crate::jpeglib_h::JCOEFPTR;
-use crate::jpeglib_h::JSAMPARRAY;
-use crate::jpeglib_h::JSAMPIMAGE;
-use ::libc;
+use crate::jmorecfg_h::{boolean, JDIMENSION};
+use crate::jpeglib_h::{
+    j_compress_ptr, j_decompress_ptr, jpeg_component_info, jpeg_marker_parser_method,
+    jvirt_barray_ptr, JBLOCKROW, JCOEFPTR, JSAMPARRAY, JSAMPIMAGE,
+};
+use libc;
 /* start_decompress done, read_scanlines OK */
 pub const DSTATE_SCANNING: c_int = 205i32;
 /* start_decompress done, read_raw_data OK */
@@ -553,5 +540,4 @@ pub const CSTATE_WRCOEFS: c_int = 103i32;
 
 /* after create_compress */
 pub const CSTATE_START: c_int = 100i32;
-
 use crate::stddef_h::size_t;

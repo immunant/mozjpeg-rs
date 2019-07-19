@@ -1,8 +1,4 @@
-use libc::c_float;
-use libc::c_int;
-use libc::c_short;
-use libc::c_uint;
-use libc::c_ushort;
+use libc::{c_float, c_int, c_short, c_uint, c_ushort};
 extern "C" {
     #[no_mangle]
     pub fn jpeg_fdct_islow(data: *mut DCTELEM);
@@ -176,7 +172,7 @@ extern "C" {
     );
 }
 // =============== BEGIN jdct_h ================
-use ::libc;
+use libc;
 /* fractional bits in scale factors */
 pub const IFAST_SCALE_BITS: c_int = 2i32;
 /*
@@ -239,14 +235,8 @@ pub type IFAST_MULT_TYPE = c_short;
 
 /* short or int, whichever is faster */
 pub type ISLOW_MULT_TYPE = c_short;
-
-use crate::jmorecfg_h::JDIMENSION;
-use crate::jmorecfg_h::MAXJSAMPLE;
-use crate::jpeglib_h::j_decompress_ptr;
-use crate::jpeglib_h::jpeg_component_info;
-
-use crate::jpeglib_h::JCOEFPTR;
-use crate::jpeglib_h::JSAMPARRAY;
+use crate::jmorecfg_h::{JDIMENSION, MAXJSAMPLE};
+use crate::jpeglib_h::{j_decompress_ptr, jpeg_component_info, JCOEFPTR, JSAMPARRAY};
 
 /*
  * Each IDCT routine is responsible for range-limiting its results and

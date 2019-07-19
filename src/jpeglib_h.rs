@@ -1,12 +1,4 @@
-use libc::c_char;
-use libc::c_double;
-use libc::c_float;
-use libc::c_int;
-use libc::c_long;
-use libc::c_uchar;
-use libc::c_uint;
-use libc::c_ulong;
-use libc::c_void;
+use libc::{c_char, c_double, c_float, c_int, c_long, c_uchar, c_uint, c_ulong, c_void};
 extern "C" {
     #[no_mangle]
     pub fn jpeg_write_m_header(cinfo: j_compress_ptr, marker: c_int, datalen: c_uint);
@@ -395,26 +387,13 @@ pub const JPOOL_NUMPOOLS: c_int = 2i32;
 
 /* APP0 marker code */
 pub const JPEG_APP0: c_int = 0xe0i32;
-pub use crate::jpegint_h::jpeg_c_coef_controller;
-pub use crate::jpegint_h::jpeg_c_main_controller;
-pub use crate::jpegint_h::jpeg_c_prep_controller;
-pub use crate::jpegint_h::jpeg_color_converter;
-pub use crate::jpegint_h::jpeg_color_deconverter;
-pub use crate::jpegint_h::jpeg_color_quantizer;
-pub use crate::jpegint_h::jpeg_comp_master;
-pub use crate::jpegint_h::jpeg_d_coef_controller;
-pub use crate::jpegint_h::jpeg_d_main_controller;
-pub use crate::jpegint_h::jpeg_d_post_controller;
-pub use crate::jpegint_h::jpeg_decomp_master;
-pub use crate::jpegint_h::jpeg_downsampler;
-pub use crate::jpegint_h::jpeg_entropy_decoder;
-pub use crate::jpegint_h::jpeg_entropy_encoder;
-pub use crate::jpegint_h::jpeg_forward_dct;
-pub use crate::jpegint_h::jpeg_input_controller;
-pub use crate::jpegint_h::jpeg_inverse_dct;
-pub use crate::jpegint_h::jpeg_marker_reader;
-pub use crate::jpegint_h::jpeg_marker_writer;
-pub use crate::jpegint_h::jpeg_upsampler;
+pub use crate::jpegint_h::{
+    jpeg_c_coef_controller, jpeg_c_main_controller, jpeg_c_prep_controller, jpeg_color_converter,
+    jpeg_color_deconverter, jpeg_color_quantizer, jpeg_comp_master, jpeg_d_coef_controller,
+    jpeg_d_main_controller, jpeg_d_post_controller, jpeg_decomp_master, jpeg_downsampler,
+    jpeg_entropy_decoder, jpeg_entropy_encoder, jpeg_forward_dct, jpeg_input_controller,
+    jpeg_inverse_dct, jpeg_marker_reader, jpeg_marker_writer, jpeg_upsampler,
+};
 /* DCTSIZE squared; # of elements in a block */
 
 /* Quantization tables are numbered 0..3 */
@@ -519,15 +498,9 @@ pub const JPEG_REACHED_EOI: c_int = 2i32;
 
 /* Suspended due to lack of input data */
 pub const JPEG_SUSPENDED: c_int = 0i32;
-use crate::jmorecfg_h::boolean;
-use crate::jmorecfg_h::JCOEF;
-use crate::jmorecfg_h::JDIMENSION;
-use crate::jmorecfg_h::JOCTET;
-use crate::jmorecfg_h::JSAMPLE;
-use crate::jmorecfg_h::UINT16;
-use crate::jmorecfg_h::UINT8;
+use crate::jmorecfg_h::{boolean, JCOEF, JDIMENSION, JOCTET, JSAMPLE, UINT16, UINT8};
 use crate::stddef_h::size_t;
-use ::libc;
+use libc;
 /* These marker codes are exported since applications and data source modules
  * are likely to want to use them.
  */
@@ -1004,8 +977,7 @@ pub const JPEG_HEADER_TABLES_ONLY: c_int = 2i32;
 pub const JPEG_HEADER_OK: c_int = 1i32;
 /* COM marker code */
 pub const JPEG_COM: c_int = 0xfei32;
-pub use crate::jmemmgr::jvirt_barray_control;
-pub use crate::jmemmgr::jvirt_sarray_control;
+pub use crate::jmemmgr::{jvirt_barray_control, jvirt_sarray_control};
 /* recommended size of format_message buffer */
 pub const JMSG_LENGTH_MAX: c_int = 200i32;
 /* may be overridden in jconfig.h */

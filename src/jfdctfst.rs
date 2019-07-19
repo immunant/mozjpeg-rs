@@ -1,9 +1,7 @@
 pub use crate::jdct_h::DCTELEM;
 pub use crate::jpegint_h::JLONG;
 pub use crate::jpeglib_h::DCTSIZE;
-use libc;
-use libc::c_int;
-use libc::c_long;
+use libc::{self, c_int, c_long};
 /*
  * jfdctfst.c
  *

@@ -1,13 +1,4 @@
-use libc::c_char;
-use libc::c_double;
-use libc::c_float;
-use libc::c_int;
-use libc::c_long;
-use libc::c_schar;
-use libc::c_uint;
-use libc::c_ulong;
-use libc::c_ushort;
-use libc::c_void;
+use libc::{c_char, c_double, c_float, c_int, c_long, c_schar, c_uint, c_ulong, c_ushort, c_void};
 extern "C" {
     #[no_mangle]
     pub fn __ctype_b_loc() -> *mut *const c_ushort;
@@ -304,9 +295,6 @@ pub unsafe extern "C" fn atoi(mut __nptr: *const c_char) -> c_int {
     return strtol(__nptr, NULL as *mut c_void as *mut *mut c_char, 10i32) as c_int;
 }
 // ================ END stdlib_h ================
-// =============== BEGIN strings_h ================
-use ::libc;
-// ================ END strings_h ================
 // =============== BEGIN struct_FILE_h ================
 #[repr(C)]
 #[derive(Copy, Clone)]

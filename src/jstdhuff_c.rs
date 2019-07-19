@@ -1,6 +1,4 @@
-use libc::c_int;
-use libc::c_ulong;
-use libc::c_void;
+use libc::{c_int, c_ulong, c_void};
 pub unsafe extern "C" fn add_huff_table(
     mut cinfo: j_common_ptr,
     mut htblptr: *mut *mut JHUFF_TBL,
@@ -516,15 +514,9 @@ pub unsafe extern "C" fn std_huff_tables(mut cinfo: j_common_ptr) {
     );
 }
 use crate::jerror::JERR_BAD_HUFF_TABLE;
-
-use crate::jmorecfg_h::FALSE;
-use crate::jmorecfg_h::UINT8;
-use crate::jpeglib_h::j_common_ptr;
-use crate::jpeglib_h::j_compress_ptr;
-use crate::jpeglib_h::j_decompress_ptr;
-use crate::jpeglib_h::jpeg_alloc_huff_table;
-
-use crate::jpeglib_h::JHUFF_TBL;
-use crate::stdlib::memcpy;
-use crate::stdlib::memset;
-use ::libc;
+use crate::jmorecfg_h::{FALSE, UINT8};
+use crate::jpeglib_h::{
+    j_common_ptr, j_compress_ptr, j_decompress_ptr, jpeg_alloc_huff_table, JHUFF_TBL,
+};
+use crate::stdlib::{memcpy, memset};
+use libc;

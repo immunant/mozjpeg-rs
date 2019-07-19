@@ -1,132 +1,33 @@
-pub use crate::jmorecfg_h::boolean;
-pub use crate::jmorecfg_h::FALSE;
-pub use crate::jmorecfg_h::JCOEF;
-pub use crate::jmorecfg_h::JDIMENSION;
-pub use crate::jmorecfg_h::JOCTET;
-pub use crate::jmorecfg_h::JSAMPLE;
-pub use crate::jmorecfg_h::MAX_COMPONENTS;
-pub use crate::jmorecfg_h::TRUE;
-pub use crate::jmorecfg_h::UINT16;
-pub use crate::jmorecfg_h::UINT8;
-pub use crate::jpeglib_h::j_common_ptr;
-pub use crate::jpeglib_h::j_compress_ptr;
-pub use crate::jpeglib_h::jpeg_add_quant_table;
-pub use crate::jpeglib_h::jpeg_c_coef_controller;
-pub use crate::jpeglib_h::jpeg_c_get_int_param;
-pub use crate::jpeglib_h::jpeg_c_int_param_supported;
-pub use crate::jpeglib_h::jpeg_c_main_controller;
-pub use crate::jpeglib_h::jpeg_c_prep_controller;
-pub use crate::jpeglib_h::jpeg_c_set_bool_param;
-pub use crate::jpeglib_h::jpeg_color_converter;
-pub use crate::jpeglib_h::jpeg_common_struct;
-pub use crate::jpeglib_h::jpeg_comp_master;
-pub use crate::jpeglib_h::jpeg_component_info;
-pub use crate::jpeglib_h::jpeg_compress_struct;
-pub use crate::jpeglib_h::jpeg_destination_mgr;
-pub use crate::jpeglib_h::jpeg_downsampler;
-pub use crate::jpeglib_h::jpeg_entropy_encoder;
-pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_float_quality_scaling;
-pub use crate::jpeglib_h::jpeg_forward_dct;
-pub use crate::jpeglib_h::jpeg_marker_writer;
-pub use crate::jpeglib_h::jpeg_memory_mgr;
-pub use crate::jpeglib_h::jpeg_progress_mgr;
-pub use crate::jpeglib_h::jpeg_scan_info;
-pub use crate::jpeglib_h::jvirt_barray_control;
-pub use crate::jpeglib_h::jvirt_barray_ptr;
-pub use crate::jpeglib_h::jvirt_sarray_control;
-pub use crate::jpeglib_h::jvirt_sarray_ptr;
-pub use crate::jpeglib_h::C2RustUnnamed_2;
-pub use crate::jpeglib_h::JCS_YCbCr;
-pub use crate::jpeglib_h::DCTSIZE2;
-pub use crate::jpeglib_h::JBLOCK;
-pub use crate::jpeglib_h::JBLOCKARRAY;
-pub use crate::jpeglib_h::JBLOCKROW;
-pub use crate::jpeglib_h::JBOOLEAN_OPTIMIZE_SCANS;
-pub use crate::jpeglib_h::JBOOLEAN_OVERSHOOT_DERINGING;
-pub use crate::jpeglib_h::JBOOLEAN_TRELLIS_EOB_OPT;
-pub use crate::jpeglib_h::JBOOLEAN_TRELLIS_QUANT;
-pub use crate::jpeglib_h::JBOOLEAN_TRELLIS_QUANT_DC;
-pub use crate::jpeglib_h::JBOOLEAN_TRELLIS_Q_OPT;
-pub use crate::jpeglib_h::JBOOLEAN_USE_LAMBDA_WEIGHT_TBL;
-pub use crate::jpeglib_h::JBOOLEAN_USE_SCANS_IN_TRELLIS;
-pub use crate::jpeglib_h::JCS_CMYK;
-pub use crate::jpeglib_h::JCS_EXT_ABGR;
-pub use crate::jpeglib_h::JCS_EXT_ARGB;
-pub use crate::jpeglib_h::JCS_EXT_BGR;
-pub use crate::jpeglib_h::JCS_EXT_BGRA;
-pub use crate::jpeglib_h::JCS_EXT_BGRX;
-pub use crate::jpeglib_h::JCS_EXT_RGB;
-pub use crate::jpeglib_h::JCS_EXT_RGBA;
-pub use crate::jpeglib_h::JCS_EXT_RGBX;
-pub use crate::jpeglib_h::JCS_EXT_XBGR;
-pub use crate::jpeglib_h::JCS_EXT_XRGB;
-pub use crate::jpeglib_h::JCS_GRAYSCALE;
-pub use crate::jpeglib_h::JCS_RGB;
-pub use crate::jpeglib_h::JCS_RGB565;
-pub use crate::jpeglib_h::JCS_UNKNOWN;
-pub use crate::jpeglib_h::JCS_YCCK;
-pub use crate::jpeglib_h::JDCT_FLOAT;
-pub use crate::jpeglib_h::JDCT_IFAST;
-pub use crate::jpeglib_h::JDCT_ISLOW;
-pub use crate::jpeglib_h::JHUFF_TBL;
-pub use crate::jpeglib_h::JINT_BASE_QUANT_TBL_IDX;
-pub use crate::jpeglib_h::JINT_COMPRESS_PROFILE;
-pub use crate::jpeglib_h::JINT_DC_SCAN_OPT_MODE;
-pub use crate::jpeglib_h::JINT_TRELLIS_FREQ_SPLIT;
-pub use crate::jpeglib_h::JINT_TRELLIS_NUM_LOOPS;
-pub use crate::jpeglib_h::JPOOL_IMAGE;
-pub use crate::jpeglib_h::JQUANT_TBL;
-pub use crate::jpeglib_h::JSAMPARRAY;
-pub use crate::jpeglib_h::JSAMPROW;
-pub use crate::jpeglib_h::J_BOOLEAN_PARAM;
-pub use crate::jpeglib_h::J_COLOR_SPACE;
-pub use crate::jpeglib_h::J_DCT_METHOD;
-pub use crate::jpeglib_h::J_INT_PARAM;
-pub use crate::jpeglib_h::MAX_COMPS_IN_SCAN;
-pub use crate::jpeglib_h::NUM_QUANT_TBLS;
-pub use crate::stddef_h::size_t;
-pub use crate::stddef_h::NULL;
-pub use crate::stdlib::C2RustUnnamed_0;
-pub use crate::stdlib::_IO_codecvt;
-pub use crate::stdlib::_IO_lock_t;
-pub use crate::stdlib::_IO_marker;
-pub use crate::stdlib::_IO_wide_data;
-pub use crate::stdlib::_ISalnum;
-pub use crate::stdlib::_ISalpha;
-pub use crate::stdlib::_ISblank;
-pub use crate::stdlib::_IScntrl;
-pub use crate::stdlib::_ISdigit;
-pub use crate::stdlib::_ISgraph;
-pub use crate::stdlib::_ISlower;
-pub use crate::stdlib::_ISprint;
-pub use crate::stdlib::_ISpunct;
-pub use crate::stdlib::_ISspace;
-pub use crate::stdlib::_ISupper;
-pub use crate::stdlib::_ISxdigit;
-pub use crate::stdlib::__ctype_b_loc;
-pub use crate::stdlib::__off64_t;
-pub use crate::stdlib::__off_t;
-pub use crate::stdlib::fclose;
-pub use crate::stdlib::fopen;
-pub use crate::stdlib::fprintf;
-pub use crate::stdlib::getc;
+pub use crate::jmorecfg_h::{
+    boolean, FALSE, JCOEF, JDIMENSION, JOCTET, JSAMPLE, MAX_COMPONENTS, TRUE, UINT16, UINT8,
+};
+pub use crate::jpeglib_h::{
+    j_common_ptr, j_compress_ptr, jpeg_add_quant_table, jpeg_c_coef_controller,
+    jpeg_c_get_int_param, jpeg_c_int_param_supported, jpeg_c_main_controller,
+    jpeg_c_prep_controller, jpeg_c_set_bool_param, jpeg_color_converter, jpeg_common_struct,
+    jpeg_comp_master, jpeg_component_info, jpeg_compress_struct, jpeg_destination_mgr,
+    jpeg_downsampler, jpeg_entropy_encoder, jpeg_error_mgr, jpeg_float_quality_scaling,
+    jpeg_forward_dct, jpeg_marker_writer, jpeg_memory_mgr, jpeg_progress_mgr, jpeg_scan_info,
+    jvirt_barray_control, jvirt_barray_ptr, jvirt_sarray_control, jvirt_sarray_ptr,
+    C2RustUnnamed_2, JCS_YCbCr, DCTSIZE2, JBLOCK, JBLOCKARRAY, JBLOCKROW, JBOOLEAN_OPTIMIZE_SCANS,
+    JBOOLEAN_OVERSHOOT_DERINGING, JBOOLEAN_TRELLIS_EOB_OPT, JBOOLEAN_TRELLIS_QUANT,
+    JBOOLEAN_TRELLIS_QUANT_DC, JBOOLEAN_TRELLIS_Q_OPT, JBOOLEAN_USE_LAMBDA_WEIGHT_TBL,
+    JBOOLEAN_USE_SCANS_IN_TRELLIS, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA,
+    JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB,
+    JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW,
+    JHUFF_TBL, JINT_BASE_QUANT_TBL_IDX, JINT_COMPRESS_PROFILE, JINT_DC_SCAN_OPT_MODE,
+    JINT_TRELLIS_FREQ_SPLIT, JINT_TRELLIS_NUM_LOOPS, JPOOL_IMAGE, JQUANT_TBL, JSAMPARRAY, JSAMPROW,
+    J_BOOLEAN_PARAM, J_COLOR_SPACE, J_DCT_METHOD, J_INT_PARAM, MAX_COMPS_IN_SCAN, NUM_QUANT_TBLS,
+};
+pub use crate::stddef_h::{size_t, NULL};
 use crate::stdlib::memcpy;
-pub use crate::stdlib::sscanf;
-pub use crate::stdlib::stderr;
-pub use crate::stdlib::ungetc;
-pub use crate::stdlib::EOF;
-pub use crate::stdlib::FILE;
-pub use crate::stdlib::_IO_FILE;
-use libc;
-use libc::c_char;
-use libc::c_float;
-use libc::c_int;
-use libc::c_long;
-use libc::c_uint;
-use libc::c_ulong;
-use libc::c_ushort;
-use libc::c_void;
+pub use crate::stdlib::{
+    C2RustUnnamed_0, _IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data, _ISalnum, _ISalpha,
+    _ISblank, _IScntrl, _ISdigit, _ISgraph, _ISlower, _ISprint, _ISpunct, _ISspace, _ISupper,
+    _ISxdigit, __ctype_b_loc, __off64_t, __off_t, fclose, fopen, fprintf, getc, sscanf, stderr,
+    ungetc, EOF, FILE, _IO_FILE,
+};
+use libc::{self, c_char, c_float, c_int, c_long, c_uint, c_ulong, c_ushort, c_void};
 /*
  * rdswitch.c
  *

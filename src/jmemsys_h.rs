@@ -1,6 +1,4 @@
-use libc::c_char;
-use libc::c_long;
-use libc::c_void;
+use libc::{c_char, c_long, c_void};
 extern "C" {
     #[no_mangle]
     pub fn jpeg_get_small(cinfo: j_common_ptr, sizeofobject: size_t) -> *mut c_void;
@@ -34,7 +32,7 @@ extern "C" {
 // =============== BEGIN jmemsys_h ================
 use crate::jpeglib_h::j_common_ptr;
 use crate::stdlib::FILE;
-use ::libc;
+use libc;
 pub type backing_store_info = backing_store_struct;
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -79,7 +77,6 @@ pub struct backing_store_struct {
 
 /* USE_MAC_MEMMGR */
 pub type backing_store_ptr = *mut backing_store_struct;
-
 use crate::stddef_h::size_t;
 /*
  * The macro MAX_ALLOC_CHUNK designates the maximum number of bytes that may

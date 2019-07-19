@@ -1,45 +1,16 @@
-pub use crate::jmorecfg_h::boolean;
-pub use crate::jmorecfg_h::FALSE;
-pub use crate::jmorecfg_h::JCOEF;
-pub use crate::jmorecfg_h::JDIMENSION;
-pub use crate::jmorecfg_h::JSAMPLE;
-pub use crate::jmorecfg_h::TRUE;
-pub use crate::jpeglib_h::j_common_ptr;
-pub use crate::jpeglib_h::jpeg_common_struct;
-pub use crate::jpeglib_h::jpeg_destroy;
-pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_memory_mgr;
-pub use crate::jpeglib_h::jpeg_progress_mgr;
-pub use crate::jpeglib_h::jvirt_barray_control;
-pub use crate::jpeglib_h::jvirt_barray_ptr;
-pub use crate::jpeglib_h::jvirt_sarray_control;
-pub use crate::jpeglib_h::jvirt_sarray_ptr;
-pub use crate::jpeglib_h::C2RustUnnamed_2;
-pub use crate::jpeglib_h::JBLOCK;
-pub use crate::jpeglib_h::JBLOCKARRAY;
-pub use crate::jpeglib_h::JBLOCKROW;
-pub use crate::jpeglib_h::JSAMPARRAY;
-pub use crate::jpeglib_h::JSAMPROW;
-pub use crate::stddef_h::size_t;
-pub use crate::stddef_h::NULL;
-pub use crate::stdlib::_IO_codecvt;
-pub use crate::stdlib::_IO_lock_t;
-pub use crate::stdlib::_IO_marker;
-pub use crate::stdlib::_IO_wide_data;
-pub use crate::stdlib::__off64_t;
-pub use crate::stdlib::__off_t;
-pub use crate::stdlib::exit;
-use crate::stdlib::fprintf;
-use crate::stdlib::sprintf;
-use crate::stdlib::stderr;
-pub use crate::stdlib::EXIT_FAILURE;
-pub use crate::stdlib::FILE;
-pub use crate::stdlib::_IO_FILE;
-use libc;
-use libc::c_char;
-use libc::c_int;
-use libc::c_long;
-use libc::c_uint;
+pub use crate::jmorecfg_h::{boolean, FALSE, JCOEF, JDIMENSION, JSAMPLE, TRUE};
+pub use crate::jpeglib_h::{
+    j_common_ptr, jpeg_common_struct, jpeg_destroy, jpeg_error_mgr, jpeg_memory_mgr,
+    jpeg_progress_mgr, jvirt_barray_control, jvirt_barray_ptr, jvirt_sarray_control,
+    jvirt_sarray_ptr, C2RustUnnamed_2, JBLOCK, JBLOCKARRAY, JBLOCKROW, JSAMPARRAY, JSAMPROW,
+};
+pub use crate::stddef_h::{size_t, NULL};
+pub use crate::stdlib::{
+    _IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data, __off64_t, __off_t, exit, EXIT_FAILURE,
+    FILE, _IO_FILE,
+};
+use crate::stdlib::{fprintf, sprintf, stderr};
+use libc::{self, c_char, c_int, c_long, c_uint};
 // =============== BEGIN jerror_h ================
 
 /*

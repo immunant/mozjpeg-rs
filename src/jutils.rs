@@ -1,18 +1,8 @@
-pub use crate::jmorecfg_h::JCOEF;
-pub use crate::jmorecfg_h::JDIMENSION;
-pub use crate::jmorecfg_h::JSAMPLE;
-pub use crate::jpeglib_h::JBLOCK;
-pub use crate::jpeglib_h::JBLOCKROW;
-pub use crate::jpeglib_h::JSAMPARRAY;
-pub use crate::jpeglib_h::JSAMPROW;
+pub use crate::jmorecfg_h::{JCOEF, JDIMENSION, JSAMPLE};
+pub use crate::jpeglib_h::{JBLOCK, JBLOCKROW, JSAMPARRAY, JSAMPROW};
 pub use crate::stddef_h::size_t;
-use crate::stdlib::memcpy;
-use crate::stdlib::memset;
-use libc;
-use libc::c_int;
-use libc::c_long;
-use libc::c_ulong;
-use libc::c_void;
+use crate::stdlib::{memcpy, memset};
+use libc::{self, c_int, c_long, c_ulong, c_void};
 /*
  * jutils.c
  *

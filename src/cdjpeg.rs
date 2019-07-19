@@ -1,7 +1,4 @@
-use libc::c_char;
-use libc::c_int;
-use libc::c_ulong;
-use libc::c_ushort;
+use libc::{c_char, c_int, c_ulong, c_ushort};
 extern "C" {
     #[no_mangle]
     pub fn read_scan_script(cinfo: j_compress_ptr, filename: *mut c_char) -> boolean;
@@ -60,15 +57,12 @@ extern "C" {
     #[no_mangle]
     pub fn jinit_write_ppm(cinfo: j_decompress_ptr) -> djpeg_dest_ptr;
 }
-pub use crate::stdlib::C2RustUnnamed_0;
 // =============== BEGIN cdjpeg_h ================
 use crate::jmorecfg_h::JDIMENSION;
-use crate::jpeglib_h::j_compress_ptr;
-use crate::jpeglib_h::j_decompress_ptr;
-
-use crate::jpeglib_h::jpeg_progress_mgr;
-use crate::jpeglib_h::jpeg_saved_marker_ptr;
-use crate::jpeglib_h::JSAMPARRAY;
+use crate::jpeglib_h::{
+    j_compress_ptr, j_decompress_ptr, jpeg_progress_mgr, jpeg_saved_marker_ptr, JSAMPARRAY,
+};
+pub use crate::stdlib::C2RustUnnamed_0;
 /*
  * Object interface for djpeg's output file encoding modules
  */
@@ -140,14 +134,9 @@ pub struct cdjpeg_progress_mgr {
 }
 pub type cd_progress_ptr = *mut cdjpeg_progress_mgr;
 pub use crate::stddef_h::size_t;
-pub use crate::stdlib::_IO_codecvt;
-pub use crate::stdlib::_IO_lock_t;
-pub use crate::stdlib::_IO_marker;
-pub use crate::stdlib::_IO_wide_data;
-pub use crate::stdlib::__int32_t;
-pub use crate::stdlib::__off64_t;
-pub use crate::stdlib::__off_t;
-pub use crate::stdlib::_IO_FILE;
+pub use crate::stdlib::{
+    _IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data, __int32_t, __off64_t, __off_t, _IO_FILE,
+};
 use libc;
 /* miscellaneous useful macros */
 
@@ -158,25 +147,12 @@ pub const WRITE_BINARY: [c_char; 3] =
     unsafe { *::std::mem::transmute::<&[u8; 3], &[c_char; 3]>(b"wb\x00") };
 /* define exit() codes if not provided */
 pub const EXIT_WARNING: c_int = 2i32;
-pub use crate::jmorecfg_h::FALSE;
-pub use crate::jmorecfg_h::TRUE;
-pub use crate::stdlib::_ISalnum;
-pub use crate::stdlib::_ISalpha;
-pub use crate::stdlib::_ISblank;
-pub use crate::stdlib::_IScntrl;
-pub use crate::stdlib::_ISdigit;
-pub use crate::stdlib::_ISgraph;
-pub use crate::stdlib::_ISlower;
-pub use crate::stdlib::_ISprint;
-pub use crate::stdlib::_ISpunct;
-pub use crate::stdlib::_ISspace;
-pub use crate::stdlib::_ISupper;
-pub use crate::stdlib::_ISxdigit;
-pub use crate::stdlib::__ctype_b_loc;
-pub use crate::stdlib::__ctype_tolower_loc;
-use crate::stdlib::stdin;
-use crate::stdlib::stdout;
-pub use crate::stdlib::tolower;
+pub use crate::jmorecfg_h::{FALSE, TRUE};
+pub use crate::stdlib::{
+    _ISalnum, _ISalpha, _ISblank, _IScntrl, _ISdigit, _ISgraph, _ISlower, _ISprint, _ISpunct,
+    _ISspace, _ISupper, _ISxdigit, __ctype_b_loc, __ctype_tolower_loc, tolower,
+};
+use crate::stdlib::{stdin, stdout};
 /*
  * cdjpeg.c
  *

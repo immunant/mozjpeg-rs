@@ -1,7 +1,6 @@
-use libc::c_char;
-use libc::c_int;
+use libc::{c_char, c_int};
 pub const SIZEOF_SIZE_T: c_int = 8i32;
-use ::libc;
+use libc;
 /* libjpeg-turbo build number */
 pub const BUILD: [c_char; 9] =
     unsafe { *::std::mem::transmute::<&[u8; 9], &[c_char; 9]>(b"20190718\x00") };

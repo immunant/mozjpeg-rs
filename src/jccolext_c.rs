@@ -1,15 +1,8 @@
 use crate::jccolor::my_cconvert_ptr;
-
-use crate::jmorecfg_h::JDIMENSION;
-use crate::jmorecfg_h::JSAMPLE;
+use crate::jmorecfg_h::{JDIMENSION, JSAMPLE};
 use crate::jpegint_h::JLONG;
-use crate::jpeglib_h::j_compress_ptr;
-
-use crate::jpeglib_h::JSAMPARRAY;
-use crate::jpeglib_h::JSAMPIMAGE;
-use crate::jpeglib_h::JSAMPROW;
-use ::libc;
-use libc::c_int;
+use crate::jpeglib_h::{j_compress_ptr, JSAMPARRAY, JSAMPIMAGE, JSAMPROW};
+use libc::{self, c_int};
 /*
  * jccolext.c
  *
@@ -1186,21 +1179,9 @@ pub unsafe extern "C" fn extrgbx_rgb_convert_internal(
         }
     }
 }
-use crate::jccolor::B_CB_OFF;
-use crate::jccolor::B_CR_OFF;
-use crate::jccolor::B_Y_OFF;
-use crate::jccolor::G_CB_OFF;
-use crate::jccolor::G_CR_OFF;
-use crate::jccolor::G_Y_OFF;
-use crate::jccolor::RGB_PIXELSIZE;
-use crate::jccolor::RGB_PIXELSIZE_0;
-use crate::jccolor::RGB_PIXELSIZE_1;
-use crate::jccolor::RGB_PIXELSIZE_2;
-use crate::jccolor::RGB_PIXELSIZE_3;
-use crate::jccolor::RGB_PIXELSIZE_4;
-use crate::jccolor::R_CB_OFF;
-use crate::jccolor::R_CR_OFF;
-use crate::jccolor::R_Y_OFF;
-use crate::jccolor::SCALEBITS;
-
+use crate::jccolor::{
+    B_CB_OFF, B_CR_OFF, B_Y_OFF, G_CB_OFF, G_CR_OFF, G_Y_OFF, RGB_PIXELSIZE, RGB_PIXELSIZE_0,
+    RGB_PIXELSIZE_1, RGB_PIXELSIZE_2, RGB_PIXELSIZE_3, RGB_PIXELSIZE_4, R_CB_OFF, R_CR_OFF,
+    R_Y_OFF, SCALEBITS,
+};
 use crate::jmorecfg_h::RGB_PIXELSIZE_5;

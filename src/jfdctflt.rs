@@ -1,7 +1,5 @@
 pub use crate::jpeglib_h::DCTSIZE;
-use libc;
-use libc::c_float;
-use libc::c_int;
+use libc::{self, c_float, c_int};
 /*
  * jfdctflt.c
  *

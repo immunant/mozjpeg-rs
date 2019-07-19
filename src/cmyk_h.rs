@@ -1,6 +1,5 @@
 use crate::jmorecfg_h::JSAMPLE;
-use ::libc;
-use libc::c_double;
+use libc::{self, c_double};
 /*
  * cmyk.h
  *

@@ -1,12 +1,8 @@
 pub use crate::stddef_h::NULL;
-pub use crate::stdlib::__suseconds_t;
-pub use crate::stdlib::__time_t;
-pub use crate::stdlib::__timezone_ptr_t;
-pub use crate::stdlib::gettimeofday;
-pub use crate::stdlib::timeval;
-pub use crate::stdlib::timezone;
-use libc;
-use libc::c_double;
+pub use crate::stdlib::{
+    __suseconds_t, __time_t, __timezone_ptr_t, gettimeofday, timeval, timezone,
+};
+use libc::{self, c_double};
 /*
  * Copyright (C)2011 D. R. Commander.  All Rights Reserved.
  *

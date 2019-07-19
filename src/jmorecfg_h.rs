@@ -1,9 +1,4 @@
-use libc::c_int;
-use libc::c_long;
-use libc::c_short;
-use libc::c_uchar;
-use libc::c_uint;
-use libc::c_ushort;
+use libc::{c_int, c_long, c_short, c_uchar, c_uint, c_ushort};
 pub const EXT_BGR_GREEN: c_int = 1i32;
 pub const EXT_RGB_GREEN: c_int = 1i32;
 /* Offset of Green */
@@ -337,7 +332,7 @@ pub const MAX_COMPONENTS: c_int = 10i32;
 pub type INT16 = c_short;
 /* JSAMPLEs per RGB scanline element */
 pub const RGB_PIXELSIZE: c_int = 3i32;
-use ::libc;
+use libc;
 /* not HAVE_UNSIGNED_CHAR */
 
 /* HAVE_UNSIGNED_CHAR */

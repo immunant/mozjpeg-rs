@@ -1,15 +1,8 @@
 use crate::jdcolor::my_cconvert_ptr;
-
-use crate::jmorecfg_h::JDIMENSION;
-use crate::jmorecfg_h::JSAMPLE;
+use crate::jmorecfg_h::{JDIMENSION, JSAMPLE};
 use crate::jpegint_h::JLONG;
-use crate::jpeglib_h::j_decompress_ptr;
-
-use crate::jpeglib_h::JSAMPARRAY;
-use crate::jpeglib_h::JSAMPIMAGE;
-use crate::jpeglib_h::JSAMPROW;
-use ::libc;
-use libc::c_int;
+use crate::jpeglib_h::{j_decompress_ptr, JSAMPARRAY, JSAMPIMAGE, JSAMPROW};
+use libc::{self, c_int};
 /*
  * jdcolext.c
  *
@@ -1128,36 +1121,10 @@ pub unsafe extern "C" fn rgb_extrgb_convert_internal(
         }
     }
 }
-use crate::jdcolor::RGB_ALPHA;
-use crate::jdcolor::RGB_ALPHA_0;
-use crate::jdcolor::RGB_ALPHA_1;
-use crate::jdcolor::RGB_ALPHA_2;
-use crate::jdcolor::RGB_BLUE;
-use crate::jdcolor::RGB_BLUE_0;
-use crate::jdcolor::RGB_BLUE_1;
-use crate::jdcolor::RGB_BLUE_2;
-use crate::jdcolor::RGB_BLUE_3;
-use crate::jdcolor::RGB_BLUE_4;
-use crate::jdcolor::RGB_GREEN;
-use crate::jdcolor::RGB_GREEN_0;
-use crate::jdcolor::RGB_GREEN_1;
-use crate::jdcolor::RGB_GREEN_2;
-use crate::jdcolor::RGB_GREEN_3;
-use crate::jdcolor::RGB_GREEN_4;
-use crate::jdcolor::RGB_PIXELSIZE;
-use crate::jdcolor::RGB_PIXELSIZE_0;
-use crate::jdcolor::RGB_PIXELSIZE_1;
-use crate::jdcolor::RGB_PIXELSIZE_2;
-use crate::jdcolor::RGB_PIXELSIZE_3;
-use crate::jdcolor::RGB_PIXELSIZE_4;
-use crate::jdcolor::RGB_RED;
-use crate::jdcolor::RGB_RED_0;
-use crate::jdcolor::RGB_RED_1;
-use crate::jdcolor::RGB_RED_2;
-use crate::jdcolor::RGB_RED_3;
-use crate::jdcolor::RGB_RED_4;
-
-use crate::jmorecfg_h::RGB_BLUE_5;
-use crate::jmorecfg_h::RGB_GREEN_5;
-use crate::jmorecfg_h::RGB_PIXELSIZE_5;
-use crate::jmorecfg_h::RGB_RED_5;
+use crate::jdcolor::{
+    RGB_ALPHA, RGB_ALPHA_0, RGB_ALPHA_1, RGB_ALPHA_2, RGB_BLUE, RGB_BLUE_0, RGB_BLUE_1, RGB_BLUE_2,
+    RGB_BLUE_3, RGB_BLUE_4, RGB_GREEN, RGB_GREEN_0, RGB_GREEN_1, RGB_GREEN_2, RGB_GREEN_3,
+    RGB_GREEN_4, RGB_PIXELSIZE, RGB_PIXELSIZE_0, RGB_PIXELSIZE_1, RGB_PIXELSIZE_2, RGB_PIXELSIZE_3,
+    RGB_PIXELSIZE_4, RGB_RED, RGB_RED_0, RGB_RED_1, RGB_RED_2, RGB_RED_3, RGB_RED_4,
+};
+use crate::jmorecfg_h::{RGB_BLUE_5, RGB_GREEN_5, RGB_PIXELSIZE_5, RGB_RED_5};
