@@ -10,49 +10,14 @@
 #![feature(extern_types)]
 #![feature(label_break_value)]
 #![feature(ptr_wrapping_offset_from)]
-
-pub use crate::stddef_h::size_t;
-pub use crate::stddef_h::NULL;
-pub use crate::stdlib::C2RustUnnamed_0;
-pub use crate::stdlib::_IO_codecvt;
-pub use crate::stdlib::_IO_lock_t;
-pub use crate::stdlib::_IO_marker;
-pub use crate::stdlib::_IO_wide_data;
-pub use crate::stdlib::_ISalnum;
-pub use crate::stdlib::_ISalpha;
-pub use crate::stdlib::_ISblank;
-pub use crate::stdlib::_IScntrl;
-pub use crate::stdlib::_ISdigit;
-pub use crate::stdlib::_ISgraph;
-pub use crate::stdlib::_ISlower;
-pub use crate::stdlib::_ISprint;
-pub use crate::stdlib::_ISpunct;
-pub use crate::stdlib::_ISspace;
-pub use crate::stdlib::_ISupper;
-pub use crate::stdlib::_ISxdigit;
-pub use crate::stdlib::__ctype_b_loc;
-pub use crate::stdlib::__ctype_tolower_loc;
-pub use crate::stdlib::__int32_t;
-pub use crate::stdlib::__off64_t;
-pub use crate::stdlib::__off_t;
-pub use crate::stdlib::exit;
-pub use crate::stdlib::fopen;
-pub use crate::stdlib::fprintf;
-pub use crate::stdlib::getc;
-pub use crate::stdlib::printf;
-pub use crate::stdlib::putc;
-pub use crate::stdlib::setlocale;
-pub use crate::stdlib::stderr;
-pub use crate::stdlib::stdin;
-pub use crate::stdlib::stdout;
-pub use crate::stdlib::tolower;
-pub use crate::stdlib::EOF;
-pub use crate::stdlib::EXIT_FAILURE;
-pub use crate::stdlib::EXIT_SUCCESS;
-pub use crate::stdlib::FILE;
-pub use crate::stdlib::LC_CTYPE;
-pub use crate::stdlib::_IO_FILE;
-pub use crate::stdlib::__LC_CTYPE;
+pub use crate::stddef_h::{size_t, NULL};
+pub use crate::stdlib::{
+    C2RustUnnamed_0, _IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data, _ISalnum, _ISalpha,
+    _ISblank, _IScntrl, _ISdigit, _ISgraph, _ISlower, _ISprint, _ISpunct, _ISspace, _ISupper,
+    _ISxdigit, __ctype_b_loc, __ctype_tolower_loc, __int32_t, __off64_t, __off_t, exit, fopen,
+    fprintf, getc, printf, putc, setlocale, stderr, stdin, stdout, tolower, EOF, EXIT_FAILURE,
+    EXIT_SUCCESS, FILE, LC_CTYPE, _IO_FILE, __LC_CTYPE,
+};
 extern crate libc;
 use mozjpeg::*;
 

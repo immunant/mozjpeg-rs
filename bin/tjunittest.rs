@@ -10,84 +10,23 @@
 #![feature(extern_types)]
 #![feature(label_break_value)]
 #![feature(ptr_wrapping_offset_from)]
-
-pub use crate::cmyk_h::cmyk_to_rgb;
-pub use crate::cmyk_h::rgb_to_cmyk;
+pub use crate::cmyk_h::{cmyk_to_rgb, rgb_to_cmyk};
 pub use crate::jmorecfg_h::JSAMPLE;
-
-pub use crate::stddef_h::size_t;
-pub use crate::stddef_h::NULL;
-pub use crate::stdlib::_IO_codecvt;
-pub use crate::stdlib::_IO_lock_t;
-pub use crate::stdlib::_IO_marker;
-pub use crate::stdlib::_IO_wide_data;
-
-pub use crate::stdlib::__off64_t;
-pub use crate::stdlib::__off_t;
-pub use crate::stdlib::exit;
-
-pub use crate::stdlib::free;
-
-pub use crate::stdlib::malloc;
-
-pub use crate::stdlib::random;
-
-pub use crate::stdlib::FILE;
-pub use crate::stdlib::RAND_MAX;
-pub use crate::stdlib::_IO_FILE;
-pub use crate::turbojpeg::tjAlloc;
-pub use crate::turbojpeg::tjAlphaOffset;
-pub use crate::turbojpeg::tjBlueOffset;
-pub use crate::turbojpeg::tjBufSize;
-pub use crate::turbojpeg::tjBufSizeYUV2;
-pub use crate::turbojpeg::tjCompress2;
-pub use crate::turbojpeg::tjCompressFromYUV;
-pub use crate::turbojpeg::tjDecodeYUV;
-pub use crate::turbojpeg::tjDecompress2;
-pub use crate::turbojpeg::tjDecompressHeader2;
-pub use crate::turbojpeg::tjDecompressToYUV2;
-pub use crate::turbojpeg::tjDestroy;
-pub use crate::turbojpeg::tjEncodeYUV3;
-pub use crate::turbojpeg::tjFree;
-pub use crate::turbojpeg::tjGetErrorStr;
-pub use crate::turbojpeg::tjGetScalingFactors;
-pub use crate::turbojpeg::tjGreenOffset;
-pub use crate::turbojpeg::tjInitCompress;
-pub use crate::turbojpeg::tjInitDecompress;
-pub use crate::turbojpeg::tjLoadImage;
-pub use crate::turbojpeg::tjMCUHeight;
-pub use crate::turbojpeg::tjMCUWidth;
-pub use crate::turbojpeg::tjPixelSize;
-pub use crate::turbojpeg::tjRedOffset;
-pub use crate::turbojpeg::tjSaveImage;
-pub use crate::turbojpeg::tjhandle;
-pub use crate::turbojpeg::tjscalingfactor;
-pub use crate::turbojpeg::TJFLAG_BOTTOMUP;
-pub use crate::turbojpeg::TJFLAG_FASTUPSAMPLE;
-pub use crate::turbojpeg::TJFLAG_NOREALLOC;
-pub use crate::turbojpeg::TJPF;
-pub use crate::turbojpeg::TJPF_ABGR;
-pub use crate::turbojpeg::TJPF_ARGB;
-pub use crate::turbojpeg::TJPF_BGR;
-pub use crate::turbojpeg::TJPF_BGRA;
-pub use crate::turbojpeg::TJPF_BGRX;
-pub use crate::turbojpeg::TJPF_CMYK;
-pub use crate::turbojpeg::TJPF_GRAY;
-pub use crate::turbojpeg::TJPF_RGB;
-pub use crate::turbojpeg::TJPF_RGBA;
-pub use crate::turbojpeg::TJPF_RGBX;
-pub use crate::turbojpeg::TJPF_UNKNOWN;
-pub use crate::turbojpeg::TJPF_XBGR;
-pub use crate::turbojpeg::TJPF_XRGB;
-pub use crate::turbojpeg::TJSAMP;
-pub use crate::turbojpeg::TJSAMP_411;
-pub use crate::turbojpeg::TJSAMP_420;
-pub use crate::turbojpeg::TJSAMP_422;
-pub use crate::turbojpeg::TJSAMP_440;
-pub use crate::turbojpeg::TJSAMP_444;
-pub use crate::turbojpeg::TJSAMP_GRAY;
-pub use crate::turbojpeg::TJ_NUMPF;
-pub use crate::turbojpeg::TJ_NUMSAMP;
+pub use crate::stddef_h::{size_t, NULL};
+pub use crate::stdlib::{
+    _IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data, __off64_t, __off_t, exit, free, malloc,
+    random, FILE, RAND_MAX, _IO_FILE,
+};
+pub use crate::turbojpeg::{
+    tjAlloc, tjAlphaOffset, tjBlueOffset, tjBufSize, tjBufSizeYUV2, tjCompress2, tjCompressFromYUV,
+    tjDecodeYUV, tjDecompress2, tjDecompressHeader2, tjDecompressToYUV2, tjDestroy, tjEncodeYUV3,
+    tjFree, tjGetErrorStr, tjGetScalingFactors, tjGreenOffset, tjInitCompress, tjInitDecompress,
+    tjLoadImage, tjMCUHeight, tjMCUWidth, tjPixelSize, tjRedOffset, tjSaveImage, tjhandle,
+    tjscalingfactor, TJFLAG_BOTTOMUP, TJFLAG_FASTUPSAMPLE, TJFLAG_NOREALLOC, TJPF, TJPF_ABGR,
+    TJPF_ARGB, TJPF_BGR, TJPF_BGRA, TJPF_BGRX, TJPF_CMYK, TJPF_GRAY, TJPF_RGB, TJPF_RGBA,
+    TJPF_RGBX, TJPF_UNKNOWN, TJPF_XBGR, TJPF_XRGB, TJSAMP, TJSAMP_411, TJSAMP_420, TJSAMP_422,
+    TJSAMP_440, TJSAMP_444, TJSAMP_GRAY, TJ_NUMPF, TJ_NUMSAMP,
+};
 extern crate libc;
 use mozjpeg::*;
 

@@ -10,89 +10,21 @@
 #![feature(extern_types)]
 #![feature(label_break_value)]
 #![feature(ptr_wrapping_offset_from)]
-
-pub use crate::stddef_h::size_t;
-pub use crate::stddef_h::NULL;
-pub use crate::stddef_h::NULL_0;
-pub use crate::stdlib::_IO_codecvt;
-pub use crate::stdlib::_IO_lock_t;
-pub use crate::stdlib::_IO_marker;
-pub use crate::stdlib::_IO_wide_data;
-
-pub use crate::stdlib::__off64_t;
-pub use crate::stdlib::__off_t;
-pub use crate::stdlib::atoi;
-pub use crate::stdlib::exit;
-pub use crate::stdlib::fclose;
-pub use crate::stdlib::fopen;
-pub use crate::stdlib::fread;
-pub use crate::stdlib::fseek;
-pub use crate::stdlib::ftell;
-pub use crate::stdlib::fwrite;
-
-pub use crate::stdlib::printf;
-pub use crate::stdlib::sscanf;
-
-pub use crate::stdlib::strtol;
-pub use crate::stdlib::FILE;
-pub use crate::stdlib::SEEK_END;
-pub use crate::stdlib::SEEK_SET;
-pub use crate::stdlib::_IO_FILE;
-pub use crate::turbojpeg::tjAlloc;
-pub use crate::turbojpeg::tjCompress2;
-pub use crate::turbojpeg::tjDecompress2;
-pub use crate::turbojpeg::tjDecompressHeader3;
-pub use crate::turbojpeg::tjDestroy;
-pub use crate::turbojpeg::tjFree;
-pub use crate::turbojpeg::tjGetErrorStr2;
-pub use crate::turbojpeg::tjGetScalingFactors;
-pub use crate::turbojpeg::tjInitCompress;
-pub use crate::turbojpeg::tjInitDecompress;
-pub use crate::turbojpeg::tjInitTransform;
-pub use crate::turbojpeg::tjLoadImage;
-pub use crate::turbojpeg::tjPixelSize;
-pub use crate::turbojpeg::tjSaveImage;
-pub use crate::turbojpeg::tjTransform;
-pub use crate::turbojpeg::tjhandle;
-pub use crate::turbojpeg::tjregion;
-pub use crate::turbojpeg::tjscalingfactor;
-pub use crate::turbojpeg::tjtransform;
-pub use crate::turbojpeg::TJFLAG_ACCURATEDCT;
-pub use crate::turbojpeg::TJFLAG_FASTDCT;
-pub use crate::turbojpeg::TJFLAG_FASTUPSAMPLE;
-pub use crate::turbojpeg::TJPF;
-pub use crate::turbojpeg::TJPF_ABGR;
-pub use crate::turbojpeg::TJPF_ARGB;
-pub use crate::turbojpeg::TJPF_BGR;
-pub use crate::turbojpeg::TJPF_BGRA;
-pub use crate::turbojpeg::TJPF_BGRX;
-pub use crate::turbojpeg::TJPF_CMYK;
-pub use crate::turbojpeg::TJPF_GRAY;
-pub use crate::turbojpeg::TJPF_RGB;
-pub use crate::turbojpeg::TJPF_RGBA;
-pub use crate::turbojpeg::TJPF_RGBX;
-pub use crate::turbojpeg::TJPF_UNKNOWN;
-pub use crate::turbojpeg::TJPF_XBGR;
-pub use crate::turbojpeg::TJPF_XRGB;
-pub use crate::turbojpeg::TJSAMP;
-pub use crate::turbojpeg::TJSAMP_411;
-pub use crate::turbojpeg::TJSAMP_420;
-pub use crate::turbojpeg::TJSAMP_422;
-pub use crate::turbojpeg::TJSAMP_440;
-pub use crate::turbojpeg::TJSAMP_444;
-pub use crate::turbojpeg::TJSAMP_GRAY;
-pub use crate::turbojpeg::TJXOP;
-pub use crate::turbojpeg::TJXOPT_CROP;
-pub use crate::turbojpeg::TJXOPT_GRAY;
-pub use crate::turbojpeg::TJXOPT_TRIM;
-pub use crate::turbojpeg::TJXOP_HFLIP;
-pub use crate::turbojpeg::TJXOP_NONE;
-pub use crate::turbojpeg::TJXOP_ROT180;
-pub use crate::turbojpeg::TJXOP_ROT270;
-pub use crate::turbojpeg::TJXOP_ROT90;
-pub use crate::turbojpeg::TJXOP_TRANSPOSE;
-pub use crate::turbojpeg::TJXOP_TRANSVERSE;
-pub use crate::turbojpeg::TJXOP_VFLIP;
+pub use crate::stddef_h::{size_t, NULL, NULL_0};
+pub use crate::stdlib::{
+    _IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data, __off64_t, __off_t, atoi, exit, fclose,
+    fopen, fread, fseek, ftell, fwrite, printf, sscanf, strtol, FILE, SEEK_END, SEEK_SET, _IO_FILE,
+};
+pub use crate::turbojpeg::{
+    tjAlloc, tjCompress2, tjDecompress2, tjDecompressHeader3, tjDestroy, tjFree, tjGetErrorStr2,
+    tjGetScalingFactors, tjInitCompress, tjInitDecompress, tjInitTransform, tjLoadImage,
+    tjPixelSize, tjSaveImage, tjTransform, tjhandle, tjregion, tjscalingfactor, tjtransform,
+    TJFLAG_ACCURATEDCT, TJFLAG_FASTDCT, TJFLAG_FASTUPSAMPLE, TJPF, TJPF_ABGR, TJPF_ARGB, TJPF_BGR,
+    TJPF_BGRA, TJPF_BGRX, TJPF_CMYK, TJPF_GRAY, TJPF_RGB, TJPF_RGBA, TJPF_RGBX, TJPF_UNKNOWN,
+    TJPF_XBGR, TJPF_XRGB, TJSAMP, TJSAMP_411, TJSAMP_420, TJSAMP_422, TJSAMP_440, TJSAMP_444,
+    TJSAMP_GRAY, TJXOP, TJXOPT_CROP, TJXOPT_GRAY, TJXOPT_TRIM, TJXOP_HFLIP, TJXOP_NONE,
+    TJXOP_ROT180, TJXOP_ROT270, TJXOP_ROT90, TJXOP_TRANSPOSE, TJXOP_TRANSVERSE, TJXOP_VFLIP,
+};
 extern crate libc;
 use mozjpeg::*;
 

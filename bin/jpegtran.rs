@@ -10,199 +10,56 @@
 #![feature(extern_types)]
 #![feature(label_break_value)]
 #![feature(ptr_wrapping_offset_from)]
-
-pub use crate::cdjpeg::keymatch;
-pub use crate::cdjpeg::read_scan_script;
-pub use crate::cdjpeg::read_stdin;
-pub use crate::cdjpeg::write_stdout;
-pub use crate::cdjpeg::EXIT_WARNING;
-pub use crate::cdjpeg::READ_BINARY;
-pub use crate::cdjpeg::WRITE_BINARY;
+pub use crate::cdjpeg::{
+    keymatch, read_scan_script, read_stdin, write_stdout, EXIT_WARNING, READ_BINARY, WRITE_BINARY,
+};
 pub use crate::jconfig_h::JPEG_LIB_VERSION;
-pub use crate::jconfigint_h::BUILD;
-pub use crate::jconfigint_h::PACKAGE_NAME;
-pub use crate::jconfigint_h::VERSION;
-pub use crate::jmorecfg_h::boolean;
-pub use crate::jmorecfg_h::FALSE;
-pub use crate::jmorecfg_h::JCOEF;
-pub use crate::jmorecfg_h::JDIMENSION;
-pub use crate::jmorecfg_h::JOCTET;
-pub use crate::jmorecfg_h::JSAMPLE;
-pub use crate::jmorecfg_h::TRUE;
-pub use crate::jmorecfg_h::UINT16;
-pub use crate::jmorecfg_h::UINT8;
-pub use crate::jpeglib_h::j_common_ptr;
-pub use crate::jpeglib_h::j_compress_ptr;
-pub use crate::jpeglib_h::j_decompress_ptr;
-pub use crate::jpeglib_h::jpeg_CreateCompress;
-pub use crate::jpeglib_h::jpeg_CreateDecompress;
-pub use crate::jpeglib_h::jpeg_c_coef_controller;
-pub use crate::jpeglib_h::jpeg_c_get_int_param;
-pub use crate::jpeglib_h::jpeg_c_int_param_supported;
-pub use crate::jpeglib_h::jpeg_c_main_controller;
-pub use crate::jpeglib_h::jpeg_c_prep_controller;
-pub use crate::jpeglib_h::jpeg_c_set_bool_param;
-pub use crate::jpeglib_h::jpeg_c_set_int_param;
-pub use crate::jpeglib_h::jpeg_color_converter;
-pub use crate::jpeglib_h::jpeg_color_deconverter;
-pub use crate::jpeglib_h::jpeg_color_quantizer;
-pub use crate::jpeglib_h::jpeg_common_struct;
-pub use crate::jpeglib_h::jpeg_comp_master;
-pub use crate::jpeglib_h::jpeg_component_info;
-pub use crate::jpeglib_h::jpeg_compress_struct;
-pub use crate::jpeglib_h::jpeg_copy_critical_parameters;
-pub use crate::jpeglib_h::jpeg_d_coef_controller;
-pub use crate::jpeglib_h::jpeg_d_main_controller;
-pub use crate::jpeglib_h::jpeg_d_post_controller;
-pub use crate::jpeglib_h::jpeg_decomp_master;
-pub use crate::jpeglib_h::jpeg_decompress_struct;
-pub use crate::jpeglib_h::jpeg_destination_mgr;
-pub use crate::jpeglib_h::jpeg_destroy_compress;
-pub use crate::jpeglib_h::jpeg_destroy_decompress;
-pub use crate::jpeglib_h::jpeg_downsampler;
-pub use crate::jpeglib_h::jpeg_entropy_decoder;
-pub use crate::jpeglib_h::jpeg_entropy_encoder;
-pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_finish_compress;
-pub use crate::jpeglib_h::jpeg_finish_decompress;
-pub use crate::jpeglib_h::jpeg_forward_dct;
-pub use crate::jpeglib_h::jpeg_input_controller;
-pub use crate::jpeglib_h::jpeg_inverse_dct;
-pub use crate::jpeglib_h::jpeg_marker_reader;
-pub use crate::jpeglib_h::jpeg_marker_struct;
-pub use crate::jpeglib_h::jpeg_marker_writer;
-pub use crate::jpeglib_h::jpeg_mem_dest;
-pub use crate::jpeglib_h::jpeg_mem_src;
-pub use crate::jpeglib_h::jpeg_memory_mgr;
-pub use crate::jpeglib_h::jpeg_progress_mgr;
-pub use crate::jpeglib_h::jpeg_read_coefficients;
-pub use crate::jpeglib_h::jpeg_read_header;
-pub use crate::jpeglib_h::jpeg_saved_marker_ptr;
-pub use crate::jpeglib_h::jpeg_scan_info;
-pub use crate::jpeglib_h::jpeg_simple_progression;
-pub use crate::jpeglib_h::jpeg_source_mgr;
-pub use crate::jpeglib_h::jpeg_std_error;
-pub use crate::jpeglib_h::jpeg_stdio_dest;
-pub use crate::jpeglib_h::jpeg_stdio_src;
-pub use crate::jpeglib_h::jpeg_upsampler;
-pub use crate::jpeglib_h::jpeg_write_coefficients;
-pub use crate::jpeglib_h::jpeg_write_icc_profile;
-pub use crate::jpeglib_h::jvirt_barray_control;
-pub use crate::jpeglib_h::jvirt_barray_ptr;
-pub use crate::jpeglib_h::jvirt_sarray_control;
-pub use crate::jpeglib_h::jvirt_sarray_ptr;
-pub use crate::jpeglib_h::C2RustUnnamed_1;
-pub use crate::jpeglib_h::C2RustUnnamed_2;
-pub use crate::jpeglib_h::JCS_YCbCr;
-pub use crate::jpeglib_h::JBLOCK;
-pub use crate::jpeglib_h::JBLOCKARRAY;
-pub use crate::jpeglib_h::JBLOCKROW;
-pub use crate::jpeglib_h::JBOOLEAN_OPTIMIZE_SCANS;
-pub use crate::jpeglib_h::JBOOLEAN_OVERSHOOT_DERINGING;
-pub use crate::jpeglib_h::JBOOLEAN_TRELLIS_EOB_OPT;
-pub use crate::jpeglib_h::JBOOLEAN_TRELLIS_QUANT;
-pub use crate::jpeglib_h::JBOOLEAN_TRELLIS_QUANT_DC;
-pub use crate::jpeglib_h::JBOOLEAN_TRELLIS_Q_OPT;
-pub use crate::jpeglib_h::JBOOLEAN_USE_LAMBDA_WEIGHT_TBL;
-pub use crate::jpeglib_h::JBOOLEAN_USE_SCANS_IN_TRELLIS;
-pub use crate::jpeglib_h::JCP_FASTEST;
-pub use crate::jpeglib_h::JCP_MAX_COMPRESSION;
-pub use crate::jpeglib_h::JCS_CMYK;
-pub use crate::jpeglib_h::JCS_EXT_ABGR;
-pub use crate::jpeglib_h::JCS_EXT_ARGB;
-pub use crate::jpeglib_h::JCS_EXT_BGR;
-pub use crate::jpeglib_h::JCS_EXT_BGRA;
-pub use crate::jpeglib_h::JCS_EXT_BGRX;
-pub use crate::jpeglib_h::JCS_EXT_RGB;
-pub use crate::jpeglib_h::JCS_EXT_RGBA;
-pub use crate::jpeglib_h::JCS_EXT_RGBX;
-pub use crate::jpeglib_h::JCS_EXT_XBGR;
-pub use crate::jpeglib_h::JCS_EXT_XRGB;
-pub use crate::jpeglib_h::JCS_GRAYSCALE;
-pub use crate::jpeglib_h::JCS_RGB;
-pub use crate::jpeglib_h::JCS_RGB565;
-pub use crate::jpeglib_h::JCS_UNKNOWN;
-pub use crate::jpeglib_h::JCS_YCCK;
-pub use crate::jpeglib_h::JDCT_FLOAT;
-pub use crate::jpeglib_h::JDCT_IFAST;
-pub use crate::jpeglib_h::JDCT_ISLOW;
-pub use crate::jpeglib_h::JDITHER_FS;
-pub use crate::jpeglib_h::JDITHER_NONE;
-pub use crate::jpeglib_h::JDITHER_ORDERED;
-pub use crate::jpeglib_h::JHUFF_TBL;
-pub use crate::jpeglib_h::JINT_BASE_QUANT_TBL_IDX;
-pub use crate::jpeglib_h::JINT_COMPRESS_PROFILE;
-pub use crate::jpeglib_h::JINT_DC_SCAN_OPT_MODE;
-pub use crate::jpeglib_h::JINT_TRELLIS_FREQ_SPLIT;
-pub use crate::jpeglib_h::JINT_TRELLIS_NUM_LOOPS;
-pub use crate::jpeglib_h::JQUANT_TBL;
-pub use crate::jpeglib_h::JSAMPARRAY;
-pub use crate::jpeglib_h::JSAMPROW;
-pub use crate::jpeglib_h::J_BOOLEAN_PARAM;
-pub use crate::jpeglib_h::J_COLOR_SPACE;
-pub use crate::jpeglib_h::J_DCT_METHOD;
-pub use crate::jpeglib_h::J_DITHER_MODE;
-pub use crate::jpeglib_h::J_INT_PARAM;
-pub use crate::jversion_h::JCOPYRIGHT;
-pub use crate::jversion_h::JVERSION;
-pub use crate::stddef_h::size_t;
-pub use crate::stddef_h::NULL;
-pub use crate::stdlib::_IO_codecvt;
-pub use crate::stdlib::_IO_lock_t;
-pub use crate::stdlib::_IO_marker;
-pub use crate::stdlib::_IO_wide_data;
-pub use crate::stdlib::__off64_t;
-pub use crate::stdlib::__off_t;
-pub use crate::stdlib::exit;
-pub use crate::stdlib::fclose;
-pub use crate::stdlib::ferror;
-pub use crate::stdlib::fopen;
-pub use crate::stdlib::fprintf;
-pub use crate::stdlib::fread;
-pub use crate::stdlib::free;
-pub use crate::stdlib::fseek;
-pub use crate::stdlib::ftell;
-pub use crate::stdlib::fwrite;
-pub use crate::stdlib::malloc;
-pub use crate::stdlib::realloc;
-pub use crate::stdlib::sscanf;
-pub use crate::stdlib::stderr;
-pub use crate::stdlib::stdin;
-pub use crate::stdlib::stdout;
-pub use crate::stdlib::EXIT_FAILURE;
-pub use crate::stdlib::EXIT_SUCCESS;
-pub use crate::stdlib::FILE;
-pub use crate::stdlib::SEEK_END;
-pub use crate::stdlib::SEEK_SET;
-pub use crate::stdlib::_IO_FILE;
-pub use crate::transupp::jcopy_markers_execute;
-pub use crate::transupp::jcopy_markers_setup;
-pub use crate::transupp::jpeg_transform_info;
-pub use crate::transupp::jtransform_adjust_parameters;
-pub use crate::transupp::jtransform_execute_transform;
-pub use crate::transupp::jtransform_execute_transformation;
-pub use crate::transupp::jtransform_parse_crop_spec;
-pub use crate::transupp::jtransform_request_workspace;
-pub use crate::transupp::JCOPYOPT_ALL;
-pub use crate::transupp::JCOPYOPT_ALL_EXCEPT_ICC;
-pub use crate::transupp::JCOPYOPT_COMMENTS;
-pub use crate::transupp::JCOPYOPT_DEFAULT;
-pub use crate::transupp::JCOPYOPT_NONE;
-pub use crate::transupp::JCOPY_OPTION;
-pub use crate::transupp::JCROP_CODE;
-pub use crate::transupp::JCROP_FORCE;
-pub use crate::transupp::JCROP_NEG;
-pub use crate::transupp::JCROP_POS;
-pub use crate::transupp::JCROP_UNSET;
-pub use crate::transupp::JXFORM_CODE;
-pub use crate::transupp::JXFORM_FLIP_H;
-pub use crate::transupp::JXFORM_FLIP_V;
-pub use crate::transupp::JXFORM_NONE;
-pub use crate::transupp::JXFORM_ROT_180;
-pub use crate::transupp::JXFORM_ROT_270;
-pub use crate::transupp::JXFORM_ROT_90;
-pub use crate::transupp::JXFORM_TRANSPOSE;
-pub use crate::transupp::JXFORM_TRANSVERSE;
+pub use crate::jconfigint_h::{BUILD, PACKAGE_NAME, VERSION};
+pub use crate::jmorecfg_h::{
+    boolean, FALSE, JCOEF, JDIMENSION, JOCTET, JSAMPLE, TRUE, UINT16, UINT8,
+};
+pub use crate::jpeglib_h::{
+    j_common_ptr, j_compress_ptr, j_decompress_ptr, jpeg_CreateCompress, jpeg_CreateDecompress,
+    jpeg_c_coef_controller, jpeg_c_get_int_param, jpeg_c_int_param_supported,
+    jpeg_c_main_controller, jpeg_c_prep_controller, jpeg_c_set_bool_param, jpeg_c_set_int_param,
+    jpeg_color_converter, jpeg_color_deconverter, jpeg_color_quantizer, jpeg_common_struct,
+    jpeg_comp_master, jpeg_component_info, jpeg_compress_struct, jpeg_copy_critical_parameters,
+    jpeg_d_coef_controller, jpeg_d_main_controller, jpeg_d_post_controller, jpeg_decomp_master,
+    jpeg_decompress_struct, jpeg_destination_mgr, jpeg_destroy_compress, jpeg_destroy_decompress,
+    jpeg_downsampler, jpeg_entropy_decoder, jpeg_entropy_encoder, jpeg_error_mgr,
+    jpeg_finish_compress, jpeg_finish_decompress, jpeg_forward_dct, jpeg_input_controller,
+    jpeg_inverse_dct, jpeg_marker_reader, jpeg_marker_struct, jpeg_marker_writer, jpeg_mem_dest,
+    jpeg_mem_src, jpeg_memory_mgr, jpeg_progress_mgr, jpeg_read_coefficients, jpeg_read_header,
+    jpeg_saved_marker_ptr, jpeg_scan_info, jpeg_simple_progression, jpeg_source_mgr,
+    jpeg_std_error, jpeg_stdio_dest, jpeg_stdio_src, jpeg_upsampler, jpeg_write_coefficients,
+    jpeg_write_icc_profile, jvirt_barray_control, jvirt_barray_ptr, jvirt_sarray_control,
+    jvirt_sarray_ptr, C2RustUnnamed_1, C2RustUnnamed_2, JCS_YCbCr, JBLOCK, JBLOCKARRAY, JBLOCKROW,
+    JBOOLEAN_OPTIMIZE_SCANS, JBOOLEAN_OVERSHOOT_DERINGING, JBOOLEAN_TRELLIS_EOB_OPT,
+    JBOOLEAN_TRELLIS_QUANT, JBOOLEAN_TRELLIS_QUANT_DC, JBOOLEAN_TRELLIS_Q_OPT,
+    JBOOLEAN_USE_LAMBDA_WEIGHT_TBL, JBOOLEAN_USE_SCANS_IN_TRELLIS, JCP_FASTEST,
+    JCP_MAX_COMPRESSION, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA,
+    JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB,
+    JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW,
+    JDITHER_FS, JDITHER_NONE, JDITHER_ORDERED, JHUFF_TBL, JINT_BASE_QUANT_TBL_IDX,
+    JINT_COMPRESS_PROFILE, JINT_DC_SCAN_OPT_MODE, JINT_TRELLIS_FREQ_SPLIT, JINT_TRELLIS_NUM_LOOPS,
+    JQUANT_TBL, JSAMPARRAY, JSAMPROW, J_BOOLEAN_PARAM, J_COLOR_SPACE, J_DCT_METHOD, J_DITHER_MODE,
+    J_INT_PARAM,
+};
+pub use crate::jversion_h::{JCOPYRIGHT, JVERSION};
+pub use crate::stddef_h::{size_t, NULL};
+pub use crate::stdlib::{
+    _IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data, __off64_t, __off_t, exit, fclose, ferror,
+    fopen, fprintf, fread, free, fseek, ftell, fwrite, malloc, realloc, sscanf, stderr, stdin,
+    stdout, EXIT_FAILURE, EXIT_SUCCESS, FILE, SEEK_END, SEEK_SET, _IO_FILE,
+};
+pub use crate::transupp::{
+    jcopy_markers_execute, jcopy_markers_setup, jpeg_transform_info, jtransform_adjust_parameters,
+    jtransform_execute_transform, jtransform_execute_transformation, jtransform_parse_crop_spec,
+    jtransform_request_workspace, JCOPYOPT_ALL, JCOPYOPT_ALL_EXCEPT_ICC, JCOPYOPT_COMMENTS,
+    JCOPYOPT_DEFAULT, JCOPYOPT_NONE, JCOPY_OPTION, JCROP_CODE, JCROP_FORCE, JCROP_NEG, JCROP_POS,
+    JCROP_UNSET, JXFORM_CODE, JXFORM_FLIP_H, JXFORM_FLIP_V, JXFORM_NONE, JXFORM_ROT_180,
+    JXFORM_ROT_270, JXFORM_ROT_90, JXFORM_TRANSPOSE, JXFORM_TRANSVERSE,
+};
 extern crate libc;
 use mozjpeg::*;
 
