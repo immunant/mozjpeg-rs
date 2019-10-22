@@ -1,96 +1,266 @@
-pub use super::jerror::{
-    C2RustUnnamed_3, JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
-    JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID, JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
-    JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE, JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
-    JERR_BAD_LENGTH, JERR_BAD_LIB_VERSION, JERR_BAD_MCU_SIZE, JERR_BAD_PARAM, JERR_BAD_PARAM_VALUE,
-    JERR_BAD_POOL_ID, JERR_BAD_PRECISION, JERR_BAD_PROGRESSION, JERR_BAD_PROG_SCRIPT,
-    JERR_BAD_SAMPLING, JERR_BAD_SCAN_SCRIPT, JERR_BAD_STATE, JERR_BAD_STRUCT_SIZE,
-    JERR_BAD_VIRTUAL_ACCESS, JERR_BUFFER_SIZE, JERR_CANT_SUSPEND, JERR_CCIR601_NOTIMPL,
-    JERR_COMPONENT_COUNT, JERR_CONVERSION_NOTIMPL, JERR_DAC_INDEX, JERR_DAC_VALUE, JERR_DHT_INDEX,
-    JERR_DQT_INDEX, JERR_EMPTY_IMAGE, JERR_EMS_READ, JERR_EMS_WRITE, JERR_EOI_EXPECTED,
-    JERR_FILE_READ, JERR_FILE_WRITE, JERR_FRACT_SAMPLE_NOTIMPL, JERR_HUFF_CLEN_OVERFLOW,
-    JERR_HUFF_MISSING_CODE, JERR_IMAGE_TOO_BIG, JERR_INPUT_EMPTY, JERR_INPUT_EOF,
-    JERR_MISMATCHED_QUANT_TABLE, JERR_MISSING_DATA, JERR_MODE_CHANGE, JERR_NOTIMPL,
-    JERR_NOT_COMPILED, JERR_NO_BACKING_STORE, JERR_NO_HUFF_TABLE, JERR_NO_IMAGE,
-    JERR_NO_QUANT_TABLE, JERR_NO_SOI, JERR_OUT_OF_MEMORY, JERR_QUANT_COMPONENTS,
-    JERR_QUANT_FEW_COLORS, JERR_QUANT_MANY_COLORS, JERR_SOF_DUPLICATE, JERR_SOF_NO_SOS,
-    JERR_SOF_UNSUPPORTED, JERR_SOI_DUPLICATE, JERR_SOS_NO_SOF, JERR_TFILE_CREATE, JERR_TFILE_READ,
-    JERR_TFILE_SEEK, JERR_TFILE_WRITE, JERR_TOO_LITTLE_DATA, JERR_UNKNOWN_MARKER,
-    JERR_UNSUPPORTED_SUSPEND, JERR_VIRTUAL_BUG, JERR_WIDTH_OVERFLOW, JERR_XMS_READ, JERR_XMS_WRITE,
-    JMSG_COPYRIGHT, JMSG_LASTMSGCODE, JMSG_NOMESSAGE, JMSG_VERSION, JTRC_16BIT_TABLES, JTRC_ADOBE,
-    JTRC_APP0, JTRC_APP14, JTRC_DAC, JTRC_DHT, JTRC_DQT, JTRC_DRI, JTRC_EMS_CLOSE, JTRC_EMS_OPEN,
-    JTRC_EOI, JTRC_HUFFBITS, JTRC_JFIF, JTRC_JFIF_BADTHUMBNAILSIZE, JTRC_JFIF_EXTENSION,
-    JTRC_JFIF_THUMBNAIL, JTRC_MISC_MARKER, JTRC_PARMLESS_MARKER, JTRC_QUANTVALS,
-    JTRC_QUANT_3_NCOLORS, JTRC_QUANT_NCOLORS, JTRC_QUANT_SELECTED, JTRC_RECOVERY_ACTION, JTRC_RST,
-    JTRC_SMOOTH_NOTIMPL, JTRC_SOF, JTRC_SOF_COMPONENT, JTRC_SOI, JTRC_SOS, JTRC_SOS_COMPONENT,
-    JTRC_SOS_PARAMS, JTRC_TFILE_CLOSE, JTRC_TFILE_OPEN, JTRC_THUMB_JPEG, JTRC_THUMB_PALETTE,
-    JTRC_THUMB_RGB, JTRC_UNKNOWN_IDS, JTRC_XMS_CLOSE, JTRC_XMS_OPEN, JWRN_ADOBE_XFORM,
-    JWRN_BOGUS_ICC, JWRN_BOGUS_PROGRESSION, JWRN_EXTRANEOUS_DATA, JWRN_HIT_MARKER,
-    JWRN_HUFF_BAD_CODE, JWRN_JFIF_MAJOR, JWRN_JPEG_EOF, JWRN_MUST_RESYNC, JWRN_NOT_SEQUENTIAL,
-    JWRN_TOO_MUCH_DATA,
-};
+pub use crate::jmorecfg_h::boolean;
+pub use crate::jpeglib_h::jpeg_comp_master;
+pub use crate::jpeglib_h::jpeg_destination_mgr;
+pub use crate::jpeglib_h::C2RustUnnamed_2;
+pub use crate::src::jerror::C2RustUnnamed_3;
+use libc;
+
+pub use crate::stddef_h::size_t;
+pub use crate::stdlib::_IO_codecvt;
+pub use crate::stdlib::_IO_lock_t;
+pub use crate::stdlib::_IO_marker;
+pub use crate::stdlib::_IO_wide_data;
+pub use crate::stdlib::__off64_t;
+pub use crate::stdlib::__off_t;
+pub use crate::stdlib::FILE;
+pub use crate::stdlib::_IO_FILE;
+
 pub use crate::jconfig_h::BITS_IN_JSAMPLE;
-pub use crate::jmorecfg_h::{
-    boolean, FALSE, JCOEF, JDIMENSION, JOCTET, JPEG_MAX_DIMENSION, JSAMPLE, MAX_COMPONENTS, TRUE,
-    UINT16, UINT8,
-};
-pub use crate::jpegint_h::{
-    jdiv_round_up, jpeg_mem_dest_internal, JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT,
-    JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, J_BUF_MODE,
-};
-pub use crate::jpeglib_h::{
-    j_common_ptr, j_compress_ptr, jpeg_c_coef_controller, jpeg_c_main_controller,
-    jpeg_c_prep_controller, jpeg_color_converter, jpeg_common_struct, jpeg_comp_master,
-    jpeg_component_info, jpeg_compress_struct, jpeg_destination_mgr, jpeg_downsampler,
-    jpeg_entropy_encoder, jpeg_error_mgr, jpeg_forward_dct, jpeg_marker_writer, jpeg_memory_mgr,
-    jpeg_progress_mgr, jpeg_scan_info, jvirt_barray_control, jvirt_barray_ptr,
-    jvirt_sarray_control, jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr, C_MAX_BLOCKS_IN_MCU,
-    DCTSIZE, DCTSIZE2, JBLOCK, JBLOCKARRAY, JBLOCKROW, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB,
-    JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR,
-    JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT,
-    JDCT_IFAST, JDCT_ISLOW, JHUFF_TBL, JPOOL_IMAGE, JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE, JSAMPROW,
-    J_COLOR_SPACE, J_DCT_METHOD, MAX_COMPS_IN_SCAN, MAX_SAMP_FACTOR, NUM_QUANT_TBLS,
-};
-pub use crate::stddef_h::{size_t, NULL};
-pub use crate::stdlib::{
-    _IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data, __off64_t, __off_t, FILE, _IO_FILE,
-};
-use crate::stdlib::{fprintf, free, memcpy, stderr};
-use libc::{self, c_char, c_int, c_long, c_uchar, c_uint, c_ulong, c_void};
+pub use crate::jmorecfg_h::FALSE;
+pub use crate::jmorecfg_h::JCOEF;
+pub use crate::jmorecfg_h::JDIMENSION;
+pub use crate::jmorecfg_h::JOCTET;
+pub use crate::jmorecfg_h::JPEG_MAX_DIMENSION;
+pub use crate::jmorecfg_h::JSAMPLE;
+pub use crate::jmorecfg_h::MAX_COMPONENTS;
+pub use crate::jmorecfg_h::TRUE;
+pub use crate::jmorecfg_h::UINT16;
+pub use crate::jmorecfg_h::UINT8;
+pub use crate::jpegint_h::jdiv_round_up;
+pub use crate::jpegint_h::jpeg_mem_dest_internal;
+pub use crate::jpegint_h::JBUF_CRANK_DEST;
+pub use crate::jpegint_h::JBUF_PASS_THRU;
+pub use crate::jpegint_h::JBUF_REQUANT;
+pub use crate::jpegint_h::JBUF_SAVE_AND_PASS;
+pub use crate::jpegint_h::JBUF_SAVE_SOURCE;
+pub use crate::jpegint_h::J_BUF_MODE;
+pub use crate::jpeglib_h::j_common_ptr;
+pub use crate::jpeglib_h::j_compress_ptr;
+pub use crate::jpeglib_h::jpeg_c_coef_controller;
+pub use crate::jpeglib_h::jpeg_c_main_controller;
+pub use crate::jpeglib_h::jpeg_c_prep_controller;
+pub use crate::jpeglib_h::jpeg_color_converter;
+pub use crate::jpeglib_h::jpeg_common_struct;
+pub use crate::jpeglib_h::jpeg_component_info;
+pub use crate::jpeglib_h::jpeg_compress_struct;
+pub use crate::jpeglib_h::jpeg_downsampler;
+pub use crate::jpeglib_h::jpeg_entropy_encoder;
+pub use crate::jpeglib_h::jpeg_error_mgr;
+pub use crate::jpeglib_h::jpeg_forward_dct;
+pub use crate::jpeglib_h::jpeg_marker_writer;
+pub use crate::jpeglib_h::jpeg_memory_mgr;
+pub use crate::jpeglib_h::jpeg_progress_mgr;
+pub use crate::jpeglib_h::jpeg_scan_info;
+pub use crate::jpeglib_h::jvirt_barray_control;
+pub use crate::jpeglib_h::jvirt_barray_ptr;
+pub use crate::jpeglib_h::jvirt_sarray_control;
+pub use crate::jpeglib_h::jvirt_sarray_ptr;
+pub use crate::jpeglib_h::JCS_YCbCr;
+pub use crate::jpeglib_h::C_MAX_BLOCKS_IN_MCU;
+pub use crate::jpeglib_h::DCTSIZE;
+pub use crate::jpeglib_h::DCTSIZE2;
+pub use crate::jpeglib_h::JBLOCK;
+pub use crate::jpeglib_h::JBLOCKARRAY;
+pub use crate::jpeglib_h::JBLOCKROW;
+pub use crate::jpeglib_h::JCS_CMYK;
+pub use crate::jpeglib_h::JCS_EXT_ABGR;
+pub use crate::jpeglib_h::JCS_EXT_ARGB;
+pub use crate::jpeglib_h::JCS_EXT_BGR;
+pub use crate::jpeglib_h::JCS_EXT_BGRA;
+pub use crate::jpeglib_h::JCS_EXT_BGRX;
+pub use crate::jpeglib_h::JCS_EXT_RGB;
+pub use crate::jpeglib_h::JCS_EXT_RGBA;
+pub use crate::jpeglib_h::JCS_EXT_RGBX;
+pub use crate::jpeglib_h::JCS_EXT_XBGR;
+pub use crate::jpeglib_h::JCS_EXT_XRGB;
+pub use crate::jpeglib_h::JCS_GRAYSCALE;
+pub use crate::jpeglib_h::JCS_RGB;
+pub use crate::jpeglib_h::JCS_RGB565;
+pub use crate::jpeglib_h::JCS_UNKNOWN;
+pub use crate::jpeglib_h::JCS_YCCK;
+pub use crate::jpeglib_h::JDCT_FLOAT;
+pub use crate::jpeglib_h::JDCT_IFAST;
+pub use crate::jpeglib_h::JDCT_ISLOW;
+pub use crate::jpeglib_h::JHUFF_TBL;
+pub use crate::jpeglib_h::JPOOL_IMAGE;
+pub use crate::jpeglib_h::JQUANT_TBL;
+pub use crate::jpeglib_h::JSAMPARRAY;
+pub use crate::jpeglib_h::JSAMPIMAGE;
+pub use crate::jpeglib_h::JSAMPROW;
+pub use crate::jpeglib_h::J_COLOR_SPACE;
+pub use crate::jpeglib_h::J_DCT_METHOD;
+pub use crate::jpeglib_h::MAX_COMPS_IN_SCAN;
+pub use crate::jpeglib_h::MAX_SAMP_FACTOR;
+pub use crate::jpeglib_h::NUM_QUANT_TBLS;
+pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
+pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
+pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
+pub use crate::src::jerror::JERR_BAD_BUFFER_MODE;
+pub use crate::src::jerror::JERR_BAD_COMPONENT_ID;
+pub use crate::src::jerror::JERR_BAD_CROP_SPEC;
+pub use crate::src::jerror::JERR_BAD_DCTSIZE;
+pub use crate::src::jerror::JERR_BAD_DCT_COEF;
+pub use crate::src::jerror::JERR_BAD_HUFF_TABLE;
+pub use crate::src::jerror::JERR_BAD_IN_COLORSPACE;
+pub use crate::src::jerror::JERR_BAD_J_COLORSPACE;
+pub use crate::src::jerror::JERR_BAD_LENGTH;
+pub use crate::src::jerror::JERR_BAD_LIB_VERSION;
+pub use crate::src::jerror::JERR_BAD_MCU_SIZE;
+pub use crate::src::jerror::JERR_BAD_PARAM;
+pub use crate::src::jerror::JERR_BAD_PARAM_VALUE;
+pub use crate::src::jerror::JERR_BAD_POOL_ID;
+pub use crate::src::jerror::JERR_BAD_PRECISION;
+pub use crate::src::jerror::JERR_BAD_PROGRESSION;
+pub use crate::src::jerror::JERR_BAD_PROG_SCRIPT;
+pub use crate::src::jerror::JERR_BAD_SAMPLING;
+pub use crate::src::jerror::JERR_BAD_SCAN_SCRIPT;
+pub use crate::src::jerror::JERR_BAD_STATE;
+pub use crate::src::jerror::JERR_BAD_STRUCT_SIZE;
+pub use crate::src::jerror::JERR_BAD_VIRTUAL_ACCESS;
+pub use crate::src::jerror::JERR_BUFFER_SIZE;
+pub use crate::src::jerror::JERR_CANT_SUSPEND;
+pub use crate::src::jerror::JERR_CCIR601_NOTIMPL;
+pub use crate::src::jerror::JERR_COMPONENT_COUNT;
+pub use crate::src::jerror::JERR_CONVERSION_NOTIMPL;
+pub use crate::src::jerror::JERR_DAC_INDEX;
+pub use crate::src::jerror::JERR_DAC_VALUE;
+pub use crate::src::jerror::JERR_DHT_INDEX;
+pub use crate::src::jerror::JERR_DQT_INDEX;
+pub use crate::src::jerror::JERR_EMPTY_IMAGE;
+pub use crate::src::jerror::JERR_EMS_READ;
+pub use crate::src::jerror::JERR_EMS_WRITE;
+pub use crate::src::jerror::JERR_EOI_EXPECTED;
+pub use crate::src::jerror::JERR_FILE_READ;
+pub use crate::src::jerror::JERR_FILE_WRITE;
+pub use crate::src::jerror::JERR_FRACT_SAMPLE_NOTIMPL;
+pub use crate::src::jerror::JERR_HUFF_CLEN_OVERFLOW;
+pub use crate::src::jerror::JERR_HUFF_MISSING_CODE;
+pub use crate::src::jerror::JERR_IMAGE_TOO_BIG;
+pub use crate::src::jerror::JERR_INPUT_EMPTY;
+pub use crate::src::jerror::JERR_INPUT_EOF;
+pub use crate::src::jerror::JERR_MISMATCHED_QUANT_TABLE;
+pub use crate::src::jerror::JERR_MISSING_DATA;
+pub use crate::src::jerror::JERR_MODE_CHANGE;
+pub use crate::src::jerror::JERR_NOTIMPL;
+pub use crate::src::jerror::JERR_NOT_COMPILED;
+pub use crate::src::jerror::JERR_NO_BACKING_STORE;
+pub use crate::src::jerror::JERR_NO_HUFF_TABLE;
+pub use crate::src::jerror::JERR_NO_IMAGE;
+pub use crate::src::jerror::JERR_NO_QUANT_TABLE;
+pub use crate::src::jerror::JERR_NO_SOI;
+pub use crate::src::jerror::JERR_OUT_OF_MEMORY;
+pub use crate::src::jerror::JERR_QUANT_COMPONENTS;
+pub use crate::src::jerror::JERR_QUANT_FEW_COLORS;
+pub use crate::src::jerror::JERR_QUANT_MANY_COLORS;
+pub use crate::src::jerror::JERR_SOF_DUPLICATE;
+pub use crate::src::jerror::JERR_SOF_NO_SOS;
+pub use crate::src::jerror::JERR_SOF_UNSUPPORTED;
+pub use crate::src::jerror::JERR_SOI_DUPLICATE;
+pub use crate::src::jerror::JERR_SOS_NO_SOF;
+pub use crate::src::jerror::JERR_TFILE_CREATE;
+pub use crate::src::jerror::JERR_TFILE_READ;
+pub use crate::src::jerror::JERR_TFILE_SEEK;
+pub use crate::src::jerror::JERR_TFILE_WRITE;
+pub use crate::src::jerror::JERR_TOO_LITTLE_DATA;
+pub use crate::src::jerror::JERR_UNKNOWN_MARKER;
+pub use crate::src::jerror::JERR_UNSUPPORTED_SUSPEND;
+pub use crate::src::jerror::JERR_VIRTUAL_BUG;
+pub use crate::src::jerror::JERR_WIDTH_OVERFLOW;
+pub use crate::src::jerror::JERR_XMS_READ;
+pub use crate::src::jerror::JERR_XMS_WRITE;
+pub use crate::src::jerror::JMSG_COPYRIGHT;
+pub use crate::src::jerror::JMSG_LASTMSGCODE;
+pub use crate::src::jerror::JMSG_NOMESSAGE;
+pub use crate::src::jerror::JMSG_VERSION;
+pub use crate::src::jerror::JTRC_16BIT_TABLES;
+pub use crate::src::jerror::JTRC_ADOBE;
+pub use crate::src::jerror::JTRC_APP0;
+pub use crate::src::jerror::JTRC_APP14;
+pub use crate::src::jerror::JTRC_DAC;
+pub use crate::src::jerror::JTRC_DHT;
+pub use crate::src::jerror::JTRC_DQT;
+pub use crate::src::jerror::JTRC_DRI;
+pub use crate::src::jerror::JTRC_EMS_CLOSE;
+pub use crate::src::jerror::JTRC_EMS_OPEN;
+pub use crate::src::jerror::JTRC_EOI;
+pub use crate::src::jerror::JTRC_HUFFBITS;
+pub use crate::src::jerror::JTRC_JFIF;
+pub use crate::src::jerror::JTRC_JFIF_BADTHUMBNAILSIZE;
+pub use crate::src::jerror::JTRC_JFIF_EXTENSION;
+pub use crate::src::jerror::JTRC_JFIF_THUMBNAIL;
+pub use crate::src::jerror::JTRC_MISC_MARKER;
+pub use crate::src::jerror::JTRC_PARMLESS_MARKER;
+pub use crate::src::jerror::JTRC_QUANTVALS;
+pub use crate::src::jerror::JTRC_QUANT_3_NCOLORS;
+pub use crate::src::jerror::JTRC_QUANT_NCOLORS;
+pub use crate::src::jerror::JTRC_QUANT_SELECTED;
+pub use crate::src::jerror::JTRC_RECOVERY_ACTION;
+pub use crate::src::jerror::JTRC_RST;
+pub use crate::src::jerror::JTRC_SMOOTH_NOTIMPL;
+pub use crate::src::jerror::JTRC_SOF;
+pub use crate::src::jerror::JTRC_SOF_COMPONENT;
+pub use crate::src::jerror::JTRC_SOI;
+pub use crate::src::jerror::JTRC_SOS;
+pub use crate::src::jerror::JTRC_SOS_COMPONENT;
+pub use crate::src::jerror::JTRC_SOS_PARAMS;
+pub use crate::src::jerror::JTRC_TFILE_CLOSE;
+pub use crate::src::jerror::JTRC_TFILE_OPEN;
+pub use crate::src::jerror::JTRC_THUMB_JPEG;
+pub use crate::src::jerror::JTRC_THUMB_PALETTE;
+pub use crate::src::jerror::JTRC_THUMB_RGB;
+pub use crate::src::jerror::JTRC_UNKNOWN_IDS;
+pub use crate::src::jerror::JTRC_XMS_CLOSE;
+pub use crate::src::jerror::JTRC_XMS_OPEN;
+pub use crate::src::jerror::JWRN_ADOBE_XFORM;
+pub use crate::src::jerror::JWRN_BOGUS_ICC;
+pub use crate::src::jerror::JWRN_BOGUS_PROGRESSION;
+pub use crate::src::jerror::JWRN_EXTRANEOUS_DATA;
+pub use crate::src::jerror::JWRN_HIT_MARKER;
+pub use crate::src::jerror::JWRN_HUFF_BAD_CODE;
+pub use crate::src::jerror::JWRN_JFIF_MAJOR;
+pub use crate::src::jerror::JWRN_JPEG_EOF;
+pub use crate::src::jerror::JWRN_MUST_RESYNC;
+pub use crate::src::jerror::JWRN_NOT_SEQUENTIAL;
+pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
+pub use crate::stddef_h::NULL;
+use crate::stdlib::fprintf;
+use crate::stdlib::free;
+use crate::stdlib::memcpy;
+use crate::stdlib::stderr;
 // =============== BEGIN jcmaster_h ================
-pub type my_master_ptr = *mut my_comp_master;
+pub type my_master_ptr = *mut crate::src::jcmaster::my_comp_master;
 
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct my_comp_master {
-    pub pub_0: jpeg_comp_master,
-    pub pass_type: c_pass_type,
-    pub pass_number: c_int,
-    pub total_passes: c_int,
-    pub scan_number: c_int,
-    pub pass_number_scan_opt_base: c_int,
-    pub scan_buffer: [*mut c_uchar; 64],
-    pub scan_size: [c_ulong; 64],
-    pub actual_Al: [c_int; 64],
-    pub best_cost: c_ulong,
-    pub best_freq_split_idx_luma: c_int,
-    pub best_freq_split_idx_chroma: c_int,
-    pub best_Al_luma: c_int,
-    pub best_Al_chroma: c_int,
-    pub interleave_chroma_dc: boolean,
-    pub saved_dest: *mut jpeg_destination_mgr,
-    pub jpeg_version: *const c_char,
+    pub pub_0: crate::jpeglib_h::jpeg_comp_master,
+    pub pass_type: crate::src::jcmaster::c_pass_type,
+    pub pass_number: libc::c_int,
+    pub total_passes: libc::c_int,
+    pub scan_number: libc::c_int,
+    pub pass_number_scan_opt_base: libc::c_int,
+    pub scan_buffer: [*mut libc::c_uchar; 64],
+    pub scan_size: [libc::c_ulong; 64],
+    pub actual_Al: [libc::c_int; 64],
+    pub best_cost: libc::c_ulong,
+    pub best_freq_split_idx_luma: libc::c_int,
+    pub best_freq_split_idx_chroma: libc::c_int,
+    pub best_Al_luma: libc::c_int,
+    pub best_Al_chroma: libc::c_int,
+    pub interleave_chroma_dc: crate::jmorecfg_h::boolean,
+    pub saved_dest: *mut crate::jpeglib_h::jpeg_destination_mgr,
+    pub jpeg_version: *const libc::c_char,
 }
 
-pub type c_pass_type = c_uint;
+pub type c_pass_type = libc::c_uint;
 
-pub const trellis_pass: c_pass_type = 3;
+pub const trellis_pass: crate::src::jcmaster::c_pass_type = 3;
 
-pub const output_pass: c_pass_type = 2;
+pub const output_pass: crate::src::jcmaster::c_pass_type = 2;
 
-pub const huff_opt_pass: c_pass_type = 1;
+pub const huff_opt_pass: crate::src::jcmaster::c_pass_type = 1;
 
-pub const main_pass: c_pass_type = 0;
+pub const main_pass: crate::src::jcmaster::c_pass_type = 0;
 /*
  * jcmaster.c
  *
@@ -112,66 +282,71 @@ pub const main_pass: c_pass_type = 0;
  * Support routines that do various essential calculations.
  */
 
-unsafe extern "C" fn initial_setup(mut cinfo: j_compress_ptr, mut transcode_only: boolean)
+unsafe extern "C" fn initial_setup(
+    mut cinfo: crate::jpeglib_h::j_compress_ptr,
+    mut transcode_only: crate::jmorecfg_h::boolean,
+)
 /* Do computations that are needed before master selection phase */
 {
-    let mut ci: c_int = 0;
-    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
-    let mut samplesperrow: c_long = 0;
-    let mut jd_samplesperrow: JDIMENSION = 0;
+    let mut ci: libc::c_int = 0;
+    let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
+        0 as *mut crate::jpeglib_h::jpeg_component_info;
+    let mut samplesperrow: libc::c_long = 0;
+    let mut jd_samplesperrow: crate::jmorecfg_h::JDIMENSION = 0;
     /* Sanity check on image dimensions */
-    if (*cinfo).image_height <= 0i32 as c_uint
-        || (*cinfo).image_width <= 0i32 as c_uint
+    if (*cinfo).image_height <= 0i32 as libc::c_uint
+        || (*cinfo).image_width <= 0i32 as libc::c_uint
         || (*cinfo).num_components <= 0i32
         || (*cinfo).input_components <= 0i32
     {
-        (*(*cinfo).err).msg_code = super::jerror::JERR_EMPTY_IMAGE as c_int;
+        (*(*cinfo).err).msg_code = crate::src::jerror::JERR_EMPTY_IMAGE as libc::c_int;
         Some(
             (*(*cinfo).err)
                 .error_exit
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as j_common_ptr);
+        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
     /* Make sure image isn't bigger than I can handle */
-    if (*cinfo).image_height as c_long > JPEG_MAX_DIMENSION
-        || (*cinfo).image_width as c_long > JPEG_MAX_DIMENSION
+    if (*cinfo).image_height as libc::c_long > crate::jmorecfg_h::JPEG_MAX_DIMENSION
+        || (*cinfo).image_width as libc::c_long > crate::jmorecfg_h::JPEG_MAX_DIMENSION
     {
-        (*(*cinfo).err).msg_code = super::jerror::JERR_IMAGE_TOO_BIG as c_int;
-        (*(*cinfo).err).msg_parm.i[0] = 65500i64 as c_uint as c_int;
+        (*(*cinfo).err).msg_code = crate::src::jerror::JERR_IMAGE_TOO_BIG as libc::c_int;
+        (*(*cinfo).err).msg_parm.i[0] = 65500i64 as libc::c_uint as libc::c_int;
         Some(
             (*(*cinfo).err)
                 .error_exit
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as j_common_ptr);
+        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
     /* Width of an input scanline must be representable as JDIMENSION. */
-    samplesperrow = (*cinfo).image_width as c_long * (*cinfo).input_components as c_long;
-    jd_samplesperrow = samplesperrow as JDIMENSION;
-    if jd_samplesperrow as c_long != samplesperrow {
-        (*(*cinfo).err).msg_code = super::jerror::JERR_WIDTH_OVERFLOW as c_int;
+    samplesperrow =
+        (*cinfo).image_width as libc::c_long * (*cinfo).input_components as libc::c_long;
+    jd_samplesperrow = samplesperrow as crate::jmorecfg_h::JDIMENSION;
+    if jd_samplesperrow as libc::c_long != samplesperrow {
+        (*(*cinfo).err).msg_code = crate::src::jerror::JERR_WIDTH_OVERFLOW as libc::c_int;
         Some(
             (*(*cinfo).err)
                 .error_exit
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as j_common_ptr);
+        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
     /* For now, precision must match compiled-in value... */
-    if (*cinfo).data_precision != BITS_IN_JSAMPLE {
-        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_PRECISION as c_int;
+    if (*cinfo).data_precision != crate::jconfig_h::BITS_IN_JSAMPLE {
+        (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_PRECISION as libc::c_int;
         (*(*cinfo).err).msg_parm.i[0] = (*cinfo).data_precision;
         Some(
             (*(*cinfo).err)
                 .error_exit
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as j_common_ptr);
+        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
     /* Check that number of components won't exceed internal array sizes */
-    if (*cinfo).num_components > MAX_COMPONENTS {
-        (*(*cinfo).err).msg_code = super::jerror::JERR_COMPONENT_COUNT as c_int;
+    if (*cinfo).num_components > crate::jmorecfg_h::MAX_COMPONENTS {
+        (*(*cinfo).err).msg_code = crate::src::jerror::JERR_COMPONENT_COUNT as libc::c_int;
         (*(*cinfo).err).msg_parm.i[0] = (*cinfo).num_components;
         (*(*cinfo).err).msg_parm.i[1] = 10i32;
         Some(
@@ -179,7 +354,7 @@ unsafe extern "C" fn initial_setup(mut cinfo: j_compress_ptr, mut transcode_only
                 .error_exit
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as j_common_ptr);
+        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
     /* Compute maximum sampling factors; check factor validity */
     (*cinfo).max_h_samp_factor = 1i32;
@@ -188,17 +363,19 @@ unsafe extern "C" fn initial_setup(mut cinfo: j_compress_ptr, mut transcode_only
     compptr = (*cinfo).comp_info;
     while ci < (*cinfo).num_components {
         if (*compptr).h_samp_factor <= 0i32
-            || (*compptr).h_samp_factor > MAX_SAMP_FACTOR
+            || (*compptr).h_samp_factor > crate::jpeglib_h::MAX_SAMP_FACTOR
             || (*compptr).v_samp_factor <= 0i32
-            || (*compptr).v_samp_factor > MAX_SAMP_FACTOR
+            || (*compptr).v_samp_factor > crate::jpeglib_h::MAX_SAMP_FACTOR
         {
-            (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_SAMPLING as c_int;
+            (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_SAMPLING as libc::c_int;
             Some(
                 (*(*cinfo).err)
                     .error_exit
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+            .expect("non-null function pointer")(
+                cinfo as crate::jpeglib_h::j_common_ptr
+            );
         }
         (*cinfo).max_h_samp_factor = if (*cinfo).max_h_samp_factor > (*compptr).h_samp_factor {
             (*cinfo).max_h_samp_factor
@@ -220,87 +397,88 @@ unsafe extern "C" fn initial_setup(mut cinfo: j_compress_ptr, mut transcode_only
         /* Fill in the correct component_index value; don't rely on application */
         (*compptr).component_index = ci;
         /* For compression, we never do DCT scaling. */
-        (*compptr).DCT_scaled_size = DCTSIZE;
+        (*compptr).DCT_scaled_size = crate::jpeglib_h::DCTSIZE;
         /* Size in DCT blocks */
-        (*compptr).width_in_blocks = jdiv_round_up(
-            (*cinfo).image_width as c_long * (*compptr).h_samp_factor as c_long,
-            ((*cinfo).max_h_samp_factor * DCTSIZE) as c_long,
-        ) as JDIMENSION;
-        (*compptr).height_in_blocks = jdiv_round_up(
-            (*cinfo).image_height as c_long * (*compptr).v_samp_factor as c_long,
-            ((*cinfo).max_v_samp_factor * DCTSIZE) as c_long,
-        ) as JDIMENSION;
+        (*compptr).width_in_blocks = crate::jpegint_h::jdiv_round_up(
+            (*cinfo).image_width as libc::c_long * (*compptr).h_samp_factor as libc::c_long,
+            ((*cinfo).max_h_samp_factor * crate::jpeglib_h::DCTSIZE) as libc::c_long,
+        ) as crate::jmorecfg_h::JDIMENSION;
+        (*compptr).height_in_blocks = crate::jpegint_h::jdiv_round_up(
+            (*cinfo).image_height as libc::c_long * (*compptr).v_samp_factor as libc::c_long,
+            ((*cinfo).max_v_samp_factor * crate::jpeglib_h::DCTSIZE) as libc::c_long,
+        ) as crate::jmorecfg_h::JDIMENSION;
         /* Size in samples */
-        (*compptr).downsampled_width = jdiv_round_up(
-            (*cinfo).image_width as c_long * (*compptr).h_samp_factor as c_long,
-            (*cinfo).max_h_samp_factor as c_long,
-        ) as JDIMENSION;
-        (*compptr).downsampled_height = jdiv_round_up(
-            (*cinfo).image_height as c_long * (*compptr).v_samp_factor as c_long,
-            (*cinfo).max_v_samp_factor as c_long,
-        ) as JDIMENSION;
+        (*compptr).downsampled_width = crate::jpegint_h::jdiv_round_up(
+            (*cinfo).image_width as libc::c_long * (*compptr).h_samp_factor as libc::c_long,
+            (*cinfo).max_h_samp_factor as libc::c_long,
+        ) as crate::jmorecfg_h::JDIMENSION;
+        (*compptr).downsampled_height = crate::jpegint_h::jdiv_round_up(
+            (*cinfo).image_height as libc::c_long * (*compptr).v_samp_factor as libc::c_long,
+            (*cinfo).max_v_samp_factor as libc::c_long,
+        ) as crate::jmorecfg_h::JDIMENSION;
         /* Mark component needed (this flag isn't actually used for compression) */
-        (*compptr).component_needed = TRUE;
+        (*compptr).component_needed = crate::jmorecfg_h::TRUE;
         ci += 1;
         compptr = compptr.offset(1)
     }
     /* Compute number of fully interleaved MCU rows (number of times that
      * main controller will call coefficient controller).
      */
-    (*cinfo).total_iMCU_rows = jdiv_round_up(
-        (*cinfo).image_height as c_long,
-        ((*cinfo).max_v_samp_factor * DCTSIZE) as c_long,
-    ) as JDIMENSION;
+    (*cinfo).total_iMCU_rows = crate::jpegint_h::jdiv_round_up(
+        (*cinfo).image_height as libc::c_long,
+        ((*cinfo).max_v_samp_factor * crate::jpeglib_h::DCTSIZE) as libc::c_long,
+    ) as crate::jmorecfg_h::JDIMENSION;
 }
 
-unsafe extern "C" fn validate_script(mut cinfo: j_compress_ptr)
+unsafe extern "C" fn validate_script(mut cinfo: crate::jpeglib_h::j_compress_ptr)
 /* Verify that the scan script in cinfo->scan_info[] is valid; also
  * determine whether it uses progressive JPEG, and set cinfo->progressive_mode.
  */
 {
-    let mut scanptr: *const jpeg_scan_info = 0 as *const jpeg_scan_info;
-    let mut scanno: c_int = 0;
-    let mut ncomps: c_int = 0;
-    let mut ci: c_int = 0;
-    let mut coefi: c_int = 0;
-    let mut thisi: c_int = 0;
-    let mut Ss: c_int = 0;
-    let mut Se: c_int = 0;
-    let mut Ah: c_int = 0;
-    let mut Al: c_int = 0;
-    let mut component_sent: [boolean; 10] = [0; 10];
-    let mut last_bitpos_ptr: *mut c_int = 0 as *mut c_int;
-    let mut last_bitpos: [[c_int; 64]; 10] = [[0; 64]; 10];
+    let mut scanptr: *const crate::jpeglib_h::jpeg_scan_info =
+        0 as *const crate::jpeglib_h::jpeg_scan_info;
+    let mut scanno: libc::c_int = 0;
+    let mut ncomps: libc::c_int = 0;
+    let mut ci: libc::c_int = 0;
+    let mut coefi: libc::c_int = 0;
+    let mut thisi: libc::c_int = 0;
+    let mut Ss: libc::c_int = 0;
+    let mut Se: libc::c_int = 0;
+    let mut Ah: libc::c_int = 0;
+    let mut Al: libc::c_int = 0;
+    let mut component_sent: [crate::jmorecfg_h::boolean; 10] = [0; 10];
+    let mut last_bitpos_ptr: *mut libc::c_int = 0 as *mut libc::c_int;
+    let mut last_bitpos: [[libc::c_int; 64]; 10] = [[0; 64]; 10];
     /* -1 until that coefficient has been seen; then last Al for it */
     if (*(*cinfo).master).optimize_scans != 0 {
-        (*cinfo).progressive_mode = TRUE;
+        (*cinfo).progressive_mode = crate::jmorecfg_h::TRUE;
         /* When we optimize scans, there is redundancy in the scan list
          * and this function will fail. Therefore skip all this checking
          */
         return;
     }
     if (*cinfo).num_scans <= 0i32 {
-        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_SCAN_SCRIPT as c_int;
+        (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_SCAN_SCRIPT as libc::c_int;
         (*(*cinfo).err).msg_parm.i[0] = 0i32;
         Some(
             (*(*cinfo).err)
                 .error_exit
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as j_common_ptr);
+        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
     /* For sequential JPEG, all scans must have Ss=0, Se=DCTSIZE2-1;
      * for progressive JPEG, no scan can have this.
      */
     scanptr = (*cinfo).scan_info;
-    if (*scanptr).Ss != 0i32 || (*scanptr).Se != DCTSIZE2 - 1i32 {
-        (*cinfo).progressive_mode = TRUE;
+    if (*scanptr).Ss != 0i32 || (*scanptr).Se != crate::jpeglib_h::DCTSIZE2 - 1i32 {
+        (*cinfo).progressive_mode = crate::jmorecfg_h::TRUE;
         last_bitpos_ptr =
-            &mut *(*last_bitpos.as_mut_ptr().offset(0)).as_mut_ptr().offset(0) as *mut c_int;
+            &mut *(*last_bitpos.as_mut_ptr().offset(0)).as_mut_ptr().offset(0) as *mut libc::c_int;
         ci = 0i32;
         while ci < (*cinfo).num_components {
             coefi = 0i32;
-            while coefi < DCTSIZE2 {
+            while coefi < crate::jpeglib_h::DCTSIZE2 {
                 let fresh0 = last_bitpos_ptr;
                 last_bitpos_ptr = last_bitpos_ptr.offset(1);
                 *fresh0 = -1i32;
@@ -309,10 +487,10 @@ unsafe extern "C" fn validate_script(mut cinfo: j_compress_ptr)
             ci += 1
         }
     } else {
-        (*cinfo).progressive_mode = FALSE;
+        (*cinfo).progressive_mode = crate::jmorecfg_h::FALSE;
         ci = 0i32;
         while ci < (*cinfo).num_components {
-            component_sent[ci as usize] = FALSE;
+            component_sent[ci as usize] = crate::jmorecfg_h::FALSE;
             ci += 1
         }
     }
@@ -320,8 +498,8 @@ unsafe extern "C" fn validate_script(mut cinfo: j_compress_ptr)
     while scanno <= (*cinfo).num_scans {
         /* Validate component indexes */
         ncomps = (*scanptr).comps_in_scan;
-        if ncomps <= 0i32 || ncomps > MAX_COMPS_IN_SCAN {
-            (*(*cinfo).err).msg_code = super::jerror::JERR_COMPONENT_COUNT as c_int;
+        if ncomps <= 0i32 || ncomps > crate::jpeglib_h::MAX_COMPS_IN_SCAN {
+            (*(*cinfo).err).msg_code = crate::src::jerror::JERR_COMPONENT_COUNT as libc::c_int;
             (*(*cinfo).err).msg_parm.i[0] = ncomps;
             (*(*cinfo).err).msg_parm.i[1] = 4i32;
             Some(
@@ -329,31 +507,37 @@ unsafe extern "C" fn validate_script(mut cinfo: j_compress_ptr)
                     .error_exit
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+            .expect("non-null function pointer")(
+                cinfo as crate::jpeglib_h::j_common_ptr
+            );
         }
         ci = 0i32;
         while ci < ncomps {
             thisi = (*scanptr).component_index[ci as usize];
             if thisi < 0i32 || thisi >= (*cinfo).num_components {
-                (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_SCAN_SCRIPT as c_int;
+                (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_SCAN_SCRIPT as libc::c_int;
                 (*(*cinfo).err).msg_parm.i[0] = scanno;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                    cinfo as crate::jpeglib_h::j_common_ptr
+                );
             }
             /* Components must appear in SOF order within each scan */
             if ci > 0i32 && thisi <= (*scanptr).component_index[(ci - 1i32) as usize] {
-                (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_SCAN_SCRIPT as c_int;
+                (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_SCAN_SCRIPT as libc::c_int;
                 (*(*cinfo).err).msg_parm.i[0] = scanno;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                    cinfo as crate::jpeglib_h::j_common_ptr
+                );
             }
             ci += 1
         }
@@ -371,45 +555,52 @@ unsafe extern "C" fn validate_script(mut cinfo: j_compress_ptr)
              * which might cause problems for some decoders.
              */
             if Ss < 0i32
-                || Ss >= DCTSIZE2
+                || Ss >= crate::jpeglib_h::DCTSIZE2
                 || Se < Ss
-                || Se >= DCTSIZE2
+                || Se >= crate::jpeglib_h::DCTSIZE2
                 || Ah < 0i32
                 || Ah > MAX_AH_AL
                 || Al < 0i32
                 || Al > MAX_AH_AL
             {
-                (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_PROG_SCRIPT as c_int;
+                (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_PROG_SCRIPT as libc::c_int;
                 (*(*cinfo).err).msg_parm.i[0] = scanno;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                    cinfo as crate::jpeglib_h::j_common_ptr
+                );
             }
             if Ss == 0i32 {
                 if Se != 0i32 {
                     /* DC and AC together not OK */
-                    (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_PROG_SCRIPT as c_int;
+                    (*(*cinfo).err).msg_code =
+                        crate::src::jerror::JERR_BAD_PROG_SCRIPT as libc::c_int;
                     (*(*cinfo).err).msg_parm.i[0] = scanno;
                     Some(
                         (*(*cinfo).err)
                             .error_exit
                             .expect("non-null function pointer"),
                     )
-                    .expect("non-null function pointer")(cinfo as j_common_ptr);
+                    .expect("non-null function pointer")(
+                        cinfo as crate::jpeglib_h::j_common_ptr
+                    );
                 }
             } else if ncomps != 1i32 {
                 /* AC scans must be for only one component */
-                (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_PROG_SCRIPT as c_int;
+                (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_PROG_SCRIPT as libc::c_int;
                 (*(*cinfo).err).msg_parm.i[0] = scanno;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                    cinfo as crate::jpeglib_h::j_common_ptr
+                );
             }
             ci = 0i32;
             while ci < ncomps {
@@ -417,24 +608,28 @@ unsafe extern "C" fn validate_script(mut cinfo: j_compress_ptr)
                     .as_mut_ptr()
                     .offset(*(*scanptr).component_index.as_ptr().offset(ci as isize) as isize))
                 .as_mut_ptr()
-                .offset(0) as *mut c_int;
+                .offset(0) as *mut libc::c_int;
                 if Ss != 0i32 && *last_bitpos_ptr.offset(0) < 0i32 {
                     /* AC without prior DC scan */
-                    (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_PROG_SCRIPT as c_int;
+                    (*(*cinfo).err).msg_code =
+                        crate::src::jerror::JERR_BAD_PROG_SCRIPT as libc::c_int;
                     (*(*cinfo).err).msg_parm.i[0] = scanno;
                     Some(
                         (*(*cinfo).err)
                             .error_exit
                             .expect("non-null function pointer"),
                     )
-                    .expect("non-null function pointer")(cinfo as j_common_ptr);
+                    .expect("non-null function pointer")(
+                        cinfo as crate::jpeglib_h::j_common_ptr
+                    );
                 }
                 coefi = Ss;
                 while coefi <= Se {
                     if *last_bitpos_ptr.offset(coefi as isize) < 0i32 {
                         /* first scan of this coefficient */
                         if Ah != 0i32 {
-                            (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_PROG_SCRIPT as c_int;
+                            (*(*cinfo).err).msg_code =
+                                crate::src::jerror::JERR_BAD_PROG_SCRIPT as libc::c_int;
                             (*(*cinfo).err).msg_parm.i[0] = scanno;
                             Some(
                                 (*(*cinfo).err)
@@ -442,11 +637,12 @@ unsafe extern "C" fn validate_script(mut cinfo: j_compress_ptr)
                                     .expect("non-null function pointer"),
                             )
                             .expect("non-null function pointer")(
-                                cinfo as j_common_ptr
+                                cinfo as crate::jpeglib_h::j_common_ptr,
                             );
                         }
                     } else if Ah != *last_bitpos_ptr.offset(coefi as isize) || Al != Ah - 1i32 {
-                        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_PROG_SCRIPT as c_int;
+                        (*(*cinfo).err).msg_code =
+                            crate::src::jerror::JERR_BAD_PROG_SCRIPT as libc::c_int;
                         (*(*cinfo).err).msg_parm.i[0] = scanno;
                         Some(
                             (*(*cinfo).err)
@@ -454,7 +650,7 @@ unsafe extern "C" fn validate_script(mut cinfo: j_compress_ptr)
                                 .expect("non-null function pointer"),
                         )
                         .expect("non-null function pointer")(
-                            cinfo as j_common_ptr
+                            cinfo as crate::jpeglib_h::j_common_ptr,
                         );
                     }
                     *last_bitpos_ptr.offset(coefi as isize) = Al;
@@ -465,31 +661,36 @@ unsafe extern "C" fn validate_script(mut cinfo: j_compress_ptr)
         } else {
             /* not first scan */
             /* For sequential JPEG, all progression parameters must be these: */
-            if Ss != 0i32 || Se != DCTSIZE2 - 1i32 || Ah != 0i32 || Al != 0i32 {
-                (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_PROG_SCRIPT as c_int;
+            if Ss != 0i32 || Se != crate::jpeglib_h::DCTSIZE2 - 1i32 || Ah != 0i32 || Al != 0i32 {
+                (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_PROG_SCRIPT as libc::c_int;
                 (*(*cinfo).err).msg_parm.i[0] = scanno;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                    cinfo as crate::jpeglib_h::j_common_ptr
+                );
             }
             /* Make sure components are not sent twice */
             ci = 0i32;
             while ci < ncomps {
                 thisi = (*scanptr).component_index[ci as usize];
                 if component_sent[thisi as usize] != 0 {
-                    (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_SCAN_SCRIPT as c_int;
+                    (*(*cinfo).err).msg_code =
+                        crate::src::jerror::JERR_BAD_SCAN_SCRIPT as libc::c_int;
                     (*(*cinfo).err).msg_parm.i[0] = scanno;
                     Some(
                         (*(*cinfo).err)
                             .error_exit
                             .expect("non-null function pointer"),
                     )
-                    .expect("non-null function pointer")(cinfo as j_common_ptr);
+                    .expect("non-null function pointer")(
+                        cinfo as crate::jpeglib_h::j_common_ptr
+                    );
                 }
-                component_sent[thisi as usize] = TRUE;
+                component_sent[thisi as usize] = crate::jmorecfg_h::TRUE;
                 ci += 1
             }
         }
@@ -506,13 +707,15 @@ unsafe extern "C" fn validate_script(mut cinfo: j_compress_ptr)
         ci = 0i32;
         while ci < (*cinfo).num_components {
             if last_bitpos[ci as usize][0] < 0i32 {
-                (*(*cinfo).err).msg_code = super::jerror::JERR_MISSING_DATA as c_int;
+                (*(*cinfo).err).msg_code = crate::src::jerror::JERR_MISSING_DATA as libc::c_int;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                    cinfo as crate::jpeglib_h::j_common_ptr
+                );
             }
             ci += 1
         }
@@ -520,33 +723,36 @@ unsafe extern "C" fn validate_script(mut cinfo: j_compress_ptr)
         ci = 0i32;
         while ci < (*cinfo).num_components {
             if component_sent[ci as usize] == 0 {
-                (*(*cinfo).err).msg_code = super::jerror::JERR_MISSING_DATA as c_int;
+                (*(*cinfo).err).msg_code = crate::src::jerror::JERR_MISSING_DATA as libc::c_int;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                    cinfo as crate::jpeglib_h::j_common_ptr
+                );
             }
             ci += 1
         }
     };
 }
 
-pub const MAX_AH_AL: c_int = 10i32;
+pub const MAX_AH_AL: libc::c_int = 10i32;
 /* C_MULTISCAN_FILES_SUPPORTED */
 
-unsafe extern "C" fn select_scan_parameters(mut cinfo: j_compress_ptr)
+unsafe extern "C" fn select_scan_parameters(mut cinfo: crate::jpeglib_h::j_compress_ptr)
 /* Set up the scan parameters for the current scan */
 {
-    let mut ci: c_int = 0;
-    let mut master: my_master_ptr = (*cinfo).master as my_master_ptr;
+    let mut ci: libc::c_int = 0;
+    let mut master: crate::src::jcmaster::my_master_ptr =
+        (*cinfo).master as crate::src::jcmaster::my_master_ptr;
     if (*master).pass_number < (*master).pass_number_scan_opt_base {
         (*cinfo).comps_in_scan = 1i32;
         if (*(*cinfo).master).use_scans_in_trellis != 0 {
             (*cinfo).cur_comp_info[0] = &mut *(*cinfo).comp_info.offset(
                 ((*master).pass_number / (4i32 * (*(*cinfo).master).trellis_num_loops)) as isize,
-            ) as *mut jpeg_component_info;
+            ) as *mut crate::jpeglib_h::jpeg_component_info;
             (*cinfo).Ss = if (*master).pass_number % 4i32 < 2i32 {
                 1i32
             } else {
@@ -555,18 +761,18 @@ unsafe extern "C" fn select_scan_parameters(mut cinfo: j_compress_ptr)
             (*cinfo).Se = if (*master).pass_number % 4i32 < 2i32 {
                 (*(*cinfo).master).trellis_freq_split
             } else {
-                (DCTSIZE2) - 1i32
+                (crate::jpeglib_h::DCTSIZE2) - 1i32
             }
         } else {
             (*cinfo).cur_comp_info[0] = &mut *(*cinfo).comp_info.offset(
                 ((*master).pass_number / (2i32 * (*(*cinfo).master).trellis_num_loops)) as isize,
-            ) as *mut jpeg_component_info;
+            ) as *mut crate::jpeglib_h::jpeg_component_info;
             (*cinfo).Ss = 1i32;
-            (*cinfo).Se = DCTSIZE2 - 1i32
+            (*cinfo).Se = crate::jpeglib_h::DCTSIZE2 - 1i32
         }
     } else if !(*cinfo).scan_info.is_null() {
         /* Prepare for current scan --- the script is already validated */
-        let mut scanptr: *const jpeg_scan_info =
+        let mut scanptr: *const crate::jpeglib_h::jpeg_scan_info =
             (*cinfo).scan_info.offset((*master).scan_number as isize);
         (*cinfo).comps_in_scan = (*scanptr).comps_in_scan;
         ci = 0i32;
@@ -574,7 +780,7 @@ unsafe extern "C" fn select_scan_parameters(mut cinfo: j_compress_ptr)
             (*cinfo).cur_comp_info[ci as usize] = &mut *(*cinfo)
                 .comp_info
                 .offset(*(*scanptr).component_index.as_ptr().offset(ci as isize) as isize)
-                as *mut jpeg_component_info;
+                as *mut crate::jpeglib_h::jpeg_component_info;
             ci += 1
         }
         (*cinfo).Ss = (*scanptr).Ss;
@@ -605,8 +811,8 @@ unsafe extern "C" fn select_scan_parameters(mut cinfo: j_compress_ptr)
         (*master).actual_Al[(*master).scan_number as usize] = (*cinfo).Al
     } else {
         /* Prepare for single sequential-JPEG scan containing all components */
-        if (*cinfo).num_components > MAX_COMPS_IN_SCAN {
-            (*(*cinfo).err).msg_code = super::jerror::JERR_COMPONENT_COUNT as c_int;
+        if (*cinfo).num_components > crate::jpeglib_h::MAX_COMPS_IN_SCAN {
+            (*(*cinfo).err).msg_code = crate::src::jerror::JERR_COMPONENT_COUNT as libc::c_int;
             (*(*cinfo).err).msg_parm.i[0] = (*cinfo).num_components;
             (*(*cinfo).err).msg_parm.i[1] = 4i32;
             Some(
@@ -614,30 +820,33 @@ unsafe extern "C" fn select_scan_parameters(mut cinfo: j_compress_ptr)
                     .error_exit
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+            .expect("non-null function pointer")(
+                cinfo as crate::jpeglib_h::j_common_ptr
+            );
         }
         (*cinfo).comps_in_scan = (*cinfo).num_components;
         ci = 0i32;
         while ci < (*cinfo).num_components {
-            (*cinfo).cur_comp_info[ci as usize] =
-                &mut *(*cinfo).comp_info.offset(ci as isize) as *mut jpeg_component_info;
+            (*cinfo).cur_comp_info[ci as usize] = &mut *(*cinfo).comp_info.offset(ci as isize)
+                as *mut crate::jpeglib_h::jpeg_component_info;
             ci += 1
         }
         (*cinfo).Ss = 0i32;
-        (*cinfo).Se = DCTSIZE2 - 1i32;
+        (*cinfo).Se = crate::jpeglib_h::DCTSIZE2 - 1i32;
         (*cinfo).Ah = 0i32;
         (*cinfo).Al = 0i32
     };
 }
 
-unsafe extern "C" fn per_scan_setup(mut cinfo: j_compress_ptr)
+unsafe extern "C" fn per_scan_setup(mut cinfo: crate::jpeglib_h::j_compress_ptr)
 /* Do computations that are needed before processing a JPEG scan */
 /* cinfo->comps_in_scan and cinfo->cur_comp_info[] are already set */
 {
-    let mut ci: c_int = 0;
-    let mut mcublks: c_int = 0;
-    let mut tmp: c_int = 0;
-    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
+    let mut ci: libc::c_int = 0;
+    let mut mcublks: libc::c_int = 0;
+    let mut tmp: libc::c_int = 0;
+    let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
+        0 as *mut crate::jpeglib_h::jpeg_component_info;
     if (*cinfo).comps_in_scan == 1i32 {
         /* Noninterleaved (single-component) scan */
         compptr = (*cinfo).cur_comp_info[0];
@@ -648,14 +857,14 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: j_compress_ptr)
         (*compptr).MCU_width = 1i32;
         (*compptr).MCU_height = 1i32;
         (*compptr).MCU_blocks = 1i32;
-        (*compptr).MCU_sample_width = DCTSIZE;
+        (*compptr).MCU_sample_width = crate::jpeglib_h::DCTSIZE;
         (*compptr).last_col_width = 1i32;
         /* For noninterleaved scans, it is convenient to define last_row_height
          * as the number of block rows present in the last iMCU row.
          */
         tmp = (*compptr)
             .height_in_blocks
-            .wrapping_rem((*compptr).v_samp_factor as c_uint) as c_int;
+            .wrapping_rem((*compptr).v_samp_factor as libc::c_uint) as libc::c_int;
         if tmp == 0i32 {
             tmp = (*compptr).v_samp_factor
         }
@@ -665,8 +874,10 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: j_compress_ptr)
         (*cinfo).MCU_membership[0] = 0i32
     } else {
         /* Interleaved (multi-component) scan */
-        if (*cinfo).comps_in_scan <= 0i32 || (*cinfo).comps_in_scan > MAX_COMPS_IN_SCAN {
-            (*(*cinfo).err).msg_code = super::jerror::JERR_COMPONENT_COUNT as c_int;
+        if (*cinfo).comps_in_scan <= 0i32
+            || (*cinfo).comps_in_scan > crate::jpeglib_h::MAX_COMPS_IN_SCAN
+        {
+            (*(*cinfo).err).msg_code = crate::src::jerror::JERR_COMPONENT_COUNT as libc::c_int;
             (*(*cinfo).err).msg_parm.i[0] = (*cinfo).comps_in_scan;
             (*(*cinfo).err).msg_parm.i[1] = 4i32;
             Some(
@@ -674,17 +885,19 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: j_compress_ptr)
                     .error_exit
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+            .expect("non-null function pointer")(
+                cinfo as crate::jpeglib_h::j_common_ptr
+            );
         }
         /* Overall image size in MCUs */
-        (*cinfo).MCUs_per_row = jdiv_round_up(
-            (*cinfo).image_width as c_long,
-            ((*cinfo).max_h_samp_factor * DCTSIZE) as c_long,
-        ) as JDIMENSION;
-        (*cinfo).MCU_rows_in_scan = jdiv_round_up(
-            (*cinfo).image_height as c_long,
-            ((*cinfo).max_v_samp_factor * DCTSIZE) as c_long,
-        ) as JDIMENSION;
+        (*cinfo).MCUs_per_row = crate::jpegint_h::jdiv_round_up(
+            (*cinfo).image_width as libc::c_long,
+            ((*cinfo).max_h_samp_factor * crate::jpeglib_h::DCTSIZE) as libc::c_long,
+        ) as crate::jmorecfg_h::JDIMENSION;
+        (*cinfo).MCU_rows_in_scan = crate::jpegint_h::jdiv_round_up(
+            (*cinfo).image_height as libc::c_long,
+            ((*cinfo).max_v_samp_factor * crate::jpeglib_h::DCTSIZE) as libc::c_long,
+        ) as crate::jmorecfg_h::JDIMENSION;
         (*cinfo).blocks_in_MCU = 0i32;
         ci = 0i32;
         while ci < (*cinfo).comps_in_scan {
@@ -693,32 +906,36 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: j_compress_ptr)
             (*compptr).MCU_width = (*compptr).h_samp_factor;
             (*compptr).MCU_height = (*compptr).v_samp_factor;
             (*compptr).MCU_blocks = (*compptr).MCU_width * (*compptr).MCU_height;
-            (*compptr).MCU_sample_width = (*compptr).MCU_width * DCTSIZE;
+            (*compptr).MCU_sample_width = (*compptr).MCU_width * crate::jpeglib_h::DCTSIZE;
             /* Figure number of non-dummy blocks in last MCU column & row */
             tmp = (*compptr)
                 .width_in_blocks
-                .wrapping_rem((*compptr).MCU_width as c_uint) as c_int;
+                .wrapping_rem((*compptr).MCU_width as libc::c_uint)
+                as libc::c_int;
             if tmp == 0i32 {
                 tmp = (*compptr).MCU_width
             }
             (*compptr).last_col_width = tmp;
             tmp = (*compptr)
                 .height_in_blocks
-                .wrapping_rem((*compptr).MCU_height as c_uint) as c_int;
+                .wrapping_rem((*compptr).MCU_height as libc::c_uint)
+                as libc::c_int;
             if tmp == 0i32 {
                 tmp = (*compptr).MCU_height
             }
             (*compptr).last_row_height = tmp;
             /* Prepare array describing MCU composition */
             mcublks = (*compptr).MCU_blocks;
-            if (*cinfo).blocks_in_MCU + mcublks > C_MAX_BLOCKS_IN_MCU {
-                (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_MCU_SIZE as c_int;
+            if (*cinfo).blocks_in_MCU + mcublks > crate::jpeglib_h::C_MAX_BLOCKS_IN_MCU {
+                (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_MCU_SIZE as libc::c_int;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                    cinfo as crate::jpeglib_h::j_common_ptr
+                );
             }
             loop {
                 let fresh1 = mcublks;
@@ -736,13 +953,13 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: j_compress_ptr)
     /* Convert restart specified in rows to actual MCU count. */
     /* Note that count must fit in 16 bits, so we provide limiting. */
     if (*cinfo).restart_in_rows > 0i32 {
-        let mut nominal: c_long =
-            (*cinfo).restart_in_rows as c_long * (*cinfo).MCUs_per_row as c_long;
+        let mut nominal: libc::c_long =
+            (*cinfo).restart_in_rows as libc::c_long * (*cinfo).MCUs_per_row as libc::c_long;
         (*cinfo).restart_interval = if nominal < 65535i64 {
             nominal
         } else {
             65535i64
-        } as c_uint
+        } as libc::c_uint
     };
 }
 /*
@@ -753,12 +970,13 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: j_compress_ptr)
  * required.
  */
 
-unsafe extern "C" fn prepare_for_pass(mut cinfo: j_compress_ptr) {
-    let mut master: my_master_ptr = (*cinfo).master as my_master_ptr;
+unsafe extern "C" fn prepare_for_pass(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
+    let mut master: crate::src::jcmaster::my_master_ptr =
+        (*cinfo).master as crate::src::jcmaster::my_master_ptr;
     (*(*cinfo).master).trellis_passes =
-        ((*master).pass_number < (*master).pass_number_scan_opt_base) as c_int;
+        ((*master).pass_number < (*master).pass_number_scan_opt_base) as libc::c_int;
     let mut current_block_54: u64;
-    match (*master).pass_type as c_uint {
+    match (*master).pass_type as libc::c_uint {
         0 => {
             /* Initial pass: will collect input data, and do either Huffman
              * optimization or data output for the first scan.
@@ -783,7 +1001,9 @@ unsafe extern "C" fn prepare_for_pass(mut cinfo: j_compress_ptr) {
                         .start_pass
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(cinfo, JBUF_PASS_THRU);
+                .expect("non-null function pointer")(
+                    cinfo, crate::jpegint_h::JBUF_PASS_THRU
+                );
             }
             Some(
                 (*(*cinfo).fdct)
@@ -799,7 +1019,7 @@ unsafe extern "C" fn prepare_for_pass(mut cinfo: j_compress_ptr) {
             .expect("non-null function pointer")(
                 cinfo,
                 (((*cinfo).optimize_coding != 0 || (*(*cinfo).master).trellis_quant != 0)
-                    && (*cinfo).arith_code == 0) as c_int,
+                    && (*cinfo).arith_code == 0) as libc::c_int,
             );
             Some(
                 (*(*cinfo).coef)
@@ -809,23 +1029,25 @@ unsafe extern "C" fn prepare_for_pass(mut cinfo: j_compress_ptr) {
             .expect("non-null function pointer")(
                 cinfo,
                 if (*master).total_passes > 1i32 {
-                    JBUF_SAVE_AND_PASS as c_int
+                    crate::jpegint_h::JBUF_SAVE_AND_PASS as libc::c_int
                 } else {
-                    JBUF_PASS_THRU as c_int
-                } as J_BUF_MODE,
+                    crate::jpegint_h::JBUF_PASS_THRU as libc::c_int
+                } as crate::jpegint_h::J_BUF_MODE,
             );
             Some(
                 (*(*cinfo).main)
                     .start_pass
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(cinfo, JBUF_PASS_THRU);
+            .expect("non-null function pointer")(
+                cinfo, crate::jpegint_h::JBUF_PASS_THRU
+            );
             if (*cinfo).optimize_coding != 0 || (*(*cinfo).master).trellis_quant != 0 {
                 /* No immediate data output; postpone writing frame/scan headers */
-                (*master).pub_0.call_pass_startup = FALSE
+                (*master).pub_0.call_pass_startup = crate::jmorecfg_h::FALSE
             } else {
                 /* Will write frame/scan headers at first jpeg_write_scanlines call */
-                (*master).pub_0.call_pass_startup = TRUE
+                (*master).pub_0.call_pass_startup = crate::jmorecfg_h::TRUE
             }
             current_block_54 = 2500484646272006982;
         }
@@ -839,20 +1061,22 @@ unsafe extern "C" fn prepare_for_pass(mut cinfo: j_compress_ptr) {
                         .start_pass
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(cinfo, TRUE);
+                .expect("non-null function pointer")(cinfo, crate::jmorecfg_h::TRUE);
                 Some(
                     (*(*cinfo).coef)
                         .start_pass
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(cinfo, JBUF_CRANK_DEST);
-                (*master).pub_0.call_pass_startup = FALSE;
+                .expect("non-null function pointer")(
+                    cinfo, crate::jpegint_h::JBUF_CRANK_DEST
+                );
+                (*master).pub_0.call_pass_startup = crate::jmorecfg_h::FALSE;
                 current_block_54 = 2500484646272006982;
             } else {
                 /* Special case: Huffman DC refinement scans need no Huffman table
                  * and therefore we can skip the optimization pass for them.
                  */
-                (*master).pass_type = output_pass;
+                (*master).pass_type = crate::src::jcmaster::output_pass;
                 (*master).pass_number += 1;
                 current_block_54 = 12235309447780442549;
             }
@@ -871,12 +1095,12 @@ unsafe extern "C" fn prepare_for_pass(mut cinfo: j_compress_ptr) {
                 == 1i32
                 && (*(*cinfo).master).trellis_q_opt != 0
             {
-                let mut i: c_int = 0;
-                let mut j: c_int = 0;
+                let mut i: libc::c_int = 0;
+                let mut j: libc::c_int = 0;
                 i = 0i32;
-                while i < NUM_QUANT_TBLS {
+                while i < crate::jpeglib_h::NUM_QUANT_TBLS {
                     j = 1i32;
-                    while j < DCTSIZE2 {
+                    while j < crate::jpeglib_h::DCTSIZE2 {
                         (*(*cinfo).master).norm_src[i as usize][j as usize] = 0.0f64;
                         (*(*cinfo).master).norm_coef[i as usize][j as usize] = 0.0f64;
                         j += 1
@@ -890,25 +1114,27 @@ unsafe extern "C" fn prepare_for_pass(mut cinfo: j_compress_ptr) {
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(
-                cinfo, ((*cinfo).arith_code == 0) as c_int
+                cinfo, ((*cinfo).arith_code == 0) as libc::c_int
             );
             Some(
                 (*(*cinfo).coef)
                     .start_pass
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(cinfo, JBUF_REQUANT);
-            (*master).pub_0.call_pass_startup = FALSE;
+            .expect("non-null function pointer")(cinfo, crate::jpegint_h::JBUF_REQUANT);
+            (*master).pub_0.call_pass_startup = crate::jmorecfg_h::FALSE;
             current_block_54 = 2500484646272006982;
         }
         _ => {
-            (*(*cinfo).err).msg_code = super::jerror::JERR_NOT_COMPILED as c_int;
+            (*(*cinfo).err).msg_code = crate::src::jerror::JERR_NOT_COMPILED as libc::c_int;
             Some(
                 (*(*cinfo).err)
                     .error_exit
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+            .expect("non-null function pointer")(
+                cinfo as crate::jpeglib_h::j_common_ptr
+            );
             current_block_54 = 2500484646272006982;
         }
     }
@@ -924,9 +1150,10 @@ unsafe extern "C" fn prepare_for_pass(mut cinfo: j_compress_ptr) {
             }
             if (*(*cinfo).master).optimize_scans != 0 {
                 (*master).saved_dest = (*cinfo).dest;
-                (*cinfo).dest = NULL as *mut jpeg_destination_mgr;
-                (*master).scan_size[(*master).scan_number as usize] = 0i32 as c_ulong;
-                jpeg_mem_dest_internal(
+                (*cinfo).dest =
+                    crate::stddef_h::NULL as *mut crate::jpeglib_h::jpeg_destination_mgr;
+                (*master).scan_size[(*master).scan_number as usize] = 0i32 as libc::c_ulong;
+                crate::jpegint_h::jpeg_mem_dest_internal(
                     cinfo,
                     &mut *(*master)
                         .scan_buffer
@@ -936,7 +1163,7 @@ unsafe extern "C" fn prepare_for_pass(mut cinfo: j_compress_ptr) {
                         .scan_size
                         .as_mut_ptr()
                         .offset((*master).scan_number as isize),
-                    JPOOL_IMAGE,
+                    crate::jpeglib_h::JPOOL_IMAGE,
                 );
                 Some(
                     (*(*cinfo).dest)
@@ -950,13 +1177,15 @@ unsafe extern "C" fn prepare_for_pass(mut cinfo: j_compress_ptr) {
                     .start_pass
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(cinfo, FALSE);
+            .expect("non-null function pointer")(cinfo, crate::jmorecfg_h::FALSE);
             Some(
                 (*(*cinfo).coef)
                     .start_pass
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(cinfo, JBUF_CRANK_DEST);
+            .expect("non-null function pointer")(
+                cinfo, crate::jpegint_h::JBUF_CRANK_DEST
+            );
             /* We emit frame/scan headers now */
             if (*master).scan_number == 0i32 {
                 Some(
@@ -972,12 +1201,12 @@ unsafe extern "C" fn prepare_for_pass(mut cinfo: j_compress_ptr) {
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(cinfo);
-            (*master).pub_0.call_pass_startup = FALSE
+            (*master).pub_0.call_pass_startup = crate::jmorecfg_h::FALSE
         }
         _ => {}
     }
     (*master).pub_0.is_last_pass =
-        ((*master).pass_number == (*master).total_passes - 1i32) as c_int;
+        ((*master).pass_number == (*master).total_passes - 1i32) as libc::c_int;
     /* Set up progress monitor's pass info if present */
     if !(*cinfo).progress.is_null() {
         (*(*cinfo).progress).completed_passes = (*master).pass_number;
@@ -994,8 +1223,8 @@ unsafe extern "C" fn prepare_for_pass(mut cinfo: j_compress_ptr) {
  * In multi-pass processing, this routine is not used.
  */
 
-unsafe extern "C" fn pass_startup(mut cinfo: j_compress_ptr) {
-    (*(*cinfo).master).call_pass_startup = FALSE; /* reset flag so call only once */
+unsafe extern "C" fn pass_startup(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
+    (*(*cinfo).master).call_pass_startup = crate::jmorecfg_h::FALSE; /* reset flag so call only once */
     Some(
         (*(*cinfo).marker)
             .write_frame_header
@@ -1010,45 +1239,55 @@ unsafe extern "C" fn pass_startup(mut cinfo: j_compress_ptr) {
     .expect("non-null function pointer")(cinfo);
 }
 
-unsafe extern "C" fn copy_buffer(mut cinfo: j_compress_ptr, mut scan_idx: c_int) {
-    let mut master: my_master_ptr = (*cinfo).master as my_master_ptr;
-    let mut size: c_ulong = (*master).scan_size[scan_idx as usize];
-    let mut src: *mut c_uchar = (*master).scan_buffer[scan_idx as usize];
-    let mut i: c_int = 0;
+unsafe extern "C" fn copy_buffer(
+    mut cinfo: crate::jpeglib_h::j_compress_ptr,
+    mut scan_idx: libc::c_int,
+) {
+    let mut master: crate::src::jcmaster::my_master_ptr =
+        (*cinfo).master as crate::src::jcmaster::my_master_ptr;
+    let mut size: libc::c_ulong = (*master).scan_size[scan_idx as usize];
+    let mut src: *mut libc::c_uchar = (*master).scan_buffer[scan_idx as usize];
+    let mut i: libc::c_int = 0;
     if (*(*cinfo).err).trace_level > 0i32 {
-        fprintf(stderr, b"SCAN \x00" as *const u8 as *const c_char);
+        crate::stdlib::fprintf(
+            crate::stdlib::stderr,
+            b"SCAN \x00" as *const u8 as *const libc::c_char,
+        );
         i = 0i32;
         while i < (*(*cinfo).scan_info.offset(scan_idx as isize)).comps_in_scan {
-            fprintf(
-                stderr,
-                b"%s%d\x00" as *const u8 as *const c_char,
+            crate::stdlib::fprintf(
+                crate::stdlib::stderr,
+                b"%s%d\x00" as *const u8 as *const libc::c_char,
                 if i == 0i32 {
-                    b"\x00" as *const u8 as *const c_char
+                    b"\x00" as *const u8 as *const libc::c_char
                 } else {
-                    b",\x00" as *const u8 as *const c_char
+                    b",\x00" as *const u8 as *const libc::c_char
                 },
                 (*(*cinfo).scan_info.offset(scan_idx as isize)).component_index[i as usize],
             );
             i += 1
         }
-        fprintf(
-            stderr,
-            b": %d %d\x00" as *const u8 as *const c_char,
+        crate::stdlib::fprintf(
+            crate::stdlib::stderr,
+            b": %d %d\x00" as *const u8 as *const libc::c_char,
             (*(*cinfo).scan_info.offset(scan_idx as isize)).Ss,
             (*(*cinfo).scan_info.offset(scan_idx as isize)).Se,
         );
-        fprintf(
-            stderr,
-            b" %d %d\x00" as *const u8 as *const c_char,
+        crate::stdlib::fprintf(
+            crate::stdlib::stderr,
+            b" %d %d\x00" as *const u8 as *const libc::c_char,
             (*(*cinfo).scan_info.offset(scan_idx as isize)).Ah,
             (*master).actual_Al[scan_idx as usize],
         );
-        fprintf(stderr, b"\n\x00" as *const u8 as *const c_char);
+        crate::stdlib::fprintf(
+            crate::stdlib::stderr,
+            b"\n\x00" as *const u8 as *const libc::c_char,
+        );
     }
     while size >= (*(*cinfo).dest).free_in_buffer {
-        memcpy(
-            (*(*cinfo).dest).next_output_byte as *mut c_void,
-            src as *const c_void,
+        crate::stdlib::memcpy(
+            (*(*cinfo).dest).next_output_byte as *mut libc::c_void,
+            src as *const libc::c_void,
             (*(*cinfo).dest).free_in_buffer,
         );
         src = src.offset((*(*cinfo).dest).free_in_buffer as isize);
@@ -1056,7 +1295,7 @@ unsafe extern "C" fn copy_buffer(mut cinfo: j_compress_ptr, mut scan_idx: c_int)
         (*(*cinfo).dest).next_output_byte = (*(*cinfo).dest)
             .next_output_byte
             .offset((*(*cinfo).dest).free_in_buffer as isize);
-        (*(*cinfo).dest).free_in_buffer = 0i32 as size_t;
+        (*(*cinfo).dest).free_in_buffer = 0i32 as crate::stddef_h::size_t;
         if Some(
             (*(*cinfo).dest)
                 .empty_output_buffer
@@ -1065,43 +1304,50 @@ unsafe extern "C" fn copy_buffer(mut cinfo: j_compress_ptr, mut scan_idx: c_int)
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            (*(*cinfo).err).msg_code = super::jerror::JERR_UNSUPPORTED_SUSPEND as c_int;
+            (*(*cinfo).err).msg_code = crate::src::jerror::JERR_UNSUPPORTED_SUSPEND as libc::c_int;
             Some(
                 (*(*cinfo).err)
                     .error_exit
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+            .expect("non-null function pointer")(
+                cinfo as crate::jpeglib_h::j_common_ptr
+            );
         }
     }
-    memcpy(
-        (*(*cinfo).dest).next_output_byte as *mut c_void,
-        src as *const c_void,
+    crate::stdlib::memcpy(
+        (*(*cinfo).dest).next_output_byte as *mut libc::c_void,
+        src as *const libc::c_void,
         size,
     );
     (*(*cinfo).dest).next_output_byte = (*(*cinfo).dest).next_output_byte.offset(size as isize);
-    (*(*cinfo).dest).free_in_buffer =
-        ((*(*cinfo).dest).free_in_buffer as c_ulong).wrapping_sub(size) as size_t as size_t;
+    (*(*cinfo).dest).free_in_buffer = ((*(*cinfo).dest).free_in_buffer as libc::c_ulong)
+        .wrapping_sub(size) as crate::stddef_h::size_t
+        as crate::stddef_h::size_t;
 }
 
-unsafe extern "C" fn select_scans(mut cinfo: j_compress_ptr, mut next_scan_number: c_int) {
-    let mut master: my_master_ptr = (*cinfo).master as my_master_ptr;
-    let mut base_scan_idx: c_int = 0i32;
-    let mut luma_freq_split_scan_start: c_int =
+unsafe extern "C" fn select_scans(
+    mut cinfo: crate::jpeglib_h::j_compress_ptr,
+    mut next_scan_number: libc::c_int,
+) {
+    let mut master: crate::src::jcmaster::my_master_ptr =
+        (*cinfo).master as crate::src::jcmaster::my_master_ptr;
+    let mut base_scan_idx: libc::c_int = 0i32;
+    let mut luma_freq_split_scan_start: libc::c_int =
         (*(*cinfo).master).num_scans_luma_dc + 3i32 * (*(*cinfo).master).Al_max_luma + 2i32;
-    let mut chroma_freq_split_scan_start: c_int = (*(*cinfo).master).num_scans_luma
+    let mut chroma_freq_split_scan_start: libc::c_int = (*(*cinfo).master).num_scans_luma
         + (*(*cinfo).master).num_scans_chroma_dc
         + (6i32 * (*(*cinfo).master).Al_max_chroma + 4i32);
-    let mut passes_per_scan: c_int = if (*cinfo).optimize_coding != 0 {
+    let mut passes_per_scan: libc::c_int = if (*cinfo).optimize_coding != 0 {
         2i32
     } else {
         1i32
     };
     if next_scan_number > 1i32 && next_scan_number <= luma_freq_split_scan_start {
         if (next_scan_number - 1i32) % 3i32 == 2i32 {
-            let mut Al: c_int = (next_scan_number - 1i32) / 3i32;
-            let mut i: c_int = 0;
-            let mut cost: c_ulong = 0i32 as c_ulong;
+            let mut Al: libc::c_int = (next_scan_number - 1i32) / 3i32;
+            let mut i: libc::c_int = 0;
+            let mut cost: libc::c_ulong = 0i32 as libc::c_ulong;
             cost = cost.wrapping_add((*master).scan_size[(next_scan_number - 2i32) as usize]);
             cost = cost.wrapping_add((*master).scan_size[(next_scan_number - 1i32) as usize]);
             i = 0i32;
@@ -1125,8 +1371,8 @@ unsafe extern "C" fn select_scans(mut cinfo: j_compress_ptr, mut next_scan_numbe
             (*master).best_freq_split_idx_luma = 0i32;
             (*master).best_cost = (*master).scan_size[(next_scan_number - 1i32) as usize]
         } else if (next_scan_number - luma_freq_split_scan_start) % 2i32 == 1i32 {
-            let mut idx: c_int = next_scan_number - luma_freq_split_scan_start >> 1i32;
-            let mut cost_0: c_ulong = 0i32 as c_ulong;
+            let mut idx: libc::c_int = next_scan_number - luma_freq_split_scan_start >> 1i32;
+            let mut cost_0: libc::c_ulong = 0i32 as libc::c_ulong;
             cost_0 = cost_0.wrapping_add((*master).scan_size[(next_scan_number - 2i32) as usize]);
             cost_0 = cost_0.wrapping_add((*master).scan_size[(next_scan_number - 1i32) as usize]);
             if cost_0 < (*master).best_cost {
@@ -1142,7 +1388,7 @@ unsafe extern "C" fn select_scans(mut cinfo: j_compress_ptr, mut next_scan_numbe
                 (*master).pass_number = passes_per_scan * ((*master).scan_number + 1i32) - 1i32
                     + (*master).pass_number_scan_opt_base;
                 (*master).pub_0.is_last_pass =
-                    ((*master).pass_number == (*master).total_passes - 1i32) as c_int
+                    ((*master).pass_number == (*master).total_passes - 1i32) as libc::c_int
             }
         }
     } else if (*cinfo).num_scans > (*(*cinfo).master).num_scans_luma {
@@ -1153,7 +1399,7 @@ unsafe extern "C" fn select_scans(mut cinfo: j_compress_ptr, mut next_scan_numbe
             (*master).interleave_chroma_dc = ((*master).scan_size[base_scan_idx as usize]
                 <= (*master).scan_size[(base_scan_idx + 1i32) as usize]
                     .wrapping_add((*master).scan_size[(base_scan_idx + 2i32) as usize]))
-                as c_int
+                as libc::c_int
         } else if next_scan_number
             > (*(*cinfo).master).num_scans_luma + (*(*cinfo).master).num_scans_chroma_dc
             && next_scan_number <= chroma_freq_split_scan_start
@@ -1161,9 +1407,9 @@ unsafe extern "C" fn select_scans(mut cinfo: j_compress_ptr, mut next_scan_numbe
             base_scan_idx =
                 (*(*cinfo).master).num_scans_luma + (*(*cinfo).master).num_scans_chroma_dc;
             if (next_scan_number - base_scan_idx) % 6i32 == 4i32 {
-                let mut Al_0: c_int = (next_scan_number - base_scan_idx) / 6i32;
-                let mut i_0: c_int = 0;
-                let mut cost_1: c_ulong = 0i32 as c_ulong;
+                let mut Al_0: libc::c_int = (next_scan_number - base_scan_idx) / 6i32;
+                let mut i_0: libc::c_int = 0;
+                let mut cost_1: libc::c_ulong = 0i32 as libc::c_ulong;
                 cost_1 =
                     cost_1.wrapping_add((*master).scan_size[(next_scan_number - 4i32) as usize]);
                 cost_1 =
@@ -1201,8 +1447,9 @@ unsafe extern "C" fn select_scans(mut cinfo: j_compress_ptr, mut next_scan_numbe
                     .best_cost
                     .wrapping_add((*master).scan_size[(next_scan_number - 1i32) as usize])
             } else if (next_scan_number - chroma_freq_split_scan_start) % 4i32 == 2i32 {
-                let mut idx_0: c_int = next_scan_number - chroma_freq_split_scan_start >> 2i32;
-                let mut cost_2: c_ulong = 0i32 as c_ulong;
+                let mut idx_0: libc::c_int =
+                    next_scan_number - chroma_freq_split_scan_start >> 2i32;
+                let mut cost_2: libc::c_ulong = 0i32 as libc::c_ulong;
                 cost_2 =
                     cost_2.wrapping_add((*master).scan_size[(next_scan_number - 4i32) as usize]);
                 cost_2 =
@@ -1224,15 +1471,15 @@ unsafe extern "C" fn select_scans(mut cinfo: j_compress_ptr, mut next_scan_numbe
                     (*master).pass_number = passes_per_scan * ((*master).scan_number + 1i32) - 1i32
                         + (*master).pass_number_scan_opt_base;
                     (*master).pub_0.is_last_pass =
-                        ((*master).pass_number == (*master).total_passes - 1i32) as c_int
+                        ((*master).pass_number == (*master).total_passes - 1i32) as libc::c_int
                 }
             }
         }
     }
     if (*master).scan_number == (*cinfo).num_scans - 1i32 {
-        let mut i_1: c_int = 0;
-        let mut Al_1: c_int = 0;
-        let mut min_Al: c_int = if (*master).best_Al_luma < (*master).best_Al_chroma {
+        let mut i_1: libc::c_int = 0;
+        let mut Al_1: libc::c_int = 0;
+        let mut min_Al: libc::c_int = if (*master).best_Al_luma < (*master).best_Al_chroma {
             (*master).best_Al_luma
         } else {
             (*master).best_Al_chroma
@@ -1323,7 +1570,7 @@ unsafe extern "C" fn select_scans(mut cinfo: j_compress_ptr, mut next_scan_numbe
         i_1 = 0i32;
         while i_1 < (*cinfo).num_scans {
             if !(*master).scan_buffer[i_1 as usize].is_null() {
-                free((*master).scan_buffer[i_1 as usize] as *mut c_void);
+                crate::stdlib::free((*master).scan_buffer[i_1 as usize] as *mut libc::c_void);
             }
             i_1 += 1
         }
@@ -1333,8 +1580,9 @@ unsafe extern "C" fn select_scans(mut cinfo: j_compress_ptr, mut next_scan_numbe
  * Finish up at end of pass.
  */
 
-unsafe extern "C" fn finish_pass_master(mut cinfo: j_compress_ptr) {
-    let mut master: my_master_ptr = (*cinfo).master as my_master_ptr;
+unsafe extern "C" fn finish_pass_master(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
+    let mut master: crate::src::jcmaster::my_master_ptr =
+        (*cinfo).master as crate::src::jcmaster::my_master_ptr;
     /* The entropy coder always needs an end-of-pass call,
      * either to analyze statistics or to flush its output buffer.
      */
@@ -1345,15 +1593,15 @@ unsafe extern "C" fn finish_pass_master(mut cinfo: j_compress_ptr) {
     )
     .expect("non-null function pointer")(cinfo);
     /* Update state for next pass */
-    match (*master).pass_type as c_uint {
+    match (*master).pass_type as libc::c_uint {
         0 => {
             /* next pass is either output of scan 0 (after optimization)
              * or output of scan 1 (if no optimization).
              */
             if (*(*cinfo).master).trellis_quant != 0 {
-                (*master).pass_type = trellis_pass
+                (*master).pass_type = crate::src::jcmaster::trellis_pass
             } else {
-                (*master).pass_type = output_pass;
+                (*master).pass_type = crate::src::jcmaster::output_pass;
                 if (*cinfo).optimize_coding == 0 {
                     (*master).scan_number += 1
                 }
@@ -1363,15 +1611,15 @@ unsafe extern "C" fn finish_pass_master(mut cinfo: j_compress_ptr) {
             /* next pass is always output of current scan */
             (*master).pass_type =
                 if (*master).pass_number < (*master).pass_number_scan_opt_base - 1i32 {
-                    trellis_pass as c_int
+                    crate::src::jcmaster::trellis_pass as libc::c_int
                 } else {
-                    output_pass as c_int
-                } as c_pass_type
+                    crate::src::jcmaster::output_pass as libc::c_int
+                } as crate::src::jcmaster::c_pass_type
         }
         2 => {
             /* next pass is either optimization or output of next scan */
             if (*cinfo).optimize_coding != 0 {
-                (*master).pass_type = huff_opt_pass
+                (*master).pass_type = crate::src::jcmaster::huff_opt_pass
             }
             if (*(*cinfo).master).optimize_scans != 0 {
                 Some(
@@ -1387,14 +1635,14 @@ unsafe extern "C" fn finish_pass_master(mut cinfo: j_compress_ptr) {
         }
         3 => {
             if (*cinfo).optimize_coding != 0 {
-                (*master).pass_type = huff_opt_pass
+                (*master).pass_type = crate::src::jcmaster::huff_opt_pass
             } else {
                 (*master).pass_type =
                     if (*master).pass_number < (*master).pass_number_scan_opt_base - 1i32 {
-                        trellis_pass as c_int
+                        crate::src::jcmaster::trellis_pass as libc::c_int
                     } else {
-                        output_pass as c_int
-                    } as c_pass_type
+                        crate::src::jcmaster::output_pass as libc::c_int
+                    } as crate::src::jcmaster::c_pass_type
             }
             if ((*master).pass_number + 1i32)
                 % ((*cinfo).num_components
@@ -1406,16 +1654,17 @@ unsafe extern "C" fn finish_pass_master(mut cinfo: j_compress_ptr) {
                 == 0i32
                 && (*(*cinfo).master).trellis_q_opt != 0
             {
-                let mut i: c_int = 0;
-                let mut j: c_int = 0;
+                let mut i: libc::c_int = 0;
+                let mut j: libc::c_int = 0;
                 i = 0i32;
-                while i < NUM_QUANT_TBLS {
+                while i < crate::jpeglib_h::NUM_QUANT_TBLS {
                     j = 1i32;
-                    while j < DCTSIZE2 {
+                    while j < crate::jpeglib_h::DCTSIZE2 {
                         if (*(*cinfo).master).norm_coef[i as usize][j as usize] != 0.0f64 {
-                            let mut q: c_int = ((*(*cinfo).master).norm_src[i as usize][j as usize]
-                                / (*(*cinfo).master).norm_coef[i as usize][j as usize]
-                                + 0.5f64) as c_int;
+                            let mut q: libc::c_int =
+                                ((*(*cinfo).master).norm_src[i as usize][j as usize]
+                                    / (*(*cinfo).master).norm_coef[i as usize][j as usize]
+                                    + 0.5f64) as libc::c_int;
                             if q > 254i32 {
                                 q = 254i32
                             }
@@ -1423,7 +1672,7 @@ unsafe extern "C" fn finish_pass_master(mut cinfo: j_compress_ptr) {
                                 q = 1i32
                             }
                             (*(*cinfo).quant_tbl_ptrs[i as usize]).quantval[j as usize] =
-                                q as UINT16
+                                q as crate::jmorecfg_h::UINT16
                         }
                         j += 1
                     }
@@ -1441,41 +1690,42 @@ unsafe extern "C" fn finish_pass_master(mut cinfo: j_compress_ptr) {
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_c_master_control(
-    mut cinfo: j_compress_ptr,
-    mut transcode_only: boolean,
+    mut cinfo: crate::jpeglib_h::j_compress_ptr,
+    mut transcode_only: crate::jmorecfg_h::boolean,
 ) {
-    let mut master: my_master_ptr = (*cinfo).master as my_master_ptr;
+    let mut master: crate::src::jcmaster::my_master_ptr =
+        (*cinfo).master as crate::src::jcmaster::my_master_ptr;
     (*master).pub_0.prepare_for_pass =
-        Some(prepare_for_pass as unsafe extern "C" fn(_: j_compress_ptr) -> ());
+        Some(prepare_for_pass as unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ());
     (*master).pub_0.pass_startup =
-        Some(pass_startup as unsafe extern "C" fn(_: j_compress_ptr) -> ());
+        Some(pass_startup as unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ());
     (*master).pub_0.finish_pass =
-        Some(finish_pass_master as unsafe extern "C" fn(_: j_compress_ptr) -> ());
-    (*master).pub_0.is_last_pass = FALSE;
-    (*master).pub_0.call_pass_startup = FALSE;
+        Some(finish_pass_master as unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ());
+    (*master).pub_0.is_last_pass = crate::jmorecfg_h::FALSE;
+    (*master).pub_0.call_pass_startup = crate::jmorecfg_h::FALSE;
     /* Validate parameters, determine derived values */
     initial_setup(cinfo, transcode_only); /* assume default tables no good for progressive mode */
     if !(*cinfo).scan_info.is_null() {
         validate_script(cinfo);
     } else {
-        (*cinfo).progressive_mode = FALSE;
+        (*cinfo).progressive_mode = crate::jmorecfg_h::FALSE;
         (*cinfo).num_scans = 1i32
     }
     if (*cinfo).progressive_mode != 0 && (*cinfo).arith_code == 0 {
         /*  TEMPORARY HACK ??? */
-        (*cinfo).optimize_coding = TRUE
+        (*cinfo).optimize_coding = crate::jmorecfg_h::TRUE
     }
     /* Initialize my private state */
     if transcode_only != 0 {
         /* no main pass in transcoding */
         if (*cinfo).optimize_coding != 0 {
-            (*master).pass_type = huff_opt_pass
+            (*master).pass_type = crate::src::jcmaster::huff_opt_pass
         } else {
-            (*master).pass_type = output_pass
+            (*master).pass_type = crate::src::jcmaster::output_pass
         }
     } else {
         /* for normal compression, first pass is always this type: */
-        (*master).pass_type = main_pass
+        (*master).pass_type = crate::src::jcmaster::main_pass
     }
     (*master).scan_number = 0i32;
     (*master).pass_number = 0i32;
@@ -1485,7 +1735,7 @@ pub unsafe extern "C" fn jinit_c_master_control(
         (*master).total_passes = (*cinfo).num_scans
     }
     (*master).jpeg_version =
-        b"mozjpeg version 4.0.0 (build 20191021)\x00" as *const u8 as *const c_char;
+        b"mozjpeg version 4.0.0 (build 20191022)\x00" as *const u8 as *const libc::c_char;
     (*master).pass_number_scan_opt_base = 0i32;
     if (*(*cinfo).master).trellis_quant != 0 {
         if (*cinfo).optimize_coding != 0 {
@@ -1507,11 +1757,11 @@ pub unsafe extern "C" fn jinit_c_master_control(
         (*master).total_passes += (*master).pass_number_scan_opt_base
     }
     if (*(*cinfo).master).optimize_scans != 0 {
-        let mut i: c_int = 0;
+        let mut i: libc::c_int = 0;
         (*master).best_Al_chroma = 0i32;
         i = 0i32;
         while i < (*cinfo).num_scans {
-            (*master).scan_buffer[i as usize] = NULL as *mut c_uchar;
+            (*master).scan_buffer[i as usize] = crate::stddef_h::NULL as *mut libc::c_uchar;
             i += 1
         }
     };

@@ -1,7 +1,35 @@
+use libc;
+
+/* JPEGLIB_H */
+
+/*
+ * The JPEG library modules define JPEG_INTERNALS before including this file.
+ * The internal structure declarations are read only when that is true.
+ * Applications using the library should not include jpegint.h, but may wish
+ * to include jerror.h.
+ */
+
+/* INCOMPLETE_TYPES_BROKEN */
+
+/* If we have a brain-damaged compiler that emits warnings (or worse, errors)
+ * for structure definitions that are never filled in, keep it quiet by
+ * supplying dummy definitions for the various substructures.
+ */
+
+/* COM marker code */
+
+/* APP0 marker code */
+
+/* EOI marker code */
+
+/* RST0 marker code */
+
+/* These marker codes are exported since applications and data source modules
+ * are likely to want to use them.
+ */
 pub use crate::jdct_h::DCTELEM;
 pub use crate::jpegint_h::JLONG;
 pub use crate::jpeglib_h::DCTSIZE;
-use libc::{self, c_int, c_ulong};
 /* preferred floating type */
 /*
  * Each IDCT routine is responsible for range-limiting its results and
@@ -105,78 +133,94 @@ use libc::{self, c_int, c_ulong};
  */
 #[no_mangle]
 
-pub unsafe extern "C" fn jpeg_fdct_islow(mut data: *mut DCTELEM) {
-    let mut tmp0: JLONG = 0;
-    let mut tmp1: JLONG = 0;
-    let mut tmp2: JLONG = 0;
-    let mut tmp3: JLONG = 0;
-    let mut tmp4: JLONG = 0;
-    let mut tmp5: JLONG = 0;
-    let mut tmp6: JLONG = 0;
-    let mut tmp7: JLONG = 0;
-    let mut tmp10: JLONG = 0;
-    let mut tmp11: JLONG = 0;
-    let mut tmp12: JLONG = 0;
-    let mut tmp13: JLONG = 0;
-    let mut z1: JLONG = 0;
-    let mut z2: JLONG = 0;
-    let mut z3: JLONG = 0;
-    let mut z4: JLONG = 0;
-    let mut z5: JLONG = 0;
-    let mut dataptr: *mut DCTELEM = 0 as *mut DCTELEM;
-    let mut ctr: c_int = 0;
+pub unsafe extern "C" fn jpeg_fdct_islow(mut data: *mut crate::jdct_h::DCTELEM) {
+    let mut tmp0: crate::jpegint_h::JLONG = 0;
+    let mut tmp1: crate::jpegint_h::JLONG = 0;
+    let mut tmp2: crate::jpegint_h::JLONG = 0;
+    let mut tmp3: crate::jpegint_h::JLONG = 0;
+    let mut tmp4: crate::jpegint_h::JLONG = 0;
+    let mut tmp5: crate::jpegint_h::JLONG = 0;
+    let mut tmp6: crate::jpegint_h::JLONG = 0;
+    let mut tmp7: crate::jpegint_h::JLONG = 0;
+    let mut tmp10: crate::jpegint_h::JLONG = 0;
+    let mut tmp11: crate::jpegint_h::JLONG = 0;
+    let mut tmp12: crate::jpegint_h::JLONG = 0;
+    let mut tmp13: crate::jpegint_h::JLONG = 0;
+    let mut z1: crate::jpegint_h::JLONG = 0;
+    let mut z2: crate::jpegint_h::JLONG = 0;
+    let mut z3: crate::jpegint_h::JLONG = 0;
+    let mut z4: crate::jpegint_h::JLONG = 0;
+    let mut z5: crate::jpegint_h::JLONG = 0;
+    let mut dataptr: *mut crate::jdct_h::DCTELEM = 0 as *mut crate::jdct_h::DCTELEM;
+    let mut ctr: libc::c_int = 0;
     /* Pass 1: process rows. */
     /* Note results are scaled up by sqrt(8) compared to a true DCT; */
     /* furthermore, we scale the results by 2**PASS1_BITS. */
     dataptr = data;
-    ctr = DCTSIZE - 1i32;
+    ctr = crate::jpeglib_h::DCTSIZE - 1i32;
     while ctr >= 0i32 {
-        tmp0 = (*dataptr.offset(0) as c_int + *dataptr.offset(7) as c_int) as JLONG;
-        tmp7 = (*dataptr.offset(0) as c_int - *dataptr.offset(7) as c_int) as JLONG;
-        tmp1 = (*dataptr.offset(1) as c_int + *dataptr.offset(6) as c_int) as JLONG;
-        tmp6 = (*dataptr.offset(1) as c_int - *dataptr.offset(6) as c_int) as JLONG;
-        tmp2 = (*dataptr.offset(2) as c_int + *dataptr.offset(5) as c_int) as JLONG;
-        tmp5 = (*dataptr.offset(2) as c_int - *dataptr.offset(5) as c_int) as JLONG;
-        tmp3 = (*dataptr.offset(3) as c_int + *dataptr.offset(4) as c_int) as JLONG;
-        tmp4 = (*dataptr.offset(3) as c_int - *dataptr.offset(4) as c_int) as JLONG;
+        tmp0 = (*dataptr.offset(0) as libc::c_int + *dataptr.offset(7) as libc::c_int)
+            as crate::jpegint_h::JLONG;
+        tmp7 = (*dataptr.offset(0) as libc::c_int - *dataptr.offset(7) as libc::c_int)
+            as crate::jpegint_h::JLONG;
+        tmp1 = (*dataptr.offset(1) as libc::c_int + *dataptr.offset(6) as libc::c_int)
+            as crate::jpegint_h::JLONG;
+        tmp6 = (*dataptr.offset(1) as libc::c_int - *dataptr.offset(6) as libc::c_int)
+            as crate::jpegint_h::JLONG;
+        tmp2 = (*dataptr.offset(2) as libc::c_int + *dataptr.offset(5) as libc::c_int)
+            as crate::jpegint_h::JLONG;
+        tmp5 = (*dataptr.offset(2) as libc::c_int - *dataptr.offset(5) as libc::c_int)
+            as crate::jpegint_h::JLONG;
+        tmp3 = (*dataptr.offset(3) as libc::c_int + *dataptr.offset(4) as libc::c_int)
+            as crate::jpegint_h::JLONG;
+        tmp4 = (*dataptr.offset(3) as libc::c_int - *dataptr.offset(4) as libc::c_int)
+            as crate::jpegint_h::JLONG;
         /* advance pointer to next row */
         tmp10 = tmp0 + tmp3;
         tmp13 = tmp0 - tmp3;
         tmp11 = tmp1 + tmp2;
         tmp12 = tmp1 - tmp2;
-        *dataptr.offset(0) = (((tmp10 + tmp11) as c_ulong) << 2i32) as JLONG as DCTELEM;
-        *dataptr.offset(4) = (((tmp10 - tmp11) as c_ulong) << 2i32) as JLONG as DCTELEM;
-        z1 = (tmp12 + tmp13) * 4433i32 as JLONG;
-        *dataptr.offset(2) =
-            (z1 + tmp13 * 6270i32 as JLONG + ((1i32 as JLONG) << 13i32 - 2i32 - 1i32)
-                >> 13i32 - 2i32) as DCTELEM;
-        *dataptr.offset(6) =
-            (z1 + tmp12 * -(15137i32 as JLONG) + ((1i32 as JLONG) << 13i32 - 2i32 - 1i32)
-                >> 13i32 - 2i32) as DCTELEM;
+        *dataptr.offset(0) = (((tmp10 + tmp11) as libc::c_ulong) << 2i32) as crate::jpegint_h::JLONG
+            as crate::jdct_h::DCTELEM;
+        *dataptr.offset(4) = (((tmp10 - tmp11) as libc::c_ulong) << 2i32) as crate::jpegint_h::JLONG
+            as crate::jdct_h::DCTELEM;
+        z1 = (tmp12 + tmp13) * 4433i32 as crate::jpegint_h::JLONG;
+        *dataptr.offset(2) = (z1
+            + tmp13 * 6270i32 as crate::jpegint_h::JLONG
+            + ((1i32 as crate::jpegint_h::JLONG) << 13i32 - 2i32 - 1i32)
+            >> 13i32 - 2i32) as crate::jdct_h::DCTELEM;
+        *dataptr.offset(6) = (z1
+            + tmp12 * -(15137i32 as crate::jpegint_h::JLONG)
+            + ((1i32 as crate::jpegint_h::JLONG) << 13i32 - 2i32 - 1i32)
+            >> 13i32 - 2i32) as crate::jdct_h::DCTELEM;
         z1 = tmp4 + tmp7;
         z2 = tmp5 + tmp6;
         z3 = tmp4 + tmp6;
         z4 = tmp5 + tmp7;
-        z5 = (z3 + z4) * 9633i32 as JLONG;
-        tmp4 = tmp4 * 2446i32 as JLONG;
-        tmp5 = tmp5 * 16819i32 as JLONG;
-        tmp6 = tmp6 * 25172i32 as JLONG;
-        tmp7 = tmp7 * 12299i32 as JLONG;
-        z1 = z1 * -(7373i32 as JLONG);
-        z2 = z2 * -(20995i32 as JLONG);
-        z3 = z3 * -(16069i32 as JLONG);
-        z4 = z4 * -(3196i32 as JLONG);
+        z5 = (z3 + z4) * 9633i32 as crate::jpegint_h::JLONG;
+        tmp4 = tmp4 * 2446i32 as crate::jpegint_h::JLONG;
+        tmp5 = tmp5 * 16819i32 as crate::jpegint_h::JLONG;
+        tmp6 = tmp6 * 25172i32 as crate::jpegint_h::JLONG;
+        tmp7 = tmp7 * 12299i32 as crate::jpegint_h::JLONG;
+        z1 = z1 * -(7373i32 as crate::jpegint_h::JLONG);
+        z2 = z2 * -(20995i32 as crate::jpegint_h::JLONG);
+        z3 = z3 * -(16069i32 as crate::jpegint_h::JLONG);
+        z4 = z4 * -(3196i32 as crate::jpegint_h::JLONG);
         z3 += z5;
         z4 += z5;
         *dataptr.offset(7) =
-            (tmp4 + z1 + z3 + ((1i32 as JLONG) << 13i32 - 2i32 - 1i32) >> 13i32 - 2i32) as DCTELEM;
+            (tmp4 + z1 + z3 + ((1i32 as crate::jpegint_h::JLONG) << 13i32 - 2i32 - 1i32)
+                >> 13i32 - 2i32) as crate::jdct_h::DCTELEM;
         *dataptr.offset(5) =
-            (tmp5 + z2 + z4 + ((1i32 as JLONG) << 13i32 - 2i32 - 1i32) >> 13i32 - 2i32) as DCTELEM;
+            (tmp5 + z2 + z4 + ((1i32 as crate::jpegint_h::JLONG) << 13i32 - 2i32 - 1i32)
+                >> 13i32 - 2i32) as crate::jdct_h::DCTELEM;
         *dataptr.offset(3) =
-            (tmp6 + z2 + z3 + ((1i32 as JLONG) << 13i32 - 2i32 - 1i32) >> 13i32 - 2i32) as DCTELEM;
+            (tmp6 + z2 + z3 + ((1i32 as crate::jpegint_h::JLONG) << 13i32 - 2i32 - 1i32)
+                >> 13i32 - 2i32) as crate::jdct_h::DCTELEM;
         *dataptr.offset(1) =
-            (tmp7 + z1 + z4 + ((1i32 as JLONG) << 13i32 - 2i32 - 1i32) >> 13i32 - 2i32) as DCTELEM;
-        dataptr = dataptr.offset(DCTSIZE as isize);
+            (tmp7 + z1 + z4 + ((1i32 as crate::jpegint_h::JLONG) << 13i32 - 2i32 - 1i32)
+                >> 13i32 - 2i32) as crate::jdct_h::DCTELEM;
+        dataptr = dataptr.offset(crate::jpeglib_h::DCTSIZE as isize);
         ctr -= 1
     }
     /* Even part per LL&M figure 1 --- note that published figure is faulty;
@@ -200,63 +244,79 @@ pub unsafe extern "C" fn jpeg_fdct_islow(mut data: *mut DCTELEM) {
      * by an overall factor of 8.
      */
     dataptr = data;
-    ctr = DCTSIZE - 1i32;
+    ctr = crate::jpeglib_h::DCTSIZE - 1i32;
     while ctr >= 0i32 {
-        tmp0 = (*dataptr.offset((DCTSIZE * 0i32) as isize) as c_int
-            + *dataptr.offset((DCTSIZE * 7i32) as isize) as c_int) as JLONG;
-        tmp7 = (*dataptr.offset((DCTSIZE * 0i32) as isize) as c_int
-            - *dataptr.offset((DCTSIZE * 7i32) as isize) as c_int) as JLONG;
-        tmp1 = (*dataptr.offset((DCTSIZE * 1i32) as isize) as c_int
-            + *dataptr.offset((DCTSIZE * 6i32) as isize) as c_int) as JLONG;
-        tmp6 = (*dataptr.offset((DCTSIZE * 1i32) as isize) as c_int
-            - *dataptr.offset((DCTSIZE * 6i32) as isize) as c_int) as JLONG;
-        tmp2 = (*dataptr.offset((DCTSIZE * 2i32) as isize) as c_int
-            + *dataptr.offset((DCTSIZE * 5i32) as isize) as c_int) as JLONG;
-        tmp5 = (*dataptr.offset((DCTSIZE * 2i32) as isize) as c_int
-            - *dataptr.offset((DCTSIZE * 5i32) as isize) as c_int) as JLONG;
-        tmp3 = (*dataptr.offset((DCTSIZE * 3i32) as isize) as c_int
-            + *dataptr.offset((DCTSIZE * 4i32) as isize) as c_int) as JLONG;
-        tmp4 = (*dataptr.offset((DCTSIZE * 3i32) as isize) as c_int
-            - *dataptr.offset((DCTSIZE * 4i32) as isize) as c_int) as JLONG;
+        tmp0 = (*dataptr.offset((crate::jpeglib_h::DCTSIZE * 0i32) as isize) as libc::c_int
+            + *dataptr.offset((crate::jpeglib_h::DCTSIZE * 7i32) as isize) as libc::c_int)
+            as crate::jpegint_h::JLONG;
+        tmp7 = (*dataptr.offset((crate::jpeglib_h::DCTSIZE * 0i32) as isize) as libc::c_int
+            - *dataptr.offset((crate::jpeglib_h::DCTSIZE * 7i32) as isize) as libc::c_int)
+            as crate::jpegint_h::JLONG;
+        tmp1 = (*dataptr.offset((crate::jpeglib_h::DCTSIZE * 1i32) as isize) as libc::c_int
+            + *dataptr.offset((crate::jpeglib_h::DCTSIZE * 6i32) as isize) as libc::c_int)
+            as crate::jpegint_h::JLONG;
+        tmp6 = (*dataptr.offset((crate::jpeglib_h::DCTSIZE * 1i32) as isize) as libc::c_int
+            - *dataptr.offset((crate::jpeglib_h::DCTSIZE * 6i32) as isize) as libc::c_int)
+            as crate::jpegint_h::JLONG;
+        tmp2 = (*dataptr.offset((crate::jpeglib_h::DCTSIZE * 2i32) as isize) as libc::c_int
+            + *dataptr.offset((crate::jpeglib_h::DCTSIZE * 5i32) as isize) as libc::c_int)
+            as crate::jpegint_h::JLONG;
+        tmp5 = (*dataptr.offset((crate::jpeglib_h::DCTSIZE * 2i32) as isize) as libc::c_int
+            - *dataptr.offset((crate::jpeglib_h::DCTSIZE * 5i32) as isize) as libc::c_int)
+            as crate::jpegint_h::JLONG;
+        tmp3 = (*dataptr.offset((crate::jpeglib_h::DCTSIZE * 3i32) as isize) as libc::c_int
+            + *dataptr.offset((crate::jpeglib_h::DCTSIZE * 4i32) as isize) as libc::c_int)
+            as crate::jpegint_h::JLONG;
+        tmp4 = (*dataptr.offset((crate::jpeglib_h::DCTSIZE * 3i32) as isize) as libc::c_int
+            - *dataptr.offset((crate::jpeglib_h::DCTSIZE * 4i32) as isize) as libc::c_int)
+            as crate::jpegint_h::JLONG;
         /* advance pointer to next column */
         tmp10 = tmp0 + tmp3;
         tmp13 = tmp0 - tmp3;
         tmp11 = tmp1 + tmp2;
         tmp12 = tmp1 - tmp2;
-        *dataptr.offset((DCTSIZE * 0i32) as isize) =
-            (tmp10 + tmp11 + ((1i32 as JLONG) << 2i32 - 1i32) >> 2i32) as DCTELEM;
-        *dataptr.offset((DCTSIZE * 4i32) as isize) =
-            (tmp10 - tmp11 + ((1i32 as JLONG) << 2i32 - 1i32) >> 2i32) as DCTELEM;
-        z1 = (tmp12 + tmp13) * 4433i32 as JLONG;
-        *dataptr.offset((DCTSIZE * 2i32) as isize) =
-            (z1 + tmp13 * 6270i32 as JLONG + ((1i32 as JLONG) << 13i32 + 2i32 - 1i32)
-                >> 13i32 + 2i32) as DCTELEM;
-        *dataptr.offset((DCTSIZE * 6i32) as isize) =
-            (z1 + tmp12 * -(15137i32 as JLONG) + ((1i32 as JLONG) << 13i32 + 2i32 - 1i32)
-                >> 13i32 + 2i32) as DCTELEM;
+        *dataptr.offset((crate::jpeglib_h::DCTSIZE * 0i32) as isize) =
+            (tmp10 + tmp11 + ((1i32 as crate::jpegint_h::JLONG) << 2i32 - 1i32) >> 2i32)
+                as crate::jdct_h::DCTELEM;
+        *dataptr.offset((crate::jpeglib_h::DCTSIZE * 4i32) as isize) =
+            (tmp10 - tmp11 + ((1i32 as crate::jpegint_h::JLONG) << 2i32 - 1i32) >> 2i32)
+                as crate::jdct_h::DCTELEM;
+        z1 = (tmp12 + tmp13) * 4433i32 as crate::jpegint_h::JLONG;
+        *dataptr.offset((crate::jpeglib_h::DCTSIZE * 2i32) as isize) =
+            (z1 + tmp13 * 6270i32 as crate::jpegint_h::JLONG
+                + ((1i32 as crate::jpegint_h::JLONG) << 13i32 + 2i32 - 1i32)
+                >> 13i32 + 2i32) as crate::jdct_h::DCTELEM;
+        *dataptr.offset((crate::jpeglib_h::DCTSIZE * 6i32) as isize) =
+            (z1 + tmp12 * -(15137i32 as crate::jpegint_h::JLONG)
+                + ((1i32 as crate::jpegint_h::JLONG) << 13i32 + 2i32 - 1i32)
+                >> 13i32 + 2i32) as crate::jdct_h::DCTELEM;
         z1 = tmp4 + tmp7;
         z2 = tmp5 + tmp6;
         z3 = tmp4 + tmp6;
         z4 = tmp5 + tmp7;
-        z5 = (z3 + z4) * 9633i32 as JLONG;
-        tmp4 = tmp4 * 2446i32 as JLONG;
-        tmp5 = tmp5 * 16819i32 as JLONG;
-        tmp6 = tmp6 * 25172i32 as JLONG;
-        tmp7 = tmp7 * 12299i32 as JLONG;
-        z1 = z1 * -(7373i32 as JLONG);
-        z2 = z2 * -(20995i32 as JLONG);
-        z3 = z3 * -(16069i32 as JLONG);
-        z4 = z4 * -(3196i32 as JLONG);
+        z5 = (z3 + z4) * 9633i32 as crate::jpegint_h::JLONG;
+        tmp4 = tmp4 * 2446i32 as crate::jpegint_h::JLONG;
+        tmp5 = tmp5 * 16819i32 as crate::jpegint_h::JLONG;
+        tmp6 = tmp6 * 25172i32 as crate::jpegint_h::JLONG;
+        tmp7 = tmp7 * 12299i32 as crate::jpegint_h::JLONG;
+        z1 = z1 * -(7373i32 as crate::jpegint_h::JLONG);
+        z2 = z2 * -(20995i32 as crate::jpegint_h::JLONG);
+        z3 = z3 * -(16069i32 as crate::jpegint_h::JLONG);
+        z4 = z4 * -(3196i32 as crate::jpegint_h::JLONG);
         z3 += z5;
         z4 += z5;
-        *dataptr.offset((DCTSIZE * 7i32) as isize) =
-            (tmp4 + z1 + z3 + ((1i32 as JLONG) << 13i32 + 2i32 - 1i32) >> 13i32 + 2i32) as DCTELEM;
-        *dataptr.offset((DCTSIZE * 5i32) as isize) =
-            (tmp5 + z2 + z4 + ((1i32 as JLONG) << 13i32 + 2i32 - 1i32) >> 13i32 + 2i32) as DCTELEM;
-        *dataptr.offset((DCTSIZE * 3i32) as isize) =
-            (tmp6 + z2 + z3 + ((1i32 as JLONG) << 13i32 + 2i32 - 1i32) >> 13i32 + 2i32) as DCTELEM;
-        *dataptr.offset((DCTSIZE * 1i32) as isize) =
-            (tmp7 + z1 + z4 + ((1i32 as JLONG) << 13i32 + 2i32 - 1i32) >> 13i32 + 2i32) as DCTELEM;
+        *dataptr.offset((crate::jpeglib_h::DCTSIZE * 7i32) as isize) =
+            (tmp4 + z1 + z3 + ((1i32 as crate::jpegint_h::JLONG) << 13i32 + 2i32 - 1i32)
+                >> 13i32 + 2i32) as crate::jdct_h::DCTELEM;
+        *dataptr.offset((crate::jpeglib_h::DCTSIZE * 5i32) as isize) =
+            (tmp5 + z2 + z4 + ((1i32 as crate::jpegint_h::JLONG) << 13i32 + 2i32 - 1i32)
+                >> 13i32 + 2i32) as crate::jdct_h::DCTELEM;
+        *dataptr.offset((crate::jpeglib_h::DCTSIZE * 3i32) as isize) =
+            (tmp6 + z2 + z3 + ((1i32 as crate::jpegint_h::JLONG) << 13i32 + 2i32 - 1i32)
+                >> 13i32 + 2i32) as crate::jdct_h::DCTELEM;
+        *dataptr.offset((crate::jpeglib_h::DCTSIZE * 1i32) as isize) =
+            (tmp7 + z1 + z4 + ((1i32 as crate::jpegint_h::JLONG) << 13i32 + 2i32 - 1i32)
+                >> 13i32 + 2i32) as crate::jdct_h::DCTELEM;
         dataptr = dataptr.offset(1);
         ctr -= 1
     }

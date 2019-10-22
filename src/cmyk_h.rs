@@ -1,19 +1,18 @@
 use crate::jmorecfg_h::JSAMPLE;
-use libc::{self, c_double};
 #[inline(always)]
 pub unsafe extern "C" fn rgb_to_cmyk(
-    mut r: JSAMPLE,
-    mut g: JSAMPLE,
-    mut b: JSAMPLE,
-    mut c: *mut JSAMPLE,
-    mut m: *mut JSAMPLE,
-    mut y: *mut JSAMPLE,
-    mut k: *mut JSAMPLE,
+    mut r: crate::jmorecfg_h::JSAMPLE,
+    mut g: crate::jmorecfg_h::JSAMPLE,
+    mut b: crate::jmorecfg_h::JSAMPLE,
+    mut c: *mut crate::jmorecfg_h::JSAMPLE,
+    mut m: *mut crate::jmorecfg_h::JSAMPLE,
+    mut y: *mut crate::jmorecfg_h::JSAMPLE,
+    mut k: *mut crate::jmorecfg_h::JSAMPLE,
 ) {
-    let mut ctmp: c_double = 1.0f64 - r as c_double / 255.0f64;
-    let mut mtmp: c_double = 1.0f64 - g as c_double / 255.0f64;
-    let mut ytmp: c_double = 1.0f64 - b as c_double / 255.0f64;
-    let mut ktmp: c_double = if (if ctmp < mtmp { ctmp } else { mtmp }) < ytmp {
+    let mut ctmp: libc::c_double = 1.0f64 - r as libc::c_double / 255.0f64;
+    let mut mtmp: libc::c_double = 1.0f64 - g as libc::c_double / 255.0f64;
+    let mut ytmp: libc::c_double = 1.0f64 - b as libc::c_double / 255.0f64;
+    let mut ktmp: libc::c_double = if (if ctmp < mtmp { ctmp } else { mtmp }) < ytmp {
         if ctmp < mtmp {
             ctmp
         } else {
@@ -31,10 +30,10 @@ pub unsafe extern "C" fn rgb_to_cmyk(
         mtmp = (mtmp - ktmp) / (1.0f64 - ktmp);
         ytmp = (ytmp - ktmp) / (1.0f64 - ktmp)
     }
-    *c = (255.0f64 - ctmp * 255.0f64 + 0.5f64) as JSAMPLE;
-    *m = (255.0f64 - mtmp * 255.0f64 + 0.5f64) as JSAMPLE;
-    *y = (255.0f64 - ytmp * 255.0f64 + 0.5f64) as JSAMPLE;
-    *k = (255.0f64 - ktmp * 255.0f64 + 0.5f64) as JSAMPLE;
+    *c = (255.0f64 - ctmp * 255.0f64 + 0.5f64) as crate::jmorecfg_h::JSAMPLE;
+    *m = (255.0f64 - mtmp * 255.0f64 + 0.5f64) as crate::jmorecfg_h::JSAMPLE;
+    *y = (255.0f64 - ytmp * 255.0f64 + 0.5f64) as crate::jmorecfg_h::JSAMPLE;
+    *k = (255.0f64 - ktmp * 255.0f64 + 0.5f64) as crate::jmorecfg_h::JSAMPLE;
 }
 /*
  * cmyk.h
@@ -54,15 +53,18 @@ pub unsafe extern "C" fn rgb_to_cmyk(
 /* Fully reversible only for C/M/Y/K values generated with rgb_to_cmyk() */
 #[inline(always)]
 pub unsafe extern "C" fn cmyk_to_rgb(
-    mut c: JSAMPLE,
-    mut m: JSAMPLE,
-    mut y: JSAMPLE,
-    mut k: JSAMPLE,
-    mut r: *mut JSAMPLE,
-    mut g: *mut JSAMPLE,
-    mut b: *mut JSAMPLE,
+    mut c: crate::jmorecfg_h::JSAMPLE,
+    mut m: crate::jmorecfg_h::JSAMPLE,
+    mut y: crate::jmorecfg_h::JSAMPLE,
+    mut k: crate::jmorecfg_h::JSAMPLE,
+    mut r: *mut crate::jmorecfg_h::JSAMPLE,
+    mut g: *mut crate::jmorecfg_h::JSAMPLE,
+    mut b: *mut crate::jmorecfg_h::JSAMPLE,
 ) {
-    *r = (c as c_double * k as c_double / 255.0f64 + 0.5f64) as JSAMPLE;
-    *g = (m as c_double * k as c_double / 255.0f64 + 0.5f64) as JSAMPLE;
-    *b = (y as c_double * k as c_double / 255.0f64 + 0.5f64) as JSAMPLE;
+    *r = (c as libc::c_double * k as libc::c_double / 255.0f64 + 0.5f64)
+        as crate::jmorecfg_h::JSAMPLE;
+    *g = (m as libc::c_double * k as libc::c_double / 255.0f64 + 0.5f64)
+        as crate::jmorecfg_h::JSAMPLE;
+    *b = (y as libc::c_double * k as libc::c_double / 255.0f64 + 0.5f64)
+        as crate::jmorecfg_h::JSAMPLE;
 }

@@ -1,5 +1,4 @@
-use libc::{c_int, c_long, c_short, c_uchar, c_uint, c_ushort};
-pub type boolean = c_int;
+pub type boolean = libc::c_int;
 /*
  * jmorecfg.h
  *
@@ -170,9 +169,9 @@ pub type boolean = c_int;
  */
 
 /* in case these macros already exist */
-pub const FALSE: c_int = 0i32;
+pub const FALSE: libc::c_int = 0i32;
 /* values of boolean */
-pub const TRUE: c_int = 1i32;
+pub const TRUE: libc::c_int = 1i32;
 /*
  * jmorecfg.h
  *
@@ -438,112 +437,112 @@ pub const TRUE: c_int = 1i32;
 /* Offset of Blue */
 
 /* JSAMPLEs per RGB scanline element */
-pub const EXT_XBGR_PIXELSIZE: c_int = 4i32;
-pub const EXT_BGRX_PIXELSIZE: c_int = 4i32;
-pub const EXT_RGBX_PIXELSIZE: c_int = 4i32;
-pub const EXT_BGR_PIXELSIZE: c_int = 3i32;
-pub const EXT_RGB_PIXELSIZE: c_int = 3i32;
-pub const RGB_PIXELSIZE_5: c_int = 3i32;
-pub const EXT_XRGB_PIXELSIZE: c_int = 4i32;
-pub static mut rgb_pixelsize: [c_int; 17] = [
+pub const EXT_XBGR_PIXELSIZE: libc::c_int = 4i32;
+pub const EXT_BGRX_PIXELSIZE: libc::c_int = 4i32;
+pub const EXT_RGBX_PIXELSIZE: libc::c_int = 4i32;
+pub const EXT_BGR_PIXELSIZE: libc::c_int = 3i32;
+pub const EXT_RGB_PIXELSIZE: libc::c_int = 3i32;
+pub const RGB_PIXELSIZE_5: libc::c_int = 3i32;
+pub const EXT_XRGB_PIXELSIZE: libc::c_int = 4i32;
+pub static mut rgb_pixelsize: [libc::c_int; 17] = [
     -1i32,
     -1i32,
-    RGB_PIXELSIZE_5,
-    -1i32,
-    -1i32,
-    -1i32,
-    EXT_RGB_PIXELSIZE,
-    EXT_RGBX_PIXELSIZE,
-    EXT_BGR_PIXELSIZE,
-    EXT_BGRX_PIXELSIZE,
-    EXT_XBGR_PIXELSIZE,
-    EXT_XRGB_PIXELSIZE,
-    EXT_RGBX_PIXELSIZE,
-    EXT_BGRX_PIXELSIZE,
-    EXT_XBGR_PIXELSIZE,
-    EXT_XRGB_PIXELSIZE,
-    -1i32,
-];
-pub const RGB_BLUE: c_int = 2i32;
-pub const EXT_RGB_BLUE: c_int = 2i32;
-pub const EXT_BGR_BLUE: c_int = 0i32;
-pub const EXT_RGBX_BLUE: c_int = 2i32;
-pub const EXT_BGRX_BLUE: c_int = 0i32;
-pub const EXT_XBGR_BLUE: c_int = 1i32;
-pub const EXT_XRGB_BLUE: c_int = 3i32;
-pub static mut rgb_blue: [c_int; 17] = [
-    -1i32,
-    -1i32,
-    RGB_BLUE,
+    crate::jmorecfg_h::RGB_PIXELSIZE_5,
     -1i32,
     -1i32,
     -1i32,
-    EXT_RGB_BLUE,
-    EXT_RGBX_BLUE,
-    EXT_BGR_BLUE,
-    EXT_BGRX_BLUE,
-    EXT_XBGR_BLUE,
-    EXT_XRGB_BLUE,
-    EXT_RGBX_BLUE,
-    EXT_BGRX_BLUE,
-    EXT_XBGR_BLUE,
-    EXT_XRGB_BLUE,
+    crate::jmorecfg_h::EXT_RGB_PIXELSIZE,
+    crate::jmorecfg_h::EXT_RGBX_PIXELSIZE,
+    crate::jmorecfg_h::EXT_BGR_PIXELSIZE,
+    crate::jmorecfg_h::EXT_BGRX_PIXELSIZE,
+    crate::jmorecfg_h::EXT_XBGR_PIXELSIZE,
+    crate::jmorecfg_h::EXT_XRGB_PIXELSIZE,
+    crate::jmorecfg_h::EXT_RGBX_PIXELSIZE,
+    crate::jmorecfg_h::EXT_BGRX_PIXELSIZE,
+    crate::jmorecfg_h::EXT_XBGR_PIXELSIZE,
+    crate::jmorecfg_h::EXT_XRGB_PIXELSIZE,
     -1i32,
 ];
-pub const RGB_GREEN: c_int = 1i32;
-pub const EXT_RGB_GREEN: c_int = 1i32;
-pub const EXT_BGR_GREEN: c_int = 1i32;
-pub const EXT_RGBX_GREEN: c_int = 1i32;
-pub const EXT_BGRX_GREEN: c_int = 1i32;
-pub const EXT_XBGR_GREEN: c_int = 2i32;
-pub const EXT_XRGB_GREEN: c_int = 2i32;
-pub static mut rgb_green: [c_int; 17] = [
+pub const RGB_BLUE: libc::c_int = 2i32;
+pub const EXT_RGB_BLUE: libc::c_int = 2i32;
+pub const EXT_BGR_BLUE: libc::c_int = 0i32;
+pub const EXT_RGBX_BLUE: libc::c_int = 2i32;
+pub const EXT_BGRX_BLUE: libc::c_int = 0i32;
+pub const EXT_XBGR_BLUE: libc::c_int = 1i32;
+pub const EXT_XRGB_BLUE: libc::c_int = 3i32;
+pub static mut rgb_blue: [libc::c_int; 17] = [
     -1i32,
     -1i32,
-    RGB_GREEN,
-    -1i32,
-    -1i32,
-    -1i32,
-    EXT_RGB_GREEN,
-    EXT_RGBX_GREEN,
-    EXT_BGR_GREEN,
-    EXT_BGRX_GREEN,
-    EXT_XBGR_GREEN,
-    EXT_XRGB_GREEN,
-    EXT_RGBX_GREEN,
-    EXT_BGRX_GREEN,
-    EXT_XBGR_GREEN,
-    EXT_XRGB_GREEN,
-    -1i32,
-];
-pub const RGB_RED: c_int = 0i32;
-pub const EXT_RGB_RED: c_int = 0i32;
-pub const EXT_BGR_RED: c_int = 2i32;
-pub const EXT_RGBX_RED: c_int = 0i32;
-pub const EXT_BGRX_RED: c_int = 2i32;
-pub const EXT_XBGR_RED: c_int = 3i32;
-pub const EXT_XRGB_RED: c_int = 1i32;
-pub static mut rgb_red: [c_int; 17] = [
-    -1i32,
-    -1i32,
-    RGB_RED,
+    crate::jmorecfg_h::RGB_BLUE,
     -1i32,
     -1i32,
     -1i32,
-    EXT_RGB_RED,
-    EXT_RGBX_RED,
-    EXT_BGR_RED,
-    EXT_BGRX_RED,
-    EXT_XBGR_RED,
-    EXT_XRGB_RED,
-    EXT_RGBX_RED,
-    EXT_BGRX_RED,
-    EXT_XBGR_RED,
-    EXT_XRGB_RED,
+    crate::jmorecfg_h::EXT_RGB_BLUE,
+    crate::jmorecfg_h::EXT_RGBX_BLUE,
+    crate::jmorecfg_h::EXT_BGR_BLUE,
+    crate::jmorecfg_h::EXT_BGRX_BLUE,
+    crate::jmorecfg_h::EXT_XBGR_BLUE,
+    crate::jmorecfg_h::EXT_XRGB_BLUE,
+    crate::jmorecfg_h::EXT_RGBX_BLUE,
+    crate::jmorecfg_h::EXT_BGRX_BLUE,
+    crate::jmorecfg_h::EXT_XBGR_BLUE,
+    crate::jmorecfg_h::EXT_XRGB_BLUE,
     -1i32,
 ];
-pub const MAXJSAMPLE: c_int = 255i32;
-pub const CENTERJSAMPLE: c_int = 128i32;
+pub const RGB_GREEN: libc::c_int = 1i32;
+pub const EXT_RGB_GREEN: libc::c_int = 1i32;
+pub const EXT_BGR_GREEN: libc::c_int = 1i32;
+pub const EXT_RGBX_GREEN: libc::c_int = 1i32;
+pub const EXT_BGRX_GREEN: libc::c_int = 1i32;
+pub const EXT_XBGR_GREEN: libc::c_int = 2i32;
+pub const EXT_XRGB_GREEN: libc::c_int = 2i32;
+pub static mut rgb_green: [libc::c_int; 17] = [
+    -1i32,
+    -1i32,
+    crate::jmorecfg_h::RGB_GREEN,
+    -1i32,
+    -1i32,
+    -1i32,
+    crate::jmorecfg_h::EXT_RGB_GREEN,
+    crate::jmorecfg_h::EXT_RGBX_GREEN,
+    crate::jmorecfg_h::EXT_BGR_GREEN,
+    crate::jmorecfg_h::EXT_BGRX_GREEN,
+    crate::jmorecfg_h::EXT_XBGR_GREEN,
+    crate::jmorecfg_h::EXT_XRGB_GREEN,
+    crate::jmorecfg_h::EXT_RGBX_GREEN,
+    crate::jmorecfg_h::EXT_BGRX_GREEN,
+    crate::jmorecfg_h::EXT_XBGR_GREEN,
+    crate::jmorecfg_h::EXT_XRGB_GREEN,
+    -1i32,
+];
+pub const RGB_RED: libc::c_int = 0i32;
+pub const EXT_RGB_RED: libc::c_int = 0i32;
+pub const EXT_BGR_RED: libc::c_int = 2i32;
+pub const EXT_RGBX_RED: libc::c_int = 0i32;
+pub const EXT_BGRX_RED: libc::c_int = 2i32;
+pub const EXT_XBGR_RED: libc::c_int = 3i32;
+pub const EXT_XRGB_RED: libc::c_int = 1i32;
+pub static mut rgb_red: [libc::c_int; 17] = [
+    -1i32,
+    -1i32,
+    crate::jmorecfg_h::RGB_RED,
+    -1i32,
+    -1i32,
+    -1i32,
+    crate::jmorecfg_h::EXT_RGB_RED,
+    crate::jmorecfg_h::EXT_RGBX_RED,
+    crate::jmorecfg_h::EXT_BGR_RED,
+    crate::jmorecfg_h::EXT_BGRX_RED,
+    crate::jmorecfg_h::EXT_XBGR_RED,
+    crate::jmorecfg_h::EXT_XRGB_RED,
+    crate::jmorecfg_h::EXT_RGBX_RED,
+    crate::jmorecfg_h::EXT_BGRX_RED,
+    crate::jmorecfg_h::EXT_XBGR_RED,
+    crate::jmorecfg_h::EXT_XRGB_RED,
+    -1i32,
+];
+pub const MAXJSAMPLE: libc::c_int = 255i32;
+pub const CENTERJSAMPLE: libc::c_int = 128i32;
 /*
  * The remaining options affect code selection within the JPEG library,
  * but they don't need to be visible to most applications using the library.
@@ -628,19 +627,18 @@ pub const CENTERJSAMPLE: c_int = 128i32;
  * listed above, changing these values will also break the SIMD extensions and
  * the regression tests.
  */
-pub const RGB_RED_5: c_int = 0i32;
+pub const RGB_RED_5: libc::c_int = 0i32;
 /* Offset of Red in an RGB scanline element */
-pub const RGB_GREEN_5: c_int = 1i32;
+pub const RGB_GREEN_5: libc::c_int = 1i32;
 /* Offset of Green */
-pub const RGB_BLUE_5: c_int = 2i32;
-use libc;
-pub const JPEG_MAX_DIMENSION: c_long = 65500i64;
-pub const MAX_COMPONENTS: c_int = 10i32;
-pub type INT16 = c_short;
-pub const RGB_PIXELSIZE: c_int = 3i32;
-pub type JSAMPLE = c_uchar;
-pub type JCOEF = c_short;
-pub type JOCTET = c_uchar;
-pub type UINT8 = c_uchar;
-pub type UINT16 = c_ushort;
-pub type JDIMENSION = c_uint;
+pub const RGB_BLUE_5: libc::c_int = 2i32;
+pub const JPEG_MAX_DIMENSION: libc::c_long = 65500i64;
+pub const MAX_COMPONENTS: libc::c_int = 10i32;
+pub type INT16 = libc::c_short;
+pub const RGB_PIXELSIZE: libc::c_int = 3i32;
+pub type JSAMPLE = libc::c_uchar;
+pub type JCOEF = libc::c_short;
+pub type JOCTET = libc::c_uchar;
+pub type UINT8 = libc::c_uchar;
+pub type UINT16 = libc::c_ushort;
+pub type JDIMENSION = libc::c_uint;

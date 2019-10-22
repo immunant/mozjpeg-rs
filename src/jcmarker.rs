@@ -1,67 +1,226 @@
-pub use super::jerror::{
-    C2RustUnnamed_3, JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
-    JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID, JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
-    JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE, JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
-    JERR_BAD_LENGTH, JERR_BAD_LIB_VERSION, JERR_BAD_MCU_SIZE, JERR_BAD_PARAM, JERR_BAD_PARAM_VALUE,
-    JERR_BAD_POOL_ID, JERR_BAD_PRECISION, JERR_BAD_PROGRESSION, JERR_BAD_PROG_SCRIPT,
-    JERR_BAD_SAMPLING, JERR_BAD_SCAN_SCRIPT, JERR_BAD_STATE, JERR_BAD_STRUCT_SIZE,
-    JERR_BAD_VIRTUAL_ACCESS, JERR_BUFFER_SIZE, JERR_CANT_SUSPEND, JERR_CCIR601_NOTIMPL,
-    JERR_COMPONENT_COUNT, JERR_CONVERSION_NOTIMPL, JERR_DAC_INDEX, JERR_DAC_VALUE, JERR_DHT_INDEX,
-    JERR_DQT_INDEX, JERR_EMPTY_IMAGE, JERR_EMS_READ, JERR_EMS_WRITE, JERR_EOI_EXPECTED,
-    JERR_FILE_READ, JERR_FILE_WRITE, JERR_FRACT_SAMPLE_NOTIMPL, JERR_HUFF_CLEN_OVERFLOW,
-    JERR_HUFF_MISSING_CODE, JERR_IMAGE_TOO_BIG, JERR_INPUT_EMPTY, JERR_INPUT_EOF,
-    JERR_MISMATCHED_QUANT_TABLE, JERR_MISSING_DATA, JERR_MODE_CHANGE, JERR_NOTIMPL,
-    JERR_NOT_COMPILED, JERR_NO_BACKING_STORE, JERR_NO_HUFF_TABLE, JERR_NO_IMAGE,
-    JERR_NO_QUANT_TABLE, JERR_NO_SOI, JERR_OUT_OF_MEMORY, JERR_QUANT_COMPONENTS,
-    JERR_QUANT_FEW_COLORS, JERR_QUANT_MANY_COLORS, JERR_SOF_DUPLICATE, JERR_SOF_NO_SOS,
-    JERR_SOF_UNSUPPORTED, JERR_SOI_DUPLICATE, JERR_SOS_NO_SOF, JERR_TFILE_CREATE, JERR_TFILE_READ,
-    JERR_TFILE_SEEK, JERR_TFILE_WRITE, JERR_TOO_LITTLE_DATA, JERR_UNKNOWN_MARKER,
-    JERR_UNSUPPORTED_SUSPEND, JERR_VIRTUAL_BUG, JERR_WIDTH_OVERFLOW, JERR_XMS_READ, JERR_XMS_WRITE,
-    JMSG_COPYRIGHT, JMSG_LASTMSGCODE, JMSG_NOMESSAGE, JMSG_VERSION, JTRC_16BIT_TABLES, JTRC_ADOBE,
-    JTRC_APP0, JTRC_APP14, JTRC_DAC, JTRC_DHT, JTRC_DQT, JTRC_DRI, JTRC_EMS_CLOSE, JTRC_EMS_OPEN,
-    JTRC_EOI, JTRC_HUFFBITS, JTRC_JFIF, JTRC_JFIF_BADTHUMBNAILSIZE, JTRC_JFIF_EXTENSION,
-    JTRC_JFIF_THUMBNAIL, JTRC_MISC_MARKER, JTRC_PARMLESS_MARKER, JTRC_QUANTVALS,
-    JTRC_QUANT_3_NCOLORS, JTRC_QUANT_NCOLORS, JTRC_QUANT_SELECTED, JTRC_RECOVERY_ACTION, JTRC_RST,
-    JTRC_SMOOTH_NOTIMPL, JTRC_SOF, JTRC_SOF_COMPONENT, JTRC_SOI, JTRC_SOS, JTRC_SOS_COMPONENT,
-    JTRC_SOS_PARAMS, JTRC_TFILE_CLOSE, JTRC_TFILE_OPEN, JTRC_THUMB_JPEG, JTRC_THUMB_PALETTE,
-    JTRC_THUMB_RGB, JTRC_UNKNOWN_IDS, JTRC_XMS_CLOSE, JTRC_XMS_OPEN, JWRN_ADOBE_XFORM,
-    JWRN_BOGUS_ICC, JWRN_BOGUS_PROGRESSION, JWRN_EXTRANEOUS_DATA, JWRN_HIT_MARKER,
-    JWRN_HUFF_BAD_CODE, JWRN_JFIF_MAJOR, JWRN_JPEG_EOF, JWRN_MUST_RESYNC, JWRN_NOT_SEQUENTIAL,
-    JWRN_TOO_MUCH_DATA,
-};
-pub use crate::jmorecfg_h::{
-    boolean, FALSE, JCOEF, JDIMENSION, JOCTET, JSAMPLE, TRUE, UINT16, UINT8,
-};
-pub use crate::jpegint_h::{
-    jpeg_natural_order, JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS,
-    JBUF_SAVE_SOURCE, J_BUF_MODE,
-};
-pub use crate::jpeglib_h::{
-    j_common_ptr, j_compress_ptr, jpeg_c_coef_controller, jpeg_c_main_controller,
-    jpeg_c_prep_controller, jpeg_color_converter, jpeg_common_struct, jpeg_comp_master,
-    jpeg_component_info, jpeg_compress_struct, jpeg_destination_mgr, jpeg_downsampler,
-    jpeg_entropy_encoder, jpeg_error_mgr, jpeg_forward_dct, jpeg_marker_writer, jpeg_memory_mgr,
-    jpeg_progress_mgr, jpeg_scan_info, jvirt_barray_control, jvirt_barray_ptr,
-    jvirt_sarray_control, jvirt_sarray_ptr, C2RustUnnamed_1, C2RustUnnamed_2, JCS_YCbCr, DCTSIZE2,
-    JBLOCK, JBLOCKARRAY, JBLOCKROW, JCP_FASTEST, JCP_MAX_COMPRESSION, JCS_CMYK, JCS_EXT_ABGR,
-    JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX,
-    JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK,
-    JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JHUFF_TBL, JPOOL_IMAGE, JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE,
-    JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD, NUM_HUFF_TBLS, NUM_QUANT_TBLS,
-};
-pub use crate::stddef_h::{size_t, NULL};
-use libc::{self, c_int, c_long, c_uint, c_ulong};
+use libc;
+
+pub use crate::jmorecfg_h::boolean;
+pub use crate::jmorecfg_h::FALSE;
+pub use crate::jmorecfg_h::JCOEF;
+pub use crate::jmorecfg_h::JDIMENSION;
+pub use crate::jmorecfg_h::JOCTET;
+pub use crate::jmorecfg_h::JSAMPLE;
+pub use crate::jmorecfg_h::TRUE;
+pub use crate::jmorecfg_h::UINT16;
+pub use crate::jmorecfg_h::UINT8;
+pub use crate::jpegint_h::jpeg_natural_order;
+pub use crate::jpegint_h::JBUF_CRANK_DEST;
+pub use crate::jpegint_h::JBUF_PASS_THRU;
+pub use crate::jpegint_h::JBUF_REQUANT;
+pub use crate::jpegint_h::JBUF_SAVE_AND_PASS;
+pub use crate::jpegint_h::JBUF_SAVE_SOURCE;
+pub use crate::jpegint_h::J_BUF_MODE;
+pub use crate::jpeglib_h::j_common_ptr;
+pub use crate::jpeglib_h::j_compress_ptr;
+pub use crate::jpeglib_h::jpeg_c_coef_controller;
+pub use crate::jpeglib_h::jpeg_c_main_controller;
+pub use crate::jpeglib_h::jpeg_c_prep_controller;
+pub use crate::jpeglib_h::jpeg_color_converter;
+pub use crate::jpeglib_h::jpeg_common_struct;
+pub use crate::jpeglib_h::jpeg_comp_master;
+pub use crate::jpeglib_h::jpeg_component_info;
+pub use crate::jpeglib_h::jpeg_compress_struct;
+pub use crate::jpeglib_h::jpeg_destination_mgr;
+pub use crate::jpeglib_h::jpeg_downsampler;
+pub use crate::jpeglib_h::jpeg_entropy_encoder;
+pub use crate::jpeglib_h::jpeg_error_mgr;
+pub use crate::jpeglib_h::jpeg_forward_dct;
+pub use crate::jpeglib_h::jpeg_marker_writer;
+pub use crate::jpeglib_h::jpeg_memory_mgr;
+pub use crate::jpeglib_h::jpeg_progress_mgr;
+pub use crate::jpeglib_h::jpeg_scan_info;
+pub use crate::jpeglib_h::jvirt_barray_control;
+pub use crate::jpeglib_h::jvirt_barray_ptr;
+pub use crate::jpeglib_h::jvirt_sarray_control;
+pub use crate::jpeglib_h::jvirt_sarray_ptr;
+pub use crate::jpeglib_h::C2RustUnnamed_1;
+pub use crate::jpeglib_h::C2RustUnnamed_2;
+pub use crate::jpeglib_h::JCS_YCbCr;
+pub use crate::jpeglib_h::DCTSIZE2;
+pub use crate::jpeglib_h::JBLOCK;
+pub use crate::jpeglib_h::JBLOCKARRAY;
+pub use crate::jpeglib_h::JBLOCKROW;
+pub use crate::jpeglib_h::JCP_FASTEST;
+pub use crate::jpeglib_h::JCP_MAX_COMPRESSION;
+pub use crate::jpeglib_h::JCS_CMYK;
+pub use crate::jpeglib_h::JCS_EXT_ABGR;
+pub use crate::jpeglib_h::JCS_EXT_ARGB;
+pub use crate::jpeglib_h::JCS_EXT_BGR;
+pub use crate::jpeglib_h::JCS_EXT_BGRA;
+pub use crate::jpeglib_h::JCS_EXT_BGRX;
+pub use crate::jpeglib_h::JCS_EXT_RGB;
+pub use crate::jpeglib_h::JCS_EXT_RGBA;
+pub use crate::jpeglib_h::JCS_EXT_RGBX;
+pub use crate::jpeglib_h::JCS_EXT_XBGR;
+pub use crate::jpeglib_h::JCS_EXT_XRGB;
+pub use crate::jpeglib_h::JCS_GRAYSCALE;
+pub use crate::jpeglib_h::JCS_RGB;
+pub use crate::jpeglib_h::JCS_RGB565;
+pub use crate::jpeglib_h::JCS_UNKNOWN;
+pub use crate::jpeglib_h::JCS_YCCK;
+pub use crate::jpeglib_h::JDCT_FLOAT;
+pub use crate::jpeglib_h::JDCT_IFAST;
+pub use crate::jpeglib_h::JDCT_ISLOW;
+pub use crate::jpeglib_h::JHUFF_TBL;
+pub use crate::jpeglib_h::JPOOL_IMAGE;
+pub use crate::jpeglib_h::JQUANT_TBL;
+pub use crate::jpeglib_h::JSAMPARRAY;
+pub use crate::jpeglib_h::JSAMPIMAGE;
+pub use crate::jpeglib_h::JSAMPROW;
+pub use crate::jpeglib_h::J_COLOR_SPACE;
+pub use crate::jpeglib_h::J_DCT_METHOD;
+pub use crate::jpeglib_h::NUM_HUFF_TBLS;
+pub use crate::jpeglib_h::NUM_QUANT_TBLS;
+pub use crate::src::jerror::C2RustUnnamed_3;
+pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
+pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
+pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
+pub use crate::src::jerror::JERR_BAD_BUFFER_MODE;
+pub use crate::src::jerror::JERR_BAD_COMPONENT_ID;
+pub use crate::src::jerror::JERR_BAD_CROP_SPEC;
+pub use crate::src::jerror::JERR_BAD_DCTSIZE;
+pub use crate::src::jerror::JERR_BAD_DCT_COEF;
+pub use crate::src::jerror::JERR_BAD_HUFF_TABLE;
+pub use crate::src::jerror::JERR_BAD_IN_COLORSPACE;
+pub use crate::src::jerror::JERR_BAD_J_COLORSPACE;
+pub use crate::src::jerror::JERR_BAD_LENGTH;
+pub use crate::src::jerror::JERR_BAD_LIB_VERSION;
+pub use crate::src::jerror::JERR_BAD_MCU_SIZE;
+pub use crate::src::jerror::JERR_BAD_PARAM;
+pub use crate::src::jerror::JERR_BAD_PARAM_VALUE;
+pub use crate::src::jerror::JERR_BAD_POOL_ID;
+pub use crate::src::jerror::JERR_BAD_PRECISION;
+pub use crate::src::jerror::JERR_BAD_PROGRESSION;
+pub use crate::src::jerror::JERR_BAD_PROG_SCRIPT;
+pub use crate::src::jerror::JERR_BAD_SAMPLING;
+pub use crate::src::jerror::JERR_BAD_SCAN_SCRIPT;
+pub use crate::src::jerror::JERR_BAD_STATE;
+pub use crate::src::jerror::JERR_BAD_STRUCT_SIZE;
+pub use crate::src::jerror::JERR_BAD_VIRTUAL_ACCESS;
+pub use crate::src::jerror::JERR_BUFFER_SIZE;
+pub use crate::src::jerror::JERR_CANT_SUSPEND;
+pub use crate::src::jerror::JERR_CCIR601_NOTIMPL;
+pub use crate::src::jerror::JERR_COMPONENT_COUNT;
+pub use crate::src::jerror::JERR_CONVERSION_NOTIMPL;
+pub use crate::src::jerror::JERR_DAC_INDEX;
+pub use crate::src::jerror::JERR_DAC_VALUE;
+pub use crate::src::jerror::JERR_DHT_INDEX;
+pub use crate::src::jerror::JERR_DQT_INDEX;
+pub use crate::src::jerror::JERR_EMPTY_IMAGE;
+pub use crate::src::jerror::JERR_EMS_READ;
+pub use crate::src::jerror::JERR_EMS_WRITE;
+pub use crate::src::jerror::JERR_EOI_EXPECTED;
+pub use crate::src::jerror::JERR_FILE_READ;
+pub use crate::src::jerror::JERR_FILE_WRITE;
+pub use crate::src::jerror::JERR_FRACT_SAMPLE_NOTIMPL;
+pub use crate::src::jerror::JERR_HUFF_CLEN_OVERFLOW;
+pub use crate::src::jerror::JERR_HUFF_MISSING_CODE;
+pub use crate::src::jerror::JERR_IMAGE_TOO_BIG;
+pub use crate::src::jerror::JERR_INPUT_EMPTY;
+pub use crate::src::jerror::JERR_INPUT_EOF;
+pub use crate::src::jerror::JERR_MISMATCHED_QUANT_TABLE;
+pub use crate::src::jerror::JERR_MISSING_DATA;
+pub use crate::src::jerror::JERR_MODE_CHANGE;
+pub use crate::src::jerror::JERR_NOTIMPL;
+pub use crate::src::jerror::JERR_NOT_COMPILED;
+pub use crate::src::jerror::JERR_NO_BACKING_STORE;
+pub use crate::src::jerror::JERR_NO_HUFF_TABLE;
+pub use crate::src::jerror::JERR_NO_IMAGE;
+pub use crate::src::jerror::JERR_NO_QUANT_TABLE;
+pub use crate::src::jerror::JERR_NO_SOI;
+pub use crate::src::jerror::JERR_OUT_OF_MEMORY;
+pub use crate::src::jerror::JERR_QUANT_COMPONENTS;
+pub use crate::src::jerror::JERR_QUANT_FEW_COLORS;
+pub use crate::src::jerror::JERR_QUANT_MANY_COLORS;
+pub use crate::src::jerror::JERR_SOF_DUPLICATE;
+pub use crate::src::jerror::JERR_SOF_NO_SOS;
+pub use crate::src::jerror::JERR_SOF_UNSUPPORTED;
+pub use crate::src::jerror::JERR_SOI_DUPLICATE;
+pub use crate::src::jerror::JERR_SOS_NO_SOF;
+pub use crate::src::jerror::JERR_TFILE_CREATE;
+pub use crate::src::jerror::JERR_TFILE_READ;
+pub use crate::src::jerror::JERR_TFILE_SEEK;
+pub use crate::src::jerror::JERR_TFILE_WRITE;
+pub use crate::src::jerror::JERR_TOO_LITTLE_DATA;
+pub use crate::src::jerror::JERR_UNKNOWN_MARKER;
+pub use crate::src::jerror::JERR_UNSUPPORTED_SUSPEND;
+pub use crate::src::jerror::JERR_VIRTUAL_BUG;
+pub use crate::src::jerror::JERR_WIDTH_OVERFLOW;
+pub use crate::src::jerror::JERR_XMS_READ;
+pub use crate::src::jerror::JERR_XMS_WRITE;
+pub use crate::src::jerror::JMSG_COPYRIGHT;
+pub use crate::src::jerror::JMSG_LASTMSGCODE;
+pub use crate::src::jerror::JMSG_NOMESSAGE;
+pub use crate::src::jerror::JMSG_VERSION;
+pub use crate::src::jerror::JTRC_16BIT_TABLES;
+pub use crate::src::jerror::JTRC_ADOBE;
+pub use crate::src::jerror::JTRC_APP0;
+pub use crate::src::jerror::JTRC_APP14;
+pub use crate::src::jerror::JTRC_DAC;
+pub use crate::src::jerror::JTRC_DHT;
+pub use crate::src::jerror::JTRC_DQT;
+pub use crate::src::jerror::JTRC_DRI;
+pub use crate::src::jerror::JTRC_EMS_CLOSE;
+pub use crate::src::jerror::JTRC_EMS_OPEN;
+pub use crate::src::jerror::JTRC_EOI;
+pub use crate::src::jerror::JTRC_HUFFBITS;
+pub use crate::src::jerror::JTRC_JFIF;
+pub use crate::src::jerror::JTRC_JFIF_BADTHUMBNAILSIZE;
+pub use crate::src::jerror::JTRC_JFIF_EXTENSION;
+pub use crate::src::jerror::JTRC_JFIF_THUMBNAIL;
+pub use crate::src::jerror::JTRC_MISC_MARKER;
+pub use crate::src::jerror::JTRC_PARMLESS_MARKER;
+pub use crate::src::jerror::JTRC_QUANTVALS;
+pub use crate::src::jerror::JTRC_QUANT_3_NCOLORS;
+pub use crate::src::jerror::JTRC_QUANT_NCOLORS;
+pub use crate::src::jerror::JTRC_QUANT_SELECTED;
+pub use crate::src::jerror::JTRC_RECOVERY_ACTION;
+pub use crate::src::jerror::JTRC_RST;
+pub use crate::src::jerror::JTRC_SMOOTH_NOTIMPL;
+pub use crate::src::jerror::JTRC_SOF;
+pub use crate::src::jerror::JTRC_SOF_COMPONENT;
+pub use crate::src::jerror::JTRC_SOI;
+pub use crate::src::jerror::JTRC_SOS;
+pub use crate::src::jerror::JTRC_SOS_COMPONENT;
+pub use crate::src::jerror::JTRC_SOS_PARAMS;
+pub use crate::src::jerror::JTRC_TFILE_CLOSE;
+pub use crate::src::jerror::JTRC_TFILE_OPEN;
+pub use crate::src::jerror::JTRC_THUMB_JPEG;
+pub use crate::src::jerror::JTRC_THUMB_PALETTE;
+pub use crate::src::jerror::JTRC_THUMB_RGB;
+pub use crate::src::jerror::JTRC_UNKNOWN_IDS;
+pub use crate::src::jerror::JTRC_XMS_CLOSE;
+pub use crate::src::jerror::JTRC_XMS_OPEN;
+pub use crate::src::jerror::JWRN_ADOBE_XFORM;
+pub use crate::src::jerror::JWRN_BOGUS_ICC;
+pub use crate::src::jerror::JWRN_BOGUS_PROGRESSION;
+pub use crate::src::jerror::JWRN_EXTRANEOUS_DATA;
+pub use crate::src::jerror::JWRN_HIT_MARKER;
+pub use crate::src::jerror::JWRN_HUFF_BAD_CODE;
+pub use crate::src::jerror::JWRN_JFIF_MAJOR;
+pub use crate::src::jerror::JWRN_JPEG_EOF;
+pub use crate::src::jerror::JWRN_MUST_RESYNC;
+pub use crate::src::jerror::JWRN_NOT_SEQUENTIAL;
+pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
+pub use crate::stddef_h::size_t;
+pub use crate::stddef_h::NULL;
 
 pub type my_marker_ptr = *mut my_marker_writer;
 
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct my_marker_writer {
-    pub pub_0: jpeg_marker_writer,
-    pub last_restart_interval: c_uint,
+    pub pub_0: crate::jpeglib_h::jpeg_marker_writer,
+    pub last_restart_interval: libc::c_uint,
 }
 
-pub type JPEG_MARKER = c_uint;
+pub type JPEG_MARKER = libc::c_uint;
 
 pub const M_ERROR: JPEG_MARKER = 256;
 
@@ -180,15 +339,15 @@ pub const M_SOF0: JPEG_MARKER = 192;
  * points where markers will be written.
  */
 
-unsafe extern "C" fn emit_byte(mut cinfo: j_compress_ptr, mut val: c_int)
+unsafe extern "C" fn emit_byte(mut cinfo: crate::jpeglib_h::j_compress_ptr, mut val: libc::c_int)
 /* Emit a byte */
 {
-    let mut dest: *mut jpeg_destination_mgr = (*cinfo).dest;
+    let mut dest: *mut crate::jpeglib_h::jpeg_destination_mgr = (*cinfo).dest;
     let fresh0 = (*dest).next_output_byte;
     (*dest).next_output_byte = (*dest).next_output_byte.offset(1);
-    *fresh0 = val as JOCTET;
+    *fresh0 = val as crate::jmorecfg_h::JOCTET;
     (*dest).free_in_buffer = (*dest).free_in_buffer.wrapping_sub(1);
-    if (*dest).free_in_buffer == 0i32 as c_ulong {
+    if (*dest).free_in_buffer == 0i32 as libc::c_ulong {
         if Some(
             (*dest)
                 .empty_output_buffer
@@ -197,25 +356,33 @@ unsafe extern "C" fn emit_byte(mut cinfo: j_compress_ptr, mut val: c_int)
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            (*(*cinfo).err).msg_code = super::jerror::JERR_CANT_SUSPEND as c_int;
+            (*(*cinfo).err).msg_code = crate::src::jerror::JERR_CANT_SUSPEND as libc::c_int;
             Some(
                 (*(*cinfo).err)
                     .error_exit
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+            .expect("non-null function pointer")(
+                cinfo as crate::jpeglib_h::j_common_ptr
+            );
         }
     };
 }
 
-unsafe extern "C" fn emit_marker(mut cinfo: j_compress_ptr, mut mark: JPEG_MARKER)
+unsafe extern "C" fn emit_marker(
+    mut cinfo: crate::jpeglib_h::j_compress_ptr,
+    mut mark: JPEG_MARKER,
+)
 /* Emit a marker code */
 {
     emit_byte(cinfo, 0xffi32);
-    emit_byte(cinfo, mark as c_int);
+    emit_byte(cinfo, mark as libc::c_int);
 }
 
-unsafe extern "C" fn emit_2bytes(mut cinfo: j_compress_ptr, mut value: c_int)
+unsafe extern "C" fn emit_2bytes(
+    mut cinfo: crate::jpeglib_h::j_compress_ptr,
+    mut value: libc::c_int,
+)
 /* Emit a 2-byte integer; these are always MSB first in JPEG files */
 {
     emit_byte(cinfo, value >> 8i32 & 0xffi32);
@@ -225,26 +392,29 @@ unsafe extern "C" fn emit_2bytes(mut cinfo: j_compress_ptr, mut value: c_int)
  * Routines to write specific marker types.
  */
 
-unsafe extern "C" fn emit_dqt(mut cinfo: j_compress_ptr, mut index: c_int) -> c_int
+unsafe extern "C" fn emit_dqt(
+    mut cinfo: crate::jpeglib_h::j_compress_ptr,
+    mut index: libc::c_int,
+) -> libc::c_int
 /* Emit a DQT marker */
 /* Returns the precision used (0 = 8bits, 1 = 16bits) for baseline checking */ {
-    let mut qtbl: *mut JQUANT_TBL = (*cinfo).quant_tbl_ptrs[index as usize];
-    let mut prec: c_int = 0;
-    let mut i: c_int = 0;
+    let mut qtbl: *mut crate::jpeglib_h::JQUANT_TBL = (*cinfo).quant_tbl_ptrs[index as usize];
+    let mut prec: libc::c_int = 0;
+    let mut i: libc::c_int = 0;
     if qtbl.is_null() {
-        (*(*cinfo).err).msg_code = super::jerror::JERR_NO_QUANT_TABLE as c_int;
+        (*(*cinfo).err).msg_code = crate::src::jerror::JERR_NO_QUANT_TABLE as libc::c_int;
         (*(*cinfo).err).msg_parm.i[0] = index;
         Some(
             (*(*cinfo).err)
                 .error_exit
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as j_common_ptr);
+        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
     prec = 0i32;
     i = 0i32;
-    while i < DCTSIZE2 {
-        if (*qtbl).quantval[i as usize] as c_int > 255i32 {
+    while i < crate::jpeglib_h::DCTSIZE2 {
+        if (*qtbl).quantval[i as usize] as libc::c_int > 255i32 {
             prec = 1i32
         }
         i += 1
@@ -254,54 +424,55 @@ unsafe extern "C" fn emit_dqt(mut cinfo: j_compress_ptr, mut index: c_int) -> c_
         emit_2bytes(
             cinfo,
             if prec != 0 {
-                (DCTSIZE2 * 2i32 + 1i32) + 2i32
+                (crate::jpeglib_h::DCTSIZE2 * 2i32 + 1i32) + 2i32
             } else {
-                (DCTSIZE2 + 1i32) + 2i32
+                (crate::jpeglib_h::DCTSIZE2 + 1i32) + 2i32
             },
         );
         emit_byte(cinfo, index + (prec << 4i32));
         i = 0i32;
-        while i < DCTSIZE2 {
+        while i < crate::jpeglib_h::DCTSIZE2 {
             /* The table entries must be emitted in zigzag order. */
-            let mut qval: c_uint = (*qtbl).quantval
-                [*jpeg_natural_order.as_ptr().offset(i as isize) as usize]
-                as c_uint;
+            let mut qval: libc::c_uint = (*qtbl).quantval[*crate::jpegint_h::jpeg_natural_order
+                .as_ptr()
+                .offset(i as isize)
+                as usize] as libc::c_uint;
             if prec != 0 {
-                emit_byte(cinfo, (qval >> 8i32) as c_int);
+                emit_byte(cinfo, (qval >> 8i32) as libc::c_int);
             }
-            emit_byte(cinfo, (qval & 0xffi32 as c_uint) as c_int);
+            emit_byte(cinfo, (qval & 0xffi32 as libc::c_uint) as libc::c_int);
             i += 1
         }
-        (*qtbl).sent_table = TRUE
+        (*qtbl).sent_table = crate::jmorecfg_h::TRUE
     }
     return prec;
 }
 
-unsafe extern "C" fn emit_multi_dqt(mut cinfo: j_compress_ptr) -> c_int
+unsafe extern "C" fn emit_multi_dqt(mut cinfo: crate::jpeglib_h::j_compress_ptr) -> libc::c_int
 /* Emits a DQT marker containing all quantization tables */
 /* Returns number of emitted 16-bit tables, or -1 for failed for baseline checking. */ {
-    let mut prec: [c_int; 10] = [0; 10];
-    let mut seen: [c_int; 10] = [0i32, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    let mut fin_prec: c_int = 0i32;
-    let mut ci: c_int = 0;
-    let mut size: c_int = 0i32;
-    if (*(*cinfo).master).compress_profile == JCP_FASTEST as c_int {
+    let mut prec: [libc::c_int; 10] = [0; 10];
+    let mut seen: [libc::c_int; 10] = [0i32, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let mut fin_prec: libc::c_int = 0i32;
+    let mut ci: libc::c_int = 0;
+    let mut size: libc::c_int = 0i32;
+    if (*(*cinfo).master).compress_profile == crate::jpeglib_h::JCP_FASTEST as libc::c_int {
         return -1i32;
     }
     ci = 0i32;
     while ci < (*cinfo).num_components {
-        let mut tbl_num: c_int = (*(*cinfo).comp_info.offset(ci as isize)).quant_tbl_no;
-        let mut i: c_int = 0;
-        let mut qtbl: *mut JQUANT_TBL = (*cinfo).quant_tbl_ptrs[tbl_num as usize];
-        if qtbl.is_null() || (*qtbl).sent_table == TRUE {
+        let mut tbl_num: libc::c_int = (*(*cinfo).comp_info.offset(ci as isize)).quant_tbl_no;
+        let mut i: libc::c_int = 0;
+        let mut qtbl: *mut crate::jpeglib_h::JQUANT_TBL = (*cinfo).quant_tbl_ptrs[tbl_num as usize];
+        if qtbl.is_null() || (*qtbl).sent_table == crate::jmorecfg_h::TRUE {
             return -1i32;
         }
         prec[ci as usize] = 0i32;
         i = 0i32;
-        while i < DCTSIZE2 {
+        while i < crate::jpeglib_h::DCTSIZE2 {
             prec[ci as usize] = (prec[ci as usize]
-                + ((*qtbl).quantval[i as usize] as c_int > 255i32) as c_int
-                != 0) as c_int;
+                + ((*qtbl).quantval[i as usize] as libc::c_int > 255i32) as libc::c_int
+                != 0) as libc::c_int;
             i += 1
         }
         fin_prec += prec[ci as usize];
@@ -310,9 +481,9 @@ unsafe extern "C" fn emit_multi_dqt(mut cinfo: j_compress_ptr) -> c_int
     emit_marker(cinfo, M_DQT);
     ci = 0i32;
     while ci < (*cinfo).num_components {
-        let mut tbl_num_0: c_int = (*(*cinfo).comp_info.offset(ci as isize)).quant_tbl_no;
+        let mut tbl_num_0: libc::c_int = (*(*cinfo).comp_info.offset(ci as isize)).quant_tbl_no;
         if seen[tbl_num_0 as usize] == 0 {
-            size += DCTSIZE2 * (prec[ci as usize] + 1i32) + 1i32;
+            size += crate::jpeglib_h::DCTSIZE2 * (prec[ci as usize] + 1i32) + 1i32;
             seen[tbl_num_0 as usize] = 1i32
         }
         ci += 1
@@ -321,35 +492,41 @@ unsafe extern "C" fn emit_multi_dqt(mut cinfo: j_compress_ptr) -> c_int
     emit_2bytes(cinfo, size);
     ci = 0i32;
     while ci < (*cinfo).num_components {
-        let mut tbl_num_1: c_int = (*(*cinfo).comp_info.offset(ci as isize)).quant_tbl_no;
-        let mut i_0: c_int = 0;
-        let mut qtbl_0: *mut JQUANT_TBL = (*cinfo).quant_tbl_ptrs[tbl_num_1 as usize];
-        if !((*qtbl_0).sent_table == TRUE) {
+        let mut tbl_num_1: libc::c_int = (*(*cinfo).comp_info.offset(ci as isize)).quant_tbl_no;
+        let mut i_0: libc::c_int = 0;
+        let mut qtbl_0: *mut crate::jpeglib_h::JQUANT_TBL =
+            (*cinfo).quant_tbl_ptrs[tbl_num_1 as usize];
+        if !((*qtbl_0).sent_table == crate::jmorecfg_h::TRUE) {
             emit_byte(cinfo, tbl_num_1 + (prec[ci as usize] << 4i32));
             i_0 = 0i32;
-            while i_0 < DCTSIZE2 {
-                let mut qval: c_uint = (*qtbl_0).quantval
-                    [*jpeg_natural_order.as_ptr().offset(i_0 as isize) as usize]
-                    as c_uint;
+            while i_0 < crate::jpeglib_h::DCTSIZE2 {
+                let mut qval: libc::c_uint =
+                    (*qtbl_0).quantval[*crate::jpegint_h::jpeg_natural_order
+                        .as_ptr()
+                        .offset(i_0 as isize) as usize] as libc::c_uint;
                 if prec[ci as usize] != 0 {
-                    emit_byte(cinfo, (qval >> 8i32) as c_int);
+                    emit_byte(cinfo, (qval >> 8i32) as libc::c_int);
                 }
-                emit_byte(cinfo, (qval & 0xffi32 as c_uint) as c_int);
+                emit_byte(cinfo, (qval & 0xffi32 as libc::c_uint) as libc::c_int);
                 i_0 += 1
             }
-            (*qtbl_0).sent_table = TRUE
+            (*qtbl_0).sent_table = crate::jmorecfg_h::TRUE
         }
         ci += 1
     }
     return fin_prec;
 }
 
-unsafe extern "C" fn emit_dht(mut cinfo: j_compress_ptr, mut index: c_int, mut is_ac: boolean)
+unsafe extern "C" fn emit_dht(
+    mut cinfo: crate::jpeglib_h::j_compress_ptr,
+    mut index: libc::c_int,
+    mut is_ac: crate::jmorecfg_h::boolean,
+)
 /* Emit a DHT marker */
 {
-    let mut htbl: *mut JHUFF_TBL = 0 as *mut JHUFF_TBL;
-    let mut length: c_int = 0;
-    let mut i: c_int = 0;
+    let mut htbl: *mut crate::jpeglib_h::JHUFF_TBL = 0 as *mut crate::jpeglib_h::JHUFF_TBL;
+    let mut length: libc::c_int = 0;
+    let mut i: libc::c_int = 0;
     if is_ac != 0 {
         htbl = (*cinfo).ac_huff_tbl_ptrs[index as usize];
         index += 0x10i32
@@ -358,90 +535,95 @@ unsafe extern "C" fn emit_dht(mut cinfo: j_compress_ptr, mut index: c_int, mut i
         htbl = (*cinfo).dc_huff_tbl_ptrs[index as usize]
     }
     if htbl.is_null() {
-        (*(*cinfo).err).msg_code = super::jerror::JERR_NO_HUFF_TABLE as c_int;
+        (*(*cinfo).err).msg_code = crate::src::jerror::JERR_NO_HUFF_TABLE as libc::c_int;
         (*(*cinfo).err).msg_parm.i[0] = index;
         Some(
             (*(*cinfo).err)
                 .error_exit
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as j_common_ptr);
+        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
     if (*htbl).sent_table == 0 {
         emit_marker(cinfo, M_DHT);
         length = 0i32;
         i = 1i32;
         while i <= 16i32 {
-            length += (*htbl).bits[i as usize] as c_int;
+            length += (*htbl).bits[i as usize] as libc::c_int;
             i += 1
         }
         emit_2bytes(cinfo, length + 2i32 + 1i32 + 16i32);
         emit_byte(cinfo, index);
         i = 1i32;
         while i <= 16i32 {
-            emit_byte(cinfo, (*htbl).bits[i as usize] as c_int);
+            emit_byte(cinfo, (*htbl).bits[i as usize] as libc::c_int);
             i += 1
         }
         i = 0i32;
         while i < length {
-            emit_byte(cinfo, (*htbl).huffval[i as usize] as c_int);
+            emit_byte(cinfo, (*htbl).huffval[i as usize] as libc::c_int);
             i += 1
         }
-        (*htbl).sent_table = TRUE
+        (*htbl).sent_table = crate::jmorecfg_h::TRUE
     };
 }
 
-unsafe extern "C" fn emit_multi_dht(mut cinfo: j_compress_ptr) -> boolean
+unsafe extern "C" fn emit_multi_dht(
+    mut cinfo: crate::jpeglib_h::j_compress_ptr,
+) -> crate::jmorecfg_h::boolean
 /* Emit all DHT markers */
 /* Returns FALSE on failure, TRUE otherwise. */ {
-    let mut i: c_int = 0;
-    let mut j: c_int = 0;
-    let mut length: c_int = 2i32;
-    let mut dclens: [c_int; 4] = [0i32, 0, 0, 0];
-    let mut aclens: [c_int; 4] = [0i32, 0, 0, 0];
-    let mut dcseen: [*mut JHUFF_TBL; 4] = [
-        NULL as *mut JHUFF_TBL,
-        0 as *mut JHUFF_TBL,
-        0 as *mut JHUFF_TBL,
-        0 as *mut JHUFF_TBL,
+    let mut i: libc::c_int = 0;
+    let mut j: libc::c_int = 0;
+    let mut length: libc::c_int = 2i32;
+    let mut dclens: [libc::c_int; 4] = [0i32, 0, 0, 0];
+    let mut aclens: [libc::c_int; 4] = [0i32, 0, 0, 0];
+    let mut dcseen: [*mut crate::jpeglib_h::JHUFF_TBL; 4] = [
+        crate::stddef_h::NULL as *mut crate::jpeglib_h::JHUFF_TBL,
+        0 as *mut crate::jpeglib_h::JHUFF_TBL,
+        0 as *mut crate::jpeglib_h::JHUFF_TBL,
+        0 as *mut crate::jpeglib_h::JHUFF_TBL,
     ];
-    let mut acseen: [*mut JHUFF_TBL; 4] = [
-        NULL as *mut JHUFF_TBL,
-        0 as *mut JHUFF_TBL,
-        0 as *mut JHUFF_TBL,
-        0 as *mut JHUFF_TBL,
+    let mut acseen: [*mut crate::jpeglib_h::JHUFF_TBL; 4] = [
+        crate::stddef_h::NULL as *mut crate::jpeglib_h::JHUFF_TBL,
+        0 as *mut crate::jpeglib_h::JHUFF_TBL,
+        0 as *mut crate::jpeglib_h::JHUFF_TBL,
+        0 as *mut crate::jpeglib_h::JHUFF_TBL,
     ];
-    if (*(*cinfo).master).compress_profile == JCP_FASTEST as c_int {
+    if (*(*cinfo).master).compress_profile == crate::jpeglib_h::JCP_FASTEST as libc::c_int {
         return 0i32;
     }
     let mut current_block_23: u64;
     /* Calclate the total length. */
     i = 0i32;
     while i < (*cinfo).comps_in_scan {
-        let mut compptr: *mut jpeg_component_info = (*cinfo).cur_comp_info[i as usize];
-        let mut dcidx: c_int = (*compptr).dc_tbl_no;
-        let mut acidx: c_int = (*compptr).ac_tbl_no;
-        let mut dctbl: *mut JHUFF_TBL = (*cinfo).dc_huff_tbl_ptrs[dcidx as usize];
-        let mut actbl: *mut JHUFF_TBL = (*cinfo).ac_huff_tbl_ptrs[acidx as usize];
-        let mut seen: c_int = 0i32;
+        let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
+            (*cinfo).cur_comp_info[i as usize];
+        let mut dcidx: libc::c_int = (*compptr).dc_tbl_no;
+        let mut acidx: libc::c_int = (*compptr).ac_tbl_no;
+        let mut dctbl: *mut crate::jpeglib_h::JHUFF_TBL = (*cinfo).dc_huff_tbl_ptrs[dcidx as usize];
+        let mut actbl: *mut crate::jpeglib_h::JHUFF_TBL = (*cinfo).ac_huff_tbl_ptrs[acidx as usize];
+        let mut seen: libc::c_int = 0i32;
         /* Handle DC table lenghts */
         if (*cinfo).Ss == 0i32 && (*cinfo).Ah == 0i32 {
             if dctbl.is_null() {
-                (*(*cinfo).err).msg_code = super::jerror::JERR_NO_HUFF_TABLE as c_int;
+                (*(*cinfo).err).msg_code = crate::src::jerror::JERR_NO_HUFF_TABLE as libc::c_int;
                 (*(*cinfo).err).msg_parm.i[0] = dcidx;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer")(
+                    cinfo as crate::jpeglib_h::j_common_ptr
+                );
             }
             if (*dctbl).sent_table != 0 {
                 current_block_23 = 11875828834189669668;
             } else {
                 j = 0i32;
-                while j < NUM_HUFF_TBLS {
-                    seen += (dctbl == dcseen[j as usize]) as c_int;
+                while j < crate::jpeglib_h::NUM_HUFF_TBLS {
+                    seen += (dctbl == dcseen[j as usize]) as libc::c_int;
                     j += 1
                 }
                 if seen != 0 {
@@ -450,7 +632,7 @@ unsafe extern "C" fn emit_multi_dht(mut cinfo: j_compress_ptr) -> boolean
                     dcseen[i as usize] = dctbl;
                     j = 1i32;
                     while j <= 16i32 {
-                        dclens[i as usize] += (*dctbl).bits[j as usize] as c_int;
+                        dclens[i as usize] += (*dctbl).bits[j as usize] as libc::c_int;
                         j += 1
                     }
                     length += dclens[i as usize] + 16i32 + 1i32;
@@ -466,7 +648,8 @@ unsafe extern "C" fn emit_multi_dht(mut cinfo: j_compress_ptr) -> boolean
             {
                 if (*cinfo).Se != 0 {
                     if actbl.is_null() {
-                        (*(*cinfo).err).msg_code = super::jerror::JERR_NO_HUFF_TABLE as c_int;
+                        (*(*cinfo).err).msg_code =
+                            crate::src::jerror::JERR_NO_HUFF_TABLE as libc::c_int;
                         (*(*cinfo).err).msg_parm.i[0] = acidx + 0x10i32;
                         Some(
                             (*(*cinfo).err)
@@ -474,21 +657,21 @@ unsafe extern "C" fn emit_multi_dht(mut cinfo: j_compress_ptr) -> boolean
                                 .expect("non-null function pointer"),
                         )
                         .expect("non-null function pointer")(
-                            cinfo as j_common_ptr
+                            cinfo as crate::jpeglib_h::j_common_ptr,
                         );
                     }
                     if !((*actbl).sent_table != 0) {
                         seen = 0i32;
                         j = 0i32;
-                        while j < NUM_HUFF_TBLS {
-                            seen += (actbl == acseen[j as usize]) as c_int;
+                        while j < crate::jpeglib_h::NUM_HUFF_TBLS {
+                            seen += (actbl == acseen[j as usize]) as libc::c_int;
                             j += 1
                         }
                         if !(seen != 0) {
                             acseen[i as usize] = actbl;
                             j = 1i32;
                             while j <= 16i32 {
-                                aclens[i as usize] += (*actbl).bits[j as usize] as c_int;
+                                aclens[i as usize] += (*actbl).bits[j as usize] as libc::c_int;
                                 j += 1
                             }
                             length += aclens[i as usize] + 16i32 + 1i32
@@ -502,53 +685,56 @@ unsafe extern "C" fn emit_multi_dht(mut cinfo: j_compress_ptr) -> boolean
     }
     /* Make sure we can fit it all into one DHT marker */
     if length > (1i32 << 16i32) - 1i32 {
-        return FALSE;
+        return crate::jmorecfg_h::FALSE;
     }
     emit_marker(cinfo, M_DHT);
     emit_2bytes(cinfo, length);
     i = 0i32;
     while i < (*cinfo).comps_in_scan {
-        let mut compptr_0: *mut jpeg_component_info = (*cinfo).cur_comp_info[i as usize];
-        let mut dcidx_0: c_int = (*compptr_0).dc_tbl_no;
-        let mut acidx_0: c_int = (*compptr_0).ac_tbl_no;
-        let mut dctbl_0: *mut JHUFF_TBL = (*cinfo).dc_huff_tbl_ptrs[dcidx_0 as usize];
-        let mut actbl_0: *mut JHUFF_TBL = (*cinfo).ac_huff_tbl_ptrs[acidx_0 as usize];
+        let mut compptr_0: *mut crate::jpeglib_h::jpeg_component_info =
+            (*cinfo).cur_comp_info[i as usize];
+        let mut dcidx_0: libc::c_int = (*compptr_0).dc_tbl_no;
+        let mut acidx_0: libc::c_int = (*compptr_0).ac_tbl_no;
+        let mut dctbl_0: *mut crate::jpeglib_h::JHUFF_TBL =
+            (*cinfo).dc_huff_tbl_ptrs[dcidx_0 as usize];
+        let mut actbl_0: *mut crate::jpeglib_h::JHUFF_TBL =
+            (*cinfo).ac_huff_tbl_ptrs[acidx_0 as usize];
         acidx_0 += 0x10i32;
         /* DC */
         if (*cinfo).Ss == 0i32 && (*cinfo).Ah == 0i32 && (*dctbl_0).sent_table == 0 {
             emit_byte(cinfo, dcidx_0);
             j = 1i32;
             while j <= 16i32 {
-                emit_byte(cinfo, (*dctbl_0).bits[j as usize] as c_int);
+                emit_byte(cinfo, (*dctbl_0).bits[j as usize] as libc::c_int);
                 j += 1
             }
             j = 0i32;
             while j < dclens[i as usize] {
-                emit_byte(cinfo, (*dctbl_0).huffval[j as usize] as c_int);
+                emit_byte(cinfo, (*dctbl_0).huffval[j as usize] as libc::c_int);
                 j += 1
             }
-            (*dctbl_0).sent_table = TRUE
+            (*dctbl_0).sent_table = crate::jmorecfg_h::TRUE
         }
         if (*cinfo).Se != 0 && (*actbl_0).sent_table == 0 {
             emit_byte(cinfo, acidx_0);
             j = 1i32;
             while j <= 16i32 {
-                emit_byte(cinfo, (*actbl_0).bits[j as usize] as c_int);
+                emit_byte(cinfo, (*actbl_0).bits[j as usize] as libc::c_int);
                 j += 1
             }
             j = 0i32;
             while j < aclens[i as usize] {
-                emit_byte(cinfo, (*actbl_0).huffval[j as usize] as c_int);
+                emit_byte(cinfo, (*actbl_0).huffval[j as usize] as libc::c_int);
                 j += 1
             }
-            (*actbl_0).sent_table = TRUE
+            (*actbl_0).sent_table = crate::jmorecfg_h::TRUE
         }
         i += 1
     }
-    return TRUE;
+    return crate::jmorecfg_h::TRUE;
 }
 
-unsafe extern "C" fn emit_dac(mut cinfo: j_compress_ptr)
+unsafe extern "C" fn emit_dac(mut cinfo: crate::jpeglib_h::j_compress_ptr)
 /* Emit a DAC marker */
 /* Since the useful info is so small, we want to emit all the tables in */
 /* one DAC marker.  Therefore this routine does its own scan of the table. */
@@ -556,35 +742,38 @@ unsafe extern "C" fn emit_dac(mut cinfo: j_compress_ptr)
     /* C_ARITH_CODING_SUPPORTED */
 }
 
-unsafe extern "C" fn emit_dri(mut cinfo: j_compress_ptr)
+unsafe extern "C" fn emit_dri(mut cinfo: crate::jpeglib_h::j_compress_ptr)
 /* Emit a DRI marker */
 {
     emit_marker(cinfo, M_DRI); /* fixed length */
     emit_2bytes(cinfo, 4i32);
-    emit_2bytes(cinfo, (*cinfo).restart_interval as c_int);
+    emit_2bytes(cinfo, (*cinfo).restart_interval as libc::c_int);
 }
 
-unsafe extern "C" fn emit_sof(mut cinfo: j_compress_ptr, mut code: JPEG_MARKER)
+unsafe extern "C" fn emit_sof(mut cinfo: crate::jpeglib_h::j_compress_ptr, mut code: JPEG_MARKER)
 /* Emit a SOF marker */
 {
-    let mut ci: c_int = 0; /* length */
-    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
+    let mut ci: libc::c_int = 0; /* length */
+    let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
+        0 as *mut crate::jpeglib_h::jpeg_component_info;
     emit_marker(cinfo, code);
     emit_2bytes(cinfo, 3i32 * (*cinfo).num_components + 2i32 + 5i32 + 1i32);
     /* Make sure image isn't bigger than SOF field can handle */
-    if (*cinfo).image_height as c_long > 65535i64 || (*cinfo).image_width as c_long > 65535i64 {
-        (*(*cinfo).err).msg_code = super::jerror::JERR_IMAGE_TOO_BIG as c_int;
-        (*(*cinfo).err).msg_parm.i[0] = 65535i32 as c_uint as c_int;
+    if (*cinfo).image_height as libc::c_long > 65535i64
+        || (*cinfo).image_width as libc::c_long > 65535i64
+    {
+        (*(*cinfo).err).msg_code = crate::src::jerror::JERR_IMAGE_TOO_BIG as libc::c_int;
+        (*(*cinfo).err).msg_parm.i[0] = 65535i32 as libc::c_uint as libc::c_int;
         Some(
             (*(*cinfo).err)
                 .error_exit
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as j_common_ptr);
+        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
     emit_byte(cinfo, (*cinfo).data_precision);
-    emit_2bytes(cinfo, (*cinfo).image_height as c_int);
-    emit_2bytes(cinfo, (*cinfo).image_width as c_int);
+    emit_2bytes(cinfo, (*cinfo).image_height as libc::c_int);
+    emit_2bytes(cinfo, (*cinfo).image_width as libc::c_int);
     emit_byte(cinfo, (*cinfo).num_components);
     ci = 0i32;
     compptr = (*cinfo).comp_info;
@@ -600,13 +789,14 @@ unsafe extern "C" fn emit_sof(mut cinfo: j_compress_ptr, mut code: JPEG_MARKER)
     }
 }
 
-unsafe extern "C" fn emit_sos(mut cinfo: j_compress_ptr)
+unsafe extern "C" fn emit_sos(mut cinfo: crate::jpeglib_h::j_compress_ptr)
 /* Emit a SOS marker */
 {
-    let mut i: c_int = 0; /* length */
-    let mut td: c_int = 0;
-    let mut ta: c_int = 0;
-    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
+    let mut i: libc::c_int = 0; /* length */
+    let mut td: libc::c_int = 0;
+    let mut ta: libc::c_int = 0;
+    let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
+        0 as *mut crate::jpeglib_h::jpeg_component_info;
     emit_marker(cinfo, M_SOS);
     emit_2bytes(cinfo, 2i32 * (*cinfo).comps_in_scan + 2i32 + 1i32 + 3i32);
     emit_byte(cinfo, (*cinfo).comps_in_scan);
@@ -637,7 +827,7 @@ unsafe extern "C" fn emit_sos(mut cinfo: j_compress_ptr)
     emit_byte(cinfo, ((*cinfo).Ah << 4i32) + (*cinfo).Al);
 }
 
-unsafe extern "C" fn emit_jfif_app0(mut cinfo: j_compress_ptr)
+unsafe extern "C" fn emit_jfif_app0(mut cinfo: crate::jpeglib_h::j_compress_ptr)
 /* Emit a JFIF-compliant APP0 marker */
 {
     /*
@@ -661,16 +851,16 @@ unsafe extern "C" fn emit_jfif_app0(mut cinfo: j_compress_ptr)
     emit_byte(cinfo, 0x49i32); /* No thumbnail image */
     emit_byte(cinfo, 0x46i32);
     emit_byte(cinfo, 0i32);
-    emit_byte(cinfo, (*cinfo).JFIF_major_version as c_int);
-    emit_byte(cinfo, (*cinfo).JFIF_minor_version as c_int);
-    emit_byte(cinfo, (*cinfo).density_unit as c_int);
-    emit_2bytes(cinfo, (*cinfo).X_density as c_int);
-    emit_2bytes(cinfo, (*cinfo).Y_density as c_int);
+    emit_byte(cinfo, (*cinfo).JFIF_major_version as libc::c_int);
+    emit_byte(cinfo, (*cinfo).JFIF_minor_version as libc::c_int);
+    emit_byte(cinfo, (*cinfo).density_unit as libc::c_int);
+    emit_2bytes(cinfo, (*cinfo).X_density as libc::c_int);
+    emit_2bytes(cinfo, (*cinfo).Y_density as libc::c_int);
     emit_byte(cinfo, 0i32);
     emit_byte(cinfo, 0i32);
 }
 
-unsafe extern "C" fn emit_adobe_app14(mut cinfo: j_compress_ptr)
+unsafe extern "C" fn emit_adobe_app14(mut cinfo: crate::jpeglib_h::j_compress_ptr)
 /* Emit an Adobe APP14 marker */
 {
     /*
@@ -698,7 +888,7 @@ unsafe extern "C" fn emit_adobe_app14(mut cinfo: j_compress_ptr)
     emit_2bytes(cinfo, 100i32); /* Color transform = 0 */
     emit_2bytes(cinfo, 0i32);
     emit_2bytes(cinfo, 0i32);
-    match (*cinfo).jpeg_color_space as c_uint {
+    match (*cinfo).jpeg_color_space as libc::c_uint {
         3 => {
             emit_byte(cinfo, 1i32);
         }
@@ -719,28 +909,34 @@ unsafe extern "C" fn emit_adobe_app14(mut cinfo: j_compress_ptr)
  */
 
 unsafe extern "C" fn write_marker_header(
-    mut cinfo: j_compress_ptr,
-    mut marker: c_int,
-    mut datalen: c_uint,
+    mut cinfo: crate::jpeglib_h::j_compress_ptr,
+    mut marker: libc::c_int,
+    mut datalen: libc::c_uint,
 )
 /* Emit an arbitrary marker header */
 {
-    if datalen > 65533i32 as c_uint {
+    if datalen > 65533i32 as libc::c_uint {
         /* safety check */
-        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_LENGTH as c_int;
+        (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_LENGTH as libc::c_int;
         Some(
             (*(*cinfo).err)
                 .error_exit
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as j_common_ptr);
+        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
     emit_marker(cinfo, marker as JPEG_MARKER);
-    emit_2bytes(cinfo, datalen.wrapping_add(2i32 as c_uint) as c_int);
+    emit_2bytes(
+        cinfo,
+        datalen.wrapping_add(2i32 as libc::c_uint) as libc::c_int,
+    );
     /* total length */
 }
 
-unsafe extern "C" fn write_marker_byte(mut cinfo: j_compress_ptr, mut val: c_int)
+unsafe extern "C" fn write_marker_byte(
+    mut cinfo: crate::jpeglib_h::j_compress_ptr,
+    mut val: libc::c_int,
+)
 /* Emit one byte of marker parameters following write_marker_header */
 {
     emit_byte(cinfo, val);
@@ -756,11 +952,11 @@ unsafe extern "C" fn write_marker_byte(mut cinfo: j_compress_ptr, mut val: c_int
  * jpeg_start_compress returns.
  */
 
-unsafe extern "C" fn write_file_header(mut cinfo: j_compress_ptr) {
+unsafe extern "C" fn write_file_header(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
     let mut marker: my_marker_ptr = (*cinfo).marker as my_marker_ptr; /* first the SOI */
     emit_marker(cinfo, M_SOI);
     /* SOI is defined to reset restart interval to 0 */
-    (*marker).last_restart_interval = 0i32 as c_uint;
+    (*marker).last_restart_interval = 0i32 as libc::c_uint;
     if (*cinfo).write_JFIF_header != 0 {
         /* next an optional JFIF APP0 */
         emit_jfif_app0(cinfo);
@@ -778,11 +974,12 @@ unsafe extern "C" fn write_file_header(mut cinfo: j_compress_ptr) {
  * try to error-check the quant table numbers as soon as they see the SOF.
  */
 
-unsafe extern "C" fn write_frame_header(mut cinfo: j_compress_ptr) {
-    let mut ci: c_int = 0;
-    let mut prec: c_int = 0;
-    let mut is_baseline: boolean = 0;
-    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
+unsafe extern "C" fn write_frame_header(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
+    let mut ci: libc::c_int = 0;
+    let mut prec: libc::c_int = 0;
+    let mut is_baseline: crate::jmorecfg_h::boolean = 0;
+    let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
+        0 as *mut crate::jpeglib_h::jpeg_component_info;
     /* Emit DQT for each quantization table.
      * Note that emit_dqt() suppresses any duplicate tables.
      */
@@ -803,28 +1000,30 @@ unsafe extern "C" fn write_frame_header(mut cinfo: j_compress_ptr) {
      */
     if (*cinfo).arith_code != 0 || (*cinfo).progressive_mode != 0 || (*cinfo).data_precision != 8i32
     {
-        is_baseline = FALSE
+        is_baseline = crate::jmorecfg_h::FALSE
     } else {
-        is_baseline = TRUE;
+        is_baseline = crate::jmorecfg_h::TRUE;
         ci = 0i32;
         compptr = (*cinfo).comp_info;
         while ci < (*cinfo).num_components {
             if (*compptr).dc_tbl_no > 1i32 || (*compptr).ac_tbl_no > 1i32 {
-                is_baseline = FALSE
+                is_baseline = crate::jmorecfg_h::FALSE
             }
             ci += 1;
             compptr = compptr.offset(1)
         }
         if prec != 0 && is_baseline != 0 {
-            is_baseline = FALSE;
+            is_baseline = crate::jmorecfg_h::FALSE;
             /* If it's baseline except for quantizer size, warn the user */
-            (*(*cinfo).err).msg_code = super::jerror::JTRC_16BIT_TABLES as c_int;
+            (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_16BIT_TABLES as libc::c_int;
             Some(
                 (*(*cinfo).err)
                     .emit_message
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(cinfo as j_common_ptr, 0i32);
+            .expect("non-null function pointer")(
+                cinfo as crate::jpeglib_h::j_common_ptr, 0i32
+            );
         }
     }
     /* Emit the proper SOF marker */
@@ -850,10 +1049,11 @@ unsafe extern "C" fn write_frame_header(mut cinfo: j_compress_ptr) {
  * Compressed data will be written following the SOS.
  */
 
-unsafe extern "C" fn write_scan_header(mut cinfo: j_compress_ptr) {
+unsafe extern "C" fn write_scan_header(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
     let mut marker: my_marker_ptr = (*cinfo).marker as my_marker_ptr;
-    let mut i: c_int = 0;
-    let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
+    let mut i: libc::c_int = 0;
+    let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
+        0 as *mut crate::jpeglib_h::jpeg_component_info;
     if (*cinfo).arith_code != 0 {
         /* Emit arith conditioning info.  We may have some duplication
          * if the file has multiple scans, but it's so small it's hardly
@@ -869,11 +1069,11 @@ unsafe extern "C" fn write_scan_header(mut cinfo: j_compress_ptr) {
              */
             /* DC needs no table for refinement scan */
             if (*cinfo).Ss == 0i32 && (*cinfo).Ah == 0i32 {
-                emit_dht(cinfo, (*compptr).dc_tbl_no, FALSE);
+                emit_dht(cinfo, (*compptr).dc_tbl_no, crate::jmorecfg_h::FALSE);
             }
             /* AC needs no table when not present */
             if (*cinfo).Se != 0 {
-                emit_dht(cinfo, (*compptr).ac_tbl_no, TRUE);
+                emit_dht(cinfo, (*compptr).ac_tbl_no, crate::jmorecfg_h::TRUE);
             }
             i += 1
         }
@@ -891,7 +1091,7 @@ unsafe extern "C" fn write_scan_header(mut cinfo: j_compress_ptr) {
  * Write datastream trailer.
  */
 
-unsafe extern "C" fn write_file_trailer(mut cinfo: j_compress_ptr) {
+unsafe extern "C" fn write_file_trailer(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
     emit_marker(cinfo, M_EOI);
 }
 /*
@@ -901,11 +1101,11 @@ unsafe extern "C" fn write_file_trailer(mut cinfo: j_compress_ptr) {
  * emitted.  Note that all tables will be marked sent_table = TRUE at exit.
  */
 
-unsafe extern "C" fn write_tables_only(mut cinfo: j_compress_ptr) {
-    let mut i: c_int = 0;
+unsafe extern "C" fn write_tables_only(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
+    let mut i: libc::c_int = 0;
     emit_marker(cinfo, M_SOI);
     i = 0i32;
-    while i < NUM_QUANT_TBLS {
+    while i < crate::jpeglib_h::NUM_QUANT_TBLS {
         if !(*cinfo).quant_tbl_ptrs[i as usize].is_null() {
             emit_dqt(cinfo, i);
         }
@@ -913,12 +1113,12 @@ unsafe extern "C" fn write_tables_only(mut cinfo: j_compress_ptr) {
     }
     if (*cinfo).arith_code == 0 {
         i = 0i32;
-        while i < NUM_HUFF_TBLS {
+        while i < crate::jpeglib_h::NUM_HUFF_TBLS {
             if !(*cinfo).dc_huff_tbl_ptrs[i as usize].is_null() {
-                emit_dht(cinfo, i, FALSE);
+                emit_dht(cinfo, i, crate::jmorecfg_h::FALSE);
             }
             if !(*cinfo).ac_huff_tbl_ptrs[i as usize].is_null() {
-                emit_dht(cinfo, i, TRUE);
+                emit_dht(cinfo, i, crate::jmorecfg_h::TRUE);
             }
             i += 1
         }
@@ -930,7 +1130,7 @@ unsafe extern "C" fn write_tables_only(mut cinfo: j_compress_ptr) {
  */
 #[no_mangle]
 
-pub unsafe extern "C" fn jinit_marker_writer(mut cinfo: j_compress_ptr) {
+pub unsafe extern "C" fn jinit_marker_writer(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
     let mut marker: my_marker_ptr = 0 as *mut my_marker_writer;
     /* Create the subobject */
     marker = Some(
@@ -939,27 +1139,34 @@ pub unsafe extern "C" fn jinit_marker_writer(mut cinfo: j_compress_ptr) {
             .expect("non-null function pointer"),
     )
     .expect("non-null function pointer")(
-        cinfo as j_common_ptr,
-        JPOOL_IMAGE,
-        ::std::mem::size_of::<my_marker_writer>() as c_ulong,
+        cinfo as crate::jpeglib_h::j_common_ptr,
+        crate::jpeglib_h::JPOOL_IMAGE,
+        ::std::mem::size_of::<my_marker_writer>() as libc::c_ulong,
     ) as my_marker_ptr;
-    (*cinfo).marker = marker as *mut jpeg_marker_writer;
+    (*cinfo).marker = marker as *mut crate::jpeglib_h::jpeg_marker_writer;
     /* Initialize method pointers */
     (*marker).pub_0.write_file_header =
-        Some(write_file_header as unsafe extern "C" fn(_: j_compress_ptr) -> ());
+        Some(write_file_header as unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ());
     (*marker).pub_0.write_frame_header =
-        Some(write_frame_header as unsafe extern "C" fn(_: j_compress_ptr) -> ());
+        Some(write_frame_header as unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ());
     (*marker).pub_0.write_scan_header =
-        Some(write_scan_header as unsafe extern "C" fn(_: j_compress_ptr) -> ());
+        Some(write_scan_header as unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ());
     (*marker).pub_0.write_file_trailer =
-        Some(write_file_trailer as unsafe extern "C" fn(_: j_compress_ptr) -> ());
+        Some(write_file_trailer as unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ());
     (*marker).pub_0.write_tables_only =
-        Some(write_tables_only as unsafe extern "C" fn(_: j_compress_ptr) -> ());
+        Some(write_tables_only as unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ());
     (*marker).pub_0.write_marker_header = Some(
-        write_marker_header as unsafe extern "C" fn(_: j_compress_ptr, _: c_int, _: c_uint) -> (),
+        write_marker_header
+            as unsafe extern "C" fn(
+                _: crate::jpeglib_h::j_compress_ptr,
+                _: libc::c_int,
+                _: libc::c_uint,
+            ) -> (),
     );
-    (*marker).pub_0.write_marker_byte =
-        Some(write_marker_byte as unsafe extern "C" fn(_: j_compress_ptr, _: c_int) -> ());
+    (*marker).pub_0.write_marker_byte = Some(
+        write_marker_byte
+            as unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr, _: libc::c_int) -> (),
+    );
     /* Initialize private state */
-    (*marker).last_restart_interval = 0i32 as c_uint;
+    (*marker).last_restart_interval = 0i32 as libc::c_uint;
 }

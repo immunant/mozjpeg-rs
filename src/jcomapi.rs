@@ -1,24 +1,89 @@
-pub use crate::jmorecfg_h::{boolean, FALSE, JCOEF, JDIMENSION, JOCTET, JSAMPLE, UINT16, UINT8};
-pub use crate::jpegint_h::{
-    inverse_DCT_method_ptr, CSTATE_START, DSTATE_START, JBUF_CRANK_DEST, JBUF_PASS_THRU,
-    JBUF_REQUANT, JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, J_BUF_MODE,
-};
-pub use crate::jpeglib_h::{
-    j_common_ptr, j_decompress_ptr, jpeg_color_deconverter, jpeg_color_quantizer,
-    jpeg_common_struct, jpeg_component_info, jpeg_d_coef_controller, jpeg_d_main_controller,
-    jpeg_d_post_controller, jpeg_decomp_master, jpeg_decompress_struct, jpeg_entropy_decoder,
-    jpeg_error_mgr, jpeg_input_controller, jpeg_inverse_dct, jpeg_marker_parser_method,
-    jpeg_marker_reader, jpeg_marker_struct, jpeg_memory_mgr, jpeg_progress_mgr,
-    jpeg_saved_marker_ptr, jpeg_source_mgr, jpeg_upsampler, jvirt_barray_control, jvirt_barray_ptr,
-    jvirt_sarray_control, jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr, JBLOCK, JBLOCKARRAY,
-    JBLOCKROW, JCOEFPTR, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA,
-    JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB,
-    JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW,
-    JDITHER_FS, JDITHER_NONE, JDITHER_ORDERED, JHUFF_TBL, JPOOL_NUMPOOLS, JPOOL_PERMANENT,
-    JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD, J_DITHER_MODE,
-};
-pub use crate::stddef_h::{size_t, NULL};
-use libc::{self, c_int, c_ulong};
+use libc;
+
+pub use crate::jmorecfg_h::boolean;
+pub use crate::jmorecfg_h::FALSE;
+pub use crate::jmorecfg_h::JCOEF;
+pub use crate::jmorecfg_h::JDIMENSION;
+pub use crate::jmorecfg_h::JOCTET;
+pub use crate::jmorecfg_h::JSAMPLE;
+pub use crate::jmorecfg_h::UINT16;
+pub use crate::jmorecfg_h::UINT8;
+pub use crate::jpegint_h::inverse_DCT_method_ptr;
+pub use crate::jpegint_h::CSTATE_START;
+pub use crate::jpegint_h::DSTATE_START;
+pub use crate::jpegint_h::JBUF_CRANK_DEST;
+pub use crate::jpegint_h::JBUF_PASS_THRU;
+pub use crate::jpegint_h::JBUF_REQUANT;
+pub use crate::jpegint_h::JBUF_SAVE_AND_PASS;
+pub use crate::jpegint_h::JBUF_SAVE_SOURCE;
+pub use crate::jpegint_h::J_BUF_MODE;
+pub use crate::jpeglib_h::j_common_ptr;
+pub use crate::jpeglib_h::j_decompress_ptr;
+pub use crate::jpeglib_h::jpeg_color_deconverter;
+pub use crate::jpeglib_h::jpeg_color_quantizer;
+pub use crate::jpeglib_h::jpeg_common_struct;
+pub use crate::jpeglib_h::jpeg_component_info;
+pub use crate::jpeglib_h::jpeg_d_coef_controller;
+pub use crate::jpeglib_h::jpeg_d_main_controller;
+pub use crate::jpeglib_h::jpeg_d_post_controller;
+pub use crate::jpeglib_h::jpeg_decomp_master;
+pub use crate::jpeglib_h::jpeg_decompress_struct;
+pub use crate::jpeglib_h::jpeg_entropy_decoder;
+pub use crate::jpeglib_h::jpeg_error_mgr;
+pub use crate::jpeglib_h::jpeg_input_controller;
+pub use crate::jpeglib_h::jpeg_inverse_dct;
+pub use crate::jpeglib_h::jpeg_marker_parser_method;
+pub use crate::jpeglib_h::jpeg_marker_reader;
+pub use crate::jpeglib_h::jpeg_marker_struct;
+pub use crate::jpeglib_h::jpeg_memory_mgr;
+pub use crate::jpeglib_h::jpeg_progress_mgr;
+pub use crate::jpeglib_h::jpeg_saved_marker_ptr;
+pub use crate::jpeglib_h::jpeg_source_mgr;
+pub use crate::jpeglib_h::jpeg_upsampler;
+pub use crate::jpeglib_h::jvirt_barray_control;
+pub use crate::jpeglib_h::jvirt_barray_ptr;
+pub use crate::jpeglib_h::jvirt_sarray_control;
+pub use crate::jpeglib_h::jvirt_sarray_ptr;
+pub use crate::jpeglib_h::C2RustUnnamed_2;
+pub use crate::jpeglib_h::JCS_YCbCr;
+pub use crate::jpeglib_h::JBLOCK;
+pub use crate::jpeglib_h::JBLOCKARRAY;
+pub use crate::jpeglib_h::JBLOCKROW;
+pub use crate::jpeglib_h::JCOEFPTR;
+pub use crate::jpeglib_h::JCS_CMYK;
+pub use crate::jpeglib_h::JCS_EXT_ABGR;
+pub use crate::jpeglib_h::JCS_EXT_ARGB;
+pub use crate::jpeglib_h::JCS_EXT_BGR;
+pub use crate::jpeglib_h::JCS_EXT_BGRA;
+pub use crate::jpeglib_h::JCS_EXT_BGRX;
+pub use crate::jpeglib_h::JCS_EXT_RGB;
+pub use crate::jpeglib_h::JCS_EXT_RGBA;
+pub use crate::jpeglib_h::JCS_EXT_RGBX;
+pub use crate::jpeglib_h::JCS_EXT_XBGR;
+pub use crate::jpeglib_h::JCS_EXT_XRGB;
+pub use crate::jpeglib_h::JCS_GRAYSCALE;
+pub use crate::jpeglib_h::JCS_RGB;
+pub use crate::jpeglib_h::JCS_RGB565;
+pub use crate::jpeglib_h::JCS_UNKNOWN;
+pub use crate::jpeglib_h::JCS_YCCK;
+pub use crate::jpeglib_h::JDCT_FLOAT;
+pub use crate::jpeglib_h::JDCT_IFAST;
+pub use crate::jpeglib_h::JDCT_ISLOW;
+pub use crate::jpeglib_h::JDITHER_FS;
+pub use crate::jpeglib_h::JDITHER_NONE;
+pub use crate::jpeglib_h::JDITHER_ORDERED;
+pub use crate::jpeglib_h::JHUFF_TBL;
+pub use crate::jpeglib_h::JPOOL_NUMPOOLS;
+pub use crate::jpeglib_h::JPOOL_PERMANENT;
+pub use crate::jpeglib_h::JQUANT_TBL;
+pub use crate::jpeglib_h::JSAMPARRAY;
+pub use crate::jpeglib_h::JSAMPIMAGE;
+pub use crate::jpeglib_h::JSAMPROW;
+pub use crate::jpeglib_h::J_COLOR_SPACE;
+pub use crate::jpeglib_h::J_DCT_METHOD;
+pub use crate::jpeglib_h::J_DITHER_MODE;
+pub use crate::stddef_h::size_t;
+pub use crate::stddef_h::NULL;
 /*
  * jcomapi.c
  *
@@ -44,8 +109,8 @@ use libc::{self, c_int, c_ulong};
  */
 #[no_mangle]
 
-pub unsafe extern "C" fn jpeg_abort(mut cinfo: j_common_ptr) {
-    let mut pool: c_int = 0;
+pub unsafe extern "C" fn jpeg_abort(mut cinfo: crate::jpeglib_h::j_common_ptr) {
+    let mut pool: libc::c_int = 0;
     /* Do nothing if called on a not-initialized or destroyed JPEG object. */
     if (*cinfo).mem.is_null() {
         return;
@@ -53,8 +118,8 @@ pub unsafe extern "C" fn jpeg_abort(mut cinfo: j_common_ptr) {
     /* Releasing pools in reverse order might help avoid fragmentation
      * with some (brain-damaged) malloc libraries.
      */
-    pool = JPOOL_NUMPOOLS - 1i32;
-    while pool > JPOOL_PERMANENT {
+    pool = crate::jpeglib_h::JPOOL_NUMPOOLS - 1i32;
+    while pool > crate::jpeglib_h::JPOOL_PERMANENT {
         Some(
             (*(*cinfo).mem)
                 .free_pool
@@ -65,14 +130,14 @@ pub unsafe extern "C" fn jpeg_abort(mut cinfo: j_common_ptr) {
     }
     /* Reset overall state for possible reuse of object */
     if (*cinfo).is_decompressor != 0 {
-        (*cinfo).global_state = DSTATE_START;
+        (*cinfo).global_state = crate::jpegint_h::DSTATE_START;
         /* Try to keep application from accessing now-deleted marker list.
          * A bit kludgy to do it here, but this is the most central place.
          */
-        let ref mut fresh0 = (*(cinfo as j_decompress_ptr)).marker_list;
-        *fresh0 = NULL as jpeg_saved_marker_ptr
+        let ref mut fresh0 = (*(cinfo as crate::jpeglib_h::j_decompress_ptr)).marker_list;
+        *fresh0 = crate::stddef_h::NULL as crate::jpeglib_h::jpeg_saved_marker_ptr
     } else {
-        (*cinfo).global_state = CSTATE_START
+        (*cinfo).global_state = crate::jpegint_h::CSTATE_START
     };
 }
 /* Main entry points for compression */
@@ -125,7 +190,7 @@ pub unsafe extern "C" fn jpeg_abort(mut cinfo: j_common_ptr) {
  */
 #[no_mangle]
 
-pub unsafe extern "C" fn jpeg_destroy(mut cinfo: j_common_ptr) {
+pub unsafe extern "C" fn jpeg_destroy(mut cinfo: crate::jpeglib_h::j_common_ptr) {
     /* We need only tell the memory manager to release everything. */
     /* NB: mem pointer is NULL if memory mgr failed to initialize. */
     if !(*cinfo).mem.is_null() {
@@ -136,7 +201,7 @@ pub unsafe extern "C" fn jpeg_destroy(mut cinfo: j_common_ptr) {
         )
         .expect("non-null function pointer")(cinfo); /* be safe if jpeg_destroy is called twice */
     }
-    (*cinfo).mem = NULL as *mut jpeg_memory_mgr;
+    (*cinfo).mem = crate::stddef_h::NULL as *mut crate::jpeglib_h::jpeg_memory_mgr;
     (*cinfo).global_state = 0i32;
     /* mark it destroyed */
 }
@@ -146,8 +211,10 @@ pub unsafe extern "C" fn jpeg_destroy(mut cinfo: j_common_ptr) {
  */
 #[no_mangle]
 
-pub unsafe extern "C" fn jpeg_alloc_quant_table(mut cinfo: j_common_ptr) -> *mut JQUANT_TBL {
-    let mut tbl: *mut JQUANT_TBL = 0 as *mut JQUANT_TBL; /* make sure this is false in any new table */
+pub unsafe extern "C" fn jpeg_alloc_quant_table(
+    mut cinfo: crate::jpeglib_h::j_common_ptr,
+) -> *mut crate::jpeglib_h::JQUANT_TBL {
+    let mut tbl: *mut crate::jpeglib_h::JQUANT_TBL = 0 as *mut crate::jpeglib_h::JQUANT_TBL; /* make sure this is false in any new table */
     tbl = Some(
         (*(*cinfo).mem)
             .alloc_small
@@ -155,16 +222,18 @@ pub unsafe extern "C" fn jpeg_alloc_quant_table(mut cinfo: j_common_ptr) -> *mut
     )
     .expect("non-null function pointer")(
         cinfo,
-        JPOOL_PERMANENT,
-        ::std::mem::size_of::<JQUANT_TBL>() as c_ulong,
-    ) as *mut JQUANT_TBL; /* make sure this is false in any new table */
-    (*tbl).sent_table = FALSE;
+        crate::jpeglib_h::JPOOL_PERMANENT,
+        ::std::mem::size_of::<crate::jpeglib_h::JQUANT_TBL>() as libc::c_ulong,
+    ) as *mut crate::jpeglib_h::JQUANT_TBL; /* make sure this is false in any new table */
+    (*tbl).sent_table = crate::jmorecfg_h::FALSE;
     return tbl;
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jpeg_alloc_huff_table(mut cinfo: j_common_ptr) -> *mut JHUFF_TBL {
-    let mut tbl: *mut JHUFF_TBL = 0 as *mut JHUFF_TBL;
+pub unsafe extern "C" fn jpeg_alloc_huff_table(
+    mut cinfo: crate::jpeglib_h::j_common_ptr,
+) -> *mut crate::jpeglib_h::JHUFF_TBL {
+    let mut tbl: *mut crate::jpeglib_h::JHUFF_TBL = 0 as *mut crate::jpeglib_h::JHUFF_TBL;
     tbl = Some(
         (*(*cinfo).mem)
             .alloc_small
@@ -172,9 +241,9 @@ pub unsafe extern "C" fn jpeg_alloc_huff_table(mut cinfo: j_common_ptr) -> *mut 
     )
     .expect("non-null function pointer")(
         cinfo,
-        JPOOL_PERMANENT,
-        ::std::mem::size_of::<JHUFF_TBL>() as c_ulong,
-    ) as *mut JHUFF_TBL;
-    (*tbl).sent_table = FALSE;
+        crate::jpeglib_h::JPOOL_PERMANENT,
+        ::std::mem::size_of::<crate::jpeglib_h::JHUFF_TBL>() as libc::c_ulong,
+    ) as *mut crate::jpeglib_h::JHUFF_TBL;
+    (*tbl).sent_table = crate::jmorecfg_h::FALSE;
     return tbl;
 }
