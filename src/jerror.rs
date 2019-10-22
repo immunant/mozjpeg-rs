@@ -695,13 +695,11 @@ unsafe extern "C" fn output_message(mut cinfo: crate::jpeglib_h::j_common_ptr) {
             .expect("non-null function pointer"),
     )
     .expect("non-null function pointer")(cinfo, buffer.as_mut_ptr());
-    /* Send it to stderr, adding a newline */
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
-        
-        b"%s\n\x00".as_ptr() as *const libc::c_char,
-        buffer.as_mut_ptr(),
-    );
+     eprintln!("{:}",
+          unsafe {
+    std::ffi::CStr::from_ptr(buffer.as_mut_ptr() as
+                                 *const libc::c_char).to_str().unwrap()
+});
 }
 /*
  * Decide whether to emit a trace or warning message.

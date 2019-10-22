@@ -1249,47 +1249,28 @@ unsafe extern "C" fn copy_buffer(
     let mut src: *mut libc::c_uchar = (*master).scan_buffer[scan_idx as usize];
     let mut i: libc::c_int = 0;
     if (*(*cinfo).err).trace_level > 0i32 {
-        crate::stdlib::fprintf(
-            crate::stdlib::stderr,
-            
-            b"SCAN \x00".as_ptr() as *const libc::c_char,
-        );
+         eprint!("SCAN ");
         i = 0i32;
         while i < (*(*cinfo).scan_info.offset(scan_idx as isize)).comps_in_scan {
-            crate::stdlib::fprintf(
-                crate::stdlib::stderr,
-                
-                b"%s%d\x00".as_ptr() as *const libc::c_char,
-                if i == 0i32 {
-                    
-                    b"\x00".as_ptr() as *const libc::c_char
-                } else {
-                    
-                    b",\x00".as_ptr() as *const libc::c_char
-                },
-                (*(*cinfo).scan_info.offset(scan_idx as isize)).component_index[i as usize],
-            );
+             eprint!("{:}{:}",
+        unsafe {
+    std::ffi::CStr::from_ptr(if i == 0i32 {
+                                 b"\x00".as_ptr() as *const libc::c_char
+                             } else {
+                                 b",\x00".as_ptr() as *const libc::c_char
+                             } as *const libc::c_char).to_str().unwrap()
+},
+        (*(*cinfo).scan_info.offset(scan_idx as isize)).component_index[i as usize] as
+    libc::c_int);
             i += 1
         }
-        crate::stdlib::fprintf(
-            crate::stdlib::stderr,
-            
-            b": %d %d\x00".as_ptr() as *const libc::c_char,
-            (*(*cinfo).scan_info.offset(scan_idx as isize)).Ss,
-            (*(*cinfo).scan_info.offset(scan_idx as isize)).Se,
-        );
-        crate::stdlib::fprintf(
-            crate::stdlib::stderr,
-            
-            b" %d %d\x00".as_ptr() as *const libc::c_char,
-            (*(*cinfo).scan_info.offset(scan_idx as isize)).Ah,
-            (*master).actual_Al[scan_idx as usize],
-        );
-        crate::stdlib::fprintf(
-            crate::stdlib::stderr,
-            
-            b"\n\x00".as_ptr() as *const libc::c_char,
-        );
+        
+        
+         eprint!(": {:} {:}",
+        (*(*cinfo).scan_info.offset(scan_idx as isize)).Ss as libc::c_int,
+        (*(*cinfo).scan_info.offset(scan_idx as isize)).Se as libc::c_int); eprint!(" {:} {:}",
+        (*(*cinfo).scan_info.offset(scan_idx as isize)).Ah as libc::c_int,
+        (*master).actual_Al[scan_idx as usize] as libc::c_int); eprintln!("");
     }
     while size >= (*(*cinfo).dest).free_in_buffer {
         crate::stdlib::memcpy(
