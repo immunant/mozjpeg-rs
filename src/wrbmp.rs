@@ -388,9 +388,9 @@ unsafe extern "C" fn put_pixel_rows(
 /* This version is for writing 24-bit pixels */
 {
     let mut dest: bmp_dest_ptr = dinfo as bmp_dest_ptr;
-    let mut image_ptr: crate::jpeglib_h::JSAMPARRAY = 0 as *mut crate::jpeglib_h::JSAMPROW;
-    let mut inptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
-    let mut outptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut image_ptr: crate::jpeglib_h::JSAMPARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>();
+    let mut inptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
+    let mut outptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     let mut pad: libc::c_int = 0;
     if (*dest).use_inversion_array != 0 {
@@ -520,9 +520,9 @@ unsafe extern "C" fn put_gray_rows(
 /* This version is for grayscale OR quantized color output */
 {
     let mut dest: bmp_dest_ptr = dinfo as bmp_dest_ptr;
-    let mut image_ptr: crate::jpeglib_h::JSAMPARRAY = 0 as *mut crate::jpeglib_h::JSAMPROW;
-    let mut inptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
-    let mut outptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut image_ptr: crate::jpeglib_h::JSAMPARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>();
+    let mut inptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
+    let mut outptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut pad: libc::c_int = 0;
     if (*dest).use_inversion_array != 0 {
         /* Access next row in virtual array */
@@ -980,8 +980,8 @@ unsafe extern "C" fn finish_output_bmp(
 ) {
     let mut dest: bmp_dest_ptr = dinfo as bmp_dest_ptr;
     let mut outfile: *mut crate::stdlib::FILE = (*dest).pub_0.output_file;
-    let mut image_ptr: crate::jpeglib_h::JSAMPARRAY = 0 as *mut crate::jpeglib_h::JSAMPROW;
-    let mut data_ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut image_ptr: crate::jpeglib_h::JSAMPARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>();
+    let mut data_ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut row: crate::jmorecfg_h::JDIMENSION = 0;
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     let mut progress: crate::src::cdjpeg::cd_progress_ptr =
@@ -1057,7 +1057,7 @@ pub unsafe extern "C" fn jinit_write_bmp(
     mut is_os2: crate::jmorecfg_h::boolean,
     mut use_inversion_array: crate::jmorecfg_h::boolean,
 ) -> crate::src::cdjpeg::djpeg_dest_ptr {
-    let mut dest: bmp_dest_ptr = 0 as *mut bmp_dest_struct;
+    let mut dest: bmp_dest_ptr = ::std::ptr::null_mut::< bmp_dest_struct>();
     let mut row_width: crate::jmorecfg_h::JDIMENSION = 0;
     /* Create module interface object, fill in method pointers */
     dest = Some(

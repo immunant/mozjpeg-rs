@@ -443,7 +443,7 @@ pub unsafe extern "C" fn jpeg_crop_scanline(
     let mut input_xoffset: crate::jmorecfg_h::JDIMENSION = 0;
     let mut reinit_upsampler: crate::jmorecfg_h::boolean = crate::jmorecfg_h::FALSE;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     if (*cinfo).global_state != crate::jpegint_h::DSTATE_SCANNING
         || (*cinfo).output_scanline != 0i32 as libc::c_uint
     {

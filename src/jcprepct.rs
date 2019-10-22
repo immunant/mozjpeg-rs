@@ -295,7 +295,7 @@ unsafe extern "C" fn pre_process_data(
     let mut ci: libc::c_int = 0;
     let mut inrows: crate::jmorecfg_h::JDIMENSION = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     while *in_row_ctr < in_rows_avail && *out_row_group_ctr < out_row_groups_avail {
         /* Do color conversion to fill the conversion buffer. */
         inrows = in_rows_avail.wrapping_sub(*in_row_ctr);
@@ -510,9 +510,9 @@ unsafe extern "C" fn create_context_buffer(mut cinfo: crate::jpeglib_h::j_compre
     let mut ci: libc::c_int = 0;
     let mut i: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
-    let mut true_buffer: crate::jpeglib_h::JSAMPARRAY = 0 as *mut crate::jpeglib_h::JSAMPROW;
-    let mut fake_buffer: crate::jpeglib_h::JSAMPARRAY = 0 as *mut crate::jpeglib_h::JSAMPROW;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
+    let mut true_buffer: crate::jpeglib_h::JSAMPARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>();
+    let mut fake_buffer: crate::jpeglib_h::JSAMPARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>();
     /* Grab enough space for fake row pointers for all the components;
      * we need five row groups' worth of pointers for each component.
      */
@@ -582,10 +582,10 @@ pub unsafe extern "C" fn jinit_c_prep_controller(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
     mut need_full_buffer: crate::jmorecfg_h::boolean,
 ) {
-    let mut prep: my_prep_ptr = 0 as *mut my_prep_controller;
+    let mut prep: my_prep_ptr = ::std::ptr::null_mut::< my_prep_controller>();
     let mut ci: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     if need_full_buffer != 0 {
         /* safety check */
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_BUFFER_MODE as libc::c_int;

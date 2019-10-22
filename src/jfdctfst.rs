@@ -126,7 +126,7 @@ pub unsafe extern "C" fn jpeg_fdct_ifast(mut data: *mut crate::jdct_h::DCTELEM) 
     let mut z5: crate::jdct_h::DCTELEM = 0;
     let mut z11: crate::jdct_h::DCTELEM = 0;
     let mut z13: crate::jdct_h::DCTELEM = 0;
-    let mut dataptr: *mut crate::jdct_h::DCTELEM = 0 as *mut crate::jdct_h::DCTELEM;
+    let mut dataptr: *mut crate::jdct_h::DCTELEM = ::std::ptr::null_mut::< crate::jdct_h::DCTELEM>();
     let mut ctr: libc::c_int = 0;
     /* Pass 1: process rows. */
     dataptr = data;

@@ -284,10 +284,10 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
     mut icc_data_len: *mut libc::c_uint,
 ) -> crate::jmorecfg_h::boolean {
     let mut marker: crate::jpeglib_h::jpeg_saved_marker_ptr =
-        0 as *mut crate::jpeglib_h::jpeg_marker_struct;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_marker_struct>();
     let mut num_markers: libc::c_int = 0i32;
     let mut seq_no: libc::c_int = 0;
-    let mut icc_data: *mut crate::jmorecfg_h::JOCTET = 0 as *mut crate::jmorecfg_h::JOCTET;
+    let mut icc_data: *mut crate::jmorecfg_h::JOCTET = ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>();
     let mut total_length: libc::c_uint = 0;
     /* sufficient since marker numbers are bytes */
     let mut marker_present: [libc::c_char; 256] = [0; 256]; /* 1 if marker found */
@@ -428,8 +428,8 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
     marker = (*cinfo).marker_list;
     while !marker.is_null() {
         if marker_is_icc(marker) != 0 {
-            let mut src_ptr: *mut crate::jmorecfg_h::JOCTET = 0 as *mut crate::jmorecfg_h::JOCTET;
-            let mut dst_ptr: *mut crate::jmorecfg_h::JOCTET = 0 as *mut crate::jmorecfg_h::JOCTET;
+            let mut src_ptr: *mut crate::jmorecfg_h::JOCTET = ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>();
+            let mut dst_ptr: *mut crate::jmorecfg_h::JOCTET = ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>();
             let mut length: libc::c_uint = 0;
             seq_no = *(*marker).data.offset(12) as libc::c_int;
             dst_ptr = icc_data.offset(data_offset[seq_no as usize] as isize);

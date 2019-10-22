@@ -414,7 +414,7 @@ pub unsafe extern "C" fn jpeg_stdio_src(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
     mut infile: *mut crate::stdlib::FILE,
 ) {
-    let mut src: my_src_ptr = 0 as *mut my_source_mgr;
+    let mut src: my_src_ptr = ::std::ptr::null_mut::< my_source_mgr>();
     /* The source object and input buffer are made permanent so that a series
      * of JPEG images can be read from the same file by calling jpeg_stdio_src
      * only before the first one.  (If we discarded the buffer at the end of
@@ -501,7 +501,7 @@ pub unsafe extern "C" fn jpeg_mem_src(
     mut insize: libc::c_ulong,
 ) {
     let mut src: *mut crate::jpeglib_h::jpeg_source_mgr =
-        0 as *mut crate::jpeglib_h::jpeg_source_mgr;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_source_mgr>();
     if inbuffer.is_null() || insize == 0i32 as libc::c_ulong {
         /* Treat empty input as fatal error */
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_INPUT_EMPTY as libc::c_int;

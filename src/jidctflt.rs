@@ -200,11 +200,11 @@ pub unsafe extern "C" fn jpeg_idct_float(
     let mut z11: libc::c_float = 0.;
     let mut z12: libc::c_float = 0.;
     let mut z13: libc::c_float = 0.;
-    let mut inptr: crate::jpeglib_h::JCOEFPTR = 0 as *mut crate::jmorecfg_h::JCOEF;
+    let mut inptr: crate::jpeglib_h::JCOEFPTR = ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>();
     let mut quantptr: *mut crate::jdct_h::FLOAT_MULT_TYPE =
-        0 as *mut crate::jdct_h::FLOAT_MULT_TYPE;
-    let mut wsptr: *mut libc::c_float = 0 as *mut libc::c_float;
-    let mut outptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+        ::std::ptr::null_mut::< crate::jdct_h::FLOAT_MULT_TYPE>();
+    let mut wsptr: *mut libc::c_float = ::std::ptr::null_mut::< libc::c_float>();
+    let mut outptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut range_limit: *mut crate::jmorecfg_h::JSAMPLE = (*cinfo).sample_range_limit;
     let mut ctr: libc::c_int = 0;
     let mut workspace: [libc::c_float; 64] = [0.; 64];

@@ -519,10 +519,10 @@ unsafe extern "C" fn get_8bit_row(
     let mut source: bmp_source_ptr = sinfo as bmp_source_ptr;
     let mut colormap: crate::jpeglib_h::JSAMPARRAY = (*source).colormap;
     let mut cmaplen: libc::c_int = (*source).cmap_length;
-    let mut image_ptr: crate::jpeglib_h::JSAMPARRAY = 0 as *mut crate::jpeglib_h::JSAMPROW;
+    let mut image_ptr: crate::jpeglib_h::JSAMPARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>();
     let mut t: libc::c_int = 0;
-    let mut inptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
-    let mut outptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut inptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
+    let mut outptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     if (*source).use_inversion_array != 0 {
         /* Fetch next row from virtual array */
@@ -682,9 +682,9 @@ unsafe extern "C" fn get_24bit_row(
 ) -> crate::jmorecfg_h::JDIMENSION
 /* This version is for reading 24-bit pixels */ {
     let mut source: bmp_source_ptr = sinfo as bmp_source_ptr;
-    let mut image_ptr: crate::jpeglib_h::JSAMPARRAY = 0 as *mut crate::jpeglib_h::JSAMPROW;
-    let mut inptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
-    let mut outptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut image_ptr: crate::jpeglib_h::JSAMPARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>();
+    let mut inptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
+    let mut outptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     if (*source).use_inversion_array != 0 {
         /* Fetch next row from virtual array */
@@ -810,9 +810,9 @@ unsafe extern "C" fn get_32bit_row(
 ) -> crate::jmorecfg_h::JDIMENSION
 /* This version is for reading 32-bit pixels */ {
     let mut source: bmp_source_ptr = sinfo as bmp_source_ptr;
-    let mut image_ptr: crate::jpeglib_h::JSAMPARRAY = 0 as *mut crate::jpeglib_h::JSAMPROW;
-    let mut inptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
-    let mut outptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut image_ptr: crate::jpeglib_h::JSAMPARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>();
+    let mut inptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
+    let mut outptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     if (*source).use_inversion_array != 0 {
         /* Fetch next row from virtual array */
@@ -949,8 +949,8 @@ unsafe extern "C" fn preload_image(
 ) -> crate::jmorecfg_h::JDIMENSION {
     let mut source: bmp_source_ptr = sinfo as bmp_source_ptr;
     let mut infile: *mut crate::stdlib::FILE = (*source).pub_0.input_file;
-    let mut out_ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
-    let mut image_ptr: crate::jpeglib_h::JSAMPARRAY = 0 as *mut crate::jpeglib_h::JSAMPROW;
+    let mut out_ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
+    let mut image_ptr: crate::jpeglib_h::JSAMPARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>();
     let mut row: crate::jmorecfg_h::JDIMENSION = 0;
     let mut progress: crate::src::cdjpeg::cd_progress_ptr =
         (*cinfo).progress as crate::src::cdjpeg::cd_progress_ptr;
@@ -1749,7 +1749,7 @@ pub unsafe extern "C" fn jinit_read_bmp(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
     mut use_inversion_array: crate::jmorecfg_h::boolean,
 ) -> crate::src::cdjpeg::cjpeg_source_ptr {
-    let mut source: bmp_source_ptr = 0 as *mut _bmp_source_struct;
+    let mut source: bmp_source_ptr = ::std::ptr::null_mut::< _bmp_source_struct>();
     /* Create module interface object */
     source = Some(
         (*(*cinfo).mem)

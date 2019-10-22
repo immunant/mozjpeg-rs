@@ -565,7 +565,7 @@ pub unsafe extern "C" fn jinit_d_post_controller(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
     mut need_full_buffer: crate::jmorecfg_h::boolean,
 ) {
-    let mut post: my_post_ptr = 0 as *mut my_post_controller; /* flag for no virtual arrays */
+    let mut post: my_post_ptr = ::std::ptr::null_mut::< my_post_controller>(); /* flag for no virtual arrays */
     post = Some(
         (*(*cinfo).mem)
             .alloc_small

@@ -92,7 +92,7 @@ pub unsafe extern "C" fn jpeg_fdct_float(mut data: *mut libc::c_float) {
     let mut z5: libc::c_float = 0.;
     let mut z11: libc::c_float = 0.;
     let mut z13: libc::c_float = 0.;
-    let mut dataptr: *mut libc::c_float = 0 as *mut libc::c_float;
+    let mut dataptr: *mut libc::c_float = ::std::ptr::null_mut::< libc::c_float>();
     let mut ctr: libc::c_int = 0;
     /* Pass 1: process rows. */
     dataptr = data;

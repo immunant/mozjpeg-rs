@@ -455,7 +455,7 @@ unsafe extern "C" fn get_sof(
     let mut c: libc::c_int = 0;
     let mut ci: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     let mut datasrc: *mut crate::jpeglib_h::jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const crate::jmorecfg_h::JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: crate::stddef_h::size_t = (*datasrc).bytes_in_buffer;
@@ -764,7 +764,7 @@ unsafe extern "C" fn get_sos(
     let mut cc: libc::c_int = 0;
     let mut pi: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     let mut datasrc: *mut crate::jpeglib_h::jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const crate::jmorecfg_h::JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: crate::stddef_h::size_t = (*datasrc).bytes_in_buffer;
@@ -1053,7 +1053,7 @@ unsafe extern "C" fn get_dht(
     let mut index: libc::c_int = 0;
     let mut count: libc::c_int = 0;
     let mut htblptr: *mut *mut crate::jpeglib_h::JHUFF_TBL =
-        0 as *mut *mut crate::jpeglib_h::JHUFF_TBL;
+        ::std::ptr::null_mut::< *mut crate::jpeglib_h::JHUFF_TBL>();
     let mut datasrc: *mut crate::jpeglib_h::jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const crate::jmorecfg_h::JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: crate::stddef_h::size_t = (*datasrc).bytes_in_buffer;
@@ -1300,7 +1300,7 @@ unsafe extern "C" fn get_dqt(
     let mut i: libc::c_int = 0;
     let mut prec: libc::c_int = 0;
     let mut tmp: libc::c_uint = 0;
-    let mut quant_ptr: *mut crate::jpeglib_h::JQUANT_TBL = 0 as *mut crate::jpeglib_h::JQUANT_TBL;
+    let mut quant_ptr: *mut crate::jpeglib_h::JQUANT_TBL = ::std::ptr::null_mut::< crate::jpeglib_h::JQUANT_TBL>();
     let mut datasrc: *mut crate::jpeglib_h::jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const crate::jmorecfg_h::JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: crate::stddef_h::size_t = (*datasrc).bytes_in_buffer;
@@ -1965,7 +1965,7 @@ unsafe extern "C" fn save_marker(
     let mut cur_marker: crate::jpeglib_h::jpeg_saved_marker_ptr = (*marker).cur_marker;
     let mut bytes_read: libc::c_uint = 0;
     let mut data_length: libc::c_uint = 0;
-    let mut data: *mut crate::jmorecfg_h::JOCTET = 0 as *mut crate::jmorecfg_h::JOCTET;
+    let mut data: *mut crate::jmorecfg_h::JOCTET = ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>();
     let mut length: crate::jpegint_h::JLONG = 0i32 as crate::jpegint_h::JLONG;
     let mut datasrc: *mut crate::jpeglib_h::jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const crate::jmorecfg_h::JOCTET = (*datasrc).next_input_byte;
@@ -2861,7 +2861,7 @@ unsafe extern "C" fn reset_marker_reader(mut cinfo: crate::jpeglib_h::j_decompre
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_marker_reader(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
-    let mut marker: my_marker_ptr = 0 as *mut my_marker_reader;
+    let mut marker: my_marker_ptr = ::std::ptr::null_mut::< my_marker_reader>();
     let mut i: libc::c_int = 0;
     /* Create subobject in permanent pool */
     marker = Some(

@@ -260,10 +260,10 @@ unsafe extern "C" fn start_pass_phuff_decoder(mut cinfo: crate::jpeglib_h::j_dec
     let mut coefi: libc::c_int = 0;
     let mut tbl: libc::c_int = 0;
     let mut pdtbl: *mut *mut crate::src::jdhuff::d_derived_tbl =
-        0 as *mut *mut crate::src::jdhuff::d_derived_tbl;
-    let mut coef_bit_ptr: *mut libc::c_int = 0 as *mut libc::c_int;
+        ::std::ptr::null_mut::< *mut crate::src::jdhuff::d_derived_tbl>();
+    let mut coef_bit_ptr: *mut libc::c_int = ::std::ptr::null_mut::< libc::c_int>();
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     is_DC_band = ((*cinfo).Ss == 0i32) as libc::c_int;
     /* Validate scan parameters */
     bad = crate::jmorecfg_h::FALSE;
@@ -520,25 +520,25 @@ unsafe extern "C" fn decode_mcu_DC_first(
     let mut r: libc::c_int = 0;
     let mut blkn: libc::c_int = 0;
     let mut ci: libc::c_int = 0;
-    let mut block: crate::jpeglib_h::JBLOCKROW = 0 as *mut crate::jpeglib_h::JBLOCK;
+    let mut block: crate::jpeglib_h::JBLOCKROW = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCK>();
     let mut get_buffer: crate::src::jdhuff::bit_buf_type = 0;
     let mut bits_left: libc::c_int = 0;
     let mut br_state: crate::src::jdhuff::bitread_working_state =
         crate::src::jdhuff::bitread_working_state {
-            next_input_byte: 0 as *const crate::jmorecfg_h::JOCTET,
+            next_input_byte: ::std::ptr::null::< crate::jmorecfg_h::JOCTET>(),
             bytes_in_buffer: 0,
             get_buffer: 0,
             bits_left: 0,
-            cinfo: 0 as *mut crate::jpeglib_h::jpeg_decompress_struct,
+            cinfo: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_decompress_struct>(),
         };
     let mut state: savable_state = savable_state {
         EOBRUN: 0,
         last_dc_val: [0; 4],
     };
     let mut tbl: *mut crate::src::jdhuff::d_derived_tbl =
-        0 as *mut crate::src::jdhuff::d_derived_tbl;
+        ::std::ptr::null_mut::< crate::src::jdhuff::d_derived_tbl>();
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     /* Process restart marker if needed; may have to suspend */
     if (*cinfo).restart_interval != 0 {
         if (*entropy).restarts_to_go == 0i32 as libc::c_uint {
@@ -697,19 +697,19 @@ unsafe extern "C" fn decode_mcu_AC_first(
     let mut k: libc::c_int = 0;
     let mut r: libc::c_int = 0;
     let mut EOBRUN: libc::c_uint = 0;
-    let mut block: crate::jpeglib_h::JBLOCKROW = 0 as *mut crate::jpeglib_h::JBLOCK;
+    let mut block: crate::jpeglib_h::JBLOCKROW = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCK>();
     let mut get_buffer: crate::src::jdhuff::bit_buf_type = 0;
     let mut bits_left: libc::c_int = 0;
     let mut br_state: crate::src::jdhuff::bitread_working_state =
         crate::src::jdhuff::bitread_working_state {
-            next_input_byte: 0 as *const crate::jmorecfg_h::JOCTET,
+            next_input_byte: ::std::ptr::null::< crate::jmorecfg_h::JOCTET>(),
             bytes_in_buffer: 0,
             get_buffer: 0,
             bits_left: 0,
-            cinfo: 0 as *mut crate::jpeglib_h::jpeg_decompress_struct,
+            cinfo: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_decompress_struct>(),
         };
     let mut tbl: *mut crate::src::jdhuff::d_derived_tbl =
-        0 as *mut crate::src::jdhuff::d_derived_tbl;
+        ::std::ptr::null_mut::< crate::src::jdhuff::d_derived_tbl>();
     /* Process restart marker if needed; may have to suspend */
     if (*cinfo).restart_interval != 0 {
         if (*entropy).restarts_to_go == 0i32 as libc::c_uint {
@@ -886,16 +886,16 @@ unsafe extern "C" fn decode_mcu_DC_refine(
     let mut entropy: phuff_entropy_ptr = (*cinfo).entropy as phuff_entropy_ptr; /* 1 in the bit position being coded */
     let mut p1: libc::c_int = 1i32 << (*cinfo).Al;
     let mut blkn: libc::c_int = 0;
-    let mut block: crate::jpeglib_h::JBLOCKROW = 0 as *mut crate::jpeglib_h::JBLOCK;
+    let mut block: crate::jpeglib_h::JBLOCKROW = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCK>();
     let mut get_buffer: crate::src::jdhuff::bit_buf_type = 0;
     let mut bits_left: libc::c_int = 0;
     let mut br_state: crate::src::jdhuff::bitread_working_state =
         crate::src::jdhuff::bitread_working_state {
-            next_input_byte: 0 as *const crate::jmorecfg_h::JOCTET,
+            next_input_byte: ::std::ptr::null::< crate::jmorecfg_h::JOCTET>(),
             bytes_in_buffer: 0,
             get_buffer: 0,
             bits_left: 0,
-            cinfo: 0 as *mut crate::jpeglib_h::jpeg_decompress_struct,
+            cinfo: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_decompress_struct>(),
         };
     /* Process restart marker if needed; may have to suspend */
     if (*cinfo).restart_interval != 0 {
@@ -961,20 +961,20 @@ unsafe extern "C" fn decode_mcu_AC_refine(
     let mut k: libc::c_int = 0;
     let mut r: libc::c_int = 0;
     let mut EOBRUN: libc::c_uint = 0;
-    let mut block: crate::jpeglib_h::JBLOCKROW = 0 as *mut crate::jpeglib_h::JBLOCK;
-    let mut thiscoef: crate::jpeglib_h::JCOEFPTR = 0 as *mut crate::jmorecfg_h::JCOEF;
+    let mut block: crate::jpeglib_h::JBLOCKROW = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCK>();
+    let mut thiscoef: crate::jpeglib_h::JCOEFPTR = ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>();
     let mut get_buffer: crate::src::jdhuff::bit_buf_type = 0;
     let mut bits_left: libc::c_int = 0;
     let mut br_state: crate::src::jdhuff::bitread_working_state =
         crate::src::jdhuff::bitread_working_state {
-            next_input_byte: 0 as *const crate::jmorecfg_h::JOCTET,
+            next_input_byte: ::std::ptr::null::< crate::jmorecfg_h::JOCTET>(),
             bytes_in_buffer: 0,
             get_buffer: 0,
             bits_left: 0,
-            cinfo: 0 as *mut crate::jpeglib_h::jpeg_decompress_struct,
+            cinfo: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_decompress_struct>(),
         };
     let mut tbl: *mut crate::src::jdhuff::d_derived_tbl =
-        0 as *mut crate::src::jdhuff::d_derived_tbl;
+        ::std::ptr::null_mut::< crate::src::jdhuff::d_derived_tbl>();
     let mut num_newnz: libc::c_int = 0;
     let mut newnz_pos: [libc::c_int; 64] = [0; 64];
     /* Process restart marker if needed; may have to suspend */
@@ -1306,8 +1306,8 @@ unsafe extern "C" fn decode_mcu_AC_refine(
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_phuff_decoder(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
-    let mut entropy: phuff_entropy_ptr = 0 as *mut phuff_entropy_decoder;
-    let mut coef_bit_ptr: *mut libc::c_int = 0 as *mut libc::c_int;
+    let mut entropy: phuff_entropy_ptr = ::std::ptr::null_mut::< phuff_entropy_decoder>();
+    let mut coef_bit_ptr: *mut libc::c_int = ::std::ptr::null_mut::< libc::c_int>();
     let mut ci: libc::c_int = 0;
     let mut i: libc::c_int = 0;
     entropy = Some(

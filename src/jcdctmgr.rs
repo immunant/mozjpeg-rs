@@ -486,9 +486,9 @@ unsafe extern "C" fn start_pass_fdctmgr(mut cinfo: crate::jpeglib_h::j_compress_
     let mut qtblno: libc::c_int = 0;
     let mut i: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
-    let mut qtbl: *mut crate::jpeglib_h::JQUANT_TBL = 0 as *mut crate::jpeglib_h::JQUANT_TBL;
-    let mut dtbl: *mut crate::jdct_h::DCTELEM = 0 as *mut crate::jdct_h::DCTELEM;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
+    let mut qtbl: *mut crate::jpeglib_h::JQUANT_TBL = ::std::ptr::null_mut::< crate::jpeglib_h::JQUANT_TBL>();
+    let mut dtbl: *mut crate::jdct_h::DCTELEM = ::std::ptr::null_mut::< crate::jdct_h::DCTELEM>();
     ci = 0i32;
     compptr = (*cinfo).comp_info;
     while ci < (*cinfo).num_components {
@@ -693,7 +693,7 @@ unsafe extern "C" fn start_pass_fdctmgr(mut cinfo: crate::jpeglib_h::j_compress_
                  * What's actually stored is 1/divisor so that the inner loop can
                  * use a multiplication rather than a division.
                  */
-                let mut fdtbl: *mut libc::c_float = 0 as *mut libc::c_float;
+                let mut fdtbl: *mut libc::c_float = ::std::ptr::null_mut::< libc::c_float>();
                 let mut row: libc::c_int = 0;
                 let mut col: libc::c_int = 0;
                 static mut aanscalefactor: [libc::c_double; 8] = [
@@ -1119,8 +1119,8 @@ unsafe extern "C" fn convsamp(
     mut start_col: crate::jmorecfg_h::JDIMENSION,
     mut workspace: *mut crate::jdct_h::DCTELEM,
 ) {
-    let mut workspaceptr: *mut crate::jdct_h::DCTELEM = 0 as *mut crate::jdct_h::DCTELEM;
-    let mut elemptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut workspaceptr: *mut crate::jdct_h::DCTELEM = ::std::ptr::null_mut::< crate::jdct_h::DCTELEM>();
+    let mut elemptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut elemr: libc::c_int = 0;
     workspaceptr = workspace;
     elemr = 0i32;
@@ -1251,7 +1251,7 @@ unsafe extern "C" fn forward_DCT(
         (*fdct).divisors[(*compptr).quant_tbl_no as usize];
     let mut qtbl: *mut crate::jpeglib_h::JQUANT_TBL =
         (*cinfo).quant_tbl_ptrs[(*compptr).quant_tbl_no as usize];
-    let mut workspace: *mut crate::jdct_h::DCTELEM = 0 as *mut crate::jdct_h::DCTELEM;
+    let mut workspace: *mut crate::jdct_h::DCTELEM = ::std::ptr::null_mut::< crate::jdct_h::DCTELEM>();
     let mut bi: crate::jmorecfg_h::JDIMENSION = 0;
     /* Make sure the compiler doesn't look up these every pass */
     let mut do_dct: forward_DCT_method_ptr = (*fdct).dct; /* fold in the vertical offset once */
@@ -1402,8 +1402,8 @@ unsafe extern "C" fn convsamp_float(
     mut start_col: crate::jmorecfg_h::JDIMENSION,
     mut workspace: *mut libc::c_float,
 ) {
-    let mut workspaceptr: *mut libc::c_float = 0 as *mut libc::c_float;
-    let mut elemptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut workspaceptr: *mut libc::c_float = ::std::ptr::null_mut::< libc::c_float>();
+    let mut elemptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut elemr: libc::c_int = 0;
     workspaceptr = workspace;
     elemr = 0i32;
@@ -1495,7 +1495,7 @@ unsafe extern "C" fn forward_DCT_float(
     let mut divisors: *mut libc::c_float = (*fdct).float_divisors[(*compptr).quant_tbl_no as usize];
     let mut qtbl: *mut crate::jpeglib_h::JQUANT_TBL =
         (*cinfo).quant_tbl_ptrs[(*compptr).quant_tbl_no as usize];
-    let mut workspace: *mut libc::c_float = 0 as *mut libc::c_float;
+    let mut workspace: *mut libc::c_float = ::std::ptr::null_mut::< libc::c_float>();
     let mut bi: crate::jmorecfg_h::JDIMENSION = 0;
     let mut v: libc::c_float = 0.;
     let mut x: libc::c_int = 0;
@@ -1659,10 +1659,10 @@ pub unsafe extern "C" fn quantize_trellis(
     let mut zero_run: libc::c_int = 0;
     let mut run_bits: libc::c_int = 0;
     let mut rate: libc::c_int = 0;
-    let mut accumulated_dc_cost: [*mut libc::c_float; 9] = [0 as *mut libc::c_float; 9];
-    let mut dc_cost_backtrack: [*mut libc::c_int; 9] = [0 as *mut libc::c_int; 9];
+    let mut accumulated_dc_cost: [*mut libc::c_float; 9] = [::std::ptr::null_mut::< libc::c_float>(); 9];
+    let mut dc_cost_backtrack: [*mut libc::c_int; 9] = [::std::ptr::null_mut::< libc::c_int>(); 9];
     let mut dc_candidate: [*mut crate::jmorecfg_h::JCOEF; 9] =
-        [0 as *mut crate::jmorecfg_h::JCOEF; 9];
+        [::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>(); 9];
     let mut mode: libc::c_int = 1i32;
     let mut lambda_table: [libc::c_float; 64] = [0.; 64];
     let dc_trellis_candidates: libc::c_int =
@@ -2157,7 +2157,7 @@ pub unsafe extern "C" fn quantize_trellis(
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_forward_dct(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
-    let mut fdct: my_fdct_ptr = 0 as *mut my_fdct_controller;
+    let mut fdct: my_fdct_ptr = ::std::ptr::null_mut::< my_fdct_controller>();
     let mut i: libc::c_int = 0;
     fdct = Some(
         (*(*cinfo).mem)

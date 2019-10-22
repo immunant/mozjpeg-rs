@@ -225,7 +225,7 @@ pub unsafe extern "C" fn read_quant_tables(
  * table 0 for luminance (or primary) components, 1 for chrominance components.
  * You must use -qslots if you want a different component->table mapping.
  */ {
-    let mut fp: *mut crate::stdlib::FILE = 0 as *mut crate::stdlib::FILE;
+    let mut fp: *mut crate::stdlib::FILE = ::std::ptr::null_mut::< crate::stdlib::FILE>();
     let mut tblno: libc::c_int = 0;
     let mut i: libc::c_int = 0;
     let mut termchar: libc::c_int = 0;
@@ -349,13 +349,13 @@ pub unsafe extern "C" fn read_scan_script(
  * jcmaster.c will validate the script parameters.
  */ {
     let mut current_block: u64;
-    let mut fp: *mut crate::stdlib::FILE = 0 as *mut crate::stdlib::FILE;
+    let mut fp: *mut crate::stdlib::FILE = ::std::ptr::null_mut::< crate::stdlib::FILE>();
     let mut scanno: libc::c_int = 0;
     let mut ncomps: libc::c_int = 0;
     let mut termchar: libc::c_int = 0;
     let mut val: libc::c_long = 0;
     let mut scanptr: *mut crate::jpeglib_h::jpeg_scan_info =
-        0 as *mut crate::jpeglib_h::jpeg_scan_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_scan_info>();
     /* quite arbitrary limit */
     let mut scans: [crate::jpeglib_h::jpeg_scan_info; 100] = [crate::jpeglib_h::jpeg_scan_info {
         comps_in_scan: 0,

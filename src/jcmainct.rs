@@ -349,10 +349,10 @@ pub unsafe extern "C" fn jinit_c_main_controller(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
     mut need_full_buffer: crate::jmorecfg_h::boolean,
 ) {
-    let mut main_ptr: my_main_ptr = 0 as *mut my_main_controller;
+    let mut main_ptr: my_main_ptr = ::std::ptr::null_mut::< my_main_controller>();
     let mut ci: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     main_ptr = Some(
         (*(*cinfo).mem)
             .alloc_small

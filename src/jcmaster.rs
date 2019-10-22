@@ -290,7 +290,7 @@ unsafe extern "C" fn initial_setup(
 {
     let mut ci: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     let mut samplesperrow: libc::c_long = 0;
     let mut jd_samplesperrow: crate::jmorecfg_h::JDIMENSION = 0;
     /* Sanity check on image dimensions */
@@ -436,7 +436,7 @@ unsafe extern "C" fn validate_script(mut cinfo: crate::jpeglib_h::j_compress_ptr
  */
 {
     let mut scanptr: *const crate::jpeglib_h::jpeg_scan_info =
-        0 as *const crate::jpeglib_h::jpeg_scan_info;
+        ::std::ptr::null::< crate::jpeglib_h::jpeg_scan_info>();
     let mut scanno: libc::c_int = 0;
     let mut ncomps: libc::c_int = 0;
     let mut ci: libc::c_int = 0;
@@ -447,7 +447,7 @@ unsafe extern "C" fn validate_script(mut cinfo: crate::jpeglib_h::j_compress_ptr
     let mut Ah: libc::c_int = 0;
     let mut Al: libc::c_int = 0;
     let mut component_sent: [crate::jmorecfg_h::boolean; 10] = [0; 10];
-    let mut last_bitpos_ptr: *mut libc::c_int = 0 as *mut libc::c_int;
+    let mut last_bitpos_ptr: *mut libc::c_int = ::std::ptr::null_mut::< libc::c_int>();
     let mut last_bitpos: [[libc::c_int; 64]; 10] = [[0; 64]; 10];
     /* -1 until that coefficient has been seen; then last Al for it */
     if (*(*cinfo).master).optimize_scans != 0 {
@@ -846,7 +846,7 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: crate::jpeglib_h::j_compress_ptr)
     let mut mcublks: libc::c_int = 0;
     let mut tmp: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     if (*cinfo).comps_in_scan == 1i32 {
         /* Noninterleaved (single-component) scan */
         compptr = (*cinfo).cur_comp_info[0];

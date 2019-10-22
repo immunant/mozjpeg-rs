@@ -314,7 +314,7 @@ unsafe extern "C" fn sep_upsample(
         (*cinfo).upsample as crate::src::jdsample::my_upsample_ptr;
     let mut ci: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     let mut num_rows: crate::jmorecfg_h::JDIMENSION = 0;
     /* Fill the conversion buffer, if it's empty */
     if (*upsample).next_row_out >= (*cinfo).max_v_samp_factor {
@@ -437,11 +437,11 @@ unsafe extern "C" fn int_upsample(
     let mut upsample: crate::src::jdsample::my_upsample_ptr =
         (*cinfo).upsample as crate::src::jdsample::my_upsample_ptr;
     let mut output_data: crate::jpeglib_h::JSAMPARRAY = *output_data_ptr;
-    let mut inptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
-    let mut outptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut inptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
+    let mut outptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut invalue: crate::jmorecfg_h::JSAMPLE = 0;
     let mut h: libc::c_int = 0;
-    let mut outend: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut outend: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut h_expand: libc::c_int = 0;
     let mut v_expand: libc::c_int = 0;
     let mut inrow: libc::c_int = 0;
@@ -494,10 +494,10 @@ unsafe extern "C" fn h2v1_upsample(
     mut output_data_ptr: *mut crate::jpeglib_h::JSAMPARRAY,
 ) {
     let mut output_data: crate::jpeglib_h::JSAMPARRAY = *output_data_ptr; /* don't need GETJSAMPLE() here */
-    let mut inptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
-    let mut outptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut inptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
+    let mut outptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut invalue: crate::jmorecfg_h::JSAMPLE = 0;
-    let mut outend: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut outend: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut inrow: libc::c_int = 0;
     inrow = 0i32;
     while inrow < (*cinfo).max_v_samp_factor {
@@ -530,10 +530,10 @@ unsafe extern "C" fn h2v2_upsample(
     mut output_data_ptr: *mut crate::jpeglib_h::JSAMPARRAY,
 ) {
     let mut output_data: crate::jpeglib_h::JSAMPARRAY = *output_data_ptr; /* don't need GETJSAMPLE() here */
-    let mut inptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
-    let mut outptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut inptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
+    let mut outptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut invalue: crate::jmorecfg_h::JSAMPLE = 0;
-    let mut outend: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut outend: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut inrow: libc::c_int = 0;
     let mut outrow: libc::c_int = 0;
     outrow = 0i32;
@@ -587,8 +587,8 @@ unsafe extern "C" fn h2v1_fancy_upsample(
     mut output_data_ptr: *mut crate::jpeglib_h::JSAMPARRAY,
 ) {
     let mut output_data: crate::jpeglib_h::JSAMPARRAY = *output_data_ptr;
-    let mut inptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
-    let mut outptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut inptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
+    let mut outptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut invalue: libc::c_int = 0;
     let mut colctr: crate::jmorecfg_h::JDIMENSION = 0;
     let mut inrow: libc::c_int = 0;
@@ -651,9 +651,9 @@ unsafe extern "C" fn h1v2_fancy_upsample(
     mut output_data_ptr: *mut crate::jpeglib_h::JSAMPARRAY,
 ) {
     let mut output_data: crate::jpeglib_h::JSAMPARRAY = *output_data_ptr;
-    let mut inptr0: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
-    let mut inptr1: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
-    let mut outptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut inptr0: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
+    let mut inptr1: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
+    let mut outptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut thiscolsum: libc::c_int = 0;
     let mut colctr: crate::jmorecfg_h::JDIMENSION = 0;
     let mut inrow: libc::c_int = 0;
@@ -708,9 +708,9 @@ unsafe extern "C" fn h2v2_fancy_upsample(
     mut output_data_ptr: *mut crate::jpeglib_h::JSAMPARRAY,
 ) {
     let mut output_data: crate::jpeglib_h::JSAMPARRAY = *output_data_ptr;
-    let mut inptr0: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
-    let mut inptr1: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
-    let mut outptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut inptr0: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
+    let mut inptr1: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
+    let mut outptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut thiscolsum: libc::c_int = 0;
     let mut lastcolsum: libc::c_int = 0;
     let mut nextcolsum: libc::c_int = 0;
@@ -798,10 +798,10 @@ unsafe extern "C" fn h2v2_fancy_upsample(
 
 pub unsafe extern "C" fn jinit_upsampler(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
     let mut upsample: crate::src::jdsample::my_upsample_ptr =
-        0 as *mut crate::src::jdsample::my_upsampler;
+        ::std::ptr::null_mut::< crate::src::jdsample::my_upsampler>();
     let mut ci: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     let mut need_buffer: crate::jmorecfg_h::boolean = 0;
     let mut do_fancy: crate::jmorecfg_h::boolean = 0;
     let mut h_in_group: libc::c_int = 0;

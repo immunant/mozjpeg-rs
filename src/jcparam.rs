@@ -279,7 +279,7 @@ pub unsafe extern "C" fn jpeg_add_quant_table(
  */
 {
     let mut qtblptr: *mut *mut crate::jpeglib_h::JQUANT_TBL =
-        0 as *mut *mut crate::jpeglib_h::JQUANT_TBL;
+        ::std::ptr::null_mut::< *mut crate::jpeglib_h::JQUANT_TBL>();
     let mut i: libc::c_int = 0;
     let mut temp: libc::c_long = 0;
     /* Safety check to ensure start_compress not called yet. */
@@ -1792,7 +1792,7 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
     mut colorspace: crate::jpeglib_h::J_COLOR_SPACE,
 ) {
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     let mut ci: libc::c_int = 0;
     /* Safety check to ensure start_compress not called yet. */
     if (*cinfo).global_state != crate::jpegint_h::CSTATE_START {
@@ -2100,7 +2100,7 @@ unsafe extern "C" fn jpeg_search_progression(
     let mut ncomps: libc::c_int = (*cinfo).num_components;
     let mut nscans: libc::c_int = 0;
     let mut scanptr: *mut crate::jpeglib_h::jpeg_scan_info =
-        0 as *mut crate::jpeglib_h::jpeg_scan_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_scan_info>();
     let mut Al: libc::c_int = 0;
     let mut frequency_split: [libc::c_int; 5] = [2i32, 8i32, 5i32, 12i32, 18i32];
     let mut i: libc::c_int = 0;
@@ -2259,7 +2259,7 @@ pub unsafe extern "C" fn jpeg_simple_progression(mut cinfo: crate::jpeglib_h::j_
     let mut ncomps: libc::c_int = 0;
     let mut nscans: libc::c_int = 0;
     let mut scanptr: *mut crate::jpeglib_h::jpeg_scan_info =
-        0 as *mut crate::jpeglib_h::jpeg_scan_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_scan_info>();
     if (*(*cinfo).master).optimize_scans != 0 {
         if jpeg_search_progression(cinfo) == crate::jmorecfg_h::TRUE {
             return;

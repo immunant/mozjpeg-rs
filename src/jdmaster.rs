@@ -415,7 +415,7 @@ unsafe extern "C" fn jpeg_core_output_dimensions(mut cinfo: crate::jpeglib_h::j_
 {
     let mut ci: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     /* Compute actual output image dimensions and DCT scaling choices. */
     if (*cinfo)
         .scale_num
@@ -704,7 +704,7 @@ pub unsafe extern "C" fn jpeg_calc_output_dimensions(
 {
     let mut ci: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     /* Prevent application from calling me at wrong times */
     if (*cinfo).global_state != crate::jpegint_h::DSTATE_READY {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
@@ -832,7 +832,7 @@ pub unsafe extern "C" fn jpeg_calc_output_dimensions(
 unsafe extern "C" fn prepare_range_limit_table(mut cinfo: crate::jpeglib_h::j_decompress_ptr)
 /* Allocate and fill in the sample_range_limit table */
 {
-    let mut table: *mut crate::jmorecfg_h::JSAMPLE = 0 as *mut crate::jmorecfg_h::JSAMPLE; /* allow negative subscripts of simple table */
+    let mut table: *mut crate::jmorecfg_h::JSAMPLE = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); /* allow negative subscripts of simple table */
     let mut i: libc::c_int = 0;
     table = Some(
         (*(*cinfo).mem)

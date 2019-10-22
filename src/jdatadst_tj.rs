@@ -271,7 +271,7 @@ unsafe extern "C" fn empty_mem_output_buffer(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
 ) -> crate::jmorecfg_h::boolean {
     let mut nextsize: crate::stddef_h::size_t = 0;
-    let mut nextbuffer: *mut crate::jmorecfg_h::JOCTET = 0 as *mut crate::jmorecfg_h::JOCTET;
+    let mut nextbuffer: *mut crate::jmorecfg_h::JOCTET = ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>();
     let mut dest: my_mem_dest_ptr = (*cinfo).dest as my_mem_dest_ptr;
     if (*dest).alloc == 0 {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BUFFER_SIZE as libc::c_int;
@@ -345,7 +345,7 @@ pub unsafe extern "C" fn jpeg_mem_dest_tj(
     mut alloc: crate::jmorecfg_h::boolean,
 ) {
     let mut reused: crate::jmorecfg_h::boolean = crate::jmorecfg_h::FALSE;
-    let mut dest: my_mem_dest_ptr = 0 as *mut my_mem_destination_mgr;
+    let mut dest: my_mem_dest_ptr = ::std::ptr::null_mut::< my_mem_destination_mgr>();
     if outbuffer.is_null() || outsize.is_null() {
         /* sanity check */
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BUFFER_SIZE as libc::c_int;

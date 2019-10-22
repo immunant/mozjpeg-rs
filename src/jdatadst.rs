@@ -320,7 +320,7 @@ unsafe extern "C" fn empty_mem_output_buffer(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
 ) -> crate::jmorecfg_h::boolean {
     let mut nextsize: crate::stddef_h::size_t = 0;
-    let mut nextbuffer: *mut crate::jmorecfg_h::JOCTET = 0 as *mut crate::jmorecfg_h::JOCTET;
+    let mut nextbuffer: *mut crate::jmorecfg_h::JOCTET = ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>();
     let mut dest: my_mem_dest_ptr = (*cinfo).dest as my_mem_dest_ptr;
     /* Try to allocate new buffer with double size */
     nextsize = (*dest).bufsize.wrapping_mul(2i32 as libc::c_ulong);
@@ -414,7 +414,7 @@ pub unsafe extern "C" fn jpeg_stdio_dest(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
     mut outfile: *mut crate::stdlib::FILE,
 ) {
-    let mut dest: my_dest_ptr = 0 as *mut my_destination_mgr;
+    let mut dest: my_dest_ptr = ::std::ptr::null_mut::< my_destination_mgr>();
     /* The destination object is made permanent so that multiple JPEG images
      * can be written to the same file without re-executing jpeg_stdio_dest.
      */
@@ -481,7 +481,7 @@ pub unsafe extern "C" fn jpeg_mem_dest_internal(
     mut outsize: *mut libc::c_ulong,
     mut pool_id: libc::c_int,
 ) {
-    let mut dest: my_mem_dest_ptr = 0 as *mut my_mem_destination_mgr;
+    let mut dest: my_mem_dest_ptr = ::std::ptr::null_mut::< my_mem_destination_mgr>();
     if outbuffer.is_null() || outsize.is_null() {
         /* sanity check */
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BUFFER_SIZE as libc::c_int;

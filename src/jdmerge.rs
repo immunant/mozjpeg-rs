@@ -342,7 +342,7 @@ unsafe extern "C" fn merged_2v_upsample(
 /* 2:1 vertical sampling case: may need a spare row. */
 {
     let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr; /* number of rows returned to caller */
-    let mut work_ptrs: [crate::jpeglib_h::JSAMPROW; 2] = [0 as *mut crate::jmorecfg_h::JSAMPLE; 2];
+    let mut work_ptrs: [crate::jpeglib_h::JSAMPROW; 2] = [::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); 2];
     let mut num_rows: crate::jmorecfg_h::JDIMENSION = 0;
     if (*upsample).spare_full != 0 {
         /* If we have a spare row saved from a previous cycle, just return it. */
@@ -705,7 +705,7 @@ unsafe extern "C" fn h2v2_merged_upsample_565D(
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_merged_upsampler(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
-    let mut upsample: my_upsample_ptr = 0 as *mut my_upsampler;
+    let mut upsample: my_upsample_ptr = ::std::ptr::null_mut::< my_upsampler>();
     upsample = Some(
         (*(*cinfo).mem)
             .alloc_small

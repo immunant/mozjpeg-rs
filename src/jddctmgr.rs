@@ -367,15 +367,15 @@ unsafe extern "C" fn start_pass(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
     let mut ci: libc::c_int = 0;
     let mut i: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     let mut method: libc::c_int = 0i32;
     let mut method_ptr: crate::jpegint_h::inverse_DCT_method_ptr =
         ::std::mem::transmute::<libc::intptr_t, crate::jpegint_h::inverse_DCT_method_ptr>(
             crate::stddef_h::NULL as libc::intptr_t,
         );
-    let mut qtbl: *mut crate::jpeglib_h::JQUANT_TBL = 0 as *mut crate::jpeglib_h::JQUANT_TBL;
+    let mut qtbl: *mut crate::jpeglib_h::JQUANT_TBL = ::std::ptr::null_mut::< crate::jpeglib_h::JQUANT_TBL>();
     let mut master: crate::src::jdmaster::my_master_ptr =
-        0 as *mut crate::src::jdmaster::my_decomp_master;
+        ::std::ptr::null_mut::< crate::src::jdmaster::my_decomp_master>();
     ci = 0i32;
     compptr = (*cinfo).comp_info;
     while ci < (*cinfo).num_components {
@@ -899,10 +899,10 @@ unsafe extern "C" fn start_pass(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_inverse_dct(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
-    let mut idct: my_idct_ptr = 0 as *mut my_idct_controller;
+    let mut idct: my_idct_ptr = ::std::ptr::null_mut::< my_idct_controller>();
     let mut ci: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     idct = Some(
         (*(*cinfo).mem)
             .alloc_small

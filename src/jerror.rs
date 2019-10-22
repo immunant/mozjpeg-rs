@@ -620,7 +620,7 @@ unsafe extern "C" fn format_message(
     let mut err: *mut crate::jpeglib_h::jpeg_error_mgr = (*cinfo).err;
     let mut msg_code: libc::c_int = (*err).msg_code;
     let mut msgtext: *const libc::c_char = crate::stddef_h::NULL as *const libc::c_char;
-    let mut msgptr: *const libc::c_char = 0 as *const libc::c_char;
+    let mut msgptr: *const libc::c_char = ::std::ptr::null::< libc::c_char>();
     let mut ch: libc::c_char = 0;
     let mut isstring: crate::jmorecfg_h::boolean = 0;
     /* Look up message string in proper table */

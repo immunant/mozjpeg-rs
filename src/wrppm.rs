@@ -595,8 +595,8 @@ unsafe extern "C" fn copy_pixel_rows(
     mut rows_supplied: crate::jmorecfg_h::JDIMENSION,
 ) {
     let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
-    let mut bufferptr: *mut libc::c_char = 0 as *mut libc::c_char;
-    let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut bufferptr: *mut libc::c_char = ::std::ptr::null_mut::< libc::c_char>();
+    let mut ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     ptr = *(*dest).pub_0.buffer.offset(0);
     bufferptr = (*dest).iobuffer;
     crate::stdlib::memcpy(
@@ -621,8 +621,8 @@ unsafe extern "C" fn put_rgb(
     mut rows_supplied: crate::jmorecfg_h::JDIMENSION,
 ) {
     let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
-    let mut bufferptr: *mut libc::c_char = 0 as *mut libc::c_char;
-    let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut bufferptr: *mut libc::c_char = ::std::ptr::null_mut::< libc::c_char>();
+    let mut ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     let mut rindex: libc::c_int = crate::jmorecfg_h::rgb_red[(*cinfo).out_color_space as usize];
     let mut gindex: libc::c_int = crate::jmorecfg_h::rgb_green[(*cinfo).out_color_space as usize];
@@ -661,8 +661,8 @@ unsafe extern "C" fn put_cmyk(
     mut rows_supplied: crate::jmorecfg_h::JDIMENSION,
 ) {
     let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
-    let mut bufferptr: *mut libc::c_char = 0 as *mut libc::c_char;
-    let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut bufferptr: *mut libc::c_char = ::std::ptr::null_mut::< libc::c_char>();
+    let mut ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     ptr = *(*dest).pub_0.buffer.offset(0);
     bufferptr = (*dest).iobuffer;
@@ -713,9 +713,9 @@ unsafe extern "C" fn put_demapped_rgb(
     mut rows_supplied: crate::jmorecfg_h::JDIMENSION,
 ) {
     let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
-    let mut bufferptr: *mut libc::c_char = 0 as *mut libc::c_char;
+    let mut bufferptr: *mut libc::c_char = ::std::ptr::null_mut::< libc::c_char>();
     let mut pixval: libc::c_int = 0;
-    let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut color_map0: crate::jpeglib_h::JSAMPROW = *(*cinfo).colormap.offset(0);
     let mut color_map1: crate::jpeglib_h::JSAMPROW = *(*cinfo).colormap.offset(1);
     let mut color_map2: crate::jpeglib_h::JSAMPROW = *(*cinfo).colormap.offset(2);
@@ -752,8 +752,8 @@ unsafe extern "C" fn put_demapped_gray(
     mut rows_supplied: crate::jmorecfg_h::JDIMENSION,
 ) {
     let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
-    let mut bufferptr: *mut libc::c_char = 0 as *mut libc::c_char;
-    let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut bufferptr: *mut libc::c_char = ::std::ptr::null_mut::< libc::c_char>();
+    let mut ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut color_map: crate::jpeglib_h::JSAMPROW = *(*cinfo).colormap.offset(0);
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     ptr = *(*dest).pub_0.buffer.offset(0);
@@ -870,7 +870,7 @@ unsafe extern "C" fn calc_buffer_dimensions_ppm(
 pub unsafe extern "C" fn jinit_write_ppm(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
 ) -> crate::src::cdjpeg::djpeg_dest_ptr {
-    let mut dest: ppm_dest_ptr = 0 as *mut ppm_dest_struct;
+    let mut dest: ppm_dest_ptr = ::std::ptr::null_mut::< ppm_dest_struct>();
     /* Create module interface object, fill in method pointers */
     dest = Some(
         (*(*cinfo).mem)

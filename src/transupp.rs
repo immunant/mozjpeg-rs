@@ -417,10 +417,10 @@ unsafe extern "C" fn do_crop(
     let mut y_crop_blocks: crate::jmorecfg_h::JDIMENSION = 0;
     let mut ci: libc::c_int = 0;
     let mut offset_y: libc::c_int = 0;
-    let mut src_buffer: crate::jpeglib_h::JBLOCKARRAY = 0 as *mut crate::jpeglib_h::JBLOCKROW;
-    let mut dst_buffer: crate::jpeglib_h::JBLOCKARRAY = 0 as *mut crate::jpeglib_h::JBLOCKROW;
+    let mut src_buffer: crate::jpeglib_h::JBLOCKARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCKROW>();
+    let mut dst_buffer: crate::jpeglib_h::JBLOCKARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCKROW>();
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     /* We simply have to copy the right amount of data (the destination's
      * image size) starting at the given X and Y offsets in the source.
      */
@@ -491,13 +491,13 @@ unsafe extern "C" fn do_flip_h_no_crop(
     let mut ci: libc::c_int = 0;
     let mut k: libc::c_int = 0;
     let mut offset_y: libc::c_int = 0;
-    let mut buffer: crate::jpeglib_h::JBLOCKARRAY = 0 as *mut crate::jpeglib_h::JBLOCKROW;
-    let mut ptr1: crate::jpeglib_h::JCOEFPTR = 0 as *mut crate::jmorecfg_h::JCOEF;
-    let mut ptr2: crate::jpeglib_h::JCOEFPTR = 0 as *mut crate::jmorecfg_h::JCOEF;
+    let mut buffer: crate::jpeglib_h::JBLOCKARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCKROW>();
+    let mut ptr1: crate::jpeglib_h::JCOEFPTR = ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>();
+    let mut ptr2: crate::jpeglib_h::JCOEFPTR = ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>();
     let mut temp1: crate::jmorecfg_h::JCOEF = 0;
     let mut temp2: crate::jmorecfg_h::JCOEF = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     /* Horizontal mirroring of DCT blocks is accomplished by swapping
      * pairs of blocks in-place.  Within a DCT block, we perform horizontal
      * mirroring by changing the signs of odd-numbered columns.
@@ -608,14 +608,14 @@ unsafe extern "C" fn do_flip_h(
     let mut ci: libc::c_int = 0;
     let mut k: libc::c_int = 0;
     let mut offset_y: libc::c_int = 0;
-    let mut src_buffer: crate::jpeglib_h::JBLOCKARRAY = 0 as *mut crate::jpeglib_h::JBLOCKROW;
-    let mut dst_buffer: crate::jpeglib_h::JBLOCKARRAY = 0 as *mut crate::jpeglib_h::JBLOCKROW;
-    let mut src_row_ptr: crate::jpeglib_h::JBLOCKROW = 0 as *mut crate::jpeglib_h::JBLOCK;
-    let mut dst_row_ptr: crate::jpeglib_h::JBLOCKROW = 0 as *mut crate::jpeglib_h::JBLOCK;
-    let mut src_ptr: crate::jpeglib_h::JCOEFPTR = 0 as *mut crate::jmorecfg_h::JCOEF;
-    let mut dst_ptr: crate::jpeglib_h::JCOEFPTR = 0 as *mut crate::jmorecfg_h::JCOEF;
+    let mut src_buffer: crate::jpeglib_h::JBLOCKARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCKROW>();
+    let mut dst_buffer: crate::jpeglib_h::JBLOCKARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCKROW>();
+    let mut src_row_ptr: crate::jpeglib_h::JBLOCKROW = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCK>();
+    let mut dst_row_ptr: crate::jpeglib_h::JBLOCKROW = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCK>();
+    let mut src_ptr: crate::jpeglib_h::JCOEFPTR = ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>();
+    let mut dst_ptr: crate::jpeglib_h::JCOEFPTR = ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>();
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     /* Here we must output into a separate array because we can't touch
      * different rows of a single virtual array simultaneously.  Otherwise,
      * this is essentially the same as the routine above.
@@ -731,14 +731,14 @@ unsafe extern "C" fn do_flip_v(
     let mut i: libc::c_int = 0;
     let mut j: libc::c_int = 0;
     let mut offset_y: libc::c_int = 0;
-    let mut src_buffer: crate::jpeglib_h::JBLOCKARRAY = 0 as *mut crate::jpeglib_h::JBLOCKROW;
-    let mut dst_buffer: crate::jpeglib_h::JBLOCKARRAY = 0 as *mut crate::jpeglib_h::JBLOCKROW;
-    let mut src_row_ptr: crate::jpeglib_h::JBLOCKROW = 0 as *mut crate::jpeglib_h::JBLOCK;
-    let mut dst_row_ptr: crate::jpeglib_h::JBLOCKROW = 0 as *mut crate::jpeglib_h::JBLOCK;
-    let mut src_ptr: crate::jpeglib_h::JCOEFPTR = 0 as *mut crate::jmorecfg_h::JCOEF;
-    let mut dst_ptr: crate::jpeglib_h::JCOEFPTR = 0 as *mut crate::jmorecfg_h::JCOEF;
+    let mut src_buffer: crate::jpeglib_h::JBLOCKARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCKROW>();
+    let mut dst_buffer: crate::jpeglib_h::JBLOCKARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCKROW>();
+    let mut src_row_ptr: crate::jpeglib_h::JBLOCKROW = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCK>();
+    let mut dst_row_ptr: crate::jpeglib_h::JBLOCKROW = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCK>();
+    let mut src_ptr: crate::jpeglib_h::JCOEFPTR = ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>();
+    let mut dst_ptr: crate::jpeglib_h::JCOEFPTR = ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>();
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     /* We output into a separate array because we can't touch different
      * rows of the source virtual array simultaneously.  Otherwise, this
      * is a pretty straightforward analog of horizontal flip.
@@ -877,12 +877,12 @@ unsafe extern "C" fn do_transpose(
     let mut j: libc::c_int = 0;
     let mut offset_x: libc::c_int = 0;
     let mut offset_y: libc::c_int = 0;
-    let mut src_buffer: crate::jpeglib_h::JBLOCKARRAY = 0 as *mut crate::jpeglib_h::JBLOCKROW;
-    let mut dst_buffer: crate::jpeglib_h::JBLOCKARRAY = 0 as *mut crate::jpeglib_h::JBLOCKROW;
-    let mut src_ptr: crate::jpeglib_h::JCOEFPTR = 0 as *mut crate::jmorecfg_h::JCOEF;
-    let mut dst_ptr: crate::jpeglib_h::JCOEFPTR = 0 as *mut crate::jmorecfg_h::JCOEF;
+    let mut src_buffer: crate::jpeglib_h::JBLOCKARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCKROW>();
+    let mut dst_buffer: crate::jpeglib_h::JBLOCKARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCKROW>();
+    let mut src_ptr: crate::jpeglib_h::JCOEFPTR = ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>();
+    let mut dst_ptr: crate::jpeglib_h::JCOEFPTR = ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>();
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     /* Transposing pixels within a block just requires transposing the
      * DCT coefficients.
      * Partial iMCUs at the edges require no special treatment; we simply
@@ -987,12 +987,12 @@ unsafe extern "C" fn do_rot_90(
     let mut j: libc::c_int = 0;
     let mut offset_x: libc::c_int = 0;
     let mut offset_y: libc::c_int = 0;
-    let mut src_buffer: crate::jpeglib_h::JBLOCKARRAY = 0 as *mut crate::jpeglib_h::JBLOCKROW;
-    let mut dst_buffer: crate::jpeglib_h::JBLOCKARRAY = 0 as *mut crate::jpeglib_h::JBLOCKROW;
-    let mut src_ptr: crate::jpeglib_h::JCOEFPTR = 0 as *mut crate::jmorecfg_h::JCOEF;
-    let mut dst_ptr: crate::jpeglib_h::JCOEFPTR = 0 as *mut crate::jmorecfg_h::JCOEF;
+    let mut src_buffer: crate::jpeglib_h::JBLOCKARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCKROW>();
+    let mut dst_buffer: crate::jpeglib_h::JBLOCKARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCKROW>();
+    let mut src_ptr: crate::jpeglib_h::JCOEFPTR = ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>();
+    let mut dst_ptr: crate::jpeglib_h::JCOEFPTR = ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>();
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     /* Because of the horizontal mirror step, we can't process partial iMCUs
      * at the (output) right edge properly.  They just get transposed and
      * not mirrored.
@@ -1159,12 +1159,12 @@ unsafe extern "C" fn do_rot_270(
     let mut j: libc::c_int = 0;
     let mut offset_x: libc::c_int = 0;
     let mut offset_y: libc::c_int = 0;
-    let mut src_buffer: crate::jpeglib_h::JBLOCKARRAY = 0 as *mut crate::jpeglib_h::JBLOCKROW;
-    let mut dst_buffer: crate::jpeglib_h::JBLOCKARRAY = 0 as *mut crate::jpeglib_h::JBLOCKROW;
-    let mut src_ptr: crate::jpeglib_h::JCOEFPTR = 0 as *mut crate::jmorecfg_h::JCOEF;
-    let mut dst_ptr: crate::jpeglib_h::JCOEFPTR = 0 as *mut crate::jmorecfg_h::JCOEF;
+    let mut src_buffer: crate::jpeglib_h::JBLOCKARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCKROW>();
+    let mut dst_buffer: crate::jpeglib_h::JBLOCKARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCKROW>();
+    let mut src_ptr: crate::jpeglib_h::JCOEFPTR = ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>();
+    let mut dst_ptr: crate::jpeglib_h::JCOEFPTR = ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>();
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     /* Because of the horizontal mirror step, we can't process partial iMCUs
      * at the (output) bottom edge properly.  They just get transposed and
      * not mirrored.
@@ -1306,14 +1306,14 @@ unsafe extern "C" fn do_rot_180(
     let mut i: libc::c_int = 0;
     let mut j: libc::c_int = 0;
     let mut offset_y: libc::c_int = 0;
-    let mut src_buffer: crate::jpeglib_h::JBLOCKARRAY = 0 as *mut crate::jpeglib_h::JBLOCKROW;
-    let mut dst_buffer: crate::jpeglib_h::JBLOCKARRAY = 0 as *mut crate::jpeglib_h::JBLOCKROW;
-    let mut src_row_ptr: crate::jpeglib_h::JBLOCKROW = 0 as *mut crate::jpeglib_h::JBLOCK;
-    let mut dst_row_ptr: crate::jpeglib_h::JBLOCKROW = 0 as *mut crate::jpeglib_h::JBLOCK;
-    let mut src_ptr: crate::jpeglib_h::JCOEFPTR = 0 as *mut crate::jmorecfg_h::JCOEF;
-    let mut dst_ptr: crate::jpeglib_h::JCOEFPTR = 0 as *mut crate::jmorecfg_h::JCOEF;
+    let mut src_buffer: crate::jpeglib_h::JBLOCKARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCKROW>();
+    let mut dst_buffer: crate::jpeglib_h::JBLOCKARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCKROW>();
+    let mut src_row_ptr: crate::jpeglib_h::JBLOCKROW = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCK>();
+    let mut dst_row_ptr: crate::jpeglib_h::JBLOCKROW = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCK>();
+    let mut src_ptr: crate::jpeglib_h::JCOEFPTR = ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>();
+    let mut dst_ptr: crate::jpeglib_h::JCOEFPTR = ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>();
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     MCU_cols = (*srcinfo).output_width.wrapping_div(
         ((*dstinfo).max_h_samp_factor * dstinfo_min_DCT_h_scaled_size) as libc::c_uint,
     );
@@ -1545,12 +1545,12 @@ unsafe extern "C" fn do_transverse(
     let mut j: libc::c_int = 0;
     let mut offset_x: libc::c_int = 0;
     let mut offset_y: libc::c_int = 0;
-    let mut src_buffer: crate::jpeglib_h::JBLOCKARRAY = 0 as *mut crate::jpeglib_h::JBLOCKROW;
-    let mut dst_buffer: crate::jpeglib_h::JBLOCKARRAY = 0 as *mut crate::jpeglib_h::JBLOCKROW;
-    let mut src_ptr: crate::jpeglib_h::JCOEFPTR = 0 as *mut crate::jmorecfg_h::JCOEF;
-    let mut dst_ptr: crate::jpeglib_h::JCOEFPTR = 0 as *mut crate::jmorecfg_h::JCOEF;
+    let mut src_buffer: crate::jpeglib_h::JBLOCKARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCKROW>();
+    let mut dst_buffer: crate::jpeglib_h::JBLOCKARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCKROW>();
+    let mut src_ptr: crate::jpeglib_h::JCOEFPTR = ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>();
+    let mut dst_ptr: crate::jpeglib_h::JCOEFPTR = ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>();
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     MCU_cols = (*srcinfo).output_height.wrapping_div(
         ((*dstinfo).max_h_samp_factor * dstinfo_min_DCT_h_scaled_size) as libc::c_uint,
     );
@@ -1944,11 +1944,11 @@ pub unsafe extern "C" fn jtransform_request_workspace(
     mut info: *mut crate::src::transupp::jpeg_transform_info,
 ) -> crate::jmorecfg_h::boolean {
     let mut coef_arrays: *mut crate::jpeglib_h::jvirt_barray_ptr =
-        0 as *mut crate::jpeglib_h::jvirt_barray_ptr;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jvirt_barray_ptr>();
     let mut need_workspace: crate::jmorecfg_h::boolean = 0;
     let mut transpose_it: crate::jmorecfg_h::boolean = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     let mut xoffset: crate::jmorecfg_h::JDIMENSION = 0;
     let mut yoffset: crate::jmorecfg_h::JDIMENSION = 0;
     let mut width_in_iMCUs: crate::jmorecfg_h::JDIMENSION = 0;
@@ -2275,8 +2275,8 @@ unsafe extern "C" fn transpose_critical_parameters(mut dstinfo: crate::jpeglib_h
     let mut ci: libc::c_int = 0;
     let mut itemp: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
-    let mut qtblptr: *mut crate::jpeglib_h::JQUANT_TBL = 0 as *mut crate::jpeglib_h::JQUANT_TBL;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
+    let mut qtblptr: *mut crate::jpeglib_h::JQUANT_TBL = ::std::ptr::null_mut::< crate::jpeglib_h::JQUANT_TBL>();
     let mut jtemp: crate::jmorecfg_h::JDIMENSION = 0;
     let mut qtemp: crate::jmorecfg_h::UINT16 = 0;
     /* Transpose image dimensions */
@@ -2903,7 +2903,7 @@ pub unsafe extern "C" fn jcopy_markers_execute(
     mut option: crate::src::transupp::JCOPY_OPTION,
 ) {
     let mut marker: crate::jpeglib_h::jpeg_saved_marker_ptr =
-        0 as *mut crate::jpeglib_h::jpeg_marker_struct;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_marker_struct>();
     /* In the current implementation, we don't actually need to examine the
      * option flag here; we just copy everything that got saved.
      * But to avoid confusion, we do not output JFIF and Adobe APP14 markers

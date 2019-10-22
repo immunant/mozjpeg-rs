@@ -379,7 +379,7 @@ unsafe extern "C" fn compress_data(
     let mut ypos: crate::jmorecfg_h::JDIMENSION = 0;
     let mut xpos: crate::jmorecfg_h::JDIMENSION = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     /* Loop to write as much as one whole iMCU row */
     yoffset = (*coef).MCU_vert_offset;
     while yoffset < (*coef).MCU_rows_per_iMCU_row {
@@ -532,11 +532,11 @@ unsafe extern "C" fn compress_first_pass(
     let mut ndummy: libc::c_int = 0;
     let mut lastDC: crate::jmorecfg_h::JCOEF = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
-    let mut buffer: crate::jpeglib_h::JBLOCKARRAY = 0 as *mut crate::jpeglib_h::JBLOCKROW;
-    let mut thisblockrow: crate::jpeglib_h::JBLOCKROW = 0 as *mut crate::jpeglib_h::JBLOCK;
-    let mut lastblockrow: crate::jpeglib_h::JBLOCKROW = 0 as *mut crate::jpeglib_h::JBLOCK;
-    let mut buffer_dst: crate::jpeglib_h::JBLOCKARRAY = 0 as *mut crate::jpeglib_h::JBLOCKROW;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
+    let mut buffer: crate::jpeglib_h::JBLOCKARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCKROW>();
+    let mut thisblockrow: crate::jpeglib_h::JBLOCKROW = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCK>();
+    let mut lastblockrow: crate::jpeglib_h::JBLOCKROW = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCK>();
+    let mut buffer_dst: crate::jpeglib_h::JBLOCKARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCKROW>();
     ci = 0i32;
     compptr = (*cinfo).comp_info;
     while ci < (*cinfo).num_components {
@@ -693,11 +693,11 @@ unsafe extern "C" fn compress_trellis_pass(
     let mut ndummy: libc::c_int = 0;
     let mut lastDC: crate::jmorecfg_h::JCOEF = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
-    let mut buffer: crate::jpeglib_h::JBLOCKARRAY = 0 as *mut crate::jpeglib_h::JBLOCKROW;
-    let mut thisblockrow: crate::jpeglib_h::JBLOCKROW = 0 as *mut crate::jpeglib_h::JBLOCK;
-    let mut lastblockrow: crate::jpeglib_h::JBLOCKROW = 0 as *mut crate::jpeglib_h::JBLOCK;
-    let mut buffer_dst: crate::jpeglib_h::JBLOCKARRAY = 0 as *mut crate::jpeglib_h::JBLOCKROW;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
+    let mut buffer: crate::jpeglib_h::JBLOCKARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCKROW>();
+    let mut thisblockrow: crate::jpeglib_h::JBLOCKROW = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCK>();
+    let mut lastblockrow: crate::jpeglib_h::JBLOCKROW = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCK>();
+    let mut buffer_dst: crate::jpeglib_h::JBLOCKARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCKROW>();
     ci = 0i32;
     while ci < (*cinfo).comps_in_scan {
         let mut dctbl_data: crate::src::jchuff::c_derived_tbl = crate::src::jchuff::c_derived_tbl {
@@ -883,10 +883,10 @@ unsafe extern "C" fn compress_output(
     let mut yindex: libc::c_int = 0;
     let mut yoffset: libc::c_int = 0;
     let mut start_col: crate::jmorecfg_h::JDIMENSION = 0;
-    let mut buffer: [crate::jpeglib_h::JBLOCKARRAY; 4] = [0 as *mut crate::jpeglib_h::JBLOCKROW; 4];
-    let mut buffer_ptr: crate::jpeglib_h::JBLOCKROW = 0 as *mut crate::jpeglib_h::JBLOCK;
+    let mut buffer: [crate::jpeglib_h::JBLOCKARRAY; 4] = [::std::ptr::null_mut::< crate::jpeglib_h::JBLOCKROW>(); 4];
+    let mut buffer_ptr: crate::jpeglib_h::JBLOCKROW = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCK>();
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     /* Align the virtual buffers for the components used in this scan.
      * NB: during first pass, this is safe only because the buffers will
      * already be aligned properly, so jmemmgr.c won't need to do any I/O.
@@ -974,7 +974,7 @@ pub unsafe extern "C" fn jinit_c_coef_controller(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
     mut need_full_buffer: crate::jmorecfg_h::boolean,
 ) {
-    let mut coef: my_coef_ptr = 0 as *mut my_coef_controller;
+    let mut coef: my_coef_ptr = ::std::ptr::null_mut::< my_coef_controller>();
     coef = Some(
         (*(*cinfo).mem)
             .alloc_small
@@ -999,7 +999,7 @@ pub unsafe extern "C" fn jinit_c_coef_controller(
         /* padded to a multiple of samp_factor DCT blocks in each direction. */
         let mut ci: libc::c_int = 0;
         let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-            0 as *mut crate::jpeglib_h::jpeg_component_info;
+            ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
         ci = 0i32;
         compptr = (*cinfo).comp_info;
         while ci < (*cinfo).num_components {
@@ -1046,7 +1046,7 @@ pub unsafe extern "C" fn jinit_c_coef_controller(
         }
     } else {
         /* We only need a single-MCU buffer. */
-        let mut buffer: crate::jpeglib_h::JBLOCKROW = 0 as *mut crate::jpeglib_h::JBLOCK;
+        let mut buffer: crate::jpeglib_h::JBLOCKROW = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCK>();
         let mut i: libc::c_int = 0;
         buffer = Some(
             (*(*cinfo).mem)

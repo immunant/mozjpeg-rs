@@ -242,7 +242,7 @@ unsafe extern "C" fn initial_setup(mut cinfo: crate::jpeglib_h::j_decompress_ptr
 {
     let mut ci: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     /* Make sure image isn't bigger than I can handle */
     if (*cinfo).image_height as libc::c_long > crate::jmorecfg_h::JPEG_MAX_DIMENSION
         || (*cinfo).image_width as libc::c_long > crate::jmorecfg_h::JPEG_MAX_DIMENSION
@@ -380,7 +380,7 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: crate::jpeglib_h::j_decompress_pt
     let mut mcublks: libc::c_int = 0;
     let mut tmp: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     if (*cinfo).comps_in_scan == 1i32 {
         /* Noninterleaved (single-component) scan */
         compptr = (*cinfo).cur_comp_info[0];
@@ -510,8 +510,8 @@ unsafe extern "C" fn latch_quant_tables(mut cinfo: crate::jpeglib_h::j_decompres
     let mut ci: libc::c_int = 0;
     let mut qtblno: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
-    let mut qtbl: *mut crate::jpeglib_h::JQUANT_TBL = 0 as *mut crate::jpeglib_h::JQUANT_TBL;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
+    let mut qtbl: *mut crate::jpeglib_h::JQUANT_TBL = ::std::ptr::null_mut::< crate::jpeglib_h::JQUANT_TBL>();
     ci = 0i32;
     while ci < (*cinfo).comps_in_scan {
         compptr = (*cinfo).cur_comp_info[ci as usize];
@@ -704,7 +704,7 @@ unsafe extern "C" fn reset_input_controller(mut cinfo: crate::jpeglib_h::j_decom
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_input_controller(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
-    let mut inputctl: my_inputctl_ptr = 0 as *mut my_input_controller;
+    let mut inputctl: my_inputctl_ptr = ::std::ptr::null_mut::< my_input_controller>();
     /* Create subobject in permanent pool */
     inputctl = Some(
         (*(*cinfo).mem)

@@ -54,9 +54,9 @@ pub unsafe extern "C" fn add_huff_table(
 }
 pub unsafe extern "C" fn std_huff_tables(mut cinfo: crate::jpeglib_h::j_common_ptr) {
     let mut dc_huff_tbl_ptrs: *mut *mut crate::jpeglib_h::JHUFF_TBL =
-        0 as *mut *mut crate::jpeglib_h::JHUFF_TBL;
+        ::std::ptr::null_mut::< *mut crate::jpeglib_h::JHUFF_TBL>();
     let mut ac_huff_tbl_ptrs: *mut *mut crate::jpeglib_h::JHUFF_TBL =
-        0 as *mut *mut crate::jpeglib_h::JHUFF_TBL;
+        ::std::ptr::null_mut::< *mut crate::jpeglib_h::JHUFF_TBL>();
     pub static mut bits_dc_luminance: [crate::jmorecfg_h::UINT8; 17] = [
         0i32 as crate::jmorecfg_h::UINT8,
         0i32 as crate::jmorecfg_h::UINT8,

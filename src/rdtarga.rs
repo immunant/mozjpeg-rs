@@ -459,7 +459,7 @@ unsafe extern "C" fn get_8bit_gray_row(
 ) -> crate::jmorecfg_h::JDIMENSION
 /* This version is for reading 8-bit grayscale pixels */ {
     let mut source: tga_source_ptr = sinfo as tga_source_ptr; /* Load next pixel into tga_pixel */
-    let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     ptr = *(*source).pub_0.buffer.offset(0);
     col = (*cinfo).image_width;
@@ -481,7 +481,7 @@ unsafe extern "C" fn get_8bit_row(
 /* This version is for reading 8-bit colormap indexes */ {
     let mut source: tga_source_ptr = sinfo as tga_source_ptr; /* Load next pixel into tga_pixel */
     let mut t: libc::c_int = 0;
-    let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     let mut colormap: crate::jpeglib_h::JSAMPARRAY = (*source).colormap;
     ptr = *(*source).pub_0.buffer.offset(0);
@@ -511,7 +511,7 @@ unsafe extern "C" fn get_16bit_row(
 /* This version is for reading 16-bit pixels */ {
     let mut source: tga_source_ptr = sinfo as tga_source_ptr; /* Load next pixel into tga_pixel */
     let mut t: libc::c_int = 0;
-    let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     ptr = *(*source).pub_0.buffer.offset(0);
     col = (*cinfo).image_width;
@@ -541,7 +541,7 @@ unsafe extern "C" fn get_24bit_row(
 ) -> crate::jmorecfg_h::JDIMENSION
 /* This version is for reading 24-bit pixels */ {
     let mut source: tga_source_ptr = sinfo as tga_source_ptr; /* Load next pixel into tga_pixel */
-    let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE; /* change BGR to RGB order */
+    let mut ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); /* change BGR to RGB order */
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     ptr = *(*source).pub_0.buffer.offset(0);
     col = (*cinfo).image_width;
@@ -1058,7 +1058,7 @@ to write the image in bottom-up order.) */
 pub unsafe extern "C" fn jinit_read_targa(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
 ) -> crate::src::cdjpeg::cjpeg_source_ptr {
-    let mut source: tga_source_ptr = 0 as *mut _tga_source_struct;
+    let mut source: tga_source_ptr = ::std::ptr::null_mut::< _tga_source_struct>();
     /* Create module interface object */
     source = Some(
         (*(*cinfo).mem)

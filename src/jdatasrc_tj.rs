@@ -359,7 +359,7 @@ pub unsafe extern "C" fn jpeg_mem_src_tj(
     mut insize: libc::c_ulong,
 ) {
     let mut src: *mut crate::jpeglib_h::jpeg_source_mgr =
-        0 as *mut crate::jpeglib_h::jpeg_source_mgr;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_source_mgr>();
     if inbuffer.is_null() || insize == 0i32 as libc::c_ulong {
         /* Treat empty input as fatal error */
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_INPUT_EMPTY as libc::c_int;

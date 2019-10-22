@@ -339,7 +339,7 @@ to write the image in bottom-up order.) */
 pub unsafe extern "C" fn jinit_read_jpeg(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
 ) -> crate::src::cdjpeg::cjpeg_source_ptr {
-    let mut source: jpeg_source_ptr = 0 as *mut _jpeg_source_struct;
+    let mut source: jpeg_source_ptr = ::std::ptr::null_mut::< _jpeg_source_struct>();
     /* Create module interface object */
     source = Some(
         (*(*cinfo).mem)

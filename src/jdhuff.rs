@@ -334,9 +334,9 @@ unsafe extern "C" fn start_pass_huff_decoder(mut cinfo: crate::jpeglib_h::j_deco
     let mut dctbl: libc::c_int = 0;
     let mut actbl: libc::c_int = 0;
     let mut pdtbl: *mut *mut crate::src::jdhuff::d_derived_tbl =
-        0 as *mut *mut crate::src::jdhuff::d_derived_tbl;
+        ::std::ptr::null_mut::< *mut crate::src::jdhuff::d_derived_tbl>();
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     /* Check that the scan parameters Ss, Se, Ah/Al are OK for sequential JPEG.
      * This ought to be an error condition, but we make it a warning because
      * there are some baseline files out there with all zeroes in these bytes.
@@ -418,9 +418,9 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
     mut tblno: libc::c_int,
     mut pdtbl: *mut *mut crate::src::jdhuff::d_derived_tbl,
 ) {
-    let mut htbl: *mut crate::jpeglib_h::JHUFF_TBL = 0 as *mut crate::jpeglib_h::JHUFF_TBL;
+    let mut htbl: *mut crate::jpeglib_h::JHUFF_TBL = ::std::ptr::null_mut::< crate::jpeglib_h::JHUFF_TBL>();
     let mut dtbl: *mut crate::src::jdhuff::d_derived_tbl =
-        0 as *mut crate::src::jdhuff::d_derived_tbl;
+        ::std::ptr::null_mut::< crate::src::jdhuff::d_derived_tbl>();
     let mut p: libc::c_int = 0;
     let mut i: libc::c_int = 0;
     let mut l: libc::c_int = 0;
@@ -936,11 +936,11 @@ unsafe extern "C" fn decode_mcu_slow(
     let mut bits_left: libc::c_int = 0;
     let mut br_state: crate::src::jdhuff::bitread_working_state =
         crate::src::jdhuff::bitread_working_state {
-            next_input_byte: 0 as *const crate::jmorecfg_h::JOCTET,
+            next_input_byte: ::std::ptr::null::< crate::jmorecfg_h::JOCTET>(),
             bytes_in_buffer: 0,
             get_buffer: 0,
             bits_left: 0,
-            cinfo: 0 as *mut crate::jpeglib_h::jpeg_decompress_struct,
+            cinfo: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_decompress_struct>(),
         };
     let mut blkn: libc::c_int = 0;
     let mut state: savable_state = savable_state {
@@ -1214,13 +1214,13 @@ unsafe extern "C" fn decode_mcu_fast(
     let mut bits_left: libc::c_int = 0;
     let mut br_state: crate::src::jdhuff::bitread_working_state =
         crate::src::jdhuff::bitread_working_state {
-            next_input_byte: 0 as *const crate::jmorecfg_h::JOCTET,
+            next_input_byte: ::std::ptr::null::< crate::jmorecfg_h::JOCTET>(),
             bytes_in_buffer: 0,
             get_buffer: 0,
             bits_left: 0,
-            cinfo: 0 as *mut crate::jpeglib_h::jpeg_decompress_struct,
+            cinfo: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_decompress_struct>(),
         };
-    let mut buffer: *mut crate::jmorecfg_h::JOCTET = 0 as *mut crate::jmorecfg_h::JOCTET;
+    let mut buffer: *mut crate::jmorecfg_h::JOCTET = ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>();
     let mut blkn: libc::c_int = 0;
     let mut state: savable_state = savable_state {
         last_dc_val: [0; 4],
@@ -2037,7 +2037,7 @@ unsafe extern "C" fn decode_mcu(
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_huff_decoder(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
-    let mut entropy: huff_entropy_ptr = 0 as *mut huff_entropy_decoder;
+    let mut entropy: huff_entropy_ptr = ::std::ptr::null_mut::< huff_entropy_decoder>();
     let mut i: libc::c_int = 0;
     /* Motion JPEG frames typically do not include the Huffman tables if they
     are the default tables.  Thus, if the tables are not set by the time

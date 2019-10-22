@@ -578,7 +578,7 @@ unsafe extern "C" fn put_pixel_rows(
     mut rows_supplied: crate::jmorecfg_h::JDIMENSION,
 ) {
     let mut dest: gif_dest_ptr = dinfo as gif_dest_ptr;
-    let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     ptr = *(*dest).pub_0.buffer.offset(0);
     col = (*cinfo).output_width;
@@ -682,7 +682,7 @@ to write the image in bottom-up order.) */
 pub unsafe extern "C" fn jinit_write_gif(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
 ) -> crate::src::cdjpeg::djpeg_dest_ptr {
-    let mut dest: gif_dest_ptr = 0 as *mut gif_dest_struct;
+    let mut dest: gif_dest_ptr = ::std::ptr::null_mut::< gif_dest_struct>();
     /* Create module interface object, fill in method pointers */
     dest = Some(
         (*(*cinfo).mem)

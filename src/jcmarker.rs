@@ -524,7 +524,7 @@ unsafe extern "C" fn emit_dht(
 )
 /* Emit a DHT marker */
 {
-    let mut htbl: *mut crate::jpeglib_h::JHUFF_TBL = 0 as *mut crate::jpeglib_h::JHUFF_TBL;
+    let mut htbl: *mut crate::jpeglib_h::JHUFF_TBL = ::std::ptr::null_mut::< crate::jpeglib_h::JHUFF_TBL>();
     let mut length: libc::c_int = 0;
     let mut i: libc::c_int = 0;
     if is_ac != 0 {
@@ -580,15 +580,15 @@ unsafe extern "C" fn emit_multi_dht(
     let mut aclens: [libc::c_int; 4] = [0i32, 0, 0, 0];
     let mut dcseen: [*mut crate::jpeglib_h::JHUFF_TBL; 4] = [
         crate::stddef_h::NULL as *mut crate::jpeglib_h::JHUFF_TBL,
-        0 as *mut crate::jpeglib_h::JHUFF_TBL,
-        0 as *mut crate::jpeglib_h::JHUFF_TBL,
-        0 as *mut crate::jpeglib_h::JHUFF_TBL,
+        ::std::ptr::null_mut::< crate::jpeglib_h::JHUFF_TBL>(),
+        ::std::ptr::null_mut::< crate::jpeglib_h::JHUFF_TBL>(),
+        ::std::ptr::null_mut::< crate::jpeglib_h::JHUFF_TBL>(),
     ];
     let mut acseen: [*mut crate::jpeglib_h::JHUFF_TBL; 4] = [
         crate::stddef_h::NULL as *mut crate::jpeglib_h::JHUFF_TBL,
-        0 as *mut crate::jpeglib_h::JHUFF_TBL,
-        0 as *mut crate::jpeglib_h::JHUFF_TBL,
-        0 as *mut crate::jpeglib_h::JHUFF_TBL,
+        ::std::ptr::null_mut::< crate::jpeglib_h::JHUFF_TBL>(),
+        ::std::ptr::null_mut::< crate::jpeglib_h::JHUFF_TBL>(),
+        ::std::ptr::null_mut::< crate::jpeglib_h::JHUFF_TBL>(),
     ];
     if (*(*cinfo).master).compress_profile == crate::jpeglib_h::JCP_FASTEST as libc::c_int {
         return 0i32;
@@ -755,7 +755,7 @@ unsafe extern "C" fn emit_sof(mut cinfo: crate::jpeglib_h::j_compress_ptr, mut c
 {
     let mut ci: libc::c_int = 0; /* length */
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     emit_marker(cinfo, code);
     emit_2bytes(cinfo, 3i32 * (*cinfo).num_components + 2i32 + 5i32 + 1i32);
     /* Make sure image isn't bigger than SOF field can handle */
@@ -796,7 +796,7 @@ unsafe extern "C" fn emit_sos(mut cinfo: crate::jpeglib_h::j_compress_ptr)
     let mut td: libc::c_int = 0;
     let mut ta: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     emit_marker(cinfo, M_SOS);
     emit_2bytes(cinfo, 2i32 * (*cinfo).comps_in_scan + 2i32 + 1i32 + 3i32);
     emit_byte(cinfo, (*cinfo).comps_in_scan);
@@ -979,7 +979,7 @@ unsafe extern "C" fn write_frame_header(mut cinfo: crate::jpeglib_h::j_compress_
     let mut prec: libc::c_int = 0;
     let mut is_baseline: crate::jmorecfg_h::boolean = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     /* Emit DQT for each quantization table.
      * Note that emit_dqt() suppresses any duplicate tables.
      */
@@ -1053,7 +1053,7 @@ unsafe extern "C" fn write_scan_header(mut cinfo: crate::jpeglib_h::j_compress_p
     let mut marker: my_marker_ptr = (*cinfo).marker as my_marker_ptr;
     let mut i: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     if (*cinfo).arith_code != 0 {
         /* Emit arith conditioning info.  We may have some duplication
          * if the file has multiple scans, but it's so small it's hardly
@@ -1131,7 +1131,7 @@ unsafe extern "C" fn write_tables_only(mut cinfo: crate::jpeglib_h::j_compress_p
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_marker_writer(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
-    let mut marker: my_marker_ptr = 0 as *mut my_marker_writer;
+    let mut marker: my_marker_ptr = ::std::ptr::null_mut::< my_marker_writer>();
     /* Create the subobject */
     marker = Some(
         (*(*cinfo).mem)

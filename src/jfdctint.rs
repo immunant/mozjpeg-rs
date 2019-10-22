@@ -151,7 +151,7 @@ pub unsafe extern "C" fn jpeg_fdct_islow(mut data: *mut crate::jdct_h::DCTELEM) 
     let mut z3: crate::jpegint_h::JLONG = 0;
     let mut z4: crate::jpegint_h::JLONG = 0;
     let mut z5: crate::jpegint_h::JLONG = 0;
-    let mut dataptr: *mut crate::jdct_h::DCTELEM = 0 as *mut crate::jdct_h::DCTELEM;
+    let mut dataptr: *mut crate::jdct_h::DCTELEM = ::std::ptr::null_mut::< crate::jdct_h::DCTELEM>();
     let mut ctr: libc::c_int = 0;
     /* Pass 1: process rows. */
     /* Note results are scaled up by sqrt(8) compared to a true DCT; */

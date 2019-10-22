@@ -88,7 +88,7 @@ pub unsafe extern "C" fn MD5End(
         buf = crate::stdlib::malloc((2i32 * LENGTH + 1i32) as libc::c_ulong) as *mut libc::c_char
     }
     if buf.is_null() {
-        return 0 as *mut libc::c_char;
+        return ::std::ptr::null_mut::< libc::c_char>();
     }
     crate::src::md5::md5::MD5Final(digest.as_mut_ptr(), ctx);
     i = 0i32;
@@ -161,10 +161,10 @@ pub unsafe extern "C" fn MD5FileChunk(
     crate::src::md5::md5::MD5Init(&mut ctx);
     f = crate::stdlib::open(filename, crate::stdlib::O_RDONLY);
     if f < 0i32 {
-        return 0 as *mut libc::c_char;
+        return ::std::ptr::null_mut::< libc::c_char>();
     }
     if crate::stdlib::fstat(f, &mut stbuf) < 0i32 {
-        return 0 as *mut libc::c_char;
+        return ::std::ptr::null_mut::< libc::c_char>();
     }
     if ofs > stbuf.st_size {
         ofs = stbuf.st_size
@@ -173,7 +173,7 @@ pub unsafe extern "C" fn MD5FileChunk(
         len = stbuf.st_size - ofs
     }
     if crate::stdlib::lseek(f, ofs, crate::stdlib::SEEK_SET) < 0i32 as libc::c_long {
-        return 0 as *mut libc::c_char;
+        return ::std::ptr::null_mut::< libc::c_char>();
     }
     n = len;
     i = 0i32;
@@ -201,7 +201,7 @@ pub unsafe extern "C" fn MD5FileChunk(
     crate::stdlib::close(f);
     *crate::stdlib::__errno_location() = e;
     if i < 0i32 {
-        return 0 as *mut libc::c_char;
+        return ::std::ptr::null_mut::< libc::c_char>();
     }
     return MD5End(&mut ctx, buf);
 }

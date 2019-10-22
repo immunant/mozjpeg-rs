@@ -311,7 +311,7 @@ unsafe extern "C" fn start_pass_huff(
     let mut dctbl: libc::c_int = 0;
     let mut actbl: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     if gather_statistics != 0 {
         (*entropy).pub_0.encode_mcu = Some(
             encode_mcu_gather
@@ -455,9 +455,9 @@ pub unsafe extern "C" fn jpeg_make_c_derived_tbl(
     mut tblno: libc::c_int,
     mut pdtbl: *mut *mut crate::src::jchuff::c_derived_tbl,
 ) {
-    let mut htbl: *mut crate::jpeglib_h::JHUFF_TBL = 0 as *mut crate::jpeglib_h::JHUFF_TBL;
+    let mut htbl: *mut crate::jpeglib_h::JHUFF_TBL = ::std::ptr::null_mut::< crate::jpeglib_h::JHUFF_TBL>();
     let mut dtbl: *mut crate::src::jchuff::c_derived_tbl =
-        0 as *mut crate::src::jchuff::c_derived_tbl;
+        ::std::ptr::null_mut::< crate::src::jchuff::c_derived_tbl>();
     let mut p: libc::c_int = 0;
     let mut i: libc::c_int = 0;
     let mut l: libc::c_int = 0;
@@ -650,7 +650,7 @@ pub const BUFSIZE: libc::c_int = crate::jpeglib_h::DCTSIZE2 * 4i32;
 
 unsafe extern "C" fn flush_bits(mut state: *mut working_state) -> crate::jmorecfg_h::boolean {
     let mut _buffer: [crate::jmorecfg_h::JOCTET; 256] = [0; 256];
-    let mut buffer: *mut crate::jmorecfg_h::JOCTET = 0 as *mut crate::jmorecfg_h::JOCTET;
+    let mut buffer: *mut crate::jmorecfg_h::JOCTET = ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>();
     let mut put_buffer: crate::stddef_h::size_t = 0;
     let mut put_bits: libc::c_int = 0;
     let mut bytes: crate::stddef_h::size_t = 0;
@@ -728,7 +728,7 @@ unsafe extern "C" fn encode_one_block_simd(
     mut actbl: *mut crate::src::jchuff::c_derived_tbl,
 ) -> crate::jmorecfg_h::boolean {
     let mut _buffer: [crate::jmorecfg_h::JOCTET; 256] = [0; 256];
-    let mut buffer: *mut crate::jmorecfg_h::JOCTET = 0 as *mut crate::jmorecfg_h::JOCTET;
+    let mut buffer: *mut crate::jmorecfg_h::JOCTET = ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>();
     let mut bytes: crate::stddef_h::size_t = 0;
     let mut bytestocopy: crate::stddef_h::size_t = 0;
     let mut localbuf: libc::c_int = 0i32;
@@ -798,7 +798,7 @@ unsafe extern "C" fn encode_one_block(
     let mut code: libc::c_int = 0;
     let mut size: libc::c_int = 0;
     let mut _buffer: [crate::jmorecfg_h::JOCTET; 256] = [0; 256];
-    let mut buffer: *mut crate::jmorecfg_h::JOCTET = 0 as *mut crate::jmorecfg_h::JOCTET;
+    let mut buffer: *mut crate::jmorecfg_h::JOCTET = ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>();
     let mut put_buffer: crate::stddef_h::size_t = 0;
     let mut put_bits: libc::c_int = 0;
     let mut code_0xf0: libc::c_int = (*actbl).ehufco[0xf0i32 as usize] as libc::c_int;
@@ -10227,19 +10227,19 @@ unsafe extern "C" fn encode_mcu_huff(
 ) -> crate::jmorecfg_h::boolean {
     let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
     let mut state: working_state = working_state {
-        next_output_byte: 0 as *mut crate::jmorecfg_h::JOCTET,
+        next_output_byte: ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>(),
         free_in_buffer: 0,
         cur: savable_state {
             put_buffer: 0,
             put_bits: 0,
             last_dc_val: [0; 4],
         },
-        cinfo: 0 as *mut crate::jpeglib_h::jpeg_compress_struct,
+        cinfo: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_compress_struct>(),
     };
     let mut blkn: libc::c_int = 0;
     let mut ci: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     /* Load up working state */
     state.next_output_byte = (*(*cinfo).dest).next_output_byte;
     state.free_in_buffer = (*(*cinfo).dest).free_in_buffer;
@@ -10317,14 +10317,14 @@ unsafe extern "C" fn encode_mcu_huff(
 unsafe extern "C" fn finish_pass_huff(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
     let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
     let mut state: working_state = working_state {
-        next_output_byte: 0 as *mut crate::jmorecfg_h::JOCTET,
+        next_output_byte: ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>(),
         free_in_buffer: 0,
         cur: savable_state {
             put_buffer: 0,
             put_bits: 0,
             last_dc_val: [0; 4],
         },
-        cinfo: 0 as *mut crate::jpeglib_h::jpeg_compress_struct,
+        cinfo: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_compress_struct>(),
     };
     /* Load up working state ... flush_bits needs it */
     state.next_output_byte = (*(*cinfo).dest).next_output_byte;
@@ -10464,7 +10464,7 @@ unsafe extern "C" fn encode_mcu_gather(
     let mut blkn: libc::c_int = 0;
     let mut ci: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     /* Take care of restart intervals if needed */
     if (*cinfo).restart_interval != 0 {
         if (*entropy).restarts_to_go == 0i32 as libc::c_uint {
@@ -10730,9 +10730,9 @@ unsafe extern "C" fn finish_pass_gather(mut cinfo: crate::jpeglib_h::j_compress_
     let mut dctbl: libc::c_int = 0;
     let mut actbl: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     let mut htblptr: *mut *mut crate::jpeglib_h::JHUFF_TBL =
-        0 as *mut *mut crate::jpeglib_h::JHUFF_TBL;
+        ::std::ptr::null_mut::< *mut crate::jpeglib_h::JHUFF_TBL>();
     let mut did_dc: [crate::jmorecfg_h::boolean; 4] = [0; 4];
     let mut did_ac: [crate::jmorecfg_h::boolean; 4] = [0; 4];
     /* It's important not to apply jpeg_gen_optimal_table more than once
@@ -10805,7 +10805,7 @@ unsafe extern "C" fn finish_pass_gather(mut cinfo: crate::jpeglib_h::j_compress_
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_huff_encoder(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
-    let mut entropy: huff_entropy_ptr = 0 as *mut huff_entropy_encoder;
+    let mut entropy: huff_entropy_ptr = ::std::ptr::null_mut::< huff_entropy_encoder>();
     let mut i: libc::c_int = 0;
     entropy = Some(
         (*(*cinfo).mem)

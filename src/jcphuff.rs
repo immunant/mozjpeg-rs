@@ -290,7 +290,7 @@ unsafe extern "C" fn start_pass_phuff(
     let mut ci: libc::c_int = 0;
     let mut tbl: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     (*entropy).cinfo = cinfo;
     (*entropy).gather_statistics = gather_statistics;
     is_DC_band = ((*cinfo).Ss == 0i32) as libc::c_int;
@@ -744,9 +744,9 @@ unsafe extern "C" fn encode_mcu_DC_first(
     let mut blkn: libc::c_int = 0;
     let mut ci: libc::c_int = 0;
     let mut Al: libc::c_int = (*cinfo).Al;
-    let mut block: crate::jpeglib_h::JBLOCKROW = 0 as *mut crate::jpeglib_h::JBLOCK;
+    let mut block: crate::jpeglib_h::JBLOCKROW = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCK>();
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     (*entropy).next_output_byte = (*(*cinfo).dest).next_output_byte;
     (*entropy).free_in_buffer = (*(*cinfo).dest).free_in_buffer;
     /* Emit restart marker if needed */
@@ -894,8 +894,8 @@ unsafe extern "C" fn encode_mcu_AC_first(
     let mut Sl: libc::c_int = (*cinfo).Se - (*cinfo).Ss + 1i32;
     let mut Al: libc::c_int = (*cinfo).Al;
     let mut values_unaligned: [crate::jmorecfg_h::JCOEF; 143] = [0; 143];
-    let mut values: *mut crate::jmorecfg_h::JCOEF = 0 as *mut crate::jmorecfg_h::JCOEF;
-    let mut cvalue: *const crate::jmorecfg_h::JCOEF = 0 as *const crate::jmorecfg_h::JCOEF;
+    let mut values: *mut crate::jmorecfg_h::JCOEF = ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>();
+    let mut cvalue: *const crate::jmorecfg_h::JCOEF = ::std::ptr::null::< crate::jmorecfg_h::JCOEF>();
     let mut zerobits: crate::stddef_h::size_t = 0;
     let mut bits: [crate::stddef_h::size_t; 1] = [0; 1];
     (*entropy).next_output_byte = (*(*cinfo).dest).next_output_byte;
@@ -991,7 +991,7 @@ unsafe extern "C" fn encode_mcu_DC_refine(
     let mut temp: libc::c_int = 0;
     let mut blkn: libc::c_int = 0;
     let mut Al: libc::c_int = (*cinfo).Al;
-    let mut block: crate::jpeglib_h::JBLOCKROW = 0 as *mut crate::jpeglib_h::JBLOCK;
+    let mut block: crate::jpeglib_h::JBLOCKROW = ::std::ptr::null_mut::< crate::jpeglib_h::JBLOCK>();
     (*entropy).next_output_byte = (*(*cinfo).dest).next_output_byte;
     (*entropy).free_in_buffer = (*(*cinfo).dest).free_in_buffer;
     /* Emit restart marker if needed */
@@ -1105,14 +1105,14 @@ unsafe extern "C" fn encode_mcu_AC_refine(
     let mut entropy: phuff_entropy_ptr = (*cinfo).entropy as phuff_entropy_ptr;
     let mut temp: libc::c_int = 0;
     let mut r: libc::c_int = 0;
-    let mut BR_buffer: *mut libc::c_char = 0 as *mut libc::c_char;
+    let mut BR_buffer: *mut libc::c_char = ::std::ptr::null_mut::< libc::c_char>();
     let mut BR: libc::c_uint = 0;
     let mut Sl: libc::c_int = (*cinfo).Se - (*cinfo).Ss + 1i32;
     let mut Al: libc::c_int = (*cinfo).Al;
     let mut absvalues_unaligned: [crate::jmorecfg_h::JCOEF; 79] = [0; 79];
-    let mut absvalues: *mut crate::jmorecfg_h::JCOEF = 0 as *mut crate::jmorecfg_h::JCOEF;
-    let mut cabsvalue: *const crate::jmorecfg_h::JCOEF = 0 as *const crate::jmorecfg_h::JCOEF;
-    let mut EOBPTR: *const crate::jmorecfg_h::JCOEF = 0 as *const crate::jmorecfg_h::JCOEF;
+    let mut absvalues: *mut crate::jmorecfg_h::JCOEF = ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>();
+    let mut cabsvalue: *const crate::jmorecfg_h::JCOEF = ::std::ptr::null::< crate::jmorecfg_h::JCOEF>();
+    let mut EOBPTR: *const crate::jmorecfg_h::JCOEF = ::std::ptr::null::< crate::jmorecfg_h::JCOEF>();
     let mut zerobits: crate::stddef_h::size_t = 0;
     let mut signbits: crate::stddef_h::size_t = 0;
     let mut bits: [crate::stddef_h::size_t; 2] = [0; 2];
@@ -1237,9 +1237,9 @@ unsafe extern "C" fn finish_pass_gather_phuff(mut cinfo: crate::jpeglib_h::j_com
     let mut ci: libc::c_int = 0;
     let mut tbl: libc::c_int = 0;
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        0 as *mut crate::jpeglib_h::jpeg_component_info;
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     let mut htblptr: *mut *mut crate::jpeglib_h::JHUFF_TBL =
-        0 as *mut *mut crate::jpeglib_h::JHUFF_TBL;
+        ::std::ptr::null_mut::< *mut crate::jpeglib_h::JHUFF_TBL>();
     let mut did: [crate::jmorecfg_h::boolean; 4] = [0; 4];
     /* Flush out buffered data (all we care about is counting the EOB symbol) */
     emit_eobrun(entropy);
@@ -1302,7 +1302,7 @@ unsafe extern "C" fn finish_pass_gather_phuff(mut cinfo: crate::jpeglib_h::j_com
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_phuff_encoder(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
-    let mut entropy: phuff_entropy_ptr = 0 as *mut phuff_entropy_encoder;
+    let mut entropy: phuff_entropy_ptr = ::std::ptr::null_mut::< phuff_entropy_encoder>();
     let mut i: libc::c_int = 0;
     entropy = Some(
         (*(*cinfo).mem)

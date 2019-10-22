@@ -242,11 +242,11 @@ pub unsafe extern "C" fn jpeg_idct_ifast(
     let mut z11: crate::jdct_h::DCTELEM = 0;
     let mut z12: crate::jdct_h::DCTELEM = 0;
     let mut z13: crate::jdct_h::DCTELEM = 0;
-    let mut inptr: crate::jpeglib_h::JCOEFPTR = 0 as *mut crate::jmorecfg_h::JCOEF;
+    let mut inptr: crate::jpeglib_h::JCOEFPTR = ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>();
     let mut quantptr: *mut crate::jdct_h::IFAST_MULT_TYPE =
-        0 as *mut crate::jdct_h::IFAST_MULT_TYPE;
-    let mut wsptr: *mut libc::c_int = 0 as *mut libc::c_int;
-    let mut outptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+        ::std::ptr::null_mut::< crate::jdct_h::IFAST_MULT_TYPE>();
+    let mut wsptr: *mut libc::c_int = ::std::ptr::null_mut::< libc::c_int>();
+    let mut outptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut range_limit: *mut crate::jmorecfg_h::JSAMPLE = (*cinfo)
         .sample_range_limit
         .offset(crate::jmorecfg_h::CENTERJSAMPLE as isize);

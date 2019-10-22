@@ -410,8 +410,8 @@ pub unsafe extern "C" fn jpeg_suppress_tables(
     mut suppress: crate::jmorecfg_h::boolean,
 ) {
     let mut i: libc::c_int = 0;
-    let mut qtbl: *mut crate::jpeglib_h::JQUANT_TBL = 0 as *mut crate::jpeglib_h::JQUANT_TBL;
-    let mut htbl: *mut crate::jpeglib_h::JHUFF_TBL = 0 as *mut crate::jpeglib_h::JHUFF_TBL;
+    let mut qtbl: *mut crate::jpeglib_h::JQUANT_TBL = ::std::ptr::null_mut::< crate::jpeglib_h::JQUANT_TBL>();
+    let mut htbl: *mut crate::jpeglib_h::JHUFF_TBL = ::std::ptr::null_mut::< crate::jpeglib_h::JHUFF_TBL>();
     i = 0i32;
     while i < crate::jpeglib_h::NUM_QUANT_TBLS {
         qtbl = (*cinfo).quant_tbl_ptrs[i as usize];

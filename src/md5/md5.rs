@@ -155,7 +155,7 @@ pub unsafe extern "C" fn MD5Final(
     mut ctx: *mut crate::src::md5::md5::MD5Context,
 ) {
     let mut count: libc::c_uint = 0;
-    let mut p: *mut libc::c_uchar = 0 as *mut libc::c_uchar;
+    let mut p: *mut libc::c_uchar = ::std::ptr::null_mut::< libc::c_uchar>();
     let mut in32: *mut crate::src::md5::md5::uint32 =
         (*ctx).in_0.as_mut_ptr() as *mut crate::src::md5::md5::uint32;
     /* Compute number of bytes mod 64 */

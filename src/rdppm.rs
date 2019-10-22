@@ -526,7 +526,7 @@ unsafe extern "C" fn get_text_gray_row(
 /* This version is for reading text-format PGM files with any maxval */ {
     let mut source: ppm_source_ptr = sinfo as ppm_source_ptr;
     let mut infile: *mut crate::stdlib::FILE = (*source).pub_0.input_file;
-    let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut rescale: *mut crate::jmorecfg_h::JSAMPLE = (*source).rescale;
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     let mut maxval: libc::c_uint = (*source).maxval;
@@ -549,7 +549,7 @@ unsafe extern "C" fn get_text_gray_rgb_row(
    converting to extended RGB */ {
     let mut source: ppm_source_ptr = sinfo as ppm_source_ptr;
     let mut infile: *mut crate::stdlib::FILE = (*source).pub_0.input_file;
-    let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut rescale: *mut crate::jmorecfg_h::JSAMPLE = (*source).rescale;
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     let mut maxval: libc::c_uint = (*source).maxval;
@@ -619,7 +619,7 @@ unsafe extern "C" fn get_text_gray_cmyk_row(
    converting to CMYK */ {
     let mut source: ppm_source_ptr = sinfo as ppm_source_ptr;
     let mut infile: *mut crate::stdlib::FILE = (*source).pub_0.input_file;
-    let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut rescale: *mut crate::jmorecfg_h::JSAMPLE = (*source).rescale;
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     let mut maxval: libc::c_uint = (*source).maxval;
@@ -669,7 +669,7 @@ unsafe extern "C" fn get_text_rgb_row(
 /* This version is for reading text-format PPM files with any maxval */ {
     let mut source: ppm_source_ptr = sinfo as ppm_source_ptr;
     let mut infile: *mut crate::stdlib::FILE = (*source).pub_0.input_file;
-    let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut rescale: *mut crate::jmorecfg_h::JSAMPLE = (*source).rescale;
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     let mut maxval: libc::c_uint = (*source).maxval;
@@ -743,7 +743,7 @@ unsafe extern "C" fn get_text_rgb_cmyk_row(
    converting to CMYK */ {
     let mut source: ppm_source_ptr = sinfo as ppm_source_ptr;
     let mut infile: *mut crate::stdlib::FILE = (*source).pub_0.input_file;
-    let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
+    let mut ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut rescale: *mut crate::jmorecfg_h::JSAMPLE = (*source).rescale;
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     let mut maxval: libc::c_uint = (*source).maxval;
@@ -792,8 +792,8 @@ unsafe extern "C" fn get_scaled_gray_row(
 ) -> crate::jmorecfg_h::JDIMENSION
 /* This version is for reading raw-byte-format PGM files with any maxval */ {
     let mut source: ppm_source_ptr = sinfo as ppm_source_ptr;
-    let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
-    let mut bufferptr: *mut U_CHAR = 0 as *mut U_CHAR;
+    let mut ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
+    let mut bufferptr: *mut U_CHAR = ::std::ptr::null_mut::< U_CHAR>();
     let mut rescale: *mut crate::jmorecfg_h::JSAMPLE = (*source).rescale;
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     if !(crate::stdlib::fread(
@@ -832,8 +832,8 @@ unsafe extern "C" fn get_gray_rgb_row(
 /* This version is for reading raw-byte-format PGM files with any maxval
    and converting to extended RGB */ {
     let mut source: ppm_source_ptr = sinfo as ppm_source_ptr;
-    let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
-    let mut bufferptr: *mut U_CHAR = 0 as *mut U_CHAR;
+    let mut ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
+    let mut bufferptr: *mut U_CHAR = ::std::ptr::null_mut::< U_CHAR>();
     let mut rescale: *mut crate::jmorecfg_h::JSAMPLE = (*source).rescale;
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     let mut maxval: libc::c_uint = (*source).maxval;
@@ -926,8 +926,8 @@ unsafe extern "C" fn get_gray_cmyk_row(
 /* This version is for reading raw-byte-format PGM files with any maxval
    and converting to CMYK */ {
     let mut source: ppm_source_ptr = sinfo as ppm_source_ptr;
-    let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
-    let mut bufferptr: *mut U_CHAR = 0 as *mut U_CHAR;
+    let mut ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
+    let mut bufferptr: *mut U_CHAR = ::std::ptr::null_mut::< U_CHAR>();
     let mut rescale: *mut crate::jmorecfg_h::JSAMPLE = (*source).rescale;
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     let mut maxval: libc::c_uint = (*source).maxval;
@@ -995,8 +995,8 @@ unsafe extern "C" fn get_rgb_row(
 ) -> crate::jmorecfg_h::JDIMENSION
 /* This version is for reading raw-byte-format PPM files with any maxval */ {
     let mut source: ppm_source_ptr = sinfo as ppm_source_ptr;
-    let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
-    let mut bufferptr: *mut U_CHAR = 0 as *mut U_CHAR;
+    let mut ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
+    let mut bufferptr: *mut U_CHAR = ::std::ptr::null_mut::< U_CHAR>();
     let mut rescale: *mut crate::jmorecfg_h::JSAMPLE = (*source).rescale;
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     let mut maxval: libc::c_uint = (*source).maxval;
@@ -1097,8 +1097,8 @@ unsafe extern "C" fn get_rgb_cmyk_row(
 /* This version is for reading raw-byte-format PPM files with any maxval and
    converting to CMYK */ {
     let mut source: ppm_source_ptr = sinfo as ppm_source_ptr;
-    let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
-    let mut bufferptr: *mut U_CHAR = 0 as *mut U_CHAR;
+    let mut ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
+    let mut bufferptr: *mut U_CHAR = ::std::ptr::null_mut::< U_CHAR>();
     let mut rescale: *mut crate::jmorecfg_h::JSAMPLE = (*source).rescale;
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     let mut maxval: libc::c_uint = (*source).maxval;
@@ -1199,8 +1199,8 @@ unsafe extern "C" fn get_word_gray_row(
 ) -> crate::jmorecfg_h::JDIMENSION
 /* This version is for reading raw-word-format PGM files with any maxval */ {
     let mut source: ppm_source_ptr = sinfo as ppm_source_ptr;
-    let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
-    let mut bufferptr: *mut U_CHAR = 0 as *mut U_CHAR;
+    let mut ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
+    let mut bufferptr: *mut U_CHAR = ::std::ptr::null_mut::< U_CHAR>();
     let mut rescale: *mut crate::jmorecfg_h::JSAMPLE = (*source).rescale;
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     let mut maxval: libc::c_uint = (*source).maxval;
@@ -1255,8 +1255,8 @@ unsafe extern "C" fn get_word_rgb_row(
 ) -> crate::jmorecfg_h::JDIMENSION
 /* This version is for reading raw-word-format PPM files with any maxval */ {
     let mut source: ppm_source_ptr = sinfo as ppm_source_ptr;
-    let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
-    let mut bufferptr: *mut U_CHAR = 0 as *mut U_CHAR;
+    let mut ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
+    let mut bufferptr: *mut U_CHAR = ::std::ptr::null_mut::< U_CHAR>();
     let mut rescale: *mut crate::jmorecfg_h::JSAMPLE = (*source).rescale;
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     let mut maxval: libc::c_uint = (*source).maxval;
@@ -1860,7 +1860,7 @@ unsafe extern "C" fn finish_input_ppm(
 pub unsafe extern "C" fn jinit_read_ppm(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
 ) -> crate::src::cdjpeg::cjpeg_source_ptr {
-    let mut source: ppm_source_ptr = 0 as *mut ppm_source_struct;
+    let mut source: ppm_source_ptr = ::std::ptr::null_mut::< ppm_source_struct>();
     /* Create module interface object */
     source = Some(
         (*(*cinfo).mem)
