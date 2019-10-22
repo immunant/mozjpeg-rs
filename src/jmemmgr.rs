@@ -1703,12 +1703,13 @@ pub unsafe extern "C" fn jinit_memory_mgr(mut cinfo: crate::jpeglib_h::j_common_
      * this feature.
      */
     let mut memenv: *mut libc::c_char = ::std::ptr::null_mut::< libc::c_char>();
-    memenv = crate::stdlib::getenv(b"JPEGMEM\x00" as *const u8 as *const libc::c_char);
+    memenv = crate::stdlib::getenv(b"JPEGMEM\x00".as_ptr() as *const libc::c_char);
     if !memenv.is_null() {
         let mut ch: libc::c_char = 'x' as i32 as libc::c_char;
         if crate::stdlib::sscanf(
             memenv,
-            b"%ld%c\x00" as *const u8 as *const libc::c_char,
+            
+            b"%ld%c\x00".as_ptr() as *const libc::c_char,
             &mut max_to_use as *mut libc::c_long,
             &mut ch as *mut libc::c_char,
         ) > 0i32

@@ -231,11 +231,12 @@ pub unsafe extern "C" fn read_quant_tables(
     let mut termchar: libc::c_int = 0;
     let mut val: libc::c_long = 0;
     let mut table: [libc::c_uint; 64] = [0; 64];
-    fp = crate::stdlib::fopen(filename, b"r\x00" as *const u8 as *const libc::c_char);
+    fp = crate::stdlib::fopen(filename,  b"r\x00".as_ptr() as *const libc::c_char);
     if fp.is_null() {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b"Can\'t open table file %s\n\x00" as *const u8 as *const libc::c_char,
+            
+            b"Can\'t open table file %s\n\x00".as_ptr() as *const libc::c_char,
             filename,
         );
         return crate::jmorecfg_h::FALSE;
@@ -246,7 +247,8 @@ pub unsafe extern "C" fn read_quant_tables(
         if tblno >= crate::jpeglib_h::NUM_QUANT_TBLS {
             crate::stdlib::fprintf(
                 crate::stdlib::stderr,
-                b"Too many tables in file %s\n\x00" as *const u8 as *const libc::c_char,
+                
+                b"Too many tables in file %s\n\x00".as_ptr() as *const libc::c_char,
                 filename,
             );
             crate::stdlib::fclose(fp);
@@ -258,7 +260,8 @@ pub unsafe extern "C" fn read_quant_tables(
             if read_text_integer(fp, &mut val, &mut termchar) == 0 {
                 crate::stdlib::fprintf(
                     crate::stdlib::stderr,
-                    b"Invalid table data in file %s\n\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"Invalid table data in file %s\n\x00".as_ptr() as *const libc::c_char,
                     filename,
                 );
                 crate::stdlib::fclose(fp);
@@ -279,7 +282,8 @@ pub unsafe extern "C" fn read_quant_tables(
     if termchar != crate::stdlib::EOF {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b"Non-numeric data in file %s\n\x00" as *const u8 as *const libc::c_char,
+            
+            b"Non-numeric data in file %s\n\x00".as_ptr() as *const libc::c_char,
             filename,
         );
         crate::stdlib::fclose(fp);
@@ -365,11 +369,12 @@ pub unsafe extern "C" fn read_scan_script(
         Ah: 0,
         Al: 0,
     }; 100];
-    fp = crate::stdlib::fopen(filename, b"r\x00" as *const u8 as *const libc::c_char);
+    fp = crate::stdlib::fopen(filename,  b"r\x00".as_ptr() as *const libc::c_char);
     if fp.is_null() {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b"Can\'t open scan definition file %s\n\x00" as *const u8 as *const libc::c_char,
+            
+            b"Can\'t open scan definition file %s\n\x00".as_ptr() as *const libc::c_char,
             filename,
         );
         return crate::jmorecfg_h::FALSE;
@@ -380,7 +385,8 @@ pub unsafe extern "C" fn read_scan_script(
         if scanno >= MAX_SCANS {
             crate::stdlib::fprintf(
                 crate::stdlib::stderr,
-                b"Too many scans defined in file %s\n\x00" as *const u8 as *const libc::c_char,
+                
+                b"Too many scans defined in file %s\n\x00".as_ptr() as *const libc::c_char,
                 filename,
             );
             crate::stdlib::fclose(fp);
@@ -396,7 +402,8 @@ pub unsafe extern "C" fn read_scan_script(
             if ncomps >= crate::jpeglib_h::MAX_COMPS_IN_SCAN {
                 crate::stdlib::fprintf(
                     crate::stdlib::stderr,
-                    b"Too many components in one scan in file %s\n\x00" as *const u8
+                    
+                    b"Too many components in one scan in file %s\n\x00".as_ptr()
                         as *const libc::c_char,
                     filename,
                 );
@@ -463,7 +470,8 @@ pub unsafe extern "C" fn read_scan_script(
         }
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b"Invalid scan entry format in file %s\n\x00" as *const u8 as *const libc::c_char,
+            
+            b"Invalid scan entry format in file %s\n\x00".as_ptr() as *const libc::c_char,
             filename,
         );
         crate::stdlib::fclose(fp);
@@ -472,7 +480,8 @@ pub unsafe extern "C" fn read_scan_script(
     if termchar != crate::stdlib::EOF {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b"Non-numeric data in file %s\n\x00" as *const u8 as *const libc::c_char,
+            
+            b"Non-numeric data in file %s\n\x00".as_ptr() as *const libc::c_char,
             filename,
         );
         crate::stdlib::fclose(fp);
@@ -1765,7 +1774,8 @@ pub unsafe extern "C" fn set_quality_ratings(
             ch = ',' as i32 as libc::c_char;
             if crate::stdlib::sscanf(
                 arg,
-                b"%f%c\x00" as *const u8 as *const libc::c_char,
+                
+                b"%f%c\x00".as_ptr() as *const libc::c_char,
                 &mut val as *mut libc::c_float,
                 &mut ch as *mut libc::c_char,
             ) < 1i32
@@ -1800,12 +1810,14 @@ pub unsafe extern "C" fn set_quality_ratings(
     if val >= 90i32 as libc::c_float {
         set_sample_factors(
             cinfo,
-            b"1x1\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            
+            b"1x1\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
         );
     } else if val >= 80i32 as libc::c_float {
         set_sample_factors(
             cinfo,
-            b"2x1\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            
+            b"2x1\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
         );
     }
     return crate::jmorecfg_h::TRUE;
@@ -1829,7 +1841,8 @@ pub unsafe extern "C" fn set_quant_slots(
             ch = ',' as i32 as libc::c_char;
             if crate::stdlib::sscanf(
                 arg,
-                b"%d%c\x00" as *const u8 as *const libc::c_char,
+                
+                b"%d%c\x00".as_ptr() as *const libc::c_char,
                 &mut val as *mut libc::c_int,
                 &mut ch as *mut libc::c_char,
             ) < 1i32
@@ -1843,7 +1856,8 @@ pub unsafe extern "C" fn set_quant_slots(
             if val < 0i32 || val >= crate::jpeglib_h::NUM_QUANT_TBLS {
                 crate::stdlib::fprintf(
                     crate::stdlib::stderr,
-                    b"JPEG quantization tables are numbered 0..%d\n\x00" as *const u8
+                    
+                    b"JPEG quantization tables are numbered 0..%d\n\x00".as_ptr()
                         as *const libc::c_char,
                     crate::jpeglib_h::NUM_QUANT_TBLS - 1i32,
                 );
@@ -1935,7 +1949,8 @@ pub unsafe extern "C" fn set_sample_factors(
             ch2 = ',' as i32 as libc::c_char;
             if crate::stdlib::sscanf(
                 arg,
-                b"%d%c%d%c\x00" as *const u8 as *const libc::c_char,
+                
+                b"%d%c%d%c\x00".as_ptr() as *const libc::c_char,
                 &mut val1 as *mut libc::c_int,
                 &mut ch1 as *mut libc::c_char,
                 &mut val2 as *mut libc::c_int,
@@ -1953,7 +1968,8 @@ pub unsafe extern "C" fn set_sample_factors(
             if val1 <= 0i32 || val1 > 4i32 || val2 <= 0i32 || val2 > 4i32 {
                 crate::stdlib::fprintf(
                     crate::stdlib::stderr,
-                    b"JPEG sampling factors must be 1..4\n\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"JPEG sampling factors must be 1..4\n\x00".as_ptr() as *const libc::c_char,
                 );
                 return crate::jmorecfg_h::FALSE;
             }

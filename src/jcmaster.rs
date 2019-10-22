@@ -1251,17 +1251,21 @@ unsafe extern "C" fn copy_buffer(
     if (*(*cinfo).err).trace_level > 0i32 {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b"SCAN \x00" as *const u8 as *const libc::c_char,
+            
+            b"SCAN \x00".as_ptr() as *const libc::c_char,
         );
         i = 0i32;
         while i < (*(*cinfo).scan_info.offset(scan_idx as isize)).comps_in_scan {
             crate::stdlib::fprintf(
                 crate::stdlib::stderr,
-                b"%s%d\x00" as *const u8 as *const libc::c_char,
+                
+                b"%s%d\x00".as_ptr() as *const libc::c_char,
                 if i == 0i32 {
-                    b"\x00" as *const u8 as *const libc::c_char
+                    
+                    b"\x00".as_ptr() as *const libc::c_char
                 } else {
-                    b",\x00" as *const u8 as *const libc::c_char
+                    
+                    b",\x00".as_ptr() as *const libc::c_char
                 },
                 (*(*cinfo).scan_info.offset(scan_idx as isize)).component_index[i as usize],
             );
@@ -1269,19 +1273,22 @@ unsafe extern "C" fn copy_buffer(
         }
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b": %d %d\x00" as *const u8 as *const libc::c_char,
+            
+            b": %d %d\x00".as_ptr() as *const libc::c_char,
             (*(*cinfo).scan_info.offset(scan_idx as isize)).Ss,
             (*(*cinfo).scan_info.offset(scan_idx as isize)).Se,
         );
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b" %d %d\x00" as *const u8 as *const libc::c_char,
+            
+            b" %d %d\x00".as_ptr() as *const libc::c_char,
             (*(*cinfo).scan_info.offset(scan_idx as isize)).Ah,
             (*master).actual_Al[scan_idx as usize],
         );
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b"\n\x00" as *const u8 as *const libc::c_char,
+            
+            b"\n\x00".as_ptr() as *const libc::c_char,
         );
     }
     while size >= (*(*cinfo).dest).free_in_buffer {
@@ -1735,7 +1742,8 @@ pub unsafe extern "C" fn jinit_c_master_control(
         (*master).total_passes = (*cinfo).num_scans
     }
     (*master).jpeg_version =
-        b"mozjpeg version 4.0.0 (build 20191022)\x00" as *const u8 as *const libc::c_char;
+        
+        b"mozjpeg version 4.0.0 (build 20191022)\x00".as_ptr() as *const libc::c_char;
     (*master).pass_number_scan_opt_base = 0i32;
     if (*(*cinfo).master).trellis_quant != 0 {
         if (*cinfo).optimize_coding != 0 {

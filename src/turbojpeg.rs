@@ -967,34 +967,61 @@ pub type my_error_ptr = *mut my_error_mgr;
 
 static mut turbojpeg_message_table: [*const libc::c_char; 29] = [
     ::std::ptr::null::< libc::c_char>(),
-    b"Unsupported BMP colormap format\x00" as *const u8 as *const libc::c_char,
-    b"Only 8- and 24-bit BMP files are supported\x00" as *const u8 as *const libc::c_char,
-    b"Invalid BMP file: bad header length\x00" as *const u8 as *const libc::c_char,
-    b"Invalid BMP file: biPlanes not equal to 1\x00" as *const u8 as *const libc::c_char,
-    b"BMP output must be grayscale or RGB\x00" as *const u8 as *const libc::c_char,
-    b"Sorry, compressed BMPs not yet supported\x00" as *const u8 as *const libc::c_char,
-    b"Empty BMP image\x00" as *const u8 as *const libc::c_char,
-    b"Not a BMP file - does not start with BM\x00" as *const u8 as *const libc::c_char,
-    b"Numeric value out of range in BMP file\x00" as *const u8 as *const libc::c_char,
-    b"%ux%u 24-bit BMP image\x00" as *const u8 as *const libc::c_char,
-    b"%ux%u 8-bit colormapped BMP image\x00" as *const u8 as *const libc::c_char,
-    b"%ux%u 24-bit OS2 BMP image\x00" as *const u8 as *const libc::c_char,
-    b"%ux%u 8-bit colormapped OS2 BMP image\x00" as *const u8 as *const libc::c_char,
-    b"PPM output must be grayscale or RGB\x00" as *const u8 as *const libc::c_char,
-    b"Nonnumeric data in PPM file\x00" as *const u8 as *const libc::c_char,
-    b"Not a PPM/PGM file\x00" as *const u8 as *const libc::c_char,
-    b"Numeric value out of range in PPM file\x00" as *const u8 as *const libc::c_char,
-    b"%ux%u PGM image\x00" as *const u8 as *const libc::c_char,
-    b"%ux%u text PGM image\x00" as *const u8 as *const libc::c_char,
-    b"%ux%u PPM image\x00" as *const u8 as *const libc::c_char,
-    b"%ux%u text PPM image\x00" as *const u8 as *const libc::c_char,
-    b"Targa support was not compiled\x00" as *const u8 as *const libc::c_char,
-    b"Color map file is invalid or of unsupported format\x00" as *const u8 as *const libc::c_char,
-    b"Output file format cannot handle %d colormap entries\x00" as *const u8 as *const libc::c_char,
-    b"ungetc failed\x00" as *const u8 as *const libc::c_char,
-    b"MozJPEG can\'t read the image (PNG support is disabled in this build)\x00" as *const u8
+    
+    b"Unsupported BMP colormap format\x00".as_ptr() as *const libc::c_char,
+    
+    b"Only 8- and 24-bit BMP files are supported\x00".as_ptr() as *const libc::c_char,
+    
+    b"Invalid BMP file: bad header length\x00".as_ptr() as *const libc::c_char,
+    
+    b"Invalid BMP file: biPlanes not equal to 1\x00".as_ptr() as *const libc::c_char,
+    
+    b"BMP output must be grayscale or RGB\x00".as_ptr() as *const libc::c_char,
+    
+    b"Sorry, compressed BMPs not yet supported\x00".as_ptr() as *const libc::c_char,
+    
+    b"Empty BMP image\x00".as_ptr() as *const libc::c_char,
+    
+    b"Not a BMP file - does not start with BM\x00".as_ptr() as *const libc::c_char,
+    
+    b"Numeric value out of range in BMP file\x00".as_ptr() as *const libc::c_char,
+    
+    b"%ux%u 24-bit BMP image\x00".as_ptr() as *const libc::c_char,
+    
+    b"%ux%u 8-bit colormapped BMP image\x00".as_ptr() as *const libc::c_char,
+    
+    b"%ux%u 24-bit OS2 BMP image\x00".as_ptr() as *const libc::c_char,
+    
+    b"%ux%u 8-bit colormapped OS2 BMP image\x00".as_ptr() as *const libc::c_char,
+    
+    b"PPM output must be grayscale or RGB\x00".as_ptr() as *const libc::c_char,
+    
+    b"Nonnumeric data in PPM file\x00".as_ptr() as *const libc::c_char,
+    
+    b"Not a PPM/PGM file\x00".as_ptr() as *const libc::c_char,
+    
+    b"Numeric value out of range in PPM file\x00".as_ptr() as *const libc::c_char,
+    
+    b"%ux%u PGM image\x00".as_ptr() as *const libc::c_char,
+    
+    b"%ux%u text PGM image\x00".as_ptr() as *const libc::c_char,
+    
+    b"%ux%u PPM image\x00".as_ptr() as *const libc::c_char,
+    
+    b"%ux%u text PPM image\x00".as_ptr() as *const libc::c_char,
+    
+    b"Targa support was not compiled\x00".as_ptr() as *const libc::c_char,
+    
+    b"Color map file is invalid or of unsupported format\x00".as_ptr() as *const libc::c_char,
+    
+    b"Output file format cannot handle %d colormap entries\x00".as_ptr() as *const libc::c_char,
+    
+    b"ungetc failed\x00".as_ptr() as *const libc::c_char,
+    
+    b"MozJPEG can\'t read the image (PNG support is disabled in this build)\x00".as_ptr()
         as *const libc::c_char,
-    b"Unsupported output file format\x00" as *const u8 as *const libc::c_char,
+    
+    b"Unsupported output file format\x00".as_ptr() as *const libc::c_char,
     crate::stddef_h::NULL as *const libc::c_char,
 ];
 
@@ -1260,35 +1287,36 @@ unsafe extern "C" fn setCompDefaults(
     let mut env: *mut libc::c_char = crate::stddef_h::NULL as *mut libc::c_char;
     (*cinfo).in_color_space = pf2cs[pixelFormat as usize];
     (*cinfo).input_components = crate::src::turbojpeg::tjPixelSize[pixelFormat as usize];
-    env = crate::stdlib::getenv(b"TJ_REVERT\x00" as *const u8 as *const libc::c_char);
+    env = crate::stdlib::getenv(b"TJ_REVERT\x00".as_ptr() as *const libc::c_char);
     if !env.is_null()
         && crate::stdlib::strlen(env) > 0i32 as libc::c_ulong
-        && crate::stdlib::strcmp(env, b"1\x00" as *const u8 as *const libc::c_char) == 0
+        && crate::stdlib::strcmp(env,  b"1\x00".as_ptr() as *const libc::c_char) == 0
     {
         (*(*cinfo).master).compress_profile = crate::jpeglib_h::JCP_FASTEST as libc::c_int
     }
     crate::jpeglib_h::jpeg_set_defaults(cinfo);
-    env = crate::stdlib::getenv(b"TJ_OPTIMIZE\x00" as *const u8 as *const libc::c_char);
+    env = crate::stdlib::getenv(b"TJ_OPTIMIZE\x00".as_ptr() as *const libc::c_char);
     if !env.is_null()
         && crate::stdlib::strlen(env) > 0i32 as libc::c_ulong
-        && crate::stdlib::strcmp(env, b"1\x00" as *const u8 as *const libc::c_char) == 0
+        && crate::stdlib::strcmp(env,  b"1\x00".as_ptr() as *const libc::c_char) == 0
     {
         (*cinfo).optimize_coding = crate::jmorecfg_h::TRUE
     }
-    env = crate::stdlib::getenv(b"TJ_ARITHMETIC\x00" as *const u8 as *const libc::c_char);
+    env = crate::stdlib::getenv(b"TJ_ARITHMETIC\x00".as_ptr() as *const libc::c_char);
     if !env.is_null()
         && crate::stdlib::strlen(env) > 0i32 as libc::c_ulong
-        && crate::stdlib::strcmp(env, b"1\x00" as *const u8 as *const libc::c_char) == 0
+        && crate::stdlib::strcmp(env,  b"1\x00".as_ptr() as *const libc::c_char) == 0
     {
         (*cinfo).arith_code = crate::jmorecfg_h::TRUE
     }
-    env = crate::stdlib::getenv(b"TJ_RESTART\x00" as *const u8 as *const libc::c_char);
+    env = crate::stdlib::getenv(b"TJ_RESTART\x00".as_ptr() as *const libc::c_char);
     if !env.is_null() && crate::stdlib::strlen(env) > 0i32 as libc::c_ulong {
         let mut temp: libc::c_int = -1i32;
         let mut tempc: libc::c_char = 0i32 as libc::c_char;
         if crate::stdlib::sscanf(
             env,
-            b"%d%c\x00" as *const u8 as *const libc::c_char,
+            
+            b"%d%c\x00".as_ptr() as *const libc::c_char,
             &mut temp as *mut libc::c_int,
             &mut tempc as *mut libc::c_char,
         ) >= 1i32
@@ -1340,10 +1368,10 @@ unsafe extern "C" fn setCompDefaults(
     if flags & crate::src::turbojpeg::TJFLAG_PROGRESSIVE != 0 {
         crate::jpeglib_h::jpeg_simple_progression(cinfo);
     } else {
-        env = crate::stdlib::getenv(b"TJ_PROGRESSIVE\x00" as *const u8 as *const libc::c_char);
+        env = crate::stdlib::getenv(b"TJ_PROGRESSIVE\x00".as_ptr() as *const libc::c_char);
         if !env.is_null()
             && crate::stdlib::strlen(env) > 0i32 as libc::c_ulong
-            && crate::stdlib::strcmp(env, b"1\x00" as *const u8 as *const libc::c_char) == 0
+            && crate::stdlib::strcmp(env,  b"1\x00".as_ptr() as *const libc::c_char) == 0
         {
             crate::jpeglib_h::jpeg_simple_progression(cinfo);
         }
@@ -1537,7 +1565,8 @@ pub unsafe extern "C" fn tjDestroy(mut handle: crate::src::turbojpeg::tjhandle) 
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"Invalid handle\x00" as *const u8 as *const libc::c_char,
+            
+            b"Invalid handle\x00".as_ptr() as *const libc::c_char,
         );
         return -1i32;
     }
@@ -1657,7 +1686,8 @@ pub unsafe extern "C" fn tjInitCompress() -> crate::src::turbojpeg::tjhandle {
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"tjInitCompress(): Memory allocation failure\x00" as *const u8 as *const libc::c_char,
+            
+            b"tjInitCompress(): Memory allocation failure\x00".as_ptr() as *const libc::c_char,
         );
         return crate::stddef_h::NULL as *mut libc::c_void;
     }
@@ -1669,7 +1699,8 @@ pub unsafe extern "C" fn tjInitCompress() -> crate::src::turbojpeg::tjhandle {
     crate::stdlib::snprintf(
         (*this).errStr.as_mut_ptr(),
         crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-        b"No error\x00" as *const u8 as *const libc::c_char,
+        
+        b"No error\x00".as_ptr() as *const libc::c_char,
     );
     return _tjInitCompress(this);
 }
@@ -1714,8 +1745,10 @@ pub unsafe extern "C" fn tjBufSize(
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjBufSize(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjBufSize(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32 as libc::c_ulong
     } else {
@@ -1747,8 +1780,10 @@ pub unsafe extern "C" fn TJBUFSIZE(
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"TJBUFSIZE(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"TJBUFSIZE(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32 as libc::c_ulong
     } else {
@@ -1794,8 +1829,10 @@ pub unsafe extern "C" fn tjBufSizeYUV2(
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjBufSizeYUV2(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjBufSizeYUV2(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32
     } else {
@@ -1865,8 +1902,10 @@ pub unsafe extern "C" fn tjPlaneWidth(
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjPlaneWidth(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjPlaneWidth(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32
     } else {
@@ -1879,8 +1918,10 @@ pub unsafe extern "C" fn tjPlaneWidth(
             crate::stdlib::snprintf(
                 errStr.as_mut_ptr(),
                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                b"%s\x00" as *const u8 as *const libc::c_char,
-                b"tjPlaneWidth(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+                
+                b"%s\x00".as_ptr() as *const libc::c_char,
+                
+                b"tjPlaneWidth(): Invalid argument\x00".as_ptr() as *const libc::c_char,
             );
             retval = -1i32
         } else {
@@ -1923,8 +1964,10 @@ pub unsafe extern "C" fn tjPlaneHeight(
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjPlaneHeight(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjPlaneHeight(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32
     } else {
@@ -1937,8 +1980,10 @@ pub unsafe extern "C" fn tjPlaneHeight(
             crate::stdlib::snprintf(
                 errStr.as_mut_ptr(),
                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                b"%s\x00" as *const u8 as *const libc::c_char,
-                b"tjPlaneHeight(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+                
+                b"%s\x00".as_ptr() as *const libc::c_char,
+                
+                b"tjPlaneHeight(): Invalid argument\x00".as_ptr() as *const libc::c_char,
             );
             retval = -1i32
         } else {
@@ -1994,8 +2039,10 @@ pub unsafe extern "C" fn tjPlaneSizeYUV(
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjPlaneSizeYUV(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjPlaneSizeYUV(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32 as libc::c_ulong
     } else {
@@ -2100,7 +2147,8 @@ pub unsafe extern "C" fn tjCompress2(
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"Invalid handle\x00" as *const u8 as *const libc::c_char,
+            
+            b"Invalid handle\x00".as_ptr() as *const libc::c_char,
         );
         return -1i32;
     }
@@ -2116,16 +2164,20 @@ pub unsafe extern "C" fn tjCompress2(
         crate::stdlib::snprintf(
             (*this).errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjCompress2(): Instance has not been initialized for compression\x00" as *const u8
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjCompress2(): Instance has not been initialized for compression\x00".as_ptr()
                 as *const libc::c_char,
         );
         (*this).isInstanceError = crate::jmorecfg_h::TRUE;
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjCompress2(): Instance has not been initialized for compression\x00" as *const u8
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjCompress2(): Instance has not been initialized for compression\x00".as_ptr()
                 as *const libc::c_char,
         );
         retval = -1i32
@@ -2145,15 +2197,19 @@ pub unsafe extern "C" fn tjCompress2(
         crate::stdlib::snprintf(
             (*this).errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjCompress2(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjCompress2(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         (*this).isInstanceError = crate::jmorecfg_h::TRUE;
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjCompress2(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjCompress2(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32
     } else {
@@ -2168,15 +2224,19 @@ pub unsafe extern "C" fn tjCompress2(
             crate::stdlib::snprintf(
                 (*this).errStr.as_mut_ptr(),
                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                b"%s\x00" as *const u8 as *const libc::c_char,
-                b"tjCompress2(): Memory allocation failure\x00" as *const u8 as *const libc::c_char,
+                
+                b"%s\x00".as_ptr() as *const libc::c_char,
+                
+                b"tjCompress2(): Memory allocation failure\x00".as_ptr() as *const libc::c_char,
             );
             (*this).isInstanceError = crate::jmorecfg_h::TRUE;
             crate::stdlib::snprintf(
                 errStr.as_mut_ptr(),
                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                b"%s\x00" as *const u8 as *const libc::c_char,
-                b"tjCompress2(): Memory allocation failure\x00" as *const u8 as *const libc::c_char,
+                
+                b"%s\x00".as_ptr() as *const libc::c_char,
+                
+                b"tjCompress2(): Memory allocation failure\x00".as_ptr() as *const libc::c_char,
             );
             retval = -1i32
         } else if crate::stdlib::_setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
@@ -2187,17 +2247,20 @@ pub unsafe extern "C" fn tjCompress2(
             (*cinfo).image_height = height as crate::jmorecfg_h::JDIMENSION;
             if flags & crate::src::turbojpeg::TJFLAG_FORCEMMX != 0 {
                 crate::stdlib::putenv(
-                    b"JSIMD_FORCEMMX=1\x00" as *const u8 as *const libc::c_char
+                    
+                    b"JSIMD_FORCEMMX=1\x00".as_ptr() as *const libc::c_char
                         as *mut libc::c_char,
                 );
             } else if flags & crate::src::turbojpeg::TJFLAG_FORCESSE != 0 {
                 crate::stdlib::putenv(
-                    b"JSIMD_FORCESSE=1\x00" as *const u8 as *const libc::c_char
+                    
+                    b"JSIMD_FORCESSE=1\x00".as_ptr() as *const libc::c_char
                         as *mut libc::c_char,
                 );
             } else if flags & crate::src::turbojpeg::TJFLAG_FORCESSE2 != 0 {
                 crate::stdlib::putenv(
-                    b"JSIMD_FORCESSE2=1\x00" as *const u8 as *const libc::c_char
+                    
+                    b"JSIMD_FORCESSE2=1\x00".as_ptr() as *const libc::c_char
                         as *mut libc::c_char,
                 );
             }
@@ -2392,7 +2455,8 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"Invalid handle\x00" as *const u8 as *const libc::c_char,
+            
+            b"Invalid handle\x00".as_ptr() as *const libc::c_char,
         );
         return -1i32;
     }
@@ -2417,17 +2481,19 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
         crate::stdlib::snprintf(
             (*this).errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjEncodeYUVPlanes(): Instance has not been initialized for compression\x00"
-                as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjEncodeYUVPlanes(): Instance has not been initialized for compression\x00".as_ptr() as *const libc::c_char,
         );
         (*this).isInstanceError = crate::jmorecfg_h::TRUE;
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjEncodeYUVPlanes(): Instance has not been initialized for compression\x00"
-                as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjEncodeYUVPlanes(): Instance has not been initialized for compression\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32
     } else if srcBuf.is_null()
@@ -2444,15 +2510,19 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
         crate::stdlib::snprintf(
             (*this).errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjEncodeYUVPlanes(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjEncodeYUVPlanes(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         (*this).isInstanceError = crate::jmorecfg_h::TRUE;
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjEncodeYUVPlanes(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjEncodeYUVPlanes(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32
     } else if subsamp != crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int
@@ -2461,31 +2531,39 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
         crate::stdlib::snprintf(
             (*this).errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjEncodeYUVPlanes(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjEncodeYUVPlanes(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         (*this).isInstanceError = crate::jmorecfg_h::TRUE;
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjEncodeYUVPlanes(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjEncodeYUVPlanes(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32
     } else if pixelFormat == crate::src::turbojpeg::TJPF_CMYK as libc::c_int {
         crate::stdlib::snprintf(
             (*this).errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjEncodeYUVPlanes(): Cannot generate YUV images from CMYK pixels\x00" as *const u8
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjEncodeYUVPlanes(): Cannot generate YUV images from CMYK pixels\x00".as_ptr()
                 as *const libc::c_char,
         );
         (*this).isInstanceError = crate::jmorecfg_h::TRUE;
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjEncodeYUVPlanes(): Cannot generate YUV images from CMYK pixels\x00" as *const u8
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjEncodeYUVPlanes(): Cannot generate YUV images from CMYK pixels\x00".as_ptr()
                 as *const libc::c_char,
         );
         retval = -1i32
@@ -2501,17 +2579,20 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
             (*cinfo).image_height = height as crate::jmorecfg_h::JDIMENSION;
             if flags & crate::src::turbojpeg::TJFLAG_FORCEMMX != 0 {
                 crate::stdlib::putenv(
-                    b"JSIMD_FORCEMMX=1\x00" as *const u8 as *const libc::c_char
+                    
+                    b"JSIMD_FORCEMMX=1\x00".as_ptr() as *const libc::c_char
                         as *mut libc::c_char,
                 );
             } else if flags & crate::src::turbojpeg::TJFLAG_FORCESSE != 0 {
                 crate::stdlib::putenv(
-                    b"JSIMD_FORCESSE=1\x00" as *const u8 as *const libc::c_char
+                    
+                    b"JSIMD_FORCESSE=1\x00".as_ptr() as *const libc::c_char
                         as *mut libc::c_char,
                 );
             } else if flags & crate::src::turbojpeg::TJFLAG_FORCESSE2 != 0 {
                 crate::stdlib::putenv(
-                    b"JSIMD_FORCESSE2=1\x00" as *const u8 as *const libc::c_char
+                    
+                    b"JSIMD_FORCESSE2=1\x00".as_ptr() as *const libc::c_char
                         as *mut libc::c_char,
                 );
             }
@@ -2526,16 +2607,20 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                 crate::stdlib::snprintf(
                     (*this).errStr.as_mut_ptr(),
                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                    b"%s\x00" as *const u8 as *const libc::c_char,
-                    b"tjEncodeYUVPlanes(): libjpeg API is in the wrong state\x00" as *const u8
+                    
+                    b"%s\x00".as_ptr() as *const libc::c_char,
+                    
+                    b"tjEncodeYUVPlanes(): libjpeg API is in the wrong state\x00".as_ptr()
                         as *const libc::c_char,
                 );
                 (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                 crate::stdlib::snprintf(
                     errStr.as_mut_ptr(),
                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                    b"%s\x00" as *const u8 as *const libc::c_char,
-                    b"tjEncodeYUVPlanes(): libjpeg API is in the wrong state\x00" as *const u8
+                    
+                    b"%s\x00".as_ptr() as *const libc::c_char,
+                    
+                    b"tjEncodeYUVPlanes(): libjpeg API is in the wrong state\x00".as_ptr()
                         as *const libc::c_char,
                 );
                 retval = -1i32
@@ -2569,16 +2654,20 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                     crate::stdlib::snprintf(
                         (*this).errStr.as_mut_ptr(),
                         crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                        b"%s\x00" as *const u8 as *const libc::c_char,
-                        b"tjEncodeYUVPlanes(): Memory allocation failure\x00" as *const u8
+                        
+                        b"%s\x00".as_ptr() as *const libc::c_char,
+                        
+                        b"tjEncodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                             as *const libc::c_char,
                     );
                     (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                     crate::stdlib::snprintf(
                         errStr.as_mut_ptr(),
                         crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                        b"%s\x00" as *const u8 as *const libc::c_char,
-                        b"tjEncodeYUVPlanes(): Memory allocation failure\x00" as *const u8
+                        
+                        b"%s\x00".as_ptr() as *const libc::c_char,
+                        
+                        b"tjEncodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                             as *const libc::c_char,
                     );
                     retval = -1i32
@@ -2631,16 +2720,20 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                             crate::stdlib::snprintf(
                                 (*this).errStr.as_mut_ptr(),
                                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                                b"%s\x00" as *const u8 as *const libc::c_char,
-                                b"tjEncodeYUVPlanes(): Memory allocation failure\x00" as *const u8
+                                
+                                b"%s\x00".as_ptr() as *const libc::c_char,
+                                
+                                b"tjEncodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                     as *const libc::c_char,
                             );
                             (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                             crate::stdlib::snprintf(
                                 errStr.as_mut_ptr(),
                                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                                b"%s\x00" as *const u8 as *const libc::c_char,
-                                b"tjEncodeYUVPlanes(): Memory allocation failure\x00" as *const u8
+                                
+                                b"%s\x00".as_ptr() as *const libc::c_char,
+                                
+                                b"tjEncodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                     as *const libc::c_char,
                             );
                             retval = -1i32;
@@ -2657,18 +2750,20 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                                 crate::stdlib::snprintf(
                                     (*this).errStr.as_mut_ptr(),
                                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                                    b"%s\x00" as *const u8 as *const libc::c_char,
-                                    b"tjEncodeYUVPlanes(): Memory allocation failure\x00"
-                                        as *const u8
+                                    
+                                    b"%s\x00".as_ptr() as *const libc::c_char,
+                                    
+                                    b"tjEncodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                         as *const libc::c_char,
                                 );
                                 (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                                 crate::stdlib::snprintf(
                                     errStr.as_mut_ptr(),
                                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                                    b"%s\x00" as *const u8 as *const libc::c_char,
-                                    b"tjEncodeYUVPlanes(): Memory allocation failure\x00"
-                                        as *const u8
+                                    
+                                    b"%s\x00".as_ptr() as *const libc::c_char,
+                                    
+                                    b"tjEncodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                         as *const libc::c_char,
                                 );
                                 retval = -1i32;
@@ -2717,18 +2812,20 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                                     crate::stdlib::snprintf(
                                         (*this).errStr.as_mut_ptr(),
                                         crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                                        b"%s\x00" as *const u8 as *const libc::c_char,
-                                        b"tjEncodeYUVPlanes(): Memory allocation failure\x00"
-                                            as *const u8
+                                        
+                                        b"%s\x00".as_ptr() as *const libc::c_char,
+                                        
+                                        b"tjEncodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                             as *const libc::c_char,
                                     );
                                     (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                                     crate::stdlib::snprintf(
                                         errStr.as_mut_ptr(),
                                         crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                                        b"%s\x00" as *const u8 as *const libc::c_char,
-                                        b"tjEncodeYUVPlanes(): Memory allocation failure\x00"
-                                            as *const u8
+                                        
+                                        b"%s\x00".as_ptr() as *const libc::c_char,
+                                        
+                                        b"tjEncodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                             as *const libc::c_char,
                                     );
                                     retval = -1i32;
@@ -2747,18 +2844,20 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                                         crate::stdlib::snprintf(
                                             (*this).errStr.as_mut_ptr(),
                                             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                                            b"%s\x00" as *const u8 as *const libc::c_char,
-                                            b"tjEncodeYUVPlanes(): Memory allocation failure\x00"
-                                                as *const u8
+                                            
+                                            b"%s\x00".as_ptr() as *const libc::c_char,
+                                            
+                                            b"tjEncodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                                 as *const libc::c_char,
                                         );
                                         (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                                         crate::stdlib::snprintf(
                                             errStr.as_mut_ptr(),
                                             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                                            b"%s\x00" as *const u8 as *const libc::c_char,
-                                            b"tjEncodeYUVPlanes(): Memory allocation failure\x00"
-                                                as *const u8
+                                            
+                                            b"%s\x00".as_ptr() as *const libc::c_char,
+                                            
+                                            b"tjEncodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                                 as *const libc::c_char,
                                         );
                                         retval = -1i32;
@@ -2802,19 +2901,21 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                                             crate::stdlib::snprintf((*this).errStr.as_mut_ptr(),
                                                      crate::jpeglib_h::JMSG_LENGTH_MAX as
                                                          libc::c_ulong,
-                                                     b"%s\x00" as *const u8 as
+                                                     
+                                                     b"%s\x00".as_ptr() as
                                                          *const libc::c_char,
-                                                     b"tjEncodeYUVPlanes(): Memory allocation failure\x00"
-                                                         as *const u8 as
+                                                     
+                                                     b"tjEncodeYUVPlanes(): Memory allocation failure\x00".as_ptr() as
                                                          *const libc::c_char);
                                             (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                                             crate::stdlib::snprintf(errStr.as_mut_ptr(),
                                                      crate::jpeglib_h::JMSG_LENGTH_MAX as
                                                          libc::c_ulong,
-                                                     b"%s\x00" as *const u8 as
+                                                     
+                                                     b"%s\x00".as_ptr() as
                                                          *const libc::c_char,
-                                                     b"tjEncodeYUVPlanes(): Memory allocation failure\x00"
-                                                         as *const u8 as
+                                                     
+                                                     b"tjEncodeYUVPlanes(): Memory allocation failure\x00".as_ptr() as
                                                          *const libc::c_char);
                                             retval = -1i32;
                                             current_block = 11274834565634332203;
@@ -3007,8 +3108,10 @@ pub unsafe extern "C" fn tjEncodeYUV3(
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjEncodeYUV3(): Invalid handle\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjEncodeYUV3(): Invalid handle\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32
     } else {
@@ -3024,15 +3127,19 @@ pub unsafe extern "C" fn tjEncodeYUV3(
             crate::stdlib::snprintf(
                 (*this).errStr.as_mut_ptr(),
                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                b"%s\x00" as *const u8 as *const libc::c_char,
-                b"tjEncodeYUV3(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+                
+                b"%s\x00".as_ptr() as *const libc::c_char,
+                
+                b"tjEncodeYUV3(): Invalid argument\x00".as_ptr() as *const libc::c_char,
             );
             (*this).isInstanceError = crate::jmorecfg_h::TRUE;
             crate::stdlib::snprintf(
                 errStr.as_mut_ptr(),
                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                b"%s\x00" as *const u8 as *const libc::c_char,
-                b"tjEncodeYUV3(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+                
+                b"%s\x00".as_ptr() as *const libc::c_char,
+                
+                b"tjEncodeYUV3(): Invalid argument\x00".as_ptr() as *const libc::c_char,
             );
             retval = -1i32
         } else {
@@ -3225,7 +3332,8 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"Invalid handle\x00" as *const u8 as *const libc::c_char,
+            
+            b"Invalid handle\x00".as_ptr() as *const libc::c_char,
         );
         return -1i32;
     }
@@ -3247,17 +3355,19 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
         crate::stdlib::snprintf(
             (*this).errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjCompressFromYUVPlanes(): Instance has not been initialized for compression\x00"
-                as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjCompressFromYUVPlanes(): Instance has not been initialized for compression\x00".as_ptr() as *const libc::c_char,
         );
         (*this).isInstanceError = crate::jmorecfg_h::TRUE;
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjCompressFromYUVPlanes(): Instance has not been initialized for compression\x00"
-                as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjCompressFromYUVPlanes(): Instance has not been initialized for compression\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32
     } else if srcPlanes.is_null()
@@ -3274,15 +3384,19 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
         crate::stdlib::snprintf(
             (*this).errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjCompressFromYUVPlanes(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjCompressFromYUVPlanes(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         (*this).isInstanceError = crate::jmorecfg_h::TRUE;
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjCompressFromYUVPlanes(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjCompressFromYUVPlanes(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32
     } else if subsamp != crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int
@@ -3291,15 +3405,19 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
         crate::stdlib::snprintf(
             (*this).errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjCompressFromYUVPlanes(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjCompressFromYUVPlanes(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         (*this).isInstanceError = crate::jmorecfg_h::TRUE;
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjCompressFromYUVPlanes(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjCompressFromYUVPlanes(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32
     } else if crate::stdlib::_setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
@@ -3310,15 +3428,18 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
         (*cinfo).image_height = height as crate::jmorecfg_h::JDIMENSION;
         if flags & crate::src::turbojpeg::TJFLAG_FORCEMMX != 0 {
             crate::stdlib::putenv(
-                b"JSIMD_FORCEMMX=1\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                
+                b"JSIMD_FORCEMMX=1\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
             );
         } else if flags & crate::src::turbojpeg::TJFLAG_FORCESSE != 0 {
             crate::stdlib::putenv(
-                b"JSIMD_FORCESSE=1\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                
+                b"JSIMD_FORCESSE=1\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
             );
         } else if flags & crate::src::turbojpeg::TJFLAG_FORCESSE2 != 0 {
             crate::stdlib::putenv(
-                b"JSIMD_FORCESSE2=1\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                
+                b"JSIMD_FORCESSE2=1\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
             );
         }
         if flags & crate::src::turbojpeg::TJFLAG_NOREALLOC != 0 {
@@ -3385,16 +3506,20 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
                 crate::stdlib::snprintf(
                     (*this).errStr.as_mut_ptr(),
                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                    b"%s\x00" as *const u8 as *const libc::c_char,
-                    b"tjCompressFromYUVPlanes(): Memory allocation failure\x00" as *const u8
+                    
+                    b"%s\x00".as_ptr() as *const libc::c_char,
+                    
+                    b"tjCompressFromYUVPlanes(): Memory allocation failure\x00".as_ptr()
                         as *const libc::c_char,
                 );
                 (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                 crate::stdlib::snprintf(
                     errStr.as_mut_ptr(),
                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                    b"%s\x00" as *const u8 as *const libc::c_char,
-                    b"tjCompressFromYUVPlanes(): Memory allocation failure\x00" as *const u8
+                    
+                    b"%s\x00".as_ptr() as *const libc::c_char,
+                    
+                    b"tjCompressFromYUVPlanes(): Memory allocation failure\x00".as_ptr()
                         as *const libc::c_char,
                 );
                 retval = -1i32;
@@ -3430,16 +3555,20 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
                         crate::stdlib::snprintf(
                             (*this).errStr.as_mut_ptr(),
                             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                            b"%s\x00" as *const u8 as *const libc::c_char,
-                            b"tjCompressFromYUVPlanes(): Memory allocation failure\x00" as *const u8
+                            
+                            b"%s\x00".as_ptr() as *const libc::c_char,
+                            
+                            b"tjCompressFromYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                 as *const libc::c_char,
                         );
                         (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                         crate::stdlib::snprintf(
                             errStr.as_mut_ptr(),
                             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                            b"%s\x00" as *const u8 as *const libc::c_char,
-                            b"tjCompressFromYUVPlanes(): Memory allocation failure\x00" as *const u8
+                            
+                            b"%s\x00".as_ptr() as *const libc::c_char,
+                            
+                            b"tjCompressFromYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                 as *const libc::c_char,
                         );
                         retval = -1i32;
@@ -3462,18 +3591,20 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
                                 crate::stdlib::snprintf(
                                     (*this).errStr.as_mut_ptr(),
                                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                                    b"%s\x00" as *const u8 as *const libc::c_char,
-                                    b"tjCompressFromYUVPlanes(): Memory allocation failure\x00"
-                                        as *const u8
+                                    
+                                    b"%s\x00".as_ptr() as *const libc::c_char,
+                                    
+                                    b"tjCompressFromYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                         as *const libc::c_char,
                                 );
                                 (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                                 crate::stdlib::snprintf(
                                     errStr.as_mut_ptr(),
                                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                                    b"%s\x00" as *const u8 as *const libc::c_char,
-                                    b"tjCompressFromYUVPlanes(): Memory allocation failure\x00"
-                                        as *const u8
+                                    
+                                    b"%s\x00".as_ptr() as *const libc::c_char,
+                                    
+                                    b"tjCompressFromYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                         as *const libc::c_char,
                                 );
                                 retval = -1i32;
@@ -3690,8 +3821,10 @@ pub unsafe extern "C" fn tjCompressFromYUV(
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjCompressFromYUV(): Invalid handle\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjCompressFromYUV(): Invalid handle\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32
     } else {
@@ -3706,15 +3839,19 @@ pub unsafe extern "C" fn tjCompressFromYUV(
             crate::stdlib::snprintf(
                 (*this).errStr.as_mut_ptr(),
                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                b"%s\x00" as *const u8 as *const libc::c_char,
-                b"tjCompressFromYUV(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+                
+                b"%s\x00".as_ptr() as *const libc::c_char,
+                
+                b"tjCompressFromYUV(): Invalid argument\x00".as_ptr() as *const libc::c_char,
             );
             (*this).isInstanceError = crate::jmorecfg_h::TRUE;
             crate::stdlib::snprintf(
                 errStr.as_mut_ptr(),
                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                b"%s\x00" as *const u8 as *const libc::c_char,
-                b"tjCompressFromYUV(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+                
+                b"%s\x00".as_ptr() as *const libc::c_char,
+                
+                b"tjCompressFromYUV(): Invalid argument\x00".as_ptr() as *const libc::c_char,
             );
             retval = -1i32
         } else {
@@ -3808,7 +3945,8 @@ pub unsafe extern "C" fn tjInitDecompress() -> crate::src::turbojpeg::tjhandle {
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"tjInitDecompress(): Memory allocation failure\x00" as *const u8
+            
+            b"tjInitDecompress(): Memory allocation failure\x00".as_ptr()
                 as *const libc::c_char,
         );
         return crate::stddef_h::NULL as *mut libc::c_void;
@@ -3821,7 +3959,8 @@ pub unsafe extern "C" fn tjInitDecompress() -> crate::src::turbojpeg::tjhandle {
     crate::stdlib::snprintf(
         (*this).errStr.as_mut_ptr(),
         crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-        b"No error\x00" as *const u8 as *const libc::c_char,
+        
+        b"No error\x00".as_ptr() as *const libc::c_char,
     );
     return _tjInitDecompress(this);
 }
@@ -3870,7 +4009,8 @@ pub unsafe extern "C" fn tjDecompressHeader3(
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"Invalid handle\x00" as *const u8 as *const libc::c_char,
+            
+            b"Invalid handle\x00".as_ptr() as *const libc::c_char,
         );
         return -1i32;
     }
@@ -3881,17 +4021,19 @@ pub unsafe extern "C" fn tjDecompressHeader3(
         crate::stdlib::snprintf(
             (*this).errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjDecompressHeader3(): Instance has not been initialized for decompression\x00"
-                as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjDecompressHeader3(): Instance has not been initialized for decompression\x00".as_ptr() as *const libc::c_char,
         );
         (*this).isInstanceError = crate::jmorecfg_h::TRUE;
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjDecompressHeader3(): Instance has not been initialized for decompression\x00"
-                as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjDecompressHeader3(): Instance has not been initialized for decompression\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32
     } else if jpegBuf.is_null()
@@ -3904,15 +4046,19 @@ pub unsafe extern "C" fn tjDecompressHeader3(
         crate::stdlib::snprintf(
             (*this).errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjDecompressHeader3(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjDecompressHeader3(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         (*this).isInstanceError = crate::jmorecfg_h::TRUE;
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjDecompressHeader3(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjDecompressHeader3(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32
     } else {
@@ -3938,50 +4084,58 @@ pub unsafe extern "C" fn tjDecompressHeader3(
             crate::stdlib::snprintf(
                 (*this).errStr.as_mut_ptr(),
                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                b"%s\x00" as *const u8 as *const libc::c_char,
-                b"tjDecompressHeader3(): Could not determine subsampling type for JPEG image\x00"
-                    as *const u8 as *const libc::c_char,
+                
+                b"%s\x00".as_ptr() as *const libc::c_char,
+                
+                b"tjDecompressHeader3(): Could not determine subsampling type for JPEG image\x00".as_ptr() as *const libc::c_char,
             );
             (*this).isInstanceError = crate::jmorecfg_h::TRUE;
             crate::stdlib::snprintf(
                 errStr.as_mut_ptr(),
                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                b"%s\x00" as *const u8 as *const libc::c_char,
-                b"tjDecompressHeader3(): Could not determine subsampling type for JPEG image\x00"
-                    as *const u8 as *const libc::c_char,
+                
+                b"%s\x00".as_ptr() as *const libc::c_char,
+                
+                b"tjDecompressHeader3(): Could not determine subsampling type for JPEG image\x00".as_ptr() as *const libc::c_char,
             );
             retval = -1i32
         } else if *jpegColorspace < 0i32 {
             crate::stdlib::snprintf(
                 (*this).errStr.as_mut_ptr(),
                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                b"%s\x00" as *const u8 as *const libc::c_char,
-                b"tjDecompressHeader3(): Could not determine colorspace of JPEG image\x00"
-                    as *const u8 as *const libc::c_char,
+                
+                b"%s\x00".as_ptr() as *const libc::c_char,
+                
+                b"tjDecompressHeader3(): Could not determine colorspace of JPEG image\x00".as_ptr() as *const libc::c_char,
             );
             (*this).isInstanceError = crate::jmorecfg_h::TRUE;
             crate::stdlib::snprintf(
                 errStr.as_mut_ptr(),
                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                b"%s\x00" as *const u8 as *const libc::c_char,
-                b"tjDecompressHeader3(): Could not determine colorspace of JPEG image\x00"
-                    as *const u8 as *const libc::c_char,
+                
+                b"%s\x00".as_ptr() as *const libc::c_char,
+                
+                b"tjDecompressHeader3(): Could not determine colorspace of JPEG image\x00".as_ptr() as *const libc::c_char,
             );
             retval = -1i32
         } else if *width < 1i32 || *height < 1i32 {
             crate::stdlib::snprintf(
                 (*this).errStr.as_mut_ptr(),
                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                b"%s\x00" as *const u8 as *const libc::c_char,
-                b"tjDecompressHeader3(): Invalid data returned in header\x00" as *const u8
+                
+                b"%s\x00".as_ptr() as *const libc::c_char,
+                
+                b"tjDecompressHeader3(): Invalid data returned in header\x00".as_ptr()
                     as *const libc::c_char,
             );
             (*this).isInstanceError = crate::jmorecfg_h::TRUE;
             crate::stdlib::snprintf(
                 errStr.as_mut_ptr(),
                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                b"%s\x00" as *const u8 as *const libc::c_char,
-                b"tjDecompressHeader3(): Invalid data returned in header\x00" as *const u8
+                
+                b"%s\x00".as_ptr() as *const libc::c_char,
+                
+                b"tjDecompressHeader3(): Invalid data returned in header\x00".as_ptr()
                     as *const libc::c_char,
             );
             retval = -1i32
@@ -4044,7 +4198,8 @@ pub unsafe extern "C" fn tjGetScalingFactors(
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"tjGetScalingFactors(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"tjGetScalingFactors(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         return crate::stddef_h::NULL as *mut crate::src::turbojpeg::tjscalingfactor;
     }
@@ -4129,7 +4284,8 @@ pub unsafe extern "C" fn tjDecompress2(
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"Invalid handle\x00" as *const u8 as *const libc::c_char,
+            
+            b"Invalid handle\x00".as_ptr() as *const libc::c_char,
         );
         return -1i32;
     }
@@ -4145,16 +4301,20 @@ pub unsafe extern "C" fn tjDecompress2(
         crate::stdlib::snprintf(
             (*this).errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjDecompress2(): Instance has not been initialized for decompression\x00" as *const u8
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjDecompress2(): Instance has not been initialized for decompression\x00".as_ptr()
                 as *const libc::c_char,
         );
         (*this).isInstanceError = crate::jmorecfg_h::TRUE;
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjDecompress2(): Instance has not been initialized for decompression\x00" as *const u8
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjDecompress2(): Instance has not been initialized for decompression\x00".as_ptr()
                 as *const libc::c_char,
         );
         retval = -1i32
@@ -4170,29 +4330,36 @@ pub unsafe extern "C" fn tjDecompress2(
         crate::stdlib::snprintf(
             (*this).errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjDecompress2(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjDecompress2(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         (*this).isInstanceError = crate::jmorecfg_h::TRUE;
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjDecompress2(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjDecompress2(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32
     } else {
         if flags & crate::src::turbojpeg::TJFLAG_FORCEMMX != 0 {
             crate::stdlib::putenv(
-                b"JSIMD_FORCEMMX=1\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                
+                b"JSIMD_FORCEMMX=1\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
             );
         } else if flags & crate::src::turbojpeg::TJFLAG_FORCESSE != 0 {
             crate::stdlib::putenv(
-                b"JSIMD_FORCESSE=1\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                
+                b"JSIMD_FORCESSE=1\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
             );
         } else if flags & crate::src::turbojpeg::TJFLAG_FORCESSE2 != 0 {
             crate::stdlib::putenv(
-                b"JSIMD_FORCESSE2=1\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                
+                b"JSIMD_FORCESSE2=1\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
             );
         }
         if crate::stdlib::_setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
@@ -4232,17 +4399,19 @@ pub unsafe extern "C" fn tjDecompress2(
                 crate::stdlib::snprintf(
                     (*this).errStr.as_mut_ptr(),
                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                    b"%s\x00" as *const u8 as *const libc::c_char,
-                    b"tjDecompress2(): Could not scale down to desired image dimensions\x00"
-                        as *const u8 as *const libc::c_char,
+                    
+                    b"%s\x00".as_ptr() as *const libc::c_char,
+                    
+                    b"tjDecompress2(): Could not scale down to desired image dimensions\x00".as_ptr() as *const libc::c_char,
                 );
                 (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                 crate::stdlib::snprintf(
                     errStr.as_mut_ptr(),
                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                    b"%s\x00" as *const u8 as *const libc::c_char,
-                    b"tjDecompress2(): Could not scale down to desired image dimensions\x00"
-                        as *const u8 as *const libc::c_char,
+                    
+                    b"%s\x00".as_ptr() as *const libc::c_char,
+                    
+                    b"tjDecompress2(): Could not scale down to desired image dimensions\x00".as_ptr() as *const libc::c_char,
                 );
                 retval = -1i32
             } else {
@@ -4264,16 +4433,20 @@ pub unsafe extern "C" fn tjDecompress2(
                     crate::stdlib::snprintf(
                         (*this).errStr.as_mut_ptr(),
                         crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                        b"%s\x00" as *const u8 as *const libc::c_char,
-                        b"tjDecompress2(): Memory allocation failure\x00" as *const u8
+                        
+                        b"%s\x00".as_ptr() as *const libc::c_char,
+                        
+                        b"tjDecompress2(): Memory allocation failure\x00".as_ptr()
                             as *const libc::c_char,
                     );
                     (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                     crate::stdlib::snprintf(
                         errStr.as_mut_ptr(),
                         crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                        b"%s\x00" as *const u8 as *const libc::c_char,
-                        b"tjDecompress2(): Memory allocation failure\x00" as *const u8
+                        
+                        b"%s\x00".as_ptr() as *const libc::c_char,
+                        
+                        b"tjDecompress2(): Memory allocation failure\x00".as_ptr()
                             as *const libc::c_char,
                     );
                     retval = -1i32
@@ -4529,7 +4702,8 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"Invalid handle\x00" as *const u8 as *const libc::c_char,
+            
+            b"Invalid handle\x00".as_ptr() as *const libc::c_char,
         );
         return -1i32;
     }
@@ -4552,17 +4726,19 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
         crate::stdlib::snprintf(
             (*this).errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjDecodeYUVPlanes(): Instance has not been initialized for decompression\x00"
-                as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjDecodeYUVPlanes(): Instance has not been initialized for decompression\x00".as_ptr() as *const libc::c_char,
         );
         (*this).isInstanceError = crate::jmorecfg_h::TRUE;
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjDecodeYUVPlanes(): Instance has not been initialized for decompression\x00"
-                as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjDecodeYUVPlanes(): Instance has not been initialized for decompression\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32
     } else if srcPlanes.is_null()
@@ -4579,15 +4755,19 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
         crate::stdlib::snprintf(
             (*this).errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjDecodeYUVPlanes(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjDecodeYUVPlanes(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         (*this).isInstanceError = crate::jmorecfg_h::TRUE;
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjDecodeYUVPlanes(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjDecodeYUVPlanes(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32
     } else if subsamp != crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int
@@ -4596,15 +4776,19 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
         crate::stdlib::snprintf(
             (*this).errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjDecodeYUVPlanes(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjDecodeYUVPlanes(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         (*this).isInstanceError = crate::jmorecfg_h::TRUE;
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjDecodeYUVPlanes(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjDecodeYUVPlanes(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32
     } else if crate::stdlib::_setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
@@ -4614,16 +4798,20 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
         crate::stdlib::snprintf(
             (*this).errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjDecodeYUVPlanes(): Cannot decode YUV images into CMYK pixels.\x00" as *const u8
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjDecodeYUVPlanes(): Cannot decode YUV images into CMYK pixels.\x00".as_ptr()
                 as *const libc::c_char,
         );
         (*this).isInstanceError = crate::jmorecfg_h::TRUE;
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjDecodeYUVPlanes(): Cannot decode YUV images into CMYK pixels.\x00" as *const u8
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjDecodeYUVPlanes(): Cannot decode YUV images into CMYK pixels.\x00".as_ptr()
                 as *const libc::c_char,
         );
         retval = -1i32
@@ -4635,15 +4823,18 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
         (*dinfo).image_height = height as crate::jmorecfg_h::JDIMENSION;
         if flags & crate::src::turbojpeg::TJFLAG_FORCEMMX != 0 {
             crate::stdlib::putenv(
-                b"JSIMD_FORCEMMX=1\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                
+                b"JSIMD_FORCEMMX=1\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
             );
         } else if flags & crate::src::turbojpeg::TJFLAG_FORCESSE != 0 {
             crate::stdlib::putenv(
-                b"JSIMD_FORCESSE=1\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                
+                b"JSIMD_FORCESSE=1\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
             );
         } else if flags & crate::src::turbojpeg::TJFLAG_FORCESSE2 != 0 {
             crate::stdlib::putenv(
-                b"JSIMD_FORCESSE2=1\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                
+                b"JSIMD_FORCESSE2=1\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
             );
         }
         if setDecodeDefaults(dinfo, pixelFormat, subsamp, flags) == -1i32 {
@@ -4691,16 +4882,20 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
                 crate::stdlib::snprintf(
                     (*this).errStr.as_mut_ptr(),
                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                    b"%s\x00" as *const u8 as *const libc::c_char,
-                    b"tjDecodeYUVPlanes(): Memory allocation failure\x00" as *const u8
+                    
+                    b"%s\x00".as_ptr() as *const libc::c_char,
+                    
+                    b"tjDecodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                         as *const libc::c_char,
                 );
                 (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                 crate::stdlib::snprintf(
                     errStr.as_mut_ptr(),
                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                    b"%s\x00" as *const u8 as *const libc::c_char,
-                    b"tjDecodeYUVPlanes(): Memory allocation failure\x00" as *const u8
+                    
+                    b"%s\x00".as_ptr() as *const libc::c_char,
+                    
+                    b"tjDecodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                         as *const libc::c_char,
                 );
                 retval = -1i32
@@ -4748,16 +4943,20 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
                         crate::stdlib::snprintf(
                             (*this).errStr.as_mut_ptr(),
                             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                            b"%s\x00" as *const u8 as *const libc::c_char,
-                            b"tjDecodeYUVPlanes(): Memory allocation failure\x00" as *const u8
+                            
+                            b"%s\x00".as_ptr() as *const libc::c_char,
+                            
+                            b"tjDecodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                 as *const libc::c_char,
                         );
                         (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                         crate::stdlib::snprintf(
                             errStr.as_mut_ptr(),
                             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                            b"%s\x00" as *const u8 as *const libc::c_char,
-                            b"tjDecodeYUVPlanes(): Memory allocation failure\x00" as *const u8
+                            
+                            b"%s\x00".as_ptr() as *const libc::c_char,
+                            
+                            b"tjDecodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                 as *const libc::c_char,
                         );
                         retval = -1i32;
@@ -4773,16 +4972,20 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
                             crate::stdlib::snprintf(
                                 (*this).errStr.as_mut_ptr(),
                                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                                b"%s\x00" as *const u8 as *const libc::c_char,
-                                b"tjDecodeYUVPlanes(): Memory allocation failure\x00" as *const u8
+                                
+                                b"%s\x00".as_ptr() as *const libc::c_char,
+                                
+                                b"tjDecodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                     as *const libc::c_char,
                             );
                             (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                             crate::stdlib::snprintf(
                                 errStr.as_mut_ptr(),
                                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                                b"%s\x00" as *const u8 as *const libc::c_char,
-                                b"tjDecodeYUVPlanes(): Memory allocation failure\x00" as *const u8
+                                
+                                b"%s\x00".as_ptr() as *const libc::c_char,
+                                
+                                b"tjDecodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                     as *const libc::c_char,
                             );
                             retval = -1i32;
@@ -4824,18 +5027,20 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
                                 crate::stdlib::snprintf(
                                     (*this).errStr.as_mut_ptr(),
                                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                                    b"%s\x00" as *const u8 as *const libc::c_char,
-                                    b"tjDecodeYUVPlanes(): Memory allocation failure\x00"
-                                        as *const u8
+                                    
+                                    b"%s\x00".as_ptr() as *const libc::c_char,
+                                    
+                                    b"tjDecodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                         as *const libc::c_char,
                                 );
                                 (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                                 crate::stdlib::snprintf(
                                     errStr.as_mut_ptr(),
                                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                                    b"%s\x00" as *const u8 as *const libc::c_char,
-                                    b"tjDecodeYUVPlanes(): Memory allocation failure\x00"
-                                        as *const u8
+                                    
+                                    b"%s\x00".as_ptr() as *const libc::c_char,
+                                    
+                                    b"tjDecodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                         as *const libc::c_char,
                                 );
                                 retval = -1i32;
@@ -5007,8 +5212,10 @@ pub unsafe extern "C" fn tjDecodeYUV(
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjDecodeYUV(): Invalid handle\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjDecodeYUV(): Invalid handle\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32
     } else {
@@ -5024,15 +5231,19 @@ pub unsafe extern "C" fn tjDecodeYUV(
             crate::stdlib::snprintf(
                 (*this).errStr.as_mut_ptr(),
                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                b"%s\x00" as *const u8 as *const libc::c_char,
-                b"tjDecodeYUV(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+                
+                b"%s\x00".as_ptr() as *const libc::c_char,
+                
+                b"tjDecodeYUV(): Invalid argument\x00".as_ptr() as *const libc::c_char,
             );
             (*this).isInstanceError = crate::jmorecfg_h::TRUE;
             crate::stdlib::snprintf(
                 errStr.as_mut_ptr(),
                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                b"%s\x00" as *const u8 as *const libc::c_char,
-                b"tjDecodeYUV(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+                
+                b"%s\x00".as_ptr() as *const libc::c_char,
+                
+                b"tjDecodeYUV(): Invalid argument\x00".as_ptr() as *const libc::c_char,
             );
             retval = -1i32
         } else {
@@ -5164,7 +5375,8 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"Invalid handle\x00" as *const u8 as *const libc::c_char,
+            
+            b"Invalid handle\x00".as_ptr() as *const libc::c_char,
         );
         return -1i32;
     }
@@ -5186,17 +5398,19 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
         crate::stdlib::snprintf(
             (*this).errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjDecompressToYUVPlanes(): Instance has not been initialized for decompression\x00"
-                as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjDecompressToYUVPlanes(): Instance has not been initialized for decompression\x00".as_ptr() as *const libc::c_char,
         );
         (*this).isInstanceError = crate::jmorecfg_h::TRUE;
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjDecompressToYUVPlanes(): Instance has not been initialized for decompression\x00"
-                as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjDecompressToYUVPlanes(): Instance has not been initialized for decompression\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32
     } else if jpegBuf.is_null()
@@ -5209,29 +5423,36 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
         crate::stdlib::snprintf(
             (*this).errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjDecompressToYUVPlanes(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjDecompressToYUVPlanes(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         (*this).isInstanceError = crate::jmorecfg_h::TRUE;
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjDecompressToYUVPlanes(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjDecompressToYUVPlanes(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32
     } else {
         if flags & crate::src::turbojpeg::TJFLAG_FORCEMMX != 0 {
             crate::stdlib::putenv(
-                b"JSIMD_FORCEMMX=1\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                
+                b"JSIMD_FORCEMMX=1\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
             );
         } else if flags & crate::src::turbojpeg::TJFLAG_FORCESSE != 0 {
             crate::stdlib::putenv(
-                b"JSIMD_FORCESSE=1\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                
+                b"JSIMD_FORCESSE=1\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
             );
         } else if flags & crate::src::turbojpeg::TJFLAG_FORCESSE2 != 0 {
             crate::stdlib::putenv(
-                b"JSIMD_FORCESSE2=1\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                
+                b"JSIMD_FORCESSE2=1\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
             );
         }
         if crate::stdlib::_setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
@@ -5247,15 +5468,17 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
             if jpegSubsamp < 0i32 {
                 crate::stdlib::snprintf((*this).errStr.as_mut_ptr(),
                          crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                         b"%s\x00" as *const u8 as *const libc::c_char,
-                         b"tjDecompressToYUVPlanes(): Could not determine subsampling type for JPEG image\x00"
-                             as *const u8 as *const libc::c_char);
+                         
+                         b"%s\x00".as_ptr() as *const libc::c_char,
+                         
+                         b"tjDecompressToYUVPlanes(): Could not determine subsampling type for JPEG image\x00".as_ptr() as *const libc::c_char);
                 (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                 crate::stdlib::snprintf(errStr.as_mut_ptr(),
                          crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                         b"%s\x00" as *const u8 as *const libc::c_char,
-                         b"tjDecompressToYUVPlanes(): Could not determine subsampling type for JPEG image\x00"
-                             as *const u8 as *const libc::c_char);
+                         
+                         b"%s\x00".as_ptr() as *const libc::c_char,
+                         
+                         b"tjDecompressToYUVPlanes(): Could not determine subsampling type for JPEG image\x00".as_ptr() as *const libc::c_char);
                 retval = -1i32
             } else if jpegSubsamp != crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int
                 && ((*dstPlanes.offset(1)).is_null() || (*dstPlanes.offset(2)).is_null())
@@ -5263,16 +5486,20 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                 crate::stdlib::snprintf(
                     (*this).errStr.as_mut_ptr(),
                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                    b"%s\x00" as *const u8 as *const libc::c_char,
-                    b"tjDecompressToYUVPlanes(): Invalid argument\x00" as *const u8
+                    
+                    b"%s\x00".as_ptr() as *const libc::c_char,
+                    
+                    b"tjDecompressToYUVPlanes(): Invalid argument\x00".as_ptr()
                         as *const libc::c_char,
                 );
                 (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                 crate::stdlib::snprintf(
                     errStr.as_mut_ptr(),
                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                    b"%s\x00" as *const u8 as *const libc::c_char,
-                    b"tjDecompressToYUVPlanes(): Invalid argument\x00" as *const u8
+                    
+                    b"%s\x00".as_ptr() as *const libc::c_char,
+                    
+                    b"tjDecompressToYUVPlanes(): Invalid argument\x00".as_ptr()
                         as *const libc::c_char,
                 );
                 retval = -1i32
@@ -5299,31 +5526,35 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                 if i >= NUMSF {
                     crate::stdlib::snprintf((*this).errStr.as_mut_ptr(),
                              crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                             b"%s\x00" as *const u8 as *const libc::c_char,
-                             b"tjDecompressToYUVPlanes(): Could not scale down to desired image dimensions\x00"
-                                 as *const u8 as *const libc::c_char);
+                             
+                             b"%s\x00".as_ptr() as *const libc::c_char,
+                             
+                             b"tjDecompressToYUVPlanes(): Could not scale down to desired image dimensions\x00".as_ptr() as *const libc::c_char);
                     (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                     crate::stdlib::snprintf(errStr.as_mut_ptr(),
                              crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                             b"%s\x00" as *const u8 as *const libc::c_char,
-                             b"tjDecompressToYUVPlanes(): Could not scale down to desired image dimensions\x00"
-                                 as *const u8 as *const libc::c_char);
+                             
+                             b"%s\x00".as_ptr() as *const libc::c_char,
+                             
+                             b"tjDecompressToYUVPlanes(): Could not scale down to desired image dimensions\x00".as_ptr() as *const libc::c_char);
                     retval = -1i32
                 } else if (*dinfo).num_components > 3i32 {
                     crate::stdlib::snprintf(
                         (*this).errStr.as_mut_ptr(),
                         crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                        b"%s\x00" as *const u8 as *const libc::c_char,
-                        b"tjDecompressToYUVPlanes(): JPEG image must have 3 or fewer components\x00"
-                            as *const u8 as *const libc::c_char,
+                        
+                        b"%s\x00".as_ptr() as *const libc::c_char,
+                        
+                        b"tjDecompressToYUVPlanes(): JPEG image must have 3 or fewer components\x00".as_ptr() as *const libc::c_char,
                     );
                     (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                     crate::stdlib::snprintf(
                         errStr.as_mut_ptr(),
                         crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                        b"%s\x00" as *const u8 as *const libc::c_char,
-                        b"tjDecompressToYUVPlanes(): JPEG image must have 3 or fewer components\x00"
-                            as *const u8 as *const libc::c_char,
+                        
+                        b"%s\x00".as_ptr() as *const libc::c_char,
+                        
+                        b"tjDecompressToYUVPlanes(): JPEG image must have 3 or fewer components\x00".as_ptr() as *const libc::c_char,
                     );
                     retval = -1i32
                 } else {
@@ -5383,18 +5614,20 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                             crate::stdlib::snprintf(
                                 (*this).errStr.as_mut_ptr(),
                                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                                b"%s\x00" as *const u8 as *const libc::c_char,
-                                b"tjDecompressToYUVPlanes(): Memory allocation failure\x00"
-                                    as *const u8
+                                
+                                b"%s\x00".as_ptr() as *const libc::c_char,
+                                
+                                b"tjDecompressToYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                     as *const libc::c_char,
                             );
                             (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                             crate::stdlib::snprintf(
                                 errStr.as_mut_ptr(),
                                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                                b"%s\x00" as *const u8 as *const libc::c_char,
-                                b"tjDecompressToYUVPlanes(): Memory allocation failure\x00"
-                                    as *const u8
+                                
+                                b"%s\x00".as_ptr() as *const libc::c_char,
+                                
+                                b"tjDecompressToYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                     as *const libc::c_char,
                             );
                             retval = -1i32;
@@ -5432,18 +5665,20 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                                     crate::stdlib::snprintf(
                                         (*this).errStr.as_mut_ptr(),
                                         crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                                        b"%s\x00" as *const u8 as *const libc::c_char,
-                                        b"tjDecompressToYUVPlanes(): Memory allocation failure\x00"
-                                            as *const u8
+                                        
+                                        b"%s\x00".as_ptr() as *const libc::c_char,
+                                        
+                                        b"tjDecompressToYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                             as *const libc::c_char,
                                     );
                                     (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                                     crate::stdlib::snprintf(
                                         errStr.as_mut_ptr(),
                                         crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                                        b"%s\x00" as *const u8 as *const libc::c_char,
-                                        b"tjDecompressToYUVPlanes(): Memory allocation failure\x00"
-                                            as *const u8
+                                        
+                                        b"%s\x00".as_ptr() as *const libc::c_char,
+                                        
+                                        b"tjDecompressToYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                             as *const libc::c_char,
                                     );
                                     retval = -1i32;
@@ -5466,19 +5701,21 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                                             crate::stdlib::snprintf((*this).errStr.as_mut_ptr(),
                                                      crate::jpeglib_h::JMSG_LENGTH_MAX as
                                                          libc::c_ulong,
-                                                     b"%s\x00" as *const u8 as
+                                                     
+                                                     b"%s\x00".as_ptr() as
                                                          *const libc::c_char,
-                                                     b"tjDecompressToYUVPlanes(): Memory allocation failure\x00"
-                                                         as *const u8 as
+                                                     
+                                                     b"tjDecompressToYUVPlanes(): Memory allocation failure\x00".as_ptr() as
                                                          *const libc::c_char);
                                             (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                                             crate::stdlib::snprintf(errStr.as_mut_ptr(),
                                                      crate::jpeglib_h::JMSG_LENGTH_MAX as
                                                          libc::c_ulong,
-                                                     b"%s\x00" as *const u8 as
+                                                     
+                                                     b"%s\x00".as_ptr() as
                                                          *const libc::c_char,
-                                                     b"tjDecompressToYUVPlanes(): Memory allocation failure\x00"
-                                                         as *const u8 as
+                                                     
+                                                     b"tjDecompressToYUVPlanes(): Memory allocation failure\x00".as_ptr() as
                                                          *const libc::c_char);
                                             retval = -1i32;
                                             current_block = 12580004273960699447;
@@ -5714,7 +5951,8 @@ pub unsafe extern "C" fn tjDecompressToYUV2(
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"Invalid handle\x00" as *const u8 as *const libc::c_char,
+            
+            b"Invalid handle\x00".as_ptr() as *const libc::c_char,
         );
         return -1i32;
     }
@@ -5737,15 +5975,19 @@ pub unsafe extern "C" fn tjDecompressToYUV2(
         crate::stdlib::snprintf(
             (*this).errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjDecompressToYUV2(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjDecompressToYUV2(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         (*this).isInstanceError = crate::jmorecfg_h::TRUE;
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjDecompressToYUV2(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjDecompressToYUV2(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32
     } else {
@@ -5760,17 +6002,19 @@ pub unsafe extern "C" fn tjDecompressToYUV2(
             crate::stdlib::snprintf(
                 (*this).errStr.as_mut_ptr(),
                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                b"%s\x00" as *const u8 as *const libc::c_char,
-                b"tjDecompressToYUV2(): Could not determine subsampling type for JPEG image\x00"
-                    as *const u8 as *const libc::c_char,
+                
+                b"%s\x00".as_ptr() as *const libc::c_char,
+                
+                b"tjDecompressToYUV2(): Could not determine subsampling type for JPEG image\x00".as_ptr() as *const libc::c_char,
             );
             (*this).isInstanceError = crate::jmorecfg_h::TRUE;
             crate::stdlib::snprintf(
                 errStr.as_mut_ptr(),
                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                b"%s\x00" as *const u8 as *const libc::c_char,
-                b"tjDecompressToYUV2(): Could not determine subsampling type for JPEG image\x00"
-                    as *const u8 as *const libc::c_char,
+                
+                b"%s\x00".as_ptr() as *const libc::c_char,
+                
+                b"tjDecompressToYUV2(): Could not determine subsampling type for JPEG image\x00".as_ptr() as *const libc::c_char,
             );
             retval = -1i32
         } else {
@@ -5797,17 +6041,19 @@ pub unsafe extern "C" fn tjDecompressToYUV2(
                 crate::stdlib::snprintf(
                     (*this).errStr.as_mut_ptr(),
                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                    b"%s\x00" as *const u8 as *const libc::c_char,
-                    b"tjDecompressToYUV2(): Could not scale down to desired image dimensions\x00"
-                        as *const u8 as *const libc::c_char,
+                    
+                    b"%s\x00".as_ptr() as *const libc::c_char,
+                    
+                    b"tjDecompressToYUV2(): Could not scale down to desired image dimensions\x00".as_ptr() as *const libc::c_char,
                 );
                 (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                 crate::stdlib::snprintf(
                     errStr.as_mut_ptr(),
                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                    b"%s\x00" as *const u8 as *const libc::c_char,
-                    b"tjDecompressToYUV2(): Could not scale down to desired image dimensions\x00"
-                        as *const u8 as *const libc::c_char,
+                    
+                    b"%s\x00".as_ptr() as *const libc::c_char,
+                    
+                    b"tjDecompressToYUV2(): Could not scale down to desired image dimensions\x00".as_ptr() as *const libc::c_char,
                 );
                 retval = -1i32
             } else {
@@ -5874,7 +6120,8 @@ pub unsafe extern "C" fn tjInitTransform() -> crate::src::turbojpeg::tjhandle {
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"tjInitTransform(): Memory allocation failure\x00" as *const u8 as *const libc::c_char,
+            
+            b"tjInitTransform(): Memory allocation failure\x00".as_ptr() as *const libc::c_char,
         );
         return crate::stddef_h::NULL as *mut libc::c_void;
     }
@@ -5886,7 +6133,8 @@ pub unsafe extern "C" fn tjInitTransform() -> crate::src::turbojpeg::tjhandle {
     crate::stdlib::snprintf(
         (*this).errStr.as_mut_ptr(),
         crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-        b"No error\x00" as *const u8 as *const libc::c_char,
+        
+        b"No error\x00".as_ptr() as *const libc::c_char,
     );
     handle = _tjInitCompress(this);
     if handle.is_null() {
@@ -5987,7 +6235,8 @@ pub unsafe extern "C" fn tjTransform(
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"Invalid handle\x00" as *const u8 as *const libc::c_char,
+            
+            b"Invalid handle\x00".as_ptr() as *const libc::c_char,
         );
         return -1i32;
     }
@@ -6006,16 +6255,20 @@ pub unsafe extern "C" fn tjTransform(
         crate::stdlib::snprintf(
             (*this).errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjTransform(): Instance has not been initialized for transformation\x00" as *const u8
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjTransform(): Instance has not been initialized for transformation\x00".as_ptr()
                 as *const libc::c_char,
         );
         (*this).isInstanceError = crate::jmorecfg_h::TRUE;
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjTransform(): Instance has not been initialized for transformation\x00" as *const u8
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjTransform(): Instance has not been initialized for transformation\x00".as_ptr()
                 as *const libc::c_char,
         );
         retval = -1i32
@@ -6030,29 +6283,36 @@ pub unsafe extern "C" fn tjTransform(
         crate::stdlib::snprintf(
             (*this).errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjTransform(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjTransform(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         (*this).isInstanceError = crate::jmorecfg_h::TRUE;
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjTransform(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjTransform(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32
     } else {
         if flags & crate::src::turbojpeg::TJFLAG_FORCEMMX != 0 {
             crate::stdlib::putenv(
-                b"JSIMD_FORCEMMX=1\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                
+                b"JSIMD_FORCEMMX=1\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
             );
         } else if flags & crate::src::turbojpeg::TJFLAG_FORCESSE != 0 {
             crate::stdlib::putenv(
-                b"JSIMD_FORCESSE=1\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                
+                b"JSIMD_FORCESSE=1\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
             );
         } else if flags & crate::src::turbojpeg::TJFLAG_FORCESSE2 != 0 {
             crate::stdlib::putenv(
-                b"JSIMD_FORCESSE2=1\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+                
+                b"JSIMD_FORCESSE2=1\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
             );
         }
         xinfo = crate::stdlib::malloc(
@@ -6063,15 +6323,19 @@ pub unsafe extern "C" fn tjTransform(
             crate::stdlib::snprintf(
                 (*this).errStr.as_mut_ptr(),
                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                b"%s\x00" as *const u8 as *const libc::c_char,
-                b"tjTransform(): Memory allocation failure\x00" as *const u8 as *const libc::c_char,
+                
+                b"%s\x00".as_ptr() as *const libc::c_char,
+                
+                b"tjTransform(): Memory allocation failure\x00".as_ptr() as *const libc::c_char,
             );
             (*this).isInstanceError = crate::jmorecfg_h::TRUE;
             crate::stdlib::snprintf(
                 errStr.as_mut_ptr(),
                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                b"%s\x00" as *const u8 as *const libc::c_char,
-                b"tjTransform(): Memory allocation failure\x00" as *const u8 as *const libc::c_char,
+                
+                b"%s\x00".as_ptr() as *const libc::c_char,
+                
+                b"tjTransform(): Memory allocation failure\x00".as_ptr() as *const libc::c_char,
             );
             retval = -1i32
         } else {
@@ -6181,17 +6445,19 @@ pub unsafe extern "C" fn tjTransform(
                     crate::stdlib::snprintf(
                         (*this).errStr.as_mut_ptr(),
                         crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                        b"%s\x00" as *const u8 as *const libc::c_char,
-                        b"tjTransform(): Could not determine subsampling type for JPEG image\x00"
-                            as *const u8 as *const libc::c_char,
+                        
+                        b"%s\x00".as_ptr() as *const libc::c_char,
+                        
+                        b"tjTransform(): Could not determine subsampling type for JPEG image\x00".as_ptr() as *const libc::c_char,
                     );
                     (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                     crate::stdlib::snprintf(
                         errStr.as_mut_ptr(),
                         crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                        b"%s\x00" as *const u8 as *const libc::c_char,
-                        b"tjTransform(): Could not determine subsampling type for JPEG image\x00"
-                            as *const u8 as *const libc::c_char,
+                        
+                        b"%s\x00".as_ptr() as *const libc::c_char,
+                        
+                        b"tjTransform(): Could not determine subsampling type for JPEG image\x00".as_ptr() as *const libc::c_char,
                     );
                     retval = -1i32
                 } else {
@@ -6209,16 +6475,20 @@ pub unsafe extern "C" fn tjTransform(
                             crate::stdlib::snprintf(
                                 (*this).errStr.as_mut_ptr(),
                                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                                b"%s\x00" as *const u8 as *const libc::c_char,
-                                b"tjTransform(): Transform is not perfect\x00" as *const u8
+                                
+                                b"%s\x00".as_ptr() as *const libc::c_char,
+                                
+                                b"tjTransform(): Transform is not perfect\x00".as_ptr()
                                     as *const libc::c_char,
                             );
                             (*this).isInstanceError = crate::jmorecfg_h::TRUE;
                             crate::stdlib::snprintf(
                                 errStr.as_mut_ptr(),
                                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                                b"%s\x00" as *const u8 as *const libc::c_char,
-                                b"tjTransform(): Transform is not perfect\x00" as *const u8
+                                
+                                b"%s\x00".as_ptr() as *const libc::c_char,
+                                
+                                b"tjTransform(): Transform is not perfect\x00".as_ptr()
                                     as *const libc::c_char,
                             );
                             retval = -1i32;
@@ -6235,8 +6505,8 @@ pub unsafe extern "C" fn tjTransform(
                                 {
                                     crate::stdlib::snprintf(errStr.as_mut_ptr(),
                                              crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                                             b"To crop this JPEG image, x must be a multiple of %d\nand y must be a multiple of %d.\n\x00"
-                                                 as *const u8 as
+                                             
+                                             b"To crop this JPEG image, x must be a multiple of %d\nand y must be a multiple of %d.\n\x00".as_ptr() as
                                                  *const libc::c_char,
                                              (*xinfo.offset(i as
                                                                 isize)).iMCU_sample_width,
@@ -6400,10 +6670,11 @@ pub unsafe extern "C" fn tjTransform(
                                                         (*this).errStr.as_mut_ptr(),
                                                         crate::jpeglib_h::JMSG_LENGTH_MAX
                                                             as libc::c_ulong,
-                                                        b"%s\x00" as *const u8
+                                                        
+                                                        b"%s\x00".as_ptr()
                                                             as *const libc::c_char,
-                                                        b"tjTransform(): Error in custom filter\x00"
-                                                            as *const u8
+                                                        
+                                                        b"tjTransform(): Error in custom filter\x00".as_ptr()
                                                             as *const libc::c_char,
                                                     );
                                                     (*this).isInstanceError =
@@ -6412,10 +6683,11 @@ pub unsafe extern "C" fn tjTransform(
                                                         errStr.as_mut_ptr(),
                                                         crate::jpeglib_h::JMSG_LENGTH_MAX
                                                             as libc::c_ulong,
-                                                        b"%s\x00" as *const u8
+                                                        
+                                                        b"%s\x00".as_ptr()
                                                             as *const libc::c_char,
-                                                        b"tjTransform(): Error in custom filter\x00"
-                                                            as *const u8
+                                                        
+                                                        b"tjTransform(): Error in custom filter\x00".as_ptr()
                                                             as *const libc::c_char,
                                                     );
                                                     retval = -1i32;
@@ -6547,16 +6819,20 @@ pub unsafe extern "C" fn tjLoadImage(
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjLoadImage(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjLoadImage(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32
     } else if align & align - 1i32 != 0i32 {
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjLoadImage(): Alignment must be a power of 2\x00" as *const u8
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjLoadImage(): Alignment must be a power of 2\x00".as_ptr()
                 as *const libc::c_char,
         );
         retval = -1i32
@@ -6567,13 +6843,15 @@ pub unsafe extern "C" fn tjLoadImage(
         }
         this = handle as *mut tjinstance;
         cinfo = &mut (*this).cinfo;
-        file = crate::stdlib::fopen(filename, b"rb\x00" as *const u8 as *const libc::c_char);
+        file = crate::stdlib::fopen(filename,  b"rb\x00".as_ptr() as *const libc::c_char);
         if file.is_null() {
             crate::stdlib::snprintf(
                 errStr.as_mut_ptr(),
                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                b"%s\n%s\x00" as *const u8 as *const libc::c_char,
-                b"tjLoadImage(): Cannot open input file\x00" as *const u8 as *const libc::c_char,
+                
+                b"%s\n%s\x00".as_ptr() as *const libc::c_char,
+                
+                b"tjLoadImage(): Cannot open input file\x00".as_ptr() as *const libc::c_char,
                 crate::stdlib::strerror(*crate::stdlib::__errno_location()),
             );
             retval = -1i32
@@ -6583,8 +6861,10 @@ pub unsafe extern "C" fn tjLoadImage(
                 crate::stdlib::snprintf(
                     errStr.as_mut_ptr(),
                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                    b"%s\n%s\x00" as *const u8 as *const libc::c_char,
-                    b"tjLoadImage(): Could not read input file\x00" as *const u8
+                    
+                    b"%s\n%s\x00".as_ptr() as *const libc::c_char,
+                    
+                    b"tjLoadImage(): Could not read input file\x00".as_ptr()
                         as *const libc::c_char,
                     crate::stdlib::strerror(*crate::stdlib::__errno_location()),
                 );
@@ -6593,8 +6873,10 @@ pub unsafe extern "C" fn tjLoadImage(
                 crate::stdlib::snprintf(
                     errStr.as_mut_ptr(),
                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                    b"%s\x00" as *const u8 as *const libc::c_char,
-                    b"tjLoadImage(): Input file contains no data\x00" as *const u8
+                    
+                    b"%s\x00".as_ptr() as *const libc::c_char,
+                    
+                    b"tjLoadImage(): Input file contains no data\x00".as_ptr()
                         as *const libc::c_char,
                 );
                 retval = -1i32
@@ -6613,8 +6895,10 @@ pub unsafe extern "C" fn tjLoadImage(
                         crate::stdlib::snprintf(
                             errStr.as_mut_ptr(),
                             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                            b"%s\x00" as *const u8 as *const libc::c_char,
-                            b"tjLoadImage(): Could not initialize bitmap loader\x00" as *const u8
+                            
+                            b"%s\x00".as_ptr() as *const libc::c_char,
+                            
+                            b"tjLoadImage(): Could not initialize bitmap loader\x00".as_ptr()
                                 as *const libc::c_char,
                         );
                         retval = -1i32;
@@ -6630,8 +6914,10 @@ pub unsafe extern "C" fn tjLoadImage(
                         crate::stdlib::snprintf(
                             errStr.as_mut_ptr(),
                             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                            b"%s\x00" as *const u8 as *const libc::c_char,
-                            b"tjLoadImage(): Could not initialize bitmap loader\x00" as *const u8
+                            
+                            b"%s\x00".as_ptr() as *const libc::c_char,
+                            
+                            b"tjLoadImage(): Could not initialize bitmap loader\x00".as_ptr()
                                 as *const libc::c_char,
                         );
                         retval = -1i32;
@@ -6645,8 +6931,10 @@ pub unsafe extern "C" fn tjLoadImage(
                     crate::stdlib::snprintf(
                         errStr.as_mut_ptr(),
                         crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                        b"%s\x00" as *const u8 as *const libc::c_char,
-                        b"tjLoadImage(): Unsupported file type\x00" as *const u8
+                        
+                        b"%s\x00".as_ptr() as *const libc::c_char,
+                        
+                        b"tjLoadImage(): Unsupported file type\x00".as_ptr()
                             as *const libc::c_char,
                     );
                     retval = -1i32;
@@ -6679,8 +6967,10 @@ pub unsafe extern "C" fn tjLoadImage(
                             crate::stdlib::snprintf(
                                 errStr.as_mut_ptr(),
                                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                                b"%s\x00" as *const u8 as *const libc::c_char,
-                                b"tjLoadImage(): Memory allocation failure\x00" as *const u8
+                                
+                                b"%s\x00".as_ptr() as *const libc::c_char,
+                                
+                                b"tjLoadImage(): Memory allocation failure\x00".as_ptr()
                                     as *const libc::c_char,
                             );
                             retval = -1i32
@@ -6813,8 +7103,10 @@ pub unsafe extern "C" fn tjSaveImage(
         crate::stdlib::snprintf(
             errStr.as_mut_ptr(),
             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-            b"%s\x00" as *const u8 as *const libc::c_char,
-            b"tjSaveImage(): Invalid argument\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\x00".as_ptr() as *const libc::c_char,
+            
+            b"tjSaveImage(): Invalid argument\x00".as_ptr() as *const libc::c_char,
         );
         retval = -1i32
     } else {
@@ -6824,13 +7116,15 @@ pub unsafe extern "C" fn tjSaveImage(
         }
         this = handle as *mut tjinstance;
         dinfo = &mut (*this).dinfo;
-        file = crate::stdlib::fopen(filename, b"wb\x00" as *const u8 as *const libc::c_char);
+        file = crate::stdlib::fopen(filename,  b"wb\x00".as_ptr() as *const libc::c_char);
         if file.is_null() {
             crate::stdlib::snprintf(
                 errStr.as_mut_ptr(),
                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                b"%s\n%s\x00" as *const u8 as *const libc::c_char,
-                b"tjSaveImage(): Cannot open output file\x00" as *const u8 as *const libc::c_char,
+                
+                b"%s\n%s\x00".as_ptr() as *const libc::c_char,
+                
+                b"tjSaveImage(): Cannot open output file\x00".as_ptr() as *const libc::c_char,
                 crate::stdlib::strerror(*crate::stdlib::__errno_location()),
             );
             retval = -1i32
@@ -6846,7 +7140,7 @@ pub unsafe extern "C" fn tjSaveImage(
             (*dinfo).scale_num = (*dinfo).scale_denom;
             ptr = crate::stdlib::strrchr(filename, '.' as i32);
             if !ptr.is_null()
-                && crate::stdlib::strcasecmp(ptr, b".bmp\x00" as *const u8 as *const libc::c_char)
+                && crate::stdlib::strcasecmp(ptr,  b".bmp\x00".as_ptr() as *const libc::c_char)
                     == 0
             {
                 dst = crate::src::cdjpeg::jinit_write_bmp(
@@ -6858,8 +7152,10 @@ pub unsafe extern "C" fn tjSaveImage(
                     crate::stdlib::snprintf(
                         errStr.as_mut_ptr(),
                         crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                        b"%s\x00" as *const u8 as *const libc::c_char,
-                        b"tjSaveImage(): Could not initialize bitmap writer\x00" as *const u8
+                        
+                        b"%s\x00".as_ptr() as *const libc::c_char,
+                        
+                        b"tjSaveImage(): Could not initialize bitmap writer\x00".as_ptr()
                             as *const libc::c_char,
                     );
                     retval = -1i32;
@@ -6875,8 +7171,10 @@ pub unsafe extern "C" fn tjSaveImage(
                     crate::stdlib::snprintf(
                         errStr.as_mut_ptr(),
                         crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
-                        b"%s\x00" as *const u8 as *const libc::c_char,
-                        b"tjSaveImage(): Could not initialize PPM writer\x00" as *const u8
+                        
+                        b"%s\x00".as_ptr() as *const libc::c_char,
+                        
+                        b"tjSaveImage(): Could not initialize PPM writer\x00".as_ptr()
                             as *const libc::c_char,
                     );
                     retval = -1i32;

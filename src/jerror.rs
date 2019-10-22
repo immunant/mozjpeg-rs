@@ -368,153 +368,282 @@ pub const JMSG_NOMESSAGE: crate::src::jerror::C2RustUnnamed_3 = 0;
 #[no_mangle]
 
 pub static mut jpeg_std_message_table: [*const libc::c_char; 130] = [
-    b"Bogus message code %d\x00" as *const u8 as *const libc::c_char,
-    b"Sorry, arithmetic coding is not implemented\x00" as *const u8 as *const libc::c_char,
-    b"ALIGN_TYPE is wrong, please fix\x00" as *const u8 as *const libc::c_char,
-    b"MAX_ALLOC_CHUNK is wrong, please fix\x00" as *const u8 as *const libc::c_char,
-    b"Bogus buffer control mode\x00" as *const u8 as *const libc::c_char,
-    b"Invalid component ID %d in SOS\x00" as *const u8 as *const libc::c_char,
-    b"DCT coefficient out of range\x00" as *const u8 as *const libc::c_char,
-    b"IDCT output block size %d not supported\x00" as *const u8 as *const libc::c_char,
-    b"Bogus Huffman table definition\x00" as *const u8 as *const libc::c_char,
-    b"Bogus input colorspace\x00" as *const u8 as *const libc::c_char,
-    b"Bogus JPEG colorspace\x00" as *const u8 as *const libc::c_char,
-    b"Bogus marker length\x00" as *const u8 as *const libc::c_char,
-    b"Wrong JPEG library version: library is %d, caller expects %d\x00" as *const u8
+    
+    b"Bogus message code %d\x00".as_ptr() as *const libc::c_char,
+    
+    b"Sorry, arithmetic coding is not implemented\x00".as_ptr() as *const libc::c_char,
+    
+    b"ALIGN_TYPE is wrong, please fix\x00".as_ptr() as *const libc::c_char,
+    
+    b"MAX_ALLOC_CHUNK is wrong, please fix\x00".as_ptr() as *const libc::c_char,
+    
+    b"Bogus buffer control mode\x00".as_ptr() as *const libc::c_char,
+    
+    b"Invalid component ID %d in SOS\x00".as_ptr() as *const libc::c_char,
+    
+    b"DCT coefficient out of range\x00".as_ptr() as *const libc::c_char,
+    
+    b"IDCT output block size %d not supported\x00".as_ptr() as *const libc::c_char,
+    
+    b"Bogus Huffman table definition\x00".as_ptr() as *const libc::c_char,
+    
+    b"Bogus input colorspace\x00".as_ptr() as *const libc::c_char,
+    
+    b"Bogus JPEG colorspace\x00".as_ptr() as *const libc::c_char,
+    
+    b"Bogus marker length\x00".as_ptr() as *const libc::c_char,
+    
+    b"Wrong JPEG library version: library is %d, caller expects %d\x00".as_ptr()
         as *const libc::c_char,
-    b"Sampling factors too large for interleaved scan\x00" as *const u8 as *const libc::c_char,
-    b"Invalid memory pool code %d\x00" as *const u8 as *const libc::c_char,
-    b"Unsupported JPEG data precision %d\x00" as *const u8 as *const libc::c_char,
-    b"Invalid progressive parameters Ss=%d Se=%d Ah=%d Al=%d\x00" as *const u8
+    
+    b"Sampling factors too large for interleaved scan\x00".as_ptr() as *const libc::c_char,
+    
+    b"Invalid memory pool code %d\x00".as_ptr() as *const libc::c_char,
+    
+    b"Unsupported JPEG data precision %d\x00".as_ptr() as *const libc::c_char,
+    
+    b"Invalid progressive parameters Ss=%d Se=%d Ah=%d Al=%d\x00".as_ptr()
         as *const libc::c_char,
-    b"Invalid progressive parameters at scan script entry %d\x00" as *const u8
+    
+    b"Invalid progressive parameters at scan script entry %d\x00".as_ptr()
         as *const libc::c_char,
-    b"Bogus sampling factors\x00" as *const u8 as *const libc::c_char,
-    b"Invalid scan script at entry %d\x00" as *const u8 as *const libc::c_char,
-    b"Improper call to JPEG library in state %d\x00" as *const u8 as *const libc::c_char,
-    b"JPEG parameter struct mismatch: library thinks size is %u, caller expects %u\x00" as *const u8
+    
+    b"Bogus sampling factors\x00".as_ptr() as *const libc::c_char,
+    
+    b"Invalid scan script at entry %d\x00".as_ptr() as *const libc::c_char,
+    
+    b"Improper call to JPEG library in state %d\x00".as_ptr() as *const libc::c_char,
+    
+    b"JPEG parameter struct mismatch: library thinks size is %u, caller expects %u\x00".as_ptr()
         as *const libc::c_char,
-    b"Bogus virtual array access\x00" as *const u8 as *const libc::c_char,
-    b"Buffer passed to JPEG library is too small\x00" as *const u8 as *const libc::c_char,
-    b"Suspension not allowed here\x00" as *const u8 as *const libc::c_char,
-    b"CCIR601 sampling not implemented yet\x00" as *const u8 as *const libc::c_char,
-    b"Too many color components: %d, max %d\x00" as *const u8 as *const libc::c_char,
-    b"Unsupported color conversion request\x00" as *const u8 as *const libc::c_char,
-    b"Bogus DAC index %d\x00" as *const u8 as *const libc::c_char,
-    b"Bogus DAC value 0x%x\x00" as *const u8 as *const libc::c_char,
-    b"Bogus DHT index %d\x00" as *const u8 as *const libc::c_char,
-    b"Bogus DQT index %d\x00" as *const u8 as *const libc::c_char,
-    b"Empty JPEG image (DNL not supported)\x00" as *const u8 as *const libc::c_char,
-    b"Read from EMS failed\x00" as *const u8 as *const libc::c_char,
-    b"Write to EMS failed\x00" as *const u8 as *const libc::c_char,
-    b"Didn\'t expect more than one scan\x00" as *const u8 as *const libc::c_char,
-    b"Input file read error\x00" as *const u8 as *const libc::c_char,
-    b"Output file write error --- out of disk space?\x00" as *const u8 as *const libc::c_char,
-    b"Fractional sampling not implemented yet\x00" as *const u8 as *const libc::c_char,
-    b"Huffman code size table overflow\x00" as *const u8 as *const libc::c_char,
-    b"Missing Huffman code table entry\x00" as *const u8 as *const libc::c_char,
-    b"Maximum supported image dimension is %u pixels\x00" as *const u8 as *const libc::c_char,
-    b"Empty input file\x00" as *const u8 as *const libc::c_char,
-    b"Premature end of input file\x00" as *const u8 as *const libc::c_char,
-    b"Cannot transcode due to multiple use of quantization table %d\x00" as *const u8
+    
+    b"Bogus virtual array access\x00".as_ptr() as *const libc::c_char,
+    
+    b"Buffer passed to JPEG library is too small\x00".as_ptr() as *const libc::c_char,
+    
+    b"Suspension not allowed here\x00".as_ptr() as *const libc::c_char,
+    
+    b"CCIR601 sampling not implemented yet\x00".as_ptr() as *const libc::c_char,
+    
+    b"Too many color components: %d, max %d\x00".as_ptr() as *const libc::c_char,
+    
+    b"Unsupported color conversion request\x00".as_ptr() as *const libc::c_char,
+    
+    b"Bogus DAC index %d\x00".as_ptr() as *const libc::c_char,
+    
+    b"Bogus DAC value 0x%x\x00".as_ptr() as *const libc::c_char,
+    
+    b"Bogus DHT index %d\x00".as_ptr() as *const libc::c_char,
+    
+    b"Bogus DQT index %d\x00".as_ptr() as *const libc::c_char,
+    
+    b"Empty JPEG image (DNL not supported)\x00".as_ptr() as *const libc::c_char,
+    
+    b"Read from EMS failed\x00".as_ptr() as *const libc::c_char,
+    
+    b"Write to EMS failed\x00".as_ptr() as *const libc::c_char,
+    
+    b"Didn\'t expect more than one scan\x00".as_ptr() as *const libc::c_char,
+    
+    b"Input file read error\x00".as_ptr() as *const libc::c_char,
+    
+    b"Output file write error --- out of disk space?\x00".as_ptr() as *const libc::c_char,
+    
+    b"Fractional sampling not implemented yet\x00".as_ptr() as *const libc::c_char,
+    
+    b"Huffman code size table overflow\x00".as_ptr() as *const libc::c_char,
+    
+    b"Missing Huffman code table entry\x00".as_ptr() as *const libc::c_char,
+    
+    b"Maximum supported image dimension is %u pixels\x00".as_ptr() as *const libc::c_char,
+    
+    b"Empty input file\x00".as_ptr() as *const libc::c_char,
+    
+    b"Premature end of input file\x00".as_ptr() as *const libc::c_char,
+    
+    b"Cannot transcode due to multiple use of quantization table %d\x00".as_ptr()
         as *const libc::c_char,
-    b"Scan script does not transmit all data\x00" as *const u8 as *const libc::c_char,
-    b"Invalid color quantization mode change\x00" as *const u8 as *const libc::c_char,
-    b"Not implemented yet\x00" as *const u8 as *const libc::c_char,
-    b"Requested feature was omitted at compile time\x00" as *const u8 as *const libc::c_char,
-    b"Backing store not supported\x00" as *const u8 as *const libc::c_char,
-    b"Huffman table 0x%02x was not defined\x00" as *const u8 as *const libc::c_char,
-    b"JPEG datastream contains no image\x00" as *const u8 as *const libc::c_char,
-    b"Quantization table 0x%02x was not defined\x00" as *const u8 as *const libc::c_char,
-    b"Not a JPEG file: starts with 0x%02x 0x%02x\x00" as *const u8 as *const libc::c_char,
-    b"Insufficient memory (case %d)\x00" as *const u8 as *const libc::c_char,
-    b"Cannot quantize more than %d color components\x00" as *const u8 as *const libc::c_char,
-    b"Cannot quantize to fewer than %d colors\x00" as *const u8 as *const libc::c_char,
-    b"Cannot quantize to more than %d colors\x00" as *const u8 as *const libc::c_char,
-    b"Invalid JPEG file structure: two SOF markers\x00" as *const u8 as *const libc::c_char,
-    b"Invalid JPEG file structure: missing SOS marker\x00" as *const u8 as *const libc::c_char,
-    b"Unsupported JPEG process: SOF type 0x%02x\x00" as *const u8 as *const libc::c_char,
-    b"Invalid JPEG file structure: two SOI markers\x00" as *const u8 as *const libc::c_char,
-    b"Invalid JPEG file structure: SOS before SOF\x00" as *const u8 as *const libc::c_char,
-    b"Failed to create temporary file %s\x00" as *const u8 as *const libc::c_char,
-    b"Read failed on temporary file\x00" as *const u8 as *const libc::c_char,
-    b"Seek failed on temporary file\x00" as *const u8 as *const libc::c_char,
-    b"Write failed on temporary file --- out of disk space?\x00" as *const u8
+    
+    b"Scan script does not transmit all data\x00".as_ptr() as *const libc::c_char,
+    
+    b"Invalid color quantization mode change\x00".as_ptr() as *const libc::c_char,
+    
+    b"Not implemented yet\x00".as_ptr() as *const libc::c_char,
+    
+    b"Requested feature was omitted at compile time\x00".as_ptr() as *const libc::c_char,
+    
+    b"Backing store not supported\x00".as_ptr() as *const libc::c_char,
+    
+    b"Huffman table 0x%02x was not defined\x00".as_ptr() as *const libc::c_char,
+    
+    b"JPEG datastream contains no image\x00".as_ptr() as *const libc::c_char,
+    
+    b"Quantization table 0x%02x was not defined\x00".as_ptr() as *const libc::c_char,
+    
+    b"Not a JPEG file: starts with 0x%02x 0x%02x\x00".as_ptr() as *const libc::c_char,
+    
+    b"Insufficient memory (case %d)\x00".as_ptr() as *const libc::c_char,
+    
+    b"Cannot quantize more than %d color components\x00".as_ptr() as *const libc::c_char,
+    
+    b"Cannot quantize to fewer than %d colors\x00".as_ptr() as *const libc::c_char,
+    
+    b"Cannot quantize to more than %d colors\x00".as_ptr() as *const libc::c_char,
+    
+    b"Invalid JPEG file structure: two SOF markers\x00".as_ptr() as *const libc::c_char,
+    
+    b"Invalid JPEG file structure: missing SOS marker\x00".as_ptr() as *const libc::c_char,
+    
+    b"Unsupported JPEG process: SOF type 0x%02x\x00".as_ptr() as *const libc::c_char,
+    
+    b"Invalid JPEG file structure: two SOI markers\x00".as_ptr() as *const libc::c_char,
+    
+    b"Invalid JPEG file structure: SOS before SOF\x00".as_ptr() as *const libc::c_char,
+    
+    b"Failed to create temporary file %s\x00".as_ptr() as *const libc::c_char,
+    
+    b"Read failed on temporary file\x00".as_ptr() as *const libc::c_char,
+    
+    b"Seek failed on temporary file\x00".as_ptr() as *const libc::c_char,
+    
+    b"Write failed on temporary file --- out of disk space?\x00".as_ptr()
         as *const libc::c_char,
-    b"Application transferred too few scanlines\x00" as *const u8 as *const libc::c_char,
-    b"Unsupported marker type 0x%02x\x00" as *const u8 as *const libc::c_char,
-    b"Virtual array controller messed up\x00" as *const u8 as *const libc::c_char,
-    b"Image too wide for this implementation\x00" as *const u8 as *const libc::c_char,
-    b"Read from XMS failed\x00" as *const u8 as *const libc::c_char,
-    b"Write to XMS failed\x00" as *const u8 as *const libc::c_char,
-    b"Copyright (C) 1991-2018 The libjpeg-turbo Project and many others\x00" as *const u8
+    
+    b"Application transferred too few scanlines\x00".as_ptr() as *const libc::c_char,
+    
+    b"Unsupported marker type 0x%02x\x00".as_ptr() as *const libc::c_char,
+    
+    b"Virtual array controller messed up\x00".as_ptr() as *const libc::c_char,
+    
+    b"Image too wide for this implementation\x00".as_ptr() as *const libc::c_char,
+    
+    b"Read from XMS failed\x00".as_ptr() as *const libc::c_char,
+    
+    b"Write to XMS failed\x00".as_ptr() as *const libc::c_char,
+    
+    b"Copyright (C) 1991-2018 The libjpeg-turbo Project and many others\x00".as_ptr()
         as *const libc::c_char,
-    b"6b  27-Mar-1998\x00" as *const u8 as *const libc::c_char,
-    b"Caution: quantization tables are too coarse for baseline JPEG\x00" as *const u8
+    
+    b"6b  27-Mar-1998\x00".as_ptr() as *const libc::c_char,
+    
+    b"Caution: quantization tables are too coarse for baseline JPEG\x00".as_ptr()
         as *const libc::c_char,
-    b"Adobe APP14 marker: version %d, flags 0x%04x 0x%04x, transform %d\x00" as *const u8
+    
+    b"Adobe APP14 marker: version %d, flags 0x%04x 0x%04x, transform %d\x00".as_ptr()
         as *const libc::c_char,
-    b"Unknown APP0 marker (not JFIF), length %u\x00" as *const u8 as *const libc::c_char,
-    b"Unknown APP14 marker (not Adobe), length %u\x00" as *const u8 as *const libc::c_char,
-    b"Define Arithmetic Table 0x%02x: 0x%02x\x00" as *const u8 as *const libc::c_char,
-    b"Define Huffman Table 0x%02x\x00" as *const u8 as *const libc::c_char,
-    b"Define Quantization Table %d  precision %d\x00" as *const u8 as *const libc::c_char,
-    b"Define Restart Interval %u\x00" as *const u8 as *const libc::c_char,
-    b"Freed EMS handle %u\x00" as *const u8 as *const libc::c_char,
-    b"Obtained EMS handle %u\x00" as *const u8 as *const libc::c_char,
-    b"End Of Image\x00" as *const u8 as *const libc::c_char,
-    b"        %3d %3d %3d %3d %3d %3d %3d %3d\x00" as *const u8 as *const libc::c_char,
-    b"JFIF APP0 marker: version %d.%02d, density %dx%d  %d\x00" as *const u8 as *const libc::c_char,
-    b"Warning: thumbnail image size does not match data length %u\x00" as *const u8
+    
+    b"Unknown APP0 marker (not JFIF), length %u\x00".as_ptr() as *const libc::c_char,
+    
+    b"Unknown APP14 marker (not Adobe), length %u\x00".as_ptr() as *const libc::c_char,
+    
+    b"Define Arithmetic Table 0x%02x: 0x%02x\x00".as_ptr() as *const libc::c_char,
+    
+    b"Define Huffman Table 0x%02x\x00".as_ptr() as *const libc::c_char,
+    
+    b"Define Quantization Table %d  precision %d\x00".as_ptr() as *const libc::c_char,
+    
+    b"Define Restart Interval %u\x00".as_ptr() as *const libc::c_char,
+    
+    b"Freed EMS handle %u\x00".as_ptr() as *const libc::c_char,
+    
+    b"Obtained EMS handle %u\x00".as_ptr() as *const libc::c_char,
+    
+    b"End Of Image\x00".as_ptr() as *const libc::c_char,
+    
+    b"        %3d %3d %3d %3d %3d %3d %3d %3d\x00".as_ptr() as *const libc::c_char,
+    
+    b"JFIF APP0 marker: version %d.%02d, density %dx%d  %d\x00".as_ptr() as *const libc::c_char,
+    
+    b"Warning: thumbnail image size does not match data length %u\x00".as_ptr()
         as *const libc::c_char,
-    b"JFIF extension marker: type 0x%02x, length %u\x00" as *const u8 as *const libc::c_char,
-    b"    with %d x %d thumbnail image\x00" as *const u8 as *const libc::c_char,
-    b"Miscellaneous marker 0x%02x, length %u\x00" as *const u8 as *const libc::c_char,
-    b"Unexpected marker 0x%02x\x00" as *const u8 as *const libc::c_char,
-    b"        %4u %4u %4u %4u %4u %4u %4u %4u\x00" as *const u8 as *const libc::c_char,
-    b"Quantizing to %d = %d*%d*%d colors\x00" as *const u8 as *const libc::c_char,
-    b"Quantizing to %d colors\x00" as *const u8 as *const libc::c_char,
-    b"Selected %d colors for quantization\x00" as *const u8 as *const libc::c_char,
-    b"At marker 0x%02x, recovery action %d\x00" as *const u8 as *const libc::c_char,
-    b"RST%d\x00" as *const u8 as *const libc::c_char,
-    b"Smoothing not supported with nonstandard sampling ratios\x00" as *const u8
+    
+    b"JFIF extension marker: type 0x%02x, length %u\x00".as_ptr() as *const libc::c_char,
+    
+    b"    with %d x %d thumbnail image\x00".as_ptr() as *const libc::c_char,
+    
+    b"Miscellaneous marker 0x%02x, length %u\x00".as_ptr() as *const libc::c_char,
+    
+    b"Unexpected marker 0x%02x\x00".as_ptr() as *const libc::c_char,
+    
+    b"        %4u %4u %4u %4u %4u %4u %4u %4u\x00".as_ptr() as *const libc::c_char,
+    
+    b"Quantizing to %d = %d*%d*%d colors\x00".as_ptr() as *const libc::c_char,
+    
+    b"Quantizing to %d colors\x00".as_ptr() as *const libc::c_char,
+    
+    b"Selected %d colors for quantization\x00".as_ptr() as *const libc::c_char,
+    
+    b"At marker 0x%02x, recovery action %d\x00".as_ptr() as *const libc::c_char,
+    
+    b"RST%d\x00".as_ptr() as *const libc::c_char,
+    
+    b"Smoothing not supported with nonstandard sampling ratios\x00".as_ptr()
         as *const libc::c_char,
-    b"Start Of Frame 0x%02x: width=%u, height=%u, components=%d\x00" as *const u8
+    
+    b"Start Of Frame 0x%02x: width=%u, height=%u, components=%d\x00".as_ptr()
         as *const libc::c_char,
-    b"    Component %d: %dhx%dv q=%d\x00" as *const u8 as *const libc::c_char,
-    b"Start of Image\x00" as *const u8 as *const libc::c_char,
-    b"Start Of Scan: %d components\x00" as *const u8 as *const libc::c_char,
-    b"    Component %d: dc=%d ac=%d\x00" as *const u8 as *const libc::c_char,
-    b"  Ss=%d, Se=%d, Ah=%d, Al=%d\x00" as *const u8 as *const libc::c_char,
-    b"Closed temporary file %s\x00" as *const u8 as *const libc::c_char,
-    b"Opened temporary file %s\x00" as *const u8 as *const libc::c_char,
-    b"JFIF extension marker: JPEG-compressed thumbnail image, length %u\x00" as *const u8
+    
+    b"    Component %d: %dhx%dv q=%d\x00".as_ptr() as *const libc::c_char,
+    
+    b"Start of Image\x00".as_ptr() as *const libc::c_char,
+    
+    b"Start Of Scan: %d components\x00".as_ptr() as *const libc::c_char,
+    
+    b"    Component %d: dc=%d ac=%d\x00".as_ptr() as *const libc::c_char,
+    
+    b"  Ss=%d, Se=%d, Ah=%d, Al=%d\x00".as_ptr() as *const libc::c_char,
+    
+    b"Closed temporary file %s\x00".as_ptr() as *const libc::c_char,
+    
+    b"Opened temporary file %s\x00".as_ptr() as *const libc::c_char,
+    
+    b"JFIF extension marker: JPEG-compressed thumbnail image, length %u\x00".as_ptr()
         as *const libc::c_char,
-    b"JFIF extension marker: palette thumbnail image, length %u\x00" as *const u8
+    
+    b"JFIF extension marker: palette thumbnail image, length %u\x00".as_ptr()
         as *const libc::c_char,
-    b"JFIF extension marker: RGB thumbnail image, length %u\x00" as *const u8
+    
+    b"JFIF extension marker: RGB thumbnail image, length %u\x00".as_ptr()
         as *const libc::c_char,
-    b"Unrecognized component IDs %d %d %d, assuming YCbCr\x00" as *const u8 as *const libc::c_char,
-    b"Freed XMS handle %u\x00" as *const u8 as *const libc::c_char,
-    b"Obtained XMS handle %u\x00" as *const u8 as *const libc::c_char,
-    b"Unknown Adobe color transform code %d\x00" as *const u8 as *const libc::c_char,
-    b"Inconsistent progression sequence for component %d coefficient %d\x00" as *const u8
+    
+    b"Unrecognized component IDs %d %d %d, assuming YCbCr\x00".as_ptr() as *const libc::c_char,
+    
+    b"Freed XMS handle %u\x00".as_ptr() as *const libc::c_char,
+    
+    b"Obtained XMS handle %u\x00".as_ptr() as *const libc::c_char,
+    
+    b"Unknown Adobe color transform code %d\x00".as_ptr() as *const libc::c_char,
+    
+    b"Inconsistent progression sequence for component %d coefficient %d\x00".as_ptr()
         as *const libc::c_char,
-    b"Corrupt JPEG data: %u extraneous bytes before marker 0x%02x\x00" as *const u8
+    
+    b"Corrupt JPEG data: %u extraneous bytes before marker 0x%02x\x00".as_ptr()
         as *const libc::c_char,
-    b"Corrupt JPEG data: premature end of data segment\x00" as *const u8 as *const libc::c_char,
-    b"Corrupt JPEG data: bad Huffman code\x00" as *const u8 as *const libc::c_char,
-    b"Warning: unknown JFIF revision number %d.%02d\x00" as *const u8 as *const libc::c_char,
-    b"Premature end of JPEG file\x00" as *const u8 as *const libc::c_char,
-    b"Corrupt JPEG data: found marker 0x%02x instead of RST%d\x00" as *const u8
+    
+    b"Corrupt JPEG data: premature end of data segment\x00".as_ptr() as *const libc::c_char,
+    
+    b"Corrupt JPEG data: bad Huffman code\x00".as_ptr() as *const libc::c_char,
+    
+    b"Warning: unknown JFIF revision number %d.%02d\x00".as_ptr() as *const libc::c_char,
+    
+    b"Premature end of JPEG file\x00".as_ptr() as *const libc::c_char,
+    
+    b"Corrupt JPEG data: found marker 0x%02x instead of RST%d\x00".as_ptr()
         as *const libc::c_char,
-    b"Invalid SOS parameters for sequential JPEG\x00" as *const u8 as *const libc::c_char,
-    b"Application transferred too many scanlines\x00" as *const u8 as *const libc::c_char,
-    b"Invalid crop request\x00" as *const u8 as *const libc::c_char,
-    b"Bogus parameter\x00" as *const u8 as *const libc::c_char,
-    b"Bogus parameter value\x00" as *const u8 as *const libc::c_char,
-    b"I/O suspension not supported in scan optimization\x00" as *const u8 as *const libc::c_char,
-    b"Corrupt JPEG data: bad ICC marker\x00" as *const u8 as *const libc::c_char,
+    
+    b"Invalid SOS parameters for sequential JPEG\x00".as_ptr() as *const libc::c_char,
+    
+    b"Application transferred too many scanlines\x00".as_ptr() as *const libc::c_char,
+    
+    b"Invalid crop request\x00".as_ptr() as *const libc::c_char,
+    
+    b"Bogus parameter\x00".as_ptr() as *const libc::c_char,
+    
+    b"Bogus parameter value\x00".as_ptr() as *const libc::c_char,
+    
+    b"I/O suspension not supported in scan optimization\x00".as_ptr() as *const libc::c_char,
+    
+    b"Corrupt JPEG data: bad ICC marker\x00".as_ptr() as *const libc::c_char,
     crate::stddef_h::NULL as *const libc::c_char,
 ];
 /*
@@ -569,7 +698,8 @@ unsafe extern "C" fn output_message(mut cinfo: crate::jpeglib_h::j_common_ptr) {
     /* Send it to stderr, adding a newline */
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"%s\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"%s\n\x00".as_ptr() as *const libc::c_char,
         buffer.as_mut_ptr(),
     );
 }

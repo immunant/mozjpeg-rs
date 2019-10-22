@@ -790,7 +790,8 @@ unsafe extern "C" fn start_output_ppm(
             /* emit header for raw PGM format */
             crate::stdlib::fprintf(
                 (*dest).pub_0.output_file,
-                b"P5\n%ld %ld\n%d\n\x00" as *const u8 as *const libc::c_char,
+                
+                b"P5\n%ld %ld\n%d\n\x00".as_ptr() as *const libc::c_char,
                 (*cinfo).output_width as libc::c_long,
                 (*cinfo).output_height as libc::c_long,
                 PPM_MAXVAL,
@@ -800,7 +801,8 @@ unsafe extern "C" fn start_output_ppm(
             /* emit header for raw PPM format */
             crate::stdlib::fprintf(
                 (*dest).pub_0.output_file,
-                b"P6\n%ld %ld\n%d\n\x00" as *const u8 as *const libc::c_char,
+                
+                b"P6\n%ld %ld\n%d\n\x00".as_ptr() as *const libc::c_char,
                 (*cinfo).output_width as libc::c_long,
                 (*cinfo).output_height as libc::c_long,
                 PPM_MAXVAL,

@@ -1069,27 +1069,27 @@ unsafe extern "C" fn init_simd() {
     }
     simd_support = crate::src::simd::x86_64::jsimd::jpeg_simd_cpu_support();
     /* Force different settings through environment variables */
-    env = crate::stdlib::getenv(b"JSIMD_FORCESSE2\x00" as *const u8 as *const libc::c_char);
+    env = crate::stdlib::getenv(b"JSIMD_FORCESSE2\x00".as_ptr() as *const libc::c_char);
     if !env.is_null()
-        && crate::stdlib::strcmp(env, b"1\x00" as *const u8 as *const libc::c_char) == 0i32
+        && crate::stdlib::strcmp(env,  b"1\x00".as_ptr() as *const libc::c_char) == 0i32
     {
         simd_support &= crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint
     }
-    env = crate::stdlib::getenv(b"JSIMD_FORCEAVX2\x00" as *const u8 as *const libc::c_char);
+    env = crate::stdlib::getenv(b"JSIMD_FORCEAVX2\x00".as_ptr() as *const libc::c_char);
     if !env.is_null()
-        && crate::stdlib::strcmp(env, b"1\x00" as *const u8 as *const libc::c_char) == 0i32
+        && crate::stdlib::strcmp(env,  b"1\x00".as_ptr() as *const libc::c_char) == 0i32
     {
         simd_support &= crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint
     }
-    env = crate::stdlib::getenv(b"JSIMD_FORCENONE\x00" as *const u8 as *const libc::c_char);
+    env = crate::stdlib::getenv(b"JSIMD_FORCENONE\x00".as_ptr() as *const libc::c_char);
     if !env.is_null()
-        && crate::stdlib::strcmp(env, b"1\x00" as *const u8 as *const libc::c_char) == 0i32
+        && crate::stdlib::strcmp(env,  b"1\x00".as_ptr() as *const libc::c_char) == 0i32
     {
         simd_support = 0i32 as libc::c_uint
     }
-    env = crate::stdlib::getenv(b"JSIMD_NOHUFFENC\x00" as *const u8 as *const libc::c_char);
+    env = crate::stdlib::getenv(b"JSIMD_NOHUFFENC\x00".as_ptr() as *const libc::c_char);
     if !env.is_null()
-        && crate::stdlib::strcmp(env, b"1\x00" as *const u8 as *const libc::c_char) == 0i32
+        && crate::stdlib::strcmp(env,  b"1\x00".as_ptr() as *const libc::c_char) == 0i32
     {
         simd_huffman = 0i32 as libc::c_uint
     };

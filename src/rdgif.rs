@@ -159,7 +159,8 @@ pub unsafe extern "C" fn jinit_read_gif(
 ) -> crate::src::cdjpeg::cjpeg_source_ptr {
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"GIF input is unsupported for legal reasons.  Sorry.\n\x00" as *const u8
+        
+        b"GIF input is unsupported for legal reasons.  Sorry.\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
