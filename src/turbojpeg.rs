@@ -1,13 +1,57 @@
 use libc::{c_char, c_int, c_short, c_uchar, c_uint, c_ulong, c_void};
 extern "C" {
+    /*
+     * Copyright (C)2009-2018 D. R. Commander.  All Rights Reserved.
+     * mozjpeg Modifications:
+     * Copyright (C) 2014, Mozilla Corporation.
+     *
+     * Redistribution and use in source and binary forms, with or without
+     * modification, are permitted provided that the following conditions are met:
+     *
+     * - Redistributions of source code must retain the above copyright notice,
+     *   this list of conditions and the following disclaimer.
+     * - Redistributions in binary form must reproduce the above copyright notice,
+     *   this list of conditions and the following disclaimer in the documentation
+     *   and/or other materials provided with the distribution.
+     * - Neither the name of the libjpeg-turbo Project nor the names of its
+     *   contributors may be used to endorse or promote products derived from this
+     *   software without specific prior written permission.
+     *
+     * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS",
+     * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+     * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+     * ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
+     * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+     * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+     * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+     * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+     * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+     * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+     * POSSIBILITY OF SUCH DAMAGE.
+     */
+    /* TurboJPEG/LJT:  this implements the TurboJPEG API using libjpeg or
+    libjpeg-turbo */
     #[no_mangle]
     pub fn jpeg_mem_dest_tj(_: j_compress_ptr, _: *mut *mut c_uchar, _: *mut c_ulong, _: boolean);
 
     #[no_mangle]
     pub fn jpeg_mem_src_tj(_: j_decompress_ptr, _: *const c_uchar, _: c_ulong);
 }
+
+pub use super::cdjpeg::{
+    cjpeg_source_ptr, cjpeg_source_struct, djpeg_dest_ptr, djpeg_dest_struct, jinit_read_bmp,
+    jinit_read_ppm, jinit_write_bmp, jinit_write_ppm,
+};
+pub use super::transupp::{
+    jcopy_markers_execute, jcopy_markers_setup, jpeg_transform_info, jtransform_adjust_parameters,
+    jtransform_execute_transform, jtransform_execute_transformation, jtransform_request_workspace,
+    JCOPYOPT_ALL, JCOPYOPT_ALL_EXCEPT_ICC, JCOPYOPT_COMMENTS, JCOPYOPT_NONE, JCOPY_OPTION,
+    JCROP_CODE, JCROP_FORCE, JCROP_NEG, JCROP_POS, JCROP_UNSET, JXFORM_CODE, JXFORM_FLIP_H,
+    JXFORM_FLIP_V, JXFORM_NONE, JXFORM_ROT_180, JXFORM_ROT_270, JXFORM_ROT_90, JXFORM_TRANSPOSE,
+    JXFORM_TRANSVERSE,
+};
 pub use crate::cderror_h::{
-    C2RustUnnamed_91, JERR_BAD_CMAP_FILE, JERR_BMP_BADCMAP, JERR_BMP_BADDEPTH, JERR_BMP_BADHEADER,
+    C2RustUnnamed_4, JERR_BAD_CMAP_FILE, JERR_BMP_BADCMAP, JERR_BMP_BADDEPTH, JERR_BMP_BADHEADER,
     JERR_BMP_BADPLANES, JERR_BMP_COLORSPACE, JERR_BMP_COMPRESSED, JERR_BMP_EMPTY, JERR_BMP_NOT,
     JERR_BMP_OUTOFRANGE, JERR_PPM_COLORSPACE, JERR_PPM_NONNUMERIC, JERR_PPM_NOT,
     JERR_PPM_OUTOFRANGE, JERR_TGA_NOTCOMP, JERR_TOO_MANY_COLORS, JERR_UNGETC_FAILED,
@@ -15,43 +59,40 @@ pub use crate::cderror_h::{
     JTRC_BMP, JTRC_BMP_MAPPED, JTRC_BMP_OS2, JTRC_BMP_OS2_MAPPED, JTRC_PGM, JTRC_PGM_TEXT,
     JTRC_PPM, JTRC_PPM_TEXT,
 };
-pub use crate::cdjpeg::{
-    cjpeg_source_ptr, cjpeg_source_struct, djpeg_dest_ptr, djpeg_dest_struct, jinit_read_bmp,
-    jinit_read_ppm, jinit_write_bmp, jinit_write_ppm,
-};
 pub use crate::jconfig_h::JPEG_LIB_VERSION;
 pub use crate::jmorecfg_h::{
     boolean, FALSE, JCOEF, JDIMENSION, JOCTET, JSAMPLE, MAX_COMPONENTS, TRUE, UINT16, UINT8,
 };
 pub use crate::jpegint_h::{
     inverse_DCT_method_ptr, jcopy_sample_rows, jinit_c_master_control, jinit_color_converter,
-    jinit_downsampler, jinit_master_decompress, jpeg_c_coef_controller, jpeg_c_main_controller,
-    jpeg_c_prep_controller, jpeg_color_converter, jpeg_color_deconverter, jpeg_color_quantizer,
-    jpeg_comp_master, jpeg_d_coef_controller, jpeg_d_main_controller, jpeg_d_post_controller,
-    jpeg_decomp_master, jpeg_downsampler, jpeg_entropy_decoder, jpeg_entropy_encoder,
-    jpeg_forward_dct, jpeg_input_controller, jpeg_inverse_dct, jpeg_marker_reader,
-    jpeg_marker_writer, jpeg_upsampler, CSTATE_START, DSTATE_READY, DSTATE_START, JBUF_CRANK_DEST,
-    JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, J_BUF_MODE,
+    jinit_downsampler, jinit_master_decompress, CSTATE_START, DSTATE_READY, DSTATE_START,
+    JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE,
+    J_BUF_MODE,
 };
 pub use crate::jpeglib_h::{
     j_common_ptr, j_compress_ptr, j_decompress_ptr, jpeg_CreateCompress, jpeg_CreateDecompress,
-    jpeg_abort_compress, jpeg_abort_decompress, jpeg_alloc_quant_table,
-    jpeg_calc_output_dimensions, jpeg_common_struct, jpeg_component_info, jpeg_compress_struct,
-    jpeg_copy_critical_parameters, jpeg_decompress_struct, jpeg_destination_mgr,
-    jpeg_destroy_compress, jpeg_destroy_decompress, jpeg_error_mgr, jpeg_finish_compress,
-    jpeg_finish_decompress, jpeg_marker_parser_method, jpeg_marker_struct, jpeg_memory_mgr,
-    jpeg_progress_mgr, jpeg_read_coefficients, jpeg_read_header, jpeg_read_raw_data,
-    jpeg_read_scanlines, jpeg_saved_marker_ptr, jpeg_scan_info, jpeg_set_colorspace,
-    jpeg_set_defaults, jpeg_set_quality, jpeg_simple_progression, jpeg_source_mgr,
-    jpeg_start_compress, jpeg_start_decompress, jpeg_std_error, jpeg_write_coefficients,
-    jpeg_write_raw_data, jpeg_write_scanlines, jvirt_barray_control, jvirt_barray_ptr,
-    jvirt_sarray_control, jvirt_sarray_ptr, C2RustUnnamed_1, C2RustUnnamed_2, JCS_YCbCr, DCTSIZE,
-    DCTSIZE2, JBLOCK, JBLOCKARRAY, JBLOCKROW, JCOEFPTR, JCP_FASTEST, JCP_MAX_COMPRESSION, JCS_CMYK,
-    JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA,
-    JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN,
-    JCS_YCCK, JDCT_FASTEST, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JDITHER_FS, JDITHER_NONE,
-    JDITHER_ORDERED, JHUFF_TBL, JMSG_LENGTH_MAX, JPEG_REACHED_SOS, JPOOL_IMAGE, JQUANT_TBL,
-    JSAMPARRAY, JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD, J_DITHER_MODE,
+    jpeg_abort_compress, jpeg_abort_decompress, jpeg_alloc_quant_table, jpeg_c_coef_controller,
+    jpeg_c_main_controller, jpeg_c_prep_controller, jpeg_calc_output_dimensions,
+    jpeg_color_converter, jpeg_color_deconverter, jpeg_color_quantizer, jpeg_common_struct,
+    jpeg_comp_master, jpeg_component_info, jpeg_compress_struct, jpeg_copy_critical_parameters,
+    jpeg_d_coef_controller, jpeg_d_main_controller, jpeg_d_post_controller, jpeg_decomp_master,
+    jpeg_decompress_struct, jpeg_destination_mgr, jpeg_destroy_compress, jpeg_destroy_decompress,
+    jpeg_downsampler, jpeg_entropy_decoder, jpeg_entropy_encoder, jpeg_error_mgr,
+    jpeg_finish_compress, jpeg_finish_decompress, jpeg_forward_dct, jpeg_input_controller,
+    jpeg_inverse_dct, jpeg_marker_parser_method, jpeg_marker_reader, jpeg_marker_struct,
+    jpeg_marker_writer, jpeg_memory_mgr, jpeg_progress_mgr, jpeg_read_coefficients,
+    jpeg_read_header, jpeg_read_raw_data, jpeg_read_scanlines, jpeg_saved_marker_ptr,
+    jpeg_scan_info, jpeg_set_colorspace, jpeg_set_defaults, jpeg_set_quality,
+    jpeg_simple_progression, jpeg_source_mgr, jpeg_start_compress, jpeg_start_decompress,
+    jpeg_std_error, jpeg_upsampler, jpeg_write_coefficients, jpeg_write_raw_data,
+    jpeg_write_scanlines, jvirt_barray_control, jvirt_barray_ptr, jvirt_sarray_control,
+    jvirt_sarray_ptr, C2RustUnnamed_1, C2RustUnnamed_2, JCS_YCbCr, DCTSIZE, DCTSIZE2, JBLOCK,
+    JBLOCKARRAY, JBLOCKROW, JCOEFPTR, JCP_FASTEST, JCP_MAX_COMPRESSION, JCS_CMYK, JCS_EXT_ABGR,
+    JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX,
+    JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK,
+    JDCT_FASTEST, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JDITHER_FS, JDITHER_NONE, JDITHER_ORDERED,
+    JHUFF_TBL, JMSG_LENGTH_MAX, JPEG_REACHED_SOS, JPOOL_IMAGE, JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE,
+    JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD, J_DITHER_MODE,
 };
 pub use crate::stddef_h::{size_t, NULL};
 pub use crate::stdlib::{
@@ -63,346 +104,9 @@ use crate::stdlib::{
     __errno_location, abs, free, getenv, malloc, memcpy, memset, putenv, strcasecmp, strcmp,
     strerror, strlen, strrchr,
 };
-pub use crate::transupp::{
-    jcopy_markers_execute, jcopy_markers_setup, jpeg_transform_info, jtransform_adjust_parameters,
-    jtransform_execute_transform, jtransform_execute_transformation, jtransform_request_workspace,
-    JCOPYOPT_ALL, JCOPYOPT_ALL_EXCEPT_ICC, JCOPYOPT_COMMENTS, JCOPYOPT_NONE, JCOPY_OPTION,
-    JCROP_CODE, JCROP_FORCE, JCROP_NEG, JCROP_POS, JCROP_UNSET, JXFORM_CODE, JXFORM_FLIP_H,
-    JXFORM_FLIP_V, JXFORM_NONE, JXFORM_ROT_180, JXFORM_ROT_270, JXFORM_ROT_90, JXFORM_TRANSPOSE,
-    JXFORM_TRANSVERSE,
-};
 use libc;
+
 // =============== BEGIN turbojpeg_h ================
-
-/* *
- * The number of JPEG colorspaces
- */
-
-/* *
- * JPEG colorspaces
- */
-pub type TJCS = c_uint;
-/* *
- * The number of error codes
- */
-
-/* *
- * Error codes
- */
-pub type TJERR = c_uint;
-/* *
- * YCCK colorspace.  YCCK (AKA "YCbCrK") is not an absolute colorspace but
- * rather a mathematical transformation of CMYK designed solely for storage
- * and transmission.  It is to CMYK as YCbCr is to RGB.  CMYK pixels can be
- * reversibly transformed into YCCK, and as with YCbCr, the chrominance
- * components in the YCCK pixels can be subsampled without incurring major
- * perceptual loss.  YCCK JPEG images can only be compressed from and
- * decompressed to CMYK pixels.
- */
-pub const TJCS_YCCK: TJCS = 4;
-/* *
- * CMYK colorspace.  When compressing the JPEG image, the C, M, Y, and K
- * components in the source image are reordered into image planes, but no
- * colorspace conversion or subsampling is performed.  CMYK JPEG images can
- * only be decompressed to CMYK pixels.
- */
-pub const TJCS_CMYK: TJCS = 3;
-/* *
- * Grayscale colorspace.  The JPEG image retains only the luminance data (Y
- * component), and any color data from the source image is discarded.
- * Grayscale JPEG images can be compressed from and decompressed to any of
- * the extended RGB pixel formats or grayscale, or they can be decompressed
- * to YUV planar images.
- */
-pub const TJCS_GRAY: TJCS = 2;
-/* *
- * YCbCr colorspace.  YCbCr is not an absolute colorspace but rather a
- * mathematical transformation of RGB designed solely for storage and
- * transmission.  YCbCr images must be converted to RGB before they can
- * actually be displayed.  In the YCbCr colorspace, the Y (luminance)
- * component represents the black & white portion of the original image, and
- * the Cb and Cr (chrominance) components represent the color portion of the
- * original image.  Originally, the analog equivalent of this transformation
- * allowed the same signal to drive both black & white and color televisions,
- * but JPEG images use YCbCr primarily because it allows the color data to be
- * optionally subsampled for the purposes of reducing bandwidth or disk
- * space.  YCbCr is the most common JPEG colorspace, and YCbCr JPEG images
- * can be compressed from and decompressed to any of the extended RGB pixel
- * formats or grayscale, or they can be decompressed to YUV planar images.
- */
-pub const TJCS_YCbCr: TJCS = 1;
-/* *
- * RGB colorspace.  When compressing the JPEG image, the R, G, and B
- * components in the source image are reordered into image planes, but no
- * colorspace conversion or subsampling is performed.  RGB JPEG images can be
- * decompressed to any of the extended RGB pixel formats or grayscale, but
- * they cannot be decompressed to YUV images.
- */
-pub const TJCS_RGB: TJCS = 0;
-/* *
- * The error was fatal and non-recoverable.
- */
-pub const TJERR_FATAL: TJERR = 1;
-/* *
- * The error was non-fatal and recoverable, but the image may still be
- * corrupt.
- */
-pub const TJERR_WARNING: TJERR = 0;
-/* *
- * Immediately discontinue the current compression/decompression/transform
- * operation if the underlying codec throws a warning (non-fatal error).  The
- * default behavior is to allow the operation to complete unless a fatal error
- * is encountered.
- */
-pub const TJFLAG_STOPONWARNING: c_int = 8192i32;
-/* *
- * Use progressive entropy coding in JPEG images generated by the compression
- * and transform functions.  Progressive entropy coding will generally improve
- * compression relative to baseline entropy coding (the default), but it will
- * reduce compression and decompression performance considerably.
- */
-pub const TJFLAG_PROGRESSIVE: c_int = 16384i32;
-/* *
- * This option will prevent #tjTransform() from outputting a JPEG image for
- * this particular transform (this can be used in conjunction with a custom
- * filter to capture the transformed DCT coefficients without transcoding
- * them.)
- */
-pub const TJXOPT_NOOUTPUT: c_int = 16i32;
-/* *
- * This option will enable progressive entropy coding in the output image
- * generated by this particular transform.  Progressive entropy coding will
- * generally improve compression relative to baseline entropy coding (the
- * default), but it will reduce compression and decompression performance
- * considerably.
- */
-
-/* *
- * This option will prevent #tjTransform() from copying any extra markers
- * (including EXIF and ICC profile data) from the source image to the output
- * image.
- */
-pub const TJXOPT_COPYNONE: c_int = 64i32;
-/* Deprecated functions and macros */
-
-/* Backward compatibility functions and macros (nothing to see here) */
-pub const TJ_GRAYSCALE: c_int = TJSAMP_GRAY as c_int;
-/*
- * Copyright (C)2009-2015, 2017 D. R. Commander.  All Rights Reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice,
- *   this list of conditions and the following disclaimer.
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- * - Neither the name of the libjpeg-turbo Project nor the names of its
- *   contributors may be used to endorse or promote products derived from this
- *   software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS",
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- */
-
-/* *
- * @addtogroup TurboJPEG
- * TurboJPEG API.  This API provides an interface for generating, decoding, and
- * transforming planar YUV and JPEG images in memory.
- *
- * @anchor YUVnotes
- * YUV Image Format Notes
- * ----------------------
- * Technically, the JPEG format uses the YCbCr colorspace (which is technically
- * not a colorspace but a color transform), but per the convention of the
- * digital video community, the TurboJPEG API uses "YUV" to refer to an image
- * format consisting of Y, Cb, and Cr image planes.
- *
- * Each plane is simply a 2D array of bytes, each byte representing the value
- * of one of the components (Y, Cb, or Cr) at a particular location in the
- * image.  The width and height of each plane are determined by the image
- * width, height, and level of chrominance subsampling.   The luminance plane
- * width is the image width padded to the nearest multiple of the horizontal
- * subsampling factor (2 in the case of 4:2:0 and 4:2:2, 4 in the case of
- * 4:1:1, 1 in the case of 4:4:4 or grayscale.)  Similarly, the luminance plane
- * height is the image height padded to the nearest multiple of the vertical
- * subsampling factor (2 in the case of 4:2:0 or 4:4:0, 1 in the case of 4:4:4
- * or grayscale.)  This is irrespective of any additional padding that may be
- * specified as an argument to the various YUV functions.  The chrominance
- * plane width is equal to the luminance plane width divided by the horizontal
- * subsampling factor, and the chrominance plane height is equal to the
- * luminance plane height divided by the vertical subsampling factor.
- *
- * For example, if the source image is 35 x 35 pixels and 4:2:2 subsampling is
- * used, then the luminance plane would be 36 x 35 bytes, and each of the
- * chrominance planes would be 18 x 35 bytes.  If you specify a line padding of
- * 4 bytes on top of this, then the luminance plane would be 36 x 35 bytes, and
- * each of the chrominance planes would be 20 x 35 bytes.
- *
- * @{
- */
-
-/* *
- * The number of chrominance subsampling options
- */
-pub const TJ_NUMSAMP: c_int = 6i32;
-/* *
- * MCU block width (in pixels) for a given level of chrominance subsampling.
- * MCU block sizes:
- * - 8x8 for no subsampling or grayscale
- * - 16x8 for 4:2:2
- * - 8x16 for 4:4:0
- * - 16x16 for 4:2:0
- * - 32x8 for 4:1:1
- */
-pub static mut tjMCUWidth: [c_int; 6] = [8i32, 16i32, 16i32, 8i32, 8i32, 32i32];
-/* *
- * MCU block height (in pixels) for a given level of chrominance subsampling.
- * MCU block sizes:
- * - 8x8 for no subsampling or grayscale
- * - 16x8 for 4:2:2
- * - 8x16 for 4:4:0
- * - 16x16 for 4:2:0
- * - 32x8 for 4:1:1
- */
-pub static mut tjMCUHeight: [c_int; 6] = [8i32, 8i32, 16i32, 8i32, 16i32, 8i32];
-/* *
- * The number of pixel formats
- */
-pub const TJ_NUMPF: c_int = 12i32;
-/* *
- * Red offset (in bytes) for a given pixel format.  This specifies the number
- * of bytes that the red component is offset from the start of the pixel.  For
- * instance, if a pixel of format TJ_BGRX is stored in <tt>char pixel[]</tt>,
- * then the red component will be <tt>pixel[tjRedOffset[TJ_BGRX]]</tt>.  This
- * will be -1 if the pixel format does not have a red component.
- */
-pub static mut tjRedOffset: [c_int; 12] = [
-    0i32, 2i32, 0i32, 2i32, 3i32, 1i32, -1i32, 0i32, 2i32, 3i32, 1i32, -1i32,
-];
-/* *
- * Green offset (in bytes) for a given pixel format.  This specifies the number
- * of bytes that the green component is offset from the start of the pixel.
- * For instance, if a pixel of format TJ_BGRX is stored in
- * <tt>char pixel[]</tt>, then the green component will be
- * <tt>pixel[tjGreenOffset[TJ_BGRX]]</tt>.  This will be -1 if the pixel format
- * does not have a green component.
- */
-pub static mut tjGreenOffset: [c_int; 12] = [
-    1i32, 1i32, 1i32, 1i32, 2i32, 2i32, -1i32, 1i32, 1i32, 2i32, 2i32, -1i32,
-];
-/* *
- * Blue offset (in bytes) for a given pixel format.  This specifies the number
- * of bytes that the Blue component is offset from the start of the pixel.  For
- * instance, if a pixel of format TJ_BGRX is stored in <tt>char pixel[]</tt>,
- * then the blue component will be <tt>pixel[tjBlueOffset[TJ_BGRX]]</tt>.  This
- * will be -1 if the pixel format does not have a blue component.
- */
-pub static mut tjBlueOffset: [c_int; 12] = [
-    2i32, 0i32, 2i32, 0i32, 1i32, 3i32, -1i32, 2i32, 0i32, 1i32, 3i32, -1i32,
-];
-/* *
- * Alpha offset (in bytes) for a given pixel format.  This specifies the number
- * of bytes that the Alpha component is offset from the start of the pixel.
- * For instance, if a pixel of format TJ_BGRA is stored in
- * <tt>char pixel[]</tt>, then the alpha component will be
- * <tt>pixel[tjAlphaOffset[TJ_BGRA]]</tt>.  This will be -1 if the pixel format
- * does not have an alpha component.
- */
-pub static mut tjAlphaOffset: [c_int; 12] = [
-    -1i32, -1i32, -1i32, -1i32, -1i32, -1i32, -1i32, 3i32, 3i32, 0i32, 0i32, -1i32,
-];
-/* *
- * The uncompressed source/destination image is stored in bottom-up (Windows,
- * OpenGL) order, not top-down (X11) order.
- */
-pub const TJFLAG_BOTTOMUP: c_int = 2i32;
-/* *
- * Disable buffer (re)allocation.  If passed to one of the JPEG compression or
- * transform functions, this flag will cause those functions to generate an
- * error if the JPEG image buffer is invalid or too small rather than
- * attempting to allocate or reallocate that buffer.  This reproduces the
- * behavior of earlier versions of TurboJPEG.
- */
-pub const TJFLAG_NOREALLOC: c_int = 1024i32;
-/*
- * Copyright (C)2009-2015, 2017 D. R. Commander.  All Rights Reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice,
- *   this list of conditions and the following disclaimer.
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- * - Neither the name of the libjpeg-turbo Project nor the names of its
- *   contributors may be used to endorse or promote products derived from this
- *   software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS",
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- */
-
-/* *
- * @addtogroup TurboJPEG
- * TurboJPEG API.  This API provides an interface for generating, decoding, and
- * transforming planar YUV and JPEG images in memory.
- *
- * @anchor YUVnotes
- * YUV Image Format Notes
- * ----------------------
- * Technically, the JPEG format uses the YCbCr colorspace (which is technically
- * not a colorspace but a color transform), but per the convention of the
- * digital video community, the TurboJPEG API uses "YUV" to refer to an image
- * format consisting of Y, Cb, and Cr image planes.
- *
- * Each plane is simply a 2D array of bytes, each byte representing the value
- * of one of the components (Y, Cb, or Cr) at a particular location in the
- * image.  The width and height of each plane are determined by the image
- * width, height, and level of chrominance subsampling.   The luminance plane
- * width is the image width padded to the nearest multiple of the horizontal
- * subsampling factor (2 in the case of 4:2:0 and 4:2:2, 4 in the case of
- * 4:1:1, 1 in the case of 4:4:4 or grayscale.)  Similarly, the luminance plane
- * height is the image height padded to the nearest multiple of the vertical
- * subsampling factor (2 in the case of 4:2:0 or 4:4:0, 1 in the case of 4:4:4
- * or grayscale.)  This is irrespective of any additional padding that may be
- * specified as an argument to the various YUV functions.  The chrominance
- * plane width is equal to the luminance plane width divided by the horizontal
- * subsampling factor, and the chrominance plane height is equal to the
- * luminance plane height divided by the vertical subsampling factor.
- *
- * For example, if the source image is 35 x 35 pixels and 4:2:2 subsampling is
- * used, then the luminance plane would be 36 x 35 bytes, and each of the
- * chrominance planes would be 18 x 35 bytes.  If you specify a line padding of
- * 4 bytes on top of this, then the luminance plane would be 36 x 35 bytes, and
- * each of the chrominance planes would be 20 x 35 bytes.
- *
- * @{
- */
-
-/* *
- * The number of chrominance subsampling options
- */
 
 /* *
  * Chrominance subsampling options.
@@ -417,52 +121,43 @@ pub type TJSAMP = c_uint;
 /* *
  * The number of pixel formats
  */
-
 /* *
  * Pixel formats
  */
+
 pub type TJPF = c_int;
+/* *
+ * The number of JPEG colorspaces
+ */
+/* *
+ * JPEG colorspaces
+ */
+
+pub type TJCS = c_uint;
+/* *
+ * The number of error codes
+ */
+/* *
+ * Error codes
+ */
+
+pub type TJERR = c_uint;
 /* *
  * The number of transform operations
  */
-
 /* *
  * Transform operations for #tjTransform()
  */
+
 pub type TJXOP = c_uint;
-/* *
- * This option will prevent #tjTransform() from outputting a JPEG image for
- * this particular transform (this can be used in conjunction with a custom
- * filter to capture the transformed DCT coefficients without transcoding
- * them.)
- */
 
-/* *
- * This option will enable progressive entropy coding in the output image
- * generated by this particular transform.  Progressive entropy coding will
- * generally improve compression relative to baseline entropy coding (the
- * default), but it will reduce compression and decompression performance
- * considerably.
- */
-
-/* *
- * This option will prevent #tjTransform() from copying any extra markers
- * (including EXIF and ICC profile data) from the source image to the output
- * image.
- */
-
-/* *
- * Scaling factor
- */
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct tjscalingfactor {
     pub num: c_int,
     pub denom: c_int,
 }
-/* *
- * Cropping region
- */
+
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct tjregion {
@@ -471,9 +166,7 @@ pub struct tjregion {
     pub w: c_int,
     pub h: c_int,
 }
-/* *
- * Lossless transform
- */
+
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct tjtransform {
@@ -495,6 +188,7 @@ pub struct tjtransform {
 /* *
  * TurboJPEG instance handle
  */
+
 pub type tjhandle = *mut c_void;
 /* *
  * 4:1:1 chrominance subsampling.  The JPEG or YUV image will contain one
@@ -507,6 +201,7 @@ pub type tjhandle = *mut c_void;
  *
  * @note 4:1:1 subsampling is not fully accelerated in libjpeg-turbo.
  */
+
 pub const TJSAMP_411: TJSAMP = 5;
 /* *
  * 4:4:0 chrominance subsampling.  The JPEG or YUV image will contain one
@@ -514,30 +209,36 @@ pub const TJSAMP_411: TJSAMP = 5;
  *
  * @note 4:4:0 subsampling is not fully accelerated in libjpeg-turbo.
  */
+
 pub const TJSAMP_440: TJSAMP = 4;
 /* *
  * Grayscale.  The JPEG or YUV image will contain no chrominance components.
  */
+
 pub const TJSAMP_GRAY: TJSAMP = 3;
 /* *
  * 4:2:0 chrominance subsampling.  The JPEG or YUV image will contain one
  * chrominance component for every 2x2 block of pixels in the source image.
  */
+
 pub const TJSAMP_420: TJSAMP = 2;
 /* *
  * 4:2:2 chrominance subsampling.  The JPEG or YUV image will contain one
  * chrominance component for every 2x1 block of pixels in the source image.
  */
+
 pub const TJSAMP_422: TJSAMP = 1;
 /* *
  * 4:4:4 chrominance subsampling (no chrominance subsampling).  The JPEG or
  * YUV image will contain one chrominance component for every pixel in the
  * source image.
  */
+
 pub const TJSAMP_444: TJSAMP = 0;
 /* *
  * Unknown pixel format.  Currently this is only used by #tjLoadImage().
  */
+
 pub const TJPF_UNKNOWN: TJPF = -1;
 /* *
  * CMYK pixel format.  Unlike RGB, which is an additive color model used
@@ -554,35 +255,41 @@ pub const TJPF_UNKNOWN: TJPF = -1;
  * CMYK pixels into a YCCK JPEG image (see #TJCS_YCCK) and decompressing YCCK
  * JPEG images into CMYK pixels.
  */
+
 pub const TJPF_CMYK: TJPF = 11;
 /* *
  * ARGB pixel format.  This is the same as @ref TJPF_XRGB, except that when
  * decompressing, the X component is guaranteed to be 0xFF, which can be
  * interpreted as an opaque alpha channel.
  */
+
 pub const TJPF_ARGB: TJPF = 10;
 /* *
  * ABGR pixel format.  This is the same as @ref TJPF_XBGR, except that when
  * decompressing, the X component is guaranteed to be 0xFF, which can be
  * interpreted as an opaque alpha channel.
  */
+
 pub const TJPF_ABGR: TJPF = 9;
 /* *
  * BGRA pixel format.  This is the same as @ref TJPF_BGRX, except that when
  * decompressing, the X component is guaranteed to be 0xFF, which can be
  * interpreted as an opaque alpha channel.
  */
+
 pub const TJPF_BGRA: TJPF = 8;
 /* *
  * RGBA pixel format.  This is the same as @ref TJPF_RGBX, except that when
  * decompressing, the X component is guaranteed to be 0xFF, which can be
  * interpreted as an opaque alpha channel.
  */
+
 pub const TJPF_RGBA: TJPF = 7;
 /* *
  * Grayscale pixel format.  Each 1-byte pixel represents a luminance
  * (brightness) level from 0 to 255.
  */
+
 pub const TJPF_GRAY: TJPF = 6;
 /* *
  * XRGB pixel format.  The red, green, and blue components in the image are
@@ -590,6 +297,7 @@ pub const TJPF_GRAY: TJPF = 6;
  * address within each pixel.  The X component is ignored when compressing
  * and undefined when decompressing.
  */
+
 pub const TJPF_XRGB: TJPF = 5;
 /* *
  * XBGR pixel format.  The red, green, and blue components in the image are
@@ -597,6 +305,7 @@ pub const TJPF_XRGB: TJPF = 5;
  * address within each pixel.  The X component is ignored when compressing
  * and undefined when decompressing.
  */
+
 pub const TJPF_XBGR: TJPF = 4;
 /* *
  * BGRX pixel format.  The red, green, and blue components in the image are
@@ -604,6 +313,7 @@ pub const TJPF_XBGR: TJPF = 4;
  * address within each pixel.  The X component is ignored when compressing
  * and undefined when decompressing.
  */
+
 pub const TJPF_BGRX: TJPF = 3;
 /* *
  * RGBX pixel format.  The red, green, and blue components in the image are
@@ -611,64 +321,265 @@ pub const TJPF_BGRX: TJPF = 3;
  * address within each pixel.  The X component is ignored when compressing
  * and undefined when decompressing.
  */
+
 pub const TJPF_RGBX: TJPF = 2;
 /* *
  * BGR pixel format.  The red, green, and blue components in the image are
  * stored in 3-byte pixels in the order B, G, R from lowest to highest byte
  * address within each pixel.
  */
+
 pub const TJPF_BGR: TJPF = 1;
 /* *
  * RGB pixel format.  The red, green, and blue components in the image are
  * stored in 3-byte pixels in the order R, G, B from lowest to highest byte
  * address within each pixel.
  */
+
 pub const TJPF_RGB: TJPF = 0;
+/* *
+ * YCCK colorspace.  YCCK (AKA "YCbCrK") is not an absolute colorspace but
+ * rather a mathematical transformation of CMYK designed solely for storage
+ * and transmission.  It is to CMYK as YCbCr is to RGB.  CMYK pixels can be
+ * reversibly transformed into YCCK, and as with YCbCr, the chrominance
+ * components in the YCCK pixels can be subsampled without incurring major
+ * perceptual loss.  YCCK JPEG images can only be compressed from and
+ * decompressed to CMYK pixels.
+ */
+
+pub const TJCS_YCCK: TJCS = 4;
+/* *
+ * CMYK colorspace.  When compressing the JPEG image, the C, M, Y, and K
+ * components in the source image are reordered into image planes, but no
+ * colorspace conversion or subsampling is performed.  CMYK JPEG images can
+ * only be decompressed to CMYK pixels.
+ */
+
+pub const TJCS_CMYK: TJCS = 3;
+/* *
+ * Grayscale colorspace.  The JPEG image retains only the luminance data (Y
+ * component), and any color data from the source image is discarded.
+ * Grayscale JPEG images can be compressed from and decompressed to any of
+ * the extended RGB pixel formats or grayscale, or they can be decompressed
+ * to YUV planar images.
+ */
+
+pub const TJCS_GRAY: TJCS = 2;
+/* *
+ * YCbCr colorspace.  YCbCr is not an absolute colorspace but rather a
+ * mathematical transformation of RGB designed solely for storage and
+ * transmission.  YCbCr images must be converted to RGB before they can
+ * actually be displayed.  In the YCbCr colorspace, the Y (luminance)
+ * component represents the black & white portion of the original image, and
+ * the Cb and Cr (chrominance) components represent the color portion of the
+ * original image.  Originally, the analog equivalent of this transformation
+ * allowed the same signal to drive both black & white and color televisions,
+ * but JPEG images use YCbCr primarily because it allows the color data to be
+ * optionally subsampled for the purposes of reducing bandwidth or disk
+ * space.  YCbCr is the most common JPEG colorspace, and YCbCr JPEG images
+ * can be compressed from and decompressed to any of the extended RGB pixel
+ * formats or grayscale, or they can be decompressed to YUV planar images.
+ */
+
+pub const TJCS_YCbCr: TJCS = 1;
+/* *
+ * RGB colorspace.  When compressing the JPEG image, the R, G, and B
+ * components in the source image are reordered into image planes, but no
+ * colorspace conversion or subsampling is performed.  RGB JPEG images can be
+ * decompressed to any of the extended RGB pixel formats or grayscale, but
+ * they cannot be decompressed to YUV images.
+ */
+
+pub const TJCS_RGB: TJCS = 0;
+/* *
+ * The error was fatal and non-recoverable.
+ */
+
+pub const TJERR_FATAL: TJERR = 1;
+/* *
+ * The error was non-fatal and recoverable, but the image may still be
+ * corrupt.
+ */
+
+pub const TJERR_WARNING: TJERR = 0;
 /* *
  * Rotate image counter-clockwise by 90 degrees.  This transform is imperfect
  * if there are any partial MCU blocks on the right edge (see
  * #TJXOPT_PERFECT.)
  */
+
 pub const TJXOP_ROT270: TJXOP = 7;
 /* *
  * Rotate image 180 degrees.  This transform is imperfect if there are any
  * partial MCU blocks in the image (see #TJXOPT_PERFECT.)
  */
+
 pub const TJXOP_ROT180: TJXOP = 6;
 /* *
  * Rotate image clockwise by 90 degrees.  This transform is imperfect if
  * there are any partial MCU blocks on the bottom edge (see
  * #TJXOPT_PERFECT.)
  */
+
 pub const TJXOP_ROT90: TJXOP = 5;
 /* *
  * Transverse transpose image (flip/mirror along upper right to lower left
  * axis.)  This transform is imperfect if there are any partial MCU blocks in
  * the image (see #TJXOPT_PERFECT.)
  */
+
 pub const TJXOP_TRANSVERSE: TJXOP = 4;
 /* *
  * Transpose image (flip/mirror along upper left to lower right axis.)  This
  * transform is always perfect.
  */
+
 pub const TJXOP_TRANSPOSE: TJXOP = 3;
 /* *
  * Flip (mirror) image vertically.  This transform is imperfect if there are
  * any partial MCU blocks on the bottom edge (see #TJXOPT_PERFECT.)
  */
+
 pub const TJXOP_VFLIP: TJXOP = 2;
 /* *
  * Flip (mirror) image horizontally.  This transform is imperfect if there
  * are any partial MCU blocks on the right edge (see #TJXOPT_PERFECT.)
  */
+
 pub const TJXOP_HFLIP: TJXOP = 1;
 /* *
  * Do not transform the position of the image pixels
  */
+
 pub const TJXOP_NONE: TJXOP = 0;
+/*
+ * Copyright (C)2009-2015, 2017 D. R. Commander.  All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice,
+ *   this list of conditions and the following disclaimer.
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ * - Neither the name of the libjpeg-turbo Project nor the names of its
+ *   contributors may be used to endorse or promote products derived from this
+ *   software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS",
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+/* *
+ * @addtogroup TurboJPEG
+ * TurboJPEG API.  This API provides an interface for generating, decoding, and
+ * transforming planar YUV and JPEG images in memory.
+ *
+ * @anchor YUVnotes
+ * YUV Image Format Notes
+ * ----------------------
+ * Technically, the JPEG format uses the YCbCr colorspace (which is technically
+ * not a colorspace but a color transform), but per the convention of the
+ * digital video community, the TurboJPEG API uses "YUV" to refer to an image
+ * format consisting of Y, Cb, and Cr image planes.
+ *
+ * Each plane is simply a 2D array of bytes, each byte representing the value
+ * of one of the components (Y, Cb, or Cr) at a particular location in the
+ * image.  The width and height of each plane are determined by the image
+ * width, height, and level of chrominance subsampling.   The luminance plane
+ * width is the image width padded to the nearest multiple of the horizontal
+ * subsampling factor (2 in the case of 4:2:0 and 4:2:2, 4 in the case of
+ * 4:1:1, 1 in the case of 4:4:4 or grayscale.)  Similarly, the luminance plane
+ * height is the image height padded to the nearest multiple of the vertical
+ * subsampling factor (2 in the case of 4:2:0 or 4:4:0, 1 in the case of 4:4:4
+ * or grayscale.)  This is irrespective of any additional padding that may be
+ * specified as an argument to the various YUV functions.  The chrominance
+ * plane width is equal to the luminance plane width divided by the horizontal
+ * subsampling factor, and the chrominance plane height is equal to the
+ * luminance plane height divided by the vertical subsampling factor.
+ *
+ * For example, if the source image is 35 x 35 pixels and 4:2:2 subsampling is
+ * used, then the luminance plane would be 36 x 35 bytes, and each of the
+ * chrominance planes would be 18 x 35 bytes.  If you specify a line padding of
+ * 4 bytes on top of this, then the luminance plane would be 36 x 35 bytes, and
+ * each of the chrominance planes would be 20 x 35 bytes.
+ *
+ * @{
+ */
+/* *
+ * The number of chrominance subsampling options
+ */
+
+pub const TJ_NUMSAMP: c_int = 6i32;
+/* *
+ * MCU block width (in pixels) for a given level of chrominance subsampling.
+ * MCU block sizes:
+ * - 8x8 for no subsampling or grayscale
+ * - 16x8 for 4:2:2
+ * - 8x16 for 4:4:0
+ * - 16x16 for 4:2:0
+ * - 32x8 for 4:1:1
+ */
+
+pub static mut tjMCUWidth: [c_int; 6] = [8i32, 16i32, 16i32, 8i32, 8i32, 32i32];
+/* *
+ * MCU block height (in pixels) for a given level of chrominance subsampling.
+ * MCU block sizes:
+ * - 8x8 for no subsampling or grayscale
+ * - 16x8 for 4:2:2
+ * - 8x16 for 4:4:0
+ * - 16x16 for 4:2:0
+ * - 32x8 for 4:1:1
+ */
+
+pub static mut tjMCUHeight: [c_int; 6] = [8i32, 8i32, 16i32, 8i32, 16i32, 8i32];
+/* *
+ * Red offset (in bytes) for a given pixel format.  This specifies the number
+ * of bytes that the red component is offset from the start of the pixel.  For
+ * instance, if a pixel of format TJ_BGRX is stored in <tt>char pixel[]</tt>,
+ * then the red component will be <tt>pixel[tjRedOffset[TJ_BGRX]]</tt>.  This
+ * will be -1 if the pixel format does not have a red component.
+ */
+
+pub static mut tjRedOffset: [c_int; 12] = [
+    0i32, 2i32, 0i32, 2i32, 3i32, 1i32, -1i32, 0i32, 2i32, 3i32, 1i32, -1i32,
+];
+/* *
+ * Green offset (in bytes) for a given pixel format.  This specifies the number
+ * of bytes that the green component is offset from the start of the pixel.
+ * For instance, if a pixel of format TJ_BGRX is stored in
+ * <tt>char pixel[]</tt>, then the green component will be
+ * <tt>pixel[tjGreenOffset[TJ_BGRX]]</tt>.  This will be -1 if the pixel format
+ * does not have a green component.
+ */
+
+pub static mut tjGreenOffset: [c_int; 12] = [
+    1i32, 1i32, 1i32, 1i32, 2i32, 2i32, -1i32, 1i32, 1i32, 2i32, 2i32, -1i32,
+];
+/* *
+ * Blue offset (in bytes) for a given pixel format.  This specifies the number
+ * of bytes that the Blue component is offset from the start of the pixel.  For
+ * instance, if a pixel of format TJ_BGRX is stored in <tt>char pixel[]</tt>,
+ * then the blue component will be <tt>pixel[tjBlueOffset[TJ_BGRX]]</tt>.  This
+ * will be -1 if the pixel format does not have a blue component.
+ */
+
+pub static mut tjBlueOffset: [c_int; 12] = [
+    2i32, 0i32, 2i32, 0i32, 1i32, 3i32, -1i32, 2i32, 0i32, 1i32, 3i32, -1i32,
+];
 /* *
  * Pixel size (in bytes) for a given pixel format
  */
+
 pub static mut tjPixelSize: [c_int; 12] = [
     3i32, 3i32, 4i32, 4i32, 4i32, 4i32, 1i32, 4i32, 4i32, 4i32, 4i32, 4i32,
 ];
@@ -677,6 +588,7 @@ pub static mut tjPixelSize: [c_int; 12] = [
  * OpenGL) order, not top-down (X11) order.
  */
 
+pub const TJFLAG_BOTTOMUP: c_int = 2i32;
 /* *
  * When decompressing an image that was compressed using chrominance
  * subsampling, use the fastest chrominance upsampling algorithm available in
@@ -684,6 +596,7 @@ pub static mut tjPixelSize: [c_int; 12] = [
  * creates a smooth transition between neighboring chrominance components in
  * order to reduce upsampling artifacts in the decompressed image.
  */
+
 pub const TJFLAG_FASTUPSAMPLE: c_int = 256i32;
 /* *
  * Disable buffer (re)allocation.  If passed to one of the JPEG compression or
@@ -693,6 +606,7 @@ pub const TJFLAG_FASTUPSAMPLE: c_int = 256i32;
  * behavior of earlier versions of TurboJPEG.
  */
 
+pub const TJFLAG_NOREALLOC: c_int = 1024i32;
 /* *
  * Use the fastest DCT/IDCT algorithm available in the underlying codec.  The
  * default if this flag is not specified is implementation-specific.  For
@@ -701,6 +615,7 @@ pub const TJFLAG_FASTUPSAMPLE: c_int = 256i32;
  * only a very slight effect on accuracy, but it uses the accurate algorithm
  * when decompressing, because this has been shown to have a larger effect.
  */
+
 pub const TJFLAG_FASTDCT: c_int = 2048i32;
 /* *
  * Use the most accurate DCT/IDCT algorithm available in the underlying codec.
@@ -710,7 +625,97 @@ pub const TJFLAG_FASTDCT: c_int = 2048i32;
  * only a very slight effect on accuracy, but it uses the accurate algorithm
  * when decompressing, because this has been shown to have a larger effect.
  */
+
 pub const TJFLAG_ACCURATEDCT: c_int = 4096i32;
+/* *
+ * Immediately discontinue the current compression/decompression/transform
+ * operation if the underlying codec throws a warning (non-fatal error).  The
+ * default behavior is to allow the operation to complete unless a fatal error
+ * is encountered.
+ */
+
+pub const TJFLAG_STOPONWARNING: c_int = 8192i32;
+/* *
+ * Use progressive entropy coding in JPEG images generated by the compression
+ * and transform functions.  Progressive entropy coding will generally improve
+ * compression relative to baseline entropy coding (the default), but it will
+ * reduce compression and decompression performance considerably.
+ */
+
+pub const TJFLAG_PROGRESSIVE: c_int = 16384i32;
+/* *
+ * This option will cause #tjTransform() to return an error if the transform is
+ * not perfect.  Lossless transforms operate on MCU blocks, whose size depends
+ * on the level of chrominance subsampling used (see #tjMCUWidth
+ * and #tjMCUHeight.)  If the image's width or height is not evenly divisible
+ * by the MCU block size, then there will be partial MCU blocks on the right
+ * and/or bottom edges.  It is not possible to move these partial MCU blocks to
+ * the top or left of the image, so any transform that would require that is
+ * "imperfect."  If this option is not specified, then any partial MCU blocks
+ * that cannot be transformed will be left in place, which will create
+ * odd-looking strips on the right or bottom edge of the image.
+ */
+/* *
+ * This option will cause #tjTransform() to discard any partial MCU blocks that
+ * cannot be transformed.
+ */
+
+pub const TJXOPT_TRIM: c_int = 2i32;
+/* *
+ * This option will enable lossless cropping.  See #tjTransform() for more
+ * information.
+ */
+
+pub const TJXOPT_CROP: c_int = 4i32;
+/* *
+ * This option will discard the color data in the input image and produce
+ * a grayscale output image.
+ */
+
+pub const TJXOPT_GRAY: c_int = 8i32;
+/* *
+ * This option will prevent #tjTransform() from outputting a JPEG image for
+ * this particular transform (this can be used in conjunction with a custom
+ * filter to capture the transformed DCT coefficients without transcoding
+ * them.)
+ */
+
+pub const TJXOPT_NOOUTPUT: c_int = 16i32;
+/* *
+ * This option will enable progressive entropy coding in the output image
+ * generated by this particular transform.  Progressive entropy coding will
+ * generally improve compression relative to baseline entropy coding (the
+ * default), but it will reduce compression and decompression performance
+ * considerably.
+ */
+/* *
+ * This option will prevent #tjTransform() from copying any extra markers
+ * (including EXIF and ICC profile data) from the source image to the output
+ * image.
+ */
+
+pub const TJXOPT_COPYNONE: c_int = 64i32;
+/* Deprecated functions and macros */
+/* Backward compatibility functions and macros (nothing to see here) */
+
+pub const TJ_GRAYSCALE: c_int = TJSAMP_GRAY as c_int;
+/* *
+ * The number of pixel formats
+ */
+
+pub const TJ_NUMPF: c_int = 12i32;
+/* *
+ * Alpha offset (in bytes) for a given pixel format.  This specifies the number
+ * of bytes that the Alpha component is offset from the start of the pixel.
+ * For instance, if a pixel of format TJ_BGRA is stored in
+ * <tt>char pixel[]</tt>, then the alpha component will be
+ * <tt>pixel[tjAlphaOffset[TJ_BGRA]]</tt>.  This will be -1 if the pixel format
+ * does not have an alpha component.
+ */
+
+pub static mut tjAlphaOffset: [c_int; 12] = [
+    -1i32, -1i32, -1i32, -1i32, -1i32, -1i32, -1i32, 3i32, 3i32, 0i32, 0i32, -1i32,
+];
 /* *
  * This option will cause #tjTransform() to return an error if the transform is
  * not perfect.  Lossless transforms operate on MCU blocks, whose size depends
@@ -724,33 +729,6 @@ pub const TJFLAG_ACCURATEDCT: c_int = 4096i32;
  * odd-looking strips on the right or bottom edge of the image.
  */
 
-/* *
- * This option will cause #tjTransform() to discard any partial MCU blocks that
- * cannot be transformed.
- */
-pub const TJXOPT_TRIM: c_int = 2i32;
-/* *
- * This option will enable lossless cropping.  See #tjTransform() for more
- * information.
- */
-pub const TJXOPT_CROP: c_int = 4i32;
-/* *
- * This option will discard the color data in the input image and produce
- * a grayscale output image.
- */
-pub const TJXOPT_GRAY: c_int = 8i32;
-/* *
- * This option will cause #tjTransform() to return an error if the transform is
- * not perfect.  Lossless transforms operate on MCU blocks, whose size depends
- * on the level of chrominance subsampling used (see #tjMCUWidth
- * and #tjMCUHeight.)  If the image's width or height is not evenly divisible
- * by the MCU block size, then there will be partial MCU blocks on the right
- * and/or bottom edges.  It is not possible to move these partial MCU blocks to
- * the top or left of the image, so any transform that would require that is
- * "imperfect."  If this option is not specified, then any partial MCU blocks
- * that cannot be transformed will be left in place, which will create
- * odd-looking strips on the right or bottom edge of the image.
- */
 pub const TJXOPT_PERFECT: c_int = 1i32;
 /* *
  * This option will enable progressive entropy coding in the output image
@@ -759,18 +737,28 @@ pub const TJXOPT_PERFECT: c_int = 1i32;
  * default), but it will reduce compression and decompression performance
  * considerably.
  */
+
 pub const TJXOPT_PROGRESSIVE: c_int = 32i32;
 /* Deprecated functions and macros */
+
 pub const TJFLAG_FORCEMMX: c_int = 8i32;
+
 pub const TJFLAG_FORCESSE: c_int = 16i32;
+
 pub const TJFLAG_FORCESSE2: c_int = 32i32;
 /* Backward compatibility functions and macros (nothing to see here) */
+
 pub const NUMSUBOPT: c_int = TJ_NUMSAMP;
+
 pub const TJ_420: c_int = TJSAMP_420 as c_int;
+
 pub const TJ_BGR: c_int = 1i32;
+
 pub const TJ_ALPHAFIRST: c_int = 64i32;
+
 pub const TJ_YUV: c_int = 512i32;
 /* Error handling (based on example in example.txt) */
+
 static mut errStr: [c_char; 200] = [
     78, 111, 32, 101, 114, 114, 111, 114, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -780,6 +768,7 @@ static mut errStr: [c_char; 200] = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ];
+
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct my_error_mgr {
@@ -789,7 +778,9 @@ pub struct my_error_mgr {
     pub warning: boolean,
     pub stopOnWarning: boolean,
 }
+
 pub type my_error_ptr = *mut my_error_mgr;
+
 static mut turbojpeg_message_table: [*const c_char; 29] = [
     0 as *const c_char,
     b"Unsupported BMP colormap format\x00" as *const u8 as *const c_char,
@@ -822,33 +813,48 @@ static mut turbojpeg_message_table: [*const c_char; 29] = [
     b"Unsupported output file format\x00" as *const u8 as *const c_char,
     NULL as *const c_char,
 ];
+
 unsafe extern "C" fn my_error_exit(mut cinfo: j_common_ptr) {
     let mut myerr: my_error_ptr = (*cinfo).err as my_error_ptr;
-    (*(*cinfo).err)
-        .output_message
-        .expect("non-null function pointer")(cinfo);
+    Some(
+        (*(*cinfo).err)
+            .output_message
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(cinfo);
     longjmp((*myerr).setjmp_buffer.as_mut_ptr(), 1i32);
 }
 /* Based on output_message() in jerror.c */
+
 unsafe extern "C" fn my_output_message(mut cinfo: j_common_ptr) {
-    (*(*cinfo).err)
-        .format_message
-        .expect("non-null function pointer")(cinfo, errStr.as_mut_ptr());
+    Some(
+        (*(*cinfo).err)
+            .format_message
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(cinfo, errStr.as_mut_ptr());
 }
+
 unsafe extern "C" fn my_emit_message(mut cinfo: j_common_ptr, mut msg_level: c_int) {
     let mut myerr: my_error_ptr = (*cinfo).err as my_error_ptr;
     (*myerr).emit_message.expect("non-null function pointer")(cinfo, msg_level);
     if msg_level < 0i32 {
         (*myerr).warning = TRUE;
-        if 0 != (*myerr).stopOnWarning {
+        if (*myerr).stopOnWarning != 0 {
             longjmp((*myerr).setjmp_buffer.as_mut_ptr(), 1i32);
         }
     };
 }
 /* Global structures, macros, etc. */
-pub type C2RustUnnamed_92 = c_uint;
-pub const COMPRESS: C2RustUnnamed_92 = 1;
-pub const DECOMPRESS: C2RustUnnamed_92 = 2;
+
+pub type C2RustUnnamed_128 = c_uint;
+
+pub const COMPRESS: C2RustUnnamed_128 = 1;
+
+pub const DECOMPRESS: C2RustUnnamed_128 = 2;
+
+pub type tjinstance = _tjinstance;
+
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct _tjinstance {
@@ -860,85 +866,137 @@ pub struct _tjinstance {
     pub errStr: [c_char; 200],
     pub isInstanceError: boolean,
 }
-pub type tjinstance = _tjinstance;
+
 static mut pixelsize: [c_int; 6] = [3i32, 3i32, 3i32, 1i32, 3i32, 3i32];
-static mut xformtypes: [JXFORM_CODE; 8] = [
-    JXFORM_NONE,
-    JXFORM_FLIP_H,
-    JXFORM_FLIP_V,
-    JXFORM_TRANSPOSE,
-    JXFORM_TRANSVERSE,
-    JXFORM_ROT_90,
-    JXFORM_ROT_180,
-    JXFORM_ROT_270,
+
+static mut xformtypes: [super::transupp::JXFORM_CODE; 8] = [
+    super::transupp::JXFORM_NONE,
+    super::transupp::JXFORM_FLIP_H,
+    super::transupp::JXFORM_FLIP_V,
+    super::transupp::JXFORM_TRANSPOSE,
+    super::transupp::JXFORM_TRANSVERSE,
+    super::transupp::JXFORM_ROT_90,
+    super::transupp::JXFORM_ROT_180,
+    super::transupp::JXFORM_ROT_270,
 ];
+
 pub const NUMSF: c_int = 16i32;
+
 static mut sf: [tjscalingfactor; 16] = [
-    tjscalingfactor {
-        num: 2i32,
-        denom: 1i32,
+    {
+        let mut init = tjscalingfactor {
+            num: 2i32,
+            denom: 1i32,
+        };
+        init
     },
-    tjscalingfactor {
-        num: 15i32,
-        denom: 8i32,
+    {
+        let mut init = tjscalingfactor {
+            num: 15i32,
+            denom: 8i32,
+        };
+        init
     },
-    tjscalingfactor {
-        num: 7i32,
-        denom: 4i32,
+    {
+        let mut init = tjscalingfactor {
+            num: 7i32,
+            denom: 4i32,
+        };
+        init
     },
-    tjscalingfactor {
-        num: 13i32,
-        denom: 8i32,
+    {
+        let mut init = tjscalingfactor {
+            num: 13i32,
+            denom: 8i32,
+        };
+        init
     },
-    tjscalingfactor {
-        num: 3i32,
-        denom: 2i32,
+    {
+        let mut init = tjscalingfactor {
+            num: 3i32,
+            denom: 2i32,
+        };
+        init
     },
-    tjscalingfactor {
-        num: 11i32,
-        denom: 8i32,
+    {
+        let mut init = tjscalingfactor {
+            num: 11i32,
+            denom: 8i32,
+        };
+        init
     },
-    tjscalingfactor {
-        num: 5i32,
-        denom: 4i32,
+    {
+        let mut init = tjscalingfactor {
+            num: 5i32,
+            denom: 4i32,
+        };
+        init
     },
-    tjscalingfactor {
-        num: 9i32,
-        denom: 8i32,
+    {
+        let mut init = tjscalingfactor {
+            num: 9i32,
+            denom: 8i32,
+        };
+        init
     },
-    tjscalingfactor {
-        num: 1i32,
-        denom: 1i32,
+    {
+        let mut init = tjscalingfactor {
+            num: 1i32,
+            denom: 1i32,
+        };
+        init
     },
-    tjscalingfactor {
-        num: 7i32,
-        denom: 8i32,
+    {
+        let mut init = tjscalingfactor {
+            num: 7i32,
+            denom: 8i32,
+        };
+        init
     },
-    tjscalingfactor {
-        num: 3i32,
-        denom: 4i32,
+    {
+        let mut init = tjscalingfactor {
+            num: 3i32,
+            denom: 4i32,
+        };
+        init
     },
-    tjscalingfactor {
-        num: 5i32,
-        denom: 8i32,
+    {
+        let mut init = tjscalingfactor {
+            num: 5i32,
+            denom: 8i32,
+        };
+        init
     },
-    tjscalingfactor {
-        num: 1i32,
-        denom: 2i32,
+    {
+        let mut init = tjscalingfactor {
+            num: 1i32,
+            denom: 2i32,
+        };
+        init
     },
-    tjscalingfactor {
-        num: 3i32,
-        denom: 8i32,
+    {
+        let mut init = tjscalingfactor {
+            num: 3i32,
+            denom: 8i32,
+        };
+        init
     },
-    tjscalingfactor {
-        num: 1i32,
-        denom: 4i32,
+    {
+        let mut init = tjscalingfactor {
+            num: 1i32,
+            denom: 4i32,
+        };
+        init
     },
-    tjscalingfactor {
-        num: 1i32,
-        denom: 8i32,
+    {
+        let mut init = tjscalingfactor {
+            num: 1i32,
+            denom: 8i32,
+        };
+        init
     },
 ];
+
 static mut pf2cs: [J_COLOR_SPACE; 12] = [
     JCS_EXT_RGB,
     JCS_EXT_BGR,
@@ -953,6 +1011,7 @@ static mut pf2cs: [J_COLOR_SPACE; 12] = [
     JCS_EXT_ARGB,
     JCS_CMYK,
 ];
+
 static mut cs2pf: [c_int; 17] = [
     TJPF_UNKNOWN as c_int,
     TJPF_GRAY as c_int,
@@ -972,25 +1031,26 @@ static mut cs2pf: [c_int; 17] = [
     TJPF_ARGB as c_int,
     TJPF_UNKNOWN as c_int,
 ];
+
 unsafe extern "C" fn getPixelFormat(mut pixelSize: c_int, mut flags: c_int) -> c_int {
     if pixelSize == 1i32 {
         return TJPF_GRAY as c_int;
     }
     if pixelSize == 3i32 {
-        if 0 != flags & TJ_BGR {
+        if flags & TJ_BGR != 0 {
             return TJPF_BGR as c_int;
         } else {
             return TJPF_RGB as c_int;
         }
     }
     if pixelSize == 4i32 {
-        if 0 != flags & TJ_ALPHAFIRST {
-            if 0 != flags & TJ_BGR {
+        if flags & TJ_ALPHAFIRST != 0 {
+            if flags & TJ_BGR != 0 {
                 return TJPF_XBGR as c_int;
             } else {
                 return TJPF_XRGB as c_int;
             }
-        } else if 0 != flags & TJ_BGR {
+        } else if flags & TJ_BGR != 0 {
             return TJPF_BGRX as c_int;
         } else {
             return TJPF_RGBX as c_int;
@@ -998,6 +1058,7 @@ unsafe extern "C" fn getPixelFormat(mut pixelSize: c_int, mut flags: c_int) -> c
     }
     return -1i32;
 }
+
 unsafe extern "C" fn setCompDefaults(
     mut cinfo: *mut jpeg_compress_struct,
     mut pixelFormat: c_int,
@@ -1012,7 +1073,7 @@ unsafe extern "C" fn setCompDefaults(
     env = getenv(b"TJ_REVERT\x00" as *const u8 as *const c_char);
     if !env.is_null()
         && strlen(env) > 0i32 as c_ulong
-        && 0 == strcmp(env, b"1\x00" as *const u8 as *const c_char)
+        && strcmp(env, b"1\x00" as *const u8 as *const c_char) == 0
     {
         (*(*cinfo).master).compress_profile = JCP_FASTEST as c_int
     }
@@ -1020,14 +1081,14 @@ unsafe extern "C" fn setCompDefaults(
     env = getenv(b"TJ_OPTIMIZE\x00" as *const u8 as *const c_char);
     if !env.is_null()
         && strlen(env) > 0i32 as c_ulong
-        && 0 == strcmp(env, b"1\x00" as *const u8 as *const c_char)
+        && strcmp(env, b"1\x00" as *const u8 as *const c_char) == 0
     {
         (*cinfo).optimize_coding = TRUE
     }
     env = getenv(b"TJ_ARITHMETIC\x00" as *const u8 as *const c_char);
     if !env.is_null()
         && strlen(env) > 0i32 as c_ulong
-        && 0 == strcmp(env, b"1\x00" as *const u8 as *const c_char)
+        && strcmp(env, b"1\x00" as *const u8 as *const c_char) == 0
     {
         (*cinfo).arith_code = TRUE
     }
@@ -1049,11 +1110,11 @@ unsafe extern "C" fn setCompDefaults(
                 if ::std::mem::size_of::<c_char>() as c_ulong > 1i32 as c_ulong {
                     if 0 != 0 {
                         let mut __c: c_int = tempc as c_int;
-                        __res = if __c < -128i32 || __c > 255i32 {
+                        __res = (if __c < -128i32 || __c > 255i32 {
                             __c
                         } else {
                             *(*__ctype_toupper_loc()).offset(__c as isize)
-                        }
+                        })
                     } else {
                         __res = toupper(tempc as c_int)
                     }
@@ -1072,7 +1133,7 @@ unsafe extern "C" fn setCompDefaults(
     }
     if jpegQual >= 0i32 {
         jpeg_set_quality(cinfo, jpegQual, TRUE);
-        if jpegQual >= 96i32 || 0 != flags & TJFLAG_ACCURATEDCT {
+        if jpegQual >= 96i32 || flags & TJFLAG_ACCURATEDCT != 0 {
             (*cinfo).dct_method = JDCT_ISLOW
         } else {
             (*cinfo).dct_method = JDCT_FASTEST as J_DCT_METHOD
@@ -1085,38 +1146,44 @@ unsafe extern "C" fn setCompDefaults(
     } else {
         jpeg_set_colorspace(cinfo, JCS_YCbCr);
     }
-    if 0 != flags & TJFLAG_PROGRESSIVE {
+    if flags & TJFLAG_PROGRESSIVE != 0 {
         jpeg_simple_progression(cinfo);
     } else {
         env = getenv(b"TJ_PROGRESSIVE\x00" as *const u8 as *const c_char);
         if !env.is_null()
             && strlen(env) > 0i32 as c_ulong
-            && 0 == strcmp(env, b"1\x00" as *const u8 as *const c_char)
+            && strcmp(env, b"1\x00" as *const u8 as *const c_char) == 0
         {
             jpeg_simple_progression(cinfo);
         }
     }
+    /* Set scan pattern again as colorspace might have changed */
     if (*(*cinfo).master).compress_profile == JCP_MAX_COMPRESSION as c_int {
         jpeg_simple_progression(cinfo);
     }
-    (*(*cinfo).comp_info.offset(0isize)).h_samp_factor = tjMCUWidth[subsamp as usize] / 8i32;
-    (*(*cinfo).comp_info.offset(1isize)).h_samp_factor = 1i32;
-    (*(*cinfo).comp_info.offset(2isize)).h_samp_factor = 1i32;
+    (*(*cinfo).comp_info.offset(0)).h_samp_factor = tjMCUWidth[subsamp as usize] / 8i32;
+    (*(*cinfo).comp_info.offset(1)).h_samp_factor = 1i32;
+    (*(*cinfo).comp_info.offset(2)).h_samp_factor = 1i32;
     if (*cinfo).num_components > 3i32 {
-        (*(*cinfo).comp_info.offset(3isize)).h_samp_factor = tjMCUWidth[subsamp as usize] / 8i32
+        (*(*cinfo).comp_info.offset(3)).h_samp_factor = tjMCUWidth[subsamp as usize] / 8i32
     }
-    (*(*cinfo).comp_info.offset(0isize)).v_samp_factor = tjMCUHeight[subsamp as usize] / 8i32;
-    (*(*cinfo).comp_info.offset(1isize)).v_samp_factor = 1i32;
-    (*(*cinfo).comp_info.offset(2isize)).v_samp_factor = 1i32;
+    (*(*cinfo).comp_info.offset(0)).v_samp_factor = tjMCUHeight[subsamp as usize] / 8i32;
+    (*(*cinfo).comp_info.offset(1)).v_samp_factor = 1i32;
+    (*(*cinfo).comp_info.offset(2)).v_samp_factor = 1i32;
     if (*cinfo).num_components > 3i32 {
-        (*(*cinfo).comp_info.offset(3isize)).v_samp_factor = tjMCUHeight[subsamp as usize] / 8i32
+        (*(*cinfo).comp_info.offset(3)).v_samp_factor = tjMCUHeight[subsamp as usize] / 8i32
     }
     return retval;
 }
+
 unsafe extern "C" fn getSubsamp(mut dinfo: j_decompress_ptr) -> c_int {
     let mut retval: c_int = -1i32;
     let mut i: c_int = 0;
     let mut k: c_int = 0;
+    /* The sampling factors actually have no meaning with grayscale JPEG files,
+    and in fact it's possible to generate grayscale JPEGs with sampling
+    factors > 1 (even though those sampling factors are ignored by the
+    decompressor.)  Thus, we need to treat grayscale as a special case. */
     if (*dinfo).num_components == 1i32
         && (*dinfo).jpeg_color_space as c_uint == JCS_GRAYSCALE as c_int as c_uint
     {
@@ -1130,9 +1197,8 @@ unsafe extern "C" fn getSubsamp(mut dinfo: j_decompress_ptr) -> c_int {
                 && pixelsize[i as usize] == 3i32
                 && (*dinfo).num_components == 4i32
         {
-            if (*(*dinfo).comp_info.offset(0isize)).h_samp_factor == tjMCUWidth[i as usize] / 8i32
-                && (*(*dinfo).comp_info.offset(0isize)).v_samp_factor
-                    == tjMCUHeight[i as usize] / 8i32
+            if (*(*dinfo).comp_info.offset(0)).h_samp_factor == tjMCUWidth[i as usize] / 8i32
+                && (*(*dinfo).comp_info.offset(0)).v_samp_factor == tjMCUHeight[i as usize] / 8i32
             {
                 let mut match_0: c_int = 0i32;
                 k = 1i32;
@@ -1160,8 +1226,8 @@ unsafe extern "C" fn getSubsamp(mut dinfo: j_decompress_ptr) -> c_int {
             }
             /* Handle 4:2:2 and 4:4:0 images whose sampling factors are specified
             in non-standard ways. */
-            if (*(*dinfo).comp_info.offset(0isize)).h_samp_factor == 2i32
-                && (*(*dinfo).comp_info.offset(0isize)).v_samp_factor == 2i32
+            if (*(*dinfo).comp_info.offset(0)).h_samp_factor == 2i32
+                && (*(*dinfo).comp_info.offset(0)).v_samp_factor == 2i32
                 && (i == TJSAMP_422 as c_int || i == TJSAMP_440 as c_int)
             {
                 let mut match_1: c_int = 0i32;
@@ -1203,12 +1269,12 @@ unsafe extern "C" fn getSubsamp(mut dinfo: j_decompress_ptr) -> c_int {
  *
  * @return a descriptive error message explaining why the last command failed.
  */
-
 /* General API functions */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjGetErrorStr2(mut handle: tjhandle) -> *mut c_char {
     let mut this: *mut tjinstance = handle as *mut tjinstance;
-    if !this.is_null() && 0 != (*this).isInstanceError {
+    if !this.is_null() && (*this).isInstanceError != 0 {
         (*this).isInstanceError = FALSE;
         return (*this).errStr.as_mut_ptr();
     } else {
@@ -1216,6 +1282,7 @@ pub unsafe extern "C" fn tjGetErrorStr2(mut handle: tjhandle) -> *mut c_char {
     };
 }
 #[no_mangle]
+
 pub unsafe extern "C" fn tjGetErrorStr() -> *mut c_char {
     return errStr.as_mut_ptr();
 }
@@ -1230,9 +1297,10 @@ pub unsafe extern "C" fn tjGetErrorStr() -> *mut c_char {
  * @ref TJERR "Error codes".
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjGetErrorCode(mut handle: tjhandle) -> c_int {
     let mut this: *mut tjinstance = handle as *mut tjinstance;
-    if !this.is_null() && 0 != (*this).jerr.warning {
+    if !this.is_null() && (*this).jerr.warning != 0 {
         return TJERR_WARNING as c_int;
     } else {
         return TJERR_FATAL as c_int;
@@ -1247,6 +1315,7 @@ pub unsafe extern "C" fn tjGetErrorCode(mut handle: tjhandle) -> c_int {
  * @return 0 if successful, or -1 if an error occurred (see #tjGetErrorStr2().)
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjDestroy(mut handle: tjhandle) -> c_int {
     let mut this: *mut tjinstance = handle as *mut tjinstance;
     let mut cinfo: j_compress_ptr = NULL as j_compress_ptr;
@@ -1263,13 +1332,13 @@ pub unsafe extern "C" fn tjDestroy(mut handle: tjhandle) -> c_int {
     dinfo = &mut (*this).dinfo;
     (*this).jerr.warning = FALSE;
     (*this).isInstanceError = FALSE;
-    if 0 != _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) {
+    if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
         return -1i32;
     }
-    if 0 != (*this).init & COMPRESS as c_int {
+    if (*this).init & COMPRESS as c_int != 0 {
         jpeg_destroy_compress(cinfo);
     }
-    if 0 != (*this).init & DECOMPRESS as c_int {
+    if (*this).init & DECOMPRESS as c_int != 0 {
         jpeg_destroy_decompress(dinfo);
     }
     free(this as *mut c_void);
@@ -1285,12 +1354,12 @@ pub unsafe extern "C" fn tjDestroy(mut handle: tjhandle) -> c_int {
  *
  * @sa tjAlloc()
  */
-
 /* These are exposed mainly because Windows can't malloc() and free() across
 DLL boundaries except when the CRT DLL is used, and we don't use the CRT DLL
 with turbojpeg.dll for compatibility reasons.  However, these functions
 can potentially be used for other purposes by different implementations. */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjFree(mut buf: *mut c_uchar) {
     if !buf.is_null() {
         free(buf as *mut c_void);
@@ -1310,14 +1379,17 @@ pub unsafe extern "C" fn tjFree(mut buf: *mut c_uchar) {
  * @sa tjFree()
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjAlloc(mut bytes: c_int) -> *mut c_uchar {
     return malloc(bytes as c_ulong) as *mut c_uchar;
 }
 /* Compressor  */
+
 unsafe extern "C" fn _tjInitCompress(mut this: *mut tjinstance) -> tjhandle {
     static mut buffer: [c_uchar; 1] = [0; 1];
     let mut buf: *mut c_uchar = buffer.as_mut_ptr();
     let mut size: c_ulong = 1i32 as c_ulong;
+    /* This is also straight out of example.txt */
     (*this).cinfo.err = jpeg_std_error(&mut (*this).jerr.pub_0);
     (*this).jerr.pub_0.error_exit =
         Some(my_error_exit as unsafe extern "C" fn(_: j_common_ptr) -> ());
@@ -1329,7 +1401,8 @@ unsafe extern "C" fn _tjInitCompress(mut this: *mut tjinstance) -> tjhandle {
     (*this).jerr.pub_0.addon_message_table = turbojpeg_message_table.as_mut_ptr();
     (*this).jerr.pub_0.first_addon_message = JMSG_FIRSTADDONCODE as c_int;
     (*this).jerr.pub_0.last_addon_message = JMSG_LASTADDONCODE as c_int;
-    if 0 != _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) {
+    if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
+        /* If we get here, the JPEG code has signaled an error. */
         if !this.is_null() {
             free(this as *mut c_void);
         }
@@ -1340,6 +1413,7 @@ unsafe extern "C" fn _tjInitCompress(mut this: *mut tjinstance) -> tjhandle {
         JPEG_LIB_VERSION,
         ::std::mem::size_of::<jpeg_compress_struct>() as c_ulong,
     );
+    /* Make an initial call so it will create the destination manager */
     jpeg_mem_dest_tj(&mut (*this).cinfo, &mut buf, &mut size, 0i32);
     (*this).init |= COMPRESS as c_int;
     return this as tjhandle;
@@ -1347,13 +1421,11 @@ unsafe extern "C" fn _tjInitCompress(mut this: *mut tjinstance) -> tjhandle {
 /* *
  * Pad the given width to the nearest 32-bit boundary
  */
-
 /* *
  * Compute the scaled value of <tt>dimension</tt> using the given scaling
  * factor.  This macro performs the integer equivalent of <tt>ceil(dimension *
  * scalingFactor)</tt>.
  */
-
 /* *
  * Create a TurboJPEG compressor instance.
  *
@@ -1361,6 +1433,7 @@ unsafe extern "C" fn _tjInitCompress(mut this: *mut tjinstance) -> tjhandle {
  * occurred (see #tjGetErrorStr2().)
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjInitCompress() -> tjhandle {
     let mut this: *mut tjinstance = NULL as *mut tjinstance;
     this = malloc(::std::mem::size_of::<tjinstance>() as c_ulong) as *mut tjinstance;
@@ -1407,6 +1480,7 @@ pub unsafe extern "C" fn tjInitCompress() -> tjhandle {
  * image, or -1 if the arguments are out of bounds.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjBufSize(
     mut width: c_int,
     mut height: c_int,
@@ -1425,12 +1499,15 @@ pub unsafe extern "C" fn tjBufSize(
         );
         retval = -1i32 as c_ulong
     } else {
+        /* This allows for rare corner cases in which a JPEG image can actually be
+        larger than the uncompressed input (we wouldn't mention it if it hadn't
+        happened before.) */
         mcuw = tjMCUWidth[jpegSubsamp as usize];
         mcuh = tjMCUHeight[jpegSubsamp as usize];
         chromasf = if jpegSubsamp == TJSAMP_GRAY as c_int {
             0i32
         } else {
-            4i32 * 64i32 / (mcuw * mcuh)
+            (4i32 * 64i32) / (mcuw * mcuh)
         };
         retval = ((width + mcuw - 1i32 & !(mcuw - 1i32))
             * (height + mcuh - 1i32 & !(mcuh - 1i32))
@@ -1440,6 +1517,7 @@ pub unsafe extern "C" fn tjBufSize(
     return retval;
 }
 #[no_mangle]
+
 pub unsafe extern "C" fn TJBUFSIZE(mut width: c_int, mut height: c_int) -> c_ulong {
     let mut retval: c_ulong = 0i32 as c_ulong;
     if width < 1i32 || height < 1i32 {
@@ -1451,6 +1529,9 @@ pub unsafe extern "C" fn TJBUFSIZE(mut width: c_int, mut height: c_int) -> c_ulo
         );
         retval = -1i32 as c_ulong
     } else {
+        /* This allows for rare corner cases in which a JPEG image can actually be
+        larger than the uncompressed input (we wouldn't mention it if it hadn't
+        happened before.) */
         retval = ((width + 16i32 - 1i32 & !(16i32 - 1i32))
             * (height + 16i32 - 1i32 & !(16i32 - 1i32))
             * 6i32
@@ -1476,6 +1557,7 @@ pub unsafe extern "C" fn TJBUFSIZE(mut width: c_int, mut height: c_int) -> c_ulo
  * -1 if the arguments are out of bounds.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjBufSizeYUV2(
     mut width: c_int,
     mut pad: c_int,
@@ -1515,6 +1597,7 @@ pub unsafe extern "C" fn tjBufSizeYUV2(
     return retval as c_ulong;
 }
 #[no_mangle]
+
 pub unsafe extern "C" fn tjBufSizeYUV(
     mut width: c_int,
     mut height: c_int,
@@ -1523,6 +1606,7 @@ pub unsafe extern "C" fn tjBufSizeYUV(
     return tjBufSizeYUV2(width, 4i32, height, subsamp);
 }
 #[no_mangle]
+
 pub unsafe extern "C" fn TJBUFSIZEYUV(
     mut width: c_int,
     mut height: c_int,
@@ -1545,6 +1629,7 @@ pub unsafe extern "C" fn TJBUFSIZEYUV(
  * -1 if the arguments are out of bounds.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjPlaneWidth(
     mut componentID: c_int,
     mut width: c_int,
@@ -1602,6 +1687,7 @@ pub unsafe extern "C" fn tjPlaneWidth(
  * -1 if the arguments are out of bounds.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjPlaneHeight(
     mut componentID: c_int,
     mut height: c_int,
@@ -1666,6 +1752,7 @@ pub unsafe extern "C" fn tjPlaneHeight(
  * plane, or -1 if the arguments are out of bounds.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjPlaneSizeYUV(
     mut componentID: c_int,
     mut width: c_int,
@@ -1760,6 +1847,7 @@ pub unsafe extern "C" fn tjPlaneSizeYUV(
  * and #tjGetErrorCode().)
 */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjCompress2(
     mut handle: tjhandle,
     mut srcBuf: *const c_uchar,
@@ -1790,7 +1878,7 @@ pub unsafe extern "C" fn tjCompress2(
     cinfo = &mut (*this).cinfo;
     (*this).jerr.warning = FALSE;
     (*this).isInstanceError = FALSE;
-    (*this).jerr.stopOnWarning = if 0 != flags & TJFLAG_STOPONWARNING {
+    (*this).jerr.stopOnWarning = if flags & TJFLAG_STOPONWARNING != 0 {
         TRUE
     } else {
         FALSE
@@ -1861,19 +1949,20 @@ pub unsafe extern "C" fn tjCompress2(
                 b"tjCompress2(): Memory allocation failure\x00" as *const u8 as *const c_char,
             );
             retval = -1i32
-        } else if 0 != _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) {
+        } else if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
+            /* If we get here, the JPEG code has signaled an error. */
             retval = -1i32
         } else {
             (*cinfo).image_width = width as JDIMENSION;
             (*cinfo).image_height = height as JDIMENSION;
-            if 0 != flags & TJFLAG_FORCEMMX {
+            if flags & TJFLAG_FORCEMMX != 0 {
                 putenv(b"JSIMD_FORCEMMX=1\x00" as *const u8 as *const c_char as *mut c_char);
-            } else if 0 != flags & TJFLAG_FORCESSE {
+            } else if flags & TJFLAG_FORCESSE != 0 {
                 putenv(b"JSIMD_FORCESSE=1\x00" as *const u8 as *const c_char as *mut c_char);
-            } else if 0 != flags & TJFLAG_FORCESSE2 {
+            } else if flags & TJFLAG_FORCESSE2 != 0 {
                 putenv(b"JSIMD_FORCESSE2=1\x00" as *const u8 as *const c_char as *mut c_char);
             }
-            if 0 != flags & TJFLAG_NOREALLOC {
+            if flags & TJFLAG_NOREALLOC != 0 {
                 alloc = 0i32;
                 *jpegSize = tjBufSize(width, height, jpegSubsamp)
             }
@@ -1884,7 +1973,7 @@ pub unsafe extern "C" fn tjCompress2(
             jpeg_start_compress(cinfo, TRUE);
             i = 0i32;
             while i < height {
-                if 0 != flags & TJFLAG_BOTTOMUP {
+                if flags & TJFLAG_BOTTOMUP != 0 {
                     let ref mut fresh0 = *row_pointer.offset(i as isize);
                     *fresh0 = &*srcBuf.offset(((height - i - 1i32) * pitch) as isize)
                         as *const c_uchar as JSAMPROW
@@ -1910,13 +1999,14 @@ pub unsafe extern "C" fn tjCompress2(
     if !row_pointer.is_null() {
         free(row_pointer as *mut c_void);
     }
-    if 0 != (*this).jerr.warning {
+    if (*this).jerr.warning != 0 {
         retval = -1i32
     }
     (*this).jerr.stopOnWarning = FALSE;
     return retval;
 }
 #[no_mangle]
+
 pub unsafe extern "C" fn tjCompress(
     mut handle: tjhandle,
     mut srcBuf: *mut c_uchar,
@@ -1932,7 +2022,7 @@ pub unsafe extern "C" fn tjCompress(
 ) -> c_int {
     let mut retval: c_int = 0i32;
     let mut size: c_ulong = 0;
-    if 0 != flags & TJ_YUV {
+    if flags & TJ_YUV != 0 {
         size = tjBufSizeYUV(width, height, jpegSubsamp);
         retval = tjEncodeYUV2(
             handle,
@@ -2018,6 +2108,7 @@ pub unsafe extern "C" fn tjCompress(
  * and #tjGetErrorCode().)
 */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjEncodeYUVPlanes(
     mut handle: tjhandle,
     mut srcBuf: *const c_uchar,
@@ -2059,7 +2150,7 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
     cinfo = &mut (*this).cinfo;
     (*this).jerr.warning = FALSE;
     (*this).isInstanceError = FALSE;
-    (*this).jerr.stopOnWarning = if 0 != flags & TJFLAG_STOPONWARNING {
+    (*this).jerr.stopOnWarning = if flags & TJFLAG_STOPONWARNING != 0 {
         TRUE
     } else {
         FALSE
@@ -2097,7 +2188,7 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
         || pixelFormat < 0i32
         || pixelFormat >= TJ_NUMPF
         || dstPlanes.is_null()
-        || (*dstPlanes.offset(0isize)).is_null()
+        || (*dstPlanes.offset(0)).is_null()
         || subsamp < 0i32
         || subsamp >= NUMSUBOPT
     {
@@ -2116,7 +2207,7 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
         );
         retval = -1i32
     } else if subsamp != TJSAMP_GRAY as c_int
-        && ((*dstPlanes.offset(1isize)).is_null() || (*dstPlanes.offset(2isize)).is_null())
+        && ((*dstPlanes.offset(1)).is_null() || (*dstPlanes.offset(2)).is_null())
     {
         snprintf(
             (*this).errStr.as_mut_ptr(),
@@ -2153,16 +2244,17 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
         if pitch == 0i32 {
             pitch = width * tjPixelSize[pixelFormat as usize]
         }
-        if 0 != _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) {
+        if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
+            /* If we get here, the JPEG code has signaled an error. */
             retval = -1i32
         } else {
             (*cinfo).image_width = width as JDIMENSION;
             (*cinfo).image_height = height as JDIMENSION;
-            if 0 != flags & TJFLAG_FORCEMMX {
+            if flags & TJFLAG_FORCEMMX != 0 {
                 putenv(b"JSIMD_FORCEMMX=1\x00" as *const u8 as *const c_char as *mut c_char);
-            } else if 0 != flags & TJFLAG_FORCESSE {
+            } else if flags & TJFLAG_FORCESSE != 0 {
                 putenv(b"JSIMD_FORCESSE=1\x00" as *const u8 as *const c_char as *mut c_char);
-            } else if 0 != flags & TJFLAG_FORCESSE2 {
+            } else if flags & TJFLAG_FORCESSE2 != 0 {
                 putenv(b"JSIMD_FORCESSE2=1\x00" as *const u8 as *const c_char as *mut c_char);
             }
             if setCompDefaults(cinfo, pixelFormat, subsamp, -1i32, flags) == -1i32 {
@@ -2190,15 +2282,21 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                 );
                 retval = -1i32
             } else {
-                (*(*cinfo).err)
-                    .reset_error_mgr
-                    .expect("non-null function pointer")(cinfo as j_common_ptr);
+                Some(
+                    (*(*cinfo).err)
+                        .reset_error_mgr
+                        .expect("non-null function pointer"),
+                )
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
                 jinit_c_master_control(cinfo, FALSE);
                 jinit_color_converter(cinfo);
                 jinit_downsampler(cinfo);
-                (*(*cinfo).cconvert)
-                    .start_pass
-                    .expect("non-null function pointer")(cinfo);
+                Some(
+                    (*(*cinfo).cconvert)
+                        .start_pass
+                        .expect("non-null function pointer"),
+                )
+                .expect("non-null function pointer")(cinfo);
                 pw0 = width + (*cinfo).max_h_samp_factor - 1i32
                     & !((*cinfo).max_h_samp_factor - 1i32);
                 ph0 = height + (*cinfo).max_v_samp_factor - 1i32
@@ -2226,7 +2324,7 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                 } else {
                     i = 0i32;
                     while i < height {
-                        if 0 != flags & TJFLAG_BOTTOMUP {
+                        if flags & TJFLAG_BOTTOMUP != 0 {
                             let ref mut fresh2 = *row_pointer.offset(i as isize);
                             *fresh2 = &*srcBuf.offset(((height - i - 1i32) * pitch) as isize)
                                 as *const c_uchar as JSAMPROW
@@ -2283,7 +2381,7 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                                     as *const c_char,
                             );
                             retval = -1i32;
-                            current_block = 15123218097135381081;
+                            current_block = 11274834565634332203;
                             break;
                         } else {
                             tmpbuf[i as usize] = malloc(
@@ -2309,7 +2407,7 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                                         as *const c_char,
                                 );
                                 retval = -1i32;
-                                current_block = 15123218097135381081;
+                                current_block = 11274834565634332203;
                                 break;
                             } else {
                                 row = 0i32;
@@ -2366,7 +2464,7 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                                             as *const c_char,
                                     );
                                     retval = -1i32;
-                                    current_block = 15123218097135381081;
+                                    current_block = 11274834565634332203;
                                     break;
                                 } else {
                                     tmpbuf2[i as usize] = malloc(
@@ -2393,7 +2491,7 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                                                 as *const c_char,
                                         );
                                         retval = -1i32;
-                                        current_block = 15123218097135381081;
+                                        current_block = 11274834565634332203;
                                         break;
                                     } else {
                                         row = 0i32;
@@ -2447,7 +2545,7 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                                                          as *const u8 as
                                                          *const c_char);
                                             retval = -1i32;
-                                            current_block = 15123218097135381081;
+                                            current_block = 11274834565634332203;
                                             break;
                                         } else {
                                             ptr = *dstPlanes.offset(i as isize);
@@ -2456,16 +2554,14 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                                                 let ref mut fresh7 =
                                                     *outbuf[i as usize].offset(row as isize);
                                                 *fresh7 = ptr;
-                                                ptr = ptr.offset(
-                                                    (if !strides.is_null()
-                                                        && *strides.offset(i as isize) != 0i32
-                                                    {
-                                                        *strides.offset(i as isize)
-                                                    } else {
-                                                        pw[i as usize]
-                                                    })
-                                                        as isize,
-                                                );
+                                                ptr = ptr.offset(if !strides.is_null()
+                                                    && *strides.offset(i as isize) != 0i32
+                                                {
+                                                    *strides.offset(i as isize)
+                                                } else {
+                                                    pw[i as usize]
+                                                }
+                                                    as isize);
                                                 row += 1
                                             }
                                             i += 1
@@ -2476,16 +2572,20 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                         }
                     }
                     match current_block {
-                        15123218097135381081 => {}
+                        11274834565634332203 => {}
                         _ => {
-                            if 0 != _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) {
+                            if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
+                                /* If we get here, the JPEG code has signaled an error. */
                                 retval = -1i32
                             } else {
                                 row = 0i32;
                                 while row < ph0 {
-                                    (*(*cinfo).cconvert)
-                                        .color_convert
-                                        .expect("non-null function pointer")(
+                                    Some(
+                                        (*(*cinfo).cconvert)
+                                            .color_convert
+                                            .expect("non-null function pointer"),
+                                    )
+                                    .expect("non-null function pointer")(
                                         cinfo,
                                         &mut *row_pointer.offset(row as isize),
                                         tmpbuf.as_mut_ptr(),
@@ -2514,7 +2614,7 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                                             pw[i as usize] as JDIMENSION,
                                         );
                                         i += 1;
-                                        compptr = compptr.offset(1isize)
+                                        compptr = compptr.offset(1)
                                     }
                                     row += (*cinfo).max_v_samp_factor
                                 }
@@ -2555,7 +2655,7 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
         }
         i += 1
     }
-    if 0 != (*this).jerr.warning {
+    if (*this).jerr.warning != 0 {
         retval = -1i32
     }
     (*this).jerr.stopOnWarning = FALSE;
@@ -2611,6 +2711,7 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
  * and #tjGetErrorCode().)
 */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjEncodeYUV3(
     mut handle: tjhandle,
     mut srcBuf: *const c_uchar,
@@ -2664,20 +2765,20 @@ pub unsafe extern "C" fn tjEncodeYUV3(
         } else {
             pw0 = tjPlaneWidth(0i32, width, subsamp);
             ph0 = tjPlaneHeight(0i32, height, subsamp);
-            dstPlanes[0usize] = dstBuf;
-            strides[0usize] = pw0 + pad - 1i32 & !(pad - 1i32);
+            dstPlanes[0] = dstBuf;
+            strides[0] = pw0 + pad - 1i32 & !(pad - 1i32);
             if subsamp == TJSAMP_GRAY as c_int {
-                strides[2usize] = 0i32;
-                strides[1usize] = strides[2usize];
-                dstPlanes[2usize] = NULL as *mut c_uchar;
-                dstPlanes[1usize] = dstPlanes[2usize]
+                strides[2] = 0i32;
+                strides[1] = strides[2];
+                dstPlanes[2] = NULL as *mut c_uchar;
+                dstPlanes[1] = dstPlanes[2]
             } else {
                 let mut pw1: c_int = tjPlaneWidth(1i32, width, subsamp);
                 let mut ph1: c_int = tjPlaneHeight(1i32, height, subsamp);
-                strides[2usize] = pw1 + pad - 1i32 & !(pad - 1i32);
-                strides[1usize] = strides[2usize];
-                dstPlanes[1usize] = dstPlanes[0usize].offset((strides[0usize] * ph0) as isize);
-                dstPlanes[2usize] = dstPlanes[1usize].offset((strides[1usize] * ph1) as isize)
+                strides[2] = pw1 + pad - 1i32 & !(pad - 1i32);
+                strides[1] = strides[2];
+                dstPlanes[1] = dstPlanes[0].offset((strides[0] * ph0) as isize);
+                dstPlanes[2] = dstPlanes[1].offset((strides[1] * ph1) as isize)
             }
             return tjEncodeYUVPlanes(
                 handle,
@@ -2696,6 +2797,7 @@ pub unsafe extern "C" fn tjEncodeYUV3(
     return retval;
 }
 #[no_mangle]
+
 pub unsafe extern "C" fn tjEncodeYUV2(
     mut handle: tjhandle,
     mut srcBuf: *mut c_uchar,
@@ -2721,6 +2823,7 @@ pub unsafe extern "C" fn tjEncodeYUV2(
     );
 }
 #[no_mangle]
+
 pub unsafe extern "C" fn tjEncodeYUV(
     mut handle: tjhandle,
     mut srcBuf: *mut c_uchar,
@@ -2811,6 +2914,7 @@ pub unsafe extern "C" fn tjEncodeYUV(
  * and #tjGetErrorCode().)
 */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjCompressFromYUVPlanes(
     mut handle: tjhandle,
     mut srcPlanes: *mut *const c_uchar,
@@ -2851,7 +2955,7 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
     cinfo = &mut (*this).cinfo;
     (*this).jerr.warning = FALSE;
     (*this).isInstanceError = FALSE;
-    (*this).jerr.stopOnWarning = if 0 != flags & TJFLAG_STOPONWARNING {
+    (*this).jerr.stopOnWarning = if flags & TJFLAG_STOPONWARNING != 0 {
         TRUE
     } else {
         FALSE
@@ -2880,7 +2984,7 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
         );
         retval = -1i32
     } else if srcPlanes.is_null()
-        || (*srcPlanes.offset(0isize)).is_null()
+        || (*srcPlanes.offset(0)).is_null()
         || width <= 0i32
         || height <= 0i32
         || subsamp < 0i32
@@ -2905,7 +3009,7 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
         );
         retval = -1i32
     } else if subsamp != TJSAMP_GRAY as c_int
-        && ((*srcPlanes.offset(1isize)).is_null() || (*srcPlanes.offset(2isize)).is_null())
+        && ((*srcPlanes.offset(1)).is_null() || (*srcPlanes.offset(2)).is_null())
     {
         snprintf(
             (*this).errStr.as_mut_ptr(),
@@ -2921,19 +3025,20 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
             b"tjCompressFromYUVPlanes(): Invalid argument\x00" as *const u8 as *const c_char,
         );
         retval = -1i32
-    } else if 0 != _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) {
+    } else if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
+        /* If we get here, the JPEG code has signaled an error. */
         retval = -1i32
     } else {
         (*cinfo).image_width = width as JDIMENSION;
         (*cinfo).image_height = height as JDIMENSION;
-        if 0 != flags & TJFLAG_FORCEMMX {
+        if flags & TJFLAG_FORCEMMX != 0 {
             putenv(b"JSIMD_FORCEMMX=1\x00" as *const u8 as *const c_char as *mut c_char);
-        } else if 0 != flags & TJFLAG_FORCESSE {
+        } else if flags & TJFLAG_FORCESSE != 0 {
             putenv(b"JSIMD_FORCESSE=1\x00" as *const u8 as *const c_char as *mut c_char);
-        } else if 0 != flags & TJFLAG_FORCESSE2 {
+        } else if flags & TJFLAG_FORCESSE2 != 0 {
             putenv(b"JSIMD_FORCESSE2=1\x00" as *const u8 as *const c_char as *mut c_char);
         }
-        if 0 != flags & TJFLAG_NOREALLOC {
+        if flags & TJFLAG_NOREALLOC != 0 {
             alloc = 0i32;
             *jpegSize = tjBufSize(width, height, subsamp)
         }
@@ -2996,7 +3101,7 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
                         as *const c_char,
                 );
                 retval = -1i32;
-                current_block = 2212142072389328366;
+                current_block = 4995605523671280494;
                 break;
             } else {
                 ptr = *srcPlanes.offset(i as isize) as *mut JSAMPLE;
@@ -3005,11 +3110,11 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
                     let ref mut fresh8 = *inbuf[i as usize].offset(row as isize);
                     *fresh8 = ptr;
                     ptr = ptr.offset(
-                        (if !strides.is_null() && *strides.offset(i as isize) != 0i32 {
+                        if !strides.is_null() && *strides.offset(i as isize) != 0i32 {
                             *strides.offset(i as isize)
                         } else {
                             pw[i as usize]
-                        }) as isize,
+                        } as isize,
                     );
                     row += 1
                 }
@@ -3017,9 +3122,9 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
             }
         }
         match current_block {
-            2212142072389328366 => {}
+            4995605523671280494 => {}
             _ => {
-                if 0 != usetmpbuf {
+                if usetmpbuf != 0 {
                     _tmpbuf = malloc(
                         (::std::mem::size_of::<JSAMPLE>() as c_ulong)
                             .wrapping_mul(tmpbufsize as c_ulong),
@@ -3041,7 +3146,7 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
                                 as *const c_char,
                         );
                         retval = -1i32;
-                        current_block = 2212142072389328366;
+                        current_block = 4995605523671280494;
                     } else {
                         ptr = _tmpbuf;
                         i = 0i32;
@@ -3073,7 +3178,7 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
                                         as *const c_char,
                                 );
                                 retval = -1i32;
-                                current_block = 2212142072389328366;
+                                current_block = 4995605523671280494;
                                 break;
                             } else {
                                 row = 0i32;
@@ -3091,9 +3196,10 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
                     current_block = 6406431739208918833;
                 }
                 match current_block {
-                    2212142072389328366 => {}
+                    4995605523671280494 => {}
                     _ => {
-                        if 0 != _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) {
+                        if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
+                            /* If we get here, the JPEG code has signaled an error. */
                             retval = -1i32
                         } else {
                             row = 0i32;
@@ -3107,7 +3213,7 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
                                             as *mut jpeg_component_info;
                                     crow[i as usize] = row * (*compptr_0).v_samp_factor
                                         / (*cinfo).max_v_samp_factor;
-                                    if 0 != usetmpbuf {
+                                    if usetmpbuf != 0 {
                                         let mut j: c_int = 0;
                                         let mut k: c_int = 0;
                                         j = 0i32;
@@ -3116,7 +3222,7 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
                                             {
                                                 th[i as usize]
                                             } else {
-                                                ph[i as usize] - crow[i as usize]
+                                                (ph[i as usize]) - crow[i as usize]
                                             })
                                         {
                                             memcpy(
@@ -3127,6 +3233,7 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
                                                     as *const c_void,
                                                 pw[i as usize] as c_ulong,
                                             );
+                                            /* Duplicate last sample in row to fill out MCU */
                                             k = pw[i as usize];
                                             while k < iw[i as usize] {
                                                 *(*tmpbuf[i as usize].offset(j as isize))
@@ -3137,6 +3244,7 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
                                             }
                                             j += 1
                                         }
+                                        /* Duplicate last row to fill out MCU */
                                         j = ph[i as usize] - crow[i as usize];
                                         while j < th[i as usize] {
                                             memcpy(
@@ -3191,7 +3299,7 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
     if !_tmpbuf.is_null() {
         free(_tmpbuf as *mut c_void);
     }
-    if 0 != (*this).jerr.warning {
+    if (*this).jerr.warning != 0 {
         retval = -1i32
     }
     (*this).jerr.stopOnWarning = FALSE;
@@ -3258,6 +3366,7 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
  * and #tjGetErrorCode().)
 */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjCompressFromYUV(
     mut handle: tjhandle,
     mut srcBuf: *const c_uchar,
@@ -3310,20 +3419,20 @@ pub unsafe extern "C" fn tjCompressFromYUV(
         } else {
             pw0 = tjPlaneWidth(0i32, width, subsamp);
             ph0 = tjPlaneHeight(0i32, height, subsamp);
-            srcPlanes[0usize] = srcBuf;
-            strides[0usize] = pw0 + pad - 1i32 & !(pad - 1i32);
+            srcPlanes[0] = srcBuf;
+            strides[0] = pw0 + pad - 1i32 & !(pad - 1i32);
             if subsamp == TJSAMP_GRAY as c_int {
-                strides[2usize] = 0i32;
-                strides[1usize] = strides[2usize];
-                srcPlanes[2usize] = NULL as *const c_uchar;
-                srcPlanes[1usize] = srcPlanes[2usize]
+                strides[2] = 0i32;
+                strides[1] = strides[2];
+                srcPlanes[2] = NULL as *const c_uchar;
+                srcPlanes[1] = srcPlanes[2]
             } else {
                 let mut pw1: c_int = tjPlaneWidth(1i32, width, subsamp);
                 let mut ph1: c_int = tjPlaneHeight(1i32, height, subsamp);
-                strides[2usize] = pw1 + pad - 1i32 & !(pad - 1i32);
-                strides[1usize] = strides[2usize];
-                srcPlanes[1usize] = srcPlanes[0usize].offset((strides[0usize] * ph0) as isize);
-                srcPlanes[2usize] = srcPlanes[1usize].offset((strides[1usize] * ph1) as isize)
+                strides[2] = pw1 + pad - 1i32 & !(pad - 1i32);
+                strides[1] = strides[2];
+                srcPlanes[1] = srcPlanes[0].offset((strides[0] * ph0) as isize);
+                srcPlanes[2] = srcPlanes[1].offset((strides[1] * ph1) as isize)
             }
             return tjCompressFromYUVPlanes(
                 handle,
@@ -3342,8 +3451,10 @@ pub unsafe extern "C" fn tjCompressFromYUV(
     return retval;
 }
 /* Decompressor */
+
 unsafe extern "C" fn _tjInitDecompress(mut this: *mut tjinstance) -> tjhandle {
     static mut buffer: [c_uchar; 1] = [0; 1];
+    /* This is also straight out of example.txt */
     (*this).dinfo.err = jpeg_std_error(&mut (*this).jerr.pub_0);
     (*this).jerr.pub_0.error_exit =
         Some(my_error_exit as unsafe extern "C" fn(_: j_common_ptr) -> ());
@@ -3355,7 +3466,8 @@ unsafe extern "C" fn _tjInitDecompress(mut this: *mut tjinstance) -> tjhandle {
     (*this).jerr.pub_0.addon_message_table = turbojpeg_message_table.as_mut_ptr();
     (*this).jerr.pub_0.first_addon_message = JMSG_FIRSTADDONCODE as c_int;
     (*this).jerr.pub_0.last_addon_message = JMSG_LASTADDONCODE as c_int;
-    if 0 != _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) {
+    if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
+        /* If we get here, the JPEG code has signaled an error. */
         if !this.is_null() {
             free(this as *mut c_void);
         }
@@ -3366,6 +3478,7 @@ unsafe extern "C" fn _tjInitDecompress(mut this: *mut tjinstance) -> tjhandle {
         JPEG_LIB_VERSION,
         ::std::mem::size_of::<jpeg_decompress_struct>() as c_ulong,
     );
+    /* Make an initial call so it will create the source manager */
     jpeg_mem_src_tj(&mut (*this).dinfo, buffer.as_mut_ptr(), 1i32 as c_ulong);
     (*this).init |= DECOMPRESS as c_int;
     return this as tjhandle;
@@ -3377,6 +3490,7 @@ unsafe extern "C" fn _tjInitDecompress(mut this: *mut tjinstance) -> tjhandle {
  * occurred (see #tjGetErrorStr2().)
 */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjInitDecompress() -> tjhandle {
     let mut this: *mut tjinstance = 0 as *mut tjinstance;
     this = malloc(::std::mem::size_of::<tjinstance>() as c_ulong) as *mut tjinstance;
@@ -3427,6 +3541,7 @@ pub unsafe extern "C" fn tjInitDecompress() -> tjhandle {
  * and #tjGetErrorCode().)
 */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjDecompressHeader3(
     mut handle: tjhandle,
     mut jpegBuf: *const c_uchar,
@@ -3489,7 +3604,8 @@ pub unsafe extern "C" fn tjDecompressHeader3(
         );
         retval = -1i32
     } else {
-        if 0 != _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) {
+        if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
+            /* If we get here, the JPEG code has signaled an error. */
             return -1i32;
         }
         jpeg_mem_src_tj(dinfo, jpegBuf, jpegSize);
@@ -3559,12 +3675,13 @@ pub unsafe extern "C" fn tjDecompressHeader3(
             retval = -1i32
         }
     }
-    if 0 != (*this).jerr.warning {
+    if (*this).jerr.warning != 0 {
         retval = -1i32
     }
     return retval;
 }
 #[no_mangle]
+
 pub unsafe extern "C" fn tjDecompressHeader2(
     mut handle: tjhandle,
     mut jpegBuf: *mut c_uchar,
@@ -3585,6 +3702,7 @@ pub unsafe extern "C" fn tjDecompressHeader2(
     );
 }
 #[no_mangle]
+
 pub unsafe extern "C" fn tjDecompressHeader(
     mut handle: tjhandle,
     mut jpegBuf: *mut c_uchar,
@@ -3606,6 +3724,7 @@ pub unsafe extern "C" fn tjDecompressHeader(
  * error is encountered (see #tjGetErrorStr2().)
 */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjGetScalingFactors(
     mut numscalingfactors: *mut c_int,
 ) -> *mut tjscalingfactor {
@@ -3671,6 +3790,7 @@ pub unsafe extern "C" fn tjGetScalingFactors(
  * and #tjGetErrorCode().)
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjDecompress2(
     mut handle: tjhandle,
     mut jpegBuf: *const c_uchar,
@@ -3702,7 +3822,7 @@ pub unsafe extern "C" fn tjDecompress2(
     dinfo = &mut (*this).dinfo;
     (*this).jerr.warning = FALSE;
     (*this).isInstanceError = FALSE;
-    (*this).jerr.stopOnWarning = if 0 != flags & TJFLAG_STOPONWARNING {
+    (*this).jerr.stopOnWarning = if flags & TJFLAG_STOPONWARNING != 0 {
         TRUE
     } else {
         FALSE
@@ -3748,23 +3868,24 @@ pub unsafe extern "C" fn tjDecompress2(
         );
         retval = -1i32
     } else {
-        if 0 != flags & TJFLAG_FORCEMMX {
+        if flags & TJFLAG_FORCEMMX != 0 {
             putenv(b"JSIMD_FORCEMMX=1\x00" as *const u8 as *const c_char as *mut c_char);
-        } else if 0 != flags & TJFLAG_FORCESSE {
+        } else if flags & TJFLAG_FORCESSE != 0 {
             putenv(b"JSIMD_FORCESSE=1\x00" as *const u8 as *const c_char as *mut c_char);
-        } else if 0 != flags & TJFLAG_FORCESSE2 {
+        } else if flags & TJFLAG_FORCESSE2 != 0 {
             putenv(b"JSIMD_FORCESSE2=1\x00" as *const u8 as *const c_char as *mut c_char);
         }
-        if 0 != _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) {
+        if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
+            /* If we get here, the JPEG code has signaled an error. */
             retval = -1i32
         } else {
             jpeg_mem_src_tj(dinfo, jpegBuf, jpegSize);
             jpeg_read_header(dinfo, TRUE);
             (*this).dinfo.out_color_space = pf2cs[pixelFormat as usize];
-            if 0 != flags & TJFLAG_FASTDCT {
+            if flags & TJFLAG_FASTDCT != 0 {
                 (*this).dinfo.dct_method = JDCT_FASTEST as J_DCT_METHOD
             }
-            if 0 != flags & TJFLAG_FASTUPSAMPLE {
+            if flags & TJFLAG_FASTUPSAMPLE != 0 {
                 (*dinfo).do_fancy_upsampling = FALSE
             }
             jpegwidth = (*dinfo).image_width as c_int;
@@ -3836,12 +3957,13 @@ pub unsafe extern "C" fn tjDecompress2(
                             as *const c_char,
                     );
                     retval = -1i32
-                } else if 0 != _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) {
+                } else if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
+                    /* If we get here, the JPEG code has signaled an error. */
                     retval = -1i32
                 } else {
                     i = 0i32;
                     while i < (*dinfo).output_height as c_int {
-                        if 0 != flags & TJFLAG_BOTTOMUP {
+                        if flags & TJFLAG_BOTTOMUP != 0 {
                             let ref mut fresh10 = *row_pointer.offset(i as isize);
                             *fresh10 = &mut *dstBuf.offset(
                                 (*dinfo)
@@ -3877,13 +3999,14 @@ pub unsafe extern "C" fn tjDecompress2(
     if !row_pointer.is_null() {
         free(row_pointer as *mut c_void);
     }
-    if 0 != (*this).jerr.warning {
+    if (*this).jerr.warning != 0 {
         retval = -1i32
     }
     (*this).jerr.stopOnWarning = FALSE;
     return retval;
 }
 #[no_mangle]
+
 pub unsafe extern "C" fn tjDecompress(
     mut handle: tjhandle,
     mut jpegBuf: *mut c_uchar,
@@ -3895,7 +4018,7 @@ pub unsafe extern "C" fn tjDecompress(
     mut pixelSize: c_int,
     mut flags: c_int,
 ) -> c_int {
-    if 0 != flags & TJ_YUV {
+    if flags & TJ_YUV != 0 {
         return tjDecompressToYUV(handle, jpegBuf, jpegSize, dstBuf, flags);
     } else {
         return tjDecompress2(
@@ -3911,11 +4034,12 @@ pub unsafe extern "C" fn tjDecompress(
         );
     };
 }
+
 unsafe extern "C" fn setDecodeDefaults(
     mut dinfo: *mut jpeg_decompress_struct,
-    mut _pixelFormat: c_int,
+    mut pixelFormat: c_int,
     mut subsamp: c_int,
-    mut _flags: c_int,
+    mut flags: c_int,
 ) -> c_int {
     let mut i: c_int = 0;
     (*dinfo).scale_denom = 1i32 as c_uint;
@@ -3929,9 +4053,12 @@ unsafe extern "C" fn setDecodeDefaults(
         (*dinfo).num_components = (*dinfo).comps_in_scan;
         (*dinfo).jpeg_color_space = JCS_YCbCr
     }
-    (*dinfo).comp_info = (*(*dinfo).mem)
-        .alloc_small
-        .expect("non-null function pointer")(
+    (*dinfo).comp_info = Some(
+        (*(*dinfo).mem)
+            .alloc_small
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(
         dinfo as j_common_ptr,
         JPOOL_IMAGE,
         ((*dinfo).num_components as c_ulong)
@@ -3942,12 +4069,12 @@ unsafe extern "C" fn setDecodeDefaults(
         let mut compptr: *mut jpeg_component_info =
             &mut *(*dinfo).comp_info.offset(i as isize) as *mut jpeg_component_info;
         (*compptr).h_samp_factor = if i == 0i32 {
-            tjMCUWidth[subsamp as usize] / 8i32
+            (tjMCUWidth[subsamp as usize]) / 8i32
         } else {
             1i32
         };
         (*compptr).v_samp_factor = if i == 0i32 {
-            tjMCUHeight[subsamp as usize] / 8i32
+            (tjMCUHeight[subsamp as usize]) / 8i32
         } else {
             1i32
         };
@@ -3970,11 +4097,13 @@ unsafe extern "C" fn setDecodeDefaults(
     return 0i32;
 }
 #[no_mangle]
-pub unsafe extern "C" fn my_read_markers(mut _dinfo: j_decompress_ptr) -> c_int {
+
+pub unsafe extern "C" fn my_read_markers(mut dinfo: j_decompress_ptr) -> c_int {
     return JPEG_REACHED_SOS;
 }
 #[no_mangle]
-pub unsafe extern "C" fn my_reset_marker_reader(mut _dinfo: j_decompress_ptr) {}
+
+pub unsafe extern "C" fn my_reset_marker_reader(mut dinfo: j_decompress_ptr) {}
 /* *
  * Decode a set of Y, U (Cb), and V (Cr) image planes into an RGB or grayscale
  * image.  This function uses the accelerated color conversion routines in the
@@ -4029,6 +4158,7 @@ pub unsafe extern "C" fn my_reset_marker_reader(mut _dinfo: j_decompress_ptr) {}
  * and #tjGetErrorCode().)
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjDecodeYUVPlanes(
     mut handle: tjhandle,
     mut srcPlanes: *mut *const c_uchar,
@@ -4070,7 +4200,7 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
     dinfo = &mut (*this).dinfo;
     (*this).jerr.warning = FALSE;
     (*this).isInstanceError = FALSE;
-    (*this).jerr.stopOnWarning = if 0 != flags & TJFLAG_STOPONWARNING {
+    (*this).jerr.stopOnWarning = if flags & TJFLAG_STOPONWARNING != 0 {
         TRUE
     } else {
         FALSE
@@ -4100,7 +4230,7 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
         );
         retval = -1i32
     } else if srcPlanes.is_null()
-        || (*srcPlanes.offset(0isize)).is_null()
+        || (*srcPlanes.offset(0)).is_null()
         || subsamp < 0i32
         || subsamp >= NUMSUBOPT
         || dstBuf.is_null()
@@ -4125,7 +4255,7 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
         );
         retval = -1i32
     } else if subsamp != TJSAMP_GRAY as c_int
-        && ((*srcPlanes.offset(1isize)).is_null() || (*srcPlanes.offset(2isize)).is_null())
+        && ((*srcPlanes.offset(1)).is_null() || (*srcPlanes.offset(2)).is_null())
     {
         snprintf(
             (*this).errStr.as_mut_ptr(),
@@ -4141,7 +4271,8 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
             b"tjDecodeYUVPlanes(): Invalid argument\x00" as *const u8 as *const c_char,
         );
         retval = -1i32
-    } else if 0 != _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) {
+    } else if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
+        /* If we get here, the JPEG code has signaled an error. */
         retval = -1i32
     } else if pixelFormat == TJPF_CMYK as c_int {
         snprintf(
@@ -4166,11 +4297,11 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
         }
         (*dinfo).image_width = width as JDIMENSION;
         (*dinfo).image_height = height as JDIMENSION;
-        if 0 != flags & TJFLAG_FORCEMMX {
+        if flags & TJFLAG_FORCEMMX != 0 {
             putenv(b"JSIMD_FORCEMMX=1\x00" as *const u8 as *const c_char as *mut c_char);
-        } else if 0 != flags & TJFLAG_FORCESSE {
+        } else if flags & TJFLAG_FORCESSE != 0 {
             putenv(b"JSIMD_FORCESSE=1\x00" as *const u8 as *const c_char as *mut c_char);
-        } else if 0 != flags & TJFLAG_FORCESSE2 {
+        } else if flags & TJFLAG_FORCESSE2 != 0 {
             putenv(b"JSIMD_FORCESSE2=1\x00" as *const u8 as *const c_char as *mut c_char);
         }
         if setDecodeDefaults(dinfo, pixelFormat, subsamp, flags) == -1i32 {
@@ -4186,15 +4317,18 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
             (*(*dinfo).marker).read_markers = old_read_markers;
             (*(*dinfo).marker).reset_marker_reader = old_reset_marker_reader;
             (*this).dinfo.out_color_space = pf2cs[pixelFormat as usize];
-            if 0 != flags & TJFLAG_FASTDCT {
+            if flags & TJFLAG_FASTDCT != 0 {
                 (*this).dinfo.dct_method = JDCT_FASTEST as J_DCT_METHOD
             }
             (*dinfo).do_fancy_upsampling = FALSE;
             (*dinfo).Se = DCTSIZE2 - 1i32;
             jinit_master_decompress(dinfo);
-            (*(*dinfo).upsample)
-                .start_pass
-                .expect("non-null function pointer")(dinfo);
+            Some(
+                (*(*dinfo).upsample)
+                    .start_pass
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(dinfo);
             pw0 = width + (*dinfo).max_h_samp_factor - 1i32 & !((*dinfo).max_h_samp_factor - 1i32);
             ph0 = height + (*dinfo).max_v_samp_factor - 1i32 & !((*dinfo).max_v_samp_factor - 1i32);
             if pitch == 0i32 {
@@ -4226,7 +4360,7 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
             } else {
                 i = 0i32;
                 while i < height {
-                    if 0 != flags & TJFLAG_BOTTOMUP {
+                    if flags & TJFLAG_BOTTOMUP != 0 {
                         let ref mut fresh12 = *row_pointer.offset(i as isize);
                         *fresh12 = &mut *dstBuf.offset(((height - i - 1i32) * pitch) as isize)
                             as *mut c_uchar
@@ -4279,7 +4413,7 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
                                 as *const c_char,
                         );
                         retval = -1i32;
-                        current_block = 16077833645231249584;
+                        current_block = 5377760937109324610;
                         break;
                     } else {
                         tmpbuf[i as usize] = malloc(
@@ -4303,7 +4437,7 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
                                     as *const c_char,
                             );
                             retval = -1i32;
-                            current_block = 16077833645231249584;
+                            current_block = 5377760937109324610;
                             break;
                         } else {
                             row = 0i32;
@@ -4354,7 +4488,7 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
                                         as *const c_char,
                                 );
                                 retval = -1i32;
-                                current_block = 16077833645231249584;
+                                current_block = 5377760937109324610;
                                 break;
                             } else {
                                 ptr = *srcPlanes.offset(i as isize) as *mut JSAMPLE;
@@ -4362,15 +4496,14 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
                                 while row < ph[i as usize] {
                                     let ref mut fresh16 = *inbuf[i as usize].offset(row as isize);
                                     *fresh16 = ptr;
-                                    ptr = ptr.offset(
-                                        (if !strides.is_null()
-                                            && *strides.offset(i as isize) != 0i32
-                                        {
-                                            *strides.offset(i as isize)
-                                        } else {
-                                            pw[i as usize]
-                                        }) as isize,
-                                    );
+                                    ptr = ptr.offset(if !strides.is_null()
+                                        && *strides.offset(i as isize) != 0i32
+                                    {
+                                        *strides.offset(i as isize)
+                                    } else {
+                                        pw[i as usize]
+                                    }
+                                        as isize);
                                     row += 1
                                 }
                                 i += 1
@@ -4379,9 +4512,10 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
                     }
                 }
                 match current_block {
-                    16077833645231249584 => {}
+                    5377760937109324610 => {}
                     _ => {
-                        if 0 != _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) {
+                        if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
+                            /* If we get here, the JPEG code has signaled an error. */
                             retval = -1i32
                         } else {
                             row = 0i32;
@@ -4400,7 +4534,7 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
                                         pw[i as usize] as JDIMENSION,
                                     );
                                     i += 1;
-                                    compptr = compptr.offset(1isize)
+                                    compptr = compptr.offset(1)
                                 }
                                 (*(*dinfo).upsample)
                                     .upsample
@@ -4441,7 +4575,7 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
         }
         i += 1
     }
-    if 0 != (*this).jerr.warning {
+    if (*this).jerr.warning != 0 {
         retval = -1i32
     }
     (*this).jerr.stopOnWarning = FALSE;
@@ -4496,6 +4630,7 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
  * and #tjGetErrorCode().)
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjDecodeYUV(
     mut handle: tjhandle,
     mut srcBuf: *const c_uchar,
@@ -4549,20 +4684,20 @@ pub unsafe extern "C" fn tjDecodeYUV(
         } else {
             pw0 = tjPlaneWidth(0i32, width, subsamp);
             ph0 = tjPlaneHeight(0i32, height, subsamp);
-            srcPlanes[0usize] = srcBuf;
-            strides[0usize] = pw0 + pad - 1i32 & !(pad - 1i32);
+            srcPlanes[0] = srcBuf;
+            strides[0] = pw0 + pad - 1i32 & !(pad - 1i32);
             if subsamp == TJSAMP_GRAY as c_int {
-                strides[2usize] = 0i32;
-                strides[1usize] = strides[2usize];
-                srcPlanes[2usize] = NULL as *const c_uchar;
-                srcPlanes[1usize] = srcPlanes[2usize]
+                strides[2] = 0i32;
+                strides[1] = strides[2];
+                srcPlanes[2] = NULL as *const c_uchar;
+                srcPlanes[1] = srcPlanes[2]
             } else {
                 let mut pw1: c_int = tjPlaneWidth(1i32, width, subsamp);
                 let mut ph1: c_int = tjPlaneHeight(1i32, height, subsamp);
-                strides[2usize] = pw1 + pad - 1i32 & !(pad - 1i32);
-                strides[1usize] = strides[2usize];
-                srcPlanes[1usize] = srcPlanes[0usize].offset((strides[0usize] * ph0) as isize);
-                srcPlanes[2usize] = srcPlanes[1usize].offset((strides[1usize] * ph1) as isize)
+                strides[2] = pw1 + pad - 1i32 & !(pad - 1i32);
+                strides[1] = strides[2];
+                srcPlanes[1] = srcPlanes[0].offset((strides[0] * ph0) as isize);
+                srcPlanes[2] = srcPlanes[1].offset((strides[1] * ph1) as isize)
             }
             return tjDecodeYUVPlanes(
                 handle,
@@ -4633,6 +4768,7 @@ pub unsafe extern "C" fn tjDecodeYUV(
  * and #tjGetErrorCode().)
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjDecompressToYUVPlanes(
     mut handle: tjhandle,
     mut jpegBuf: *const c_uchar,
@@ -4677,7 +4813,7 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
     dinfo = &mut (*this).dinfo;
     (*this).jerr.warning = FALSE;
     (*this).isInstanceError = FALSE;
-    (*this).jerr.stopOnWarning = if 0 != flags & TJFLAG_STOPONWARNING {
+    (*this).jerr.stopOnWarning = if flags & TJFLAG_STOPONWARNING != 0 {
         TRUE
     } else {
         FALSE
@@ -4708,7 +4844,7 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
     } else if jpegBuf.is_null()
         || jpegSize <= 0i32 as c_ulong
         || dstPlanes.is_null()
-        || (*dstPlanes.offset(0isize)).is_null()
+        || (*dstPlanes.offset(0)).is_null()
         || width < 0i32
         || height < 0i32
     {
@@ -4727,17 +4863,18 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
         );
         retval = -1i32
     } else {
-        if 0 != flags & TJFLAG_FORCEMMX {
+        if flags & TJFLAG_FORCEMMX != 0 {
             putenv(b"JSIMD_FORCEMMX=1\x00" as *const u8 as *const c_char as *mut c_char);
-        } else if 0 != flags & TJFLAG_FORCESSE {
+        } else if flags & TJFLAG_FORCESSE != 0 {
             putenv(b"JSIMD_FORCESSE=1\x00" as *const u8 as *const c_char as *mut c_char);
-        } else if 0 != flags & TJFLAG_FORCESSE2 {
+        } else if flags & TJFLAG_FORCESSE2 != 0 {
             putenv(b"JSIMD_FORCESSE2=1\x00" as *const u8 as *const c_char as *mut c_char);
         }
-        if 0 != _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) {
+        if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
+            /* If we get here, the JPEG code has signaled an error. */
             retval = -1i32
         } else {
-            if 0 == (*this).headerRead {
+            if (*this).headerRead == 0 {
                 jpeg_mem_src_tj(dinfo, jpegBuf, jpegSize);
                 jpeg_read_header(dinfo, TRUE);
             }
@@ -4757,7 +4894,7 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                              as *const u8 as *const c_char);
                 retval = -1i32
             } else if jpegSubsamp != TJSAMP_GRAY as c_int
-                && ((*dstPlanes.offset(1isize)).is_null() || (*dstPlanes.offset(2isize)).is_null())
+                && ((*dstPlanes.offset(1)).is_null() || (*dstPlanes.offset(2)).is_null())
             {
                 snprintf(
                     (*this).errStr.as_mut_ptr(),
@@ -4887,7 +5024,7 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                                     as *const u8 as *const c_char,
                             );
                             retval = -1i32;
-                            current_block = 14966079537190407338;
+                            current_block = 12580004273960699447;
                             break;
                         } else {
                             ptr = *dstPlanes.offset(i as isize);
@@ -4895,22 +5032,22 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                             while row < ph[i as usize] {
                                 let ref mut fresh17 = *outbuf[i as usize].offset(row as isize);
                                 *fresh17 = ptr;
-                                ptr = ptr.offset(
-                                    (if !strides.is_null() && *strides.offset(i as isize) != 0i32 {
-                                        *strides.offset(i as isize)
-                                    } else {
-                                        pw[i as usize]
-                                    }) as isize,
-                                );
+                                ptr = ptr.offset(if !strides.is_null()
+                                    && *strides.offset(i as isize) != 0i32
+                                {
+                                    *strides.offset(i as isize)
+                                } else {
+                                    pw[i as usize]
+                                } as isize);
                                 row += 1
                             }
                             i += 1
                         }
                     }
                     match current_block {
-                        14966079537190407338 => {}
+                        12580004273960699447 => {}
                         _ => {
-                            if 0 != usetmpbuf {
+                            if usetmpbuf != 0 {
                                 _tmpbuf = malloc(
                                     (::std::mem::size_of::<JSAMPLE>() as c_ulong)
                                         .wrapping_mul(tmpbufsize as c_ulong),
@@ -4934,7 +5071,7 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                                             as *const c_char,
                                     );
                                     retval = -1i32;
-                                    current_block = 14966079537190407338;
+                                    current_block = 12580004273960699447;
                                 } else {
                                     ptr = _tmpbuf;
                                     i = 0i32;
@@ -4967,7 +5104,7 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                                                          as *const u8 as
                                                          *const c_char);
                                             retval = -1i32;
-                                            current_block = 14966079537190407338;
+                                            current_block = 12580004273960699447;
                                             break;
                                         } else {
                                             row = 0i32;
@@ -4986,15 +5123,16 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                                 current_block = 1966075811433896587;
                             }
                             match current_block {
-                                14966079537190407338 => {}
+                                12580004273960699447 => {}
                                 _ => {
-                                    if 0 != _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) {
+                                    if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
+                                        /* If we get here, the JPEG code has signaled an error. */
                                         retval = -1i32
                                     } else {
-                                        if 0 != flags & TJFLAG_FASTUPSAMPLE {
+                                        if flags & TJFLAG_FASTUPSAMPLE != 0 {
                                             (*dinfo).do_fancy_upsampling = FALSE
                                         }
-                                        if 0 != flags & TJFLAG_FASTDCT {
+                                        if flags & TJFLAG_FASTDCT != 0 {
                                             (*dinfo).dct_method = JDCT_FASTEST as J_DCT_METHOD
                                         }
                                         (*dinfo).raw_data_out = TRUE;
@@ -5010,6 +5148,16 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                                                     &mut *(*dinfo).comp_info.offset(i as isize)
                                                         as *mut jpeg_component_info;
                                                 if jpegSubsamp == TJ_420 {
+                                                    /* When 4:2:0 subsampling is used with IDCT scaling, libjpeg will try
+                                                    to be clever and use the IDCT to perform upsampling on the U and V
+                                                    planes.  For instance, if the output image is to be scaled by 1/2
+                                                    relative to the JPEG image, then the scaling factor and upsampling
+                                                    effectively cancel each other, so a normal 8x8 IDCT can be used.
+                                                    However, this is not desirable when using the decompress-to-YUV
+                                                    functionality in TurboJPEG, since we want to output the U and V
+                                                    planes in their subsampled form.  Thus, we have to override some
+                                                    internal libjpeg parameters to force it to use the "scaled" IDCT
+                                                    functions on the U and V planes. */
                                                     (*compptr_0).DCT_scaled_size = dctsize;
                                                     (*compptr_0).MCU_sample_width = tjMCUWidth
                                                         [jpegSubsamp as usize]
@@ -5018,11 +5166,11 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                                                         * (*compptr_0).v_samp_factor
                                                         / (*dinfo).max_v_samp_factor;
                                                     (*(*dinfo).idct).inverse_DCT[i as usize] =
-                                                        (*(*dinfo).idct).inverse_DCT[0usize]
+                                                        (*(*dinfo).idct).inverse_DCT[0]
                                                 }
                                                 crow[i as usize] = row * (*compptr_0).v_samp_factor
                                                     / (*dinfo).max_v_samp_factor;
-                                                if 0 != usetmpbuf {
+                                                if usetmpbuf != 0 {
                                                     yuvptr[i as usize] = tmpbuf[i as usize]
                                                 } else {
                                                     yuvptr[i as usize] = &mut *(*outbuf
@@ -5041,7 +5189,7 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                                                     * (*dinfo).min_DCT_scaled_size)
                                                     as JDIMENSION,
                                             );
-                                            if 0 != usetmpbuf {
+                                            if usetmpbuf != 0 {
                                                 let mut j: c_int = 0;
                                                 i = 0i32;
                                                 while i < (*dinfo).num_components {
@@ -5052,7 +5200,7 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                                                         {
                                                             th[i as usize]
                                                         } else {
-                                                            ph[i as usize] - crow[i as usize]
+                                                            (ph[i as usize]) - crow[i as usize]
                                                         })
                                                     {
                                                         memcpy(
@@ -5098,7 +5246,7 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
     if !_tmpbuf.is_null() {
         free(_tmpbuf as *mut c_void);
     }
-    if 0 != (*this).jerr.warning {
+    if (*this).jerr.warning != 0 {
         retval = -1i32
     }
     (*this).jerr.stopOnWarning = FALSE;
@@ -5151,6 +5299,7 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
  * and #tjGetErrorCode().)
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjDecompressToYUV2(
     mut handle: tjhandle,
     mut jpegBuf: *const c_uchar,
@@ -5185,7 +5334,7 @@ pub unsafe extern "C" fn tjDecompressToYUV2(
     dinfo = &mut (*this).dinfo;
     (*this).jerr.warning = FALSE;
     (*this).isInstanceError = FALSE;
-    (*this).jerr.stopOnWarning = if 0 != flags & TJFLAG_STOPONWARNING {
+    (*this).jerr.stopOnWarning = if flags & TJFLAG_STOPONWARNING != 0 {
         TRUE
     } else {
         FALSE
@@ -5213,7 +5362,8 @@ pub unsafe extern "C" fn tjDecompressToYUV2(
         );
         retval = -1i32
     } else {
-        if 0 != _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) {
+        if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
+            /* If we get here, the JPEG code has signaled an error. */
             return -1i32;
         }
         jpeg_mem_src_tj(dinfo, jpegBuf, jpegSize);
@@ -5276,20 +5426,20 @@ pub unsafe extern "C" fn tjDecompressToYUV2(
             } else {
                 pw0 = tjPlaneWidth(0i32, width, jpegSubsamp);
                 ph0 = tjPlaneHeight(0i32, height, jpegSubsamp);
-                dstPlanes[0usize] = dstBuf;
-                strides[0usize] = pw0 + pad - 1i32 & !(pad - 1i32);
+                dstPlanes[0] = dstBuf;
+                strides[0] = pw0 + pad - 1i32 & !(pad - 1i32);
                 if jpegSubsamp == TJSAMP_GRAY as c_int {
-                    strides[2usize] = 0i32;
-                    strides[1usize] = strides[2usize];
-                    dstPlanes[2usize] = NULL as *mut c_uchar;
-                    dstPlanes[1usize] = dstPlanes[2usize]
+                    strides[2] = 0i32;
+                    strides[1] = strides[2];
+                    dstPlanes[2] = NULL as *mut c_uchar;
+                    dstPlanes[1] = dstPlanes[2]
                 } else {
                     let mut pw1: c_int = tjPlaneWidth(1i32, width, jpegSubsamp);
                     let mut ph1: c_int = tjPlaneHeight(1i32, height, jpegSubsamp);
-                    strides[2usize] = pw1 + pad - 1i32 & !(pad - 1i32);
-                    strides[1usize] = strides[2usize];
-                    dstPlanes[1usize] = dstPlanes[0usize].offset((strides[0usize] * ph0) as isize);
-                    dstPlanes[2usize] = dstPlanes[1usize].offset((strides[1usize] * ph1) as isize)
+                    strides[2] = pw1 + pad - 1i32 & !(pad - 1i32);
+                    strides[1] = strides[2];
+                    dstPlanes[1] = dstPlanes[0].offset((strides[0] * ph0) as isize);
+                    dstPlanes[2] = dstPlanes[1].offset((strides[1] * ph1) as isize)
                 }
                 (*this).headerRead = 1i32;
                 return tjDecompressToYUVPlanes(
@@ -5309,6 +5459,7 @@ pub unsafe extern "C" fn tjDecompressToYUV2(
     return retval;
 }
 #[no_mangle]
+
 pub unsafe extern "C" fn tjDecompressToYUV(
     mut handle: tjhandle,
     mut jpegBuf: *mut c_uchar,
@@ -5324,9 +5475,9 @@ pub unsafe extern "C" fn tjDecompressToYUV(
  * @return a handle to the newly-created instance, or NULL if an error
  * occurred (see #tjGetErrorStr2().)
  */
-
 /* Transformer */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjInitTransform() -> tjhandle {
     let mut this: *mut tjinstance = NULL as *mut tjinstance;
     let mut handle: tjhandle = NULL as *mut c_void;
@@ -5417,6 +5568,7 @@ pub unsafe extern "C" fn tjInitTransform() -> tjhandle {
  * and #tjGetErrorCode().)
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjTransform(
     mut handle: tjhandle,
     mut jpegBuf: *const c_uchar,
@@ -5428,7 +5580,8 @@ pub unsafe extern "C" fn tjTransform(
     mut flags: c_int,
 ) -> c_int {
     let mut current_block: u64;
-    let mut xinfo: *mut jpeg_transform_info = NULL as *mut jpeg_transform_info;
+    let mut xinfo: *mut super::transupp::jpeg_transform_info =
+        NULL as *mut super::transupp::jpeg_transform_info;
     let mut srccoefs: *mut jvirt_barray_ptr = 0 as *mut jvirt_barray_ptr;
     let mut dstcoefs: *mut jvirt_barray_ptr = 0 as *mut jvirt_barray_ptr;
     let mut retval: c_int = 0i32;
@@ -5450,7 +5603,7 @@ pub unsafe extern "C" fn tjTransform(
     dinfo = &mut (*this).dinfo;
     (*this).jerr.warning = FALSE;
     (*this).isInstanceError = FALSE;
-    (*this).jerr.stopOnWarning = if 0 != flags & TJFLAG_STOPONWARNING {
+    (*this).jerr.stopOnWarning = if flags & TJFLAG_STOPONWARNING != 0 {
         TRUE
     } else {
         FALSE
@@ -5495,16 +5648,17 @@ pub unsafe extern "C" fn tjTransform(
         );
         retval = -1i32
     } else {
-        if 0 != flags & TJFLAG_FORCEMMX {
+        if flags & TJFLAG_FORCEMMX != 0 {
             putenv(b"JSIMD_FORCEMMX=1\x00" as *const u8 as *const c_char as *mut c_char);
-        } else if 0 != flags & TJFLAG_FORCESSE {
+        } else if flags & TJFLAG_FORCESSE != 0 {
             putenv(b"JSIMD_FORCESSE=1\x00" as *const u8 as *const c_char as *mut c_char);
-        } else if 0 != flags & TJFLAG_FORCESSE2 {
+        } else if flags & TJFLAG_FORCESSE2 != 0 {
             putenv(b"JSIMD_FORCESSE2=1\x00" as *const u8 as *const c_char as *mut c_char);
         }
         xinfo = malloc(
-            (::std::mem::size_of::<jpeg_transform_info>() as c_ulong).wrapping_mul(n as c_ulong),
-        ) as *mut jpeg_transform_info;
+            (::std::mem::size_of::<super::transupp::jpeg_transform_info>() as c_ulong)
+                .wrapping_mul(n as c_ulong),
+        ) as *mut super::transupp::jpeg_transform_info;
         if xinfo.is_null() {
             snprintf(
                 (*this).errStr.as_mut_ptr(),
@@ -5524,10 +5678,11 @@ pub unsafe extern "C" fn tjTransform(
             memset(
                 xinfo as *mut c_void,
                 0i32,
-                (::std::mem::size_of::<jpeg_transform_info>() as c_ulong)
+                (::std::mem::size_of::<super::transupp::jpeg_transform_info>() as c_ulong)
                     .wrapping_mul(n as c_ulong),
             );
-            if 0 != _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) {
+            if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
+                /* If we get here, the JPEG code has signaled an error. */
                 retval = -1i32
             } else {
                 jpeg_mem_src_tj(dinfo, jpegBuf, jpegSize);
@@ -5536,25 +5691,25 @@ pub unsafe extern "C" fn tjTransform(
                     (*xinfo.offset(i as isize)).transform =
                         xformtypes[(*t.offset(i as isize)).op as usize];
                     (*xinfo.offset(i as isize)).perfect =
-                        if 0 != (*t.offset(i as isize)).options & TJXOPT_PERFECT {
+                        if (*t.offset(i as isize)).options & TJXOPT_PERFECT != 0 {
                             1i32
                         } else {
                             0i32
                         };
                     (*xinfo.offset(i as isize)).trim =
-                        if 0 != (*t.offset(i as isize)).options & TJXOPT_TRIM {
+                        if (*t.offset(i as isize)).options & TJXOPT_TRIM != 0 {
                             1i32
                         } else {
                             0i32
                         };
                     (*xinfo.offset(i as isize)).force_grayscale =
-                        if 0 != (*t.offset(i as isize)).options & TJXOPT_GRAY {
+                        if (*t.offset(i as isize)).options & TJXOPT_GRAY != 0 {
                             1i32
                         } else {
                             0i32
                         };
                     (*xinfo.offset(i as isize)).crop =
-                        if 0 != (*t.offset(i as isize)).options & TJXOPT_CROP {
+                        if (*t.offset(i as isize)).options & TJXOPT_CROP != 0 {
                             1i32
                         } else {
                             0i32
@@ -5564,42 +5719,42 @@ pub unsafe extern "C" fn tjTransform(
                     } else {
                         (*xinfo.offset(i as isize)).slow_hflip = 0i32
                     }
-                    if 0 != (*xinfo.offset(i as isize)).crop {
+                    if (*xinfo.offset(i as isize)).crop != 0 {
                         (*xinfo.offset(i as isize)).crop_xoffset =
                             (*t.offset(i as isize)).r.x as JDIMENSION;
-                        (*xinfo.offset(i as isize)).crop_xoffset_set = JCROP_POS;
+                        (*xinfo.offset(i as isize)).crop_xoffset_set = super::transupp::JCROP_POS;
                         (*xinfo.offset(i as isize)).crop_yoffset =
                             (*t.offset(i as isize)).r.y as JDIMENSION;
-                        (*xinfo.offset(i as isize)).crop_yoffset_set = JCROP_POS;
+                        (*xinfo.offset(i as isize)).crop_yoffset_set = super::transupp::JCROP_POS;
                         if (*t.offset(i as isize)).r.w != 0i32 {
                             (*xinfo.offset(i as isize)).crop_width =
                                 (*t.offset(i as isize)).r.w as JDIMENSION;
-                            (*xinfo.offset(i as isize)).crop_width_set = JCROP_POS
+                            (*xinfo.offset(i as isize)).crop_width_set = super::transupp::JCROP_POS
                         } else {
                             (*xinfo.offset(i as isize)).crop_width =
-                                JCROP_UNSET as c_int as JDIMENSION
+                                super::transupp::JCROP_UNSET as c_int as JDIMENSION
                         }
                         if (*t.offset(i as isize)).r.h != 0i32 {
                             (*xinfo.offset(i as isize)).crop_height =
                                 (*t.offset(i as isize)).r.h as JDIMENSION;
-                            (*xinfo.offset(i as isize)).crop_height_set = JCROP_POS
+                            (*xinfo.offset(i as isize)).crop_height_set = super::transupp::JCROP_POS
                         } else {
                             (*xinfo.offset(i as isize)).crop_height =
-                                JCROP_UNSET as c_int as JDIMENSION
+                                super::transupp::JCROP_UNSET as c_int as JDIMENSION
                         }
                     }
-                    if 0 == (*t.offset(i as isize)).options & TJXOPT_COPYNONE {
+                    if (*t.offset(i as isize)).options & TJXOPT_COPYNONE == 0 {
                         saveMarkers = 1i32
                     }
                     i += 1
                 }
-                jcopy_markers_setup(
+                super::transupp::jcopy_markers_setup(
                     dinfo,
-                    (if 0 != saveMarkers {
-                        JCOPYOPT_ALL as c_int
+                    if saveMarkers != 0 {
+                        super::transupp::JCOPYOPT_ALL as c_int
                     } else {
-                        JCOPYOPT_NONE as c_int
-                    }) as JCOPY_OPTION,
+                        super::transupp::JCOPYOPT_NONE as c_int
+                    } as super::transupp::JCOPY_OPTION,
                 );
                 jpeg_read_header(dinfo, TRUE);
                 jpegSubsamp = getSubsamp(dinfo);
@@ -5627,7 +5782,10 @@ pub unsafe extern "C" fn tjTransform(
                             current_block = 1852451392920375136;
                             break;
                         }
-                        if 0 == jtransform_request_workspace(dinfo, &mut *xinfo.offset(i as isize))
+                        if super::transupp::jtransform_request_workspace(
+                            dinfo,
+                            &mut *xinfo.offset(i as isize),
+                        ) == 0
                         {
                             snprintf(
                                 (*this).errStr.as_mut_ptr(),
@@ -5645,10 +5803,10 @@ pub unsafe extern "C" fn tjTransform(
                                     as *const c_char,
                             );
                             retval = -1i32;
-                            current_block = 12794459883372408020;
+                            current_block = 1538248363559331145;
                             break;
                         } else {
-                            if 0 != (*xinfo.offset(i as isize)).crop {
+                            if (*xinfo.offset(i as isize)).crop != 0 {
                                 if (*t.offset(i as isize)).r.x
                                     % (*xinfo.offset(i as isize)).iMCU_sample_width
                                     != 0i32
@@ -5666,7 +5824,7 @@ pub unsafe extern "C" fn tjTransform(
                                              (*xinfo.offset(i as
                                                                 isize)).iMCU_sample_height);
                                     retval = -1i32;
-                                    current_block = 12794459883372408020;
+                                    current_block = 1538248363559331145;
                                     break;
                                 }
                             }
@@ -5674,7 +5832,7 @@ pub unsafe extern "C" fn tjTransform(
                         }
                     }
                     match current_block {
-                        12794459883372408020 => {}
+                        1538248363559331145 => {}
                         _ => {
                             srccoefs = jpeg_read_coefficients(dinfo);
                             i = 0i32;
@@ -5686,18 +5844,18 @@ pub unsafe extern "C" fn tjTransform(
                                 let mut w: c_int = 0;
                                 let mut h: c_int = 0;
                                 let mut alloc: c_int = 1i32;
-                                if 0 == (*xinfo.offset(i as isize)).crop {
+                                if (*xinfo.offset(i as isize)).crop == 0 {
                                     w = (*dinfo).image_width as c_int;
                                     h = (*dinfo).image_height as c_int
                                 } else {
                                     w = (*xinfo.offset(i as isize)).crop_width as c_int;
                                     h = (*xinfo.offset(i as isize)).crop_height as c_int
                                 }
-                                if 0 != flags & TJFLAG_NOREALLOC {
+                                if flags & TJFLAG_NOREALLOC != 0 {
                                     alloc = 0i32;
                                     *dstSizes.offset(i as isize) = tjBufSize(w, h, jpegSubsamp)
                                 }
-                                if 0 == (*t.offset(i as isize)).options & TJXOPT_NOOUTPUT {
+                                if (*t.offset(i as isize)).options & TJXOPT_NOOUTPUT == 0 {
                                     jpeg_mem_dest_tj(
                                         cinfo,
                                         &mut *dstBufs.offset(i as isize),
@@ -5706,32 +5864,33 @@ pub unsafe extern "C" fn tjTransform(
                                     );
                                 }
                                 jpeg_copy_critical_parameters(dinfo, cinfo);
-                                dstcoefs = jtransform_adjust_parameters(
+                                dstcoefs = super::transupp::jtransform_adjust_parameters(
                                     dinfo,
                                     cinfo,
                                     srccoefs,
                                     &mut *xinfo.offset(i as isize),
                                 );
-                                if 0 != flags & TJFLAG_PROGRESSIVE
-                                    || 0 != (*t.offset(i as isize)).options & TJXOPT_PROGRESSIVE
+                                if flags & TJFLAG_PROGRESSIVE != 0
+                                    || (*t.offset(i as isize)).options & TJXOPT_PROGRESSIVE != 0
                                 {
                                     jpeg_simple_progression(cinfo);
                                 }
-                                if 0 == (*t.offset(i as isize)).options & TJXOPT_NOOUTPUT {
+                                if (*t.offset(i as isize)).options & TJXOPT_NOOUTPUT == 0 {
                                     jpeg_write_coefficients(cinfo, dstcoefs);
-                                    jcopy_markers_execute(
+                                    super::transupp::jcopy_markers_execute(
                                         dinfo,
                                         cinfo,
-                                        (if 0 != (*t.offset(i as isize)).options & TJXOPT_COPYNONE {
-                                            JCOPYOPT_NONE as c_int
+                                        if (*t.offset(i as isize)).options & TJXOPT_COPYNONE != 0 {
+                                            super::transupp::JCOPYOPT_NONE as c_int
                                         } else {
-                                            JCOPYOPT_ALL as c_int
-                                        }) as JCOPY_OPTION,
+                                            super::transupp::JCOPYOPT_ALL as c_int
+                                        }
+                                            as super::transupp::JCOPY_OPTION,
                                     );
                                 } else {
                                     jinit_c_master_control(cinfo, TRUE);
                                 }
-                                jtransform_execute_transform(
+                                super::transupp::jtransform_execute_transform(
                                     dinfo,
                                     cinfo,
                                     srccoefs,
@@ -5746,26 +5905,32 @@ pub unsafe extern "C" fn tjTransform(
                                         let mut compptr: *mut jpeg_component_info =
                                             &mut *(*cinfo).comp_info.offset(ci as isize)
                                                 as *mut jpeg_component_info;
-                                        let mut arrayRegion: tjregion = tjregion {
-                                            x: 0i32,
-                                            y: 0i32,
-                                            w: (*compptr)
-                                                .width_in_blocks
-                                                .wrapping_mul(DCTSIZE as c_uint)
-                                                as c_int,
-                                            h: DCTSIZE,
+                                        let mut arrayRegion: tjregion = {
+                                            let mut init = tjregion {
+                                                x: 0i32,
+                                                y: 0i32,
+                                                w: (*compptr)
+                                                    .width_in_blocks
+                                                    .wrapping_mul(DCTSIZE as c_uint)
+                                                    as c_int,
+                                                h: DCTSIZE,
+                                            };
+                                            init
                                         };
-                                        let mut planeRegion: tjregion = tjregion {
-                                            x: 0i32,
-                                            y: 0i32,
-                                            w: (*compptr)
-                                                .width_in_blocks
-                                                .wrapping_mul(DCTSIZE as c_uint)
-                                                as c_int,
-                                            h: (*compptr)
-                                                .height_in_blocks
-                                                .wrapping_mul(DCTSIZE as c_uint)
-                                                as c_int,
+                                        let mut planeRegion: tjregion = {
+                                            let mut init = tjregion {
+                                                x: 0i32,
+                                                y: 0i32,
+                                                w: (*compptr)
+                                                    .width_in_blocks
+                                                    .wrapping_mul(DCTSIZE as c_uint)
+                                                    as c_int,
+                                                h: (*compptr)
+                                                    .height_in_blocks
+                                                    .wrapping_mul(DCTSIZE as c_uint)
+                                                    as c_int,
+                                            };
+                                            init
                                         };
                                         by = 0i32 as JDIMENSION;
                                         while by < (*compptr).height_in_blocks {
@@ -5783,7 +5948,7 @@ pub unsafe extern "C" fn tjTransform(
                                                 if (*t.offset(i as isize))
                                                     .customFilter
                                                     .expect("non-null function pointer")(
-                                                    (*(*barray.offset(y as isize)).offset(0isize))
+                                                    (*(*barray.offset(y as isize)).offset(0))
                                                         .as_mut_ptr(),
                                                     arrayRegion,
                                                     planeRegion,
@@ -5810,7 +5975,7 @@ pub unsafe extern "C" fn tjTransform(
                                                             as *const c_char,
                                                     );
                                                     retval = -1i32;
-                                                    current_block = 12794459883372408020;
+                                                    current_block = 1538248363559331145;
                                                     break 's_452;
                                                 } else {
                                                     arrayRegion.y += DCTSIZE;
@@ -5825,13 +5990,13 @@ pub unsafe extern "C" fn tjTransform(
                                         ci += 1
                                     }
                                 }
-                                if 0 == (*t.offset(i as isize)).options & TJXOPT_NOOUTPUT {
+                                if (*t.offset(i as isize)).options & TJXOPT_NOOUTPUT == 0 {
                                     jpeg_finish_compress(cinfo);
                                 }
                                 i += 1
                             }
                             match current_block {
-                                12794459883372408020 => {}
+                                1538248363559331145 => {}
                                 _ => {
                                     jpeg_finish_decompress(dinfo);
                                 }
@@ -5851,7 +6016,7 @@ pub unsafe extern "C" fn tjTransform(
     if !xinfo.is_null() {
         free(xinfo as *mut c_void);
     }
-    if 0 != (*this).jerr.warning {
+    if (*this).jerr.warning != 0 {
         retval = -1i32
     }
     (*this).jerr.stopOnWarning = FALSE;
@@ -5901,6 +6066,7 @@ pub unsafe extern "C" fn tjTransform(
  * buffer should be freed using #tjFree().
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjLoadImage(
     mut filename: *const c_char,
     mut width: *mut c_int,
@@ -5916,7 +6082,7 @@ pub unsafe extern "C" fn tjLoadImage(
     let mut handle: tjhandle = NULL as *mut c_void;
     let mut this: *mut tjinstance = 0 as *mut tjinstance;
     let mut cinfo: j_compress_ptr = NULL as j_compress_ptr;
-    let mut src: cjpeg_source_ptr = 0 as *mut cjpeg_source_struct;
+    let mut src: super::cdjpeg::cjpeg_source_ptr = 0 as *mut super::cdjpeg::cjpeg_source_struct;
     let mut dstBuf: *mut c_uchar = NULL as *mut c_uchar;
     let mut file: *mut FILE = NULL as *mut FILE;
     let mut invert: boolean = 0;
@@ -5979,7 +6145,8 @@ pub unsafe extern "C" fn tjLoadImage(
                     b"tjLoadImage(): Input file contains no data\x00" as *const u8 as *const c_char,
                 );
                 retval = -1i32
-            } else if 0 != _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) {
+            } else if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
+                /* If we get here, the JPEG code has signaled an error. */
                 retval = -1i32
             } else {
                 if *pixelFormat == TJPF_UNKNOWN as c_int {
@@ -5988,7 +6155,7 @@ pub unsafe extern "C" fn tjLoadImage(
                     (*cinfo).in_color_space = pf2cs[*pixelFormat as usize]
                 }
                 if tempc == 'B' as i32 {
-                    src = jinit_read_bmp(cinfo, FALSE);
+                    src = super::cdjpeg::jinit_read_bmp(cinfo, FALSE);
                     if src.is_null() {
                         snprintf(
                             errStr.as_mut_ptr(),
@@ -5998,13 +6165,13 @@ pub unsafe extern "C" fn tjLoadImage(
                                 as *const c_char,
                         );
                         retval = -1i32;
-                        current_block = 14993526094991803608;
+                        current_block = 7323915231371106940;
                     } else {
                         invert = (flags & TJFLAG_BOTTOMUP == 0i32) as c_int;
                         current_block = 3689906465960840878;
                     }
                 } else if tempc == 'P' as i32 {
-                    src = jinit_read_ppm(cinfo);
+                    src = super::cdjpeg::jinit_read_ppm(cinfo);
                     if src.is_null() {
                         snprintf(
                             errStr.as_mut_ptr(),
@@ -6014,7 +6181,7 @@ pub unsafe extern "C" fn tjLoadImage(
                                 as *const c_char,
                         );
                         retval = -1i32;
-                        current_block = 14993526094991803608;
+                        current_block = 7323915231371106940;
                     } else {
                         invert = (flags & TJFLAG_BOTTOMUP != 0i32) as c_int;
                         current_block = 3689906465960840878;
@@ -6027,16 +6194,20 @@ pub unsafe extern "C" fn tjLoadImage(
                         b"tjLoadImage(): Unsupported file type\x00" as *const u8 as *const c_char,
                     );
                     retval = -1i32;
-                    current_block = 14993526094991803608;
+                    current_block = 7323915231371106940;
                 }
                 match current_block {
-                    14993526094991803608 => {}
+                    7323915231371106940 => {}
                     _ => {
                         (*src).input_file = file;
-                        (*src).start_input.expect("non-null function pointer")(cinfo, src);
-                        (*(*cinfo).mem)
-                            .realize_virt_arrays
-                            .expect("non-null function pointer")(
+                        Some((*src).start_input.expect("non-null function pointer"))
+                            .expect("non-null function pointer")(cinfo, src);
+                        Some(
+                            (*(*cinfo).mem)
+                                .realize_virt_arrays
+                                .expect("non-null function pointer"),
+                        )
+                        .expect("non-null function pointer")(
                             cinfo as j_common_ptr
                         );
                         *width = (*cinfo).image_width as c_int;
@@ -6054,21 +6225,23 @@ pub unsafe extern "C" fn tjLoadImage(
                                     as *const c_char,
                             );
                             retval = -1i32
-                        } else if 0 != _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) {
+                        } else if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
+                            /* If we get here, the JPEG code has signaled an error. */
                             retval = -1i32
                         } else {
                             while (*cinfo).next_scanline < (*cinfo).image_height {
                                 let mut i: c_int = 0;
                                 let mut nlines: c_int =
-                                    (*src).get_pixel_rows.expect("non-null function pointer")(
-                                        cinfo, src,
+                                    Some((*src).get_pixel_rows.expect("non-null function pointer"))
+                                        .expect("non-null function pointer")(
+                                        cinfo, src
                                     ) as c_int;
                                 i = 0i32;
                                 while i < nlines {
                                     let mut dstptr: *mut c_uchar = 0 as *mut c_uchar;
                                     let mut row: c_int = 0;
                                     row = (*cinfo).next_scanline.wrapping_add(i as c_uint) as c_int;
-                                    if 0 != invert {
+                                    if invert != 0 {
                                         dstptr = &mut *dstBuf
                                             .offset(((*height - row - 1i32) * pitch) as isize)
                                             as *mut c_uchar
@@ -6088,7 +6261,10 @@ pub unsafe extern "C" fn tjLoadImage(
                                     as JDIMENSION
                                     as JDIMENSION
                             }
-                            (*src).finish_input.expect("non-null function pointer")(cinfo, src);
+                            Some((*src).finish_input.expect("non-null function pointer"))
+                                .expect("non-null function pointer")(
+                                cinfo, src
+                            );
                         }
                     }
                 }
@@ -6140,6 +6316,7 @@ pub unsafe extern "C" fn tjLoadImage(
  * @return 0 if successful, or -1 if an error occurred (see #tjGetErrorStr2().)
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn tjSaveImage(
     mut filename: *const c_char,
     mut buffer: *mut c_uchar,
@@ -6154,7 +6331,7 @@ pub unsafe extern "C" fn tjSaveImage(
     let mut handle: tjhandle = NULL as *mut c_void;
     let mut this: *mut tjinstance = 0 as *mut tjinstance;
     let mut dinfo: j_decompress_ptr = NULL as j_decompress_ptr;
-    let mut dst: djpeg_dest_ptr = 0 as *mut djpeg_dest_struct;
+    let mut dst: super::cdjpeg::djpeg_dest_ptr = 0 as *mut super::cdjpeg::djpeg_dest_struct;
     let mut file: *mut FILE = NULL as *mut FILE;
     let mut ptr: *mut c_char = NULL as *mut c_char;
     let mut invert: boolean = 0;
@@ -6190,7 +6367,8 @@ pub unsafe extern "C" fn tjSaveImage(
                 strerror(*__errno_location()),
             );
             retval = -1i32
-        } else if 0 != _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) {
+        } else if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
+            /* If we get here, the JPEG code has signaled an error. */
             retval = -1i32
         } else {
             (*this).dinfo.out_color_space = pf2cs[pixelFormat as usize];
@@ -6200,8 +6378,8 @@ pub unsafe extern "C" fn tjSaveImage(
             (*dinfo).scale_denom = 1i32 as c_uint;
             (*dinfo).scale_num = (*dinfo).scale_denom;
             ptr = strrchr(filename, '.' as i32);
-            if !ptr.is_null() && 0 == strcasecmp(ptr, b".bmp\x00" as *const u8 as *const c_char) {
-                dst = jinit_write_bmp(dinfo, FALSE, FALSE);
+            if !ptr.is_null() && strcasecmp(ptr, b".bmp\x00" as *const u8 as *const c_char) == 0 {
+                dst = super::cdjpeg::jinit_write_bmp(dinfo, FALSE, FALSE);
                 if dst.is_null() {
                     snprintf(
                         errStr.as_mut_ptr(),
@@ -6211,13 +6389,13 @@ pub unsafe extern "C" fn tjSaveImage(
                             as *const c_char,
                     );
                     retval = -1i32;
-                    current_block = 2715919454766555664;
+                    current_block = 4226535191933510688;
                 } else {
                     invert = (flags & TJFLAG_BOTTOMUP == 0i32) as c_int;
                     current_block = 2604890879466389055;
                 }
             } else {
-                dst = jinit_write_ppm(dinfo);
+                dst = super::cdjpeg::jinit_write_ppm(dinfo);
                 if dst.is_null() {
                     snprintf(
                         errStr.as_mut_ptr(),
@@ -6227,28 +6405,30 @@ pub unsafe extern "C" fn tjSaveImage(
                             as *const c_char,
                     );
                     retval = -1i32;
-                    current_block = 2715919454766555664;
+                    current_block = 4226535191933510688;
                 } else {
                     invert = (flags & TJFLAG_BOTTOMUP != 0i32) as c_int;
                     current_block = 2604890879466389055;
                 }
             }
             match current_block {
-                2715919454766555664 => {}
+                4226535191933510688 => {}
                 _ => {
                     (*dst).output_file = file;
-                    (*dst).start_output.expect("non-null function pointer")(dinfo, dst);
-                    (*(*dinfo).mem)
-                        .realize_virt_arrays
-                        .expect("non-null function pointer")(
-                        dinfo as j_common_ptr
-                    );
+                    Some((*dst).start_output.expect("non-null function pointer"))
+                        .expect("non-null function pointer")(dinfo, dst);
+                    Some(
+                        (*(*dinfo).mem)
+                            .realize_virt_arrays
+                            .expect("non-null function pointer"),
+                    )
+                    .expect("non-null function pointer")(dinfo as j_common_ptr);
                     if pitch == 0i32 {
                         pitch = width * tjPixelSize[pixelFormat as usize]
                     }
                     while (*dinfo).output_scanline < (*dinfo).output_height {
                         let mut rowptr: *mut c_uchar = 0 as *mut c_uchar;
-                        if 0 != invert {
+                        if invert != 0 {
                             rowptr = &mut *buffer.offset(
                                 (height as c_uint)
                                     .wrapping_sub((*dinfo).output_scanline)
@@ -6263,18 +6443,18 @@ pub unsafe extern "C" fn tjSaveImage(
                                         as isize) as *mut c_uchar
                         }
                         memcpy(
-                            *(*dst).buffer.offset(0isize) as *mut c_void,
+                            *(*dst).buffer.offset(0) as *mut c_void,
                             rowptr as *const c_void,
                             (width * tjPixelSize[pixelFormat as usize]) as c_ulong,
                         );
-                        (*dst).put_pixel_rows.expect("non-null function pointer")(
-                            dinfo,
-                            dst,
-                            1i32 as JDIMENSION,
+                        Some((*dst).put_pixel_rows.expect("non-null function pointer"))
+                            .expect("non-null function pointer")(
+                            dinfo, dst, 1i32 as JDIMENSION
                         );
                         (*dinfo).output_scanline = (*dinfo).output_scanline.wrapping_add(1)
                     }
-                    (*dst).finish_output.expect("non-null function pointer")(dinfo, dst);
+                    Some((*dst).finish_output.expect("non-null function pointer"))
+                        .expect("non-null function pointer")(dinfo, dst);
                 }
             }
         }

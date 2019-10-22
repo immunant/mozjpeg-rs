@@ -30,9 +30,10 @@ new_header="#![allow(dead_code)]
 #![feature(extern_types)]
 #![feature(label_break_value)]
 #![feature(ptr_wrapping_offset_from)]
+#![feature(main)]
 
 "
-new_use="extern crate libc;\nuse mozjpeg::*;\n"
+new_use="use mozjpeg::*;\n"
 
 mkdir bin || true
 
@@ -43,6 +44,7 @@ do
 
     # Remove binary module from lib.rs
     sed --in-place -e "$!N;s|^#\[path = \"$path\"\]\npub mod $modname;$||;P;D" lib.rs
+    sed --in-place -e "$!N;s|pub mod $modname;$||;P;D" lib.rs
 
     # Add header to binary module file
     sed --in-place "s|use libc;|$new_use|" "$path"

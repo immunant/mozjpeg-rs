@@ -10,134 +10,117 @@
 #![feature(custom_attribute)]
 #![feature(extern_types)]
 #![feature(label_break_value)]
+#![feature(main)]
 #![feature(ptr_wrapping_offset_from)]
-
-extern crate libc;
 
 use libc::c_int;
 pub const __CHAR_BIT__: c_int = 8i32;
 pub const __INT_MAX__: c_int = 2147483647i32;
 
+pub mod src {
+    pub mod cdjpeg;
+
+    pub mod jcapimin;
+    pub mod jcapistd;
+    pub mod jccoefct;
+    pub mod jccolor;
+    pub mod jcdctmgr;
+    pub mod jcext;
+    pub mod jchuff;
+    pub mod jcicc;
+    pub mod jcinit;
+    pub mod jcmainct;
+    pub mod jcmarker;
+    pub mod jcmaster;
+    pub mod jcomapi;
+    pub mod jcparam;
+    pub mod jcphuff;
+    pub mod jcprepct;
+    pub mod jcsample;
+
+    pub mod jctrans;
+    pub mod jdapimin;
+    pub mod jdapistd;
+    pub mod jdatadst;
+    pub mod jdatadst_tj;
+    pub mod jdatasrc;
+    pub mod jdatasrc_tj;
+    pub mod jdcoefct;
+    pub mod jdcolor;
+    pub mod jddctmgr;
+    pub mod jdhuff;
+    pub mod jdicc;
+    pub mod jdinput;
+    pub mod jdmainct;
+    pub mod jdmarker;
+    pub mod jdmaster;
+    pub mod jdmerge;
+    pub mod jdphuff;
+    pub mod jdpostct;
+    pub mod jdsample;
+    pub mod jdtrans;
+    pub mod jerror;
+    pub mod jfdctflt;
+    pub mod jfdctfst;
+    pub mod jfdctint;
+    pub mod jidctflt;
+    pub mod jidctfst;
+    pub mod jidctint;
+    pub mod jidctred;
+    pub mod jmemmgr;
+    pub mod jmemnobs;
+
+    pub mod jquant1;
+    pub mod jquant2;
+    pub mod jutils;
+    pub mod md5 {
+        pub mod md5;
+
+        pub mod md5hl;
+    } // mod md5
+    pub mod rdbmp;
+    pub mod rdcolmap;
+    pub mod rdgif;
+    pub mod rdjpeg;
+
+    pub mod rdppm;
+    pub mod rdswitch;
+    pub mod rdtarga;
+    pub mod simd {
+        pub mod x86_64 {
+            pub mod jsimd;
+        } // mod x86_64
+    } // mod simd
+
+    pub mod tjutil;
+    pub mod transupp;
+    pub mod turbojpeg;
+    pub mod wrbmp;
+    pub mod wrgif;
+
+    pub mod wrppm;
+    pub mod wrtarga;
+}
 #[path = "src/cderror_h.rs"]
 pub mod cderror_h;
-#[path = "src/cdjpeg.rs"]
-pub mod cdjpeg;
-
 #[path = "src/cmyk_h.rs"]
 pub mod cmyk_h;
-#[path = "src/jcapimin.rs"]
-pub mod jcapimin;
-#[path = "src/jcapistd.rs"]
-pub mod jcapistd;
-#[path = "src/jccoefct.rs"]
-pub mod jccoefct;
 #[path = "src/jccolext_c.rs"]
 pub mod jccolext_c;
-#[path = "src/jccolor.rs"]
-pub mod jccolor;
-#[path = "src/jcdctmgr.rs"]
-pub mod jcdctmgr;
-#[path = "src/jcext.rs"]
-pub mod jcext;
-#[path = "src/jchuff.rs"]
-pub mod jchuff;
-#[path = "src/jcicc.rs"]
-pub mod jcicc;
-#[path = "src/jcinit.rs"]
-pub mod jcinit;
-#[path = "src/jcmainct.rs"]
-pub mod jcmainct;
-#[path = "src/jcmarker.rs"]
-pub mod jcmarker;
-#[path = "src/jcmaster.rs"]
-pub mod jcmaster;
-#[path = "src/jcomapi.rs"]
-pub mod jcomapi;
 #[path = "src/jconfig_h.rs"]
 pub mod jconfig_h;
 #[path = "src/jconfigint_h.rs"]
 pub mod jconfigint_h;
-#[path = "src/jcparam.rs"]
-pub mod jcparam;
-#[path = "src/jcphuff.rs"]
-pub mod jcphuff;
-#[path = "src/jcprepct.rs"]
-pub mod jcprepct;
-#[path = "src/jcsample.rs"]
-pub mod jcsample;
-
-#[path = "src/jctrans.rs"]
-pub mod jctrans;
-#[path = "src/jdapimin.rs"]
-pub mod jdapimin;
-#[path = "src/jdapistd.rs"]
-pub mod jdapistd;
-#[path = "src/jdatadst.rs"]
-pub mod jdatadst;
-#[path = "src/jdatadst_tj.rs"]
-pub mod jdatadst_tj;
-#[path = "src/jdatasrc.rs"]
-pub mod jdatasrc;
-#[path = "src/jdatasrc_tj.rs"]
-pub mod jdatasrc_tj;
-#[path = "src/jdcoefct.rs"]
-pub mod jdcoefct;
 #[path = "src/jdcol565_c.rs"]
 pub mod jdcol565_c;
 #[path = "src/jdcolext_c.rs"]
 pub mod jdcolext_c;
-#[path = "src/jdcolor.rs"]
-pub mod jdcolor;
 #[path = "src/jdct_h.rs"]
 pub mod jdct_h;
-#[path = "src/jddctmgr.rs"]
-pub mod jddctmgr;
-#[path = "src/jdhuff.rs"]
-pub mod jdhuff;
-#[path = "src/jdicc.rs"]
-pub mod jdicc;
-#[path = "src/jdinput.rs"]
-pub mod jdinput;
-#[path = "src/jdmainct.rs"]
-pub mod jdmainct;
-#[path = "src/jdmarker.rs"]
-pub mod jdmarker;
-#[path = "src/jdmaster.rs"]
-pub mod jdmaster;
-#[path = "src/jdmerge.rs"]
-pub mod jdmerge;
 #[path = "src/jdmrg565_c.rs"]
 pub mod jdmrg565_c;
 #[path = "src/jdmrgext_c.rs"]
 pub mod jdmrgext_c;
-#[path = "src/jdphuff.rs"]
-pub mod jdphuff;
-#[path = "src/jdpostct.rs"]
-pub mod jdpostct;
-#[path = "src/jdsample.rs"]
-pub mod jdsample;
-#[path = "src/jdtrans.rs"]
-pub mod jdtrans;
-#[path = "src/jerror.rs"]
-pub mod jerror;
-#[path = "src/jfdctflt.rs"]
-pub mod jfdctflt;
-#[path = "src/jfdctfst.rs"]
-pub mod jfdctfst;
-#[path = "src/jfdctint.rs"]
-pub mod jfdctint;
-#[path = "src/jidctflt.rs"]
-pub mod jidctflt;
-#[path = "src/jidctfst.rs"]
-pub mod jidctfst;
-#[path = "src/jidctint.rs"]
-pub mod jidctint;
-#[path = "src/jidctred.rs"]
-pub mod jidctred;
-#[path = "src/jmemmgr.rs"]
-pub mod jmemmgr;
-#[path = "src/jmemnobs.rs"]
-pub mod jmemnobs;
 #[path = "src/jmemsys_h.rs"]
 pub mod jmemsys_h;
 #[path = "src/jmorecfg_h.rs"]
@@ -148,58 +131,13 @@ pub mod jpeg_nbits_table_h;
 pub mod jpegint_h;
 #[path = "src/jpeglib_h.rs"]
 pub mod jpeglib_h;
-
-#[path = "src/jquant1.rs"]
-pub mod jquant1;
-#[path = "src/jquant2.rs"]
-pub mod jquant2;
-#[path = "src/jsimd.rs"]
-pub mod jsimd;
 #[path = "src/jstdhuff_c.rs"]
 pub mod jstdhuff_c;
-#[path = "src/jutils.rs"]
-pub mod jutils;
 #[path = "src/jversion_h.rs"]
 pub mod jversion_h;
 #[path = "src/limits_h.rs"]
 pub mod limits_h;
-#[path = "src/md5.rs"]
-pub mod md5;
-
-#[path = "src/md5hl.rs"]
-pub mod md5hl;
-#[path = "src/rdbmp.rs"]
-pub mod rdbmp;
-#[path = "src/rdcolmap.rs"]
-pub mod rdcolmap;
-#[path = "src/rdgif.rs"]
-pub mod rdgif;
-#[path = "src/rdjpeg.rs"]
-pub mod rdjpeg;
-
-#[path = "src/rdppm.rs"]
-pub mod rdppm;
-#[path = "src/rdswitch.rs"]
-pub mod rdswitch;
-#[path = "src/rdtarga.rs"]
-pub mod rdtarga;
 #[path = "src/stddef_h.rs"]
 pub mod stddef_h;
 #[path = "src/stdlib.rs"]
-pub mod stdlib;
-
-#[path = "src/tjutil.rs"]
-pub mod tjutil;
-#[path = "src/transupp.rs"]
-pub mod transupp;
-#[path = "src/turbojpeg.rs"]
-pub mod turbojpeg;
-#[path = "src/wrbmp.rs"]
-pub mod wrbmp;
-#[path = "src/wrgif.rs"]
-pub mod wrgif;
-
-#[path = "src/wrppm.rs"]
-pub mod wrppm;
-#[path = "src/wrtarga.rs"]
-pub mod wrtarga;
+pub mod stdlib; // mod src

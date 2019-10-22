@@ -1,4 +1,4 @@
-pub use crate::jerror::{
+pub use super::jerror::{
     C2RustUnnamed_3, JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
     JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID, JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
     JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE, JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
@@ -31,20 +31,21 @@ pub use crate::jerror::{
 };
 pub use crate::jmorecfg_h::{boolean, JCOEF, JDIMENSION, JOCTET, JSAMPLE, UINT16, UINT8};
 pub use crate::jpegint_h::{
-    jpeg_c_coef_controller, jpeg_c_main_controller, jpeg_c_prep_controller, jpeg_color_converter,
-    jpeg_comp_master, jpeg_downsampler, jpeg_entropy_encoder, jpeg_forward_dct, jpeg_marker_writer,
     CSTATE_SCANNING, JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS,
     JBUF_SAVE_SOURCE, J_BUF_MODE,
 };
 pub use crate::jpeglib_h::{
-    j_common_ptr, j_compress_ptr, jpeg_common_struct, jpeg_component_info, jpeg_compress_struct,
-    jpeg_destination_mgr, jpeg_error_mgr, jpeg_memory_mgr, jpeg_progress_mgr, jpeg_scan_info,
-    jpeg_write_m_byte, jpeg_write_m_header, jvirt_barray_control, jvirt_barray_ptr,
-    jvirt_sarray_control, jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr, JBLOCK, JBLOCKARRAY,
-    JBLOCKROW, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX,
-    JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB,
-    JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JHUFF_TBL, JPEG_APP0,
-    JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD,
+    j_common_ptr, j_compress_ptr, jpeg_c_coef_controller, jpeg_c_main_controller,
+    jpeg_c_prep_controller, jpeg_color_converter, jpeg_common_struct, jpeg_comp_master,
+    jpeg_component_info, jpeg_compress_struct, jpeg_destination_mgr, jpeg_downsampler,
+    jpeg_entropy_encoder, jpeg_error_mgr, jpeg_forward_dct, jpeg_marker_writer, jpeg_memory_mgr,
+    jpeg_progress_mgr, jpeg_scan_info, jpeg_write_m_byte, jpeg_write_m_header,
+    jvirt_barray_control, jvirt_barray_ptr, jvirt_sarray_control, jvirt_sarray_ptr,
+    C2RustUnnamed_2, JCS_YCbCr, JBLOCK, JBLOCKARRAY, JBLOCKROW, JCS_CMYK, JCS_EXT_ABGR,
+    JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX,
+    JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK,
+    JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JHUFF_TBL, JPEG_APP0, JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE,
+    JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD,
 };
 pub use crate::stddef_h::{size_t, NULL};
 use libc::{self, c_int, c_uint};
@@ -74,12 +75,16 @@ use libc::{self, c_int, c_uint};
  * Decoders should use the marker sequence numbers to reassemble the profile,
  * rather than assuming that the APP2 markers appear in the correct sequence.
  */
-/* JPEG marker code for ICC */
+
 pub const ICC_MARKER: c_int = JPEG_APP0 + 2i32;
-/* size of non-profile data in APP2 */
+/* JPEG marker code for ICC */
+
 pub const ICC_OVERHEAD_LEN: c_int = 14i32;
-/* maximum data len of a JPEG marker */
+/* size of non-profile data in APP2 */
+
 pub const MAX_BYTES_IN_MARKER: c_int = 65533i32;
+/* maximum data len of a JPEG marker */
+
 pub const MAX_DATA_BYTES_IN_MARKER: c_int = MAX_BYTES_IN_MARKER - ICC_OVERHEAD_LEN;
 /* Write ICC profile.  See libjpeg.txt for usage information. */
 /*
@@ -89,45 +94,56 @@ pub const MAX_DATA_BYTES_IN_MARKER: c_int = MAX_BYTES_IN_MARKER - ICC_OVERHEAD_L
  * appear after the SOI and JFIF or Adobe markers, but before all else.)
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_write_icc_profile(
     mut cinfo: j_compress_ptr,
     mut icc_data_ptr: *const JOCTET,
     mut icc_data_len: c_uint,
 ) {
-    /* total number of markers we'll write */
-    let mut num_markers: c_uint = 0;
-    /* per spec, counting starts at 1 */
-    let mut cur_marker: c_int = 1i32;
-    /* number of bytes to write in this marker */
-    let mut length: c_uint = 0;
+    let mut num_markers: c_uint = 0; /* total number of markers we'll write */
+    let mut cur_marker: c_int = 1i32; /* per spec, counting starts at 1 */
+    let mut length: c_uint = 0; /* number of bytes to write in this marker */
     if icc_data_ptr.is_null() || icc_data_len == 0i32 as c_uint {
-        (*(*cinfo).err).msg_code = JERR_BUFFER_SIZE as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BUFFER_SIZE as c_int;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     if (*cinfo).global_state < CSTATE_SCANNING {
-        (*(*cinfo).err).msg_code = JERR_BAD_STATE as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] = (*cinfo).global_state;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_STATE as c_int;
+        (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
+    /* Calculate the number of markers we'll need, rounding up of course */
     num_markers = icc_data_len.wrapping_div(MAX_DATA_BYTES_IN_MARKER as c_uint);
     if num_markers.wrapping_mul(MAX_DATA_BYTES_IN_MARKER as c_uint) != icc_data_len {
         num_markers = num_markers.wrapping_add(1)
     }
     while icc_data_len > 0i32 as c_uint {
+        /* length of profile to put in this marker */
         length = icc_data_len;
         if length > MAX_DATA_BYTES_IN_MARKER as c_uint {
             length = MAX_DATA_BYTES_IN_MARKER as c_uint
         }
         icc_data_len = icc_data_len.wrapping_sub(length);
+        /* Write the JPEG marker header (APP2 code and marker length) */
         jpeg_write_m_header(
             cinfo,
             ICC_MARKER,
             length.wrapping_add(ICC_OVERHEAD_LEN as c_uint),
         );
+        /* Write the marker identifying string "ICC_PROFILE" (null-terminated).  We
+         * code it in this less-than-transparent way so that the code works even if
+         * the local character set is not ASCII.
+         */
         jpeg_write_m_byte(cinfo, 0x49i32);
         jpeg_write_m_byte(cinfo, 0x43i32);
         jpeg_write_m_byte(cinfo, 0x43i32);
@@ -140,16 +156,19 @@ pub unsafe extern "C" fn jpeg_write_icc_profile(
         jpeg_write_m_byte(cinfo, 0x4ci32);
         jpeg_write_m_byte(cinfo, 0x45i32);
         jpeg_write_m_byte(cinfo, 0i32);
+        /* Add the sequencing info */
         jpeg_write_m_byte(cinfo, cur_marker);
         jpeg_write_m_byte(cinfo, num_markers as c_int);
-        loop {
+        loop
+        /* Add the profile data */
+        {
             let fresh0 = length;
             length = length.wrapping_sub(1);
-            if !(0 != fresh0) {
+            if !(fresh0 != 0) {
                 break;
             }
             jpeg_write_m_byte(cinfo, *icc_data_ptr as c_int);
-            icc_data_ptr = icc_data_ptr.offset(1isize)
+            icc_data_ptr = icc_data_ptr.offset(1)
         }
         cur_marker += 1
     }

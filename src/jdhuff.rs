@@ -1,4 +1,4 @@
-pub use crate::jerror::{
+pub use super::jerror::{
     C2RustUnnamed_3, JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
     JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID, JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
     JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE, JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
@@ -33,29 +33,30 @@ pub use crate::jmorecfg_h::{
     boolean, FALSE, JCOEF, JDIMENSION, JOCTET, JSAMPLE, TRUE, UINT16, UINT8,
 };
 pub use crate::jpegint_h::{
-    inverse_DCT_method_ptr, jpeg_c_coef_controller, jpeg_c_main_controller, jpeg_c_prep_controller,
-    jpeg_color_converter, jpeg_color_deconverter, jpeg_color_quantizer, jpeg_comp_master,
-    jpeg_d_coef_controller, jpeg_d_main_controller, jpeg_d_post_controller, jpeg_decomp_master,
-    jpeg_downsampler, jpeg_entropy_decoder, jpeg_entropy_encoder, jpeg_forward_dct,
-    jpeg_input_controller, jpeg_inverse_dct, jpeg_marker_reader, jpeg_marker_writer,
-    jpeg_natural_order, jpeg_upsampler, JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT,
+    inverse_DCT_method_ptr, jpeg_natural_order, JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT,
     JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, JLONG, J_BUF_MODE,
 };
 pub use crate::jpeglib_h::{
-    j_common_ptr, j_compress_ptr, j_decompress_ptr, jpeg_alloc_huff_table, jpeg_common_struct,
-    jpeg_component_info, jpeg_compress_struct, jpeg_decompress_struct, jpeg_destination_mgr,
-    jpeg_error_mgr, jpeg_marker_parser_method, jpeg_marker_struct, jpeg_memory_mgr,
-    jpeg_progress_mgr, jpeg_saved_marker_ptr, jpeg_scan_info, jpeg_source_mgr,
-    jvirt_barray_control, jvirt_barray_ptr, jvirt_sarray_control, jvirt_sarray_ptr,
-    C2RustUnnamed_2, JCS_YCbCr, DCTSIZE2, JBLOCK, JBLOCKARRAY, JBLOCKROW, JCOEFPTR, JCS_CMYK,
-    JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA,
-    JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN,
-    JCS_YCCK, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JDITHER_FS, JDITHER_NONE, JDITHER_ORDERED,
-    JHUFF_TBL, JPOOL_IMAGE, JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE,
-    J_DCT_METHOD, J_DITHER_MODE, NUM_HUFF_TBLS,
+    j_common_ptr, j_compress_ptr, j_decompress_ptr, jpeg_alloc_huff_table, jpeg_c_coef_controller,
+    jpeg_c_main_controller, jpeg_c_prep_controller, jpeg_color_converter, jpeg_color_deconverter,
+    jpeg_color_quantizer, jpeg_common_struct, jpeg_comp_master, jpeg_component_info,
+    jpeg_compress_struct, jpeg_d_coef_controller, jpeg_d_main_controller, jpeg_d_post_controller,
+    jpeg_decomp_master, jpeg_decompress_struct, jpeg_destination_mgr, jpeg_downsampler,
+    jpeg_entropy_decoder, jpeg_entropy_encoder, jpeg_error_mgr, jpeg_forward_dct,
+    jpeg_input_controller, jpeg_inverse_dct, jpeg_marker_parser_method, jpeg_marker_reader,
+    jpeg_marker_struct, jpeg_marker_writer, jpeg_memory_mgr, jpeg_progress_mgr,
+    jpeg_saved_marker_ptr, jpeg_scan_info, jpeg_source_mgr, jpeg_upsampler, jvirt_barray_control,
+    jvirt_barray_ptr, jvirt_sarray_control, jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr, DCTSIZE2,
+    JBLOCK, JBLOCKARRAY, JBLOCKROW, JCOEFPTR, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR,
+    JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR,
+    JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT,
+    JDCT_IFAST, JDCT_ISLOW, JDITHER_FS, JDITHER_NONE, JDITHER_ORDERED, JHUFF_TBL, JPOOL_IMAGE,
+    JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD, J_DITHER_MODE,
+    NUM_HUFF_TBLS,
 };
 pub use crate::jstdhuff_c::{add_huff_table, std_huff_tables};
 pub use crate::stddef_h::{size_t, NULL};
+use crate::stdlib::{memcpy, memset};
 use libc::{self, c_char, c_int, c_long, c_uint, c_ulong};
 // =============== BEGIN jdhuff_h ================
 #[repr(C)]
@@ -66,14 +67,7 @@ pub struct d_derived_tbl {
     pub pub_0: *mut JHUFF_TBL,
     pub lookup: [c_int; 256],
 }
-/* If long is > 32 bits on your machine, and shifting/masking longs is
- * reasonably fast, making bit_buf_type be long and setting BIT_BUF_SIZE
- * appropriately should be a win.  Unfortunately we can't define the size
- * with something like  #define BIT_BUF_SIZE (sizeof(bit_buf_type)*8)
- * because not all machines measure sizeof in 8-bit bytes.
- */
 
-/* Bitreading state saved across MCUs */
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct bitread_perm_state {
@@ -98,9 +92,8 @@ pub struct bitread_perm_state {
  * necessary.
  */
 
-/* type of bit-extraction buffer */
 pub type bit_buf_type = size_t;
-/* Bitreading working state within an MCU */
+
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct bitread_working_state {
@@ -124,50 +117,19 @@ pub struct bitread_working_state {
  * that are shared between the sequential decoder (jdhuff.c) and the
  * progressive decoder (jdphuff.c).  No other modules need to see these.
  */
-
 /* Derived data constructed for each Huffman table */
 
-/* # of bits of lookahead */
 pub const HUFF_LOOKAHEAD: c_int = 8i32;
-/* size of buffer in bits */
-pub const BIT_BUF_SIZE: c_int = 64i32;
-/*
- * jdhuff.c
- *
- * This file was part of the Independent JPEG Group's software:
- * Copyright (C) 1991-1997, Thomas G. Lane.
- * libjpeg-turbo Modifications:
- * Copyright (C) 2009-2011, 2016, 2018, D. R. Commander.
- * For conditions of distribution and use, see the accompanying README.ijg
- * file.
- *
- * This file contains Huffman entropy decoding routines.
- *
- * Much of the complexity here has to do with supporting input suspension.
- * If the data source module demands suspension, we want to be able to back
- * up to the start of the current MCU.  To do this, we copy state variables
- * into local working storage, and update them back to the permanent
- * storage only upon successful completion of an MCU.
- *
- * NOTE: All referenced figures are from
- * Recommendation ITU-T T.81 (1992) | ISO/IEC 10918-1:1994.
- */
+/* type of bit-extraction buffer */
 
-/*
- * Expanded entropy decoder object for Huffman decoding.
- *
- * The savable_state subrecord contains fields that change within an MCU,
- * but must not be updated permanently until we complete the MCU.
- */
+pub const BIT_BUF_SIZE: c_int = 64i32;
+
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct savable_state {
     pub last_dc_val: [c_int; 4],
 }
-/* This macro is to work around compilers with missing or broken
- * structure assignment.  You'll need to fix this code if you have
- * such a compiler and you change MAX_COMPS_IN_SCAN.
- */
+
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct huff_entropy_decoder {
@@ -182,10 +144,12 @@ pub struct huff_entropy_decoder {
     pub dc_needed: [boolean; 10],
     pub ac_needed: [boolean; 10],
 }
+
 pub type huff_entropy_ptr = *mut huff_entropy_decoder;
 /*
  * Initialize for a Huffman-compressed scan.
  */
+
 unsafe extern "C" fn start_pass_huff_decoder(mut cinfo: j_decompress_ptr) {
     let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
     let mut ci: c_int = 0;
@@ -194,21 +158,30 @@ unsafe extern "C" fn start_pass_huff_decoder(mut cinfo: j_decompress_ptr) {
     let mut actbl: c_int = 0;
     let mut pdtbl: *mut *mut d_derived_tbl = 0 as *mut *mut d_derived_tbl;
     let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
+    /* Check that the scan parameters Ss, Se, Ah/Al are OK for sequential JPEG.
+     * This ought to be an error condition, but we make it a warning because
+     * there are some baseline files out there with all zeroes in these bytes.
+     */
     if (*cinfo).Ss != 0i32
         || (*cinfo).Se != DCTSIZE2 - 1i32
         || (*cinfo).Ah != 0i32
         || (*cinfo).Al != 0i32
     {
-        (*(*cinfo).err).msg_code = JWRN_NOT_SEQUENTIAL as c_int;
-        (*(*cinfo).err)
-            .emit_message
-            .expect("non-null function pointer")(cinfo as j_common_ptr, -1i32);
+        (*(*cinfo).err).msg_code = super::jerror::JWRN_NOT_SEQUENTIAL as c_int;
+        Some(
+            (*(*cinfo).err)
+                .emit_message
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr, -1i32);
     }
     ci = 0i32;
     while ci < (*cinfo).comps_in_scan {
         compptr = (*cinfo).cur_comp_info[ci as usize];
         dctbl = (*compptr).dc_tbl_no;
         actbl = (*compptr).ac_tbl_no;
+        /* Compute derived values for Huffman tables */
+        /* We may do this more than once for a table, but it's not expensive */
         pdtbl = (*entropy)
             .dc_derived_tbls
             .as_mut_ptr()
@@ -219,19 +192,24 @@ unsafe extern "C" fn start_pass_huff_decoder(mut cinfo: j_decompress_ptr) {
             .as_mut_ptr()
             .offset(actbl as isize);
         jpeg_make_d_derived_tbl(cinfo, FALSE, actbl, pdtbl);
+        /* Initialize DC predictions to 0 */
         (*entropy).saved.last_dc_val[ci as usize] = 0i32;
         ci += 1
     }
+    /* Precalculate decoding info for each block in an MCU of this scan */
     blkn = 0i32;
     while blkn < (*cinfo).blocks_in_MCU {
         ci = (*cinfo).MCU_membership[blkn as usize];
         compptr = (*cinfo).cur_comp_info[ci as usize];
+        /* Precalculate which table to use for each block */
         (*entropy).dc_cur_tbls[blkn as usize] =
             (*entropy).dc_derived_tbls[(*compptr).dc_tbl_no as usize];
         (*entropy).ac_cur_tbls[blkn as usize] =
             (*entropy).ac_derived_tbls[(*compptr).ac_tbl_no as usize];
-        if 0 != (*compptr).component_needed {
+        /* Decide whether we really care about the coefficient values */
+        if (*compptr).component_needed != 0 {
             (*entropy).dc_needed[blkn as usize] = TRUE;
+            /* we don't need the ACs if producing a 1/8th-size image */
             (*entropy).ac_needed[blkn as usize] = ((*compptr).DCT_scaled_size > 1i32) as c_int
         } else {
             (*entropy).ac_needed[blkn as usize] = FALSE;
@@ -239,13 +217,14 @@ unsafe extern "C" fn start_pass_huff_decoder(mut cinfo: j_decompress_ptr) {
         }
         blkn += 1
     }
-    (*entropy).bitstate.bits_left = 0i32;
+    /* Initialize bitread state variables */
+    (*entropy).bitstate.bits_left = 0i32; /* unnecessary, but keeps Purify quiet */
     (*entropy).bitstate.get_buffer = 0i32 as bit_buf_type;
     (*entropy).pub_0.insufficient_data = FALSE;
+    /* Initialize restart counter */
     (*entropy).restarts_to_go = (*cinfo).restart_interval;
 }
 /* Expand a Huffman table definition into the derived format */
-
 /*
  * Compute the derived values for a Huffman table.
  * This routine also performs some validation checks on the table.
@@ -253,6 +232,7 @@ unsafe extern "C" fn start_pass_huff_decoder(mut cinfo: j_decompress_ptr) {
  * Note this is also used by jdphuff.c.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
     mut cinfo: j_decompress_ptr,
     mut isDC: boolean,
@@ -271,50 +251,69 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
     let mut huffsize: [c_char; 257] = [0; 257];
     let mut huffcode: [c_uint; 257] = [0; 257];
     let mut code: c_uint = 0;
+    /* Note that huffsize[] and huffcode[] are filled in code-length order,
+     * paralleling the order of the symbols themselves in htbl->huffval[].
+     */
+    /* Find the input Huffman table */
     if tblno < 0i32 || tblno >= NUM_HUFF_TBLS {
-        (*(*cinfo).err).msg_code = JERR_NO_HUFF_TABLE as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] = tblno;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_NO_HUFF_TABLE as c_int;
+        (*(*cinfo).err).msg_parm.i[0] = tblno;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
-    htbl = if 0 != isDC {
+    htbl = if isDC != 0 {
         (*cinfo).dc_huff_tbl_ptrs[tblno as usize]
     } else {
         (*cinfo).ac_huff_tbl_ptrs[tblno as usize]
     };
     if htbl.is_null() {
-        (*(*cinfo).err).msg_code = JERR_NO_HUFF_TABLE as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] = tblno;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_NO_HUFF_TABLE as c_int;
+        (*(*cinfo).err).msg_parm.i[0] = tblno;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
+    /* Allocate a workspace if we haven't already done so. */
     if (*pdtbl).is_null() {
-        *pdtbl = (*(*cinfo).mem)
-            .alloc_small
-            .expect("non-null function pointer")(
+        *pdtbl = Some(
+            (*(*cinfo).mem)
+                .alloc_small
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(
             cinfo as j_common_ptr,
             JPOOL_IMAGE,
             ::std::mem::size_of::<d_derived_tbl>() as c_ulong,
         ) as *mut d_derived_tbl
-    }
+    } /* fill in back link */
     dtbl = *pdtbl;
     (*dtbl).pub_0 = htbl;
+    /* Figure C.1: make table of Huffman code length for each symbol */
     p = 0i32;
     l = 1i32;
     while l <= 16i32 {
         i = (*htbl).bits[l as usize] as c_int;
         if i < 0i32 || p + i > 256i32 {
-            (*(*cinfo).err).msg_code = JERR_BAD_HUFF_TABLE as c_int;
-            (*(*cinfo).err)
-                .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+            /* protect against table overrun */
+            (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_HUFF_TABLE as c_int;
+            Some(
+                (*(*cinfo).err)
+                    .error_exit
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         loop {
             let fresh0 = i;
             i = i - 1;
-            if !(0 != fresh0) {
+            if !(fresh0 != 0) {
                 break;
             }
             let fresh1 = p;
@@ -325,39 +324,59 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
     }
     huffsize[p as usize] = 0i32 as c_char;
     numsymbols = p;
+    /* Figure C.2: generate the codes themselves */
+    /* We also validate that the counts represent a legal Huffman code tree. */
     code = 0i32 as c_uint;
-    si = huffsize[0usize] as c_int;
+    si = huffsize[0] as c_int;
     p = 0i32;
-    while 0 != huffsize[p as usize] {
+    while huffsize[p as usize] != 0 {
         while huffsize[p as usize] as c_int == si {
             let fresh2 = p;
             p = p + 1;
             huffcode[fresh2 as usize] = code;
             code = code.wrapping_add(1)
         }
+        /* code is now 1 more than the last code used for codelength si; but
+         * it must still fit in si bits, since no code is allowed to be all ones.
+         */
         if code as JLONG >= (1i32 as JLONG) << si {
-            (*(*cinfo).err).msg_code = JERR_BAD_HUFF_TABLE as c_int;
-            (*(*cinfo).err)
-                .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+            (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_HUFF_TABLE as c_int;
+            Some(
+                (*(*cinfo).err)
+                    .error_exit
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         code <<= 1i32;
         si += 1
     }
+    /* Figure F.15: generate decoding tables for bit-sequential decoding */
     p = 0i32;
     l = 1i32;
     while l <= 16i32 {
-        if 0 != (*htbl).bits[l as usize] {
+        if (*htbl).bits[l as usize] != 0 {
+            /* valoffset[l] = huffval[] index of 1st symbol of code length l,
+             * minus the minimum code of length l
+             */
             (*dtbl).valoffset[l as usize] = p as JLONG - huffcode[p as usize] as JLONG;
             p += (*htbl).bits[l as usize] as c_int;
             (*dtbl).maxcode[l as usize] = huffcode[(p - 1i32) as usize] as JLONG
+        /* maximum code of length l */
         } else {
             (*dtbl).maxcode[l as usize] = -1i32 as JLONG
-        }
+            /* -1 if no codes of this length */
+        } /* ensures jpeg_huff_decode terminates */
         l += 1
     }
-    (*dtbl).valoffset[17usize] = 0i32 as JLONG;
-    (*dtbl).maxcode[17usize] = 0xfffffi64;
+    (*dtbl).valoffset[17] = 0i32 as JLONG;
+    (*dtbl).maxcode[17] = 0xfffffi64;
+    /* Compute lookahead tables to speed up decoding.
+     * First we set all the table entries to 0, indicating "too long";
+     * then we iterate through the Huffman codes that are short enough and
+     * fill in all the entries that correspond to bit sequences starting
+     * with that code.
+     */
     i = 0i32;
     while i < 1i32 << HUFF_LOOKAHEAD {
         (*dtbl).lookup[i as usize] = HUFF_LOOKAHEAD + 1i32 << HUFF_LOOKAHEAD;
@@ -368,6 +387,8 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
     while l <= HUFF_LOOKAHEAD {
         i = 1i32;
         while i <= (*htbl).bits[l as usize] as c_int {
+            /* l = current code's length, p = its index in huffcode[] & huffval[]. */
+            /* Generate left-justified code followed by all possible bit sequences */
             lookbits = (huffcode[p as usize] << HUFF_LOOKAHEAD - l) as c_int;
             ctr = 1i32 << HUFF_LOOKAHEAD - l;
             while ctr > 0i32 {
@@ -381,15 +402,24 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
         }
         l += 1
     }
-    if 0 != isDC {
+    /* Validate symbols as being reasonable.
+     * For AC tables, we make no check, but accept all byte values 0..255.
+     * For DC tables, we require the symbols to be in range 0..15.
+     * (Tighter bounds could be applied depending on the data depth and mode,
+     * but this is sufficient to ensure safe decoding.)
+     */
+    if isDC != 0 {
         i = 0i32;
         while i < numsymbols {
             let mut sym: c_int = (*htbl).huffval[i as usize] as c_int;
             if sym < 0i32 || sym > 15i32 {
-                (*(*cinfo).err).msg_code = JERR_BAD_HUFF_TABLE as c_int;
-                (*(*cinfo).err)
-                    .error_exit
-                    .expect("non-null function pointer")(cinfo as j_common_ptr);
+                (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_HUFF_TABLE as c_int;
+                Some(
+                    (*(*cinfo).err)
+                        .error_exit
+                        .expect("non-null function pointer"),
+                )
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             i += 1
         }
@@ -409,9 +439,9 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
  * be a win to set MIN_GET_BITS to the minimum value of 15.  This reduces the
  * average shift distance at the cost of more calls to jpeg_fill_bit_buffer.
  */
+
 pub const MIN_GET_BITS: c_int = BIT_BUF_SIZE - 7i32;
 /* Macros to declare and load/save bitread local variables. */
-
 /*
  * These macros provide the in-line portion of bit fetching.
  * Use CHECK_BIT_BUFFER to ensure there are N bits in get_buffer
@@ -429,32 +459,41 @@ pub const MIN_GET_BITS: c_int = BIT_BUF_SIZE - 7i32;
  * The value N should be a simple variable, not an expression, because it
  * is evaluated multiple times.
  */
-
 /* Load up the bit buffer to a depth of at least nbits */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_fill_bit_buffer(
     mut state: *mut bitread_working_state,
     mut get_buffer: bit_buf_type,
     mut bits_left: c_int,
     mut nbits: c_int,
-) -> boolean {
+) -> boolean
+/* Load up the bit buffer to a depth of at least nbits */ {
     /* Copy heavily used state fields into locals (hopefully registers) */
     let mut next_input_byte: *const JOCTET = (*state).next_input_byte;
     let mut bytes_in_buffer: size_t = (*state).bytes_in_buffer;
     let mut cinfo: j_decompress_ptr = (*state).cinfo;
     let mut current_block_30: u64;
+    /* Attempt to load at least MIN_GET_BITS bits into get_buffer. */
+    /* (It is assumed that no request will be for more than that many bits.) */
+    /* We fail to do so only if we hit a marker or are forced to suspend. */
     if (*cinfo).unread_marker == 0i32 {
-        /* cannot advance past a marker */
         loop {
             if !(bits_left < MIN_GET_BITS) {
                 current_block_30 = 6417057564578538666;
                 break;
+                /* end while */
             }
             let mut c: c_int = 0;
+            /* Attempt to read a byte */
             if bytes_in_buffer == 0i32 as c_ulong {
-                if 0 == (*(*cinfo).src)
-                    .fill_input_buffer
-                    .expect("non-null function pointer")(cinfo)
+                if Some(
+                    (*(*cinfo).src)
+                        .fill_input_buffer
+                        .expect("non-null function pointer"),
+                )
+                .expect("non-null function pointer")(cinfo)
+                    == 0
                 {
                     return FALSE;
                 }
@@ -467,13 +506,22 @@ pub unsafe extern "C" fn jpeg_fill_bit_buffer(
             c = *fresh3 as c_int;
             /* If it's 0xFF, check and discard stuffed zero byte */
             if c == 0xffi32 {
-                loop {
+                loop
+                /* Loop here to discard any padding FF's on terminating marker,
+                 * so that we can save a valid unread_marker value.  NOTE: we will
+                 * accept multiple FF's followed by a 0 as meaning a single FF data
+                 * byte.  This data pattern is not valid according to the standard.
+                 */
+                {
                     if bytes_in_buffer == 0i32 as c_ulong {
-                        if 0 == (*(*cinfo).src)
-                            .fill_input_buffer
-                            .expect("non-null function pointer")(
-                            cinfo
-                        ) {
+                        if Some(
+                            (*(*cinfo).src)
+                                .fill_input_buffer
+                                .expect("non-null function pointer"),
+                        )
+                        .expect("non-null function pointer")(cinfo)
+                            == 0
+                        {
                             return FALSE;
                         }
                         next_input_byte = (*(*cinfo).src).next_input_byte;
@@ -488,39 +536,63 @@ pub unsafe extern "C" fn jpeg_fill_bit_buffer(
                     }
                 }
                 if c == 0i32 {
+                    /* Found FF/00, which represents an FF data byte */
                     c = 0xffi32
                 } else {
+                    /* Oops, it's actually a marker indicating end of compressed data.
+                     * Save the marker code for later use.
+                     * Fine point: it might appear that we should save the marker into
+                     * bitread working state, not straight into permanent state.  But
+                     * once we have hit a marker, we cannot need to suspend within the
+                     * current MCU, because we will read no more bytes from the data
+                     * source.  So it is OK to update permanent state right away.
+                     */
                     (*cinfo).unread_marker = c;
-                    /* See if we need to insert some fake zero bits. */
                     current_block_30 = 7022714159392939963;
                     break;
                 }
             }
+            /* OK, load c into get_buffer */
             get_buffer = get_buffer << 8i32 | c as c_ulong;
             bits_left += 8i32
         }
     } else {
-        /* end while */
         current_block_30 = 7022714159392939963;
     }
     match current_block_30 {
-        7022714159392939963 => {
+        7022714159392939963 =>
+        /* See if we need to insert some fake zero bits. */
+        /* We get here if we've read the marker that terminates the compressed
+         * data segment.  There should be enough bits in the buffer register
+         * to satisfy the request; if so, no problem.
+         */
+        {
             if nbits > bits_left {
-                if 0 == (*(*cinfo).entropy).insufficient_data {
-                    (*(*cinfo).err).msg_code = JWRN_HIT_MARKER as c_int;
-                    (*(*cinfo).err)
-                        .emit_message
-                        .expect("non-null function pointer")(
+                /* Uh-oh.  Report corrupted data to user and stuff zeroes into
+                 * the data stream, so that we can produce some kind of image.
+                 * We use a nonvolatile flag to ensure that only one warning message
+                 * appears per data segment.
+                 */
+                if (*(*cinfo).entropy).insufficient_data == 0 {
+                    (*(*cinfo).err).msg_code = super::jerror::JWRN_HIT_MARKER as c_int;
+                    Some(
+                        (*(*cinfo).err)
+                            .emit_message
+                            .expect("non-null function pointer"),
+                    )
+                    .expect("non-null function pointer")(
                         cinfo as j_common_ptr, -1i32
                     );
                     (*(*cinfo).entropy).insufficient_data = TRUE
                 }
+                /* Fill the buffer with zero bits */
                 get_buffer <<= MIN_GET_BITS - bits_left;
                 bits_left = MIN_GET_BITS
             }
         }
         _ => {}
     }
+    /* Unload the local registers */
     (*state).next_input_byte = next_input_byte;
     (*state).bytes_in_buffer = bytes_in_buffer;
     (*state).get_buffer = get_buffer;
@@ -543,34 +615,24 @@ pub unsafe extern "C" fn jpeg_fill_bit_buffer(
  *    more than HUFF_LOOKAHEAD bits long.
  * 3. jpeg_huff_decode returns -1 if forced to suspend.
  */
-
 /* Pre-execute the common case of nb <= HUFF_LOOKAHEAD */
-
 /* Equivalent of jpeg_huff_decode() */
-
 /* Don't use GET_BITS() here because we don't want to modify bits_left */
-
 /* Out-of-line case for Huffman code fetching */
-
 /* Macro version of the above, which performs much better but does not
 handle markers.  We have to hand off any blocks with markers to the
 slower routines. */
-
 /* Pre-execute most common case */
-
 /* Pre-execute case of FF/00, which represents an FF data byte */
-
 /* Oops, it's actually a marker indicating end of compressed data. */
-
 /* Back out pre-execution and fill the buffer with zero bits */
-
 /* Pre-fetch 48 bytes, because the holding register is 64-bit */
-
 /*
  * Out-of-line code for Huffman code decoding.
  * See jdhuff.h for info about usage.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_huff_decode(
     mut state: *mut bitread_working_state,
     mut get_buffer: bit_buf_type,
@@ -580,8 +642,10 @@ pub unsafe extern "C" fn jpeg_huff_decode(
 ) -> c_int {
     let mut l: c_int = min_bits;
     let mut code: JLONG = 0;
+    /* HUFF_DECODE has determined that the code is at least min_bits */
+    /* bits long, so fetch that many bits in one swoop. */
     if bits_left < l {
-        if 0 == jpeg_fill_bit_buffer(state, get_buffer, bits_left, l) {
+        if jpeg_fill_bit_buffer(state, get_buffer, bits_left, l) == 0 {
             return -1i32;
         }
         get_buffer = (*state).get_buffer;
@@ -589,10 +653,12 @@ pub unsafe extern "C" fn jpeg_huff_decode(
     }
     bits_left -= l;
     code = ((get_buffer >> bits_left) as c_int & (1i32 << l) - 1i32) as JLONG;
+    /* Collect the rest of the Huffman code one bit at a time. */
+    /* This is per Figure F.16. */
     while code > (*htbl).maxcode[l as usize] {
         code <<= 1i32;
         if bits_left < 1i32 {
-            if 0 == jpeg_fill_bit_buffer(state, get_buffer, bits_left, 1i32) {
+            if jpeg_fill_bit_buffer(state, get_buffer, bits_left, 1i32) == 0 {
                 return -1i32;
             }
             get_buffer = (*state).get_buffer;
@@ -602,48 +668,69 @@ pub unsafe extern "C" fn jpeg_huff_decode(
         code |= ((get_buffer >> bits_left) as c_int & (1i32 << 1i32) - 1i32) as c_long;
         l += 1
     }
+    /* Unload the local registers */
     (*state).get_buffer = get_buffer;
     (*state).bits_left = bits_left;
+    /* With garbage input we may reach the sentinel value l = 17. */
     if l > 16i32 {
-        (*(*(*state).cinfo).err).msg_code = JWRN_HUFF_BAD_CODE as c_int;
-        (*(*(*state).cinfo).err)
-            .emit_message
-            .expect("non-null function pointer")((*state).cinfo as j_common_ptr, -1i32);
+        (*(*(*state).cinfo).err).msg_code = super::jerror::JWRN_HUFF_BAD_CODE as c_int;
+        Some(
+            (*(*(*state).cinfo).err)
+                .emit_message
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")((*state).cinfo as j_common_ptr, -1i32);
         return 0i32;
+        /* fake a zero as the safest result */
     }
     return (*(*htbl).pub_0).huffval[(code + (*htbl).valoffset[l as usize]) as c_int as usize]
         as c_int;
 }
 /* AVOID_TABLES */
-
 /*
  * Check for a restart marker & resynchronize decoder.
  * Returns FALSE if must suspend.
  */
+
 unsafe extern "C" fn process_restart(mut cinfo: j_decompress_ptr) -> boolean {
     let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
     let mut ci: c_int = 0;
+    /* Throw away any unused bits remaining in bit buffer; */
+    /* include any full bytes in next_marker's count of discarded bytes */
     (*(*cinfo).marker).discarded_bytes = (*(*cinfo).marker)
         .discarded_bytes
         .wrapping_add(((*entropy).bitstate.bits_left / 8i32) as c_uint);
     (*entropy).bitstate.bits_left = 0i32;
-    if 0 == (*(*cinfo).marker)
-        .read_restart_marker
-        .expect("non-null function pointer")(cinfo)
+    /* Advance past the RSTn marker */
+    if Some(
+        (*(*cinfo).marker)
+            .read_restart_marker
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(cinfo)
+        == 0
     {
         return FALSE;
     }
+    /* Re-initialize DC predictions to 0 */
     ci = 0i32;
     while ci < (*cinfo).comps_in_scan {
         (*entropy).saved.last_dc_val[ci as usize] = 0i32;
         ci += 1
     }
+    /* Reset restart counter */
     (*entropy).restarts_to_go = (*cinfo).restart_interval;
+    /* Reset out-of-data flag, unless read_restart_marker left us smack up
+     * against a marker.  In that case we will end up treating the next data
+     * segment as empty, and we can avoid producing bogus output pixels by
+     * leaving the flag set.
+     */
     if (*cinfo).unread_marker == 0i32 {
         (*entropy).pub_0.insufficient_data = FALSE
     }
     return TRUE;
 }
+
 unsafe extern "C" fn decode_mcu_slow(
     mut cinfo: j_decompress_ptr,
     mut MCU_data: *mut JBLOCKROW,
@@ -662,6 +749,8 @@ unsafe extern "C" fn decode_mcu_slow(
     let mut state: savable_state = savable_state {
         last_dc_val: [0; 4],
     };
+    /* Outer loop handles each block in the MCU */
+    /* Load up working state */
     br_state.cinfo = cinfo;
     br_state.next_input_byte = (*(*cinfo).src).next_input_byte;
     br_state.bytes_in_buffer = (*(*cinfo).src).bytes_in_buffer;
@@ -681,10 +770,12 @@ unsafe extern "C" fn decode_mcu_slow(
         let mut k: c_int = 0;
         let mut r: c_int = 0;
         let mut current_block_22: u64;
+        /* Decode a single block's worth of coefficients */
+        /* Section F.2.2.1: decode the DC coefficient difference */
         let mut nb: c_int = 0;
         let mut look: c_int = 0;
         if bits_left < HUFF_LOOKAHEAD {
-            if 0 == jpeg_fill_bit_buffer(&mut br_state, get_buffer, bits_left, 0i32) {
+            if jpeg_fill_bit_buffer(&mut br_state, get_buffer, bits_left, 0i32) == 0 {
                 return 0i32;
             }
             get_buffer = br_state.get_buffer;
@@ -723,9 +814,9 @@ unsafe extern "C" fn decode_mcu_slow(
             }
             _ => {}
         }
-        if 0 != s {
+        if s != 0 {
             if bits_left < s {
-                if 0 == jpeg_fill_bit_buffer(&mut br_state, get_buffer, bits_left, s) {
+                if jpeg_fill_bit_buffer(&mut br_state, get_buffer, bits_left, s) == 0 {
                     return 0i32;
                 }
                 get_buffer = br_state.get_buffer;
@@ -738,22 +829,26 @@ unsafe extern "C" fn decode_mcu_slow(
                     & ((-1i32 as c_uint) << s).wrapping_add(1i32 as c_uint),
             ) as c_int
         }
-        if 0 != (*entropy).dc_needed[blkn as usize] {
+        if (*entropy).dc_needed[blkn as usize] != 0 {
+            /* Convert DC difference to actual value, update last_dc_val */
             let mut ci: c_int = (*cinfo).MCU_membership[blkn as usize];
             s += state.last_dc_val[ci as usize];
             state.last_dc_val[ci as usize] = s;
             if !block.is_null() {
-                (*block)[0usize] = s as JCOEF
+                /* Output the DC coefficient (assumes jpeg_natural_order[0] = 0) */
+                (*block)[0] = s as JCOEF
             }
         }
-        if 0 != (*entropy).ac_needed[blkn as usize] && !block.is_null() {
+        if (*entropy).ac_needed[blkn as usize] != 0 && !block.is_null() {
+            /* Section F.2.2.2: decode the AC coefficients */
+            /* Since zeroes are skipped, output area must be cleared beforehand */
             k = 1i32;
             while k < DCTSIZE2 {
                 let mut current_block_60: u64;
                 let mut nb_0: c_int = 0;
                 let mut look_0: c_int = 0;
                 if bits_left < HUFF_LOOKAHEAD {
-                    if 0 == jpeg_fill_bit_buffer(&mut br_state, get_buffer, bits_left, 0i32) {
+                    if jpeg_fill_bit_buffer(&mut br_state, get_buffer, bits_left, 0i32) == 0 {
                         return 0i32;
                     }
                     get_buffer = br_state.get_buffer;
@@ -794,10 +889,10 @@ unsafe extern "C" fn decode_mcu_slow(
                 }
                 r = s >> 4i32;
                 s &= 15i32;
-                if 0 != s {
+                if s != 0 {
                     k += r;
                     if bits_left < s {
-                        if 0 == jpeg_fill_bit_buffer(&mut br_state, get_buffer, bits_left, s) {
+                        if jpeg_fill_bit_buffer(&mut br_state, get_buffer, bits_left, s) == 0 {
                             return 0i32;
                         }
                         get_buffer = br_state.get_buffer;
@@ -809,6 +904,10 @@ unsafe extern "C" fn decode_mcu_slow(
                         (r - (1i32 << s - 1i32) >> 31i32) as c_uint
                             & ((-1i32 as c_uint) << s).wrapping_add(1i32 as c_uint),
                     ) as c_int;
+                    /* Output coefficient in natural (dezigzagged) order.
+                     * Note: the extra entries in jpeg_natural_order[] will save us
+                     * if k >= DCTSIZE2, which could happen if the data is corrupted.
+                     */
                     (*block)[*jpeg_natural_order.as_ptr().offset(k as isize) as usize] = s as JCOEF
                 } else {
                     if r != 15i32 {
@@ -819,13 +918,15 @@ unsafe extern "C" fn decode_mcu_slow(
                 k += 1
             }
         } else {
+            /* Section F.2.2.2: decode the AC coefficients */
+            /* In this path we just discard the values */
             k = 1i32;
             while k < DCTSIZE2 {
                 let mut current_block_97: u64;
                 let mut nb_1: c_int = 0;
                 let mut look_1: c_int = 0;
                 if bits_left < HUFF_LOOKAHEAD {
-                    if 0 == jpeg_fill_bit_buffer(&mut br_state, get_buffer, bits_left, 0i32) {
+                    if jpeg_fill_bit_buffer(&mut br_state, get_buffer, bits_left, 0i32) == 0 {
                         return 0i32;
                     }
                     get_buffer = br_state.get_buffer;
@@ -866,10 +967,10 @@ unsafe extern "C" fn decode_mcu_slow(
                 }
                 r = s >> 4i32;
                 s &= 15i32;
-                if 0 != s {
+                if s != 0 {
                     k += r;
                     if bits_left < s {
-                        if 0 == jpeg_fill_bit_buffer(&mut br_state, get_buffer, bits_left, s) {
+                        if jpeg_fill_bit_buffer(&mut br_state, get_buffer, bits_left, s) == 0 {
                             return 0i32;
                         }
                         get_buffer = br_state.get_buffer;
@@ -887,6 +988,7 @@ unsafe extern "C" fn decode_mcu_slow(
         }
         blkn += 1
     }
+    /* Completed MCU, so update state */
     (*(*cinfo).src).next_input_byte = br_state.next_input_byte;
     (*(*cinfo).src).bytes_in_buffer = br_state.bytes_in_buffer;
     (*entropy).bitstate.get_buffer = get_buffer;
@@ -894,6 +996,7 @@ unsafe extern "C" fn decode_mcu_slow(
     (*entropy).saved = state;
     return TRUE;
 }
+
 unsafe extern "C" fn decode_mcu_fast(
     mut cinfo: j_decompress_ptr,
     mut MCU_data: *mut JBLOCKROW,
@@ -913,6 +1016,8 @@ unsafe extern "C" fn decode_mcu_fast(
     let mut state: savable_state = savable_state {
         last_dc_val: [0; 4],
     };
+    /* Outer loop handles each block in the MCU */
+    /* Load up working state */
     br_state.cinfo = cinfo;
     br_state.next_input_byte = (*(*cinfo).src).next_input_byte;
     br_state.bytes_in_buffer = (*(*cinfo).src).bytes_in_buffer;
@@ -943,10 +1048,10 @@ unsafe extern "C" fn decode_mcu_fast(
             get_buffer = get_buffer << 8i32 | c0 as c_ulong;
             bits_left += 8i32;
             if c0 == 0xffi32 {
-                buffer = buffer.offset(1isize);
+                buffer = buffer.offset(1);
                 if c1 != 0i32 {
                     (*cinfo).unread_marker = c1;
-                    buffer = buffer.offset(-2isize);
+                    buffer = buffer.offset(-2);
                     get_buffer &= !0xffi32 as c_ulong
                 }
             }
@@ -959,10 +1064,10 @@ unsafe extern "C" fn decode_mcu_fast(
             get_buffer = get_buffer << 8i32 | c0_0 as c_ulong;
             bits_left += 8i32;
             if c0_0 == 0xffi32 {
-                buffer = buffer.offset(1isize);
+                buffer = buffer.offset(1);
                 if c1_0 != 0i32 {
                     (*cinfo).unread_marker = c1_0;
-                    buffer = buffer.offset(-2isize);
+                    buffer = buffer.offset(-2);
                     get_buffer &= !0xffi32 as c_ulong
                 }
             }
@@ -975,10 +1080,10 @@ unsafe extern "C" fn decode_mcu_fast(
             get_buffer = get_buffer << 8i32 | c0_1 as c_ulong;
             bits_left += 8i32;
             if c0_1 == 0xffi32 {
-                buffer = buffer.offset(1isize);
+                buffer = buffer.offset(1);
                 if c1_1 != 0i32 {
                     (*cinfo).unread_marker = c1_1;
-                    buffer = buffer.offset(-2isize);
+                    buffer = buffer.offset(-2);
                     get_buffer &= !0xffi32 as c_ulong
                 }
             }
@@ -991,10 +1096,10 @@ unsafe extern "C" fn decode_mcu_fast(
             get_buffer = get_buffer << 8i32 | c0_2 as c_ulong;
             bits_left += 8i32;
             if c0_2 == 0xffi32 {
-                buffer = buffer.offset(1isize);
+                buffer = buffer.offset(1);
                 if c1_2 != 0i32 {
                     (*cinfo).unread_marker = c1_2;
-                    buffer = buffer.offset(-2isize);
+                    buffer = buffer.offset(-2);
                     get_buffer &= !0xffi32 as c_ulong
                 }
             }
@@ -1007,10 +1112,10 @@ unsafe extern "C" fn decode_mcu_fast(
             get_buffer = get_buffer << 8i32 | c0_3 as c_ulong;
             bits_left += 8i32;
             if c0_3 == 0xffi32 {
-                buffer = buffer.offset(1isize);
+                buffer = buffer.offset(1);
                 if c1_3 != 0i32 {
                     (*cinfo).unread_marker = c1_3;
-                    buffer = buffer.offset(-2isize);
+                    buffer = buffer.offset(-2);
                     get_buffer &= !0xffi32 as c_ulong
                 }
             }
@@ -1023,10 +1128,10 @@ unsafe extern "C" fn decode_mcu_fast(
             get_buffer = get_buffer << 8i32 | c0_4 as c_ulong;
             bits_left += 8i32;
             if c0_4 == 0xffi32 {
-                buffer = buffer.offset(1isize);
+                buffer = buffer.offset(1);
                 if c1_4 != 0i32 {
                     (*cinfo).unread_marker = c1_4;
-                    buffer = buffer.offset(-2isize);
+                    buffer = buffer.offset(-2);
                     get_buffer &= !0xffi32 as c_ulong
                 }
             }
@@ -1048,7 +1153,7 @@ unsafe extern "C" fn decode_mcu_fast(
                 [((s as c_long + (*dctbl).valoffset[l as usize]) as c_int & 0xffi32) as usize]
                 as c_int
         }
-        if 0 != s {
+        if s != 0 {
             if bits_left <= 16i32 {
                 let mut c0_5: c_int = 0;
                 let mut c1_5: c_int = 0;
@@ -1059,10 +1164,10 @@ unsafe extern "C" fn decode_mcu_fast(
                 get_buffer = get_buffer << 8i32 | c0_5 as c_ulong;
                 bits_left += 8i32;
                 if c0_5 == 0xffi32 {
-                    buffer = buffer.offset(1isize);
+                    buffer = buffer.offset(1);
                     if c1_5 != 0i32 {
                         (*cinfo).unread_marker = c1_5;
-                        buffer = buffer.offset(-2isize);
+                        buffer = buffer.offset(-2);
                         get_buffer &= !0xffi32 as c_ulong
                     }
                 }
@@ -1075,10 +1180,10 @@ unsafe extern "C" fn decode_mcu_fast(
                 get_buffer = get_buffer << 8i32 | c0_6 as c_ulong;
                 bits_left += 8i32;
                 if c0_6 == 0xffi32 {
-                    buffer = buffer.offset(1isize);
+                    buffer = buffer.offset(1);
                     if c1_6 != 0i32 {
                         (*cinfo).unread_marker = c1_6;
-                        buffer = buffer.offset(-2isize);
+                        buffer = buffer.offset(-2);
                         get_buffer &= !0xffi32 as c_ulong
                     }
                 }
@@ -1091,10 +1196,10 @@ unsafe extern "C" fn decode_mcu_fast(
                 get_buffer = get_buffer << 8i32 | c0_7 as c_ulong;
                 bits_left += 8i32;
                 if c0_7 == 0xffi32 {
-                    buffer = buffer.offset(1isize);
+                    buffer = buffer.offset(1);
                     if c1_7 != 0i32 {
                         (*cinfo).unread_marker = c1_7;
-                        buffer = buffer.offset(-2isize);
+                        buffer = buffer.offset(-2);
                         get_buffer &= !0xffi32 as c_ulong
                     }
                 }
@@ -1107,10 +1212,10 @@ unsafe extern "C" fn decode_mcu_fast(
                 get_buffer = get_buffer << 8i32 | c0_8 as c_ulong;
                 bits_left += 8i32;
                 if c0_8 == 0xffi32 {
-                    buffer = buffer.offset(1isize);
+                    buffer = buffer.offset(1);
                     if c1_8 != 0i32 {
                         (*cinfo).unread_marker = c1_8;
-                        buffer = buffer.offset(-2isize);
+                        buffer = buffer.offset(-2);
                         get_buffer &= !0xffi32 as c_ulong
                     }
                 }
@@ -1123,10 +1228,10 @@ unsafe extern "C" fn decode_mcu_fast(
                 get_buffer = get_buffer << 8i32 | c0_9 as c_ulong;
                 bits_left += 8i32;
                 if c0_9 == 0xffi32 {
-                    buffer = buffer.offset(1isize);
+                    buffer = buffer.offset(1);
                     if c1_9 != 0i32 {
                         (*cinfo).unread_marker = c1_9;
-                        buffer = buffer.offset(-2isize);
+                        buffer = buffer.offset(-2);
                         get_buffer &= !0xffi32 as c_ulong
                     }
                 }
@@ -1139,10 +1244,10 @@ unsafe extern "C" fn decode_mcu_fast(
                 get_buffer = get_buffer << 8i32 | c0_10 as c_ulong;
                 bits_left += 8i32;
                 if c0_10 == 0xffi32 {
-                    buffer = buffer.offset(1isize);
+                    buffer = buffer.offset(1);
                     if c1_10 != 0i32 {
                         (*cinfo).unread_marker = c1_10;
-                        buffer = buffer.offset(-2isize);
+                        buffer = buffer.offset(-2);
                         get_buffer &= !0xffi32 as c_ulong
                     }
                 }
@@ -1154,15 +1259,15 @@ unsafe extern "C" fn decode_mcu_fast(
                     & ((-1i32 as c_uint) << s).wrapping_add(1i32 as c_uint),
             ) as c_int
         }
-        if 0 != (*entropy).dc_needed[blkn as usize] {
+        if (*entropy).dc_needed[blkn as usize] != 0 {
             let mut ci: c_int = (*cinfo).MCU_membership[blkn as usize];
             s += state.last_dc_val[ci as usize];
             state.last_dc_val[ci as usize] = s;
             if !block.is_null() {
-                (*block)[0usize] = s as JCOEF
+                (*block)[0] = s as JCOEF
             }
         }
-        if 0 != (*entropy).ac_needed[blkn as usize] && !block.is_null() {
+        if (*entropy).ac_needed[blkn as usize] != 0 && !block.is_null() {
             k = 1i32;
             while k < DCTSIZE2 {
                 if bits_left <= 16i32 {
@@ -1175,10 +1280,10 @@ unsafe extern "C" fn decode_mcu_fast(
                     get_buffer = get_buffer << 8i32 | c0_11 as c_ulong;
                     bits_left += 8i32;
                     if c0_11 == 0xffi32 {
-                        buffer = buffer.offset(1isize);
+                        buffer = buffer.offset(1);
                         if c1_11 != 0i32 {
                             (*cinfo).unread_marker = c1_11;
-                            buffer = buffer.offset(-2isize);
+                            buffer = buffer.offset(-2);
                             get_buffer &= !0xffi32 as c_ulong
                         }
                     }
@@ -1191,10 +1296,10 @@ unsafe extern "C" fn decode_mcu_fast(
                     get_buffer = get_buffer << 8i32 | c0_12 as c_ulong;
                     bits_left += 8i32;
                     if c0_12 == 0xffi32 {
-                        buffer = buffer.offset(1isize);
+                        buffer = buffer.offset(1);
                         if c1_12 != 0i32 {
                             (*cinfo).unread_marker = c1_12;
-                            buffer = buffer.offset(-2isize);
+                            buffer = buffer.offset(-2);
                             get_buffer &= !0xffi32 as c_ulong
                         }
                     }
@@ -1207,10 +1312,10 @@ unsafe extern "C" fn decode_mcu_fast(
                     get_buffer = get_buffer << 8i32 | c0_13 as c_ulong;
                     bits_left += 8i32;
                     if c0_13 == 0xffi32 {
-                        buffer = buffer.offset(1isize);
+                        buffer = buffer.offset(1);
                         if c1_13 != 0i32 {
                             (*cinfo).unread_marker = c1_13;
-                            buffer = buffer.offset(-2isize);
+                            buffer = buffer.offset(-2);
                             get_buffer &= !0xffi32 as c_ulong
                         }
                     }
@@ -1223,10 +1328,10 @@ unsafe extern "C" fn decode_mcu_fast(
                     get_buffer = get_buffer << 8i32 | c0_14 as c_ulong;
                     bits_left += 8i32;
                     if c0_14 == 0xffi32 {
-                        buffer = buffer.offset(1isize);
+                        buffer = buffer.offset(1);
                         if c1_14 != 0i32 {
                             (*cinfo).unread_marker = c1_14;
-                            buffer = buffer.offset(-2isize);
+                            buffer = buffer.offset(-2);
                             get_buffer &= !0xffi32 as c_ulong
                         }
                     }
@@ -1239,10 +1344,10 @@ unsafe extern "C" fn decode_mcu_fast(
                     get_buffer = get_buffer << 8i32 | c0_15 as c_ulong;
                     bits_left += 8i32;
                     if c0_15 == 0xffi32 {
-                        buffer = buffer.offset(1isize);
+                        buffer = buffer.offset(1);
                         if c1_15 != 0i32 {
                             (*cinfo).unread_marker = c1_15;
-                            buffer = buffer.offset(-2isize);
+                            buffer = buffer.offset(-2);
                             get_buffer &= !0xffi32 as c_ulong
                         }
                     }
@@ -1255,10 +1360,10 @@ unsafe extern "C" fn decode_mcu_fast(
                     get_buffer = get_buffer << 8i32 | c0_16 as c_ulong;
                     bits_left += 8i32;
                     if c0_16 == 0xffi32 {
-                        buffer = buffer.offset(1isize);
+                        buffer = buffer.offset(1);
                         if c1_16 != 0i32 {
                             (*cinfo).unread_marker = c1_16;
-                            buffer = buffer.offset(-2isize);
+                            buffer = buffer.offset(-2);
                             get_buffer &= !0xffi32 as c_ulong
                         }
                     }
@@ -1282,7 +1387,7 @@ unsafe extern "C" fn decode_mcu_fast(
                 }
                 r = s >> 4i32;
                 s &= 15i32;
-                if 0 != s {
+                if s != 0 {
                     k += r;
                     if bits_left <= 16i32 {
                         let mut c0_17: c_int = 0;
@@ -1294,10 +1399,10 @@ unsafe extern "C" fn decode_mcu_fast(
                         get_buffer = get_buffer << 8i32 | c0_17 as c_ulong;
                         bits_left += 8i32;
                         if c0_17 == 0xffi32 {
-                            buffer = buffer.offset(1isize);
+                            buffer = buffer.offset(1);
                             if c1_17 != 0i32 {
                                 (*cinfo).unread_marker = c1_17;
-                                buffer = buffer.offset(-2isize);
+                                buffer = buffer.offset(-2);
                                 get_buffer &= !0xffi32 as c_ulong
                             }
                         }
@@ -1310,10 +1415,10 @@ unsafe extern "C" fn decode_mcu_fast(
                         get_buffer = get_buffer << 8i32 | c0_18 as c_ulong;
                         bits_left += 8i32;
                         if c0_18 == 0xffi32 {
-                            buffer = buffer.offset(1isize);
+                            buffer = buffer.offset(1);
                             if c1_18 != 0i32 {
                                 (*cinfo).unread_marker = c1_18;
-                                buffer = buffer.offset(-2isize);
+                                buffer = buffer.offset(-2);
                                 get_buffer &= !0xffi32 as c_ulong
                             }
                         }
@@ -1326,10 +1431,10 @@ unsafe extern "C" fn decode_mcu_fast(
                         get_buffer = get_buffer << 8i32 | c0_19 as c_ulong;
                         bits_left += 8i32;
                         if c0_19 == 0xffi32 {
-                            buffer = buffer.offset(1isize);
+                            buffer = buffer.offset(1);
                             if c1_19 != 0i32 {
                                 (*cinfo).unread_marker = c1_19;
-                                buffer = buffer.offset(-2isize);
+                                buffer = buffer.offset(-2);
                                 get_buffer &= !0xffi32 as c_ulong
                             }
                         }
@@ -1342,10 +1447,10 @@ unsafe extern "C" fn decode_mcu_fast(
                         get_buffer = get_buffer << 8i32 | c0_20 as c_ulong;
                         bits_left += 8i32;
                         if c0_20 == 0xffi32 {
-                            buffer = buffer.offset(1isize);
+                            buffer = buffer.offset(1);
                             if c1_20 != 0i32 {
                                 (*cinfo).unread_marker = c1_20;
-                                buffer = buffer.offset(-2isize);
+                                buffer = buffer.offset(-2);
                                 get_buffer &= !0xffi32 as c_ulong
                             }
                         }
@@ -1358,10 +1463,10 @@ unsafe extern "C" fn decode_mcu_fast(
                         get_buffer = get_buffer << 8i32 | c0_21 as c_ulong;
                         bits_left += 8i32;
                         if c0_21 == 0xffi32 {
-                            buffer = buffer.offset(1isize);
+                            buffer = buffer.offset(1);
                             if c1_21 != 0i32 {
                                 (*cinfo).unread_marker = c1_21;
-                                buffer = buffer.offset(-2isize);
+                                buffer = buffer.offset(-2);
                                 get_buffer &= !0xffi32 as c_ulong
                             }
                         }
@@ -1374,10 +1479,10 @@ unsafe extern "C" fn decode_mcu_fast(
                         get_buffer = get_buffer << 8i32 | c0_22 as c_ulong;
                         bits_left += 8i32;
                         if c0_22 == 0xffi32 {
-                            buffer = buffer.offset(1isize);
+                            buffer = buffer.offset(1);
                             if c1_22 != 0i32 {
                                 (*cinfo).unread_marker = c1_22;
-                                buffer = buffer.offset(-2isize);
+                                buffer = buffer.offset(-2);
                                 get_buffer &= !0xffi32 as c_ulong
                             }
                         }
@@ -1410,10 +1515,10 @@ unsafe extern "C" fn decode_mcu_fast(
                     get_buffer = get_buffer << 8i32 | c0_23 as c_ulong;
                     bits_left += 8i32;
                     if c0_23 == 0xffi32 {
-                        buffer = buffer.offset(1isize);
+                        buffer = buffer.offset(1);
                         if c1_23 != 0i32 {
                             (*cinfo).unread_marker = c1_23;
-                            buffer = buffer.offset(-2isize);
+                            buffer = buffer.offset(-2);
                             get_buffer &= !0xffi32 as c_ulong
                         }
                     }
@@ -1426,10 +1531,10 @@ unsafe extern "C" fn decode_mcu_fast(
                     get_buffer = get_buffer << 8i32 | c0_24 as c_ulong;
                     bits_left += 8i32;
                     if c0_24 == 0xffi32 {
-                        buffer = buffer.offset(1isize);
+                        buffer = buffer.offset(1);
                         if c1_24 != 0i32 {
                             (*cinfo).unread_marker = c1_24;
-                            buffer = buffer.offset(-2isize);
+                            buffer = buffer.offset(-2);
                             get_buffer &= !0xffi32 as c_ulong
                         }
                     }
@@ -1442,10 +1547,10 @@ unsafe extern "C" fn decode_mcu_fast(
                     get_buffer = get_buffer << 8i32 | c0_25 as c_ulong;
                     bits_left += 8i32;
                     if c0_25 == 0xffi32 {
-                        buffer = buffer.offset(1isize);
+                        buffer = buffer.offset(1);
                         if c1_25 != 0i32 {
                             (*cinfo).unread_marker = c1_25;
-                            buffer = buffer.offset(-2isize);
+                            buffer = buffer.offset(-2);
                             get_buffer &= !0xffi32 as c_ulong
                         }
                     }
@@ -1458,10 +1563,10 @@ unsafe extern "C" fn decode_mcu_fast(
                     get_buffer = get_buffer << 8i32 | c0_26 as c_ulong;
                     bits_left += 8i32;
                     if c0_26 == 0xffi32 {
-                        buffer = buffer.offset(1isize);
+                        buffer = buffer.offset(1);
                         if c1_26 != 0i32 {
                             (*cinfo).unread_marker = c1_26;
-                            buffer = buffer.offset(-2isize);
+                            buffer = buffer.offset(-2);
                             get_buffer &= !0xffi32 as c_ulong
                         }
                     }
@@ -1474,10 +1579,10 @@ unsafe extern "C" fn decode_mcu_fast(
                     get_buffer = get_buffer << 8i32 | c0_27 as c_ulong;
                     bits_left += 8i32;
                     if c0_27 == 0xffi32 {
-                        buffer = buffer.offset(1isize);
+                        buffer = buffer.offset(1);
                         if c1_27 != 0i32 {
                             (*cinfo).unread_marker = c1_27;
-                            buffer = buffer.offset(-2isize);
+                            buffer = buffer.offset(-2);
                             get_buffer &= !0xffi32 as c_ulong
                         }
                     }
@@ -1490,10 +1595,10 @@ unsafe extern "C" fn decode_mcu_fast(
                     get_buffer = get_buffer << 8i32 | c0_28 as c_ulong;
                     bits_left += 8i32;
                     if c0_28 == 0xffi32 {
-                        buffer = buffer.offset(1isize);
+                        buffer = buffer.offset(1);
                         if c1_28 != 0i32 {
                             (*cinfo).unread_marker = c1_28;
-                            buffer = buffer.offset(-2isize);
+                            buffer = buffer.offset(-2);
                             get_buffer &= !0xffi32 as c_ulong
                         }
                     }
@@ -1517,7 +1622,7 @@ unsafe extern "C" fn decode_mcu_fast(
                 }
                 r = s >> 4i32;
                 s &= 15i32;
-                if 0 != s {
+                if s != 0 {
                     k += r;
                     if bits_left <= 16i32 {
                         let mut c0_29: c_int = 0;
@@ -1529,10 +1634,10 @@ unsafe extern "C" fn decode_mcu_fast(
                         get_buffer = get_buffer << 8i32 | c0_29 as c_ulong;
                         bits_left += 8i32;
                         if c0_29 == 0xffi32 {
-                            buffer = buffer.offset(1isize);
+                            buffer = buffer.offset(1);
                             if c1_29 != 0i32 {
                                 (*cinfo).unread_marker = c1_29;
-                                buffer = buffer.offset(-2isize);
+                                buffer = buffer.offset(-2);
                                 get_buffer &= !0xffi32 as c_ulong
                             }
                         }
@@ -1545,10 +1650,10 @@ unsafe extern "C" fn decode_mcu_fast(
                         get_buffer = get_buffer << 8i32 | c0_30 as c_ulong;
                         bits_left += 8i32;
                         if c0_30 == 0xffi32 {
-                            buffer = buffer.offset(1isize);
+                            buffer = buffer.offset(1);
                             if c1_30 != 0i32 {
                                 (*cinfo).unread_marker = c1_30;
-                                buffer = buffer.offset(-2isize);
+                                buffer = buffer.offset(-2);
                                 get_buffer &= !0xffi32 as c_ulong
                             }
                         }
@@ -1561,10 +1666,10 @@ unsafe extern "C" fn decode_mcu_fast(
                         get_buffer = get_buffer << 8i32 | c0_31 as c_ulong;
                         bits_left += 8i32;
                         if c0_31 == 0xffi32 {
-                            buffer = buffer.offset(1isize);
+                            buffer = buffer.offset(1);
                             if c1_31 != 0i32 {
                                 (*cinfo).unread_marker = c1_31;
-                                buffer = buffer.offset(-2isize);
+                                buffer = buffer.offset(-2);
                                 get_buffer &= !0xffi32 as c_ulong
                             }
                         }
@@ -1577,10 +1682,10 @@ unsafe extern "C" fn decode_mcu_fast(
                         get_buffer = get_buffer << 8i32 | c0_32 as c_ulong;
                         bits_left += 8i32;
                         if c0_32 == 0xffi32 {
-                            buffer = buffer.offset(1isize);
+                            buffer = buffer.offset(1);
                             if c1_32 != 0i32 {
                                 (*cinfo).unread_marker = c1_32;
-                                buffer = buffer.offset(-2isize);
+                                buffer = buffer.offset(-2);
                                 get_buffer &= !0xffi32 as c_ulong
                             }
                         }
@@ -1593,10 +1698,10 @@ unsafe extern "C" fn decode_mcu_fast(
                         get_buffer = get_buffer << 8i32 | c0_33 as c_ulong;
                         bits_left += 8i32;
                         if c0_33 == 0xffi32 {
-                            buffer = buffer.offset(1isize);
+                            buffer = buffer.offset(1);
                             if c1_33 != 0i32 {
                                 (*cinfo).unread_marker = c1_33;
-                                buffer = buffer.offset(-2isize);
+                                buffer = buffer.offset(-2);
                                 get_buffer &= !0xffi32 as c_ulong
                             }
                         }
@@ -1609,10 +1714,10 @@ unsafe extern "C" fn decode_mcu_fast(
                         get_buffer = get_buffer << 8i32 | c0_34 as c_ulong;
                         bits_left += 8i32;
                         if c0_34 == 0xffi32 {
-                            buffer = buffer.offset(1isize);
+                            buffer = buffer.offset(1);
                             if c1_34 != 0i32 {
                                 (*cinfo).unread_marker = c1_34;
-                                buffer = buffer.offset(-2isize);
+                                buffer = buffer.offset(-2);
                                 get_buffer &= !0xffi32 as c_ulong
                             }
                         }
@@ -1658,16 +1763,19 @@ unsafe extern "C" fn decode_mcu_fast(
  * coefficients may already have been assigned.  This is harmless for
  * this module, since we'll just re-assign them on the next call.)
  */
+
 pub const BUFSIZE: c_int = DCTSIZE2 * 8i32;
+
 unsafe extern "C" fn decode_mcu(
     mut cinfo: j_decompress_ptr,
     mut MCU_data: *mut JBLOCKROW,
 ) -> boolean {
     let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
     let mut usefast: c_int = 1i32;
-    if 0 != (*cinfo).restart_interval {
+    /* Process restart marker if needed; may have to suspend */
+    if (*cinfo).restart_interval != 0 {
         if (*entropy).restarts_to_go == 0i32 as c_uint {
-            if 0 == process_restart(cinfo) {
+            if process_restart(cinfo) == 0 {
                 return FALSE;
             }
         }
@@ -1679,10 +1787,13 @@ unsafe extern "C" fn decode_mcu(
     {
         usefast = 0i32
     }
-    if 0 == (*entropy).pub_0.insufficient_data {
+    /* If we've run out of data, just leave the MCU set to zeroes.
+     * This way, we return uniform gray for the remainder of the segment.
+     */
+    if (*entropy).pub_0.insufficient_data == 0 {
         let mut current_block_9: u64;
-        if 0 != usefast {
-            if 0 == decode_mcu_fast(cinfo, MCU_data) {
+        if usefast != 0 {
+            if decode_mcu_fast(cinfo, MCU_data) == 0 {
                 current_block_9 = 4519966451224754431;
             } else {
                 current_block_9 = 12349973810996921269;
@@ -1692,13 +1803,14 @@ unsafe extern "C" fn decode_mcu(
         }
         match current_block_9 {
             4519966451224754431 => {
-                if 0 == decode_mcu_slow(cinfo, MCU_data) {
+                if decode_mcu_slow(cinfo, MCU_data) == 0 {
                     return FALSE;
                 }
             }
             _ => {}
         }
     }
+    /* Account for restart interval (no-op if not using restarts) */
     (*entropy).restarts_to_go = (*entropy).restarts_to_go.wrapping_sub(1);
     return TRUE;
 }
@@ -1706,13 +1818,21 @@ unsafe extern "C" fn decode_mcu(
  * Module initialization routine for Huffman entropy decoding.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jinit_huff_decoder(mut cinfo: j_decompress_ptr) {
     let mut entropy: huff_entropy_ptr = 0 as *mut huff_entropy_decoder;
     let mut i: c_int = 0;
+    /* Motion JPEG frames typically do not include the Huffman tables if they
+    are the default tables.  Thus, if the tables are not set by the time
+    the Huffman decoder is initialized (usually within the body of
+    jpeg_start_decompress()), we set them to default values. */
     std_huff_tables(cinfo as j_common_ptr);
-    entropy = (*(*cinfo).mem)
-        .alloc_small
-        .expect("non-null function pointer")(
+    entropy = Some(
+        (*(*cinfo).mem)
+            .alloc_small
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(
         cinfo as j_common_ptr,
         JPOOL_IMAGE,
         ::std::mem::size_of::<huff_entropy_decoder>() as c_ulong,
@@ -1722,6 +1842,7 @@ pub unsafe extern "C" fn jinit_huff_decoder(mut cinfo: j_decompress_ptr) {
         Some(start_pass_huff_decoder as unsafe extern "C" fn(_: j_decompress_ptr) -> ());
     (*entropy).pub_0.decode_mcu =
         Some(decode_mcu as unsafe extern "C" fn(_: j_decompress_ptr, _: *mut JBLOCKROW) -> boolean);
+    /* Mark tables unallocated */
     i = 0i32;
     while i < NUM_HUFF_TBLS {
         (*entropy).ac_derived_tbls[i as usize] = NULL as *mut d_derived_tbl;

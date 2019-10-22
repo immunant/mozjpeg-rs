@@ -3,22 +3,22 @@ pub use crate::jmorecfg_h::{
     boolean, CENTERJSAMPLE, JCOEF, JDIMENSION, JOCTET, JSAMPLE, MAXJSAMPLE, UINT16, UINT8,
 };
 pub use crate::jpegint_h::{
-    inverse_DCT_method_ptr, jpeg_color_deconverter, jpeg_color_quantizer, jpeg_d_coef_controller,
-    jpeg_d_main_controller, jpeg_d_post_controller, jpeg_decomp_master, jpeg_entropy_decoder,
-    jpeg_input_controller, jpeg_inverse_dct, jpeg_marker_reader, jpeg_upsampler, JBUF_CRANK_DEST,
-    JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, JLONG, J_BUF_MODE,
+    inverse_DCT_method_ptr, JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS,
+    JBUF_SAVE_SOURCE, JLONG, J_BUF_MODE,
 };
 pub use crate::jpeglib_h::{
-    j_common_ptr, j_decompress_ptr, jpeg_common_struct, jpeg_component_info,
-    jpeg_decompress_struct, jpeg_error_mgr, jpeg_marker_parser_method, jpeg_marker_struct,
-    jpeg_memory_mgr, jpeg_progress_mgr, jpeg_saved_marker_ptr, jpeg_source_mgr,
-    jvirt_barray_control, jvirt_barray_ptr, jvirt_sarray_control, jvirt_sarray_ptr,
-    C2RustUnnamed_2, JCS_YCbCr, DCTSIZE, JBLOCK, JBLOCKARRAY, JBLOCKROW, JCOEFPTR, JCS_CMYK,
-    JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA,
-    JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN,
-    JCS_YCCK, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JDITHER_FS, JDITHER_NONE, JDITHER_ORDERED,
-    JHUFF_TBL, JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD,
-    J_DITHER_MODE,
+    j_common_ptr, j_decompress_ptr, jpeg_color_deconverter, jpeg_color_quantizer,
+    jpeg_common_struct, jpeg_component_info, jpeg_d_coef_controller, jpeg_d_main_controller,
+    jpeg_d_post_controller, jpeg_decomp_master, jpeg_decompress_struct, jpeg_entropy_decoder,
+    jpeg_error_mgr, jpeg_input_controller, jpeg_inverse_dct, jpeg_marker_parser_method,
+    jpeg_marker_reader, jpeg_marker_struct, jpeg_memory_mgr, jpeg_progress_mgr,
+    jpeg_saved_marker_ptr, jpeg_source_mgr, jpeg_upsampler, jvirt_barray_control, jvirt_barray_ptr,
+    jvirt_sarray_control, jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr, DCTSIZE, JBLOCK,
+    JBLOCKARRAY, JBLOCKROW, JCOEFPTR, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR,
+    JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR,
+    JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT,
+    JDCT_IFAST, JDCT_ISLOW, JDITHER_FS, JDITHER_NONE, JDITHER_ORDERED, JHUFF_TBL, JQUANT_TBL,
+    JSAMPARRAY, JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD, J_DITHER_MODE,
 };
 pub use crate::stddef_h::size_t;
 use libc::{self, c_int, c_ulong};
@@ -85,6 +85,7 @@ use libc::{self, c_int, c_ulong};
  * producing a reduced-size 4x4 output block.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_idct_4x4(
     mut cinfo: j_decompress_ptr,
     mut compptr: *mut jpeg_component_info,
@@ -92,7 +93,7 @@ pub unsafe extern "C" fn jpeg_idct_4x4(
     mut output_buf: JSAMPARRAY,
     mut output_col: JDIMENSION,
 ) {
-    let mut tmp0: JLONG = 0;
+    let mut tmp0: JLONG = 0; /* buffers data between passes */
     let mut tmp2: JLONG = 0;
     let mut tmp10: JLONG = 0;
     let mut tmp12: JLONG = 0;
@@ -106,8 +107,8 @@ pub unsafe extern "C" fn jpeg_idct_4x4(
     let mut outptr: JSAMPROW = 0 as *mut JSAMPLE;
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit.offset(CENTERJSAMPLE as isize);
     let mut ctr: c_int = 0;
-    /* buffers data between passes */
     let mut workspace: [c_int; 32] = [0; 32];
+    /* Pass 1: process columns from input, store into work array. */
     inptr = coef_block;
     quantptr = (*compptr).dct_table as *mut ISLOW_MULT_TYPE;
     wsptr = workspace.as_mut_ptr();
@@ -132,6 +133,7 @@ pub unsafe extern "C" fn jpeg_idct_4x4(
                 *wsptr.offset((DCTSIZE * 2i32) as isize) = dcval;
                 *wsptr.offset((DCTSIZE * 3i32) as isize) = dcval
             } else {
+                /* Even part */
                 tmp0 = (*inptr.offset((8i32 * 0i32) as isize) as c_int
                     * *quantptr.offset((8i32 * 0i32) as isize) as c_int)
                     as JLONG;
@@ -145,12 +147,13 @@ pub unsafe extern "C" fn jpeg_idct_4x4(
                 tmp2 = z2 * 15137i32 as JLONG + z3 * -(6270i32 as JLONG);
                 tmp10 = tmp0 + tmp2;
                 tmp12 = tmp0 - tmp2;
+                /* Odd part */
                 z1 = (*inptr.offset((8i32 * 7i32) as isize) as c_int
                     * *quantptr.offset((8i32 * 7i32) as isize) as c_int)
-                    as JLONG;
+                    as JLONG; /* sqrt(2) * ( c5+c7) */
                 z2 = (*inptr.offset((8i32 * 5i32) as isize) as c_int
                     * *quantptr.offset((8i32 * 5i32) as isize) as c_int)
-                    as JLONG;
+                    as JLONG; /* sqrt(2) * (c1+c3) */
                 z3 = (*inptr.offset((8i32 * 3i32) as isize) as c_int
                     * *quantptr.offset((8i32 * 3i32) as isize) as c_int)
                     as JLONG;
@@ -165,6 +168,7 @@ pub unsafe extern "C" fn jpeg_idct_4x4(
                     + z2 * -(4926i32 as JLONG)
                     + z3 * 7373i32 as JLONG
                     + z4 * 20995i32 as JLONG;
+                /* Final output stage */
                 *wsptr.offset((DCTSIZE * 0i32) as isize) =
                     (tmp10 + tmp2 + ((1i32 as JLONG) << 13i32 - 2i32 + 1i32 - 1i32)
                         >> 13i32 - 2i32 + 1i32) as c_int;
@@ -179,44 +183,48 @@ pub unsafe extern "C" fn jpeg_idct_4x4(
                         >> 13i32 - 2i32 + 1i32) as c_int
             }
         }
-        inptr = inptr.offset(1isize);
-        quantptr = quantptr.offset(1isize);
-        wsptr = wsptr.offset(1isize);
+        inptr = inptr.offset(1);
+        quantptr = quantptr.offset(1);
+        wsptr = wsptr.offset(1);
         ctr -= 1
     }
+    /* Pass 2: process 4 rows from work array, store into output array. */
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 4i32 {
         outptr = (*output_buf.offset(ctr as isize)).offset(output_col as isize);
+        /* advance pointer to next row */
         /* It's not clear whether a zero row test is worthwhile here ... */
-        if *wsptr.offset(1isize) == 0i32
-            && *wsptr.offset(2isize) == 0i32
-            && *wsptr.offset(3isize) == 0i32
-            && *wsptr.offset(5isize) == 0i32
-            && *wsptr.offset(6isize) == 0i32
-            && *wsptr.offset(7isize) == 0i32
+        if *wsptr.offset(1) == 0i32
+            && *wsptr.offset(2) == 0i32
+            && *wsptr.offset(3) == 0i32
+            && *wsptr.offset(5) == 0i32
+            && *wsptr.offset(6) == 0i32
+            && *wsptr.offset(7) == 0i32
         {
             /* AC terms all zero */
             let mut dcval_0: JSAMPLE = *range_limit.offset(
-                ((*wsptr.offset(0isize) as JLONG + ((1i32 as JLONG) << 2i32 + 3i32 - 1i32)
+                ((*wsptr.offset(0) as JLONG + ((1i32 as JLONG) << 2i32 + 3i32 - 1i32)
                     >> 2i32 + 3i32) as c_int
                     & RANGE_MASK) as isize,
-            );
-            *outptr.offset(0isize) = dcval_0;
-            *outptr.offset(1isize) = dcval_0;
-            *outptr.offset(2isize) = dcval_0;
-            *outptr.offset(3isize) = dcval_0;
+            ); /* advance pointer to next row */
+            *outptr.offset(0) = dcval_0;
+            *outptr.offset(1) = dcval_0;
+            *outptr.offset(2) = dcval_0;
+            *outptr.offset(3) = dcval_0;
             wsptr = wsptr.offset(DCTSIZE as isize)
         } else {
-            tmp0 = ((*wsptr.offset(0isize) as JLONG as c_ulong) << 13i32 + 1i32) as JLONG;
-            tmp2 = *wsptr.offset(2isize) as JLONG * 15137i32 as JLONG
-                + *wsptr.offset(6isize) as JLONG * -(6270i32 as JLONG);
+            /* Even part */
+            tmp0 = ((*wsptr.offset(0) as JLONG as c_ulong) << 13i32 + 1i32) as JLONG;
+            tmp2 = *wsptr.offset(2) as JLONG * 15137i32 as JLONG
+                + *wsptr.offset(6) as JLONG * -(6270i32 as JLONG);
             tmp10 = tmp0 + tmp2;
             tmp12 = tmp0 - tmp2;
-            z1 = *wsptr.offset(7isize) as JLONG;
-            z2 = *wsptr.offset(5isize) as JLONG;
-            z3 = *wsptr.offset(3isize) as JLONG;
-            z4 = *wsptr.offset(1isize) as JLONG;
+            /* Odd part */
+            z1 = *wsptr.offset(7) as JLONG; /* sqrt(2) * ( c5+c7) */
+            z2 = *wsptr.offset(5) as JLONG; /* sqrt(2) * (c1+c3) */
+            z3 = *wsptr.offset(3) as JLONG;
+            z4 = *wsptr.offset(1) as JLONG;
             tmp0 = z1 * -(1730i32 as JLONG)
                 + z2 * 11893i32 as JLONG
                 + z3 * -(17799i32 as JLONG)
@@ -225,22 +233,23 @@ pub unsafe extern "C" fn jpeg_idct_4x4(
                 + z2 * -(4926i32 as JLONG)
                 + z3 * 7373i32 as JLONG
                 + z4 * 20995i32 as JLONG;
-            *outptr.offset(0isize) = *range_limit.offset(
+            /* Final output stage */
+            *outptr.offset(0) = *range_limit.offset(
                 ((tmp10 + tmp2 + ((1i32 as JLONG) << 13i32 + 2i32 + 3i32 + 1i32 - 1i32)
                     >> 13i32 + 2i32 + 3i32 + 1i32) as c_int
                     & RANGE_MASK) as isize,
             );
-            *outptr.offset(3isize) = *range_limit.offset(
+            *outptr.offset(3) = *range_limit.offset(
                 ((tmp10 - tmp2 + ((1i32 as JLONG) << 13i32 + 2i32 + 3i32 + 1i32 - 1i32)
                     >> 13i32 + 2i32 + 3i32 + 1i32) as c_int
                     & RANGE_MASK) as isize,
             );
-            *outptr.offset(1isize) = *range_limit.offset(
+            *outptr.offset(1) = *range_limit.offset(
                 ((tmp12 + tmp0 + ((1i32 as JLONG) << 13i32 + 2i32 + 3i32 + 1i32 - 1i32)
                     >> 13i32 + 2i32 + 3i32 + 1i32) as c_int
                     & RANGE_MASK) as isize,
             );
-            *outptr.offset(2isize) = *range_limit.offset(
+            *outptr.offset(2) = *range_limit.offset(
                 ((tmp12 - tmp0 + ((1i32 as JLONG) << 13i32 + 2i32 + 3i32 + 1i32 - 1i32)
                     >> 13i32 + 2i32 + 3i32 + 1i32) as c_int
                     & RANGE_MASK) as isize,
@@ -255,6 +264,7 @@ pub unsafe extern "C" fn jpeg_idct_4x4(
  * producing a reduced-size 2x2 output block.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_idct_2x2(
     mut cinfo: j_decompress_ptr,
     mut compptr: *mut jpeg_component_info,
@@ -262,7 +272,7 @@ pub unsafe extern "C" fn jpeg_idct_2x2(
     mut output_buf: JSAMPARRAY,
     mut output_col: JDIMENSION,
 ) {
-    let mut tmp0: JLONG = 0;
+    let mut tmp0: JLONG = 0; /* buffers data between passes */
     let mut tmp10: JLONG = 0;
     let mut z1: JLONG = 0;
     let mut inptr: JCOEFPTR = 0 as *mut JCOEF;
@@ -271,8 +281,8 @@ pub unsafe extern "C" fn jpeg_idct_2x2(
     let mut outptr: JSAMPROW = 0 as *mut JSAMPLE;
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit.offset(CENTERJSAMPLE as isize);
     let mut ctr: c_int = 0;
-    /* buffers data between passes */
     let mut workspace: [c_int; 16] = [0; 16];
+    /* Pass 1: process columns from input, store into work array. */
     inptr = coef_block;
     quantptr = (*compptr).dct_table as *mut ISLOW_MULT_TYPE;
     wsptr = workspace.as_mut_ptr();
@@ -293,18 +303,20 @@ pub unsafe extern "C" fn jpeg_idct_2x2(
                 *wsptr.offset((DCTSIZE * 0i32) as isize) = dcval;
                 *wsptr.offset((DCTSIZE * 1i32) as isize) = dcval
             } else {
+                /* Even part */
                 z1 = (*inptr.offset((8i32 * 0i32) as isize) as c_int
                     * *quantptr.offset((8i32 * 0i32) as isize) as c_int)
                     as JLONG;
                 tmp10 = ((z1 as c_ulong) << 13i32 + 2i32) as JLONG;
+                /* Odd part */
                 z1 = (*inptr.offset((8i32 * 7i32) as isize) as c_int
                     * *quantptr.offset((8i32 * 7i32) as isize) as c_int)
-                    as JLONG;
-                tmp0 = z1 * -(5906i32 as JLONG);
+                    as JLONG; /* sqrt(2) * ( c7-c5+c3-c1) */
+                tmp0 = z1 * -(5906i32 as JLONG); /* sqrt(2) * (-c1+c3+c5+c7) */
                 z1 = (*inptr.offset((8i32 * 5i32) as isize) as c_int
                     * *quantptr.offset((8i32 * 5i32) as isize) as c_int)
-                    as JLONG;
-                tmp0 += z1 * 6967i32 as JLONG;
+                    as JLONG; /* sqrt(2) * (-c1+c3-c5-c7) */
+                tmp0 += z1 * 6967i32 as JLONG; /* sqrt(2) * ( c1+c3+c5+c7) */
                 z1 = (*inptr.offset((8i32 * 3i32) as isize) as c_int
                     * *quantptr.offset((8i32 * 3i32) as isize) as c_int)
                     as JLONG;
@@ -313,6 +325,7 @@ pub unsafe extern "C" fn jpeg_idct_2x2(
                     * *quantptr.offset((8i32 * 1i32) as isize) as c_int)
                     as JLONG;
                 tmp0 += z1 * 29692i32 as JLONG;
+                /* Final output stage */
                 *wsptr.offset((DCTSIZE * 0i32) as isize) =
                     (tmp10 + tmp0 + ((1i32 as JLONG) << 13i32 - 2i32 + 2i32 - 1i32)
                         >> 13i32 - 2i32 + 2i32) as c_int;
@@ -321,42 +334,47 @@ pub unsafe extern "C" fn jpeg_idct_2x2(
                         >> 13i32 - 2i32 + 2i32) as c_int
             }
         }
-        inptr = inptr.offset(1isize);
-        quantptr = quantptr.offset(1isize);
-        wsptr = wsptr.offset(1isize);
+        inptr = inptr.offset(1);
+        quantptr = quantptr.offset(1);
+        wsptr = wsptr.offset(1);
         ctr -= 1
     }
+    /* Pass 2: process 2 rows from work array, store into output array. */
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 2i32 {
         outptr = (*output_buf.offset(ctr as isize)).offset(output_col as isize);
+        /* advance pointer to next row */
         /* It's not clear whether a zero row test is worthwhile here ... */
-        if *wsptr.offset(1isize) == 0i32
-            && *wsptr.offset(3isize) == 0i32
-            && *wsptr.offset(5isize) == 0i32
-            && *wsptr.offset(7isize) == 0i32
+        if *wsptr.offset(1) == 0i32
+            && *wsptr.offset(3) == 0i32
+            && *wsptr.offset(5) == 0i32
+            && *wsptr.offset(7) == 0i32
         {
             /* AC terms all zero */
             let mut dcval_0: JSAMPLE = *range_limit.offset(
-                ((*wsptr.offset(0isize) as JLONG + ((1i32 as JLONG) << 2i32 + 3i32 - 1i32)
+                ((*wsptr.offset(0) as JLONG + ((1i32 as JLONG) << 2i32 + 3i32 - 1i32)
                     >> 2i32 + 3i32) as c_int
                     & RANGE_MASK) as isize,
-            );
-            *outptr.offset(0isize) = dcval_0;
-            *outptr.offset(1isize) = dcval_0;
+            ); /* advance pointer to next row */
+            *outptr.offset(0) = dcval_0;
+            *outptr.offset(1) = dcval_0;
             wsptr = wsptr.offset(DCTSIZE as isize)
         } else {
-            tmp10 = ((*wsptr.offset(0isize) as JLONG as c_ulong) << 13i32 + 2i32) as JLONG;
-            tmp0 = *wsptr.offset(7isize) as JLONG * -(5906i32 as JLONG)
-                + *wsptr.offset(5isize) as JLONG * 6967i32 as JLONG
-                + *wsptr.offset(3isize) as JLONG * -(10426i32 as JLONG)
-                + *wsptr.offset(1isize) as JLONG * 29692i32 as JLONG;
-            *outptr.offset(0isize) = *range_limit.offset(
+            /* Even part */
+            tmp10 = ((*wsptr.offset(0) as JLONG as c_ulong) << 13i32 + 2i32) as JLONG;
+            /* Odd part */
+            tmp0 = *wsptr.offset(7) as JLONG * -(5906i32 as JLONG)
+                + *wsptr.offset(5) as JLONG * 6967i32 as JLONG
+                + *wsptr.offset(3) as JLONG * -(10426i32 as JLONG)
+                + *wsptr.offset(1) as JLONG * 29692i32 as JLONG; /* sqrt(2) * ( c1+c3+c5+c7) */
+            /* Final output stage */
+            *outptr.offset(0) = *range_limit.offset(
                 ((tmp10 + tmp0 + ((1i32 as JLONG) << 13i32 + 2i32 + 3i32 + 2i32 - 1i32)
                     >> 13i32 + 2i32 + 3i32 + 2i32) as c_int
                     & RANGE_MASK) as isize,
             );
-            *outptr.offset(1isize) = *range_limit.offset(
+            *outptr.offset(1) = *range_limit.offset(
                 ((tmp10 - tmp0 + ((1i32 as JLONG) << 13i32 + 2i32 + 3i32 + 2i32 - 1i32)
                     >> 13i32 + 2i32 + 3i32 + 2i32) as c_int
                     & RANGE_MASK) as isize,
@@ -371,6 +389,7 @@ pub unsafe extern "C" fn jpeg_idct_2x2(
  * producing a reduced-size 1x1 output block.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_idct_1x1(
     mut cinfo: j_decompress_ptr,
     mut compptr: *mut jpeg_component_info,
@@ -381,9 +400,13 @@ pub unsafe extern "C" fn jpeg_idct_1x1(
     let mut dcval: c_int = 0;
     let mut quantptr: *mut ISLOW_MULT_TYPE = 0 as *mut ISLOW_MULT_TYPE;
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit.offset(CENTERJSAMPLE as isize);
+    /* We hardly need an inverse DCT routine for this: just take the
+     * average pixel value, which is one-eighth of the DC coefficient.
+     */
     quantptr = (*compptr).dct_table as *mut ISLOW_MULT_TYPE;
-    dcval = *coef_block.offset(0isize) as c_int * *quantptr.offset(0isize) as c_int;
+    dcval = *coef_block.offset(0) as c_int * *quantptr.offset(0) as c_int;
     dcval = (dcval as JLONG + ((1i32 as JLONG) << 3i32 - 1i32) >> 3i32) as c_int;
-    *(*output_buf.offset(0isize)).offset(output_col as isize) =
+    *(*output_buf.offset(0)).offset(output_col as isize) =
         *range_limit.offset((dcval & RANGE_MASK) as isize);
 }
+/* IDCT_SCALING_SUPPORTED */

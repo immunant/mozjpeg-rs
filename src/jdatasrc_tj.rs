@@ -1,4 +1,4 @@
-pub use crate::jerror::{
+pub use super::jerror::{
     C2RustUnnamed_3, JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
     JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID, JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
     JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE, JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
@@ -70,8 +70,10 @@ use libc::{self, c_int, c_long, c_uchar, c_ulong};
  * Initialize source --- called by jpeg_read_header
  * before any data is actually read.
  */
-unsafe extern "C" fn init_mem_source(mut _cinfo: j_decompress_ptr) {}
-/* no work necessary here */
+
+unsafe extern "C" fn init_mem_source(mut cinfo: j_decompress_ptr) {
+    /* no work necessary here */
+}
 /*
  * Fill the input buffer --- called whenever buffer is emptied.
  *
@@ -104,6 +106,7 @@ unsafe extern "C" fn init_mem_source(mut _cinfo: j_decompress_ptr) {}
  * Data beyond this point must be rescanned after resumption, so move it to
  * the front of the buffer rather than discarding it.
  */
+
 unsafe extern "C" fn fill_mem_input_buffer(mut cinfo: j_decompress_ptr) -> boolean {
     static mut mybuffer: [JOCTET; 4] = [
         0xffi32 as JOCTET,
@@ -111,10 +114,18 @@ unsafe extern "C" fn fill_mem_input_buffer(mut cinfo: j_decompress_ptr) -> boole
         0i32 as JOCTET,
         0i32 as JOCTET,
     ];
-    (*(*cinfo).err).msg_code = JWRN_JPEG_EOF as c_int;
-    (*(*cinfo).err)
-        .emit_message
-        .expect("non-null function pointer")(cinfo as j_common_ptr, -1i32);
+    /* The whole JPEG data is expected to reside in the supplied memory
+     * buffer, so any request for more data beyond the given buffer size
+     * is treated as an error.
+     */
+    (*(*cinfo).err).msg_code = super::jerror::JWRN_JPEG_EOF as c_int;
+    Some(
+        (*(*cinfo).err)
+            .emit_message
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(cinfo as j_common_ptr, -1i32);
+    /* Insert a fake EOI marker */
     (*(*cinfo).src).next_input_byte = mybuffer.as_ptr();
     (*(*cinfo).src).bytes_in_buffer = 2i32 as size_t;
     return TRUE;
@@ -130,12 +141,21 @@ unsafe extern "C" fn fill_mem_input_buffer(mut cinfo: j_decompress_ptr) -> boole
  * Arranging for additional bytes to be discarded before reloading the input
  * buffer is the application writer's problem.
  */
+
 unsafe extern "C" fn skip_input_data(mut cinfo: j_decompress_ptr, mut num_bytes: c_long) {
     let mut src: *mut jpeg_source_mgr = (*cinfo).src;
+    /* Just a dumb implementation for now.  Could use fseek() except
+     * it doesn't work on pipes.  Not clear that being smart is worth
+     * any trouble anyway --- large skips are infrequent.
+     */
     if num_bytes > 0i32 as c_long {
         while num_bytes > (*src).bytes_in_buffer as c_long {
             num_bytes -= (*src).bytes_in_buffer as c_long;
-            (*src).fill_input_buffer.expect("non-null function pointer")(cinfo);
+            Some((*src).fill_input_buffer.expect("non-null function pointer"))
+                .expect("non-null function pointer")(cinfo);
+            /* note we assume that fill_input_buffer will never return FALSE,
+             * so suspension need not be handled.
+             */
         }
         (*src).next_input_byte = (*src).next_input_byte.offset(num_bytes as size_t as isize);
         (*src).bytes_in_buffer = ((*src).bytes_in_buffer as c_ulong)
@@ -157,13 +177,16 @@ unsafe extern "C" fn skip_input_data(mut cinfo: j_decompress_ptr, mut num_bytes:
  * application must deal with any cleanup that should happen even
  * for error exit.
  */
-unsafe extern "C" fn term_source(mut _cinfo: j_decompress_ptr) {}
-/* no work necessary here */
+
+unsafe extern "C" fn term_source(mut cinfo: j_decompress_ptr) {
+    /* no work necessary here */
+}
 /*
  * Prepare for input from a supplied memory buffer.
  * The buffer must contain the whole JPEG data.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_mem_src_tj(
     mut cinfo: j_decompress_ptr,
     mut inbuffer: *const c_uchar,
@@ -171,15 +194,27 @@ pub unsafe extern "C" fn jpeg_mem_src_tj(
 ) {
     let mut src: *mut jpeg_source_mgr = 0 as *mut jpeg_source_mgr;
     if inbuffer.is_null() || insize == 0i32 as c_ulong {
-        (*(*cinfo).err).msg_code = JERR_INPUT_EMPTY as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        /* Treat empty input as fatal error */
+        (*(*cinfo).err).msg_code = super::jerror::JERR_INPUT_EMPTY as c_int;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
+    /* The source object is made permanent so that a series of JPEG images
+     * can be read from the same buffer by calling jpeg_mem_src only before
+     * the first one.
+     */
     if (*cinfo).src.is_null() {
-        (*cinfo).src = (*(*cinfo).mem)
-            .alloc_small
-            .expect("non-null function pointer")(
+        /* first time for this JPEG object? */
+        (*cinfo).src = Some(
+            (*(*cinfo).mem)
+                .alloc_small
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(
             cinfo as j_common_ptr,
             JPOOL_PERMANENT,
             ::std::mem::size_of::<jpeg_source_mgr>() as c_ulong,
@@ -187,10 +222,16 @@ pub unsafe extern "C" fn jpeg_mem_src_tj(
     } else if (*(*cinfo).src).init_source
         != Some(init_mem_source as unsafe extern "C" fn(_: j_decompress_ptr) -> ())
     {
-        (*(*cinfo).err).msg_code = JERR_BUFFER_SIZE as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        /* It is unsafe to reuse the existing source manager unless it was created
+         * by this function.
+         */
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BUFFER_SIZE as c_int; /* use default method */
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     src = (*cinfo).src;
     (*src).init_source = Some(init_mem_source as unsafe extern "C" fn(_: j_decompress_ptr) -> ());

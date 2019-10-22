@@ -171,9 +171,8 @@ extern "C" {
         output_col: JDIMENSION,
     );
 }
-// =============== BEGIN jdct_h ================
 use libc;
-/* fractional bits in scale factors */
+/* 16 bits is OK, use short if faster */
 pub const IFAST_SCALE_BITS: c_int = 2i32;
 /*
  * jdct.h
@@ -205,16 +204,15 @@ pub const IFAST_SCALE_BITS: c_int = 2i32;
  * Quantization of the output coefficients is done by jcdctmgr.c. This
  * step requires an unsigned type and also one with twice the bits.
  */
-
-/* prefer 16 bit with SIMD for parellelism */
 pub type DCTELEM = c_short;
 pub type UDCTELEM2 = c_uint;
+/* prefer 16 bit with SIMD for parellelism */
 pub type UDCTELEM = c_ushort;
-/* fractional bits in scale factors */
-
-/* preferred floating type */
-pub type FLOAT_MULT_TYPE = c_float;
 /* 16 bits is OK, use short if faster */
+
+/* fractional bits in scale factors */
+pub type FLOAT_MULT_TYPE = c_float;
+/* short or int, whichever is faster */
 pub type IFAST_MULT_TYPE = c_short;
 /*
  * An inverse DCT routine is given a pointer to the input JBLOCK and a pointer
@@ -232,11 +230,13 @@ pub type IFAST_MULT_TYPE = c_short;
 /*
  * Each IDCT routine has its own ideas about the best dct_table element type.
  */
-
-/* short or int, whichever is faster */
 pub type ISLOW_MULT_TYPE = c_short;
-use crate::jmorecfg_h::{JDIMENSION, MAXJSAMPLE};
-use crate::jpeglib_h::{j_decompress_ptr, jpeg_component_info, JCOEFPTR, JSAMPARRAY};
+
+use crate::jmorecfg_h::{JCOEF, JDIMENSION, MAXJSAMPLE};
+use crate::jpeglib_h::{
+    j_decompress_ptr, jpeg_component_info, jpeg_decompress_struct, JCOEFPTR, JSAMPARRAY, JSAMPROW,
+};
+/* preferred floating type */
 
 /*
  * Each IDCT routine is responsible for range-limiting its results and
@@ -246,8 +246,6 @@ use crate::jpeglib_h::{j_decompress_ptr, jpeg_component_info, JCOEFPTR, JSAMPARR
  * to do the combined operations quickly.  See the comments with
  * prepare_range_limit_table (in jdmaster.c) for more info.
  */
-
-/* 2 bits wider than legal samples */
 pub const RANGE_MASK: c_int = MAXJSAMPLE * 4i32 + 3i32;
 /*
  * Macros for handling fixed-point arithmetic; these are used by many

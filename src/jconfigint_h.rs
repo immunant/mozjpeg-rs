@@ -1,9 +1,19 @@
-use libc::{c_char, c_int};
+use libc::{self, c_char, c_int};
+/* libjpeg-turbo build number */
+
+/* Compiler's inline keyword */
+
+/* How to obtain function inlining. */
+
+/* Define to the full name of this package. */
+
+/* Version number of package */
+
+/* The size of `size_t', as computed by sizeof. */
 pub const SIZEOF_SIZE_T: c_int = 8i32;
-use libc;
 /* libjpeg-turbo build number */
 pub const BUILD: [c_char; 9] =
-    unsafe { *::std::mem::transmute::<&[u8; 9], &[c_char; 9]>(b"20190718\x00") };
+    unsafe { *::std::mem::transmute::<&[u8; 9], &[c_char; 9]>(b"20191021\x00") };
 /* Compiler's inline keyword */
 
 /* How to obtain function inlining. */

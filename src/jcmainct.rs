@@ -1,4 +1,4 @@
-pub use crate::jerror::{
+pub use super::jerror::{
     C2RustUnnamed_3, JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
     JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID, JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
     JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE, JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
@@ -33,39 +33,26 @@ pub use crate::jmorecfg_h::{
     boolean, FALSE, JCOEF, JDIMENSION, JOCTET, JSAMPLE, TRUE, UINT16, UINT8,
 };
 pub use crate::jpegint_h::{
-    jpeg_c_coef_controller, jpeg_c_main_controller, jpeg_c_prep_controller, jpeg_color_converter,
-    jpeg_comp_master, jpeg_downsampler, jpeg_entropy_encoder, jpeg_forward_dct, jpeg_marker_writer,
-    JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE,
-    J_BUF_MODE,
+    JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, J_BUF_MODE,
 };
 pub use crate::jpeglib_h::{
-    j_common_ptr, j_compress_ptr, jpeg_common_struct, jpeg_component_info, jpeg_compress_struct,
-    jpeg_destination_mgr, jpeg_error_mgr, jpeg_memory_mgr, jpeg_progress_mgr, jpeg_scan_info,
-    jvirt_barray_control, jvirt_barray_ptr, jvirt_sarray_control, jvirt_sarray_ptr,
-    C2RustUnnamed_2, JCS_YCbCr, DCTSIZE, JBLOCK, JBLOCKARRAY, JBLOCKROW, JCS_CMYK, JCS_EXT_ABGR,
-    JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX,
-    JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK,
-    JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JHUFF_TBL, JPOOL_IMAGE, JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE,
-    JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD,
+    j_common_ptr, j_compress_ptr, jpeg_c_coef_controller, jpeg_c_main_controller,
+    jpeg_c_prep_controller, jpeg_color_converter, jpeg_common_struct, jpeg_comp_master,
+    jpeg_component_info, jpeg_compress_struct, jpeg_destination_mgr, jpeg_downsampler,
+    jpeg_entropy_encoder, jpeg_error_mgr, jpeg_forward_dct, jpeg_marker_writer, jpeg_memory_mgr,
+    jpeg_progress_mgr, jpeg_scan_info, jvirt_barray_control, jvirt_barray_ptr,
+    jvirt_sarray_control, jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr, DCTSIZE, JBLOCK,
+    JBLOCKARRAY, JBLOCKROW, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA,
+    JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB,
+    JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW,
+    JHUFF_TBL, JPOOL_IMAGE, JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE,
+    J_DCT_METHOD,
 };
 pub use crate::stddef_h::size_t;
 use libc::{self, c_int, c_uint, c_ulong};
+
 pub type my_main_ptr = *mut my_main_controller;
-/*
- * jcmainct.c
- *
- * This file was part of the Independent JPEG Group's software:
- * Copyright (C) 1994-1996, Thomas G. Lane.
- * It was modified by The libjpeg-turbo Project to include only code relevant
- * to libjpeg-turbo.
- * For conditions of distribution and use, see the accompanying README.ijg
- * file.
- *
- * This file contains the main buffer controller for compression.
- * The main buffer lies between the pre-processor and the JPEG
- * compressor proper; it holds downsampled data in the JPEG colorspace.
- */
-/* Private buffer controller object */
+
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct my_main_controller {
@@ -79,16 +66,21 @@ pub struct my_main_controller {
 /*
  * Initialize for a processing pass.
  */
+
 unsafe extern "C" fn start_pass_main(mut cinfo: j_compress_ptr, mut pass_mode: J_BUF_MODE) {
     let mut main_ptr: my_main_ptr = (*cinfo).main as my_main_ptr;
-    if 0 != (*cinfo).raw_data_in {
+    /* Do nothing in raw-data mode. */
+    if (*cinfo).raw_data_in != 0 {
         return;
-    }
+    } /* initialize counters */
     if pass_mode as c_uint != JBUF_PASS_THRU as c_int as c_uint {
-        (*(*cinfo).err).msg_code = JERR_BAD_BUFFER_MODE as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_BUFFER_MODE as c_int; /* save mode for use by process_data */
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     (*main_ptr).cur_iMCU_row = 0i32 as JDIMENSION;
     (*main_ptr).rowgroup_ctr = 0i32 as JDIMENSION;
@@ -110,6 +102,7 @@ unsafe extern "C" fn start_pass_main(mut cinfo: j_compress_ptr, mut pass_mode: J
  * This routine handles the simple pass-through mode,
  * where we have only a strip buffer.
  */
+
 unsafe extern "C" fn process_data_simple_main(
     mut cinfo: j_compress_ptr,
     mut input_buf: JSAMPARRAY,
@@ -118,10 +111,14 @@ unsafe extern "C" fn process_data_simple_main(
 ) {
     let mut main_ptr: my_main_ptr = (*cinfo).main as my_main_ptr;
     while (*main_ptr).cur_iMCU_row < (*cinfo).total_iMCU_rows {
+        /* Read input data if we haven't filled the main buffer yet */
         if (*main_ptr).rowgroup_ctr < DCTSIZE as c_uint {
-            (*(*cinfo).prep)
-                .pre_process_data
-                .expect("non-null function pointer")(
+            Some(
+                (*(*cinfo).prep)
+                    .pre_process_data
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(
                 cinfo,
                 input_buf,
                 in_row_ctr,
@@ -131,21 +128,38 @@ unsafe extern "C" fn process_data_simple_main(
                 DCTSIZE as JDIMENSION,
             );
         }
+        /* If we don't have a full iMCU row buffered, return to application for
+         * more data.  Note that preprocessor will always pad to fill the iMCU row
+         * at the bottom of the image.
+         */
         if (*main_ptr).rowgroup_ctr != DCTSIZE as c_uint {
             return;
         }
-        if 0 == (*(*cinfo).coef)
-            .compress_data
-            .expect("non-null function pointer")(
-            cinfo, (*main_ptr).buffer.as_mut_ptr()
-        ) {
-            if 0 == (*main_ptr).suspended {
+        /* Send the completed row to the compressor */
+        if Some(
+            (*(*cinfo).coef)
+                .compress_data
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo, (*main_ptr).buffer.as_mut_ptr())
+            == 0
+        {
+            /* If compressor did not consume the whole row, then we must need to
+             * suspend processing and return to the application.  In this situation
+             * we pretend we didn't yet consume the last input row; otherwise, if
+             * it happened to be the last row of the image, the application would
+             * think we were done.
+             */
+            if (*main_ptr).suspended == 0 {
                 *in_row_ctr = (*in_row_ctr).wrapping_sub(1);
                 (*main_ptr).suspended = TRUE
             }
             return;
         }
-        if 0 != (*main_ptr).suspended {
+        /* We did finish the row.  Undo our little suspension hack if a previous
+         * call suspended; then mark the main buffer empty.
+         */
+        if (*main_ptr).suspended != 0 {
             *in_row_ctr = (*in_row_ctr).wrapping_add(1);
             (*main_ptr).suspended = FALSE
         }
@@ -157,6 +171,7 @@ unsafe extern "C" fn process_data_simple_main(
  * Initialize main buffer controller.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jinit_c_main_controller(
     mut cinfo: j_compress_ptr,
     mut need_full_buffer: boolean,
@@ -164,9 +179,12 @@ pub unsafe extern "C" fn jinit_c_main_controller(
     let mut main_ptr: my_main_ptr = 0 as *mut my_main_controller;
     let mut ci: c_int = 0;
     let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
-    main_ptr = (*(*cinfo).mem)
-        .alloc_small
-        .expect("non-null function pointer")(
+    main_ptr = Some(
+        (*(*cinfo).mem)
+            .alloc_small
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(
         cinfo as j_common_ptr,
         JPOOL_IMAGE,
         ::std::mem::size_of::<my_main_controller>() as c_ulong,
@@ -174,28 +192,39 @@ pub unsafe extern "C" fn jinit_c_main_controller(
     (*cinfo).main = main_ptr as *mut jpeg_c_main_controller;
     (*main_ptr).pub_0.start_pass =
         Some(start_pass_main as unsafe extern "C" fn(_: j_compress_ptr, _: J_BUF_MODE) -> ());
-    if 0 != (*cinfo).raw_data_in {
+    /* We don't need to create a buffer in raw-data mode. */
+    if (*cinfo).raw_data_in != 0 {
         return;
     }
-    if 0 != need_full_buffer {
-        (*(*cinfo).err).msg_code = JERR_BAD_BUFFER_MODE as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+    /* Create the buffer.  It holds downsampled data, so each component
+     * may be of a different size.
+     */
+    if need_full_buffer != 0 {
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_BUFFER_MODE as c_int;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     } else {
+        /* Allocate a strip buffer for each component */
         ci = 0i32;
         compptr = (*cinfo).comp_info;
         while ci < (*cinfo).num_components {
-            (*main_ptr).buffer[ci as usize] = (*(*cinfo).mem)
-                .alloc_sarray
-                .expect("non-null function pointer")(
+            (*main_ptr).buffer[ci as usize] = Some(
+                (*(*cinfo).mem)
+                    .alloc_sarray
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(
                 cinfo as j_common_ptr,
                 JPOOL_IMAGE,
                 (*compptr).width_in_blocks.wrapping_mul(DCTSIZE as c_uint),
                 ((*compptr).v_samp_factor * DCTSIZE) as JDIMENSION,
             );
             ci += 1;
-            compptr = compptr.offset(1isize)
+            compptr = compptr.offset(1)
         }
     };
 }

@@ -3,22 +3,22 @@ pub use crate::jmorecfg_h::{
     boolean, CENTERJSAMPLE, JCOEF, JDIMENSION, JOCTET, JSAMPLE, MAXJSAMPLE, UINT16, UINT8,
 };
 pub use crate::jpegint_h::{
-    inverse_DCT_method_ptr, jpeg_color_deconverter, jpeg_color_quantizer, jpeg_d_coef_controller,
-    jpeg_d_main_controller, jpeg_d_post_controller, jpeg_decomp_master, jpeg_entropy_decoder,
-    jpeg_input_controller, jpeg_inverse_dct, jpeg_marker_reader, jpeg_upsampler, JBUF_CRANK_DEST,
-    JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, JLONG, J_BUF_MODE,
+    inverse_DCT_method_ptr, JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS,
+    JBUF_SAVE_SOURCE, JLONG, J_BUF_MODE,
 };
 pub use crate::jpeglib_h::{
-    j_common_ptr, j_decompress_ptr, jpeg_common_struct, jpeg_component_info,
-    jpeg_decompress_struct, jpeg_error_mgr, jpeg_marker_parser_method, jpeg_marker_struct,
-    jpeg_memory_mgr, jpeg_progress_mgr, jpeg_saved_marker_ptr, jpeg_source_mgr,
-    jvirt_barray_control, jvirt_barray_ptr, jvirt_sarray_control, jvirt_sarray_ptr,
-    C2RustUnnamed_2, JCS_YCbCr, DCTSIZE, JBLOCK, JBLOCKARRAY, JBLOCKROW, JCOEFPTR, JCS_CMYK,
-    JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA,
-    JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN,
-    JCS_YCCK, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JDITHER_FS, JDITHER_NONE, JDITHER_ORDERED,
-    JHUFF_TBL, JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD,
-    J_DITHER_MODE,
+    j_common_ptr, j_decompress_ptr, jpeg_color_deconverter, jpeg_color_quantizer,
+    jpeg_common_struct, jpeg_component_info, jpeg_d_coef_controller, jpeg_d_main_controller,
+    jpeg_d_post_controller, jpeg_decomp_master, jpeg_decompress_struct, jpeg_entropy_decoder,
+    jpeg_error_mgr, jpeg_input_controller, jpeg_inverse_dct, jpeg_marker_parser_method,
+    jpeg_marker_reader, jpeg_marker_struct, jpeg_memory_mgr, jpeg_progress_mgr,
+    jpeg_saved_marker_ptr, jpeg_source_mgr, jpeg_upsampler, jvirt_barray_control, jvirt_barray_ptr,
+    jvirt_sarray_control, jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr, DCTSIZE, JBLOCK,
+    JBLOCKARRAY, JBLOCKROW, JCOEFPTR, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR,
+    JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR,
+    JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT,
+    JDCT_IFAST, JDCT_ISLOW, JDITHER_FS, JDITHER_NONE, JDITHER_ORDERED, JHUFF_TBL, JQUANT_TBL,
+    JSAMPARRAY, JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD, J_DITHER_MODE,
 };
 pub use crate::stddef_h::size_t;
 use libc::{self, c_double, c_int, c_long, c_ulong};
@@ -107,7 +107,9 @@ use libc::{self, c_double, c_int, c_long, c_ulong};
  * have BITS_IN_JSAMPLE + CONST_BITS + PASS1_BITS <= 26.  Error analysis
  * shows that the values given below are the most effective.
  */
+
 pub const CONST_BITS: c_int = 13i32;
+
 pub const PASS1_BITS: c_int = 2i32;
 /* Some C compilers fail to reduce "FIX(constant)" at compile time, thus
  * causing a lot of useless floating-point operations at run time.
@@ -141,6 +143,7 @@ pub const PASS1_BITS: c_int = 2i32;
  * Perform dequantization and inverse DCT on one block of coefficients.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_idct_islow(
     mut cinfo: j_decompress_ptr,
     mut compptr: *mut jpeg_component_info,
@@ -148,7 +151,7 @@ pub unsafe extern "C" fn jpeg_idct_islow(
     mut output_buf: JSAMPARRAY,
     mut output_col: JDIMENSION,
 ) {
-    let mut tmp0: JLONG = 0;
+    let mut tmp0: JLONG = 0; /* buffers data between passes */
     let mut tmp1: JLONG = 0;
     let mut tmp2: JLONG = 0;
     let mut tmp3: JLONG = 0;
@@ -167,8 +170,10 @@ pub unsafe extern "C" fn jpeg_idct_islow(
     let mut outptr: JSAMPROW = 0 as *mut JSAMPLE;
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit.offset(CENTERJSAMPLE as isize);
     let mut ctr: c_int = 0;
-    /* buffers data between passes */
     let mut workspace: [c_int; 64] = [0; 64];
+    /* Pass 1: process columns from input, store into work array. */
+    /* Note results are scaled up by sqrt(8) compared to a true IDCT; */
+    /* furthermore, we scale the results by 2**PASS1_BITS. */
     inptr = coef_block;
     quantptr = (*compptr).dct_table as *mut ISLOW_MULT_TYPE;
     wsptr = workspace.as_mut_ptr();
@@ -194,7 +199,7 @@ pub unsafe extern "C" fn jpeg_idct_islow(
             let mut dcval: c_int = (((*inptr.offset((8i32 * 0i32) as isize) as c_int
                 * *quantptr.offset((8i32 * 0i32) as isize) as c_int)
                 as c_ulong)
-                << 2i32) as JLONG as c_int;
+                << 2i32) as JLONG as c_int; /* advance pointers to next column */
             *wsptr.offset((DCTSIZE * 0i32) as isize) = dcval;
             *wsptr.offset((DCTSIZE * 1i32) as isize) = dcval;
             *wsptr.offset((DCTSIZE * 2i32) as isize) = dcval;
@@ -203,10 +208,12 @@ pub unsafe extern "C" fn jpeg_idct_islow(
             *wsptr.offset((DCTSIZE * 5i32) as isize) = dcval;
             *wsptr.offset((DCTSIZE * 6i32) as isize) = dcval;
             *wsptr.offset((DCTSIZE * 7i32) as isize) = dcval;
-            inptr = inptr.offset(1isize);
-            quantptr = quantptr.offset(1isize);
-            wsptr = wsptr.offset(1isize)
+            inptr = inptr.offset(1);
+            quantptr = quantptr.offset(1);
+            wsptr = wsptr.offset(1)
         } else {
+            /* Even part: reverse the even part of the forward DCT. */
+            /* The rotator is sqrt(2)*c(-6). */
             z2 = (*inptr.offset((8i32 * 2i32) as isize) as c_int
                 * *quantptr.offset((8i32 * 2i32) as isize) as c_int) as JLONG;
             z3 = (*inptr.offset((8i32 * 6i32) as isize) as c_int
@@ -224,19 +231,22 @@ pub unsafe extern "C" fn jpeg_idct_islow(
             tmp13 = tmp0 - tmp3;
             tmp11 = tmp1 + tmp2;
             tmp12 = tmp1 - tmp2;
+            /* Odd part per figure 8; the matrix is unitary and hence its
+             * transpose is its inverse.  i0..i3 are y7,y5,y3,y1 respectively.
+             */
             tmp0 = (*inptr.offset((8i32 * 7i32) as isize) as c_int
-                * *quantptr.offset((8i32 * 7i32) as isize) as c_int) as JLONG;
+                * *quantptr.offset((8i32 * 7i32) as isize) as c_int) as JLONG; /* sqrt(2) * c3 */
             tmp1 = (*inptr.offset((8i32 * 5i32) as isize) as c_int
-                * *quantptr.offset((8i32 * 5i32) as isize) as c_int) as JLONG;
+                * *quantptr.offset((8i32 * 5i32) as isize) as c_int) as JLONG; /* sqrt(2) * (-c1+c3+c5-c7) */
             tmp2 = (*inptr.offset((8i32 * 3i32) as isize) as c_int
-                * *quantptr.offset((8i32 * 3i32) as isize) as c_int) as JLONG;
+                * *quantptr.offset((8i32 * 3i32) as isize) as c_int) as JLONG; /* sqrt(2) * ( c1+c3-c5+c7) */
             tmp3 = (*inptr.offset((8i32 * 1i32) as isize) as c_int
-                * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG;
-            z1 = tmp0 + tmp3;
-            z2 = tmp1 + tmp2;
-            z3 = tmp0 + tmp2;
-            z4 = tmp1 + tmp3;
-            z5 = (z3 + z4) * 9633i32 as JLONG;
+                * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG; /* sqrt(2) * ( c1+c3+c5-c7) */
+            z1 = tmp0 + tmp3; /* sqrt(2) * ( c1+c3-c5-c7) */
+            z2 = tmp1 + tmp2; /* sqrt(2) * ( c7-c3) */
+            z3 = tmp0 + tmp2; /* sqrt(2) * (-c1-c3) */
+            z4 = tmp1 + tmp3; /* sqrt(2) * (-c3-c5) */
+            z5 = (z3 + z4) * 9633i32 as JLONG; /* sqrt(2) * ( c5-c3) */
             tmp0 = tmp0 * 2446i32 as JLONG;
             tmp1 = tmp1 * 16819i32 as JLONG;
             tmp2 = tmp2 * 25172i32 as JLONG;
@@ -251,8 +261,9 @@ pub unsafe extern "C" fn jpeg_idct_islow(
             tmp1 += z2 + z4;
             tmp2 += z2 + z3;
             tmp3 += z1 + z4;
+            /* Final output stage: inputs are tmp10..tmp13, tmp0..tmp3 */
             *wsptr.offset((DCTSIZE * 0i32) as isize) =
-                (tmp10 + tmp3 + ((1i32 as JLONG) << 13i32 - 2i32 - 1i32) >> 13i32 - 2i32) as c_int;
+                (tmp10 + tmp3 + ((1i32 as JLONG) << 13i32 - 2i32 - 1i32) >> 13i32 - 2i32) as c_int; /* advance pointers to next column */
             *wsptr.offset((DCTSIZE * 7i32) as isize) =
                 (tmp10 - tmp3 + ((1i32 as JLONG) << 13i32 - 2i32 - 1i32) >> 13i32 - 2i32) as c_int;
             *wsptr.offset((DCTSIZE * 1i32) as isize) =
@@ -267,16 +278,20 @@ pub unsafe extern "C" fn jpeg_idct_islow(
                 (tmp13 + tmp0 + ((1i32 as JLONG) << 13i32 - 2i32 - 1i32) >> 13i32 - 2i32) as c_int;
             *wsptr.offset((DCTSIZE * 4i32) as isize) =
                 (tmp13 - tmp0 + ((1i32 as JLONG) << 13i32 - 2i32 - 1i32) >> 13i32 - 2i32) as c_int;
-            inptr = inptr.offset(1isize);
-            quantptr = quantptr.offset(1isize);
-            wsptr = wsptr.offset(1isize)
+            inptr = inptr.offset(1);
+            quantptr = quantptr.offset(1);
+            wsptr = wsptr.offset(1)
         }
         ctr -= 1
     }
+    /* Pass 2: process rows from work array, store into output array. */
+    /* Note that we must descale the results by a factor of 8 == 2**3, */
+    /* and also undo the PASS1_BITS scaling. */
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < DCTSIZE {
         outptr = (*output_buf.offset(ctr as isize)).offset(output_col as isize);
+        /* advance pointer to next row */
         /* Rows of zeroes can be exploited in the same way as we did with columns.
          * However, the column calculation has created many nonzero AC terms, so
          * the simplification applies less often (typically 5% to 10% of the time).
@@ -284,52 +299,57 @@ pub unsafe extern "C" fn jpeg_idct_islow(
          * test takes more time than it's worth.  In that case this section
          * may be commented out.
          */
-        if *wsptr.offset(1isize) == 0i32
-            && *wsptr.offset(2isize) == 0i32
-            && *wsptr.offset(3isize) == 0i32
-            && *wsptr.offset(4isize) == 0i32
-            && *wsptr.offset(5isize) == 0i32
-            && *wsptr.offset(6isize) == 0i32
-            && *wsptr.offset(7isize) == 0i32
+        if *wsptr.offset(1) == 0i32
+            && *wsptr.offset(2) == 0i32
+            && *wsptr.offset(3) == 0i32
+            && *wsptr.offset(4) == 0i32
+            && *wsptr.offset(5) == 0i32
+            && *wsptr.offset(6) == 0i32
+            && *wsptr.offset(7) == 0i32
         {
             /* AC terms all zero */
             let mut dcval_0: JSAMPLE = *range_limit.offset(
-                ((*wsptr.offset(0isize) as JLONG + ((1i32 as JLONG) << 2i32 + 3i32 - 1i32)
+                ((*wsptr.offset(0) as JLONG + ((1i32 as JLONG) << 2i32 + 3i32 - 1i32)
                     >> 2i32 + 3i32) as c_int
                     & RANGE_MASK) as isize,
-            );
-            *outptr.offset(0isize) = dcval_0;
-            *outptr.offset(1isize) = dcval_0;
-            *outptr.offset(2isize) = dcval_0;
-            *outptr.offset(3isize) = dcval_0;
-            *outptr.offset(4isize) = dcval_0;
-            *outptr.offset(5isize) = dcval_0;
-            *outptr.offset(6isize) = dcval_0;
-            *outptr.offset(7isize) = dcval_0;
+            ); /* advance pointer to next row */
+            *outptr.offset(0) = dcval_0;
+            *outptr.offset(1) = dcval_0;
+            *outptr.offset(2) = dcval_0;
+            *outptr.offset(3) = dcval_0;
+            *outptr.offset(4) = dcval_0;
+            *outptr.offset(5) = dcval_0;
+            *outptr.offset(6) = dcval_0;
+            *outptr.offset(7) = dcval_0;
             wsptr = wsptr.offset(DCTSIZE as isize)
         } else {
-            z2 = *wsptr.offset(2isize) as JLONG;
-            z3 = *wsptr.offset(6isize) as JLONG;
+            /* Even part: reverse the even part of the forward DCT. */
+            /* The rotator is sqrt(2)*c(-6). */
+            z2 = *wsptr.offset(2) as JLONG;
+            z3 = *wsptr.offset(6) as JLONG;
             z1 = (z2 + z3) * 4433i32 as JLONG;
             tmp2 = z1 + z3 * -(15137i32 as JLONG);
             tmp3 = z1 + z2 * 6270i32 as JLONG;
-            tmp0 = (((*wsptr.offset(0isize) as JLONG + *wsptr.offset(4isize) as JLONG) as c_ulong)
-                << 13i32) as JLONG;
-            tmp1 = (((*wsptr.offset(0isize) as JLONG - *wsptr.offset(4isize) as JLONG) as c_ulong)
-                << 13i32) as JLONG;
+            tmp0 = (((*wsptr.offset(0) as JLONG + *wsptr.offset(4) as JLONG) as c_ulong) << 13i32)
+                as JLONG;
+            tmp1 = (((*wsptr.offset(0) as JLONG - *wsptr.offset(4) as JLONG) as c_ulong) << 13i32)
+                as JLONG;
             tmp10 = tmp0 + tmp3;
             tmp13 = tmp0 - tmp3;
             tmp11 = tmp1 + tmp2;
             tmp12 = tmp1 - tmp2;
-            tmp0 = *wsptr.offset(7isize) as JLONG;
-            tmp1 = *wsptr.offset(5isize) as JLONG;
-            tmp2 = *wsptr.offset(3isize) as JLONG;
-            tmp3 = *wsptr.offset(1isize) as JLONG;
-            z1 = tmp0 + tmp3;
-            z2 = tmp1 + tmp2;
-            z3 = tmp0 + tmp2;
-            z4 = tmp1 + tmp3;
-            z5 = (z3 + z4) * 9633i32 as JLONG;
+            /* Odd part per figure 8; the matrix is unitary and hence its
+             * transpose is its inverse.  i0..i3 are y7,y5,y3,y1 respectively.
+             */
+            tmp0 = *wsptr.offset(7) as JLONG; /* sqrt(2) * c3 */
+            tmp1 = *wsptr.offset(5) as JLONG; /* sqrt(2) * (-c1+c3+c5-c7) */
+            tmp2 = *wsptr.offset(3) as JLONG; /* sqrt(2) * ( c1+c3-c5+c7) */
+            tmp3 = *wsptr.offset(1) as JLONG; /* sqrt(2) * ( c1+c3+c5-c7) */
+            z1 = tmp0 + tmp3; /* sqrt(2) * ( c1+c3-c5-c7) */
+            z2 = tmp1 + tmp2; /* sqrt(2) * ( c7-c3) */
+            z3 = tmp0 + tmp2; /* sqrt(2) * (-c1-c3) */
+            z4 = tmp1 + tmp3; /* sqrt(2) * (-c3-c5) */
+            z5 = (z3 + z4) * 9633i32 as JLONG; /* sqrt(2) * ( c5-c3) */
             tmp0 = tmp0 * 2446i32 as JLONG;
             tmp1 = tmp1 * 16819i32 as JLONG;
             tmp2 = tmp2 * 25172i32 as JLONG;
@@ -344,42 +364,43 @@ pub unsafe extern "C" fn jpeg_idct_islow(
             tmp1 += z2 + z4;
             tmp2 += z2 + z3;
             tmp3 += z1 + z4;
-            *outptr.offset(0isize) = *range_limit.offset(
+            /* Final output stage: inputs are tmp10..tmp13, tmp0..tmp3 */
+            *outptr.offset(0) = *range_limit.offset(
                 ((tmp10 + tmp3 + ((1i32 as JLONG) << 13i32 + 2i32 + 3i32 - 1i32)
                     >> 13i32 + 2i32 + 3i32) as c_int
                     & RANGE_MASK) as isize,
             );
-            *outptr.offset(7isize) = *range_limit.offset(
+            *outptr.offset(7) = *range_limit.offset(
                 ((tmp10 - tmp3 + ((1i32 as JLONG) << 13i32 + 2i32 + 3i32 - 1i32)
                     >> 13i32 + 2i32 + 3i32) as c_int
                     & RANGE_MASK) as isize,
             );
-            *outptr.offset(1isize) = *range_limit.offset(
+            *outptr.offset(1) = *range_limit.offset(
                 ((tmp11 + tmp2 + ((1i32 as JLONG) << 13i32 + 2i32 + 3i32 - 1i32)
                     >> 13i32 + 2i32 + 3i32) as c_int
                     & RANGE_MASK) as isize,
             );
-            *outptr.offset(6isize) = *range_limit.offset(
+            *outptr.offset(6) = *range_limit.offset(
                 ((tmp11 - tmp2 + ((1i32 as JLONG) << 13i32 + 2i32 + 3i32 - 1i32)
                     >> 13i32 + 2i32 + 3i32) as c_int
                     & RANGE_MASK) as isize,
             );
-            *outptr.offset(2isize) = *range_limit.offset(
+            *outptr.offset(2) = *range_limit.offset(
                 ((tmp12 + tmp1 + ((1i32 as JLONG) << 13i32 + 2i32 + 3i32 - 1i32)
                     >> 13i32 + 2i32 + 3i32) as c_int
                     & RANGE_MASK) as isize,
             );
-            *outptr.offset(5isize) = *range_limit.offset(
+            *outptr.offset(5) = *range_limit.offset(
                 ((tmp12 - tmp1 + ((1i32 as JLONG) << 13i32 + 2i32 + 3i32 - 1i32)
                     >> 13i32 + 2i32 + 3i32) as c_int
                     & RANGE_MASK) as isize,
             );
-            *outptr.offset(3isize) = *range_limit.offset(
+            *outptr.offset(3) = *range_limit.offset(
                 ((tmp13 + tmp0 + ((1i32 as JLONG) << 13i32 + 2i32 + 3i32 - 1i32)
                     >> 13i32 + 2i32 + 3i32) as c_int
                     & RANGE_MASK) as isize,
             );
-            *outptr.offset(4isize) = *range_limit.offset(
+            *outptr.offset(4) = *range_limit.offset(
                 ((tmp13 - tmp0 + ((1i32 as JLONG) << 13i32 + 2i32 + 3i32 - 1i32)
                     >> 13i32 + 2i32 + 3i32) as c_int
                     & RANGE_MASK) as isize,
@@ -397,6 +418,7 @@ pub unsafe extern "C" fn jpeg_idct_islow(
  * cK represents sqrt(2) * cos(K*pi/14).
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_idct_7x7(
     mut cinfo: j_decompress_ptr,
     mut compptr: *mut jpeg_component_info,
@@ -404,7 +426,7 @@ pub unsafe extern "C" fn jpeg_idct_7x7(
     mut output_buf: JSAMPARRAY,
     mut output_col: JDIMENSION,
 ) {
-    let mut tmp0: JLONG = 0;
+    let mut tmp0: JLONG = 0; /* buffers data between passes */
     let mut tmp1: JLONG = 0;
     let mut tmp2: JLONG = 0;
     let mut tmp10: JLONG = 0;
@@ -420,29 +442,31 @@ pub unsafe extern "C" fn jpeg_idct_7x7(
     let mut outptr: JSAMPROW = 0 as *mut JSAMPLE;
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit.offset(CENTERJSAMPLE as isize);
     let mut ctr: c_int = 0;
-    /* buffers data between passes */
     let mut workspace: [c_int; 49] = [0; 49];
+    /* Pass 1: process columns from input, store into work array. */
     inptr = coef_block;
     quantptr = (*compptr).dct_table as *mut ISLOW_MULT_TYPE;
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 7i32 {
+        /* Even part */
         tmp13 = (*inptr.offset((8i32 * 0i32) as isize) as c_int
             * *quantptr.offset((8i32 * 0i32) as isize) as c_int) as JLONG;
         tmp13 = ((tmp13 as c_ulong) << 13i32) as JLONG;
-        tmp13 += (ONE as JLONG) << CONST_BITS - PASS1_BITS - 1i32;
+        /* Add fudge factor here for final descale. */
+        tmp13 += (ONE as JLONG) << CONST_BITS - PASS1_BITS - 1i32; /* c4 */
         z1 = (*inptr.offset((8i32 * 2i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 2i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 2i32) as isize) as c_int) as JLONG; /* c6 */
         z2 = (*inptr.offset((8i32 * 4i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 4i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 4i32) as isize) as c_int) as JLONG; /* c2+c4-c6 */
         z3 = (*inptr.offset((8i32 * 6i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 6i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 6i32) as isize) as c_int) as JLONG; /* c2 */
         tmp10 =
-            (z2 - z3) * (0.881747734f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            (z2 - z3) * (0.881747734f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c2-c4-c6 */
         tmp12 =
-            (z1 - z2) * (0.314692123f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            (z1 - z2) * (0.314692123f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c2+c4+c6 */
         tmp11 = tmp10 + tmp12 + tmp13
-            - z2 * (1.841218003f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            - z2 * (1.841218003f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c0 */
         tmp0 = z1 + z3;
         z2 -= tmp0;
         tmp0 = tmp0 * (1.274162392f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG
@@ -452,16 +476,17 @@ pub unsafe extern "C" fn jpeg_idct_7x7(
         tmp12 +=
             tmp0 - z1 * (2.470602249f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp13 += z2 * (1.414213562f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+        /* Odd part */
         z1 = (*inptr.offset((8i32 * 1i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG; /* (c3+c1-c5)/2 */
         z2 = (*inptr.offset((8i32 * 3i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 3i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 3i32) as isize) as c_int) as JLONG; /* (c3+c5-c1)/2 */
         z3 = (*inptr.offset((8i32 * 5i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 5i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 5i32) as isize) as c_int) as JLONG; /* -c1 */
         tmp1 =
-            (z1 + z2) * (0.935414347f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            (z1 + z2) * (0.935414347f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c5 */
         tmp2 =
-            (z1 - z2) * (0.170262339f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            (z1 - z2) * (0.170262339f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c3+c1-c5 */
         tmp0 = tmp1 - tmp2;
         tmp1 += tmp2;
         tmp2 = (z2 + z3)
@@ -472,6 +497,7 @@ pub unsafe extern "C" fn jpeg_idct_7x7(
         tmp0 += z2;
         tmp2 +=
             z2 + z3 * (1.870828693f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+        /* Final output stage */
         *wsptr.offset((7i32 * 0i32) as isize) = (tmp10 + tmp0 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((7i32 * 6i32) as isize) = (tmp10 - tmp0 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((7i32 * 1i32) as isize) = (tmp11 + tmp1 >> 13i32 - 2i32) as c_int;
@@ -480,19 +506,21 @@ pub unsafe extern "C" fn jpeg_idct_7x7(
         *wsptr.offset((7i32 * 4i32) as isize) = (tmp12 - tmp2 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((7i32 * 3i32) as isize) = (tmp13 >> 13i32 - 2i32) as c_int;
         ctr += 1;
-        inptr = inptr.offset(1isize);
-        quantptr = quantptr.offset(1isize);
-        wsptr = wsptr.offset(1isize)
+        inptr = inptr.offset(1);
+        quantptr = quantptr.offset(1);
+        wsptr = wsptr.offset(1)
     }
+    /* Pass 2: process 7 rows from work array, store into output array. */
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 7i32 {
         outptr = (*output_buf.offset(ctr as isize)).offset(output_col as isize);
-        tmp13 = *wsptr.offset(0isize) as JLONG + ((ONE as JLONG) << PASS1_BITS + 2i32);
+        /* advance pointer to next row */
+        tmp13 = *wsptr.offset(0) as JLONG + ((ONE as JLONG) << PASS1_BITS + 2i32);
         tmp13 = ((tmp13 as c_ulong) << 13i32) as JLONG;
-        z1 = *wsptr.offset(2isize) as JLONG;
-        z2 = *wsptr.offset(4isize) as JLONG;
-        z3 = *wsptr.offset(6isize) as JLONG;
+        z1 = *wsptr.offset(2) as JLONG;
+        z2 = *wsptr.offset(4) as JLONG;
+        z3 = *wsptr.offset(6) as JLONG;
         tmp10 =
             (z2 - z3) * (0.881747734f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp12 =
@@ -508,9 +536,9 @@ pub unsafe extern "C" fn jpeg_idct_7x7(
         tmp12 +=
             tmp0 - z1 * (2.470602249f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp13 += z2 * (1.414213562f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
-        z1 = *wsptr.offset(1isize) as JLONG;
-        z2 = *wsptr.offset(3isize) as JLONG;
-        z3 = *wsptr.offset(5isize) as JLONG;
+        z1 = *wsptr.offset(1) as JLONG;
+        z2 = *wsptr.offset(3) as JLONG;
+        z3 = *wsptr.offset(5) as JLONG;
         tmp1 =
             (z1 + z2) * (0.935414347f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp2 =
@@ -525,24 +553,40 @@ pub unsafe extern "C" fn jpeg_idct_7x7(
         tmp0 += z2;
         tmp2 +=
             z2 + z3 * (1.870828693f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
-        *outptr.offset(0isize) = *range_limit
+        *outptr.offset(0) = *range_limit
             .offset(((tmp10 + tmp0 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(6isize) = *range_limit
+        *outptr.offset(6) = *range_limit
             .offset(((tmp10 - tmp0 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(1isize) = *range_limit
+        *outptr.offset(1) = *range_limit
             .offset(((tmp11 + tmp1 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(5isize) = *range_limit
+        *outptr.offset(5) = *range_limit
             .offset(((tmp11 - tmp1 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(2isize) = *range_limit
+        *outptr.offset(2) = *range_limit
             .offset(((tmp12 + tmp2 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(4isize) = *range_limit
+        *outptr.offset(4) = *range_limit
             .offset(((tmp12 - tmp2 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(3isize) =
+        *outptr.offset(3) =
             *range_limit.offset(((tmp13 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        wsptr = wsptr.offset(7isize);
+        wsptr = wsptr.offset(7);
         ctr += 1
     }
 }
+/* Even part */
+/* Add fudge factor here for final descale. */
+/* c4 */
+/* c6 */
+/* c2+c4-c6 */
+/* c2 */
+/* c2-c4-c6 */
+/* c2+c4+c6 */
+/* c0 */
+/* Odd part */
+/* (c3+c1-c5)/2 */
+/* (c3+c5-c1)/2 */
+/* -c1 */
+/* c5 */
+/* c3+c1-c5 */
+/* Final output stage */
 /*
  * Perform dequantization and inverse DCT on one block of coefficients,
  * producing a reduced-size 6x6 output block.
@@ -551,6 +595,7 @@ pub unsafe extern "C" fn jpeg_idct_7x7(
  * cK represents sqrt(2) * cos(K*pi/12).
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_idct_6x6(
     mut cinfo: j_decompress_ptr,
     mut compptr: *mut jpeg_component_info,
@@ -558,7 +603,7 @@ pub unsafe extern "C" fn jpeg_idct_6x6(
     mut output_buf: JSAMPARRAY,
     mut output_col: JDIMENSION,
 ) {
-    let mut tmp0: JLONG = 0;
+    let mut tmp0: JLONG = 0; /* buffers data between passes */
     let mut tmp1: JLONG = 0;
     let mut tmp2: JLONG = 0;
     let mut tmp10: JLONG = 0;
@@ -573,19 +618,21 @@ pub unsafe extern "C" fn jpeg_idct_6x6(
     let mut outptr: JSAMPROW = 0 as *mut JSAMPLE;
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit.offset(CENTERJSAMPLE as isize);
     let mut ctr: c_int = 0;
-    /* buffers data between passes */
     let mut workspace: [c_int; 36] = [0; 36];
+    /* Pass 1: process columns from input, store into work array. */
     inptr = coef_block;
     quantptr = (*compptr).dct_table as *mut ISLOW_MULT_TYPE;
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 6i32 {
+        /* Even part */
         tmp0 = (*inptr.offset((8i32 * 0i32) as isize) as c_int
             * *quantptr.offset((8i32 * 0i32) as isize) as c_int) as JLONG;
         tmp0 = ((tmp0 as c_ulong) << 13i32) as JLONG;
-        tmp0 += (ONE as JLONG) << CONST_BITS - PASS1_BITS - 1i32;
+        /* Add fudge factor here for final descale. */
+        tmp0 += (ONE as JLONG) << CONST_BITS - PASS1_BITS - 1i32; /* c4 */
         tmp2 = (*inptr.offset((8i32 * 4i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 4i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 4i32) as isize) as c_int) as JLONG; /* c2 */
         tmp10 = tmp2 * (0.707106781f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp1 = tmp0 + tmp10;
         tmp11 = tmp0 - tmp10 - tmp10 >> 13i32 - 2i32;
@@ -594,8 +641,9 @@ pub unsafe extern "C" fn jpeg_idct_6x6(
         tmp0 = tmp10 * (1.224744871f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp10 = tmp1 + tmp0;
         tmp12 = tmp1 - tmp0;
+        /* Odd part */
         z1 = (*inptr.offset((8i32 * 1i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG; /* c5 */
         z2 = (*inptr.offset((8i32 * 3i32) as isize) as c_int
             * *quantptr.offset((8i32 * 3i32) as isize) as c_int) as JLONG;
         z3 = (*inptr.offset((8i32 * 5i32) as isize) as c_int
@@ -605,6 +653,7 @@ pub unsafe extern "C" fn jpeg_idct_6x6(
         tmp0 = tmp1 + (((z1 + z2) as c_ulong) << 13i32) as JLONG;
         tmp2 = tmp1 + (((z3 - z2) as c_ulong) << 13i32) as JLONG;
         tmp1 = (((z1 - z2 - z3) as c_ulong) << 2i32) as JLONG;
+        /* Final output stage */
         *wsptr.offset((6i32 * 0i32) as isize) = (tmp10 + tmp0 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((6i32 * 5i32) as isize) = (tmp10 - tmp0 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((6i32 * 1i32) as isize) = (tmp11 + tmp1) as c_int;
@@ -612,48 +661,57 @@ pub unsafe extern "C" fn jpeg_idct_6x6(
         *wsptr.offset((6i32 * 2i32) as isize) = (tmp12 + tmp2 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((6i32 * 3i32) as isize) = (tmp12 - tmp2 >> 13i32 - 2i32) as c_int;
         ctr += 1;
-        inptr = inptr.offset(1isize);
-        quantptr = quantptr.offset(1isize);
-        wsptr = wsptr.offset(1isize)
+        inptr = inptr.offset(1);
+        quantptr = quantptr.offset(1);
+        wsptr = wsptr.offset(1)
     }
+    /* Pass 2: process 6 rows from work array, store into output array. */
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 6i32 {
         outptr = (*output_buf.offset(ctr as isize)).offset(output_col as isize);
-        tmp0 = *wsptr.offset(0isize) as JLONG + ((ONE as JLONG) << PASS1_BITS + 2i32);
+        /* advance pointer to next row */
+        tmp0 = *wsptr.offset(0) as JLONG + ((ONE as JLONG) << PASS1_BITS + 2i32);
         tmp0 = ((tmp0 as c_ulong) << 13i32) as JLONG;
-        tmp2 = *wsptr.offset(4isize) as JLONG;
+        tmp2 = *wsptr.offset(4) as JLONG;
         tmp10 = tmp2 * (0.707106781f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp1 = tmp0 + tmp10;
         tmp11 = tmp0 - tmp10 - tmp10;
-        tmp10 = *wsptr.offset(2isize) as JLONG;
+        tmp10 = *wsptr.offset(2) as JLONG;
         tmp0 = tmp10 * (1.224744871f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp10 = tmp1 + tmp0;
         tmp12 = tmp1 - tmp0;
-        z1 = *wsptr.offset(1isize) as JLONG;
-        z2 = *wsptr.offset(3isize) as JLONG;
-        z3 = *wsptr.offset(5isize) as JLONG;
+        z1 = *wsptr.offset(1) as JLONG;
+        z2 = *wsptr.offset(3) as JLONG;
+        z3 = *wsptr.offset(5) as JLONG;
         tmp1 =
             (z1 + z3) * (0.366025404f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp0 = tmp1 + (((z1 + z2) as c_ulong) << 13i32) as JLONG;
         tmp2 = tmp1 + (((z3 - z2) as c_ulong) << 13i32) as JLONG;
         tmp1 = (((z1 - z2 - z3) as c_ulong) << 13i32) as JLONG;
-        *outptr.offset(0isize) = *range_limit
+        *outptr.offset(0) = *range_limit
             .offset(((tmp10 + tmp0 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(5isize) = *range_limit
+        *outptr.offset(5) = *range_limit
             .offset(((tmp10 - tmp0 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(1isize) = *range_limit
+        *outptr.offset(1) = *range_limit
             .offset(((tmp11 + tmp1 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(4isize) = *range_limit
+        *outptr.offset(4) = *range_limit
             .offset(((tmp11 - tmp1 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(2isize) = *range_limit
+        *outptr.offset(2) = *range_limit
             .offset(((tmp12 + tmp2 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(3isize) = *range_limit
+        *outptr.offset(3) = *range_limit
             .offset(((tmp12 - tmp2 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        wsptr = wsptr.offset(6isize);
+        wsptr = wsptr.offset(6);
         ctr += 1
     }
 }
+/* Even part */
+/* Add fudge factor here for final descale. */
+/* c4 */
+/* c2 */
+/* Odd part */
+/* c5 */
+/* Final output stage */
 /*
  * Perform dequantization and inverse DCT on one block of coefficients,
  * producing a reduced-size 5x5 output block.
@@ -662,6 +720,7 @@ pub unsafe extern "C" fn jpeg_idct_6x6(
  * cK represents sqrt(2) * cos(K*pi/10).
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_idct_5x5(
     mut cinfo: j_decompress_ptr,
     mut compptr: *mut jpeg_component_info,
@@ -669,7 +728,7 @@ pub unsafe extern "C" fn jpeg_idct_5x5(
     mut output_buf: JSAMPARRAY,
     mut output_col: JDIMENSION,
 ) {
-    let mut tmp0: JLONG = 0;
+    let mut tmp0: JLONG = 0; /* buffers data between passes */
     let mut tmp1: JLONG = 0;
     let mut tmp10: JLONG = 0;
     let mut tmp11: JLONG = 0;
@@ -683,19 +742,21 @@ pub unsafe extern "C" fn jpeg_idct_5x5(
     let mut outptr: JSAMPROW = 0 as *mut JSAMPLE;
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit.offset(CENTERJSAMPLE as isize);
     let mut ctr: c_int = 0;
-    /* buffers data between passes */
     let mut workspace: [c_int; 25] = [0; 25];
+    /* Pass 1: process columns from input, store into work array. */
     inptr = coef_block;
     quantptr = (*compptr).dct_table as *mut ISLOW_MULT_TYPE;
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 5i32 {
+        /* Even part */
         tmp12 = (*inptr.offset((8i32 * 0i32) as isize) as c_int
             * *quantptr.offset((8i32 * 0i32) as isize) as c_int) as JLONG;
         tmp12 = ((tmp12 as c_ulong) << 13i32) as JLONG;
-        tmp12 += (ONE as JLONG) << CONST_BITS - PASS1_BITS - 1i32;
+        /* Add fudge factor here for final descale. */
+        tmp12 += (ONE as JLONG) << CONST_BITS - PASS1_BITS - 1i32; /* (c2+c4)/2 */
         tmp0 = (*inptr.offset((8i32 * 2i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 2i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 2i32) as isize) as c_int) as JLONG; /* (c2-c4)/2 */
         tmp1 = (*inptr.offset((8i32 * 4i32) as isize) as c_int
             * *quantptr.offset((8i32 * 4i32) as isize) as c_int) as JLONG;
         z1 = (tmp0 + tmp1)
@@ -706,34 +767,38 @@ pub unsafe extern "C" fn jpeg_idct_5x5(
         tmp10 = z3 + z1;
         tmp11 = z3 - z1;
         tmp12 -= ((z2 as c_ulong) << 2i32) as JLONG;
+        /* Odd part */
         z2 = (*inptr.offset((8i32 * 1i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG; /* c3 */
         z3 = (*inptr.offset((8i32 * 3i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 3i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 3i32) as isize) as c_int) as JLONG; /* c1-c3 */
         z1 =
-            (z2 + z3) * (0.831253876f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            (z2 + z3) * (0.831253876f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c1+c3 */
         tmp0 =
             z1 + z2 * (0.513743148f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp1 =
             z1 - z3 * (2.176250899f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+        /* Final output stage */
         *wsptr.offset((5i32 * 0i32) as isize) = (tmp10 + tmp0 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((5i32 * 4i32) as isize) = (tmp10 - tmp0 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((5i32 * 1i32) as isize) = (tmp11 + tmp1 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((5i32 * 3i32) as isize) = (tmp11 - tmp1 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((5i32 * 2i32) as isize) = (tmp12 >> 13i32 - 2i32) as c_int;
         ctr += 1;
-        inptr = inptr.offset(1isize);
-        quantptr = quantptr.offset(1isize);
-        wsptr = wsptr.offset(1isize)
+        inptr = inptr.offset(1);
+        quantptr = quantptr.offset(1);
+        wsptr = wsptr.offset(1)
     }
+    /* Pass 2: process 5 rows from work array, store into output array. */
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 5i32 {
         outptr = (*output_buf.offset(ctr as isize)).offset(output_col as isize);
-        tmp12 = *wsptr.offset(0isize) as JLONG + ((ONE as JLONG) << PASS1_BITS + 2i32);
+        /* advance pointer to next row */
+        tmp12 = *wsptr.offset(0) as JLONG + ((ONE as JLONG) << PASS1_BITS + 2i32);
         tmp12 = ((tmp12 as c_ulong) << 13i32) as JLONG;
-        tmp0 = *wsptr.offset(2isize) as JLONG;
-        tmp1 = *wsptr.offset(4isize) as JLONG;
+        tmp0 = *wsptr.offset(2) as JLONG;
+        tmp1 = *wsptr.offset(4) as JLONG;
         z1 = (tmp0 + tmp1)
             * (0.790569415f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         z2 = (tmp0 - tmp1)
@@ -742,28 +807,37 @@ pub unsafe extern "C" fn jpeg_idct_5x5(
         tmp10 = z3 + z1;
         tmp11 = z3 - z1;
         tmp12 -= ((z2 as c_ulong) << 2i32) as JLONG;
-        z2 = *wsptr.offset(1isize) as JLONG;
-        z3 = *wsptr.offset(3isize) as JLONG;
+        z2 = *wsptr.offset(1) as JLONG;
+        z3 = *wsptr.offset(3) as JLONG;
         z1 =
             (z2 + z3) * (0.831253876f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp0 =
             z1 + z2 * (0.513743148f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp1 =
             z1 - z3 * (2.176250899f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
-        *outptr.offset(0isize) = *range_limit
+        *outptr.offset(0) = *range_limit
             .offset(((tmp10 + tmp0 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(4isize) = *range_limit
+        *outptr.offset(4) = *range_limit
             .offset(((tmp10 - tmp0 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(1isize) = *range_limit
+        *outptr.offset(1) = *range_limit
             .offset(((tmp11 + tmp1 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(3isize) = *range_limit
+        *outptr.offset(3) = *range_limit
             .offset(((tmp11 - tmp1 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(2isize) =
+        *outptr.offset(2) =
             *range_limit.offset(((tmp12 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        wsptr = wsptr.offset(5isize);
+        wsptr = wsptr.offset(5);
         ctr += 1
     }
 }
+/* Even part */
+/* Add fudge factor here for final descale. */
+/* (c2+c4)/2 */
+/* (c2-c4)/2 */
+/* Odd part */
+/* c3 */
+/* c1-c3 */
+/* c1+c3 */
+/* Final output stage */
 /*
  * Perform dequantization and inverse DCT on one block of coefficients,
  * producing a reduced-size 3x3 output block.
@@ -772,6 +846,7 @@ pub unsafe extern "C" fn jpeg_idct_5x5(
  * cK represents sqrt(2) * cos(K*pi/6).
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_idct_3x3(
     mut cinfo: j_decompress_ptr,
     mut compptr: *mut jpeg_component_info,
@@ -779,7 +854,7 @@ pub unsafe extern "C" fn jpeg_idct_3x3(
     mut output_buf: JSAMPARRAY,
     mut output_col: JDIMENSION,
 ) {
-    let mut tmp0: JLONG = 0;
+    let mut tmp0: JLONG = 0; /* buffers data between passes */
     let mut tmp2: JLONG = 0;
     let mut tmp10: JLONG = 0;
     let mut tmp12: JLONG = 0;
@@ -789,55 +864,67 @@ pub unsafe extern "C" fn jpeg_idct_3x3(
     let mut outptr: JSAMPROW = 0 as *mut JSAMPLE;
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit.offset(CENTERJSAMPLE as isize);
     let mut ctr: c_int = 0;
-    /* buffers data between passes */
     let mut workspace: [c_int; 9] = [0; 9];
+    /* Pass 1: process columns from input, store into work array. */
     inptr = coef_block;
     quantptr = (*compptr).dct_table as *mut ISLOW_MULT_TYPE;
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 3i32 {
+        /* Even part */
         tmp0 = (*inptr.offset((8i32 * 0i32) as isize) as c_int
             * *quantptr.offset((8i32 * 0i32) as isize) as c_int) as JLONG;
         tmp0 = ((tmp0 as c_ulong) << 13i32) as JLONG;
-        tmp0 += (ONE as JLONG) << CONST_BITS - PASS1_BITS - 1i32;
+        /* Add fudge factor here for final descale. */
+        tmp0 += (ONE as JLONG) << CONST_BITS - PASS1_BITS - 1i32; /* c2 */
         tmp2 = (*inptr.offset((8i32 * 2i32) as isize) as c_int
             * *quantptr.offset((8i32 * 2i32) as isize) as c_int) as JLONG;
         tmp12 = tmp2 * (0.707106781f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp10 = tmp0 + tmp12;
         tmp2 = tmp0 - tmp12 - tmp12;
+        /* Odd part */
         tmp12 = (*inptr.offset((8i32 * 1i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG; /* c1 */
         tmp0 = tmp12 * (1.224744871f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+        /* Final output stage */
         *wsptr.offset((3i32 * 0i32) as isize) = (tmp10 + tmp0 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((3i32 * 2i32) as isize) = (tmp10 - tmp0 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((3i32 * 1i32) as isize) = (tmp2 >> 13i32 - 2i32) as c_int;
         ctr += 1;
-        inptr = inptr.offset(1isize);
-        quantptr = quantptr.offset(1isize);
-        wsptr = wsptr.offset(1isize)
+        inptr = inptr.offset(1);
+        quantptr = quantptr.offset(1);
+        wsptr = wsptr.offset(1)
     }
+    /* Pass 2: process 3 rows from work array, store into output array. */
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 3i32 {
         outptr = (*output_buf.offset(ctr as isize)).offset(output_col as isize);
-        tmp0 = *wsptr.offset(0isize) as JLONG + ((ONE as JLONG) << PASS1_BITS + 2i32);
+        /* advance pointer to next row */
+        tmp0 = *wsptr.offset(0) as JLONG + ((ONE as JLONG) << PASS1_BITS + 2i32);
         tmp0 = ((tmp0 as c_ulong) << 13i32) as JLONG;
-        tmp2 = *wsptr.offset(2isize) as JLONG;
+        tmp2 = *wsptr.offset(2) as JLONG;
         tmp12 = tmp2 * (0.707106781f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp10 = tmp0 + tmp12;
         tmp2 = tmp0 - tmp12 - tmp12;
-        tmp12 = *wsptr.offset(1isize) as JLONG;
+        tmp12 = *wsptr.offset(1) as JLONG;
         tmp0 = tmp12 * (1.224744871f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
-        *outptr.offset(0isize) = *range_limit
+        *outptr.offset(0) = *range_limit
             .offset(((tmp10 + tmp0 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(2isize) = *range_limit
+        *outptr.offset(2) = *range_limit
             .offset(((tmp10 - tmp0 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(1isize) =
+        *outptr.offset(1) =
             *range_limit.offset(((tmp2 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        wsptr = wsptr.offset(3isize);
+        wsptr = wsptr.offset(3);
         ctr += 1
     }
 }
+/* Even part */
+/* Add fudge factor here for final descale. */
+/* c2 */
+/* Odd part */
+/* c1 */
+/* Final output stage */
 /*
  * Perform dequantization and inverse DCT on one block of coefficients,
  * producing a 9x9 output block.
@@ -846,6 +933,7 @@ pub unsafe extern "C" fn jpeg_idct_3x3(
  * cK represents sqrt(2) * cos(K*pi/18).
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_idct_9x9(
     mut cinfo: j_decompress_ptr,
     mut compptr: *mut jpeg_component_info,
@@ -853,7 +941,7 @@ pub unsafe extern "C" fn jpeg_idct_9x9(
     mut output_buf: JSAMPARRAY,
     mut output_col: JDIMENSION,
 ) {
-    let mut tmp0: JLONG = 0;
+    let mut tmp0: JLONG = 0; /* buffers data between passes */
     let mut tmp1: JLONG = 0;
     let mut tmp2: JLONG = 0;
     let mut tmp3: JLONG = 0;
@@ -872,24 +960,26 @@ pub unsafe extern "C" fn jpeg_idct_9x9(
     let mut outptr: JSAMPROW = 0 as *mut JSAMPLE;
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit.offset(CENTERJSAMPLE as isize);
     let mut ctr: c_int = 0;
-    /* buffers data between passes */
     let mut workspace: [c_int; 72] = [0; 72];
+    /* Pass 1: process columns from input, store into work array. */
     inptr = coef_block;
     quantptr = (*compptr).dct_table as *mut ISLOW_MULT_TYPE;
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 8i32 {
+        /* Even part */
         tmp0 = (*inptr.offset((8i32 * 0i32) as isize) as c_int
             * *quantptr.offset((8i32 * 0i32) as isize) as c_int) as JLONG;
         tmp0 = ((tmp0 as c_ulong) << 13i32) as JLONG;
-        tmp0 += (ONE as JLONG) << CONST_BITS - PASS1_BITS - 1i32;
+        /* Add fudge factor here for final descale. */
+        tmp0 += (ONE as JLONG) << CONST_BITS - PASS1_BITS - 1i32; /* c6 */
         z1 = (*inptr.offset((8i32 * 2i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 2i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 2i32) as isize) as c_int) as JLONG; /* c6 */
         z2 = (*inptr.offset((8i32 * 4i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 4i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 4i32) as isize) as c_int) as JLONG; /* c2 */
         z3 = (*inptr.offset((8i32 * 6i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 6i32) as isize) as c_int) as JLONG;
-        tmp3 = z3 * (0.707106781f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            * *quantptr.offset((8i32 * 6i32) as isize) as c_int) as JLONG; /* c4 */
+        tmp3 = z3 * (0.707106781f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c8 */
         tmp1 = tmp0 + tmp3;
         tmp2 = tmp0 - tmp3 - tmp3;
         tmp0 =
@@ -903,15 +993,16 @@ pub unsafe extern "C" fn jpeg_idct_9x9(
         tmp10 = tmp1 + tmp0 - tmp3;
         tmp12 = tmp1 - tmp0 + tmp2;
         tmp13 = tmp1 - tmp2 + tmp3;
+        /* Odd part */
         z1 = (*inptr.offset((8i32 * 1i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG; /* -c3 */
         z2 = (*inptr.offset((8i32 * 3i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 3i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 3i32) as isize) as c_int) as JLONG; /* c5 */
         z3 = (*inptr.offset((8i32 * 5i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 5i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 5i32) as isize) as c_int) as JLONG; /* c7 */
         z4 = (*inptr.offset((8i32 * 7i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 7i32) as isize) as c_int) as JLONG;
-        z2 = z2 * -((1.224744871f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG);
+            * *quantptr.offset((8i32 * 7i32) as isize) as c_int) as JLONG; /* c1 */
+        z2 = z2 * -((1.224744871f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG); /* c3 */
         tmp2 =
             (z1 + z3) * (0.909038955f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp3 =
@@ -923,6 +1014,7 @@ pub unsafe extern "C" fn jpeg_idct_9x9(
         tmp3 += z2 + tmp1;
         tmp1 = (z1 - z3 - z4)
             * (1.224744871f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+        /* Final output stage */
         *wsptr.offset((8i32 * 0i32) as isize) = (tmp10 + tmp0 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((8i32 * 8i32) as isize) = (tmp10 - tmp0 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((8i32 * 1i32) as isize) = (tmp11 + tmp1 >> 13i32 - 2i32) as c_int;
@@ -933,19 +1025,21 @@ pub unsafe extern "C" fn jpeg_idct_9x9(
         *wsptr.offset((8i32 * 5i32) as isize) = (tmp13 - tmp3 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((8i32 * 4i32) as isize) = (tmp14 >> 13i32 - 2i32) as c_int;
         ctr += 1;
-        inptr = inptr.offset(1isize);
-        quantptr = quantptr.offset(1isize);
-        wsptr = wsptr.offset(1isize)
+        inptr = inptr.offset(1);
+        quantptr = quantptr.offset(1);
+        wsptr = wsptr.offset(1)
     }
+    /* Pass 2: process 9 rows from work array, store into output array. */
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 9i32 {
         outptr = (*output_buf.offset(ctr as isize)).offset(output_col as isize);
-        tmp0 = *wsptr.offset(0isize) as JLONG + ((ONE as JLONG) << PASS1_BITS + 2i32);
+        /* advance pointer to next row */
+        tmp0 = *wsptr.offset(0) as JLONG + ((ONE as JLONG) << PASS1_BITS + 2i32);
         tmp0 = ((tmp0 as c_ulong) << 13i32) as JLONG;
-        z1 = *wsptr.offset(2isize) as JLONG;
-        z2 = *wsptr.offset(4isize) as JLONG;
-        z3 = *wsptr.offset(6isize) as JLONG;
+        z1 = *wsptr.offset(2) as JLONG;
+        z2 = *wsptr.offset(4) as JLONG;
+        z3 = *wsptr.offset(6) as JLONG;
         tmp3 = z3 * (0.707106781f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp1 = tmp0 + tmp3;
         tmp2 = tmp0 - tmp3 - tmp3;
@@ -960,10 +1054,10 @@ pub unsafe extern "C" fn jpeg_idct_9x9(
         tmp10 = tmp1 + tmp0 - tmp3;
         tmp12 = tmp1 - tmp0 + tmp2;
         tmp13 = tmp1 - tmp2 + tmp3;
-        z1 = *wsptr.offset(1isize) as JLONG;
-        z2 = *wsptr.offset(3isize) as JLONG;
-        z3 = *wsptr.offset(5isize) as JLONG;
-        z4 = *wsptr.offset(7isize) as JLONG;
+        z1 = *wsptr.offset(1) as JLONG;
+        z2 = *wsptr.offset(3) as JLONG;
+        z3 = *wsptr.offset(5) as JLONG;
+        z4 = *wsptr.offset(7) as JLONG;
         z2 = z2 * -((1.224744871f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG);
         tmp2 =
             (z1 + z3) * (0.909038955f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
@@ -976,28 +1070,42 @@ pub unsafe extern "C" fn jpeg_idct_9x9(
         tmp3 += z2 + tmp1;
         tmp1 = (z1 - z3 - z4)
             * (1.224744871f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
-        *outptr.offset(0isize) = *range_limit
+        *outptr.offset(0) = *range_limit
             .offset(((tmp10 + tmp0 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(8isize) = *range_limit
+        *outptr.offset(8) = *range_limit
             .offset(((tmp10 - tmp0 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(1isize) = *range_limit
+        *outptr.offset(1) = *range_limit
             .offset(((tmp11 + tmp1 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(7isize) = *range_limit
+        *outptr.offset(7) = *range_limit
             .offset(((tmp11 - tmp1 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(2isize) = *range_limit
+        *outptr.offset(2) = *range_limit
             .offset(((tmp12 + tmp2 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(6isize) = *range_limit
+        *outptr.offset(6) = *range_limit
             .offset(((tmp12 - tmp2 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(3isize) = *range_limit
+        *outptr.offset(3) = *range_limit
             .offset(((tmp13 + tmp3 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(5isize) = *range_limit
+        *outptr.offset(5) = *range_limit
             .offset(((tmp13 - tmp3 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(4isize) =
+        *outptr.offset(4) =
             *range_limit.offset(((tmp14 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        wsptr = wsptr.offset(8isize);
+        wsptr = wsptr.offset(8);
         ctr += 1
     }
 }
+/* Even part */
+/* Add fudge factor here for final descale. */
+/* c6 */
+/* c6 */
+/* c2 */
+/* c4 */
+/* c8 */
+/* Odd part */
+/* -c3 */
+/* c5 */
+/* c7 */
+/* c1 */
+/* c3 */
+/* Final output stage */
 /*
  * Perform dequantization and inverse DCT on one block of coefficients,
  * producing a 10x10 output block.
@@ -1006,6 +1114,7 @@ pub unsafe extern "C" fn jpeg_idct_9x9(
  * cK represents sqrt(2) * cos(K*pi/20).
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_idct_10x10(
     mut cinfo: j_decompress_ptr,
     mut compptr: *mut jpeg_component_info,
@@ -1013,7 +1122,7 @@ pub unsafe extern "C" fn jpeg_idct_10x10(
     mut output_buf: JSAMPARRAY,
     mut output_col: JDIMENSION,
 ) {
-    let mut tmp10: JLONG = 0;
+    let mut tmp10: JLONG = 0; /* buffers data between passes */
     let mut tmp11: JLONG = 0;
     let mut tmp12: JLONG = 0;
     let mut tmp13: JLONG = 0;
@@ -1034,30 +1143,33 @@ pub unsafe extern "C" fn jpeg_idct_10x10(
     let mut outptr: JSAMPROW = 0 as *mut JSAMPLE;
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit.offset(CENTERJSAMPLE as isize);
     let mut ctr: c_int = 0;
-    /* buffers data between passes */
     let mut workspace: [c_int; 80] = [0; 80];
+    /* Pass 1: process columns from input, store into work array. */
     inptr = coef_block;
     quantptr = (*compptr).dct_table as *mut ISLOW_MULT_TYPE;
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 8i32 {
+        /* Even part */
         z3 = (*inptr.offset((8i32 * 0i32) as isize) as c_int
             * *quantptr.offset((8i32 * 0i32) as isize) as c_int) as JLONG;
         z3 = ((z3 as c_ulong) << 13i32) as JLONG;
-        z3 += (ONE as JLONG) << CONST_BITS - PASS1_BITS - 1i32;
+        /* Add fudge factor here for final descale. */
+        z3 += (ONE as JLONG) << CONST_BITS - PASS1_BITS - 1i32; /* c4 */
         z4 = (*inptr.offset((8i32 * 4i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 4i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 4i32) as isize) as c_int) as JLONG; /* c8 */
         z1 = z4 * (1.144122806f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         z2 = z4 * (0.437016024f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp10 = z3 + z1;
         tmp11 = z3 - z2;
         tmp22 = z3 - (((z1 - z2) as c_ulong) << 1i32) as JLONG >> 13i32 - 2i32;
+        /* c0 = (c4-c8)*2 */
         z2 = (*inptr.offset((8i32 * 2i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 2i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 2i32) as isize) as c_int) as JLONG; /* c6 */
         z3 = (*inptr.offset((8i32 * 6i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 6i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 6i32) as isize) as c_int) as JLONG; /* c2-c6 */
         z1 =
-            (z2 + z3) * (0.831253876f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            (z2 + z3) * (0.831253876f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c2+c6 */
         tmp12 =
             z1 + z2 * (0.513743148f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp13 =
@@ -1066,17 +1178,18 @@ pub unsafe extern "C" fn jpeg_idct_10x10(
         tmp24 = tmp10 - tmp12;
         tmp21 = tmp11 + tmp13;
         tmp23 = tmp11 - tmp13;
+        /* Odd part */
         z1 = (*inptr.offset((8i32 * 1i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG; /* (c3-c7)/2 */
         z2 = (*inptr.offset((8i32 * 3i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 3i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 3i32) as isize) as c_int) as JLONG; /* (c3+c7)/2 */
         z3 = (*inptr.offset((8i32 * 5i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 5i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 5i32) as isize) as c_int) as JLONG; /* c1 */
         z4 = (*inptr.offset((8i32 * 7i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 7i32) as isize) as c_int) as JLONG;
-        tmp11 = z2 + z4;
-        tmp13 = z2 - z4;
-        tmp12 = tmp13 * (0.309016994f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            * *quantptr.offset((8i32 * 7i32) as isize) as c_int) as JLONG; /* c9 */
+        tmp11 = z2 + z4; /* (c1-c9)/2 */
+        tmp13 = z2 - z4; /* c3 */
+        tmp12 = tmp13 * (0.309016994f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c7 */
         z5 = ((z3 as c_ulong) << 13i32) as JLONG;
         z2 = tmp11 * (0.951056516f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         z4 = z5 + tmp12;
@@ -1095,6 +1208,7 @@ pub unsafe extern "C" fn jpeg_idct_10x10(
         tmp13 = z1 * (0.642039522f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG
             - z2
             + z4;
+        /* Final output stage */
         *wsptr.offset((8i32 * 0i32) as isize) = (tmp20 + tmp10 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((8i32 * 9i32) as isize) = (tmp20 - tmp10 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((8i32 * 1i32) as isize) = (tmp21 + tmp11 >> 13i32 - 2i32) as c_int;
@@ -1106,24 +1220,26 @@ pub unsafe extern "C" fn jpeg_idct_10x10(
         *wsptr.offset((8i32 * 4i32) as isize) = (tmp24 + tmp14 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((8i32 * 5i32) as isize) = (tmp24 - tmp14 >> 13i32 - 2i32) as c_int;
         ctr += 1;
-        inptr = inptr.offset(1isize);
-        quantptr = quantptr.offset(1isize);
-        wsptr = wsptr.offset(1isize)
+        inptr = inptr.offset(1);
+        quantptr = quantptr.offset(1);
+        wsptr = wsptr.offset(1)
     }
+    /* Pass 2: process 10 rows from work array, store into output array. */
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 10i32 {
         outptr = (*output_buf.offset(ctr as isize)).offset(output_col as isize);
-        z3 = *wsptr.offset(0isize) as JLONG + ((ONE as JLONG) << PASS1_BITS + 2i32);
+        /* advance pointer to next row */
+        z3 = *wsptr.offset(0) as JLONG + ((ONE as JLONG) << PASS1_BITS + 2i32);
         z3 = ((z3 as c_ulong) << 13i32) as JLONG;
-        z4 = *wsptr.offset(4isize) as JLONG;
+        z4 = *wsptr.offset(4) as JLONG;
         z1 = z4 * (1.144122806f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         z2 = z4 * (0.437016024f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp10 = z3 + z1;
         tmp11 = z3 - z2;
         tmp22 = z3 - (((z1 - z2) as c_ulong) << 1i32) as JLONG;
-        z2 = *wsptr.offset(2isize) as JLONG;
-        z3 = *wsptr.offset(6isize) as JLONG;
+        z2 = *wsptr.offset(2) as JLONG;
+        z3 = *wsptr.offset(6) as JLONG;
         z1 =
             (z2 + z3) * (0.831253876f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp12 =
@@ -1134,11 +1250,11 @@ pub unsafe extern "C" fn jpeg_idct_10x10(
         tmp24 = tmp10 - tmp12;
         tmp21 = tmp11 + tmp13;
         tmp23 = tmp11 - tmp13;
-        z1 = *wsptr.offset(1isize) as JLONG;
-        z2 = *wsptr.offset(3isize) as JLONG;
-        z3 = *wsptr.offset(5isize) as JLONG;
+        z1 = *wsptr.offset(1) as JLONG;
+        z2 = *wsptr.offset(3) as JLONG;
+        z3 = *wsptr.offset(5) as JLONG;
         z3 = ((z3 as c_ulong) << 13i32) as JLONG;
-        z4 = *wsptr.offset(7isize) as JLONG;
+        z4 = *wsptr.offset(7) as JLONG;
         tmp11 = z2 + z4;
         tmp13 = z2 - z4;
         tmp12 = tmp13 * (0.309016994f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
@@ -1159,30 +1275,47 @@ pub unsafe extern "C" fn jpeg_idct_10x10(
         tmp13 = z1 * (0.642039522f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG
             - z2
             + z4;
-        *outptr.offset(0isize) = *range_limit
+        *outptr.offset(0) = *range_limit
             .offset(((tmp20 + tmp10 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(9isize) = *range_limit
+        *outptr.offset(9) = *range_limit
             .offset(((tmp20 - tmp10 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(1isize) = *range_limit
+        *outptr.offset(1) = *range_limit
             .offset(((tmp21 + tmp11 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(8isize) = *range_limit
+        *outptr.offset(8) = *range_limit
             .offset(((tmp21 - tmp11 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(2isize) = *range_limit
+        *outptr.offset(2) = *range_limit
             .offset(((tmp22 + tmp12 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(7isize) = *range_limit
+        *outptr.offset(7) = *range_limit
             .offset(((tmp22 - tmp12 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(3isize) = *range_limit
+        *outptr.offset(3) = *range_limit
             .offset(((tmp23 + tmp13 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(6isize) = *range_limit
+        *outptr.offset(6) = *range_limit
             .offset(((tmp23 - tmp13 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(4isize) = *range_limit
+        *outptr.offset(4) = *range_limit
             .offset(((tmp24 + tmp14 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(5isize) = *range_limit
+        *outptr.offset(5) = *range_limit
             .offset(((tmp24 - tmp14 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        wsptr = wsptr.offset(8isize);
+        wsptr = wsptr.offset(8);
         ctr += 1
     }
 }
+/* Even part */
+/* Add fudge factor here for final descale. */
+/* c4 */
+/* c8 */
+/* c0 = (c4-c8)*2 */
+/* c6 */
+/* c2-c6 */
+/* c2+c6 */
+/* Odd part */
+/* (c3-c7)/2 */
+/* (c3+c7)/2 */
+/* c1 */
+/* c9 */
+/* (c1-c9)/2 */
+/* c3 */
+/* c7 */
+/* Final output stage */
 /*
  * Perform dequantization and inverse DCT on one block of coefficients,
  * producing a 11x11 output block.
@@ -1191,6 +1324,7 @@ pub unsafe extern "C" fn jpeg_idct_10x10(
  * cK represents sqrt(2) * cos(K*pi/22).
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_idct_11x11(
     mut cinfo: j_decompress_ptr,
     mut compptr: *mut jpeg_component_info,
@@ -1198,7 +1332,7 @@ pub unsafe extern "C" fn jpeg_idct_11x11(
     mut output_buf: JSAMPARRAY,
     mut output_col: JDIMENSION,
 ) {
-    let mut tmp10: JLONG = 0;
+    let mut tmp10: JLONG = 0; /* buffers data between passes */
     let mut tmp11: JLONG = 0;
     let mut tmp12: JLONG = 0;
     let mut tmp13: JLONG = 0;
@@ -1219,32 +1353,34 @@ pub unsafe extern "C" fn jpeg_idct_11x11(
     let mut outptr: JSAMPROW = 0 as *mut JSAMPLE;
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit.offset(CENTERJSAMPLE as isize);
     let mut ctr: c_int = 0;
-    /* buffers data between passes */
     let mut workspace: [c_int; 88] = [0; 88];
+    /* Pass 1: process columns from input, store into work array. */
     inptr = coef_block;
     quantptr = (*compptr).dct_table as *mut ISLOW_MULT_TYPE;
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 8i32 {
+        /* Even part */
         tmp10 = (*inptr.offset((8i32 * 0i32) as isize) as c_int
             * *quantptr.offset((8i32 * 0i32) as isize) as c_int) as JLONG;
         tmp10 = ((tmp10 as c_ulong) << 13i32) as JLONG;
-        tmp10 += (ONE as JLONG) << CONST_BITS - PASS1_BITS - 1i32;
+        /* Add fudge factor here for final descale. */
+        tmp10 += (ONE as JLONG) << CONST_BITS - PASS1_BITS - 1i32; /* c2+c4 */
         z1 = (*inptr.offset((8i32 * 2i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 2i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 2i32) as isize) as c_int) as JLONG; /* c2-c6 */
         z2 = (*inptr.offset((8i32 * 4i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 4i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 4i32) as isize) as c_int) as JLONG; /* -(c2-c10) */
         z3 = (*inptr.offset((8i32 * 6i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 6i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 6i32) as isize) as c_int) as JLONG; /* c2 */
         tmp20 =
-            (z2 - z3) * (2.546640132f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            (z2 - z3) * (2.546640132f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c2+c4+c10-c6 */
         tmp23 =
-            (z2 - z1) * (0.430815045f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
-        z4 = z1 + z3;
-        tmp24 = z4 * -((1.155664402f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG);
-        z4 -= z2;
+            (z2 - z1) * (0.430815045f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c4+c6 */
+        z4 = z1 + z3; /* c6+c8 */
+        tmp24 = z4 * -((1.155664402f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG); /* c8+c10 */
+        z4 -= z2; /* c4+c10 */
         tmp25 = tmp10
-            + z4 * (1.356927976f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            + z4 * (1.356927976f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c0 */
         tmp21 = tmp20 + tmp23 + tmp25
             - z2 * (1.821790775f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp20 += tmp25
@@ -1258,28 +1394,29 @@ pub unsafe extern "C" fn jpeg_idct_11x11(
             - z1 * (1.390975730f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp25 = tmp10
             - z4 * (1.414213562f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+        /* Odd part */
         z1 = (*inptr.offset((8i32 * 1i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG; /* c9 */
         z2 = (*inptr.offset((8i32 * 3i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 3i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 3i32) as isize) as c_int) as JLONG; /* c3-c9 */
         z3 = (*inptr.offset((8i32 * 5i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 5i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 5i32) as isize) as c_int) as JLONG; /* c5-c9 */
         z4 = (*inptr.offset((8i32 * 7i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 7i32) as isize) as c_int) as JLONG;
-        tmp11 = z1 + z2;
+            * *quantptr.offset((8i32 * 7i32) as isize) as c_int) as JLONG; /* c7-c9 */
+        tmp11 = z1 + z2; /* c7+c5+c3-c1-2*c9 */
         tmp14 = (tmp11 + z3 + z4)
-            * (0.398430003f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
-        tmp11 = tmp11 * (0.887983902f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            * (0.398430003f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c7+c9 */
+        tmp11 = tmp11 * (0.887983902f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c1+c7+3*c9-c3 */
         tmp12 =
-            (z1 + z3) * (0.670361295f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            (z1 + z3) * (0.670361295f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c3+c5-c7-c9 */
         tmp13 = tmp14
             + (z1 + z4)
-                * (0.366151574f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+                * (0.366151574f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* -(c1+c9) */
         tmp10 = tmp11 + tmp12 + tmp13
-            - z1 * (0.923107866f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            - z1 * (0.923107866f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c1+c5+c9-c7 */
         z1 = tmp14
             - (z2 + z3)
-                * (1.163011579f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+                * (1.163011579f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c3+c9 */
         tmp11 +=
             z1 + z2 * (2.073276588f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp12 +=
@@ -1293,6 +1430,7 @@ pub unsafe extern "C" fn jpeg_idct_11x11(
             * -((1.467221301f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG)
             + z3 * (1.001388905f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG
             - z4 * (1.684843907f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+        /* Final output stage */
         *wsptr.offset((8i32 * 0i32) as isize) = (tmp20 + tmp10 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((8i32 * 10i32) as isize) = (tmp20 - tmp10 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((8i32 * 1i32) as isize) = (tmp21 + tmp11 >> 13i32 - 2i32) as c_int;
@@ -1305,19 +1443,21 @@ pub unsafe extern "C" fn jpeg_idct_11x11(
         *wsptr.offset((8i32 * 6i32) as isize) = (tmp24 - tmp14 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((8i32 * 5i32) as isize) = (tmp25 >> 13i32 - 2i32) as c_int;
         ctr += 1;
-        inptr = inptr.offset(1isize);
-        quantptr = quantptr.offset(1isize);
-        wsptr = wsptr.offset(1isize)
+        inptr = inptr.offset(1);
+        quantptr = quantptr.offset(1);
+        wsptr = wsptr.offset(1)
     }
+    /* Pass 2: process 11 rows from work array, store into output array. */
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 11i32 {
         outptr = (*output_buf.offset(ctr as isize)).offset(output_col as isize);
-        tmp10 = *wsptr.offset(0isize) as JLONG + ((ONE as JLONG) << PASS1_BITS + 2i32);
+        /* advance pointer to next row */
+        tmp10 = *wsptr.offset(0) as JLONG + ((ONE as JLONG) << PASS1_BITS + 2i32);
         tmp10 = ((tmp10 as c_ulong) << 13i32) as JLONG;
-        z1 = *wsptr.offset(2isize) as JLONG;
-        z2 = *wsptr.offset(4isize) as JLONG;
-        z3 = *wsptr.offset(6isize) as JLONG;
+        z1 = *wsptr.offset(2) as JLONG;
+        z2 = *wsptr.offset(4) as JLONG;
+        z3 = *wsptr.offset(6) as JLONG;
         tmp20 =
             (z2 - z3) * (2.546640132f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp23 =
@@ -1340,10 +1480,10 @@ pub unsafe extern "C" fn jpeg_idct_11x11(
             - z1 * (1.390975730f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp25 = tmp10
             - z4 * (1.414213562f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
-        z1 = *wsptr.offset(1isize) as JLONG;
-        z2 = *wsptr.offset(3isize) as JLONG;
-        z3 = *wsptr.offset(5isize) as JLONG;
-        z4 = *wsptr.offset(7isize) as JLONG;
+        z1 = *wsptr.offset(1) as JLONG;
+        z2 = *wsptr.offset(3) as JLONG;
+        z3 = *wsptr.offset(5) as JLONG;
+        z4 = *wsptr.offset(7) as JLONG;
         tmp11 = z1 + z2;
         tmp14 = (tmp11 + z3 + z4)
             * (0.398430003f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
@@ -1371,32 +1511,57 @@ pub unsafe extern "C" fn jpeg_idct_11x11(
             * -((1.467221301f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG)
             + z3 * (1.001388905f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG
             - z4 * (1.684843907f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
-        *outptr.offset(0isize) = *range_limit
+        *outptr.offset(0) = *range_limit
             .offset(((tmp20 + tmp10 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(10isize) = *range_limit
+        *outptr.offset(10) = *range_limit
             .offset(((tmp20 - tmp10 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(1isize) = *range_limit
+        *outptr.offset(1) = *range_limit
             .offset(((tmp21 + tmp11 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(9isize) = *range_limit
+        *outptr.offset(9) = *range_limit
             .offset(((tmp21 - tmp11 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(2isize) = *range_limit
+        *outptr.offset(2) = *range_limit
             .offset(((tmp22 + tmp12 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(8isize) = *range_limit
+        *outptr.offset(8) = *range_limit
             .offset(((tmp22 - tmp12 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(3isize) = *range_limit
+        *outptr.offset(3) = *range_limit
             .offset(((tmp23 + tmp13 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(7isize) = *range_limit
+        *outptr.offset(7) = *range_limit
             .offset(((tmp23 - tmp13 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(4isize) = *range_limit
+        *outptr.offset(4) = *range_limit
             .offset(((tmp24 + tmp14 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(6isize) = *range_limit
+        *outptr.offset(6) = *range_limit
             .offset(((tmp24 - tmp14 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(5isize) =
+        *outptr.offset(5) =
             *range_limit.offset(((tmp25 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        wsptr = wsptr.offset(8isize);
+        wsptr = wsptr.offset(8);
         ctr += 1
     }
 }
+/* Even part */
+/* Add fudge factor here for final descale. */
+/* c2+c4 */
+/* c2-c6 */
+/* -(c2-c10) */
+/* c2 */
+/* c2+c4+c10-c6 */
+/* c4+c6 */
+/* c6+c8 */
+/* c8+c10 */
+/* c4+c10 */
+/* c0 */
+/* Odd part */
+/* c9 */
+/* c3-c9 */
+/* c5-c9 */
+/* c7-c9 */
+/* c7+c5+c3-c1-2*c9 */
+/* c7+c9 */
+/* c1+c7+3*c9-c3 */
+/* c3+c5-c7-c9 */
+/* -(c1+c9) */
+/* c1+c5+c9-c7 */
+/* c3+c9 */
+/* Final output stage */
 /*
  * Perform dequantization and inverse DCT on one block of coefficients,
  * producing a 12x12 output block.
@@ -1405,6 +1570,7 @@ pub unsafe extern "C" fn jpeg_idct_11x11(
  * cK represents sqrt(2) * cos(K*pi/24).
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_idct_12x12(
     mut cinfo: j_decompress_ptr,
     mut compptr: *mut jpeg_component_info,
@@ -1412,7 +1578,7 @@ pub unsafe extern "C" fn jpeg_idct_12x12(
     mut output_buf: JSAMPARRAY,
     mut output_col: JDIMENSION,
 ) {
-    let mut tmp10: JLONG = 0;
+    let mut tmp10: JLONG = 0; /* buffers data between passes */
     let mut tmp11: JLONG = 0;
     let mut tmp12: JLONG = 0;
     let mut tmp13: JLONG = 0;
@@ -1434,19 +1600,21 @@ pub unsafe extern "C" fn jpeg_idct_12x12(
     let mut outptr: JSAMPROW = 0 as *mut JSAMPLE;
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit.offset(CENTERJSAMPLE as isize);
     let mut ctr: c_int = 0;
-    /* buffers data between passes */
     let mut workspace: [c_int; 96] = [0; 96];
+    /* Pass 1: process columns from input, store into work array. */
     inptr = coef_block;
     quantptr = (*compptr).dct_table as *mut ISLOW_MULT_TYPE;
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 8i32 {
+        /* Even part */
         z3 = (*inptr.offset((8i32 * 0i32) as isize) as c_int
             * *quantptr.offset((8i32 * 0i32) as isize) as c_int) as JLONG;
         z3 = ((z3 as c_ulong) << 13i32) as JLONG;
-        z3 += (ONE as JLONG) << CONST_BITS - PASS1_BITS - 1i32;
+        /* Add fudge factor here for final descale. */
+        z3 += (ONE as JLONG) << CONST_BITS - PASS1_BITS - 1i32; /* c4 */
         z4 = (*inptr.offset((8i32 * 4i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 4i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 4i32) as isize) as c_int) as JLONG; /* c2 */
         z4 = z4 * (1.224744871f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp10 = z3 + z4;
         tmp11 = z3 - z4;
@@ -1466,28 +1634,29 @@ pub unsafe extern "C" fn jpeg_idct_12x12(
         tmp12 = z4 - z1 - z2;
         tmp22 = tmp11 + tmp12;
         tmp23 = tmp11 - tmp12;
+        /* Odd part */
         z1 = (*inptr.offset((8i32 * 1i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG; /* c3 */
         z2 = (*inptr.offset((8i32 * 3i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 3i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 3i32) as isize) as c_int) as JLONG; /* -c9 */
         z3 = (*inptr.offset((8i32 * 5i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 5i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 5i32) as isize) as c_int) as JLONG; /* c7 */
         z4 = (*inptr.offset((8i32 * 7i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 7i32) as isize) as c_int) as JLONG;
-        tmp11 = z2 * (1.306562965f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
-        tmp14 = z2 * -(4433i32 as JLONG);
-        tmp10 = z1 + z3;
+            * *quantptr.offset((8i32 * 7i32) as isize) as c_int) as JLONG; /* c5-c7 */
+        tmp11 = z2 * (1.306562965f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c1-c5 */
+        tmp14 = z2 * -(4433i32 as JLONG); /* -(c7+c11) */
+        tmp10 = z1 + z3; /* c1+c5-c7-c11 */
         tmp15 = (tmp10 + z4)
-            * (0.860918669f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            * (0.860918669f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c1+c11 */
         tmp12 = tmp15
-            + tmp10 * (0.261052384f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            + tmp10 * (0.261052384f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c5+c7 */
         tmp10 = tmp12
             + tmp11
-            + z1 * (0.280143716f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            + z1 * (0.280143716f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c9 */
         tmp13 = (z3 + z4)
-            * -((1.045510580f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG);
+            * -((1.045510580f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG); /* c3-c9 */
         tmp12 += tmp13 + tmp14
-            - z3 * (1.478575242f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            - z3 * (1.478575242f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c3+c9 */
         tmp13 += tmp15 - tmp11
             + z4 * (1.586706681f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp15 += tmp14
@@ -1498,6 +1667,7 @@ pub unsafe extern "C" fn jpeg_idct_12x12(
         z3 = (z1 + z2) * 4433i32 as JLONG;
         tmp11 = z3 + z1 * 6270i32 as JLONG;
         tmp14 = z3 - z2 * 15137i32 as JLONG;
+        /* Final output stage */
         *wsptr.offset((8i32 * 0i32) as isize) = (tmp20 + tmp10 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((8i32 * 11i32) as isize) = (tmp20 - tmp10 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((8i32 * 1i32) as isize) = (tmp21 + tmp11 >> 13i32 - 2i32) as c_int;
@@ -1511,24 +1681,26 @@ pub unsafe extern "C" fn jpeg_idct_12x12(
         *wsptr.offset((8i32 * 5i32) as isize) = (tmp25 + tmp15 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((8i32 * 6i32) as isize) = (tmp25 - tmp15 >> 13i32 - 2i32) as c_int;
         ctr += 1;
-        inptr = inptr.offset(1isize);
-        quantptr = quantptr.offset(1isize);
-        wsptr = wsptr.offset(1isize)
+        inptr = inptr.offset(1);
+        quantptr = quantptr.offset(1);
+        wsptr = wsptr.offset(1)
     }
+    /* Pass 2: process 12 rows from work array, store into output array. */
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 12i32 {
         outptr = (*output_buf.offset(ctr as isize)).offset(output_col as isize);
-        z3 = *wsptr.offset(0isize) as JLONG + ((ONE as JLONG) << PASS1_BITS + 2i32);
+        /* advance pointer to next row */
+        z3 = *wsptr.offset(0) as JLONG + ((ONE as JLONG) << PASS1_BITS + 2i32);
         z3 = ((z3 as c_ulong) << 13i32) as JLONG;
-        z4 = *wsptr.offset(4isize) as JLONG;
+        z4 = *wsptr.offset(4) as JLONG;
         z4 = z4 * (1.224744871f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp10 = z3 + z4;
         tmp11 = z3 - z4;
-        z1 = *wsptr.offset(2isize) as JLONG;
+        z1 = *wsptr.offset(2) as JLONG;
         z4 = z1 * (1.366025404f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         z1 = ((z1 as c_ulong) << 13i32) as JLONG;
-        z2 = *wsptr.offset(6isize) as JLONG;
+        z2 = *wsptr.offset(6) as JLONG;
         z2 = ((z2 as c_ulong) << 13i32) as JLONG;
         tmp12 = z1 - z2;
         tmp21 = z3 + tmp12;
@@ -1539,10 +1711,10 @@ pub unsafe extern "C" fn jpeg_idct_12x12(
         tmp12 = z4 - z1 - z2;
         tmp22 = tmp11 + tmp12;
         tmp23 = tmp11 - tmp12;
-        z1 = *wsptr.offset(1isize) as JLONG;
-        z2 = *wsptr.offset(3isize) as JLONG;
-        z3 = *wsptr.offset(5isize) as JLONG;
-        z4 = *wsptr.offset(7isize) as JLONG;
+        z1 = *wsptr.offset(1) as JLONG;
+        z2 = *wsptr.offset(3) as JLONG;
+        z3 = *wsptr.offset(5) as JLONG;
+        z4 = *wsptr.offset(7) as JLONG;
         tmp11 = z2 * (1.306562965f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp14 = z2 * -(4433i32 as JLONG);
         tmp10 = z1 + z3;
@@ -1567,34 +1739,52 @@ pub unsafe extern "C" fn jpeg_idct_12x12(
         z3 = (z1 + z2) * 4433i32 as JLONG;
         tmp11 = z3 + z1 * 6270i32 as JLONG;
         tmp14 = z3 - z2 * 15137i32 as JLONG;
-        *outptr.offset(0isize) = *range_limit
+        *outptr.offset(0) = *range_limit
             .offset(((tmp20 + tmp10 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(11isize) = *range_limit
+        *outptr.offset(11) = *range_limit
             .offset(((tmp20 - tmp10 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(1isize) = *range_limit
+        *outptr.offset(1) = *range_limit
             .offset(((tmp21 + tmp11 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(10isize) = *range_limit
+        *outptr.offset(10) = *range_limit
             .offset(((tmp21 - tmp11 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(2isize) = *range_limit
+        *outptr.offset(2) = *range_limit
             .offset(((tmp22 + tmp12 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(9isize) = *range_limit
+        *outptr.offset(9) = *range_limit
             .offset(((tmp22 - tmp12 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(3isize) = *range_limit
+        *outptr.offset(3) = *range_limit
             .offset(((tmp23 + tmp13 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(8isize) = *range_limit
+        *outptr.offset(8) = *range_limit
             .offset(((tmp23 - tmp13 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(4isize) = *range_limit
+        *outptr.offset(4) = *range_limit
             .offset(((tmp24 + tmp14 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(7isize) = *range_limit
+        *outptr.offset(7) = *range_limit
             .offset(((tmp24 - tmp14 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(5isize) = *range_limit
+        *outptr.offset(5) = *range_limit
             .offset(((tmp25 + tmp15 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(6isize) = *range_limit
+        *outptr.offset(6) = *range_limit
             .offset(((tmp25 - tmp15 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        wsptr = wsptr.offset(8isize);
+        wsptr = wsptr.offset(8);
         ctr += 1
     }
 }
+/* Even part */
+/* Add fudge factor here for final descale. */
+/* c4 */
+/* c2 */
+/* Odd part */
+/* c3 */
+/* -c9 */
+/* c7 */
+/* c5-c7 */
+/* c1-c5 */
+/* -(c7+c11) */
+/* c1+c5-c7-c11 */
+/* c1+c11 */
+/* c5+c7 */
+/* c9 */
+/* c3-c9 */
+/* c3+c9 */
+/* Final output stage */
 /*
  * Perform dequantization and inverse DCT on one block of coefficients,
  * producing a 13x13 output block.
@@ -1603,6 +1793,7 @@ pub unsafe extern "C" fn jpeg_idct_12x12(
  * cK represents sqrt(2) * cos(K*pi/26).
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_idct_13x13(
     mut cinfo: j_decompress_ptr,
     mut compptr: *mut jpeg_component_info,
@@ -1610,7 +1801,7 @@ pub unsafe extern "C" fn jpeg_idct_13x13(
     mut output_buf: JSAMPARRAY,
     mut output_col: JDIMENSION,
 ) {
-    let mut tmp10: JLONG = 0;
+    let mut tmp10: JLONG = 0; /* buffers data between passes */
     let mut tmp11: JLONG = 0;
     let mut tmp12: JLONG = 0;
     let mut tmp13: JLONG = 0;
@@ -1633,40 +1824,42 @@ pub unsafe extern "C" fn jpeg_idct_13x13(
     let mut outptr: JSAMPROW = 0 as *mut JSAMPLE;
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit.offset(CENTERJSAMPLE as isize);
     let mut ctr: c_int = 0;
-    /* buffers data between passes */
     let mut workspace: [c_int; 104] = [0; 104];
+    /* Pass 1: process columns from input, store into work array. */
     inptr = coef_block;
     quantptr = (*compptr).dct_table as *mut ISLOW_MULT_TYPE;
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 8i32 {
+        /* Even part */
         z1 = (*inptr.offset((8i32 * 0i32) as isize) as c_int
             * *quantptr.offset((8i32 * 0i32) as isize) as c_int) as JLONG;
         z1 = ((z1 as c_ulong) << 13i32) as JLONG;
-        z1 += (ONE as JLONG) << CONST_BITS - PASS1_BITS - 1i32;
+        /* Add fudge factor here for final descale. */
+        z1 += (ONE as JLONG) << CONST_BITS - PASS1_BITS - 1i32; /* (c4+c6)/2 */
         z2 = (*inptr.offset((8i32 * 2i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 2i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 2i32) as isize) as c_int) as JLONG; /* (c4-c6)/2 */
         z3 = (*inptr.offset((8i32 * 4i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 4i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 4i32) as isize) as c_int) as JLONG; /* c2 */
         z4 = (*inptr.offset((8i32 * 6i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 6i32) as isize) as c_int) as JLONG;
-        tmp10 = z3 + z4;
-        tmp11 = z3 - z4;
-        tmp12 = tmp10 * (1.155388986f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            * *quantptr.offset((8i32 * 6i32) as isize) as c_int) as JLONG; /* c10 */
+        tmp10 = z3 + z4; /* (c8-c12)/2 */
+        tmp11 = z3 - z4; /* (c8+c12)/2 */
+        tmp12 = tmp10 * (1.155388986f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c6 */
         tmp13 = tmp11 * (0.096834934f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG
-            + z1;
+            + z1; /* c4 */
         tmp20 = z2 * (1.373119086f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG
             + tmp12
-            + tmp13;
+            + tmp13; /* (c2-c10)/2 */
         tmp22 = z2 * (0.501487041f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG
             - tmp12
-            + tmp13;
-        tmp12 = tmp10 * (0.316450131f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            + tmp13; /* (c2+c10)/2 */
+        tmp12 = tmp10 * (0.316450131f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c12 */
         tmp13 = tmp11 * (0.486914739f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG
-            + z1;
+            + z1; /* c8 */
         tmp21 = z2 * (1.058554052f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG
             - tmp12
-            + tmp13;
+            + tmp13; /* c0 */
         tmp25 = z2 * -((1.252223920f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG)
             + tmp12
             + tmp13;
@@ -1682,31 +1875,32 @@ pub unsafe extern "C" fn jpeg_idct_13x13(
         tmp26 = (tmp11 - z2)
             * (1.414213562f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG
             + z1;
+        /* Odd part */
         z1 = (*inptr.offset((8i32 * 1i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG; /* c3 */
         z2 = (*inptr.offset((8i32 * 3i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 3i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 3i32) as isize) as c_int) as JLONG; /* c5 */
         z3 = (*inptr.offset((8i32 * 5i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 5i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 5i32) as isize) as c_int) as JLONG; /* c7 */
         z4 = (*inptr.offset((8i32 * 7i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 7i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 7i32) as isize) as c_int) as JLONG; /* c7+c5+c3-c1 */
         tmp11 =
-            (z1 + z2) * (1.322312651f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            (z1 + z2) * (1.322312651f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* -c11 */
         tmp12 =
-            (z1 + z3) * (1.163874945f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
-        tmp15 = z1 + z4;
-        tmp13 = tmp15 * (0.937797057f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            (z1 + z3) * (1.163874945f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c5+c9+c11-c3 */
+        tmp15 = z1 + z4; /* c1+c5-c9-c11 */
+        tmp13 = tmp15 * (0.937797057f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* -c5 */
         tmp10 = tmp11 + tmp12 + tmp13
-            - z1 * (2.020082300f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            - z1 * (2.020082300f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c3+c5+c9-c7 */
         tmp14 = (z2 + z3)
-            * -((0.338443458f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG);
+            * -((0.338443458f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG); /* -c9 */
         tmp11 += tmp14
-            + z2 * (0.837223564f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            + z2 * (0.837223564f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c11 */
         tmp12 += tmp14
-            - z3 * (1.572116027f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            - z3 * (1.572116027f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c1-c7 */
         tmp14 = (z2 + z4)
-            * -((1.163874945f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG);
-        tmp11 += tmp14;
+            * -((1.163874945f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG); /* c7 */
+        tmp11 += tmp14; /* c1+c11 */
         tmp13 += tmp14
             + z4 * (2.205608352f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp14 = (z3 + z4)
@@ -1723,6 +1917,7 @@ pub unsafe extern "C" fn jpeg_idct_13x13(
         tmp15 += z1
             + z3 * (0.384515595f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG
             - z4 * (1.742345811f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+        /* Final output stage */
         *wsptr.offset((8i32 * 0i32) as isize) = (tmp20 + tmp10 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((8i32 * 12i32) as isize) = (tmp20 - tmp10 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((8i32 * 1i32) as isize) = (tmp21 + tmp11 >> 13i32 - 2i32) as c_int;
@@ -1737,19 +1932,21 @@ pub unsafe extern "C" fn jpeg_idct_13x13(
         *wsptr.offset((8i32 * 7i32) as isize) = (tmp25 - tmp15 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((8i32 * 6i32) as isize) = (tmp26 >> 13i32 - 2i32) as c_int;
         ctr += 1;
-        inptr = inptr.offset(1isize);
-        quantptr = quantptr.offset(1isize);
-        wsptr = wsptr.offset(1isize)
+        inptr = inptr.offset(1);
+        quantptr = quantptr.offset(1);
+        wsptr = wsptr.offset(1)
     }
+    /* Pass 2: process 13 rows from work array, store into output array. */
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 13i32 {
         outptr = (*output_buf.offset(ctr as isize)).offset(output_col as isize);
-        z1 = *wsptr.offset(0isize) as JLONG + ((ONE as JLONG) << PASS1_BITS + 2i32);
+        /* advance pointer to next row */
+        z1 = *wsptr.offset(0) as JLONG + ((ONE as JLONG) << PASS1_BITS + 2i32);
         z1 = ((z1 as c_ulong) << 13i32) as JLONG;
-        z2 = *wsptr.offset(2isize) as JLONG;
-        z3 = *wsptr.offset(4isize) as JLONG;
-        z4 = *wsptr.offset(6isize) as JLONG;
+        z2 = *wsptr.offset(2) as JLONG;
+        z3 = *wsptr.offset(4) as JLONG;
+        z4 = *wsptr.offset(6) as JLONG;
         tmp10 = z3 + z4;
         tmp11 = z3 - z4;
         tmp12 = tmp10 * (1.155388986f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
@@ -1782,10 +1979,10 @@ pub unsafe extern "C" fn jpeg_idct_13x13(
         tmp26 = (tmp11 - z2)
             * (1.414213562f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG
             + z1;
-        z1 = *wsptr.offset(1isize) as JLONG;
-        z2 = *wsptr.offset(3isize) as JLONG;
-        z3 = *wsptr.offset(5isize) as JLONG;
-        z4 = *wsptr.offset(7isize) as JLONG;
+        z1 = *wsptr.offset(1) as JLONG;
+        z2 = *wsptr.offset(3) as JLONG;
+        z3 = *wsptr.offset(5) as JLONG;
+        z4 = *wsptr.offset(7) as JLONG;
         tmp11 =
             (z1 + z2) * (1.322312651f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp12 =
@@ -1819,36 +2016,67 @@ pub unsafe extern "C" fn jpeg_idct_13x13(
         tmp15 += z1
             + z3 * (0.384515595f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG
             - z4 * (1.742345811f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
-        *outptr.offset(0isize) = *range_limit
+        *outptr.offset(0) = *range_limit
             .offset(((tmp20 + tmp10 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(12isize) = *range_limit
+        *outptr.offset(12) = *range_limit
             .offset(((tmp20 - tmp10 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(1isize) = *range_limit
+        *outptr.offset(1) = *range_limit
             .offset(((tmp21 + tmp11 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(11isize) = *range_limit
+        *outptr.offset(11) = *range_limit
             .offset(((tmp21 - tmp11 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(2isize) = *range_limit
+        *outptr.offset(2) = *range_limit
             .offset(((tmp22 + tmp12 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(10isize) = *range_limit
+        *outptr.offset(10) = *range_limit
             .offset(((tmp22 - tmp12 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(3isize) = *range_limit
+        *outptr.offset(3) = *range_limit
             .offset(((tmp23 + tmp13 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(9isize) = *range_limit
+        *outptr.offset(9) = *range_limit
             .offset(((tmp23 - tmp13 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(4isize) = *range_limit
+        *outptr.offset(4) = *range_limit
             .offset(((tmp24 + tmp14 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(8isize) = *range_limit
+        *outptr.offset(8) = *range_limit
             .offset(((tmp24 - tmp14 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(5isize) = *range_limit
+        *outptr.offset(5) = *range_limit
             .offset(((tmp25 + tmp15 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(7isize) = *range_limit
+        *outptr.offset(7) = *range_limit
             .offset(((tmp25 - tmp15 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(6isize) =
+        *outptr.offset(6) =
             *range_limit.offset(((tmp26 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        wsptr = wsptr.offset(8isize);
+        wsptr = wsptr.offset(8);
         ctr += 1
     }
 }
+/* Even part */
+/* Add fudge factor here for final descale. */
+/* (c4+c6)/2 */
+/* (c4-c6)/2 */
+/* c2 */
+/* c10 */
+/* (c8-c12)/2 */
+/* (c8+c12)/2 */
+/* c6 */
+/* c4 */
+/* (c2-c10)/2 */
+/* (c2+c10)/2 */
+/* c12 */
+/* c8 */
+/* c0 */
+/* Odd part */
+/* c3 */
+/* c5 */
+/* c7 */
+/* c7+c5+c3-c1 */
+/* -c11 */
+/* c5+c9+c11-c3 */
+/* c1+c5-c9-c11 */
+/* -c5 */
+/* c3+c5+c9-c7 */
+/* -c9 */
+/* c11 */
+/* c1-c7 */
+/* c7 */
+/* c1+c11 */
+/* Final output stage */
 /*
  * Perform dequantization and inverse DCT on one block of coefficients,
  * producing a 14x14 output block.
@@ -1857,6 +2085,7 @@ pub unsafe extern "C" fn jpeg_idct_13x13(
  * cK represents sqrt(2) * cos(K*pi/28).
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_idct_14x14(
     mut cinfo: j_decompress_ptr,
     mut compptr: *mut jpeg_component_info,
@@ -1864,7 +2093,7 @@ pub unsafe extern "C" fn jpeg_idct_14x14(
     mut output_buf: JSAMPARRAY,
     mut output_col: JDIMENSION,
 ) {
-    let mut tmp10: JLONG = 0;
+    let mut tmp10: JLONG = 0; /* buffers data between passes */
     let mut tmp11: JLONG = 0;
     let mut tmp12: JLONG = 0;
     let mut tmp13: JLONG = 0;
@@ -1888,34 +2117,37 @@ pub unsafe extern "C" fn jpeg_idct_14x14(
     let mut outptr: JSAMPROW = 0 as *mut JSAMPLE;
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit.offset(CENTERJSAMPLE as isize);
     let mut ctr: c_int = 0;
-    /* buffers data between passes */
     let mut workspace: [c_int; 112] = [0; 112];
+    /* Pass 1: process columns from input, store into work array. */
     inptr = coef_block;
     quantptr = (*compptr).dct_table as *mut ISLOW_MULT_TYPE;
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 8i32 {
+        /* Even part */
         z1 = (*inptr.offset((8i32 * 0i32) as isize) as c_int
             * *quantptr.offset((8i32 * 0i32) as isize) as c_int) as JLONG;
         z1 = ((z1 as c_ulong) << 13i32) as JLONG;
-        z1 += (ONE as JLONG) << CONST_BITS - PASS1_BITS - 1i32;
+        /* Add fudge factor here for final descale. */
+        z1 += (ONE as JLONG) << CONST_BITS - PASS1_BITS - 1i32; /* c4 */
         z4 = (*inptr.offset((8i32 * 4i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 4i32) as isize) as c_int) as JLONG;
-        z2 = z4 * (1.274162392f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            * *quantptr.offset((8i32 * 4i32) as isize) as c_int) as JLONG; /* c12 */
+        z2 = z4 * (1.274162392f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c8 */
         z3 = z4 * (0.314692123f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         z4 = z4 * (0.881747734f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp10 = z1 + z2;
         tmp11 = z1 + z3;
         tmp12 = z1 - z4;
         tmp23 = z1 - (((z2 + z3 - z4) as c_ulong) << 1i32) as JLONG >> 13i32 - 2i32;
+        /* c0 = (c4+c12-c8)*2 */
         z1 = (*inptr.offset((8i32 * 2i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 2i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 2i32) as isize) as c_int) as JLONG; /* c6 */
         z2 = (*inptr.offset((8i32 * 6i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 6i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 6i32) as isize) as c_int) as JLONG; /* c2-c6 */
         z3 =
-            (z1 + z2) * (1.105676686f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            (z1 + z2) * (1.105676686f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c6+c10 */
         tmp13 =
-            z3 + z1 * (0.273079590f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            z3 + z1 * (0.273079590f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c2 */
         tmp14 =
             z3 - z2 * (1.719280954f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp15 = z1 * (0.613604268f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG
@@ -1926,25 +2158,26 @@ pub unsafe extern "C" fn jpeg_idct_14x14(
         tmp25 = tmp11 - tmp14;
         tmp22 = tmp12 + tmp15;
         tmp24 = tmp12 - tmp15;
+        /* Odd part */
         z1 = (*inptr.offset((8i32 * 1i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG; /* c3 */
         z2 = (*inptr.offset((8i32 * 3i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 3i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 3i32) as isize) as c_int) as JLONG; /* c5 */
         z3 = (*inptr.offset((8i32 * 5i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 5i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 5i32) as isize) as c_int) as JLONG; /* c3+c5-c1 */
         z4 = (*inptr.offset((8i32 * 7i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 7i32) as isize) as c_int) as JLONG;
-        tmp13 = ((z4 as c_ulong) << 13i32) as JLONG;
-        tmp14 = z1 + z3;
+            * *quantptr.offset((8i32 * 7i32) as isize) as c_int) as JLONG; /* c9 */
+        tmp13 = ((z4 as c_ulong) << 13i32) as JLONG; /* c9+c11-c13 */
+        tmp14 = z1 + z3; /* c11 */
         tmp11 =
-            (z1 + z2) * (1.334852607f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
-        tmp12 = tmp14 * (1.197448846f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            (z1 + z2) * (1.334852607f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* -c13 */
+        tmp12 = tmp14 * (1.197448846f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c3-c9-c13 */
         tmp10 = tmp11 + tmp12 + tmp13
-            - z1 * (1.126980169f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
-        tmp14 = tmp14 * (0.752406978f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            - z1 * (1.126980169f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c3+c5-c13 */
+        tmp14 = tmp14 * (0.752406978f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c1 */
         tmp16 = tmp14
-            - z1 * (1.061150426f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
-        z1 -= z2;
+            - z1 * (1.061150426f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c1+c9-c11 */
+        z1 -= z2; /* c1+c11-c5 */
         tmp15 = z1 * (0.467085129f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG
             - tmp13;
         tmp16 += tmp15;
@@ -1963,6 +2196,7 @@ pub unsafe extern "C" fn jpeg_idct_14x14(
         tmp15 +=
             z4 + z2 * (0.674957567f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp13 = (((z1 - z3) as c_ulong) << 2i32) as JLONG;
+        /* Final output stage */
         *wsptr.offset((8i32 * 0i32) as isize) = (tmp20 + tmp10 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((8i32 * 13i32) as isize) = (tmp20 - tmp10 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((8i32 * 1i32) as isize) = (tmp21 + tmp11 >> 13i32 - 2i32) as c_int;
@@ -1978,17 +2212,19 @@ pub unsafe extern "C" fn jpeg_idct_14x14(
         *wsptr.offset((8i32 * 6i32) as isize) = (tmp26 + tmp16 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((8i32 * 7i32) as isize) = (tmp26 - tmp16 >> 13i32 - 2i32) as c_int;
         ctr += 1;
-        inptr = inptr.offset(1isize);
-        quantptr = quantptr.offset(1isize);
-        wsptr = wsptr.offset(1isize)
+        inptr = inptr.offset(1);
+        quantptr = quantptr.offset(1);
+        wsptr = wsptr.offset(1)
     }
+    /* Pass 2: process 14 rows from work array, store into output array. */
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 14i32 {
         outptr = (*output_buf.offset(ctr as isize)).offset(output_col as isize);
-        z1 = *wsptr.offset(0isize) as JLONG + ((ONE as JLONG) << PASS1_BITS + 2i32);
+        /* advance pointer to next row */
+        z1 = *wsptr.offset(0) as JLONG + ((ONE as JLONG) << PASS1_BITS + 2i32);
         z1 = ((z1 as c_ulong) << 13i32) as JLONG;
-        z4 = *wsptr.offset(4isize) as JLONG;
+        z4 = *wsptr.offset(4) as JLONG;
         z2 = z4 * (1.274162392f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         z3 = z4 * (0.314692123f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         z4 = z4 * (0.881747734f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
@@ -1996,8 +2232,8 @@ pub unsafe extern "C" fn jpeg_idct_14x14(
         tmp11 = z1 + z3;
         tmp12 = z1 - z4;
         tmp23 = z1 - (((z2 + z3 - z4) as c_ulong) << 1i32) as JLONG;
-        z1 = *wsptr.offset(2isize) as JLONG;
-        z2 = *wsptr.offset(6isize) as JLONG;
+        z1 = *wsptr.offset(2) as JLONG;
+        z2 = *wsptr.offset(6) as JLONG;
         z3 =
             (z1 + z2) * (1.105676686f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp13 =
@@ -2012,10 +2248,10 @@ pub unsafe extern "C" fn jpeg_idct_14x14(
         tmp25 = tmp11 - tmp14;
         tmp22 = tmp12 + tmp15;
         tmp24 = tmp12 - tmp15;
-        z1 = *wsptr.offset(1isize) as JLONG;
-        z2 = *wsptr.offset(3isize) as JLONG;
-        z3 = *wsptr.offset(5isize) as JLONG;
-        z4 = *wsptr.offset(7isize) as JLONG;
+        z1 = *wsptr.offset(1) as JLONG;
+        z2 = *wsptr.offset(3) as JLONG;
+        z3 = *wsptr.offset(5) as JLONG;
+        z4 = *wsptr.offset(7) as JLONG;
         z4 = ((z4 as c_ulong) << 13i32) as JLONG;
         tmp14 = z1 + z3;
         tmp11 =
@@ -2044,38 +2280,62 @@ pub unsafe extern "C" fn jpeg_idct_14x14(
         tmp15 += tmp13
             + z2 * (0.674957567f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp13 = (((z1 - z3) as c_ulong) << 13i32) as JLONG + z4;
-        *outptr.offset(0isize) = *range_limit
+        *outptr.offset(0) = *range_limit
             .offset(((tmp20 + tmp10 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(13isize) = *range_limit
+        *outptr.offset(13) = *range_limit
             .offset(((tmp20 - tmp10 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(1isize) = *range_limit
+        *outptr.offset(1) = *range_limit
             .offset(((tmp21 + tmp11 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(12isize) = *range_limit
+        *outptr.offset(12) = *range_limit
             .offset(((tmp21 - tmp11 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(2isize) = *range_limit
+        *outptr.offset(2) = *range_limit
             .offset(((tmp22 + tmp12 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(11isize) = *range_limit
+        *outptr.offset(11) = *range_limit
             .offset(((tmp22 - tmp12 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(3isize) = *range_limit
+        *outptr.offset(3) = *range_limit
             .offset(((tmp23 + tmp13 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(10isize) = *range_limit
+        *outptr.offset(10) = *range_limit
             .offset(((tmp23 - tmp13 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(4isize) = *range_limit
+        *outptr.offset(4) = *range_limit
             .offset(((tmp24 + tmp14 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(9isize) = *range_limit
+        *outptr.offset(9) = *range_limit
             .offset(((tmp24 - tmp14 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(5isize) = *range_limit
+        *outptr.offset(5) = *range_limit
             .offset(((tmp25 + tmp15 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(8isize) = *range_limit
+        *outptr.offset(8) = *range_limit
             .offset(((tmp25 - tmp15 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(6isize) = *range_limit
+        *outptr.offset(6) = *range_limit
             .offset(((tmp26 + tmp16 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(7isize) = *range_limit
+        *outptr.offset(7) = *range_limit
             .offset(((tmp26 - tmp16 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        wsptr = wsptr.offset(8isize);
+        wsptr = wsptr.offset(8);
         ctr += 1
     }
 }
+/* Even part */
+/* Add fudge factor here for final descale. */
+/* c4 */
+/* c12 */
+/* c8 */
+/* c0 = (c4+c12-c8)*2 */
+/* c6 */
+/* c2-c6 */
+/* c6+c10 */
+/* c2 */
+/* Odd part */
+/* c3 */
+/* c5 */
+/* c3+c5-c1 */
+/* c9 */
+/* c9+c11-c13 */
+/* c11 */
+/* -c13 */
+/* c3-c9-c13 */
+/* c3+c5-c13 */
+/* c1 */
+/* c1+c9-c11 */
+/* c1+c11-c5 */
+/* Final output stage */
 /*
  * Perform dequantization and inverse DCT on one block of coefficients,
  * producing a 15x15 output block.
@@ -2084,6 +2344,7 @@ pub unsafe extern "C" fn jpeg_idct_14x14(
  * cK represents sqrt(2) * cos(K*pi/30).
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_idct_15x15(
     mut cinfo: j_decompress_ptr,
     mut compptr: *mut jpeg_component_info,
@@ -2091,7 +2352,7 @@ pub unsafe extern "C" fn jpeg_idct_15x15(
     mut output_buf: JSAMPARRAY,
     mut output_col: JDIMENSION,
 ) {
-    let mut tmp10: JLONG = 0;
+    let mut tmp10: JLONG = 0; /* buffers data between passes */
     let mut tmp11: JLONG = 0;
     let mut tmp12: JLONG = 0;
     let mut tmp13: JLONG = 0;
@@ -2116,31 +2377,33 @@ pub unsafe extern "C" fn jpeg_idct_15x15(
     let mut outptr: JSAMPROW = 0 as *mut JSAMPLE;
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit.offset(CENTERJSAMPLE as isize);
     let mut ctr: c_int = 0;
-    /* buffers data between passes */
     let mut workspace: [c_int; 120] = [0; 120];
+    /* Pass 1: process columns from input, store into work array. */
     inptr = coef_block;
     quantptr = (*compptr).dct_table as *mut ISLOW_MULT_TYPE;
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 8i32 {
+        /* Even part */
         z1 = (*inptr.offset((8i32 * 0i32) as isize) as c_int
             * *quantptr.offset((8i32 * 0i32) as isize) as c_int) as JLONG;
         z1 = ((z1 as c_ulong) << 13i32) as JLONG;
-        z1 += (ONE as JLONG) << CONST_BITS - PASS1_BITS - 1i32;
+        /* Add fudge factor here for final descale. */
+        z1 += (ONE as JLONG) << CONST_BITS - PASS1_BITS - 1i32; /* c12 */
         z2 = (*inptr.offset((8i32 * 2i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 2i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 2i32) as isize) as c_int) as JLONG; /* c6 */
         z3 = (*inptr.offset((8i32 * 4i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 4i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 4i32) as isize) as c_int) as JLONG; /* c0 = (c6-c12)*2 */
         z4 = (*inptr.offset((8i32 * 6i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 6i32) as isize) as c_int) as JLONG;
-        tmp10 = z4 * (0.437016024f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
-        tmp11 = z4 * (1.144122806f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
-        tmp12 = z1 - tmp10;
-        tmp13 = z1 + tmp11;
-        z1 -= (((tmp11 - tmp10) as c_ulong) << 1i32) as JLONG;
-        z4 = z2 - z3;
-        z3 += z2;
-        tmp10 = z3 * (1.337628990f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            * *quantptr.offset((8i32 * 6i32) as isize) as c_int) as JLONG; /* (c2+c4)/2 */
+        tmp10 = z4 * (0.437016024f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* (c2-c4)/2 */
+        tmp11 = z4 * (1.144122806f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c4+c14 */
+        tmp12 = z1 - tmp10; /* (c8+c14)/2 */
+        tmp13 = z1 + tmp11; /* (c8-c14)/2 */
+        z1 -= (((tmp11 - tmp10) as c_ulong) << 1i32) as JLONG; /* (c6+c12)/2 */
+        z4 = z2 - z3; /* (c6-c12)/2 */
+        z3 += z2; /* c10 = c6-c12 */
+        tmp10 = z3 * (1.337628990f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c0 = (c6-c12)*2 */
         tmp11 = z4 * (0.045680613f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         z2 = z2 * (1.439773946f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp20 = tmp13 + tmp10 + tmp11;
@@ -2156,27 +2419,28 @@ pub unsafe extern "C" fn jpeg_idct_15x15(
         tmp11 += tmp11;
         tmp22 = z1 + tmp11;
         tmp27 = z1 - tmp11 - tmp11;
+        /* Odd part */
         z1 = (*inptr.offset((8i32 * 1i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG; /* c5 */
         z2 = (*inptr.offset((8i32 * 3i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 3i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 3i32) as isize) as c_int) as JLONG; /* c9 */
         z4 = (*inptr.offset((8i32 * 5i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 5i32) as isize) as c_int) as JLONG;
-        z3 = z4 * (1.224744871f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            * *quantptr.offset((8i32 * 5i32) as isize) as c_int) as JLONG; /* c3-c9 */
+        z3 = z4 * (1.224744871f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c3+c9 */
         z4 = (*inptr.offset((8i32 * 7i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 7i32) as isize) as c_int) as JLONG;
-        tmp13 = z2 - z4;
+            * *quantptr.offset((8i32 * 7i32) as isize) as c_int) as JLONG; /* -c9 */
+        tmp13 = z2 - z4; /* -c3 */
         tmp15 = (z1 + tmp13)
-            * (0.831253876f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            * (0.831253876f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c1 */
         tmp11 = tmp15
-            + z1 * (0.513743148f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            + z1 * (0.513743148f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c1+c7 */
         tmp14 = tmp15
-            - tmp13 * (2.176250899f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
-        tmp13 = z2 * -((0.831253876f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG);
-        tmp15 = z2 * -((1.344997024f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG);
-        z2 = z1 - z4;
+            - tmp13 * (2.176250899f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c1-c13 */
+        tmp13 = z2 * -((0.831253876f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG); /* c5 */
+        tmp15 = z2 * -((1.344997024f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG); /* c11 */
+        z2 = z1 - z4; /* c7-c11 */
         tmp12 =
-            z3 + z2 * (1.406466353f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            z3 + z2 * (1.406466353f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c11+c13 */
         tmp10 = tmp12
             + z4 * (2.457431844f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG
             - tmp15;
@@ -2193,6 +2457,7 @@ pub unsafe extern "C" fn jpeg_idct_15x15(
         tmp15 += z2
             - z4 * (0.869244010f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG
             + z3;
+        /* Final output stage */
         *wsptr.offset((8i32 * 0i32) as isize) = (tmp20 + tmp10 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((8i32 * 14i32) as isize) = (tmp20 - tmp10 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((8i32 * 1i32) as isize) = (tmp21 + tmp11 >> 13i32 - 2i32) as c_int;
@@ -2209,19 +2474,21 @@ pub unsafe extern "C" fn jpeg_idct_15x15(
         *wsptr.offset((8i32 * 8i32) as isize) = (tmp26 - tmp16 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((8i32 * 7i32) as isize) = (tmp27 >> 13i32 - 2i32) as c_int;
         ctr += 1;
-        inptr = inptr.offset(1isize);
-        quantptr = quantptr.offset(1isize);
-        wsptr = wsptr.offset(1isize)
+        inptr = inptr.offset(1);
+        quantptr = quantptr.offset(1);
+        wsptr = wsptr.offset(1)
     }
+    /* Pass 2: process 15 rows from work array, store into output array. */
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 15i32 {
         outptr = (*output_buf.offset(ctr as isize)).offset(output_col as isize);
-        z1 = *wsptr.offset(0isize) as JLONG + ((ONE as JLONG) << PASS1_BITS + 2i32);
+        /* advance pointer to next row */
+        z1 = *wsptr.offset(0) as JLONG + ((ONE as JLONG) << PASS1_BITS + 2i32);
         z1 = ((z1 as c_ulong) << 13i32) as JLONG;
-        z2 = *wsptr.offset(2isize) as JLONG;
-        z3 = *wsptr.offset(4isize) as JLONG;
-        z4 = *wsptr.offset(6isize) as JLONG;
+        z2 = *wsptr.offset(2) as JLONG;
+        z3 = *wsptr.offset(4) as JLONG;
+        z4 = *wsptr.offset(6) as JLONG;
         tmp10 = z4 * (0.437016024f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp11 = z4 * (1.144122806f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp12 = z1 - tmp10;
@@ -2245,11 +2512,11 @@ pub unsafe extern "C" fn jpeg_idct_15x15(
         tmp11 += tmp11;
         tmp22 = z1 + tmp11;
         tmp27 = z1 - tmp11 - tmp11;
-        z1 = *wsptr.offset(1isize) as JLONG;
-        z2 = *wsptr.offset(3isize) as JLONG;
-        z4 = *wsptr.offset(5isize) as JLONG;
+        z1 = *wsptr.offset(1) as JLONG;
+        z2 = *wsptr.offset(3) as JLONG;
+        z4 = *wsptr.offset(5) as JLONG;
         z3 = z4 * (1.224744871f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
-        z4 = *wsptr.offset(7isize) as JLONG;
+        z4 = *wsptr.offset(7) as JLONG;
         tmp13 = z2 - z4;
         tmp15 = (z1 + tmp13)
             * (0.831253876f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
@@ -2278,40 +2545,69 @@ pub unsafe extern "C" fn jpeg_idct_15x15(
         tmp15 += z2
             - z4 * (0.869244010f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG
             + z3;
-        *outptr.offset(0isize) = *range_limit
+        *outptr.offset(0) = *range_limit
             .offset(((tmp20 + tmp10 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(14isize) = *range_limit
+        *outptr.offset(14) = *range_limit
             .offset(((tmp20 - tmp10 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(1isize) = *range_limit
+        *outptr.offset(1) = *range_limit
             .offset(((tmp21 + tmp11 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(13isize) = *range_limit
+        *outptr.offset(13) = *range_limit
             .offset(((tmp21 - tmp11 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(2isize) = *range_limit
+        *outptr.offset(2) = *range_limit
             .offset(((tmp22 + tmp12 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(12isize) = *range_limit
+        *outptr.offset(12) = *range_limit
             .offset(((tmp22 - tmp12 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(3isize) = *range_limit
+        *outptr.offset(3) = *range_limit
             .offset(((tmp23 + tmp13 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(11isize) = *range_limit
+        *outptr.offset(11) = *range_limit
             .offset(((tmp23 - tmp13 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(4isize) = *range_limit
+        *outptr.offset(4) = *range_limit
             .offset(((tmp24 + tmp14 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(10isize) = *range_limit
+        *outptr.offset(10) = *range_limit
             .offset(((tmp24 - tmp14 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(5isize) = *range_limit
+        *outptr.offset(5) = *range_limit
             .offset(((tmp25 + tmp15 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(9isize) = *range_limit
+        *outptr.offset(9) = *range_limit
             .offset(((tmp25 - tmp15 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(6isize) = *range_limit
+        *outptr.offset(6) = *range_limit
             .offset(((tmp26 + tmp16 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(8isize) = *range_limit
+        *outptr.offset(8) = *range_limit
             .offset(((tmp26 - tmp16 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(7isize) =
+        *outptr.offset(7) =
             *range_limit.offset(((tmp27 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        wsptr = wsptr.offset(8isize);
+        wsptr = wsptr.offset(8);
         ctr += 1
     }
 }
+/* Even part */
+/* Add fudge factor here for final descale. */
+/* c12 */
+/* c6 */
+/* c0 = (c6-c12)*2 */
+/* (c2+c4)/2 */
+/* (c2-c4)/2 */
+/* c4+c14 */
+/* (c8+c14)/2 */
+/* (c8-c14)/2 */
+/* (c6+c12)/2 */
+/* (c6-c12)/2 */
+/* c10 = c6-c12 */
+/* c0 = (c6-c12)*2 */
+/* Odd part */
+/* c5 */
+/* c9 */
+/* c3-c9 */
+/* c3+c9 */
+/* -c9 */
+/* -c3 */
+/* c1 */
+/* c1+c7 */
+/* c1-c13 */
+/* c5 */
+/* c11 */
+/* c7-c11 */
+/* c11+c13 */
+/* Final output stage */
 /*
  * Perform dequantization and inverse DCT on one block of coefficients,
  * producing a 16x16 output block.
@@ -2320,6 +2616,7 @@ pub unsafe extern "C" fn jpeg_idct_15x15(
  * cK represents sqrt(2) * cos(K*pi/32).
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_idct_16x16(
     mut cinfo: j_decompress_ptr,
     mut compptr: *mut jpeg_component_info,
@@ -2327,7 +2624,7 @@ pub unsafe extern "C" fn jpeg_idct_16x16(
     mut output_buf: JSAMPARRAY,
     mut output_col: JDIMENSION,
 ) {
-    let mut tmp0: JLONG = 0;
+    let mut tmp0: JLONG = 0; /* buffers data between passes */
     let mut tmp1: JLONG = 0;
     let mut tmp2: JLONG = 0;
     let mut tmp3: JLONG = 0;
@@ -2353,25 +2650,27 @@ pub unsafe extern "C" fn jpeg_idct_16x16(
     let mut outptr: JSAMPROW = 0 as *mut JSAMPLE;
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit.offset(CENTERJSAMPLE as isize);
     let mut ctr: c_int = 0;
-    /* buffers data between passes */
     let mut workspace: [c_int; 128] = [0; 128];
+    /* Pass 1: process columns from input, store into work array. */
     inptr = coef_block;
     quantptr = (*compptr).dct_table as *mut ISLOW_MULT_TYPE;
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 8i32 {
+        /* Even part */
         tmp0 = (*inptr.offset((8i32 * 0i32) as isize) as c_int
             * *quantptr.offset((8i32 * 0i32) as isize) as c_int) as JLONG;
         tmp0 = ((tmp0 as c_ulong) << 13i32) as JLONG;
-        tmp0 += (1i32 << CONST_BITS - PASS1_BITS - 1i32) as c_long;
+        /* Add fudge factor here for final descale. */
+        tmp0 += (1i32 << CONST_BITS - PASS1_BITS - 1i32) as c_long; /* c4[16] = c2[8] */
         z1 = (*inptr.offset((8i32 * 4i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 4i32) as isize) as c_int) as JLONG;
-        tmp1 = z1 * (1.306562965f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
-        tmp2 = z1 * 4433i32 as JLONG;
-        tmp10 = tmp0 + tmp1;
-        tmp11 = tmp0 - tmp1;
-        tmp12 = tmp0 + tmp2;
-        tmp13 = tmp0 - tmp2;
+            * *quantptr.offset((8i32 * 4i32) as isize) as c_int) as JLONG; /* c12[16] = c6[8] */
+        tmp1 = z1 * (1.306562965f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c14[16] = c7[8] */
+        tmp2 = z1 * 4433i32 as JLONG; /* c2[16] = c1[8] */
+        tmp10 = tmp0 + tmp1; /* (c6+c2)[16] = (c3+c1)[8] */
+        tmp11 = tmp0 - tmp1; /* (c6-c14)[16] = (c3-c7)[8] */
+        tmp12 = tmp0 + tmp2; /* (c2-c10)[16] = (c1-c5)[8] */
+        tmp13 = tmp0 - tmp2; /* (c10-c14)[16] = (c5-c7)[8] */
         z1 = (*inptr.offset((8i32 * 2i32) as isize) as c_int
             * *quantptr.offset((8i32 * 2i32) as isize) as c_int) as JLONG;
         z2 = (*inptr.offset((8i32 * 6i32) as isize) as c_int
@@ -2393,42 +2692,43 @@ pub unsafe extern "C" fn jpeg_idct_16x16(
         tmp25 = tmp13 - tmp2;
         tmp23 = tmp11 + tmp3;
         tmp24 = tmp11 - tmp3;
+        /* Odd part */
         z1 = (*inptr.offset((8i32 * 1i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 1i32) as isize) as c_int) as JLONG; /* c3 */
         z2 = (*inptr.offset((8i32 * 3i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 3i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 3i32) as isize) as c_int) as JLONG; /* c5 */
         z3 = (*inptr.offset((8i32 * 5i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 5i32) as isize) as c_int) as JLONG;
+            * *quantptr.offset((8i32 * 5i32) as isize) as c_int) as JLONG; /* c7 */
         z4 = (*inptr.offset((8i32 * 7i32) as isize) as c_int
-            * *quantptr.offset((8i32 * 7i32) as isize) as c_int) as JLONG;
-        tmp11 = z1 + z3;
+            * *quantptr.offset((8i32 * 7i32) as isize) as c_int) as JLONG; /* c9 */
+        tmp11 = z1 + z3; /* c11 */
         tmp1 =
-            (z1 + z2) * (1.353318001f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
-        tmp2 = tmp11 * (1.247225013f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            (z1 + z2) * (1.353318001f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c13 */
+        tmp2 = tmp11 * (1.247225013f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c7+c5+c3-c1 */
         tmp3 =
-            (z1 + z4) * (1.093201867f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            (z1 + z4) * (1.093201867f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c9+c11+c13-c15 */
         tmp10 =
-            (z1 - z4) * (0.897167586f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
-        tmp11 = tmp11 * (0.666655658f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            (z1 - z4) * (0.897167586f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c15 */
+        tmp11 = tmp11 * (0.666655658f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c9+c11-c3-c15 */
         tmp12 =
-            (z1 - z2) * (0.410524528f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            (z1 - z2) * (0.410524528f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c5+c7+c15-c3 */
         tmp0 = tmp1 + tmp2 + tmp3
-            - z1 * (2.286341144f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            - z1 * (2.286341144f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c1 */
         tmp13 = tmp10 + tmp11 + tmp12
-            - z1 * (1.835730603f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            - z1 * (1.835730603f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c1+c11-c9-c13 */
         z1 =
-            (z2 + z3) * (0.138617169f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            (z2 + z3) * (0.138617169f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c1+c5+c13-c7 */
         tmp1 +=
-            z1 + z2 * (0.071888074f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            z1 + z2 * (0.071888074f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* -c11 */
         tmp2 +=
-            z1 - z3 * (1.125726048f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            z1 - z3 * (1.125726048f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c3+c11+c15-c7 */
         z1 =
-            (z3 - z2) * (1.407403738f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            (z3 - z2) * (1.407403738f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* -c5 */
         tmp11 +=
-            z1 - z3 * (0.766367282f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
+            z1 - z3 * (0.766367282f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* c1+c5+c9-c13 */
         tmp12 +=
-            z1 + z2 * (1.971951411f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
-        z2 += z4;
+            z1 + z2 * (1.971951411f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG; /* -c3 */
+        z2 += z4; /* c13 */
         z1 = z2 * -((0.666655658f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG);
         tmp1 += z1;
         tmp3 +=
@@ -2445,6 +2745,7 @@ pub unsafe extern "C" fn jpeg_idct_16x16(
             (z4 - z3) * (0.410524528f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp10 += z2;
         tmp11 += z2;
+        /* Final output stage */
         *wsptr.offset((8i32 * 0i32) as isize) = (tmp20 + tmp0 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((8i32 * 15i32) as isize) = (tmp20 - tmp0 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((8i32 * 1i32) as isize) = (tmp21 + tmp1 >> 13i32 - 2i32) as c_int;
@@ -2462,25 +2763,27 @@ pub unsafe extern "C" fn jpeg_idct_16x16(
         *wsptr.offset((8i32 * 7i32) as isize) = (tmp27 + tmp13 >> 13i32 - 2i32) as c_int;
         *wsptr.offset((8i32 * 8i32) as isize) = (tmp27 - tmp13 >> 13i32 - 2i32) as c_int;
         ctr += 1;
-        inptr = inptr.offset(1isize);
-        quantptr = quantptr.offset(1isize);
-        wsptr = wsptr.offset(1isize)
+        inptr = inptr.offset(1);
+        quantptr = quantptr.offset(1);
+        wsptr = wsptr.offset(1)
     }
+    /* Pass 2: process 16 rows from work array, store into output array. */
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 16i32 {
         outptr = (*output_buf.offset(ctr as isize)).offset(output_col as isize);
-        tmp0 = *wsptr.offset(0isize) as JLONG + ((ONE as JLONG) << PASS1_BITS + 2i32);
+        /* advance pointer to next row */
+        tmp0 = *wsptr.offset(0) as JLONG + ((ONE as JLONG) << PASS1_BITS + 2i32);
         tmp0 = ((tmp0 as c_ulong) << 13i32) as JLONG;
-        z1 = *wsptr.offset(4isize) as JLONG;
+        z1 = *wsptr.offset(4) as JLONG;
         tmp1 = z1 * (1.306562965f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp2 = z1 * 4433i32 as JLONG;
         tmp10 = tmp0 + tmp1;
         tmp11 = tmp0 - tmp1;
         tmp12 = tmp0 + tmp2;
         tmp13 = tmp0 - tmp2;
-        z1 = *wsptr.offset(2isize) as JLONG;
-        z2 = *wsptr.offset(6isize) as JLONG;
+        z1 = *wsptr.offset(2) as JLONG;
+        z2 = *wsptr.offset(6) as JLONG;
         z3 = z1 - z2;
         z4 = z3 * (0.275899379f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         z3 = z3 * (1.387039845f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
@@ -2498,10 +2801,10 @@ pub unsafe extern "C" fn jpeg_idct_16x16(
         tmp25 = tmp13 - tmp2;
         tmp23 = tmp11 + tmp3;
         tmp24 = tmp11 - tmp3;
-        z1 = *wsptr.offset(1isize) as JLONG;
-        z2 = *wsptr.offset(3isize) as JLONG;
-        z3 = *wsptr.offset(5isize) as JLONG;
-        z4 = *wsptr.offset(7isize) as JLONG;
+        z1 = *wsptr.offset(1) as JLONG;
+        z2 = *wsptr.offset(3) as JLONG;
+        z3 = *wsptr.offset(5) as JLONG;
+        z4 = *wsptr.offset(7) as JLONG;
         tmp11 = z1 + z3;
         tmp1 =
             (z1 + z2) * (1.353318001f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
@@ -2546,39 +2849,73 @@ pub unsafe extern "C" fn jpeg_idct_16x16(
             (z4 - z3) * (0.410524528f64 * ((1i32 as JLONG) << 13i32) as c_double + 0.5f64) as JLONG;
         tmp10 += z2;
         tmp11 += z2;
-        *outptr.offset(0isize) = *range_limit
+        *outptr.offset(0) = *range_limit
             .offset(((tmp20 + tmp0 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(15isize) = *range_limit
+        *outptr.offset(15) = *range_limit
             .offset(((tmp20 - tmp0 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(1isize) = *range_limit
+        *outptr.offset(1) = *range_limit
             .offset(((tmp21 + tmp1 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(14isize) = *range_limit
+        *outptr.offset(14) = *range_limit
             .offset(((tmp21 - tmp1 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(2isize) = *range_limit
+        *outptr.offset(2) = *range_limit
             .offset(((tmp22 + tmp2 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(13isize) = *range_limit
+        *outptr.offset(13) = *range_limit
             .offset(((tmp22 - tmp2 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(3isize) = *range_limit
+        *outptr.offset(3) = *range_limit
             .offset(((tmp23 + tmp3 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(12isize) = *range_limit
+        *outptr.offset(12) = *range_limit
             .offset(((tmp23 - tmp3 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(4isize) = *range_limit
+        *outptr.offset(4) = *range_limit
             .offset(((tmp24 + tmp10 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(11isize) = *range_limit
+        *outptr.offset(11) = *range_limit
             .offset(((tmp24 - tmp10 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(5isize) = *range_limit
+        *outptr.offset(5) = *range_limit
             .offset(((tmp25 + tmp11 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(10isize) = *range_limit
+        *outptr.offset(10) = *range_limit
             .offset(((tmp25 - tmp11 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(6isize) = *range_limit
+        *outptr.offset(6) = *range_limit
             .offset(((tmp26 + tmp12 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(9isize) = *range_limit
+        *outptr.offset(9) = *range_limit
             .offset(((tmp26 - tmp12 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(7isize) = *range_limit
+        *outptr.offset(7) = *range_limit
             .offset(((tmp27 + tmp13 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        *outptr.offset(8isize) = *range_limit
+        *outptr.offset(8) = *range_limit
             .offset(((tmp27 - tmp13 >> 13i32 + 2i32 + 3i32) as c_int & RANGE_MASK) as isize);
-        wsptr = wsptr.offset(8isize);
+        wsptr = wsptr.offset(8);
         ctr += 1
     }
 }
+/* Even part */
+/* Add fudge factor here for final descale. */
+/* c4[16] = c2[8] */
+/* c12[16] = c6[8] */
+/* c14[16] = c7[8] */
+/* c2[16] = c1[8] */
+/* (c6+c2)[16] = (c3+c1)[8] */
+/* (c6-c14)[16] = (c3-c7)[8] */
+/* (c2-c10)[16] = (c1-c5)[8] */
+/* (c10-c14)[16] = (c5-c7)[8] */
+/* Odd part */
+/* c3 */
+/* c5 */
+/* c7 */
+/* c9 */
+/* c11 */
+/* c13 */
+/* c7+c5+c3-c1 */
+/* c9+c11+c13-c15 */
+/* c15 */
+/* c9+c11-c3-c15 */
+/* c5+c7+c15-c3 */
+/* c1 */
+/* c1+c11-c9-c13 */
+/* c1+c5+c13-c7 */
+/* -c11 */
+/* c3+c11+c15-c7 */
+/* -c5 */
+/* c1+c5+c9-c13 */
+/* -c3 */
+/* c13 */
+/* Final output stage */
+/* DCT_ISLOW_SUPPORTED */
+/* IDCT_SCALING_SUPPORTED */

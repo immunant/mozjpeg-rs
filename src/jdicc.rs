@@ -1,4 +1,4 @@
-pub use crate::jerror::{
+pub use super::jerror::{
     C2RustUnnamed_3, JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
     JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID, JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
     JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE, JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
@@ -33,23 +33,22 @@ pub use crate::jmorecfg_h::{
     boolean, FALSE, JCOEF, JDIMENSION, JOCTET, JSAMPLE, TRUE, UINT16, UINT8,
 };
 pub use crate::jpegint_h::{
-    inverse_DCT_method_ptr, jpeg_color_deconverter, jpeg_color_quantizer, jpeg_d_coef_controller,
-    jpeg_d_main_controller, jpeg_d_post_controller, jpeg_decomp_master, jpeg_entropy_decoder,
-    jpeg_input_controller, jpeg_inverse_dct, jpeg_marker_reader, jpeg_upsampler, DSTATE_READY,
-    JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE,
-    J_BUF_MODE,
+    inverse_DCT_method_ptr, DSTATE_READY, JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT,
+    JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, J_BUF_MODE,
 };
 pub use crate::jpeglib_h::{
-    j_common_ptr, j_decompress_ptr, jpeg_common_struct, jpeg_component_info,
-    jpeg_decompress_struct, jpeg_error_mgr, jpeg_marker_parser_method, jpeg_marker_struct,
-    jpeg_memory_mgr, jpeg_progress_mgr, jpeg_saved_marker_ptr, jpeg_source_mgr,
-    jvirt_barray_control, jvirt_barray_ptr, jvirt_sarray_control, jvirt_sarray_ptr,
-    C2RustUnnamed_2, JCS_YCbCr, JBLOCK, JBLOCKARRAY, JBLOCKROW, JCOEFPTR, JCS_CMYK, JCS_EXT_ABGR,
-    JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX,
-    JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK,
-    JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JDITHER_FS, JDITHER_NONE, JDITHER_ORDERED, JHUFF_TBL,
-    JPEG_APP0, JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD,
-    J_DITHER_MODE,
+    j_common_ptr, j_decompress_ptr, jpeg_color_deconverter, jpeg_color_quantizer,
+    jpeg_common_struct, jpeg_component_info, jpeg_d_coef_controller, jpeg_d_main_controller,
+    jpeg_d_post_controller, jpeg_decomp_master, jpeg_decompress_struct, jpeg_entropy_decoder,
+    jpeg_error_mgr, jpeg_input_controller, jpeg_inverse_dct, jpeg_marker_parser_method,
+    jpeg_marker_reader, jpeg_marker_struct, jpeg_memory_mgr, jpeg_progress_mgr,
+    jpeg_saved_marker_ptr, jpeg_source_mgr, jpeg_upsampler, jvirt_barray_control, jvirt_barray_ptr,
+    jvirt_sarray_control, jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr, JBLOCK, JBLOCKARRAY,
+    JBLOCKROW, JCOEFPTR, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA,
+    JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB,
+    JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW,
+    JDITHER_FS, JDITHER_NONE, JDITHER_ORDERED, JHUFF_TBL, JPEG_APP0, JQUANT_TBL, JSAMPARRAY,
+    JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD, J_DITHER_MODE,
 };
 pub use crate::stddef_h::{size_t, NULL};
 use crate::stdlib::malloc;
@@ -69,31 +68,34 @@ use libc::{self, c_char, c_int, c_uint, c_ulong};
  * just knows how to get the profile data from a JPEG file while reading it.
  */
 /* <stdlib.h> should declare malloc() */
-/* JPEG marker code for ICC */
+
 pub const ICC_MARKER: c_int = JPEG_APP0 + 2i32;
-/* size of non-profile data in APP2 */
+/* JPEG marker code for ICC */
+
 pub const ICC_OVERHEAD_LEN: c_int = 14i32;
+/* size of non-profile data in APP2 */
 /*
  * Handy subroutine to test whether a saved marker is an ICC profile marker.
  */
+
 unsafe extern "C" fn marker_is_icc(mut marker: jpeg_saved_marker_ptr) -> boolean {
     return ((*marker).marker as c_int == ICC_MARKER
         && (*marker).data_length >= ICC_OVERHEAD_LEN as c_uint
-        && *(*marker).data.offset(0isize) as c_int == 0x49i32
-        && *(*marker).data.offset(1isize) as c_int == 0x43i32
-        && *(*marker).data.offset(2isize) as c_int == 0x43i32
-        && *(*marker).data.offset(3isize) as c_int == 0x5fi32
-        && *(*marker).data.offset(4isize) as c_int == 0x50i32
-        && *(*marker).data.offset(5isize) as c_int == 0x52i32
-        && *(*marker).data.offset(6isize) as c_int == 0x4fi32
-        && *(*marker).data.offset(7isize) as c_int == 0x46i32
-        && *(*marker).data.offset(8isize) as c_int == 0x49i32
-        && *(*marker).data.offset(9isize) as c_int == 0x4ci32
-        && *(*marker).data.offset(10isize) as c_int == 0x45i32
-        && *(*marker).data.offset(11isize) as c_int == 0i32) as c_int;
+        && *(*marker).data.offset(0) as c_int == 0x49i32
+        && *(*marker).data.offset(1) as c_int == 0x43i32
+        && *(*marker).data.offset(2) as c_int == 0x43i32
+        && *(*marker).data.offset(3) as c_int == 0x5fi32
+        && *(*marker).data.offset(4) as c_int == 0x50i32
+        && *(*marker).data.offset(5) as c_int == 0x52i32
+        && *(*marker).data.offset(6) as c_int == 0x4fi32
+        && *(*marker).data.offset(7) as c_int == 0x46i32
+        && *(*marker).data.offset(8) as c_int == 0x49i32
+        && *(*marker).data.offset(9) as c_int == 0x4ci32
+        && *(*marker).data.offset(10) as c_int == 0x45i32
+        && *(*marker).data.offset(11) as c_int == 0i32) as c_int;
 }
+/* Accessor functions for extension parameters */
 /* Read ICC profile.  See libjpeg.txt for usage information. */
-/* verify the identifying string */
 /*
  * See if there was an ICC profile in the JPEG file being read; if so,
  * reassemble and return the profile data.
@@ -111,6 +113,7 @@ unsafe extern "C" fn marker_is_icc(mut marker: jpeg_saved_marker_ptr) -> boolean
  * finishes.)
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_read_icc_profile(
     mut cinfo: j_decompress_ptr,
     mut icc_data_ptr: *mut *mut JOCTET,
@@ -121,63 +124,73 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
     let mut seq_no: c_int = 0;
     let mut icc_data: *mut JOCTET = 0 as *mut JOCTET;
     let mut total_length: c_uint = 0;
-    /* 1 if marker found */
-    let mut marker_present: [c_char; 256] = [0; 256];
-    /* size of profile data in marker */
-    let mut data_length: [c_uint; 256] = [0; 256];
-    /* offset for data in marker */
-    let mut data_offset: [c_uint; 256] = [0; 256];
+    /* sufficient since marker numbers are bytes */
+    let mut marker_present: [c_char; 256] = [0; 256]; /* 1 if marker found */
+    let mut data_length: [c_uint; 256] = [0; 256]; /* size of profile data in marker */
+    let mut data_offset: [c_uint; 256] = [0; 256]; /* offset for data in marker */
     if icc_data_ptr.is_null() || icc_data_len.is_null() {
-        (*(*cinfo).err).msg_code = JERR_BUFFER_SIZE as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BUFFER_SIZE as c_int; /* avoid confusion if FALSE return */
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     if (*cinfo).global_state < DSTATE_READY {
-        (*(*cinfo).err).msg_code = JERR_BAD_STATE as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] = (*cinfo).global_state;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_STATE as c_int;
+        (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     *icc_data_ptr = NULL as *mut JOCTET;
     *icc_data_len = 0i32 as c_uint;
-    seq_no = 1i32;
+    /* This first pass over the saved markers discovers whether there are
+     * any ICC markers and verifies the consistency of the marker numbering.
+     */
+    seq_no = 1i32; /* inconsistent num_markers fields */
     while seq_no <= MAX_SEQ_NO {
-        marker_present[seq_no as usize] = 0i32 as c_char;
+        marker_present[seq_no as usize] = 0i32 as c_char; /* bogus sequence number */
         seq_no += 1
-    }
+    } /* duplicate sequence numbers */
     marker = (*cinfo).marker_list;
     while !marker.is_null() {
-        if 0 != marker_is_icc(marker) {
+        if marker_is_icc(marker) != 0 {
             if num_markers == 0i32 {
-                num_markers = *(*marker).data.offset(13isize) as c_int
-            } else if num_markers != *(*marker).data.offset(13isize) as c_int {
-                (*(*cinfo).err).msg_code = JWRN_BOGUS_ICC as c_int;
-                (*(*cinfo).err)
-                    .emit_message
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr, -1i32
-                );
+                num_markers = *(*marker).data.offset(13) as c_int
+            } else if num_markers != *(*marker).data.offset(13) as c_int {
+                (*(*cinfo).err).msg_code = super::jerror::JWRN_BOGUS_ICC as c_int;
+                Some(
+                    (*(*cinfo).err)
+                        .emit_message
+                        .expect("non-null function pointer"),
+                )
+                .expect("non-null function pointer")(cinfo as j_common_ptr, -1i32);
                 return FALSE;
             }
-            seq_no = *(*marker).data.offset(12isize) as c_int;
+            seq_no = *(*marker).data.offset(12) as c_int;
             if seq_no <= 0i32 || seq_no > num_markers {
-                (*(*cinfo).err).msg_code = JWRN_BOGUS_ICC as c_int;
-                (*(*cinfo).err)
-                    .emit_message
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr, -1i32
-                );
+                (*(*cinfo).err).msg_code = super::jerror::JWRN_BOGUS_ICC as c_int;
+                Some(
+                    (*(*cinfo).err)
+                        .emit_message
+                        .expect("non-null function pointer"),
+                )
+                .expect("non-null function pointer")(cinfo as j_common_ptr, -1i32);
                 return FALSE;
             }
-            if 0 != marker_present[seq_no as usize] {
-                (*(*cinfo).err).msg_code = JWRN_BOGUS_ICC as c_int;
-                (*(*cinfo).err)
-                    .emit_message
-                    .expect("non-null function pointer")(
-                    cinfo as j_common_ptr, -1i32
-                );
+            if marker_present[seq_no as usize] != 0 {
+                (*(*cinfo).err).msg_code = super::jerror::JWRN_BOGUS_ICC as c_int;
+                Some(
+                    (*(*cinfo).err)
+                        .emit_message
+                        .expect("non-null function pointer"),
+                )
+                .expect("non-null function pointer")(cinfo as j_common_ptr, -1i32);
                 return FALSE;
             }
             marker_present[seq_no as usize] = 1i32 as c_char;
@@ -190,14 +203,20 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
     if num_markers == 0i32 {
         return FALSE;
     }
-    total_length = 0i32 as c_uint;
-    seq_no = 1i32;
+    /* Check for missing markers, count total space needed,
+     * compute offset of each marker's part of the data.
+     */
+    total_length = 0i32 as c_uint; /* missing sequence number */
+    seq_no = 1i32; /* found only empty markers? */
     while seq_no <= num_markers {
         if marker_present[seq_no as usize] as c_int == 0i32 {
-            (*(*cinfo).err).msg_code = JWRN_BOGUS_ICC as c_int;
-            (*(*cinfo).err)
-                .emit_message
-                .expect("non-null function pointer")(cinfo as j_common_ptr, -1i32);
+            (*(*cinfo).err).msg_code = super::jerror::JWRN_BOGUS_ICC as c_int;
+            Some(
+                (*(*cinfo).err)
+                    .emit_message
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(cinfo as j_common_ptr, -1i32);
             return FALSE;
         }
         data_offset[seq_no as usize] = total_length;
@@ -205,42 +224,50 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
         seq_no += 1
     }
     if total_length == 0i32 as c_uint {
-        (*(*cinfo).err).msg_code = JWRN_BOGUS_ICC as c_int;
-        (*(*cinfo).err)
-            .emit_message
-            .expect("non-null function pointer")(cinfo as j_common_ptr, -1i32);
+        (*(*cinfo).err).msg_code = super::jerror::JWRN_BOGUS_ICC as c_int;
+        Some(
+            (*(*cinfo).err)
+                .emit_message
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr, -1i32);
         return FALSE;
     }
+    /* Allocate space for assembled data */
     icc_data =
         malloc((total_length as c_ulong).wrapping_mul(::std::mem::size_of::<JOCTET>() as c_ulong))
-            as *mut JOCTET;
+            as *mut JOCTET; /* oops, out of memory */
     if icc_data.is_null() {
-        (*(*cinfo).err).msg_code = JERR_OUT_OF_MEMORY as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] = 11i32;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_OUT_OF_MEMORY as c_int;
+        (*(*cinfo).err).msg_parm.i[0] = 11i32;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
+    /* and fill it in */
     marker = (*cinfo).marker_list;
     while !marker.is_null() {
-        if 0 != marker_is_icc(marker) {
+        if marker_is_icc(marker) != 0 {
             let mut src_ptr: *mut JOCTET = 0 as *mut JOCTET;
             let mut dst_ptr: *mut JOCTET = 0 as *mut JOCTET;
             let mut length: c_uint = 0;
-            seq_no = *(*marker).data.offset(12isize) as c_int;
+            seq_no = *(*marker).data.offset(12) as c_int;
             dst_ptr = icc_data.offset(data_offset[seq_no as usize] as isize);
             src_ptr = (*marker).data.offset(ICC_OVERHEAD_LEN as isize);
             length = data_length[seq_no as usize];
             loop {
                 let fresh0 = length;
                 length = length.wrapping_sub(1);
-                if !(0 != fresh0) {
+                if !(fresh0 != 0) {
                     break;
                 }
-                let fresh2 = dst_ptr;
-                dst_ptr = dst_ptr.offset(1);
                 let fresh1 = src_ptr;
                 src_ptr = src_ptr.offset(1);
+                let fresh2 = dst_ptr;
+                dst_ptr = dst_ptr.offset(1);
                 *fresh2 = *fresh1
             }
         }
@@ -250,5 +277,5 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
     *icc_data_len = total_length;
     return TRUE;
 }
-/* sufficient since marker numbers are bytes */
+
 pub const MAX_SEQ_NO: c_int = 255i32;

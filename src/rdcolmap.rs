@@ -1,17 +1,4 @@
-pub use crate::cderror_h::{
-    C2RustUnnamed_91, JERR_BAD_CMAP_FILE, JERR_BMP_BADCMAP, JERR_BMP_BADDEPTH, JERR_BMP_BADHEADER,
-    JERR_BMP_BADPLANES, JERR_BMP_COLORSPACE, JERR_BMP_COMPRESSED, JERR_BMP_EMPTY, JERR_BMP_NOT,
-    JERR_BMP_OUTOFRANGE, JERR_GIF_BUG, JERR_GIF_CODESIZE, JERR_GIF_COLORSPACE,
-    JERR_GIF_IMAGENOTFOUND, JERR_GIF_NOT, JERR_PPM_COLORSPACE, JERR_PPM_NONNUMERIC, JERR_PPM_NOT,
-    JERR_PPM_OUTOFRANGE, JERR_TGA_BADCMAP, JERR_TGA_BADPARMS, JERR_TGA_COLORSPACE,
-    JERR_TOO_MANY_COLORS, JERR_UNGETC_FAILED, JERR_UNKNOWN_FORMAT, JERR_UNSUPPORTED_FORMAT,
-    JMSG_FIRSTADDONCODE, JMSG_LASTADDONCODE, JTRC_BMP, JTRC_BMP_MAPPED, JTRC_BMP_OS2,
-    JTRC_BMP_OS2_MAPPED, JTRC_GIF, JTRC_GIF_BADVERSION, JTRC_GIF_EXTENSION, JTRC_GIF_NONSQUARE,
-    JTRC_PGM, JTRC_PGM_TEXT, JTRC_PPM, JTRC_PPM_TEXT, JTRC_TGA, JTRC_TGA_GRAY, JTRC_TGA_MAPPED,
-    JWRN_GIF_BADDATA, JWRN_GIF_CHAR, JWRN_GIF_ENDCODE, JWRN_GIF_NOMOREDATA,
-};
-pub use crate::jconfig_h::BITS_IN_JSAMPLE;
-pub use crate::jerror::{
+pub use super::jerror::{
     C2RustUnnamed_3, JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
     JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID, JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
     JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE, JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
@@ -42,6 +29,19 @@ pub use crate::jerror::{
     JWRN_HUFF_BAD_CODE, JWRN_JFIF_MAJOR, JWRN_JPEG_EOF, JWRN_MUST_RESYNC, JWRN_NOT_SEQUENTIAL,
     JWRN_TOO_MUCH_DATA,
 };
+pub use crate::cderror_h::{
+    C2RustUnnamed_4, JERR_BAD_CMAP_FILE, JERR_BMP_BADCMAP, JERR_BMP_BADDEPTH, JERR_BMP_BADHEADER,
+    JERR_BMP_BADPLANES, JERR_BMP_COLORSPACE, JERR_BMP_COMPRESSED, JERR_BMP_EMPTY, JERR_BMP_NOT,
+    JERR_BMP_OUTOFRANGE, JERR_GIF_BUG, JERR_GIF_CODESIZE, JERR_GIF_COLORSPACE,
+    JERR_GIF_IMAGENOTFOUND, JERR_GIF_NOT, JERR_PPM_COLORSPACE, JERR_PPM_NONNUMERIC, JERR_PPM_NOT,
+    JERR_PPM_OUTOFRANGE, JERR_TGA_BADCMAP, JERR_TGA_BADPARMS, JERR_TGA_COLORSPACE,
+    JERR_TOO_MANY_COLORS, JERR_UNGETC_FAILED, JERR_UNKNOWN_FORMAT, JERR_UNSUPPORTED_FORMAT,
+    JMSG_FIRSTADDONCODE, JMSG_LASTADDONCODE, JTRC_BMP, JTRC_BMP_MAPPED, JTRC_BMP_OS2,
+    JTRC_BMP_OS2_MAPPED, JTRC_GIF, JTRC_GIF_BADVERSION, JTRC_GIF_EXTENSION, JTRC_GIF_NONSQUARE,
+    JTRC_PGM, JTRC_PGM_TEXT, JTRC_PPM, JTRC_PPM_TEXT, JTRC_TGA, JTRC_TGA_GRAY, JTRC_TGA_MAPPED,
+    JWRN_GIF_BADDATA, JWRN_GIF_CHAR, JWRN_GIF_ENDCODE, JWRN_GIF_NOMOREDATA,
+};
+pub use crate::jconfig_h::BITS_IN_JSAMPLE;
 pub use crate::jmorecfg_h::{
     boolean, JCOEF, JDIMENSION, JOCTET, JSAMPLE, MAXJSAMPLE, UINT16, UINT8,
 };
@@ -102,17 +102,19 @@ use libc::{self, c_int, c_uint};
 /*
  * Add a (potentially) new color to the color map.
  */
+
 unsafe extern "C" fn add_map_entry(
     mut cinfo: j_decompress_ptr,
     mut R: c_int,
     mut G: c_int,
     mut B: c_int,
 ) {
-    let mut colormap0: JSAMPROW = *(*cinfo).colormap.offset(0isize);
-    let mut colormap1: JSAMPROW = *(*cinfo).colormap.offset(1isize);
-    let mut colormap2: JSAMPROW = *(*cinfo).colormap.offset(2isize);
+    let mut colormap0: JSAMPROW = *(*cinfo).colormap.offset(0);
+    let mut colormap1: JSAMPROW = *(*cinfo).colormap.offset(1);
+    let mut colormap2: JSAMPROW = *(*cinfo).colormap.offset(2);
     let mut ncolors: c_int = (*cinfo).actual_number_of_colors;
     let mut index: c_int = 0;
+    /* Check for duplicate color. */
     index = 0i32;
     while index < ncolors {
         if *colormap0.offset(index as isize) as c_int == R
@@ -122,14 +124,20 @@ unsafe extern "C" fn add_map_entry(
             return;
         }
         index += 1
+        /* color is already in map */
     }
+    /* Check for map overflow. */
     if ncolors >= MAXJSAMPLE + 1i32 {
-        (*(*cinfo).err).msg_code = JERR_QUANT_MANY_COLORS as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] = 255i32 + 1i32;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_QUANT_MANY_COLORS as c_int;
+        (*(*cinfo).err).msg_parm.i[0] = 255i32 + 1i32;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
+    /* OK, add color to map. */
     *colormap0.offset(ncolors as isize) = R as JSAMPLE;
     *colormap1.offset(ncolors as isize) = G as JSAMPLE;
     *colormap2.offset(ncolors as isize) = B as JSAMPLE;
@@ -138,6 +146,7 @@ unsafe extern "C" fn add_map_entry(
 /*
  * Extract color map from a GIF file.
  */
+
 unsafe extern "C" fn read_gif_map(mut cinfo: j_decompress_ptr, mut infile: *mut FILE) {
     let mut header: [c_int; 13] = [0; 13];
     let mut i: c_int = 0;
@@ -145,30 +154,44 @@ unsafe extern "C" fn read_gif_map(mut cinfo: j_decompress_ptr, mut infile: *mut 
     let mut R: c_int = 0;
     let mut G: c_int = 0;
     let mut B: c_int = 0;
+    /* Initial 'G' has already been read by read_color_map */
+    /* Read the rest of the GIF header and logical screen descriptor */
     i = 1i32;
     while i < 13i32 {
         header[i as usize] = getc(infile);
         if header[i as usize] == EOF {
             (*(*cinfo).err).msg_code = JERR_BAD_CMAP_FILE as c_int;
-            (*(*cinfo).err)
-                .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+            Some(
+                (*(*cinfo).err)
+                    .error_exit
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         i += 1
     }
-    if header[1usize] != 'I' as i32 || header[2usize] != 'F' as i32 {
+    /* Verify GIF Header */
+    if header[1] != 'I' as i32 || header[2] != 'F' as i32 {
         (*(*cinfo).err).msg_code = JERR_BAD_CMAP_FILE as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
-    if header[10usize] & 0x80i32 == 0i32 {
+    /* There must be a global color map. */
+    if header[10] & 0x80i32 == 0i32 {
         (*(*cinfo).err).msg_code = JERR_BAD_CMAP_FILE as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
-    colormaplen = 2i32 << (header[10usize] & 0x7i32);
+    /* OK, fetch it. */
+    colormaplen = 2i32 << (header[10] & 0x7i32);
     i = 0i32;
     while i < colormaplen {
         R = getc(infile);
@@ -176,9 +199,12 @@ unsafe extern "C" fn read_gif_map(mut cinfo: j_decompress_ptr, mut infile: *mut 
         B = getc(infile);
         if R == EOF || G == EOF || B == EOF {
             (*(*cinfo).err).msg_code = JERR_BAD_CMAP_FILE as c_int;
-            (*(*cinfo).err)
-                .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+            Some(
+                (*(*cinfo).err)
+                    .error_exit
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         add_map_entry(
             cinfo,
@@ -190,7 +216,10 @@ unsafe extern "C" fn read_gif_map(mut cinfo: j_decompress_ptr, mut infile: *mut 
     }
 }
 /* Support routines for reading PPM */
-unsafe extern "C" fn pbm_getc(mut infile: *mut FILE) -> c_int {
+
+unsafe extern "C" fn pbm_getc(mut infile: *mut FILE) -> c_int
+/* Read next char, skipping over any comments */
+/* A comment/newline sequence is returned as a newline */ {
     let mut ch: c_int = 0;
     ch = getc(infile);
     if ch == '#' as i32 {
@@ -203,19 +232,29 @@ unsafe extern "C" fn pbm_getc(mut infile: *mut FILE) -> c_int {
     }
     return ch;
 }
+
 unsafe extern "C" fn read_pbm_integer(
     mut cinfo: j_decompress_ptr,
     mut infile: *mut FILE,
-) -> c_uint {
+) -> c_uint
+/* Read an unsigned decimal integer from the PPM file */
+/* Swallows one trailing character after the integer */
+/* Note that on a 16-bit-int machine, only values up to 64k can be read. */
+/* This should not be a problem in practice. */ {
     let mut ch: c_int = 0;
     let mut val: c_uint = 0;
-    loop {
+    loop
+    /* Skip any leading whitespace */
+    {
         ch = pbm_getc(infile);
         if ch == EOF {
             (*(*cinfo).err).msg_code = JERR_BAD_CMAP_FILE as c_int;
-            (*(*cinfo).err)
-                .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+            Some(
+                (*(*cinfo).err)
+                    .error_exit
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         if !(ch == ' ' as i32 || ch == '\t' as i32 || ch == '\n' as i32 || ch == '\r' as i32) {
             break;
@@ -223,9 +262,12 @@ unsafe extern "C" fn read_pbm_integer(
     }
     if ch < '0' as i32 || ch > '9' as i32 {
         (*(*cinfo).err).msg_code = JERR_BAD_CMAP_FILE as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     val = (ch - '0' as i32) as c_uint;
     loop {
@@ -241,6 +283,7 @@ unsafe extern "C" fn read_pbm_integer(
 /*
  * Extract color map from a PPM file.
  */
+
 unsafe extern "C" fn read_ppm_map(mut cinfo: j_decompress_ptr, mut infile: *mut FILE) {
     let mut c: c_int = 0;
     let mut w: c_uint = 0;
@@ -251,24 +294,35 @@ unsafe extern "C" fn read_ppm_map(mut cinfo: j_decompress_ptr, mut infile: *mut 
     let mut R: c_int = 0;
     let mut G: c_int = 0;
     let mut B: c_int = 0;
-    c = getc(infile);
+    /* Initial 'P' has already been read by read_color_map */
+    c = getc(infile); /* save format discriminator for a sec */
+    /* while we fetch the remaining header info */
     w = read_pbm_integer(cinfo, infile);
     h = read_pbm_integer(cinfo, infile);
     maxval = read_pbm_integer(cinfo, infile);
     if w <= 0i32 as c_uint || h <= 0i32 as c_uint || maxval <= 0i32 as c_uint {
+        /* error check */
         (*(*cinfo).err).msg_code = JERR_BAD_CMAP_FILE as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
+    /* For now, we don't support rescaling from an unusual maxval. */
     if maxval != MAXJSAMPLE as c_uint {
         (*(*cinfo).err).msg_code = JERR_BAD_CMAP_FILE as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     match c {
         51 => {
+            /* it's a text-format PPM file */
             row = 0i32 as c_uint;
             while row < h {
                 col = 0i32 as c_uint;
@@ -283,6 +337,7 @@ unsafe extern "C" fn read_ppm_map(mut cinfo: j_decompress_ptr, mut infile: *mut 
             }
         }
         54 => {
+            /* it's a raw-format PPM file */
             row = 0i32 as c_uint;
             while row < h {
                 col = 0i32 as c_uint;
@@ -292,9 +347,12 @@ unsafe extern "C" fn read_ppm_map(mut cinfo: j_decompress_ptr, mut infile: *mut 
                     B = getc(infile);
                     if R == EOF || G == EOF || B == EOF {
                         (*(*cinfo).err).msg_code = JERR_BAD_CMAP_FILE as c_int;
-                        (*(*cinfo).err)
-                            .error_exit
-                            .expect("non-null function pointer")(
+                        Some(
+                            (*(*cinfo).err)
+                                .error_exit
+                                .expect("non-null function pointer"),
+                        )
+                        .expect("non-null function pointer")(
                             cinfo as j_common_ptr
                         );
                     }
@@ -306,12 +364,65 @@ unsafe extern "C" fn read_ppm_map(mut cinfo: j_decompress_ptr, mut infile: *mut 
         }
         _ => {
             (*(*cinfo).err).msg_code = JERR_BAD_CMAP_FILE as c_int;
-            (*(*cinfo).err)
-                .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+            Some(
+                (*(*cinfo).err)
+                    .error_exit
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
     };
 }
+/*
+ * cdjpeg.h
+ *
+ * This file was part of the Independent JPEG Group's software:
+ * Copyright (C) 1994-1997, Thomas G. Lane.
+ * libjpeg-turbo Modifications:
+ * Copyright (C) 2017, D. R. Commander.
+ * mozjpeg Modifications:
+ * Copyright (C) 2014, Mozilla Corporation.
+ * For conditions of distribution and use, see the accompanying README.ijg file.
+ *
+ * This file contains common declarations for the sample applications
+ * cjpeg and djpeg.  It is NOT used by the core JPEG library.
+ */
+/* define proper options in jconfig.h */
+/* cjpeg.c,djpeg.c need to see xxx_SUPPORTED */
+/*
+ * Object interface for cjpeg's source file decoding modules
+ */
+/*
+ * Object interface for djpeg's output file encoding modules
+ */
+/* start_output is called after jpeg_start_decompress finishes.
+ * The color map will be ready at this time, if one is needed.
+ */
+/* Emit the specified number of pixel rows from the buffer. */
+/* Finish up at the end of the image. */
+/* Re-calculate buffer dimensions based on output dimensions (for use with
+partial image decompression.)  If this is NULL, then the output format
+does not support partial image decompression (BMP and RLE, in particular,
+cannot support partial decompression because they use an inversion buffer
+to write the image in bottom-up order.) */
+/* Target file spec; filled in by djpeg.c after object is created. */
+/* Output pixel-row buffer.  Created by module init or start_output.
+ * Width is cinfo->output_width * cinfo->output_components;
+ * height is buffer_height.
+ */
+/*
+ * cjpeg/djpeg may need to perform extra passes to convert to or from
+ * the source/destination file format.  The JPEG library does not know
+ * about these passes, but we'd like them to be counted by the progress
+ * monitor.  We use an expanded progress monitor object to hold the
+ * additional pass count.
+ */
+/* fields known to JPEG library */
+/* extra passes completed */
+/* total extra */
+/* last printed percentage stored here to avoid multiple printouts */
+/* Module selection routines for I/O modules. */
+/* cjpeg support routines (in rdswitch.c) */
 /* djpeg support routines (in rdcolmap.c) */
 /*
  * Main entry point from djpeg.c.
@@ -319,16 +430,22 @@ unsafe extern "C" fn read_ppm_map(mut cinfo: j_decompress_ptr, mut infile: *mut 
  *  Output: colormap and actual_number_of_colors fields are set in cinfo.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn read_color_map(mut cinfo: j_decompress_ptr, mut infile: *mut FILE) {
-    (*cinfo).colormap = (*(*cinfo).mem)
-        .alloc_sarray
-        .expect("non-null function pointer")(
+    /* Allocate space for a color map of maximum supported size. */
+    (*cinfo).colormap = Some(
+        (*(*cinfo).mem)
+            .alloc_sarray
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(
         cinfo as j_common_ptr,
         JPOOL_IMAGE,
         (MAXJSAMPLE + 1i32) as JDIMENSION,
         3i32 as JDIMENSION,
-    );
+    ); /* initialize map to empty */
     (*cinfo).actual_number_of_colors = 0i32;
+    /* Read first byte to determine file format */
     match getc(infile) {
         71 => {
             read_gif_map(cinfo, infile);
@@ -338,9 +455,13 @@ pub unsafe extern "C" fn read_color_map(mut cinfo: j_decompress_ptr, mut infile:
         }
         _ => {
             (*(*cinfo).err).msg_code = JERR_BAD_CMAP_FILE as c_int;
-            (*(*cinfo).err)
-                .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+            Some(
+                (*(*cinfo).err)
+                    .error_exit
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
     };
 }
+/* QUANT_2PASS_SUPPORTED */

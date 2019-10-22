@@ -1,8 +1,7 @@
-pub use crate::jcmaster::{
+pub use super::jcmaster::{
     c_pass_type, huff_opt_pass, main_pass, my_comp_master, output_pass, trellis_pass,
 };
-pub use crate::jconfig_h::JPEG_LIB_VERSION;
-pub use crate::jerror::{
+pub use super::jerror::{
     C2RustUnnamed_3, JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
     JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID, JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
     JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE, JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
@@ -33,18 +32,19 @@ pub use crate::jerror::{
     JWRN_HUFF_BAD_CODE, JWRN_JFIF_MAJOR, JWRN_JPEG_EOF, JWRN_MUST_RESYNC, JWRN_NOT_SEQUENTIAL,
     JWRN_TOO_MUCH_DATA,
 };
+pub use crate::jconfig_h::JPEG_LIB_VERSION;
 pub use crate::jmorecfg_h::{boolean, FALSE, JCOEF, JDIMENSION, JOCTET, JSAMPLE, UINT16, UINT8};
 pub use crate::jpegint_h::{
-    jinit_marker_writer, jinit_memory_mgr, jpeg_c_coef_controller, jpeg_c_main_controller,
-    jpeg_c_prep_controller, jpeg_color_converter, jpeg_comp_master, jpeg_downsampler,
-    jpeg_entropy_encoder, jpeg_forward_dct, jpeg_marker_writer, CSTATE_RAW_OK, CSTATE_SCANNING,
-    CSTATE_START, CSTATE_WRCOEFS, JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT,
-    JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, J_BUF_MODE,
+    jinit_marker_writer, jinit_memory_mgr, CSTATE_RAW_OK, CSTATE_SCANNING, CSTATE_START,
+    CSTATE_WRCOEFS, JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS,
+    JBUF_SAVE_SOURCE, J_BUF_MODE,
 };
 pub use crate::jpeglib_h::{
-    j_common_ptr, j_compress_ptr, jpeg_abort, jpeg_common_struct, jpeg_component_info,
-    jpeg_compress_struct, jpeg_destination_mgr, jpeg_destroy, jpeg_error_mgr, jpeg_memory_mgr,
-    jpeg_progress_mgr, jpeg_scan_info, jvirt_barray_control, jvirt_barray_ptr,
+    j_common_ptr, j_compress_ptr, jpeg_abort, jpeg_c_coef_controller, jpeg_c_main_controller,
+    jpeg_c_prep_controller, jpeg_color_converter, jpeg_common_struct, jpeg_comp_master,
+    jpeg_component_info, jpeg_compress_struct, jpeg_destination_mgr, jpeg_destroy,
+    jpeg_downsampler, jpeg_entropy_encoder, jpeg_error_mgr, jpeg_forward_dct, jpeg_marker_writer,
+    jpeg_memory_mgr, jpeg_progress_mgr, jpeg_scan_info, jvirt_barray_control, jvirt_barray_ptr,
     jvirt_sarray_control, jvirt_sarray_ptr, C2RustUnnamed_1, C2RustUnnamed_2, JCS_YCbCr, JBLOCK,
     JBLOCKARRAY, JBLOCKROW, JCP_FASTEST, JCP_MAX_COMPRESSION, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB,
     JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR,
@@ -75,43 +75,50 @@ use libc::{self, c_int, c_long, c_uint, c_ulong, c_void};
  * parameter-setup helper routines, jcomapi.c for routines shared by
  * compression and decompression, and jctrans.c for the transcoding case.
  */
-/* Initialization of JPEG compression objects.
- * jpeg_create_compress() and jpeg_create_decompress() are the exported
- * names that applications should call.  These expand to calls on
- * jpeg_CreateCompress and jpeg_CreateDecompress with additional information
- * passed for version mismatch checking.
- * NB: you must set up the error-manager BEFORE calling jpeg_create_xxx.
- */
 /*
  * Initialization of a JPEG compression object.
  * The error manager must already be set up (in case memory manager fails).
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_CreateCompress(
     mut cinfo: j_compress_ptr,
     mut version: c_int,
     mut structsize: size_t,
 ) {
     let mut i: c_int = 0;
-    (*cinfo).mem = NULL as *mut jpeg_memory_mgr;
+    /* Guard against version mismatches between library and caller. */
+    (*cinfo).mem = NULL as *mut jpeg_memory_mgr; /* so jpeg_destroy knows mem mgr not called */
     if version != JPEG_LIB_VERSION {
-        (*(*cinfo).err).msg_code = JERR_BAD_LIB_VERSION as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] = 62i32;
-        (*(*cinfo).err).msg_parm.i[1usize] = version;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_LIB_VERSION as c_int;
+        (*(*cinfo).err).msg_parm.i[0] = 62i32;
+        (*(*cinfo).err).msg_parm.i[1] = version;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     if structsize != ::std::mem::size_of::<jpeg_compress_struct>() as c_ulong {
-        (*(*cinfo).err).msg_code = JERR_BAD_STRUCT_SIZE as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] =
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_STRUCT_SIZE as c_int;
+        (*(*cinfo).err).msg_parm.i[0] =
             ::std::mem::size_of::<jpeg_compress_struct>() as c_ulong as c_int;
-        (*(*cinfo).err).msg_parm.i[1usize] = structsize as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        (*(*cinfo).err).msg_parm.i[1] = structsize as c_int;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
-    let mut err: *mut jpeg_error_mgr = (*cinfo).err;
+    /* For debugging purposes, we zero the whole master structure.
+     * But the application has already set the err pointer, and may have set
+     * client_data, so we have to save and restore those fields.
+     * Note: if application hasn't set client_data, tools like Purify may
+     * complain here.
+     */
+    let mut err: *mut jpeg_error_mgr = (*cinfo).err; /* ignore Purify complaint here */
     let mut client_data: *mut c_void = (*cinfo).client_data;
     memset(
         cinfo as *mut c_void,
@@ -121,8 +128,10 @@ pub unsafe extern "C" fn jpeg_CreateCompress(
     (*cinfo).err = err;
     (*cinfo).client_data = client_data;
     (*cinfo).is_decompressor = FALSE;
+    /* Initialize a memory manager instance for this object */
     jinit_memory_mgr(cinfo as j_common_ptr);
-    (*cinfo).progress = NULL as *mut jpeg_progress_mgr;
+    /* Zero out pointers to permanent structures. */
+    (*cinfo).progress = NULL as *mut jpeg_progress_mgr; /* in case application forgets */
     (*cinfo).dest = NULL as *mut jpeg_destination_mgr;
     (*cinfo).comp_info = NULL as *mut jpeg_component_info;
     i = 0i32;
@@ -138,29 +147,61 @@ pub unsafe extern "C" fn jpeg_CreateCompress(
     }
     (*cinfo).script_space = NULL as *mut jpeg_scan_info;
     (*cinfo).input_gamma = 1.0f64;
+    /* OK, I'm ready */
     (*cinfo).global_state = CSTATE_START;
-    (*cinfo).master = (*(*cinfo).mem)
-        .alloc_small
-        .expect("non-null function pointer")(
+    /* The master struct is used to store extension parameters, so we allocate it
+     * here.  It is later reallocated by jinit_c_master_control().
+     */
+    (*cinfo).master = Some(
+        (*(*cinfo).mem)
+            .alloc_small
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(
         cinfo as j_common_ptr,
         JPOOL_PERMANENT,
-        ::std::mem::size_of::<my_comp_master>() as c_ulong,
+        ::std::mem::size_of::<super::jcmaster::my_comp_master>() as c_ulong,
     ) as *mut jpeg_comp_master;
     memset(
         (*cinfo).master as *mut c_void,
         0i32,
-        ::std::mem::size_of::<my_comp_master>() as c_ulong,
+        ::std::mem::size_of::<super::jcmaster::my_comp_master>() as c_ulong,
     );
     (*(*cinfo).master).compress_profile = JCP_MAX_COMPRESSION as c_int;
 }
-/* Destruction of JPEG compression objects */
 /*
  * Destruction of a JPEG compression object
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_destroy_compress(mut cinfo: j_compress_ptr) {
     jpeg_destroy(cinfo as j_common_ptr);
+    /* use common routine */
 }
+/* Write ICC profile.  See libjpeg.txt for usage information. */
+/* Decompression startup: read start of JPEG datastream to see what's there */
+/* Return value is one of: */
+/* Suspended due to lack of input data */
+/* Found valid image datastream */
+/* Found valid table-specs-only datastream */
+/* If you pass require_image = TRUE (normal case), you need not check for
+ * a TABLES_ONLY return code; an abbreviated file will cause an error exit.
+ * JPEG_SUSPENDED is only possible if you use a data source module that can
+ * give a suspension return (the stdio source module doesn't).
+ */
+/* Main entry points for decompression */
+/* Replaces jpeg_read_scanlines when reading raw downsampled data. */
+/* Additional entry points for buffered-image mode. */
+/* Return value is one of: */
+/* #define JPEG_SUSPENDED       0    Suspended due to lack of input data */
+/* Reached start of new scan */
+/* Reached end of image */
+/* Completed one iMCU row */
+/* Completed last iMCU row of a scan */
+/* Precalculate output dimensions for current decompression parameters. */
+/* Control saving of COM and APPn markers into marker_list. */
+/* Install a special processing method for COM or APPn markers. */
+/* Read or write raw DCT coefficients --- useful for lossless transcoding. */
 /* If you choose to abort compression or decompression before completing
  * jpeg_finish_(de)compress, then you need to clean up to release memory,
  * temporary files, etc.  You can just call jpeg_destroy_(de)compress
@@ -172,8 +213,10 @@ pub unsafe extern "C" fn jpeg_destroy_compress(mut cinfo: j_compress_ptr) {
  * but don't destroy the object itself.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_abort_compress(mut cinfo: j_compress_ptr) {
     jpeg_abort(cinfo as j_common_ptr);
+    /* use common routine */
 }
 /*
  * Forcibly suppress or un-suppress all quantization and Huffman tables.
@@ -187,6 +230,7 @@ pub unsafe extern "C" fn jpeg_abort_compress(mut cinfo: j_compress_ptr) {
  * jcparam.o would be linked whether the application used it or not.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_suppress_tables(mut cinfo: j_compress_ptr, mut suppress: boolean) {
     let mut i: c_int = 0;
     let mut qtbl: *mut JQUANT_TBL = 0 as *mut JQUANT_TBL;
@@ -219,63 +263,101 @@ pub unsafe extern "C" fn jpeg_suppress_tables(mut cinfo: j_compress_ptr, mut sup
  * work including most of the actual output.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_finish_compress(mut cinfo: j_compress_ptr) {
     let mut iMCU_row: JDIMENSION = 0;
     if (*cinfo).global_state == CSTATE_SCANNING || (*cinfo).global_state == CSTATE_RAW_OK {
+        /* Terminate first pass */
         if (*cinfo).next_scanline < (*cinfo).image_height {
-            (*(*cinfo).err).msg_code = JERR_TOO_LITTLE_DATA as c_int;
+            (*(*cinfo).err).msg_code = super::jerror::JERR_TOO_LITTLE_DATA as c_int;
+            Some(
+                (*(*cinfo).err)
+                    .error_exit
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        }
+        Some(
+            (*(*cinfo).master)
+                .finish_pass
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo);
+    } else if (*cinfo).global_state != CSTATE_WRCOEFS {
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_STATE as c_int;
+        (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
+        Some(
             (*(*cinfo).err)
                 .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
-        }
-        (*(*cinfo).master)
-            .finish_pass
-            .expect("non-null function pointer")(cinfo);
-    } else if (*cinfo).global_state != CSTATE_WRCOEFS {
-        (*(*cinfo).err).msg_code = JERR_BAD_STATE as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] = (*cinfo).global_state;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
-    while 0 == (*(*cinfo).master).is_last_pass {
-        (*(*cinfo).master)
-            .prepare_for_pass
-            .expect("non-null function pointer")(cinfo);
+    /* Perform any remaining passes */
+    while (*(*cinfo).master).is_last_pass == 0 {
+        Some(
+            (*(*cinfo).master)
+                .prepare_for_pass
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo);
         iMCU_row = 0i32 as JDIMENSION;
         while iMCU_row < (*cinfo).total_iMCU_rows {
             if !(*cinfo).progress.is_null() {
                 (*(*cinfo).progress).pass_counter = iMCU_row as c_long;
                 (*(*cinfo).progress).pass_limit = (*cinfo).total_iMCU_rows as c_long;
-                (*(*cinfo).progress)
-                    .progress_monitor
-                    .expect("non-null function pointer")(cinfo as j_common_ptr);
+                Some(
+                    (*(*cinfo).progress)
+                        .progress_monitor
+                        .expect("non-null function pointer"),
+                )
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
-            if 0 == (*(*cinfo).coef)
-                .compress_data
-                .expect("non-null function pointer")(
+            /* We bypass the main controller and invoke coef controller directly;
+             * all work is being done from the coefficient buffer.
+             */
+            if Some(
+                (*(*cinfo).coef)
+                    .compress_data
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(
                 cinfo, NULL as *mut c_void as JSAMPIMAGE
-            ) {
-                (*(*cinfo).err).msg_code = JERR_CANT_SUSPEND as c_int;
-                (*(*cinfo).err)
-                    .error_exit
-                    .expect("non-null function pointer")(cinfo as j_common_ptr);
+            ) == 0
+            {
+                (*(*cinfo).err).msg_code = super::jerror::JERR_CANT_SUSPEND as c_int;
+                Some(
+                    (*(*cinfo).err)
+                        .error_exit
+                        .expect("non-null function pointer"),
+                )
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             iMCU_row = iMCU_row.wrapping_add(1)
         }
-        (*(*cinfo).master)
-            .finish_pass
-            .expect("non-null function pointer")(cinfo);
+        Some(
+            (*(*cinfo).master)
+                .finish_pass
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo);
     }
-    (*(*cinfo).marker)
-        .write_file_trailer
-        .expect("non-null function pointer")(cinfo);
-    (*(*cinfo).dest)
-        .term_destination
-        .expect("non-null function pointer")(cinfo);
+    /* Write EOI, do final cleanup */
+    Some(
+        (*(*cinfo).marker)
+            .write_file_trailer
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(cinfo);
+    Some(
+        (*(*cinfo).dest)
+            .term_destination
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(cinfo);
+    /* We can use jpeg_abort to release memory and reset global_state */
     jpeg_abort(cinfo as j_common_ptr);
 }
-/* Write a special marker.  See libjpeg.txt concerning safe usage. */
 /*
  * Write a special marker.
  * This is only recommended for writing COM or APPn markers.
@@ -283,6 +365,7 @@ pub unsafe extern "C" fn jpeg_finish_compress(mut cinfo: j_compress_ptr) {
  * first call to jpeg_write_scanlines() or jpeg_write_raw_data().
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_write_marker(
     mut cinfo: j_compress_ptr,
     mut marker: c_int,
@@ -290,35 +373,42 @@ pub unsafe extern "C" fn jpeg_write_marker(
     mut datalen: c_uint,
 ) {
     let mut write_marker_byte: Option<unsafe extern "C" fn(_: j_compress_ptr, _: c_int) -> ()> =
-        None;
+        None; /* copy for speed */
     if (*cinfo).next_scanline != 0i32 as c_uint
         || (*cinfo).global_state != CSTATE_SCANNING
             && (*cinfo).global_state != CSTATE_RAW_OK
             && (*cinfo).global_state != CSTATE_WRCOEFS
     {
-        (*(*cinfo).err).msg_code = JERR_BAD_STATE as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] = (*cinfo).global_state;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_STATE as c_int;
+        (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
-    (*(*cinfo).marker)
-        .write_marker_header
-        .expect("non-null function pointer")(cinfo, marker, datalen);
+    Some(
+        (*(*cinfo).marker)
+            .write_marker_header
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(cinfo, marker, datalen);
     write_marker_byte = (*(*cinfo).marker).write_marker_byte;
     loop {
         let fresh0 = datalen;
         datalen = datalen.wrapping_sub(1);
-        if !(0 != fresh0) {
+        if !(fresh0 != 0) {
             break;
         }
-        write_marker_byte.expect("non-null function pointer")(cinfo, *dataptr as c_int);
-        dataptr = dataptr.offset(1isize)
+        Some(write_marker_byte.expect("non-null function pointer"))
+            .expect("non-null function pointer")(cinfo, *dataptr as c_int);
+        dataptr = dataptr.offset(1)
     }
 }
 /* Same, but piecemeal. */
-/* Same, but piecemeal. */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_write_m_header(
     mut cinfo: j_compress_ptr,
     mut marker: c_int,
@@ -329,22 +419,132 @@ pub unsafe extern "C" fn jpeg_write_m_header(
             && (*cinfo).global_state != CSTATE_RAW_OK
             && (*cinfo).global_state != CSTATE_WRCOEFS
     {
-        (*(*cinfo).err).msg_code = JERR_BAD_STATE as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] = (*cinfo).global_state;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_STATE as c_int;
+        (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
-    (*(*cinfo).marker)
-        .write_marker_header
-        .expect("non-null function pointer")(cinfo, marker, datalen);
+    Some(
+        (*(*cinfo).marker)
+            .write_marker_header
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(cinfo, marker, datalen);
 }
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_write_m_byte(mut cinfo: j_compress_ptr, mut val: c_int) {
-    (*(*cinfo).marker)
-        .write_marker_byte
-        .expect("non-null function pointer")(cinfo, val);
+    Some(
+        (*(*cinfo).marker)
+            .write_marker_byte
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(cinfo, val);
 }
+/* "Object" declarations for JPEG modules that may be supplied or called
+ * directly by the surrounding application.
+ * As with all objects in the JPEG library, these structs only define the
+ * publicly visible methods and state variables of a module.  Additional
+ * private fields may exist after the public ones.
+ */
+/* Error handler object */
+/* Error exit handler: does not return to caller */
+/* Conditionally emit a trace or warning message */
+/* Routine that actually outputs a trace or error message */
+/* Format a message string for the most recent JPEG error or message */
+/* recommended size of format_message buffer */
+/* Reset error state variables at start of a new image */
+/* The message ID code and any parameters are saved here.
+ * A message can have one string parameter or up to 8 int parameters.
+ */
+/* Standard state variables for error facility */
+/* max msg_level that will be displayed */
+/* For recoverable corrupt-data errors, we emit a warning message,
+ * but keep going unless emit_message chooses to abort.  emit_message
+ * should count warnings in num_warnings.  The surrounding application
+ * can check for bad data by seeing if num_warnings is nonzero at the
+ * end of processing.
+ */
+/* number of corrupt-data warnings */
+/* These fields point to the table(s) of error message strings.
+ * An application can change the table pointer to switch to a different
+ * message list (typically, to change the language in which errors are
+ * reported).  Some applications may wish to add additional error codes
+ * that will be handled by the JPEG library error mechanism; the second
+ * table pointer is used for this purpose.
+ *
+ * First table includes all errors generated by JPEG library itself.
+ * Error code 0 is reserved for a "no such error string" message.
+ */
+/* Library errors */
+/* Table contains strings 0..last_jpeg_message */
+/* Second table can be added by application (see cjpeg/djpeg for example).
+ * It contains strings numbered first_addon_message..last_addon_message.
+ */
+/* Non-library errors */
+/* code for first string in addon table */
+/* code for last string in addon table */
+/* Progress monitor object */
+/* work units completed in this pass */
+/* total number of work units in this pass */
+/* passes completed so far */
+/* total number of passes expected */
+/* Data destination object for compression */
+/* => next byte to write in buffer */
+/* # of byte spaces remaining in buffer */
+/* Data source object for decompression */
+/* => next byte to read from buffer */
+/* # of bytes remaining in buffer */
+/* Memory manager object.
+ * Allocates "small" objects (a few K total), "large" objects (tens of K),
+ * and "really big" objects (virtual arrays with backing store if needed).
+ * The memory manager does not allow individual objects to be freed; rather,
+ * each created object is assigned to a pool, and whole pools can be freed
+ * at once.  This is faster and more convenient than remembering exactly what
+ * to free, especially where malloc()/free() are not too speedy.
+ * NB: alloc routines never return NULL.  They exit to error_exit if not
+ * successful.
+ */
+/* lasts until master record is destroyed */
+/* lasts until done with image/datastream */
+/* Method pointers */
+/* Limit on memory allocation for this JPEG object.  (Note that this is
+ * merely advisory, not a guaranteed maximum; it only affects the space
+ * used for virtual-array buffers.)  May be changed by outer application
+ * after creating the JPEG object.
+ */
+/* Maximum allocation request accepted by alloc_large. */
+/* Routine signature for application-supplied marker processing methods.
+ * Need not pass marker code since it is stored in cinfo->unread_marker.
+ */
+/* Originally, this macro was used as a way of defining function prototypes
+ * for both modern compilers as well as older compilers that did not support
+ * prototype parameters.  libjpeg-turbo has never supported these older,
+ * non-ANSI compilers, but the macro is still included because there is some
+ * software out there that uses it.
+ */
+/* Default error-management setup */
+/* Initialization of JPEG compression objects.
+ * jpeg_create_compress() and jpeg_create_decompress() are the exported
+ * names that applications should call.  These expand to calls on
+ * jpeg_CreateCompress and jpeg_CreateDecompress with additional information
+ * passed for version mismatch checking.
+ * NB: you must set up the error-manager BEFORE calling jpeg_create_xxx.
+ */
+/* Destruction of JPEG compression objects */
+/* Standard data source and destination managers: stdio streams. */
+/* Caller is responsible for opening the file before and closing after. */
+/* Data source and destination managers: memory buffers. */
+/* Default parameter setup for compression */
+/* Compression parameter setup aids */
+/* Main entry points for compression */
+/* Replaces jpeg_write_scanlines when writing raw downsampled data. */
+/* Write a special marker.  See libjpeg.txt concerning safe usage. */
+/* Same, but piecemeal. */
 /* Alternate compression function: just write an abbreviated table file */
 /*
  * Alternate compression function: just write an abbreviated table file.
@@ -367,25 +567,57 @@ pub unsafe extern "C" fn jpeg_write_m_byte(mut cinfo: j_compress_ptr, mut val: c
  * will not re-emit the tables unless it is passed write_all_tables=TRUE.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_write_tables(mut cinfo: j_compress_ptr) {
     if (*cinfo).global_state != CSTATE_START {
-        (*(*cinfo).err).msg_code = JERR_BAD_STATE as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] = (*cinfo).global_state;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
-    }
-    (*(*cinfo).err)
-        .reset_error_mgr
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_STATE as c_int;
+        (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
         .expect("non-null function pointer")(cinfo as j_common_ptr);
-    (*(*cinfo).dest)
-        .init_destination
-        .expect("non-null function pointer")(cinfo);
+    }
+    /* (Re)initialize error mgr and destination modules */
+    Some(
+        (*(*cinfo).err)
+            .reset_error_mgr
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(cinfo as j_common_ptr);
+    Some(
+        (*(*cinfo).dest)
+            .init_destination
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(cinfo);
+    /* Initialize the marker writer ... bit of a crock to do it here. */
     jinit_marker_writer(cinfo);
-    (*(*cinfo).marker)
-        .write_tables_only
-        .expect("non-null function pointer")(cinfo);
-    (*(*cinfo).dest)
-        .term_destination
-        .expect("non-null function pointer")(cinfo);
+    /* Write them tables! */
+    Some(
+        (*(*cinfo).marker)
+            .write_tables_only
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(cinfo);
+    /* And clean up. */
+    Some(
+        (*(*cinfo).dest)
+            .term_destination
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(cinfo);
+    /*
+     * In library releases up through v6a, we called jpeg_abort() here to free
+     * any working memory allocated by the destination manager and marker
+     * writer.  Some applications had a problem with that: they allocated space
+     * of their own from the library memory manager, and didn't want it to go
+     * away during write_tables.  So now we do nothing.  This will cause a
+     * memory leak if an app calls write_tables repeatedly without doing a full
+     * compression cycle or otherwise resetting the JPEG object.  However, that
+     * seems less bad than unexpectedly freeing memory in the normal case.
+     * An app that prefers the old behavior can call jpeg_abort for itself after
+     * each call to jpeg_write_tables().
+     */
 }

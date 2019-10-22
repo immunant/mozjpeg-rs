@@ -1,4 +1,4 @@
-pub use crate::jerror::{
+pub use super::jerror::{
     C2RustUnnamed_3, JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
     JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID, JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
     JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE, JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
@@ -31,24 +31,25 @@ pub use crate::jerror::{
 };
 pub use crate::jmorecfg_h::{boolean, FALSE, JCOEF, JDIMENSION, JOCTET, JSAMPLE, UINT16, UINT8};
 pub use crate::jpegint_h::{
-    jinit_compress_master, jpeg_c_coef_controller, jpeg_c_main_controller, jpeg_c_prep_controller,
-    jpeg_color_converter, jpeg_comp_master, jpeg_downsampler, jpeg_entropy_encoder,
-    jpeg_forward_dct, jpeg_marker_writer, CSTATE_RAW_OK, CSTATE_SCANNING, CSTATE_START,
-    JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE,
-    J_BUF_MODE,
+    jinit_compress_master, CSTATE_RAW_OK, CSTATE_SCANNING, CSTATE_START, JBUF_CRANK_DEST,
+    JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, J_BUF_MODE,
 };
 pub use crate::jpeglib_h::{
-    j_common_ptr, j_compress_ptr, jpeg_common_struct, jpeg_component_info, jpeg_compress_struct,
-    jpeg_destination_mgr, jpeg_error_mgr, jpeg_memory_mgr, jpeg_progress_mgr, jpeg_scan_info,
-    jpeg_suppress_tables, jvirt_barray_control, jvirt_barray_ptr, jvirt_sarray_control,
-    jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr, DCTSIZE, JBLOCK, JBLOCKARRAY, JBLOCKROW,
-    JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB,
-    JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565,
-    JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JHUFF_TBL, JQUANT_TBL, JSAMPARRAY,
-    JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD,
+    j_common_ptr, j_compress_ptr, jpeg_c_coef_controller, jpeg_c_main_controller,
+    jpeg_c_prep_controller, jpeg_color_converter, jpeg_common_struct, jpeg_comp_master,
+    jpeg_component_info, jpeg_compress_struct, jpeg_destination_mgr, jpeg_downsampler,
+    jpeg_entropy_encoder, jpeg_error_mgr, jpeg_forward_dct, jpeg_marker_writer, jpeg_memory_mgr,
+    jpeg_progress_mgr, jpeg_scan_info, jpeg_suppress_tables, jvirt_barray_control,
+    jvirt_barray_ptr, jvirt_sarray_control, jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr, DCTSIZE,
+    JBLOCK, JBLOCKARRAY, JBLOCKROW, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR,
+    JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR,
+    JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT,
+    JDCT_IFAST, JDCT_ISLOW, JHUFF_TBL, JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE,
+    J_DCT_METHOD,
 };
 pub use crate::stddef_h::{size_t, NULL};
 use libc::{self, c_int, c_long, c_uint};
+/* Main entry points for compression */
 /*
  * jcapistd.c
  *
@@ -66,7 +67,6 @@ use libc::{self, c_int, c_long, c_uint};
  * We thus must separate this file from jcapimin.c to avoid linking the
  * whole compression library into a transcoder.
  */
-/* Main entry points for compression */
 /*
  * Compression initialization.
  * Before calling this, all parameters and a data destination must be set up.
@@ -82,38 +82,58 @@ use libc::{self, c_int, c_long, c_uint};
  * wrong thing.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_start_compress(
     mut cinfo: j_compress_ptr,
     mut write_all_tables: boolean,
 ) {
     if (*cinfo).global_state != CSTATE_START {
-        (*(*cinfo).err).msg_code = JERR_BAD_STATE as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] = (*cinfo).global_state;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_STATE as c_int; /* mark all tables to be written */
+        (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
-    if 0 != write_all_tables {
+    if write_all_tables != 0 {
         jpeg_suppress_tables(cinfo, FALSE);
     }
+    /* setting up scan optimisation pattern failed, disable scan optimisation */
     if (*(*cinfo).master).num_scans_luma == 0i32
         || (*cinfo).scan_info.is_null()
         || (*cinfo).num_scans == 0i32
     {
         (*(*cinfo).master).optimize_scans = FALSE
     }
-    (*(*cinfo).err)
-        .reset_error_mgr
-        .expect("non-null function pointer")(cinfo as j_common_ptr);
-    (*(*cinfo).dest)
-        .init_destination
-        .expect("non-null function pointer")(cinfo);
+    /* (Re)initialize error mgr and destination modules */
+    Some(
+        (*(*cinfo).err)
+            .reset_error_mgr
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(cinfo as j_common_ptr);
+    Some(
+        (*(*cinfo).dest)
+            .init_destination
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(cinfo);
+    /* Perform master selection of active modules */
     jinit_compress_master(cinfo);
-    (*(*cinfo).master)
-        .prepare_for_pass
-        .expect("non-null function pointer")(cinfo);
+    /* Set up for the first pass */
+    Some(
+        (*(*cinfo).master)
+            .prepare_for_pass
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(cinfo);
+    /* Ready for application to drive first pass through jpeg_write_scanlines
+     * or jpeg_write_raw_data.
+     */
     (*cinfo).next_scanline = 0i32 as JDIMENSION;
-    (*cinfo).global_state = if 0 != (*cinfo).raw_data_in {
+    (*cinfo).global_state = if (*cinfo).raw_data_in != 0 {
         CSTATE_RAW_OK
     } else {
         CSTATE_SCANNING
@@ -134,6 +154,7 @@ pub unsafe extern "C" fn jpeg_start_compress(
  * when using a multiple-scanline buffer.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_write_scanlines(
     mut cinfo: j_compress_ptr,
     mut scanlines: JSAMPARRAY,
@@ -142,38 +163,60 @@ pub unsafe extern "C" fn jpeg_write_scanlines(
     let mut row_ctr: JDIMENSION = 0;
     let mut rows_left: JDIMENSION = 0;
     if (*cinfo).global_state != CSTATE_SCANNING {
-        (*(*cinfo).err).msg_code = JERR_BAD_STATE as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] = (*cinfo).global_state;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_STATE as c_int;
+        (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     if (*cinfo).next_scanline >= (*cinfo).image_height {
-        (*(*cinfo).err).msg_code = JWRN_TOO_MUCH_DATA as c_int;
-        (*(*cinfo).err)
-            .emit_message
-            .expect("non-null function pointer")(cinfo as j_common_ptr, -1i32);
+        (*(*cinfo).err).msg_code = super::jerror::JWRN_TOO_MUCH_DATA as c_int;
+        Some(
+            (*(*cinfo).err)
+                .emit_message
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr, -1i32);
     }
+    /* Call progress monitor hook if present */
     if !(*cinfo).progress.is_null() {
         (*(*cinfo).progress).pass_counter = (*cinfo).next_scanline as c_long;
         (*(*cinfo).progress).pass_limit = (*cinfo).image_height as c_long;
-        (*(*cinfo).progress)
-            .progress_monitor
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        Some(
+            (*(*cinfo).progress)
+                .progress_monitor
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
-    if 0 != (*(*cinfo).master).call_pass_startup {
-        (*(*cinfo).master)
-            .pass_startup
-            .expect("non-null function pointer")(cinfo);
+    /* Give master control module another chance if this is first call to
+     * jpeg_write_scanlines.  This lets output of the frame/scan headers be
+     * delayed so that application can write COM, etc, markers between
+     * jpeg_start_compress and jpeg_write_scanlines.
+     */
+    if (*(*cinfo).master).call_pass_startup != 0 {
+        Some(
+            (*(*cinfo).master)
+                .pass_startup
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo);
     }
+    /* Ignore any extra scanlines at bottom of image. */
     rows_left = (*cinfo).image_height.wrapping_sub((*cinfo).next_scanline);
     if num_lines > rows_left {
         num_lines = rows_left
     }
     row_ctr = 0i32 as JDIMENSION;
-    (*(*cinfo).main)
-        .process_data
-        .expect("non-null function pointer")(cinfo, scanlines, &mut row_ctr, num_lines);
+    Some(
+        (*(*cinfo).main)
+            .process_data
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(cinfo, scanlines, &mut row_ctr, num_lines);
     (*cinfo).next_scanline =
         ((*cinfo).next_scanline as c_uint).wrapping_add(row_ctr) as JDIMENSION as JDIMENSION;
     return row_ctr;
@@ -184,6 +227,7 @@ pub unsafe extern "C" fn jpeg_write_scanlines(
  * Processes exactly one iMCU row per call, unless suspended.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_write_raw_data(
     mut cinfo: j_compress_ptr,
     mut data: JSAMPIMAGE,
@@ -191,44 +235,73 @@ pub unsafe extern "C" fn jpeg_write_raw_data(
 ) -> JDIMENSION {
     let mut lines_per_iMCU_row: JDIMENSION = 0;
     if (*cinfo).global_state != CSTATE_RAW_OK {
-        (*(*cinfo).err).msg_code = JERR_BAD_STATE as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] = (*cinfo).global_state;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_STATE as c_int;
+        (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     if (*cinfo).next_scanline >= (*cinfo).image_height {
-        (*(*cinfo).err).msg_code = JWRN_TOO_MUCH_DATA as c_int;
-        (*(*cinfo).err)
-            .emit_message
-            .expect("non-null function pointer")(cinfo as j_common_ptr, -1i32);
+        (*(*cinfo).err).msg_code = super::jerror::JWRN_TOO_MUCH_DATA as c_int;
+        Some(
+            (*(*cinfo).err)
+                .emit_message
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr, -1i32);
         return 0i32 as JDIMENSION;
     }
+    /* Call progress monitor hook if present */
     if !(*cinfo).progress.is_null() {
         (*(*cinfo).progress).pass_counter = (*cinfo).next_scanline as c_long;
         (*(*cinfo).progress).pass_limit = (*cinfo).image_height as c_long;
-        (*(*cinfo).progress)
-            .progress_monitor
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        Some(
+            (*(*cinfo).progress)
+                .progress_monitor
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
-    if 0 != (*(*cinfo).master).call_pass_startup {
-        (*(*cinfo).master)
-            .pass_startup
-            .expect("non-null function pointer")(cinfo);
+    /* Give master control module another chance if this is first call to
+     * jpeg_write_raw_data.  This lets output of the frame/scan headers be
+     * delayed so that application can write COM, etc, markers between
+     * jpeg_start_compress and jpeg_write_raw_data.
+     */
+    if (*(*cinfo).master).call_pass_startup != 0 {
+        Some(
+            (*(*cinfo).master)
+                .pass_startup
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo);
     }
+    /* Verify that at least one iMCU row has been passed. */
     lines_per_iMCU_row = ((*cinfo).max_v_samp_factor * DCTSIZE) as JDIMENSION;
     if num_lines < lines_per_iMCU_row {
-        (*(*cinfo).err).msg_code = JERR_BUFFER_SIZE as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BUFFER_SIZE as c_int;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
-    if 0 == (*(*cinfo).coef)
-        .compress_data
-        .expect("non-null function pointer")(cinfo, data)
+    /* Directly compress the row. */
+    if Some(
+        (*(*cinfo).coef)
+            .compress_data
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(cinfo, data)
+        == 0
     {
+        /* If compressor did not consume the whole row, suspend processing. */
         return 0i32 as JDIMENSION;
     }
+    /* OK, we processed one iMCU row. */
     (*cinfo).next_scanline = ((*cinfo).next_scanline as c_uint).wrapping_add(lines_per_iMCU_row)
         as JDIMENSION as JDIMENSION;
     return lines_per_iMCU_row;

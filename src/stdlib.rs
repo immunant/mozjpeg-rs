@@ -40,72 +40,81 @@ extern "C" {
     pub static mut stdout: *mut FILE;
 
     #[no_mangle]
-    pub static mut stderr: *mut FILE;
-
-    #[no_mangle]
-    pub fn fprintf(_: *mut FILE, _: *const c_char, _: ...) -> c_int;
-
-    #[no_mangle]
-    pub fn printf(_: *const c_char, _: ...) -> c_int;
-
-    #[no_mangle]
-    pub fn getc(__stream: *mut FILE) -> c_int;
-
-    #[no_mangle]
-    pub fn putc(__c: c_int, __stream: *mut FILE) -> c_int;
-
-    #[no_mangle]
-    pub fn fopen(_: *const c_char, _: *const c_char) -> *mut FILE;
-
-    #[no_mangle]
-    pub fn ferror(__stream: *mut FILE) -> c_int;
-
-    #[no_mangle]
     pub fn fflush(__stream: *mut FILE) -> c_int;
 
     #[no_mangle]
     pub fn sprintf(_: *mut c_char, _: *const c_char, _: ...) -> c_int;
 
     #[no_mangle]
-    pub fn puts(__s: *const c_char) -> c_int;
+    pub fn perror(__s: *const c_char);
 
     #[no_mangle]
     pub fn feof(__stream: *mut FILE) -> c_int;
 
     #[no_mangle]
-    pub fn perror(__s: *const c_char);
-
-    #[no_mangle]
     pub fn snprintf(_: *mut c_char, _: c_ulong, _: *const c_char, _: ...) -> c_int;
 
     #[no_mangle]
-    pub fn ungetc(__c: c_int, __stream: *mut FILE) -> c_int;
+    pub fn puts(__s: *const c_char) -> c_int;
+
+    #[no_mangle]
+    pub static mut stderr: *mut FILE;
 
     #[no_mangle]
     pub fn fclose(__stream: *mut FILE) -> c_int;
 
     #[no_mangle]
+    pub fn fopen(_: *const c_char, _: *const c_char) -> *mut FILE;
+
+    #[no_mangle]
+    pub fn fprintf(_: *mut FILE, _: *const c_char, _: ...) -> c_int;
+
+    #[no_mangle]
     pub fn sscanf(_: *const c_char, _: *const c_char, _: ...) -> c_int;
 
     #[no_mangle]
-    pub fn fread(_: *mut c_void, _: c_ulong, _: c_ulong, _: *mut FILE) -> c_ulong;
+    pub fn getc(__stream: *mut FILE) -> c_int;
 
     #[no_mangle]
-    pub fn fwrite(_: *const c_void, _: c_ulong, _: c_ulong, _: *mut FILE) -> c_ulong;
+    pub fn ungetc(__c: c_int, __stream: *mut FILE) -> c_int;
+
+    #[no_mangle]
+    pub fn fread(_: *mut c_void, _: c_ulong, _: c_ulong, _: *mut FILE) -> c_ulong;
 
     #[no_mangle]
     pub fn fseek(__stream: *mut FILE, __off: c_long, __whence: c_int) -> c_int;
 
     #[no_mangle]
     pub fn ftell(__stream: *mut FILE) -> c_long;
+
     #[no_mangle]
-    pub fn exit(_: c_int) -> !;
+    pub fn putc(__c: c_int, __stream: *mut FILE) -> c_int;
+
+    #[no_mangle]
+    pub fn fwrite(_: *const c_void, _: c_ulong, _: c_ulong, _: *mut FILE) -> c_ulong;
+
+    #[no_mangle]
+    pub fn ferror(__stream: *mut FILE) -> c_int;
+
+    #[no_mangle]
+    pub fn printf(_: *const c_char, _: ...) -> c_int;
+    #[no_mangle]
+    pub fn abs(_: c_int) -> c_int;
 
     #[no_mangle]
     pub fn strtod(_: *const c_char, _: *mut *mut c_char) -> c_double;
 
     #[no_mangle]
-    pub fn abs(_: c_int) -> c_int;
+    pub fn strtol(_: *const c_char, _: *mut *mut c_char, _: c_int) -> c_long;
+
+    #[no_mangle]
+    pub fn malloc(_: c_ulong) -> *mut c_void;
+
+    #[no_mangle]
+    pub fn free(__ptr: *mut c_void);
+
+    #[no_mangle]
+    pub fn exit(_: c_int) -> !;
 
     #[no_mangle]
     pub fn realloc(_: *mut c_void, _: c_ulong) -> *mut c_void;
@@ -117,21 +126,24 @@ extern "C" {
     pub fn random() -> c_long;
 
     #[no_mangle]
-    pub fn malloc(_: c_ulong) -> *mut c_void;
-
-    #[no_mangle]
-    pub fn free(__ptr: *mut c_void);
-
-    #[no_mangle]
     pub fn putenv(__string: *mut c_char) -> c_int;
-
     #[no_mangle]
-    pub fn strtol(_: *const c_char, _: *mut *mut c_char, _: c_int) -> c_long;
+    pub fn strcmp(_: *const c_char, _: *const c_char) -> c_int;
+
     #[no_mangle]
     pub fn strcpy(_: *mut c_char, _: *const c_char) -> *mut c_char;
 
     #[no_mangle]
     pub fn strcat(_: *mut c_char, _: *const c_char) -> *mut c_char;
+
+    #[no_mangle]
+    pub fn memset(_: *mut c_void, _: c_int, _: c_ulong) -> *mut c_void;
+
+    #[no_mangle]
+    pub fn memcpy(_: *mut c_void, _: *const c_void, _: c_ulong) -> *mut c_void;
+
+    #[no_mangle]
+    pub fn strlen(_: *const c_char) -> c_ulong;
 
     #[no_mangle]
     pub fn strncpy(_: *mut c_char, _: *const c_char, _: c_ulong) -> *mut c_char;
@@ -146,29 +158,17 @@ extern "C" {
     pub fn strrchr(_: *const c_char, _: c_int) -> *mut c_char;
 
     #[no_mangle]
-    pub fn strlen(_: *const c_char) -> c_ulong;
-
-    #[no_mangle]
     pub fn strerror(_: c_int) -> *mut c_char;
-
-    #[no_mangle]
-    pub fn memset(_: *mut c_void, _: c_int, _: c_ulong) -> *mut c_void;
-
-    #[no_mangle]
-    pub fn strcmp(_: *const c_char, _: *const c_char) -> c_int;
-
-    #[no_mangle]
-    pub fn memcpy(_: *mut c_void, _: *const c_void, _: c_ulong) -> *mut c_void;
     #[no_mangle]
     pub fn strcasecmp(_: *const c_char, _: *const c_char) -> c_int;
 
     #[no_mangle]
     pub fn strncasecmp(_: *const c_char, _: *const c_char, _: c_ulong) -> c_int;
-    pub type _IO_wide_data;
+    pub type _IO_marker;
 
     pub type _IO_codecvt;
 
-    pub type _IO_marker;
+    pub type _IO_wide_data;
     #[no_mangle]
     pub fn __fxstat(__ver: c_int, __fildes: c_int, __stat_buf: *mut stat) -> c_int;
     #[no_mangle]
@@ -188,6 +188,42 @@ extern "C" {
 // =============== BEGIN FILE_h ================
 pub type FILE = _IO_FILE;
 // ================ END FILE_h ================
+// =============== BEGIN __FILE_h ================
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct _IO_FILE {
+    pub _flags: c_int,
+    pub _IO_read_ptr: *mut c_char,
+    pub _IO_read_end: *mut c_char,
+    pub _IO_read_base: *mut c_char,
+    pub _IO_write_base: *mut c_char,
+    pub _IO_write_ptr: *mut c_char,
+    pub _IO_write_end: *mut c_char,
+    pub _IO_buf_base: *mut c_char,
+    pub _IO_buf_end: *mut c_char,
+    pub _IO_save_base: *mut c_char,
+    pub _IO_backup_base: *mut c_char,
+    pub _IO_save_end: *mut c_char,
+    pub _markers: *mut _IO_marker,
+    pub _chain: *mut _IO_FILE,
+    pub _fileno: c_int,
+    pub _flags2: c_int,
+    pub _old_offset: __off_t,
+    pub _cur_column: c_ushort,
+    pub _vtable_offset: c_schar,
+    pub _shortbuf: [c_char; 1],
+    pub _lock: *mut c_void,
+    pub _offset: __off64_t,
+    pub _codecvt: *mut _IO_codecvt,
+    pub _wide_data: *mut _IO_wide_data,
+    pub _freeres_list: *mut _IO_FILE,
+    pub _freeres_buf: *mut c_void,
+    pub __pad5: size_t,
+    pub _mode: c_int,
+    pub _unused2: [c_char; 20],
+}
+use crate::stddef_h::size_t;
+// ================ END __FILE_h ================
 // =============== BEGIN __sigset_t_h ================
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -197,6 +233,7 @@ pub struct __sigset_t {
 // ================ END __sigset_t_h ================
 // =============== BEGIN ctype_h ================
 pub type C2RustUnnamed_0 = c_uint;
+pub const _ISupper: C2RustUnnamed_0 = 256;
 pub const _ISalnum: C2RustUnnamed_0 = 8;
 pub const _ISpunct: C2RustUnnamed_0 = 4;
 pub const _IScntrl: C2RustUnnamed_0 = 2;
@@ -208,7 +245,6 @@ pub const _ISxdigit: C2RustUnnamed_0 = 4096;
 pub const _ISdigit: C2RustUnnamed_0 = 2048;
 pub const _ISalpha: C2RustUnnamed_0 = 1024;
 pub const _ISlower: C2RustUnnamed_0 = 512;
-pub const _ISupper: C2RustUnnamed_0 = 256;
 #[inline]
 pub unsafe extern "C" fn tolower(mut __c: c_int) -> c_int {
     return if __c >= -128i32 && __c < 256i32 {
@@ -268,16 +304,16 @@ pub struct stat {
     pub st_ctim: timespec,
     pub __glibc_reserved: [__syscall_slong_t; 3],
 }
-pub const _STAT_VER: c_int = _STAT_VER_LINUX;
 pub const _STAT_VER_LINUX: c_int = 1i32;
+pub const _STAT_VER: c_int = _STAT_VER_LINUX;
 // ================ END stat_h ================
 // =============== BEGIN stdint_h ================
 pub const SIZE_MAX: c_ulong = 18446744073709551615u64;
 // ================ END stdint_h ================
 // =============== BEGIN stdio_h ================
-pub const EOF: c_int = -1i32;
-pub const SEEK_SET: c_int = 0i32;
 pub const SEEK_END: c_int = 2i32;
+pub const SEEK_SET: c_int = 0i32;
+pub const EOF: c_int = -1i32;
 // ================ END stdio_h ================
 // =============== BEGIN stdlib_float_h ================
 #[inline]
@@ -286,51 +322,19 @@ pub unsafe extern "C" fn atof(mut __nptr: *const c_char) -> c_double {
 }
 // ================ END stdlib_float_h ================
 // =============== BEGIN stdlib_h ================
-pub const EXIT_FAILURE: c_int = 1i32;
-pub const EXIT_SUCCESS: c_int = 0i32;
-use crate::stddef_h::NULL;
-pub const RAND_MAX: c_int = 2147483647i32;
 #[inline]
 pub unsafe extern "C" fn atoi(mut __nptr: *const c_char) -> c_int {
     return strtol(__nptr, NULL as *mut c_void as *mut *mut c_char, 10i32) as c_int;
 }
-// ================ END stdlib_h ================
+pub const EXIT_SUCCESS: c_int = 0i32;
+pub const EXIT_FAILURE: c_int = 1i32;
+pub const RAND_MAX: c_int = 2147483647i32;
+
+use crate::stddef_h::NULL;
+use libc;
+// ================ END string_h ================
 // =============== BEGIN struct_FILE_h ================
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct _IO_FILE {
-    pub _flags: c_int,
-    pub _IO_read_ptr: *mut c_char,
-    pub _IO_read_end: *mut c_char,
-    pub _IO_read_base: *mut c_char,
-    pub _IO_write_base: *mut c_char,
-    pub _IO_write_ptr: *mut c_char,
-    pub _IO_write_end: *mut c_char,
-    pub _IO_buf_base: *mut c_char,
-    pub _IO_buf_end: *mut c_char,
-    pub _IO_save_base: *mut c_char,
-    pub _IO_backup_base: *mut c_char,
-    pub _IO_save_end: *mut c_char,
-    pub _markers: *mut _IO_marker,
-    pub _chain: *mut _IO_FILE,
-    pub _fileno: c_int,
-    pub _flags2: c_int,
-    pub _old_offset: __off_t,
-    pub _cur_column: c_ushort,
-    pub _vtable_offset: c_schar,
-    pub _shortbuf: [c_char; 1],
-    pub _lock: *mut c_void,
-    pub _offset: __off64_t,
-    pub _codecvt: *mut _IO_codecvt,
-    pub _wide_data: *mut _IO_wide_data,
-    pub _freeres_list: *mut _IO_FILE,
-    pub _freeres_buf: *mut c_void,
-    pub __pad5: size_t,
-    pub _mode: c_int,
-    pub _unused2: [c_char; 20],
-}
 pub type _IO_lock_t = ();
-use crate::stddef_h::size_t;
 // ================ END struct_FILE_h ================
 // =============== BEGIN struct_timespec_h ================
 #[repr(C)]
@@ -377,9 +381,9 @@ pub type __gid_t = c_uint;
 pub type __ino_t = c_ulong;
 pub type __mode_t = c_uint;
 pub type __nlink_t = c_ulong;
+pub type __time_t = c_long;
 pub type __blksize_t = c_long;
 pub type __blkcnt_t = c_long;
 pub type __ssize_t = c_long;
 pub type __syscall_slong_t = c_long;
-pub type __time_t = c_long;
 pub type __suseconds_t = c_long;

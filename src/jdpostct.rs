@@ -1,4 +1,4 @@
-pub use crate::jerror::{
+pub use super::jerror::{
     C2RustUnnamed_3, JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
     JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID, JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
     JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE, JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
@@ -33,48 +33,28 @@ pub use crate::jmorecfg_h::{
     boolean, FALSE, JCOEF, JDIMENSION, JOCTET, JSAMPLE, TRUE, UINT16, UINT8,
 };
 pub use crate::jpegint_h::{
-    inverse_DCT_method_ptr, jpeg_color_deconverter, jpeg_color_quantizer, jpeg_d_coef_controller,
-    jpeg_d_main_controller, jpeg_d_post_controller, jpeg_decomp_master, jpeg_entropy_decoder,
-    jpeg_input_controller, jpeg_inverse_dct, jpeg_marker_reader, jpeg_upsampler, jround_up,
-    JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE,
-    J_BUF_MODE,
+    inverse_DCT_method_ptr, jround_up, JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT,
+    JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, J_BUF_MODE,
 };
 pub use crate::jpeglib_h::{
-    j_common_ptr, j_decompress_ptr, jpeg_common_struct, jpeg_component_info,
-    jpeg_decompress_struct, jpeg_error_mgr, jpeg_marker_parser_method, jpeg_marker_struct,
-    jpeg_memory_mgr, jpeg_progress_mgr, jpeg_saved_marker_ptr, jpeg_source_mgr,
-    jvirt_barray_control, jvirt_barray_ptr, jvirt_sarray_control, jvirt_sarray_ptr,
-    C2RustUnnamed_2, JCS_YCbCr, JBLOCK, JBLOCKARRAY, JBLOCKROW, JCOEFPTR, JCS_CMYK, JCS_EXT_ABGR,
-    JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX,
-    JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK,
-    JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JDITHER_FS, JDITHER_NONE, JDITHER_ORDERED, JHUFF_TBL,
-    JPOOL_IMAGE, JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD,
-    J_DITHER_MODE,
+    j_common_ptr, j_decompress_ptr, jpeg_color_deconverter, jpeg_color_quantizer,
+    jpeg_common_struct, jpeg_component_info, jpeg_d_coef_controller, jpeg_d_main_controller,
+    jpeg_d_post_controller, jpeg_decomp_master, jpeg_decompress_struct, jpeg_entropy_decoder,
+    jpeg_error_mgr, jpeg_input_controller, jpeg_inverse_dct, jpeg_marker_parser_method,
+    jpeg_marker_reader, jpeg_marker_struct, jpeg_memory_mgr, jpeg_progress_mgr,
+    jpeg_saved_marker_ptr, jpeg_source_mgr, jpeg_upsampler, jvirt_barray_control, jvirt_barray_ptr,
+    jvirt_sarray_control, jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr, JBLOCK, JBLOCKARRAY,
+    JBLOCKROW, JCOEFPTR, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA,
+    JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB,
+    JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW,
+    JDITHER_FS, JDITHER_NONE, JDITHER_ORDERED, JHUFF_TBL, JPOOL_IMAGE, JQUANT_TBL, JSAMPARRAY,
+    JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD, J_DITHER_MODE,
 };
 pub use crate::stddef_h::{size_t, NULL};
 use libc::{self, c_int, c_long, c_uint, c_ulong, c_void};
+
 pub type my_post_ptr = *mut my_post_controller;
-/*
- * jdpostct.c
- *
- * This file was part of the Independent JPEG Group's software:
- * Copyright (C) 1994-1996, Thomas G. Lane.
- * It was modified by The libjpeg-turbo Project to include only code relevant
- * to libjpeg-turbo.
- * For conditions of distribution and use, see the accompanying README.ijg
- * file.
- *
- * This file contains the decompression postprocessing controller.
- * This controller manages the upsampling, color conversion, and color
- * quantization/reduction steps; specifically, it controls the buffering
- * between upsample/color conversion and color quantization/reduction.
- *
- * If no color quantization/reduction is required, then this module has no
- * work to do, and it just hands off to the upsample/color conversion code.
- * An integrated upsample/convert/quantize process would replace this module
- * entirely.
- */
-/* Private buffer controller object */
+
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct my_post_controller {
@@ -88,11 +68,13 @@ pub struct my_post_controller {
 /*
  * Initialize for a processing pass.
  */
+
 unsafe extern "C" fn start_pass_dpost(mut cinfo: j_decompress_ptr, mut pass_mode: J_BUF_MODE) {
     let mut post: my_post_ptr = (*cinfo).post as my_post_ptr;
     match pass_mode as c_uint {
         0 => {
-            if 0 != (*cinfo).quantize_colors {
+            if (*cinfo).quantize_colors != 0 {
+                /* Single-pass processing with color quantization. */
                 (*post).pub_0.post_process_data = Some(
                     post_process_1pass
                         as unsafe extern "C" fn(
@@ -105,10 +87,17 @@ unsafe extern "C" fn start_pass_dpost(mut cinfo: j_decompress_ptr, mut pass_mode
                             _: JDIMENSION,
                         ) -> (),
                 );
+                /* We could be doing buffered-image output before starting a 2-pass
+                 * color quantization; in that case, jinit_d_post_controller did not
+                 * allocate a strip buffer.  Use the virtual-array buffer as workspace.
+                 */
                 if (*post).buffer.is_null() {
-                    (*post).buffer = (*(*cinfo).mem)
-                        .access_virt_sarray
-                        .expect("non-null function pointer")(
+                    (*post).buffer = Some(
+                        (*(*cinfo).mem)
+                            .access_virt_sarray
+                            .expect("non-null function pointer"),
+                    )
+                    .expect("non-null function pointer")(
                         cinfo as j_common_ptr,
                         (*post).whole_image,
                         0i32 as JDIMENSION,
@@ -117,15 +106,22 @@ unsafe extern "C" fn start_pass_dpost(mut cinfo: j_decompress_ptr, mut pass_mode
                     )
                 }
             } else {
+                /* For single-pass processing without color quantization,
+                 * I have no work to do; just call the upsampler directly.
+                 */
                 (*post).pub_0.post_process_data = (*(*cinfo).upsample).upsample
             }
         }
         3 => {
+            /* First pass of 2-pass quantization */
             if (*post).whole_image.is_null() {
-                (*(*cinfo).err).msg_code = JERR_BAD_BUFFER_MODE as c_int;
-                (*(*cinfo).err)
-                    .error_exit
-                    .expect("non-null function pointer")(cinfo as j_common_ptr);
+                (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_BUFFER_MODE as c_int;
+                Some(
+                    (*(*cinfo).err)
+                        .error_exit
+                        .expect("non-null function pointer"),
+                )
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             (*post).pub_0.post_process_data = Some(
                 post_process_prepass
@@ -141,11 +137,15 @@ unsafe extern "C" fn start_pass_dpost(mut cinfo: j_decompress_ptr, mut pass_mode
             )
         }
         2 => {
+            /* Second pass of 2-pass quantization */
             if (*post).whole_image.is_null() {
-                (*(*cinfo).err).msg_code = JERR_BAD_BUFFER_MODE as c_int;
-                (*(*cinfo).err)
-                    .error_exit
-                    .expect("non-null function pointer")(cinfo as j_common_ptr);
+                (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_BUFFER_MODE as c_int;
+                Some(
+                    (*(*cinfo).err)
+                        .error_exit
+                        .expect("non-null function pointer"),
+                )
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             (*post).pub_0.post_process_data = Some(
                 post_process_2pass
@@ -161,10 +161,14 @@ unsafe extern "C" fn start_pass_dpost(mut cinfo: j_decompress_ptr, mut pass_mode
             )
         }
         _ => {
-            (*(*cinfo).err).msg_code = JERR_BAD_BUFFER_MODE as c_int;
-            (*(*cinfo).err)
-                .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+            /* QUANT_2PASS_SUPPORTED */
+            (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_BUFFER_MODE as c_int;
+            Some(
+                (*(*cinfo).err)
+                    .error_exit
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
     }
     (*post).next_row = 0i32 as JDIMENSION;
@@ -175,6 +179,7 @@ unsafe extern "C" fn start_pass_dpost(mut cinfo: j_decompress_ptr, mut pass_mode
  * Process some data in the one-pass (strip buffer) case.
  * This is used for color precision reduction as well as one-pass quantization.
  */
+
 unsafe extern "C" fn post_process_1pass(
     mut cinfo: j_decompress_ptr,
     mut input_buf: JSAMPIMAGE,
@@ -187,14 +192,19 @@ unsafe extern "C" fn post_process_1pass(
     let mut post: my_post_ptr = (*cinfo).post as my_post_ptr;
     let mut num_rows: JDIMENSION = 0;
     let mut max_rows: JDIMENSION = 0;
+    /* Fill the buffer, but not more than what we can dump out in one go. */
+    /* Note we rely on the upsampler to detect bottom of image. */
     max_rows = out_rows_avail.wrapping_sub(*out_row_ctr);
     if max_rows > (*post).strip_height {
         max_rows = (*post).strip_height
     }
     num_rows = 0i32 as JDIMENSION;
-    (*(*cinfo).upsample)
-        .upsample
-        .expect("non-null function pointer")(
+    Some(
+        (*(*cinfo).upsample)
+            .upsample
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(
         cinfo,
         input_buf,
         in_row_group_ctr,
@@ -203,9 +213,13 @@ unsafe extern "C" fn post_process_1pass(
         &mut num_rows,
         max_rows,
     );
-    (*(*cinfo).cquantize)
-        .color_quantize
-        .expect("non-null function pointer")(
+    /* Quantize and emit data. */
+    Some(
+        (*(*cinfo).cquantize)
+            .color_quantize
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(
         cinfo,
         (*post).buffer,
         output_buf.offset(*out_row_ctr as isize),
@@ -216,22 +230,27 @@ unsafe extern "C" fn post_process_1pass(
 /*
  * Process some data in the first pass of 2-pass quantization.
  */
+
 unsafe extern "C" fn post_process_prepass(
     mut cinfo: j_decompress_ptr,
     mut input_buf: JSAMPIMAGE,
     mut in_row_group_ctr: *mut JDIMENSION,
     mut in_row_groups_avail: JDIMENSION,
-    mut _output_buf: JSAMPARRAY,
+    mut output_buf: JSAMPARRAY,
     mut out_row_ctr: *mut JDIMENSION,
-    mut _out_rows_avail: JDIMENSION,
+    mut out_rows_avail: JDIMENSION,
 ) {
     let mut post: my_post_ptr = (*cinfo).post as my_post_ptr;
     let mut old_next_row: JDIMENSION = 0;
     let mut num_rows: JDIMENSION = 0;
+    /* Reposition virtual buffer if at start of strip. */
     if (*post).next_row == 0i32 as c_uint {
-        (*post).buffer = (*(*cinfo).mem)
-            .access_virt_sarray
-            .expect("non-null function pointer")(
+        (*post).buffer = Some(
+            (*(*cinfo).mem)
+                .access_virt_sarray
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(
             cinfo as j_common_ptr,
             (*post).whole_image,
             (*post).starting_row,
@@ -239,10 +258,14 @@ unsafe extern "C" fn post_process_prepass(
             TRUE,
         )
     }
+    /* Upsample some data (up to a strip height's worth). */
     old_next_row = (*post).next_row;
-    (*(*cinfo).upsample)
-        .upsample
-        .expect("non-null function pointer")(
+    Some(
+        (*(*cinfo).upsample)
+            .upsample
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(
         cinfo,
         input_buf,
         in_row_group_ctr,
@@ -251,11 +274,16 @@ unsafe extern "C" fn post_process_prepass(
         &mut (*post).next_row,
         (*post).strip_height,
     );
+    /* Allow quantizer to scan new data.  No data is emitted, */
+    /* but we advance out_row_ctr so outer loop can tell when we're done. */
     if (*post).next_row > old_next_row {
         num_rows = (*post).next_row.wrapping_sub(old_next_row);
-        (*(*cinfo).cquantize)
-            .color_quantize
-            .expect("non-null function pointer")(
+        Some(
+            (*(*cinfo).cquantize)
+                .color_quantize
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(
             cinfo,
             (*post).buffer.offset(old_next_row as isize),
             NULL as *mut c_void as JSAMPARRAY,
@@ -263,6 +291,7 @@ unsafe extern "C" fn post_process_prepass(
         );
         *out_row_ctr = (*out_row_ctr as c_uint).wrapping_add(num_rows) as JDIMENSION as JDIMENSION
     }
+    /* Advance if we filled the strip. */
     if (*post).next_row >= (*post).strip_height {
         (*post).starting_row = ((*post).starting_row as c_uint).wrapping_add((*post).strip_height)
             as JDIMENSION as JDIMENSION;
@@ -272,11 +301,12 @@ unsafe extern "C" fn post_process_prepass(
 /*
  * Process some data in the second pass of 2-pass quantization.
  */
+
 unsafe extern "C" fn post_process_2pass(
     mut cinfo: j_decompress_ptr,
-    mut _input_buf: JSAMPIMAGE,
-    mut _in_row_group_ctr: *mut JDIMENSION,
-    mut _in_row_groups_avail: JDIMENSION,
+    mut input_buf: JSAMPIMAGE,
+    mut in_row_group_ctr: *mut JDIMENSION,
+    mut in_row_groups_avail: JDIMENSION,
     mut output_buf: JSAMPARRAY,
     mut out_row_ctr: *mut JDIMENSION,
     mut out_rows_avail: JDIMENSION,
@@ -284,10 +314,14 @@ unsafe extern "C" fn post_process_2pass(
     let mut post: my_post_ptr = (*cinfo).post as my_post_ptr;
     let mut num_rows: JDIMENSION = 0;
     let mut max_rows: JDIMENSION = 0;
+    /* Reposition virtual buffer if at start of strip. */
     if (*post).next_row == 0i32 as c_uint {
-        (*post).buffer = (*(*cinfo).mem)
-            .access_virt_sarray
-            .expect("non-null function pointer")(
+        (*post).buffer = Some(
+            (*(*cinfo).mem)
+                .access_virt_sarray
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(
             cinfo as j_common_ptr,
             (*post).whole_image,
             (*post).starting_row,
@@ -295,24 +329,31 @@ unsafe extern "C" fn post_process_2pass(
             FALSE,
         )
     }
-    num_rows = (*post).strip_height.wrapping_sub((*post).next_row);
-    max_rows = out_rows_avail.wrapping_sub(*out_row_ctr);
+    /* Determine number of rows to emit. */
+    num_rows = (*post).strip_height.wrapping_sub((*post).next_row); /* available in strip */
+    max_rows = out_rows_avail.wrapping_sub(*out_row_ctr); /* available in output area */
     if num_rows > max_rows {
         num_rows = max_rows
     }
+    /* We have to check bottom of image here, can't depend on upsampler. */
     max_rows = (*cinfo).output_height.wrapping_sub((*post).starting_row);
     if num_rows > max_rows {
         num_rows = max_rows
     }
-    (*(*cinfo).cquantize)
-        .color_quantize
-        .expect("non-null function pointer")(
+    /* Quantize and emit data. */
+    Some(
+        (*(*cinfo).cquantize)
+            .color_quantize
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(
         cinfo,
         (*post).buffer.offset((*post).next_row as isize),
         output_buf.offset(*out_row_ctr as isize),
         num_rows as c_int,
     );
     *out_row_ctr = (*out_row_ctr as c_uint).wrapping_add(num_rows) as JDIMENSION as JDIMENSION;
+    /* Advance if we filled the strip. */
     (*post).next_row =
         ((*post).next_row as c_uint).wrapping_add(num_rows) as JDIMENSION as JDIMENSION;
     if (*post).next_row >= (*post).strip_height {
@@ -321,34 +362,65 @@ unsafe extern "C" fn post_process_2pass(
         (*post).next_row = 0i32 as JDIMENSION
     };
 }
+/* It is useful to allow each component to have a separate IDCT method. */
+/* Upsampling (note that upsampler must also call color converter) */
+/* TRUE if need rows above & below */
+/* Colorspace conversion */
+/* Color quantization or color precision reduction */
+/* Miscellaneous useful macros */
+/* We assume that right shift corresponds to signed division by 2 with
+ * rounding towards minus infinity.  This is correct for typical "arithmetic
+ * shift" instructions that shift in copies of the sign bit.  But some
+ * C compilers implement >> with an unsigned shift.  For these machines you
+ * must define RIGHT_SHIFT_IS_UNSIGNED.
+ * RIGHT_SHIFT provides a proper signed right shift of a JLONG quantity.
+ * It is only applied with constant shift counts.  SHIFT_TEMPS must be
+ * included in the variables of any routine using RIGHT_SHIFT.
+ */
+/* Compression module initialization routines */
+/* Decompression module initialization routines */
 /* QUANT_2PASS_SUPPORTED */
 /*
  * Initialize postprocessing controller.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jinit_d_post_controller(
     mut cinfo: j_decompress_ptr,
     mut need_full_buffer: boolean,
 ) {
-    let mut post: my_post_ptr = 0 as *mut my_post_controller;
-    post = (*(*cinfo).mem)
-        .alloc_small
-        .expect("non-null function pointer")(
+    let mut post: my_post_ptr = 0 as *mut my_post_controller; /* flag for no virtual arrays */
+    post = Some(
+        (*(*cinfo).mem)
+            .alloc_small
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(
         cinfo as j_common_ptr,
         JPOOL_IMAGE,
         ::std::mem::size_of::<my_post_controller>() as c_ulong,
-    ) as my_post_ptr;
+    ) as my_post_ptr; /* flag for no strip buffer */
     (*cinfo).post = post as *mut jpeg_d_post_controller;
     (*post).pub_0.start_pass =
         Some(start_pass_dpost as unsafe extern "C" fn(_: j_decompress_ptr, _: J_BUF_MODE) -> ());
     (*post).whole_image = NULL as jvirt_sarray_ptr;
     (*post).buffer = NULL as JSAMPARRAY;
-    if 0 != (*cinfo).quantize_colors {
+    /* Create the quantization buffer, if needed */
+    if (*cinfo).quantize_colors != 0 {
+        /* The buffer strip height is max_v_samp_factor, which is typically
+         * an efficient number of rows for upsampling to return.
+         * (In the presence of output rescaling, we might want to be smarter?)
+         */
         (*post).strip_height = (*cinfo).max_v_samp_factor as JDIMENSION;
-        if 0 != need_full_buffer {
-            (*post).whole_image = (*(*cinfo).mem)
-                .request_virt_sarray
-                .expect("non-null function pointer")(
+        if need_full_buffer != 0 {
+            /* Two-pass color quantization: need full-image storage. */
+            /* We round up the number of rows to a multiple of the strip height. */
+            (*post).whole_image = Some(
+                (*(*cinfo).mem)
+                    .request_virt_sarray
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(
                 cinfo as j_common_ptr,
                 JPOOL_IMAGE,
                 FALSE,
@@ -361,10 +433,15 @@ pub unsafe extern "C" fn jinit_d_post_controller(
                 ) as JDIMENSION,
                 (*post).strip_height,
             )
+        /* QUANT_2PASS_SUPPORTED */
         } else {
-            (*post).buffer = (*(*cinfo).mem)
-                .alloc_sarray
-                .expect("non-null function pointer")(
+            /* One-pass color quantization: just make a strip buffer. */
+            (*post).buffer = Some(
+                (*(*cinfo).mem)
+                    .alloc_sarray
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(
                 cinfo as j_common_ptr,
                 JPOOL_IMAGE,
                 (*cinfo)

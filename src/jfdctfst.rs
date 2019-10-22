@@ -77,6 +77,7 @@ use libc::{self, c_int, c_long};
  * Perform the forward DCT on one block of samples.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_fdct_ifast(mut data: *mut DCTELEM) {
     let mut tmp0: DCTELEM = 0;
     let mut tmp1: DCTELEM = 0;
@@ -99,26 +100,28 @@ pub unsafe extern "C" fn jpeg_fdct_ifast(mut data: *mut DCTELEM) {
     let mut z13: DCTELEM = 0;
     let mut dataptr: *mut DCTELEM = 0 as *mut DCTELEM;
     let mut ctr: c_int = 0;
+    /* Pass 1: process rows. */
     dataptr = data;
     ctr = DCTSIZE - 1i32;
     while ctr >= 0i32 {
-        tmp0 = (*dataptr.offset(0isize) as c_int + *dataptr.offset(7isize) as c_int) as DCTELEM;
-        tmp7 = (*dataptr.offset(0isize) as c_int - *dataptr.offset(7isize) as c_int) as DCTELEM;
-        tmp1 = (*dataptr.offset(1isize) as c_int + *dataptr.offset(6isize) as c_int) as DCTELEM;
-        tmp6 = (*dataptr.offset(1isize) as c_int - *dataptr.offset(6isize) as c_int) as DCTELEM;
-        tmp2 = (*dataptr.offset(2isize) as c_int + *dataptr.offset(5isize) as c_int) as DCTELEM;
-        tmp5 = (*dataptr.offset(2isize) as c_int - *dataptr.offset(5isize) as c_int) as DCTELEM;
-        tmp3 = (*dataptr.offset(3isize) as c_int + *dataptr.offset(4isize) as c_int) as DCTELEM;
-        tmp4 = (*dataptr.offset(3isize) as c_int - *dataptr.offset(4isize) as c_int) as DCTELEM;
+        tmp0 = (*dataptr.offset(0) as c_int + *dataptr.offset(7) as c_int) as DCTELEM;
+        tmp7 = (*dataptr.offset(0) as c_int - *dataptr.offset(7) as c_int) as DCTELEM;
+        tmp1 = (*dataptr.offset(1) as c_int + *dataptr.offset(6) as c_int) as DCTELEM;
+        tmp6 = (*dataptr.offset(1) as c_int - *dataptr.offset(6) as c_int) as DCTELEM;
+        tmp2 = (*dataptr.offset(2) as c_int + *dataptr.offset(5) as c_int) as DCTELEM;
+        tmp5 = (*dataptr.offset(2) as c_int - *dataptr.offset(5) as c_int) as DCTELEM;
+        tmp3 = (*dataptr.offset(3) as c_int + *dataptr.offset(4) as c_int) as DCTELEM;
+        tmp4 = (*dataptr.offset(3) as c_int - *dataptr.offset(4) as c_int) as DCTELEM;
+        /* advance pointer to next row */
         tmp10 = (tmp0 as c_int + tmp3 as c_int) as DCTELEM;
         tmp13 = (tmp0 as c_int - tmp3 as c_int) as DCTELEM;
         tmp11 = (tmp1 as c_int + tmp2 as c_int) as DCTELEM;
         tmp12 = (tmp1 as c_int - tmp2 as c_int) as DCTELEM;
-        *dataptr.offset(0isize) = (tmp10 as c_int + tmp11 as c_int) as DCTELEM;
-        *dataptr.offset(4isize) = (tmp10 as c_int - tmp11 as c_int) as DCTELEM;
+        *dataptr.offset(0) = (tmp10 as c_int + tmp11 as c_int) as DCTELEM;
+        *dataptr.offset(4) = (tmp10 as c_int - tmp11 as c_int) as DCTELEM;
         z1 = ((tmp12 as c_int + tmp13 as c_int) as c_long * 181i32 as JLONG >> 8i32) as DCTELEM;
-        *dataptr.offset(2isize) = (tmp13 as c_int + z1 as c_int) as DCTELEM;
-        *dataptr.offset(6isize) = (tmp13 as c_int - z1 as c_int) as DCTELEM;
+        *dataptr.offset(2) = (tmp13 as c_int + z1 as c_int) as DCTELEM;
+        *dataptr.offset(6) = (tmp13 as c_int - z1 as c_int) as DCTELEM;
         tmp10 = (tmp4 as c_int + tmp5 as c_int) as DCTELEM;
         tmp11 = (tmp5 as c_int + tmp6 as c_int) as DCTELEM;
         tmp12 = (tmp6 as c_int + tmp7 as c_int) as DCTELEM;
@@ -130,13 +133,28 @@ pub unsafe extern "C" fn jpeg_fdct_ifast(mut data: *mut DCTELEM) {
         z3 = (tmp11 as c_long * 181i32 as JLONG >> 8i32) as DCTELEM;
         z11 = (tmp7 as c_int + z3 as c_int) as DCTELEM;
         z13 = (tmp7 as c_int - z3 as c_int) as DCTELEM;
-        *dataptr.offset(5isize) = (z13 as c_int + z2 as c_int) as DCTELEM;
-        *dataptr.offset(3isize) = (z13 as c_int - z2 as c_int) as DCTELEM;
-        *dataptr.offset(1isize) = (z11 as c_int + z4 as c_int) as DCTELEM;
-        *dataptr.offset(7isize) = (z11 as c_int - z4 as c_int) as DCTELEM;
+        *dataptr.offset(5) = (z13 as c_int + z2 as c_int) as DCTELEM;
+        *dataptr.offset(3) = (z13 as c_int - z2 as c_int) as DCTELEM;
+        *dataptr.offset(1) = (z11 as c_int + z4 as c_int) as DCTELEM;
+        *dataptr.offset(7) = (z11 as c_int - z4 as c_int) as DCTELEM;
         dataptr = dataptr.offset(DCTSIZE as isize);
         ctr -= 1
     }
+    /* Even part */
+    /* phase 2 */
+    /* phase 3 */
+    /* c4 */
+    /* phase 5 */
+    /* Odd part */
+    /* phase 2 */
+    /* The rotator is modified from fig 4-8 to avoid extra negations. */
+    /* c6 */
+    /* c2-c6 */
+    /* c2+c6 */
+    /* c4 */
+    /* phase 5 */
+    /* phase 6 */
+    /* Pass 2: process columns. */
     dataptr = data;
     ctr = DCTSIZE - 1i32;
     while ctr >= 0i32 {
@@ -156,6 +174,7 @@ pub unsafe extern "C" fn jpeg_fdct_ifast(mut data: *mut DCTELEM) {
             + *dataptr.offset((DCTSIZE * 4i32) as isize) as c_int) as DCTELEM;
         tmp4 = (*dataptr.offset((DCTSIZE * 3i32) as isize) as c_int
             - *dataptr.offset((DCTSIZE * 4i32) as isize) as c_int) as DCTELEM;
+        /* advance pointer to next column */
         tmp10 = (tmp0 as c_int + tmp3 as c_int) as DCTELEM;
         tmp13 = (tmp0 as c_int - tmp3 as c_int) as DCTELEM;
         tmp11 = (tmp1 as c_int + tmp2 as c_int) as DCTELEM;
@@ -180,7 +199,22 @@ pub unsafe extern "C" fn jpeg_fdct_ifast(mut data: *mut DCTELEM) {
         *dataptr.offset((DCTSIZE * 3i32) as isize) = (z13 as c_int - z2 as c_int) as DCTELEM;
         *dataptr.offset((DCTSIZE * 1i32) as isize) = (z11 as c_int + z4 as c_int) as DCTELEM;
         *dataptr.offset((DCTSIZE * 7i32) as isize) = (z11 as c_int - z4 as c_int) as DCTELEM;
-        dataptr = dataptr.offset(1isize);
+        dataptr = dataptr.offset(1);
         ctr -= 1
     }
 }
+/* Even part */
+/* phase 2 */
+/* phase 3 */
+/* c4 */
+/* phase 5 */
+/* Odd part */
+/* phase 2 */
+/* The rotator is modified from fig 4-8 to avoid extra negations. */
+/* c6 */
+/* c2-c6 */
+/* c2+c6 */
+/* c4 */
+/* phase 5 */
+/* phase 6 */
+/* DCT_IFAST_SUPPORTED */

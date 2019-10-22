@@ -1,4 +1,4 @@
-pub use crate::jerror::{
+pub use super::jerror::{
     C2RustUnnamed_3, JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
     JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID, JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
     JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE, JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
@@ -33,23 +33,39 @@ pub use crate::jmorecfg_h::{boolean, FALSE, JCOEF, JDIMENSION, JOCTET, JSAMPLE, 
 pub use crate::jpegint_h::{
     jinit_c_coef_controller, jinit_c_main_controller, jinit_c_master_control,
     jinit_c_prep_controller, jinit_color_converter, jinit_downsampler, jinit_forward_dct,
-    jinit_huff_encoder, jinit_marker_writer, jinit_phuff_encoder, jpeg_c_coef_controller,
-    jpeg_c_main_controller, jpeg_c_prep_controller, jpeg_color_converter, jpeg_comp_master,
-    jpeg_downsampler, jpeg_entropy_encoder, jpeg_forward_dct, jpeg_marker_writer, JBUF_CRANK_DEST,
-    JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, J_BUF_MODE,
+    jinit_huff_encoder, jinit_marker_writer, jinit_phuff_encoder, JBUF_CRANK_DEST, JBUF_PASS_THRU,
+    JBUF_REQUANT, JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, J_BUF_MODE,
 };
 pub use crate::jpeglib_h::{
-    j_common_ptr, j_compress_ptr, jpeg_common_struct, jpeg_component_info, jpeg_compress_struct,
-    jpeg_destination_mgr, jpeg_error_mgr, jpeg_memory_mgr, jpeg_progress_mgr, jpeg_scan_info,
-    jvirt_barray_control, jvirt_barray_ptr, jvirt_sarray_control, jvirt_sarray_ptr,
-    C2RustUnnamed_2, JCS_YCbCr, JBLOCK, JBLOCKARRAY, JBLOCKROW, JCS_CMYK, JCS_EXT_ABGR,
-    JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX,
-    JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK,
-    JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JHUFF_TBL, JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE, JSAMPROW,
-    J_COLOR_SPACE, J_DCT_METHOD,
+    j_common_ptr, j_compress_ptr, jpeg_c_coef_controller, jpeg_c_main_controller,
+    jpeg_c_prep_controller, jpeg_color_converter, jpeg_common_struct, jpeg_comp_master,
+    jpeg_component_info, jpeg_compress_struct, jpeg_destination_mgr, jpeg_downsampler,
+    jpeg_entropy_encoder, jpeg_error_mgr, jpeg_forward_dct, jpeg_marker_writer, jpeg_memory_mgr,
+    jpeg_progress_mgr, jpeg_scan_info, jvirt_barray_control, jvirt_barray_ptr,
+    jvirt_sarray_control, jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr, JBLOCK, JBLOCKARRAY,
+    JBLOCKROW, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX,
+    JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB,
+    JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JHUFF_TBL, JQUANT_TBL,
+    JSAMPARRAY, JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD,
 };
 pub use crate::stddef_h::size_t;
 use libc::{self, c_int};
+/* It is useful to allow each component to have a separate IDCT method. */
+/* Upsampling (note that upsampler must also call color converter) */
+/* TRUE if need rows above & below */
+/* Colorspace conversion */
+/* Color quantization or color precision reduction */
+/* Miscellaneous useful macros */
+/* We assume that right shift corresponds to signed division by 2 with
+ * rounding towards minus infinity.  This is correct for typical "arithmetic
+ * shift" instructions that shift in copies of the sign bit.  But some
+ * C compilers implement >> with an unsigned shift.  For these machines you
+ * must define RIGHT_SHIFT_IS_UNSIGNED.
+ * RIGHT_SHIFT provides a proper signed right shift of a JLONG quantity.
+ * It is only applied with constant shift counts.  SHIFT_TEMPS must be
+ * included in the variables of any routine using RIGHT_SHIFT.
+ */
+/* Compression module initialization routines */
 /*
  * jcinit.c
  *
@@ -68,54 +84,63 @@ use libc::{self, c_int};
  * For a transcoding-only application, we want to be able to use jcmaster.c
  * without linking in the whole library.
  */
-/* Miscellaneous useful macros */
-/* We assume that right shift corresponds to signed division by 2 with
- * rounding towards minus infinity.  This is correct for typical "arithmetic
- * shift" instructions that shift in copies of the sign bit.  But some
- * C compilers implement >> with an unsigned shift.  For these machines you
- * must define RIGHT_SHIFT_IS_UNSIGNED.
- * RIGHT_SHIFT provides a proper signed right shift of a JLONG quantity.
- * It is only applied with constant shift counts.  SHIFT_TEMPS must be
- * included in the variables of any routine using RIGHT_SHIFT.
- */
-/* Compression module initialization routines */
 /*
  * Master selection of compression modules.
  * This is done once at the start of processing an image.  We determine
  * which modules will be used and give them appropriate initialization calls.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jinit_compress_master(mut cinfo: j_compress_ptr) {
+    /* Initialize master control (includes parameter checking/processing) */
     jinit_c_master_control(cinfo, FALSE);
-    if 0 == (*cinfo).raw_data_in {
+    /* Preprocessing */
+    if (*cinfo).raw_data_in == 0 {
         jinit_color_converter(cinfo);
         jinit_downsampler(cinfo);
         jinit_c_prep_controller(cinfo, FALSE);
     }
+    /* Forward DCT */
     jinit_forward_dct(cinfo);
-    if 0 != (*cinfo).arith_code {
-        (*(*cinfo).err).msg_code = JERR_ARITH_NOTIMPL as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
-    } else if 0 != (*cinfo).progressive_mode {
+    /* Entropy encoding: either Huffman or arithmetic coding. */
+    if (*cinfo).arith_code != 0 {
+        (*(*cinfo).err).msg_code = super::jerror::JERR_ARITH_NOTIMPL as c_int;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
+    } else if (*cinfo).progressive_mode != 0 {
         jinit_phuff_encoder(cinfo);
     } else {
         jinit_huff_encoder(cinfo);
     }
+    /* Need a full-image coefficient buffer in any multi-pass mode. */
     jinit_c_coef_controller(
         cinfo,
         ((*cinfo).num_scans > 1i32
-            || 0 != (*cinfo).optimize_coding
-            || 0 != (*(*cinfo).master).optimize_scans
-            || 0 != (*(*cinfo).master).trellis_quant) as c_int,
+            || (*cinfo).optimize_coding != 0
+            || (*(*cinfo).master).optimize_scans != 0
+            || (*(*cinfo).master).trellis_quant != 0) as c_int,
     );
     jinit_c_main_controller(cinfo, FALSE);
     jinit_marker_writer(cinfo);
-    (*(*cinfo).mem)
-        .realize_virt_arrays
-        .expect("non-null function pointer")(cinfo as j_common_ptr);
-    (*(*cinfo).marker)
-        .write_file_header
-        .expect("non-null function pointer")(cinfo);
+    /* We can now tell the memory manager to allocate virtual arrays. */
+    Some(
+        (*(*cinfo).mem)
+            .realize_virt_arrays
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(cinfo as j_common_ptr);
+    /* Write the datastream header (SOI) immediately.
+     * Frame and scan headers are postponed till later.
+     * This lets application insert special markers after the SOI.
+     */
+    Some(
+        (*(*cinfo).marker)
+            .write_file_header
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(cinfo);
 }

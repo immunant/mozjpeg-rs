@@ -1,19 +1,5 @@
 use crate::jmorecfg_h::JSAMPLE;
 use libc::{self, c_double};
-/*
- * cmyk.h
- *
- * Copyright (C) 2017-2018, D. R. Commander.
- * For conditions of distribution and use, see the accompanying README.ijg
- * file.
- *
- * This file contains convenience functions for performing quick & dirty
- * CMYK<->RGB conversion.  This algorithm is suitable for testing purposes
- * only.  Properly converting between CMYK and RGB requires a color management
- * system.
- */
-
-/* Fully reversible */
 #[inline(always)]
 pub unsafe extern "C" fn rgb_to_cmyk(
     mut r: JSAMPLE,
@@ -50,6 +36,21 @@ pub unsafe extern "C" fn rgb_to_cmyk(
     *y = (255.0f64 - ytmp * 255.0f64 + 0.5f64) as JSAMPLE;
     *k = (255.0f64 - ktmp * 255.0f64 + 0.5f64) as JSAMPLE;
 }
+/*
+ * cmyk.h
+ *
+ * Copyright (C) 2017-2018, D. R. Commander.
+ * For conditions of distribution and use, see the accompanying README.ijg
+ * file.
+ *
+ * This file contains convenience functions for performing quick & dirty
+ * CMYK<->RGB conversion.  This algorithm is suitable for testing purposes
+ * only.  Properly converting between CMYK and RGB requires a color management
+ * system.
+ */
+
+/* Fully reversible */
+
 /* Fully reversible only for C/M/Y/K values generated with rgb_to_cmyk() */
 #[inline(always)]
 pub unsafe extern "C" fn cmyk_to_rgb(

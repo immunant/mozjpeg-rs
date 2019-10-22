@@ -1,4 +1,4 @@
-pub use crate::cdjpeg::{cjpeg_source_ptr, cjpeg_source_struct};
+pub use super::cdjpeg::{cjpeg_source_ptr, cjpeg_source_struct};
 pub use crate::jconfig_h::JPEG_LIB_VERSION;
 pub use crate::jmorecfg_h::{
     boolean, FALSE, JCOEF, JDIMENSION, JOCTET, JSAMPLE, TRUE, UINT16, UINT8,
@@ -38,19 +38,23 @@ use libc::{self, c_int, c_uint, c_ulong};
  *
  */
 /* Private version of data source object */
+
 pub type jpeg_source_ptr = *mut _jpeg_source_struct;
+
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct _jpeg_source_struct {
-    pub pub_0: cjpeg_source_struct,
+    pub pub_0: super::cdjpeg::cjpeg_source_struct,
     pub cinfo: j_compress_ptr,
     pub dinfo: jpeg_decompress_struct,
     pub jerr: jpeg_error_mgr,
 }
+
 pub type jpeg_source_struct = _jpeg_source_struct;
+
 unsafe extern "C" fn get_rows(
-    mut _cinfo: j_compress_ptr,
-    mut sinfo: cjpeg_source_ptr,
+    mut cinfo: j_compress_ptr,
+    mut sinfo: super::cdjpeg::cjpeg_source_ptr,
 ) -> JDIMENSION {
     let mut source: jpeg_source_ptr = sinfo as jpeg_source_ptr;
     return jpeg_read_scanlines(
@@ -62,7 +66,11 @@ unsafe extern "C" fn get_rows(
 /*
  * Read the file header; return image size and component count.
  */
-unsafe extern "C" fn start_input_jpeg(mut cinfo: j_compress_ptr, mut sinfo: cjpeg_source_ptr) {
+
+unsafe extern "C" fn start_input_jpeg(
+    mut cinfo: j_compress_ptr,
+    mut sinfo: super::cdjpeg::cjpeg_source_ptr,
+) {
     let mut m: c_int = 0;
     let mut source: jpeg_source_ptr = sinfo as jpeg_source_ptr;
     (*source).dinfo.err = jpeg_std_error(&mut (*source).jerr);
@@ -88,9 +96,12 @@ unsafe extern "C" fn start_input_jpeg(mut cinfo: j_compress_ptr, mut sinfo: cjpe
     (*cinfo).image_width = (*source).dinfo.image_width;
     (*cinfo).image_height = (*source).dinfo.image_height;
     (*cinfo).raw_data_in = FALSE;
-    (*source).pub_0.buffer = (*(*cinfo).mem)
-        .alloc_sarray
-        .expect("non-null function pointer")(
+    (*source).pub_0.buffer = Some(
+        (*(*cinfo).mem)
+            .alloc_sarray
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(
         cinfo as j_common_ptr,
         JPOOL_IMAGE,
         (*cinfo)
@@ -100,37 +111,103 @@ unsafe extern "C" fn start_input_jpeg(mut cinfo: j_compress_ptr, mut sinfo: cjpe
     );
     (*source).pub_0.buffer_height = 1i32 as JDIMENSION;
     (*source).pub_0.get_pixel_rows = Some(
-        get_rows as unsafe extern "C" fn(_: j_compress_ptr, _: cjpeg_source_ptr) -> JDIMENSION,
+        get_rows
+            as unsafe extern "C" fn(
+                _: j_compress_ptr,
+                _: super::cdjpeg::cjpeg_source_ptr,
+            ) -> JDIMENSION,
     );
 }
 /*
  * Finish up at the end of the file.
  */
-unsafe extern "C" fn finish_input_jpeg(mut _cinfo: j_compress_ptr, mut sinfo: cjpeg_source_ptr) {
+
+unsafe extern "C" fn finish_input_jpeg(
+    mut cinfo: j_compress_ptr,
+    mut sinfo: super::cdjpeg::cjpeg_source_ptr,
+) {
     let mut source: jpeg_source_ptr = sinfo as jpeg_source_ptr;
     jpeg_finish_decompress(&mut (*source).dinfo);
     jpeg_destroy_decompress(&mut (*source).dinfo);
 }
+/*
+ * cdjpeg.h
+ *
+ * This file was part of the Independent JPEG Group's software:
+ * Copyright (C) 1994-1997, Thomas G. Lane.
+ * libjpeg-turbo Modifications:
+ * Copyright (C) 2017, D. R. Commander.
+ * mozjpeg Modifications:
+ * Copyright (C) 2014, Mozilla Corporation.
+ * For conditions of distribution and use, see the accompanying README.ijg file.
+ *
+ * This file contains common declarations for the sample applications
+ * cjpeg and djpeg.  It is NOT used by the core JPEG library.
+ */
+/* define proper options in jconfig.h */
+/* cjpeg.c,djpeg.c need to see xxx_SUPPORTED */
+/*
+ * Object interface for cjpeg's source file decoding modules
+ */
+/*
+ * Object interface for djpeg's output file encoding modules
+ */
+/* start_output is called after jpeg_start_decompress finishes.
+ * The color map will be ready at this time, if one is needed.
+ */
+/* Emit the specified number of pixel rows from the buffer. */
+/* Finish up at the end of the image. */
+/* Re-calculate buffer dimensions based on output dimensions (for use with
+partial image decompression.)  If this is NULL, then the output format
+does not support partial image decompression (BMP and RLE, in particular,
+cannot support partial decompression because they use an inversion buffer
+to write the image in bottom-up order.) */
+/* Target file spec; filled in by djpeg.c after object is created. */
+/* Output pixel-row buffer.  Created by module init or start_output.
+ * Width is cinfo->output_width * cinfo->output_components;
+ * height is buffer_height.
+ */
+/*
+ * cjpeg/djpeg may need to perform extra passes to convert to or from
+ * the source/destination file format.  The JPEG library does not know
+ * about these passes, but we'd like them to be counted by the progress
+ * monitor.  We use an expanded progress monitor object to hold the
+ * additional pass count.
+ */
+/* fields known to JPEG library */
+/* extra passes completed */
+/* total extra */
+/* last printed percentage stored here to avoid multiple printouts */
 /* Module selection routines for I/O modules. */
 /*
  * The module selection routine for JPEG format input.
  */
 #[no_mangle]
-pub unsafe extern "C" fn jinit_read_jpeg(mut cinfo: j_compress_ptr) -> cjpeg_source_ptr {
+
+pub unsafe extern "C" fn jinit_read_jpeg(
+    mut cinfo: j_compress_ptr,
+) -> super::cdjpeg::cjpeg_source_ptr {
     let mut source: jpeg_source_ptr = 0 as *mut _jpeg_source_struct;
-    source = (*(*cinfo).mem)
-        .alloc_small
-        .expect("non-null function pointer")(
+    /* Create module interface object */
+    source = Some(
+        (*(*cinfo).mem)
+            .alloc_small
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(
         cinfo as j_common_ptr,
         JPOOL_IMAGE,
         ::std::mem::size_of::<jpeg_source_struct>() as c_ulong,
-    ) as jpeg_source_ptr;
+    ) as jpeg_source_ptr; /* make back link for subroutines */
     (*source).cinfo = cinfo;
+    /* Fill in method ptrs, except get_pixel_rows which start_input sets */
     (*source).pub_0.start_input = Some(
-        start_input_jpeg as unsafe extern "C" fn(_: j_compress_ptr, _: cjpeg_source_ptr) -> (),
+        start_input_jpeg
+            as unsafe extern "C" fn(_: j_compress_ptr, _: super::cdjpeg::cjpeg_source_ptr) -> (),
     );
     (*source).pub_0.finish_input = Some(
-        finish_input_jpeg as unsafe extern "C" fn(_: j_compress_ptr, _: cjpeg_source_ptr) -> (),
+        finish_input_jpeg
+            as unsafe extern "C" fn(_: j_compress_ptr, _: super::cdjpeg::cjpeg_source_ptr) -> (),
     );
-    return source as cjpeg_source_ptr;
+    return source as super::cdjpeg::cjpeg_source_ptr;
 }

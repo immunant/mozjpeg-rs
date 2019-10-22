@@ -43,6 +43,7 @@ use libc::{self, c_float, c_int};
  * Perform the forward DCT on one block of samples.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_fdct_float(mut data: *mut c_float) {
     let mut tmp0: c_float = 0.;
     let mut tmp1: c_float = 0.;
@@ -65,26 +66,28 @@ pub unsafe extern "C" fn jpeg_fdct_float(mut data: *mut c_float) {
     let mut z13: c_float = 0.;
     let mut dataptr: *mut c_float = 0 as *mut c_float;
     let mut ctr: c_int = 0;
+    /* Pass 1: process rows. */
     dataptr = data;
     ctr = DCTSIZE - 1i32;
     while ctr >= 0i32 {
-        tmp0 = *dataptr.offset(0isize) + *dataptr.offset(7isize);
-        tmp7 = *dataptr.offset(0isize) - *dataptr.offset(7isize);
-        tmp1 = *dataptr.offset(1isize) + *dataptr.offset(6isize);
-        tmp6 = *dataptr.offset(1isize) - *dataptr.offset(6isize);
-        tmp2 = *dataptr.offset(2isize) + *dataptr.offset(5isize);
-        tmp5 = *dataptr.offset(2isize) - *dataptr.offset(5isize);
-        tmp3 = *dataptr.offset(3isize) + *dataptr.offset(4isize);
-        tmp4 = *dataptr.offset(3isize) - *dataptr.offset(4isize);
+        tmp0 = *dataptr.offset(0) + *dataptr.offset(7);
+        tmp7 = *dataptr.offset(0) - *dataptr.offset(7);
+        tmp1 = *dataptr.offset(1) + *dataptr.offset(6);
+        tmp6 = *dataptr.offset(1) - *dataptr.offset(6);
+        tmp2 = *dataptr.offset(2) + *dataptr.offset(5);
+        tmp5 = *dataptr.offset(2) - *dataptr.offset(5);
+        tmp3 = *dataptr.offset(3) + *dataptr.offset(4);
+        tmp4 = *dataptr.offset(3) - *dataptr.offset(4);
+        /* advance pointer to next row */
         tmp10 = tmp0 + tmp3;
         tmp13 = tmp0 - tmp3;
         tmp11 = tmp1 + tmp2;
         tmp12 = tmp1 - tmp2;
-        *dataptr.offset(0isize) = tmp10 + tmp11;
-        *dataptr.offset(4isize) = tmp10 - tmp11;
+        *dataptr.offset(0) = tmp10 + tmp11;
+        *dataptr.offset(4) = tmp10 - tmp11;
         z1 = (tmp12 + tmp13) * 0.707106781f64 as c_float;
-        *dataptr.offset(2isize) = tmp13 + z1;
-        *dataptr.offset(6isize) = tmp13 - z1;
+        *dataptr.offset(2) = tmp13 + z1;
+        *dataptr.offset(6) = tmp13 - z1;
         tmp10 = tmp4 + tmp5;
         tmp11 = tmp5 + tmp6;
         tmp12 = tmp6 + tmp7;
@@ -94,13 +97,28 @@ pub unsafe extern "C" fn jpeg_fdct_float(mut data: *mut c_float) {
         z3 = tmp11 * 0.707106781f64 as c_float;
         z11 = tmp7 + z3;
         z13 = tmp7 - z3;
-        *dataptr.offset(5isize) = z13 + z2;
-        *dataptr.offset(3isize) = z13 - z2;
-        *dataptr.offset(1isize) = z11 + z4;
-        *dataptr.offset(7isize) = z11 - z4;
+        *dataptr.offset(5) = z13 + z2;
+        *dataptr.offset(3) = z13 - z2;
+        *dataptr.offset(1) = z11 + z4;
+        *dataptr.offset(7) = z11 - z4;
         dataptr = dataptr.offset(DCTSIZE as isize);
         ctr -= 1
     }
+    /* Even part */
+    /* phase 2 */
+    /* phase 3 */
+    /* c4 */
+    /* phase 5 */
+    /* Odd part */
+    /* phase 2 */
+    /* The rotator is modified from fig 4-8 to avoid extra negations. */
+    /* c6 */
+    /* c2-c6 */
+    /* c2+c6 */
+    /* c4 */
+    /* phase 5 */
+    /* phase 6 */
+    /* Pass 2: process columns. */
     dataptr = data;
     ctr = DCTSIZE - 1i32;
     while ctr >= 0i32 {
@@ -120,6 +138,7 @@ pub unsafe extern "C" fn jpeg_fdct_float(mut data: *mut c_float) {
             *dataptr.offset((DCTSIZE * 3i32) as isize) + *dataptr.offset((DCTSIZE * 4i32) as isize);
         tmp4 =
             *dataptr.offset((DCTSIZE * 3i32) as isize) - *dataptr.offset((DCTSIZE * 4i32) as isize);
+        /* advance pointer to next column */
         tmp10 = tmp0 + tmp3;
         tmp13 = tmp0 - tmp3;
         tmp11 = tmp1 + tmp2;
@@ -142,7 +161,22 @@ pub unsafe extern "C" fn jpeg_fdct_float(mut data: *mut c_float) {
         *dataptr.offset((DCTSIZE * 3i32) as isize) = z13 - z2;
         *dataptr.offset((DCTSIZE * 1i32) as isize) = z11 + z4;
         *dataptr.offset((DCTSIZE * 7i32) as isize) = z11 - z4;
-        dataptr = dataptr.offset(1isize);
+        dataptr = dataptr.offset(1);
         ctr -= 1
     }
 }
+/* Even part */
+/* phase 2 */
+/* phase 3 */
+/* c4 */
+/* phase 5 */
+/* Odd part */
+/* phase 2 */
+/* The rotator is modified from fig 4-8 to avoid extra negations. */
+/* c6 */
+/* c2-c6 */
+/* c2+c6 */
+/* c4 */
+/* phase 5 */
+/* phase 6 */
+/* DCT_FLOAT_SUPPORTED */

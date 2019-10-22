@@ -31,6 +31,7 @@ use libc::{self, c_double};
  * POSSIBILITY OF SUCH DAMAGE.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn getTime() -> c_double {
     let mut tv: timeval = timeval {
         tv_sec: 0,

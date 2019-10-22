@@ -12,11 +12,16 @@ pub unsafe extern "C" fn add_huff_table(
     } else {
         return;
     }
+    /* Copy the number-of-symbols-of-each-code-length counts */
     memcpy(
         (**htblptr).bits.as_mut_ptr() as *mut c_void,
         bits as *const c_void,
         ::std::mem::size_of::<[UINT8; 17]>() as c_ulong,
     );
+    /* Validate the counts.  We do this here mainly so we can copy the right
+     * number of symbols from the val[] array, without risking marching off
+     * the end of memory.  jchuff.c will do a more thorough test later.
+     */
     nsymbols = 0i32;
     len = 1i32;
     while len <= 16i32 {
@@ -25,9 +30,12 @@ pub unsafe extern "C" fn add_huff_table(
     }
     if nsymbols < 1i32 || nsymbols > 256i32 {
         (*(*cinfo).err).msg_code = JERR_BAD_HUFF_TABLE as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo);
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo);
     }
     memcpy(
         (**htblptr).huffval.as_mut_ptr() as *mut c_void,
@@ -40,6 +48,7 @@ pub unsafe extern "C" fn add_huff_table(
         0i32,
         ((256i32 - nsymbols) as c_ulong).wrapping_mul(::std::mem::size_of::<UINT8>() as c_ulong),
     );
+    /* Initialize sent_table FALSE so table will be written to JPEG file. */
     (**htblptr).sent_table = FALSE;
 }
 pub unsafe extern "C" fn std_huff_tables(mut cinfo: j_common_ptr) {
@@ -64,7 +73,6 @@ pub unsafe extern "C" fn std_huff_tables(mut cinfo: j_common_ptr) {
         0i32 as UINT8,
         0i32 as UINT8,
     ];
-    /* 0-base */
     pub static mut val_dc_luminance: [UINT8; 12] = [
         0i32 as UINT8,
         1i32 as UINT8,
@@ -98,7 +106,6 @@ pub unsafe extern "C" fn std_huff_tables(mut cinfo: j_common_ptr) {
         0i32 as UINT8,
         0i32 as UINT8,
     ];
-    /* 0-base */
     pub static mut val_dc_chrominance: [UINT8; 12] = [
         0i32 as UINT8,
         1i32 as UINT8,
@@ -132,7 +139,6 @@ pub unsafe extern "C" fn std_huff_tables(mut cinfo: j_common_ptr) {
         1i32 as UINT8,
         0x7di32 as UINT8,
     ];
-    /* 0-base */
     pub static mut val_ac_luminance: [UINT8; 162] = [
         0x1i32 as UINT8,
         0x2i32 as UINT8,
@@ -316,7 +322,6 @@ pub unsafe extern "C" fn std_huff_tables(mut cinfo: j_common_ptr) {
         2i32 as UINT8,
         0x77i32 as UINT8,
     ];
-    /* 0-base */
     pub static mut val_ac_chrominance: [UINT8; 162] = [
         0i32 as UINT8,
         0x1i32 as UINT8,
@@ -481,7 +486,7 @@ pub unsafe extern "C" fn std_huff_tables(mut cinfo: j_common_ptr) {
         0xf9i32 as UINT8,
         0xfai32 as UINT8,
     ];
-    if 0 != (*cinfo).is_decompressor {
+    if (*cinfo).is_decompressor != 0 {
         dc_huff_tbl_ptrs = (*(cinfo as j_decompress_ptr)).dc_huff_tbl_ptrs.as_mut_ptr();
         ac_huff_tbl_ptrs = (*(cinfo as j_decompress_ptr)).ac_huff_tbl_ptrs.as_mut_ptr()
     } else {
@@ -490,33 +495,35 @@ pub unsafe extern "C" fn std_huff_tables(mut cinfo: j_common_ptr) {
     }
     add_huff_table(
         cinfo,
-        &mut *dc_huff_tbl_ptrs.offset(0isize),
+        &mut *dc_huff_tbl_ptrs.offset(0),
         bits_dc_luminance.as_ptr(),
         val_dc_luminance.as_ptr(),
     );
     add_huff_table(
         cinfo,
-        &mut *ac_huff_tbl_ptrs.offset(0isize),
+        &mut *ac_huff_tbl_ptrs.offset(0),
         bits_ac_luminance.as_ptr(),
         val_ac_luminance.as_ptr(),
     );
     add_huff_table(
         cinfo,
-        &mut *dc_huff_tbl_ptrs.offset(1isize),
+        &mut *dc_huff_tbl_ptrs.offset(1),
         bits_dc_chrominance.as_ptr(),
         val_dc_chrominance.as_ptr(),
     );
     add_huff_table(
         cinfo,
-        &mut *ac_huff_tbl_ptrs.offset(1isize),
+        &mut *ac_huff_tbl_ptrs.offset(1),
         bits_ac_chrominance.as_ptr(),
         val_ac_chrominance.as_ptr(),
     );
 }
-use crate::jerror::JERR_BAD_HUFF_TABLE;
-use crate::jmorecfg_h::{FALSE, UINT8};
+
+use crate::jmorecfg_h::{boolean, FALSE, UINT8};
 use crate::jpeglib_h::{
-    j_common_ptr, j_compress_ptr, j_decompress_ptr, jpeg_alloc_huff_table, JHUFF_TBL,
+    j_common_ptr, j_compress_ptr, j_decompress_ptr, jpeg_alloc_huff_table, jpeg_common_struct,
+    JHUFF_TBL,
 };
+use crate::src::jerror::JERR_BAD_HUFF_TABLE;
 use crate::stdlib::{memcpy, memset};
 use libc;

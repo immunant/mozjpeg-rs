@@ -1,4 +1,4 @@
-pub use crate::jerror::{
+pub use super::jerror::{
     C2RustUnnamed_3, JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
     JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID, JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
     JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE, JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
@@ -31,66 +31,28 @@ pub use crate::jerror::{
 };
 pub use crate::jmorecfg_h::{boolean, JCOEF, JDIMENSION, JOCTET, JSAMPLE, UINT16, UINT8};
 pub use crate::jpegint_h::{
-    jcopy_sample_rows, jpeg_c_coef_controller, jpeg_c_main_controller, jpeg_c_prep_controller,
-    jpeg_color_converter, jpeg_comp_master, jpeg_downsampler, jpeg_entropy_encoder,
-    jpeg_forward_dct, jpeg_marker_writer, JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT,
-    JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, J_BUF_MODE,
+    jcopy_sample_rows, JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS,
+    JBUF_SAVE_SOURCE, J_BUF_MODE,
 };
 pub use crate::jpeglib_h::{
-    j_common_ptr, j_compress_ptr, jpeg_common_struct, jpeg_component_info, jpeg_compress_struct,
-    jpeg_destination_mgr, jpeg_error_mgr, jpeg_memory_mgr, jpeg_progress_mgr, jpeg_scan_info,
-    jvirt_barray_control, jvirt_barray_ptr, jvirt_sarray_control, jvirt_sarray_ptr,
-    C2RustUnnamed_2, JCS_YCbCr, DCTSIZE, JBLOCK, JBLOCKARRAY, JBLOCKROW, JCS_CMYK, JCS_EXT_ABGR,
-    JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX,
-    JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK,
-    JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JHUFF_TBL, JPOOL_IMAGE, JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE,
-    JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD,
+    j_common_ptr, j_compress_ptr, jpeg_c_coef_controller, jpeg_c_main_controller,
+    jpeg_c_prep_controller, jpeg_color_converter, jpeg_common_struct, jpeg_comp_master,
+    jpeg_component_info, jpeg_compress_struct, jpeg_destination_mgr, jpeg_downsampler,
+    jpeg_entropy_encoder, jpeg_error_mgr, jpeg_forward_dct, jpeg_marker_writer, jpeg_memory_mgr,
+    jpeg_progress_mgr, jpeg_scan_info, jvirt_barray_control, jvirt_barray_ptr,
+    jvirt_sarray_control, jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr, DCTSIZE, JBLOCK,
+    JBLOCKARRAY, JBLOCKROW, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA,
+    JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB,
+    JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW,
+    JHUFF_TBL, JPOOL_IMAGE, JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE,
+    J_DCT_METHOD,
 };
 pub use crate::stddef_h::size_t;
 use crate::stdlib::memcpy;
 use libc::{self, c_int, c_long, c_uint, c_ulong, c_void};
+
 pub type my_prep_ptr = *mut my_prep_controller;
-/*
- * jcprepct.c
- *
- * This file is part of the Independent JPEG Group's software:
- * Copyright (C) 1994-1996, Thomas G. Lane.
- * It was modified by The libjpeg-turbo Project to include only code relevant
- * to libjpeg-turbo.
- * For conditions of distribution and use, see the accompanying README.ijg
- * file.
- *
- * This file contains the compression preprocessing controller.
- * This controller manages the color conversion, downsampling,
- * and edge expansion steps.
- *
- * Most of the complexity here is associated with buffering input rows
- * as required by the downsampler.  See the comments at the head of
- * jcsample.c for the downsampler's needs.
- */
-/* At present, jcsample.c can request context rows only for smoothing.
- * In the future, we might also need context rows for CCIR601 sampling
- * or other more-complex downsampling procedures.  The code to support
- * context rows should be compiled only if needed.
- */
-/*
- * For the simple (no-context-row) case, we just need to buffer one
- * row group's worth of pixels for the downsampling step.  At the bottom of
- * the image, we pad to a full row group by replicating the last pixel row.
- * The downsampler's last output row is then replicated if needed to pad
- * out to a full iMCU row.
- *
- * When providing context rows, we must buffer three row groups' worth of
- * pixels.  Three row groups are physically allocated, but the row pointer
- * arrays are made five row groups high, with the extra pointers above and
- * below "wrapping around" to point to the last and first real row groups.
- * This allows the downsampler to access the proper context rows.
- * At the top and bottom of the image, we create dummy context rows by
- * copying the first or last real pixel row.  This copying could be avoided
- * by pointer hacking as is done in jdmainct.c, but it doesn't seem worth the
- * trouble on the compression side.
- */
-/* Private buffer controller object */
+
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct my_prep_controller {
@@ -104,23 +66,34 @@ pub struct my_prep_controller {
 /*
  * Initialize for a processing pass.
  */
+
 unsafe extern "C" fn start_pass_prep(mut cinfo: j_compress_ptr, mut pass_mode: J_BUF_MODE) {
     let mut prep: my_prep_ptr = (*cinfo).prep as my_prep_ptr;
     if pass_mode as c_uint != JBUF_PASS_THRU as c_int as c_uint {
-        (*(*cinfo).err).msg_code = JERR_BAD_BUFFER_MODE as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_BUFFER_MODE as c_int;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
+    /* Initialize total-height counter for detecting bottom of image */
     (*prep).rows_to_go = (*cinfo).image_height;
+    /* Mark the conversion buffer empty */
     (*prep).next_buf_row = 0i32;
+    /* Preset additional state variables for context mode.
+     * These aren't used in non-context mode, so we needn't test which mode.
+     */
     (*prep).this_row_group = 0i32;
+    /* Set next_buf_stop to stop after two row groups have been read in. */
     (*prep).next_buf_stop = 2i32 * (*cinfo).max_v_samp_factor;
 }
 /*
  * Expand an image vertically from height input_rows to height output_rows,
  * by duplicating the bottom row.
  */
+
 unsafe extern "C" fn expand_bottom_edge(
     mut image_data: JSAMPARRAY,
     mut num_cols: JDIMENSION,
@@ -149,6 +122,7 @@ unsafe extern "C" fn expand_bottom_edge(
  * Downsampling will produce this much data from each max_v_samp_factor
  * input rows.
  */
+
 unsafe extern "C" fn pre_process_data(
     mut cinfo: j_compress_ptr,
     mut input_buf: JSAMPARRAY,
@@ -164,16 +138,20 @@ unsafe extern "C" fn pre_process_data(
     let mut inrows: JDIMENSION = 0;
     let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
     while *in_row_ctr < in_rows_avail && *out_row_group_ctr < out_row_groups_avail {
+        /* Do color conversion to fill the conversion buffer. */
         inrows = in_rows_avail.wrapping_sub(*in_row_ctr);
         numrows = (*cinfo).max_v_samp_factor - (*prep).next_buf_row;
-        numrows = (if (numrows as JDIMENSION) < inrows {
+        numrows = if (numrows as JDIMENSION) < inrows {
             numrows as JDIMENSION
         } else {
             inrows
-        }) as c_int;
-        (*(*cinfo).cconvert)
-            .color_convert
-            .expect("non-null function pointer")(
+        } as c_int;
+        Some(
+            (*(*cinfo).cconvert)
+                .color_convert
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(
             cinfo,
             input_buf.offset(*in_row_ctr as isize),
             (*prep).color_buf.as_mut_ptr(),
@@ -185,6 +163,7 @@ unsafe extern "C" fn pre_process_data(
         (*prep).next_buf_row += numrows;
         (*prep).rows_to_go = ((*prep).rows_to_go as c_uint).wrapping_sub(numrows as c_uint)
             as JDIMENSION as JDIMENSION;
+        /* If at bottom of image, pad to fill the conversion buffer. */
         if (*prep).rows_to_go == 0i32 as c_uint && (*prep).next_buf_row < (*cinfo).max_v_samp_factor
         {
             ci = 0i32;
@@ -199,10 +178,14 @@ unsafe extern "C" fn pre_process_data(
             }
             (*prep).next_buf_row = (*cinfo).max_v_samp_factor
         }
+        /* If we've filled the conversion buffer, empty it. */
         if (*prep).next_buf_row == (*cinfo).max_v_samp_factor {
-            (*(*cinfo).downsample)
-                .downsample
-                .expect("non-null function pointer")(
+            Some(
+                (*(*cinfo).downsample)
+                    .downsample
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(
                 cinfo,
                 (*prep).color_buf.as_mut_ptr(),
                 0i32 as JDIMENSION,
@@ -228,16 +211,17 @@ unsafe extern "C" fn pre_process_data(
                 out_row_groups_avail.wrapping_mul((*compptr).v_samp_factor as c_uint) as c_int,
             );
             ci += 1;
-            compptr = compptr.offset(1isize)
+            compptr = compptr.offset(1)
         }
         *out_row_group_ctr = out_row_groups_avail;
-        /* can exit outer loop without test */
         break;
+        /* can exit outer loop without test */
     }
 }
 /*
  * Process some data in the context case.
  */
+
 unsafe extern "C" fn pre_process_context(
     mut cinfo: j_compress_ptr,
     mut input_buf: JSAMPARRAY,
@@ -254,22 +238,27 @@ unsafe extern "C" fn pre_process_context(
     let mut inrows: JDIMENSION = 0;
     while *out_row_group_ctr < out_row_groups_avail {
         if *in_row_ctr < in_rows_avail {
+            /* Do color conversion to fill the conversion buffer. */
             inrows = in_rows_avail.wrapping_sub(*in_row_ctr);
             numrows = (*prep).next_buf_stop - (*prep).next_buf_row;
-            numrows = (if (numrows as JDIMENSION) < inrows {
+            numrows = if (numrows as JDIMENSION) < inrows {
                 numrows as JDIMENSION
             } else {
                 inrows
-            }) as c_int;
-            (*(*cinfo).cconvert)
-                .color_convert
-                .expect("non-null function pointer")(
+            } as c_int;
+            Some(
+                (*(*cinfo).cconvert)
+                    .color_convert
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(
                 cinfo,
                 input_buf.offset(*in_row_ctr as isize),
                 (*prep).color_buf.as_mut_ptr(),
                 (*prep).next_buf_row as JDIMENSION,
                 numrows,
             );
+            /* Pad at top of image, if first time through */
             if (*prep).rows_to_go == (*cinfo).image_height {
                 ci = 0i32;
                 while ci < (*cinfo).num_components {
@@ -299,6 +288,7 @@ unsafe extern "C" fn pre_process_context(
             if (*prep).rows_to_go != 0i32 as c_uint {
                 break;
             }
+            /* When at bottom of image, pad to fill the conversion buffer. */
             if (*prep).next_buf_row < (*prep).next_buf_stop {
                 ci = 0i32;
                 while ci < (*cinfo).num_components {
@@ -313,10 +303,14 @@ unsafe extern "C" fn pre_process_context(
                 (*prep).next_buf_row = (*prep).next_buf_stop
             }
         }
+        /* If we've gotten enough data, downsample a row group. */
         if (*prep).next_buf_row == (*prep).next_buf_stop {
-            (*(*cinfo).downsample)
-                .downsample
-                .expect("non-null function pointer")(
+            Some(
+                (*(*cinfo).downsample)
+                    .downsample
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(
                 cinfo,
                 (*prep).color_buf.as_mut_ptr(),
                 (*prep).this_row_group as JDIMENSION,
@@ -324,6 +318,7 @@ unsafe extern "C" fn pre_process_context(
                 *out_row_group_ctr,
             );
             *out_row_group_ctr = (*out_row_group_ctr).wrapping_add(1);
+            /* Advance pointers with wraparound as necessary. */
             (*prep).this_row_group += (*cinfo).max_v_samp_factor;
             if (*prep).this_row_group >= buf_height {
                 (*prep).this_row_group = 0i32
@@ -338,6 +333,7 @@ unsafe extern "C" fn pre_process_context(
 /*
  * Create the wrapped-around downsampling input buffer needed for context mode.
  */
+
 unsafe extern "C" fn create_context_buffer(mut cinfo: j_compress_ptr) {
     let mut prep: my_prep_ptr = (*cinfo).prep as my_prep_ptr;
     let mut rgroup_height: c_int = (*cinfo).max_v_samp_factor;
@@ -346,9 +342,15 @@ unsafe extern "C" fn create_context_buffer(mut cinfo: j_compress_ptr) {
     let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
     let mut true_buffer: JSAMPARRAY = 0 as *mut JSAMPROW;
     let mut fake_buffer: JSAMPARRAY = 0 as *mut JSAMPROW;
-    fake_buffer = (*(*cinfo).mem)
-        .alloc_small
-        .expect("non-null function pointer")(
+    /* Grab enough space for fake row pointers for all the components;
+     * we need five row groups' worth of pointers for each component.
+     */
+    fake_buffer = Some(
+        (*(*cinfo).mem)
+            .alloc_small
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(
         cinfo as j_common_ptr,
         JPOOL_IMAGE,
         (((*cinfo).num_components * 5i32 * rgroup_height) as c_ulong)
@@ -357,9 +359,16 @@ unsafe extern "C" fn create_context_buffer(mut cinfo: j_compress_ptr) {
     ci = 0i32;
     compptr = (*cinfo).comp_info;
     while ci < (*cinfo).num_components {
-        true_buffer = (*(*cinfo).mem)
-            .alloc_sarray
-            .expect("non-null function pointer")(
+        /* Allocate the actual buffer space (3 row groups) for this component.
+         * We make the buffer wide enough to allow the downsampler to edge-expand
+         * horizontally within the buffer, if it so chooses.
+         */
+        true_buffer = Some(
+            (*(*cinfo).mem)
+                .alloc_sarray
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(
             cinfo as j_common_ptr,
             JPOOL_IMAGE,
             ((*compptr).width_in_blocks as c_long
@@ -368,6 +377,7 @@ unsafe extern "C" fn create_context_buffer(mut cinfo: j_compress_ptr) {
                 / (*compptr).h_samp_factor as c_long) as JDIMENSION,
             (3i32 * rgroup_height) as JDIMENSION,
         );
+        /* point to space for next component */
         memcpy(
             fake_buffer.offset(rgroup_height as isize) as *mut c_void,
             true_buffer as *const c_void,
@@ -385,14 +395,17 @@ unsafe extern "C" fn create_context_buffer(mut cinfo: j_compress_ptr) {
         (*prep).color_buf[ci as usize] = fake_buffer.offset(rgroup_height as isize);
         fake_buffer = fake_buffer.offset((5i32 * rgroup_height) as isize);
         ci += 1;
-        compptr = compptr.offset(1isize)
+        compptr = compptr.offset(1)
     }
 }
+/* Copy true buffer row pointers into the middle of the fake row array */
+/* Fill in the above and below wraparound pointers */
 /* CONTEXT_ROWS_SUPPORTED */
 /*
  * Initialize preprocessing controller.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jinit_c_prep_controller(
     mut cinfo: j_compress_ptr,
     mut need_full_buffer: boolean,
@@ -400,15 +413,22 @@ pub unsafe extern "C" fn jinit_c_prep_controller(
     let mut prep: my_prep_ptr = 0 as *mut my_prep_controller;
     let mut ci: c_int = 0;
     let mut compptr: *mut jpeg_component_info = 0 as *mut jpeg_component_info;
-    if 0 != need_full_buffer {
-        (*(*cinfo).err).msg_code = JERR_BAD_BUFFER_MODE as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+    if need_full_buffer != 0 {
+        /* safety check */
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_BUFFER_MODE as c_int;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
-    prep = (*(*cinfo).mem)
-        .alloc_small
-        .expect("non-null function pointer")(
+    prep = Some(
+        (*(*cinfo).mem)
+            .alloc_small
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(
         cinfo as j_common_ptr,
         JPOOL_IMAGE,
         ::std::mem::size_of::<my_prep_controller>() as c_ulong,
@@ -416,7 +436,12 @@ pub unsafe extern "C" fn jinit_c_prep_controller(
     (*cinfo).prep = prep as *mut jpeg_c_prep_controller;
     (*prep).pub_0.start_pass =
         Some(start_pass_prep as unsafe extern "C" fn(_: j_compress_ptr, _: J_BUF_MODE) -> ());
-    if 0 != (*(*cinfo).downsample).need_context_rows {
+    /* Allocate the color conversion buffer.
+     * We make the buffer wide enough to allow the downsampler to edge-expand
+     * horizontally within the buffer, if it so chooses.
+     */
+    if (*(*cinfo).downsample).need_context_rows != 0 {
+        /* Set up to provide context rows */
         (*prep).pub_0.pre_process_data = Some(
             pre_process_context
                 as unsafe extern "C" fn(
@@ -431,6 +456,7 @@ pub unsafe extern "C" fn jinit_c_prep_controller(
         );
         create_context_buffer(cinfo);
     } else {
+        /* No context, just make it tall enough for one row group */
         (*prep).pub_0.pre_process_data = Some(
             pre_process_data
                 as unsafe extern "C" fn(
@@ -446,9 +472,12 @@ pub unsafe extern "C" fn jinit_c_prep_controller(
         ci = 0i32;
         compptr = (*cinfo).comp_info;
         while ci < (*cinfo).num_components {
-            (*prep).color_buf[ci as usize] = (*(*cinfo).mem)
-                .alloc_sarray
-                .expect("non-null function pointer")(
+            (*prep).color_buf[ci as usize] = Some(
+                (*(*cinfo).mem)
+                    .alloc_sarray
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(
                 cinfo as j_common_ptr,
                 JPOOL_IMAGE,
                 ((*compptr).width_in_blocks as c_long
@@ -458,7 +487,7 @@ pub unsafe extern "C" fn jinit_c_prep_controller(
                 (*cinfo).max_v_samp_factor as JDIMENSION,
             );
             ci += 1;
-            compptr = compptr.offset(1isize)
+            compptr = compptr.offset(1)
         }
     };
 }

@@ -1,4 +1,4 @@
-pub use crate::jerror::{
+pub use super::jerror::{
     C2RustUnnamed_3, JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
     JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID, JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
     JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE, JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
@@ -31,20 +31,19 @@ pub use crate::jerror::{
 };
 pub use crate::jmorecfg_h::{boolean, JCOEF, JDIMENSION, JOCTET, JSAMPLE, TRUE, UINT16, UINT8};
 pub use crate::jpegint_h::{
-    jpeg_c_coef_controller, jpeg_c_main_controller, jpeg_c_prep_controller, jpeg_color_converter,
-    jpeg_comp_master, jpeg_downsampler, jpeg_entropy_encoder, jpeg_forward_dct, jpeg_marker_writer,
-    JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE,
-    J_BUF_MODE,
+    JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, J_BUF_MODE,
 };
 pub use crate::jpeglib_h::{
-    j_common_ptr, j_compress_ptr, jpeg_common_struct, jpeg_component_info, jpeg_compress_struct,
-    jpeg_destination_mgr, jpeg_error_mgr, jpeg_memory_mgr, jpeg_progress_mgr, jpeg_scan_info,
-    jvirt_barray_control, jvirt_barray_ptr, jvirt_sarray_control, jvirt_sarray_ptr,
-    C2RustUnnamed_2, JCS_YCbCr, JBLOCK, JBLOCKARRAY, JBLOCKROW, JCS_CMYK, JCS_EXT_ABGR,
-    JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX,
-    JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK,
-    JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JHUFF_TBL, JPOOL_IMAGE, JPOOL_PERMANENT, JQUANT_TBL,
-    JSAMPARRAY, JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD,
+    j_common_ptr, j_compress_ptr, jpeg_c_coef_controller, jpeg_c_main_controller,
+    jpeg_c_prep_controller, jpeg_color_converter, jpeg_common_struct, jpeg_comp_master,
+    jpeg_component_info, jpeg_compress_struct, jpeg_destination_mgr, jpeg_downsampler,
+    jpeg_entropy_encoder, jpeg_error_mgr, jpeg_forward_dct, jpeg_marker_writer, jpeg_memory_mgr,
+    jpeg_progress_mgr, jpeg_scan_info, jvirt_barray_control, jvirt_barray_ptr,
+    jvirt_sarray_control, jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr, JBLOCK, JBLOCKARRAY,
+    JBLOCKROW, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX,
+    JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB,
+    JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JHUFF_TBL, JPOOL_IMAGE,
+    JPOOL_PERMANENT, JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD,
 };
 pub use crate::stddef_h::{size_t, NULL};
 pub use crate::stdlib::{
@@ -52,29 +51,9 @@ pub use crate::stdlib::{
 };
 use crate::stdlib::{ferror, fflush, free, fwrite, malloc, memcpy};
 use libc::{self, c_int, c_uchar, c_ulong, c_void};
+
 pub type my_dest_ptr = *mut my_destination_mgr;
-/*
- * jdatadst.c
- *
- * This file was part of the Independent JPEG Group's software:
- * Copyright (C) 1994-1996, Thomas G. Lane.
- * Modified 2009-2012 by Guido Vollbeding.
- * libjpeg-turbo Modifications:
- * Copyright (C) 2013, 2016, D. R. Commander.
- * For conditions of distribution and use, see the accompanying README.ijg
- * file.
- *
- * This file contains compression data destination routines for the case of
- * emitting JPEG data to memory or to a file (or any stdio stream).
- * While these routines are sufficient for most applications,
- * some will want to use a different destination manager.
- * IMPORTANT: we assume that fwrite() will correctly transcribe an array of
- * JOCTETs into 8-bit-wide elements on external storage.  If char is wider
- * than 8 bits on your machine, you may need to do some tweaking.
- */
-/* this is not a core library module, so it doesn't define JPEG_INTERNALS */
-/* <stdlib.h> should declare malloc(),free() */
-/* Expanded data destination object for stdio output */
+
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct my_destination_mgr {
@@ -82,8 +61,9 @@ pub struct my_destination_mgr {
     pub outfile: *mut FILE,
     pub buffer: *mut JOCTET,
 }
+
 pub type my_mem_dest_ptr = *mut my_mem_destination_mgr;
-/* Expanded data destination object for memory output */
+
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct my_mem_destination_mgr {
@@ -94,17 +74,22 @@ pub struct my_mem_destination_mgr {
     pub buffer: *mut JOCTET,
     pub bufsize: size_t,
 }
-/* choose an efficiently fwrite'able size */
+
 pub const OUTPUT_BUF_SIZE: c_int = 4096i32;
 /*
  * Initialize destination --- called by jpeg_start_compress
  * before any data is actually written.
  */
+
 unsafe extern "C" fn init_destination(mut cinfo: j_compress_ptr) {
     let mut dest: my_dest_ptr = (*cinfo).dest as my_dest_ptr;
-    (*dest).buffer = (*(*cinfo).mem)
-        .alloc_small
-        .expect("non-null function pointer")(
+    /* Allocate the output buffer --- it will be released when done with image */
+    (*dest).buffer = Some(
+        (*(*cinfo).mem)
+            .alloc_small
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(
         cinfo as j_common_ptr,
         JPOOL_IMAGE,
         (OUTPUT_BUF_SIZE as c_ulong).wrapping_mul(::std::mem::size_of::<JOCTET>() as c_ulong),
@@ -112,8 +97,10 @@ unsafe extern "C" fn init_destination(mut cinfo: j_compress_ptr) {
     (*dest).pub_0.next_output_byte = (*dest).buffer;
     (*dest).pub_0.free_in_buffer = OUTPUT_BUF_SIZE as size_t;
 }
-unsafe extern "C" fn init_mem_destination(mut _cinfo: j_compress_ptr) {}
-/* no work necessary here */
+
+unsafe extern "C" fn init_mem_destination(mut cinfo: j_compress_ptr) {
+    /* no work necessary here */
+}
 /*
  * Empty the output buffer --- called whenever buffer fills up.
  *
@@ -136,6 +123,7 @@ unsafe extern "C" fn init_mem_destination(mut _cinfo: j_compress_ptr) {}
  * Data beyond this point will be regenerated after resumption, so do not
  * write it out when emptying the buffer externally.
  */
+
 unsafe extern "C" fn empty_output_buffer(mut cinfo: j_compress_ptr) -> boolean {
     let mut dest: my_dest_ptr = (*cinfo).dest as my_dest_ptr;
     if fwrite(
@@ -145,27 +133,35 @@ unsafe extern "C" fn empty_output_buffer(mut cinfo: j_compress_ptr) -> boolean {
         (*dest).outfile,
     ) != OUTPUT_BUF_SIZE as size_t
     {
-        (*(*cinfo).err).msg_code = JERR_FILE_WRITE as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_FILE_WRITE as c_int;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     (*dest).pub_0.next_output_byte = (*dest).buffer;
     (*dest).pub_0.free_in_buffer = OUTPUT_BUF_SIZE as size_t;
     return TRUE;
 }
+
 unsafe extern "C" fn empty_mem_output_buffer(mut cinfo: j_compress_ptr) -> boolean {
     let mut nextsize: size_t = 0;
     let mut nextbuffer: *mut JOCTET = 0 as *mut JOCTET;
     let mut dest: my_mem_dest_ptr = (*cinfo).dest as my_mem_dest_ptr;
+    /* Try to allocate new buffer with double size */
     nextsize = (*dest).bufsize.wrapping_mul(2i32 as c_ulong);
     nextbuffer = malloc(nextsize) as *mut JOCTET;
     if nextbuffer.is_null() {
-        (*(*cinfo).err).msg_code = JERR_OUT_OF_MEMORY as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] = 10i32;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_OUT_OF_MEMORY as c_int;
+        (*(*cinfo).err).msg_parm.i[0] = 10i32;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     memcpy(
         nextbuffer as *mut c_void,
@@ -190,10 +186,12 @@ unsafe extern "C" fn empty_mem_output_buffer(mut cinfo: j_compress_ptr) -> boole
  * application must deal with any cleanup that should happen even
  * for error exit.
  */
+
 unsafe extern "C" fn term_destination(mut cinfo: j_compress_ptr) {
     let mut dest: my_dest_ptr = (*cinfo).dest as my_dest_ptr;
     let mut datacount: size_t =
         (OUTPUT_BUF_SIZE as c_ulong).wrapping_sub((*dest).pub_0.free_in_buffer);
+    /* Write any data remaining in the buffer */
     if datacount > 0i32 as c_ulong {
         if fwrite(
             (*dest).buffer as *const c_void,
@@ -202,20 +200,28 @@ unsafe extern "C" fn term_destination(mut cinfo: j_compress_ptr) {
             (*dest).outfile,
         ) != datacount
         {
-            (*(*cinfo).err).msg_code = JERR_FILE_WRITE as c_int;
-            (*(*cinfo).err)
-                .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+            (*(*cinfo).err).msg_code = super::jerror::JERR_FILE_WRITE as c_int;
+            Some(
+                (*(*cinfo).err)
+                    .error_exit
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
     }
     fflush((*dest).outfile);
-    if 0 != ferror((*dest).outfile) {
-        (*(*cinfo).err).msg_code = JERR_FILE_WRITE as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+    /* Make sure we wrote the output file OK */
+    if ferror((*dest).outfile) != 0 {
+        (*(*cinfo).err).msg_code = super::jerror::JERR_FILE_WRITE as c_int;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     };
 }
+
 unsafe extern "C" fn term_mem_destination(mut cinfo: j_compress_ptr) {
     let mut dest: my_mem_dest_ptr = (*cinfo).dest as my_mem_dest_ptr;
     *(*dest).outbuffer = (*dest).buffer;
@@ -229,12 +235,20 @@ unsafe extern "C" fn term_mem_destination(mut cinfo: j_compress_ptr) {
  * for closing it after finishing compression.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_stdio_dest(mut cinfo: j_compress_ptr, mut outfile: *mut FILE) {
     let mut dest: my_dest_ptr = 0 as *mut my_destination_mgr;
+    /* The destination object is made permanent so that multiple JPEG images
+     * can be written to the same file without re-executing jpeg_stdio_dest.
+     */
     if (*cinfo).dest.is_null() {
-        (*cinfo).dest = (*(*cinfo).mem)
-            .alloc_small
-            .expect("non-null function pointer")(
+        /* first time for this JPEG object? */
+        (*cinfo).dest = Some(
+            (*(*cinfo).mem)
+                .alloc_small
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(
             cinfo as j_common_ptr,
             JPOOL_PERMANENT,
             ::std::mem::size_of::<my_destination_mgr>() as c_ulong,
@@ -242,10 +256,19 @@ pub unsafe extern "C" fn jpeg_stdio_dest(mut cinfo: j_compress_ptr, mut outfile:
     } else if (*(*cinfo).dest).init_destination
         != Some(init_destination as unsafe extern "C" fn(_: j_compress_ptr) -> ())
     {
-        (*(*cinfo).err).msg_code = JERR_BUFFER_SIZE as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        /* It is unsafe to reuse the existing destination manager unless it was
+         * created by this function.  Otherwise, there is no guarantee that the
+         * opaque structure is the right size.  Note that we could just create a
+         * new structure, but the old structure would not be freed until
+         * jpeg_destroy_compress() was called.
+         */
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BUFFER_SIZE as c_int;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     dest = (*cinfo).dest as my_dest_ptr;
     (*dest).pub_0.init_destination =
@@ -270,6 +293,7 @@ pub unsafe extern "C" fn jpeg_stdio_dest(mut cinfo: j_compress_ptr, mut outfile:
  * when allocating a larger buffer.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_mem_dest_internal(
     mut cinfo: j_compress_ptr,
     mut outbuffer: *mut *mut c_uchar,
@@ -278,15 +302,26 @@ pub unsafe extern "C" fn jpeg_mem_dest_internal(
 ) {
     let mut dest: my_mem_dest_ptr = 0 as *mut my_mem_destination_mgr;
     if outbuffer.is_null() || outsize.is_null() {
-        (*(*cinfo).err).msg_code = JERR_BUFFER_SIZE as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        /* sanity check */
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BUFFER_SIZE as c_int;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
+    /* The destination object is made permanent so that multiple JPEG images
+     * can be written to the same buffer without re-executing jpeg_mem_dest.
+     */
     if (*cinfo).dest.is_null() {
-        (*cinfo).dest = (*(*cinfo).mem)
-            .alloc_small
-            .expect("non-null function pointer")(
+        /* first time for this JPEG object? */
+        (*cinfo).dest = Some(
+            (*(*cinfo).mem)
+                .alloc_small
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(
             cinfo as j_common_ptr,
             pool_id,
             ::std::mem::size_of::<my_mem_destination_mgr>() as c_ulong,
@@ -294,10 +329,16 @@ pub unsafe extern "C" fn jpeg_mem_dest_internal(
     } else if (*(*cinfo).dest).init_destination
         != Some(init_mem_destination as unsafe extern "C" fn(_: j_compress_ptr) -> ())
     {
-        (*(*cinfo).err).msg_code = JERR_BUFFER_SIZE as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo as j_common_ptr);
+        /* It is unsafe to reuse the existing destination manager unless it was
+         * created by this function.
+         */
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BUFFER_SIZE as c_int;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     dest = (*cinfo).dest as my_mem_dest_ptr;
     (*dest).pub_0.init_destination =
@@ -310,14 +351,18 @@ pub unsafe extern "C" fn jpeg_mem_dest_internal(
     (*dest).outsize = outsize;
     (*dest).newbuffer = NULL as *mut c_uchar;
     if (*outbuffer).is_null() || *outsize == 0i32 as c_ulong {
+        /* Allocate initial buffer */
         *outbuffer = malloc(OUTPUT_BUF_SIZE as c_ulong) as *mut c_uchar;
         (*dest).newbuffer = *outbuffer;
         if (*dest).newbuffer.is_null() {
-            (*(*cinfo).err).msg_code = JERR_OUT_OF_MEMORY as c_int;
-            (*(*cinfo).err).msg_parm.i[0usize] = 10i32;
-            (*(*cinfo).err)
-                .error_exit
-                .expect("non-null function pointer")(cinfo as j_common_ptr);
+            (*(*cinfo).err).msg_code = super::jerror::JERR_OUT_OF_MEMORY as c_int;
+            (*(*cinfo).err).msg_parm.i[0] = 10i32;
+            Some(
+                (*(*cinfo).err)
+                    .error_exit
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         *outsize = OUTPUT_BUF_SIZE as c_ulong
     }
@@ -328,10 +373,14 @@ pub unsafe extern "C" fn jpeg_mem_dest_internal(
 }
 /* Data source and destination managers: memory buffers. */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_mem_dest(
     mut cinfo: j_compress_ptr,
     mut outbuffer: *mut *mut c_uchar,
     mut outsize: *mut c_ulong,
 ) {
+    /* The destination object is made permanent so that multiple JPEG images
+     * can be written to the same file without re-executing jpeg_stdio_dest.
+     */
     jpeg_mem_dest_internal(cinfo, outbuffer, outsize, JPOOL_PERMANENT);
 }

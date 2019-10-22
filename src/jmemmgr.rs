@@ -1,4 +1,4 @@
-pub use crate::jerror::{
+pub use super::jerror::{
     C2RustUnnamed_3, JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
     JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID, JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
     JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE, JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
@@ -38,8 +38,9 @@ pub use crate::jmorecfg_h::{boolean, FALSE, JCOEF, JDIMENSION, JSAMPLE, TRUE};
 use crate::jpegint_h::jzero_far;
 pub use crate::jpeglib_h::{
     j_common_ptr, jpeg_common_struct, jpeg_error_mgr, jpeg_memory_mgr, jpeg_progress_mgr,
-    jvirt_barray_ptr, jvirt_sarray_ptr, C2RustUnnamed_2, JBLOCK, JBLOCKARRAY, JBLOCKROW,
-    JPOOL_IMAGE, JPOOL_NUMPOOLS, JPOOL_PERMANENT, JSAMPARRAY, JSAMPROW,
+    jvirt_barray_control, jvirt_barray_ptr, jvirt_sarray_control, jvirt_sarray_ptr,
+    C2RustUnnamed_2, JBLOCK, JBLOCKARRAY, JBLOCKROW, JPOOL_IMAGE, JPOOL_NUMPOOLS, JPOOL_PERMANENT,
+    JSAMPARRAY, JSAMPROW,
 };
 pub use crate::stddef_h::{size_t, NULL};
 pub use crate::stdlib::{
@@ -48,50 +49,9 @@ pub use crate::stdlib::{
 };
 use crate::stdlib::{getenv, sscanf};
 use libc::{self, c_char, c_int, c_long, c_uint, c_ulong, c_void};
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jvirt_barray_control {
-    pub mem_buffer: JBLOCKARRAY,
-    pub rows_in_array: JDIMENSION,
-    pub blocksperrow: JDIMENSION,
-    pub maxaccess: JDIMENSION,
-    pub rows_in_mem: JDIMENSION,
-    pub rowsperchunk: JDIMENSION,
-    pub cur_start_row: JDIMENSION,
-    pub first_undef_row: JDIMENSION,
-    pub pre_zero: boolean,
-    pub dirty: boolean,
-    pub b_s_open: boolean,
-    pub next: jvirt_barray_ptr,
-    pub b_s_info: backing_store_info,
-}
-/*
- * The control blocks for virtual arrays.
- * Note that these blocks are allocated in the "small" pool area.
- * System-dependent info for the associated backing store (if any) is hidden
- * inside the backing_store_info struct.
- */
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jvirt_sarray_control {
-    pub mem_buffer: JSAMPARRAY,
-    pub rows_in_array: JDIMENSION,
-    pub samplesperrow: JDIMENSION,
-    pub maxaccess: JDIMENSION,
-    pub rows_in_mem: JDIMENSION,
-    pub rowsperchunk: JDIMENSION,
-    pub cur_start_row: JDIMENSION,
-    pub first_undef_row: JDIMENSION,
-    pub pre_zero: boolean,
-    pub dirty: boolean,
-    pub b_s_open: boolean,
-    pub next: jvirt_sarray_ptr,
-    pub b_s_info: backing_store_info,
-}
+
 pub type my_mem_ptr = *mut my_memory_mgr;
-/*
- * Here is the full definition of a memory manager object.
- */
+
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct my_memory_mgr {
@@ -103,7 +63,9 @@ pub struct my_memory_mgr {
     pub total_space_allocated: size_t,
     pub last_rowsperchunk: JDIMENSION,
 }
+
 pub type large_pool_ptr = *mut large_pool_struct;
+
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct large_pool_struct {
@@ -111,14 +73,9 @@ pub struct large_pool_struct {
     pub bytes_used: size_t,
     pub bytes_left: size_t,
 }
-/*
- * We allocate objects from "pools", where each pool is gotten with a single
- * request to jpeg_get_small() or jpeg_get_large().  There is no per-object
- * overhead within a pool, except for alignment padding.  Each pool has a
- * header with a link to the next pool of the same class.
- * Small and large pool headers are identical.
- */
+
 pub type small_pool_ptr = *mut small_pool_struct;
+
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct small_pool_struct {
@@ -126,83 +83,32 @@ pub struct small_pool_struct {
     pub bytes_used: size_t,
     pub bytes_left: size_t,
 }
+
 pub type small_pool_hdr = small_pool_struct;
+
 pub type large_pool_hdr = large_pool_struct;
-/*
- * jmemmgr.c
- *
- * This file was part of the Independent JPEG Group's software:
- * Copyright (C) 1991-1997, Thomas G. Lane.
- * libjpeg-turbo Modifications:
- * Copyright (C) 2016, D. R. Commander.
- * For conditions of distribution and use, see the accompanying README.ijg
- * file.
- *
- * This file contains the JPEG system-independent memory management
- * routines.  This code is usable across a wide variety of machines; most
- * of the system dependencies have been isolated in a separate file.
- * The major functions provided here are:
- *   * pool-based allocation and freeing of memory;
- *   * policy decisions about how to divide available memory among the
- *     virtual arrays;
- *   * control logic for swapping virtual arrays between main memory and
- *     backing storage.
- * The separate system-dependent file provides the actual backing-storage
- * access code, and it contains the policy decision about how much total
- * main memory to use.
- * This file is system-dependent in the sense that some of its functions
- * are unnecessary in some systems.  For example, if there is enough virtual
- * memory so that backing storage will never be used, much of the virtual
- * array control logic could be removed.  (Of course, if you have that much
- * memory then you shouldn't care about a little bit of unused code...)
- */
-/* we define jvirt_Xarray_control structs */
-/* <stdlib.h> should declare getenv() */
+
 unsafe extern "C" fn round_up_pow2(mut a: size_t, mut b: size_t) -> size_t {
     return a.wrapping_add(b).wrapping_sub(1i32 as c_ulong) & !b.wrapping_sub(1i32 as c_ulong);
 }
-/*
- * Some important notes:
- *   The allocation routines provided here must never return NULL.
- *   They should exit to error_exit if unsuccessful.
- *
- *   It's not a good idea to try to merge the sarray and barray routines,
- *   even though they are textually almost the same, because samples are
- *   usually stored as bytes while coefficients are shorts or ints.  Thus,
- *   in machines where byte pointers have a different representation from
- *   word pointers, the resulting machine code could not be the same.
- */
-/*
- * Many machines require storage alignment: longs must start on 4-byte
- * boundaries, doubles on 8-byte boundaries, etc.  On such machines, malloc()
- * always returns pointers that are multiples of the worst-case alignment
- * requirement, and we had better do so too.
- * There isn't any really portable way to determine the worst-case alignment
- * requirement.  This module assumes that the alignment requirement is
- * multiples of ALIGN_SIZE.
- * By default, we define ALIGN_SIZE as sizeof(double).  This is necessary on
- * some workstations (where doubles really do need 8-byte alignment) and will
- * work fine on nearly everything.  If your machine has lesser alignment needs,
- * you can save a few bytes by making ALIGN_SIZE smaller.
- * The only place I know of where this will NOT work is certain Macintosh
- * 680x0 compilers that define double as a 10-byte IEEE extended float.
- * Doing 10-byte alignment is counterproductive because longwords won't be
- * aligned well.  Put "#define ALIGN_SIZE 4" in jconfig.h if you have
- * such a compiler.
- */
-/* so can override from jconfig.h */
-/* Most of the SIMD instructions we support require
-16-byte (128-bit) alignment, but AVX2 requires
-32-byte alignment. */
+
 pub const ALIGN_SIZE: c_int = 32i32;
+/* System-dependent control info */
 /* optional extra stuff for statistics */
 /* MEM_STATS */
-unsafe extern "C" fn out_of_memory(mut cinfo: j_common_ptr, mut which: c_int) {
-    (*(*cinfo).err).msg_code = JERR_OUT_OF_MEMORY as c_int;
-    (*(*cinfo).err).msg_parm.i[0usize] = which;
-    (*(*cinfo).err)
-        .error_exit
-        .expect("non-null function pointer")(cinfo);
+
+unsafe extern "C" fn out_of_memory(mut cinfo: j_common_ptr, mut which: c_int)
+/* Report an out-of-memory error and stop execution */
+/* If we compiled MEM_STATS support, report alloc requests before dying */
+{
+    (*(*cinfo).err).msg_code = super::jerror::JERR_OUT_OF_MEMORY as c_int;
+    (*(*cinfo).err).msg_parm.i[0] = which;
+    Some(
+        (*(*cinfo).err)
+            .error_exit
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(cinfo);
 }
 /*
  * Allocation of "small" objects.
@@ -220,99 +126,122 @@ unsafe extern "C" fn out_of_memory(mut cinfo: j_common_ptr, mut which: c_int) {
  * allocate ALIGN_SIZE-1 extra space per pool to have room for alignment
  * adjustment.
  */
+
 static mut first_pool_slop: [size_t; 2] = [1600i32 as size_t, 16000i32 as size_t];
-/* first PERMANENT pool */
-/* first IMAGE pool */
+
 static mut extra_pool_slop: [size_t; 2] = [0i32 as size_t, 5000i32 as size_t];
-/* additional PERMANENT pools */
-/* additional IMAGE pools */
-/* greater than 0 to avoid futile looping */
+
 pub const MIN_SLOP: c_int = 50i32;
+/* greater than 0 to avoid futile looping */
+
 unsafe extern "C" fn alloc_small(
     mut cinfo: j_common_ptr,
     mut pool_id: c_int,
     mut sizeofobject: size_t,
-) -> *mut c_void {
+) -> *mut c_void
+/* Allocate a "small" object */ {
     let mut mem: my_mem_ptr = (*cinfo).mem as my_mem_ptr;
     let mut hdr_ptr: small_pool_ptr = 0 as *mut small_pool_struct;
     let mut prev_hdr_ptr: small_pool_ptr = 0 as *mut small_pool_struct;
     let mut data_ptr: *mut c_char = 0 as *mut c_char;
     let mut min_request: size_t = 0;
     let mut slop: size_t = 0;
+    /*
+     * Round up the requested size to a multiple of ALIGN_SIZE in order
+     * to assure alignment for the next object allocated in the same pool
+     * and so that algorithms can straddle outside the proper area up
+     * to the next alignment.
+     */
     if sizeofobject > MAX_ALLOC_CHUNK as c_ulong {
+        /* This prevents overflow/wrap-around in round_up_pow2() if sizeofobject
+        is close to SIZE_MAX. */
         out_of_memory(cinfo, 7i32);
     }
     sizeofobject = round_up_pow2(sizeofobject, ALIGN_SIZE as size_t);
+    /* Check for unsatisfiable request (do now to ensure no overflow below) */
     if (::std::mem::size_of::<small_pool_hdr>() as c_ulong)
         .wrapping_add(sizeofobject)
         .wrapping_add(ALIGN_SIZE as c_ulong)
         .wrapping_sub(1i32 as c_ulong)
         > MAX_ALLOC_CHUNK as c_ulong
     {
-        out_of_memory(cinfo, 1i32);
+        out_of_memory(cinfo, 1i32); /* request exceeds malloc's ability */
     }
+    /* See if space is available in any existing pool */
     if pool_id < 0i32 || pool_id >= JPOOL_NUMPOOLS {
-        (*(*cinfo).err).msg_code = JERR_BAD_POOL_ID as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] = pool_id;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_POOL_ID as c_int; /* safety check */
+        (*(*cinfo).err).msg_parm.i[0] = pool_id; /* found pool with enough space */
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo);
     }
     prev_hdr_ptr = NULL as small_pool_ptr;
     hdr_ptr = (*mem).small_list[pool_id as usize];
     while !hdr_ptr.is_null() {
         if (*hdr_ptr).bytes_left >= sizeofobject {
-            /* found pool with enough space */
             break;
-        } else {
-            prev_hdr_ptr = hdr_ptr;
-            hdr_ptr = (*hdr_ptr).next
         }
+        prev_hdr_ptr = hdr_ptr;
+        hdr_ptr = (*hdr_ptr).next
     }
+    /* Time to make a new pool? */
     if hdr_ptr.is_null() {
+        /* min_request is what we need now, slop is what will be leftover */
         min_request = (::std::mem::size_of::<small_pool_hdr>() as c_ulong)
             .wrapping_add(sizeofobject)
             .wrapping_add(ALIGN_SIZE as c_ulong)
             .wrapping_sub(1i32 as c_ulong);
         if prev_hdr_ptr.is_null() {
+            /* first pool in class? */
             slop = first_pool_slop[pool_id as usize]
         } else {
             slop = extra_pool_slop[pool_id as usize]
         }
+        /* Don't ask for more than MAX_ALLOC_CHUNK */
         if slop > (MAX_ALLOC_CHUNK as c_ulong).wrapping_sub(min_request) {
             slop = (MAX_ALLOC_CHUNK as c_ulong).wrapping_sub(min_request)
         }
-        loop {
+        loop
+        /* Try to get space, if fail reduce slop and try again */
+        {
             hdr_ptr = jpeg_get_small(cinfo, min_request.wrapping_add(slop)) as small_pool_ptr;
             if !hdr_ptr.is_null() {
                 break;
             }
             slop = (slop as c_ulong).wrapping_div(2i32 as c_ulong) as size_t as size_t;
             if slop < MIN_SLOP as c_ulong {
+                /* give up when it gets real small */
                 out_of_memory(cinfo, 2i32);
             }
         }
         (*mem).total_space_allocated = ((*mem).total_space_allocated as c_ulong)
             .wrapping_add(min_request.wrapping_add(slop))
             as size_t as size_t;
+        /* Success, initialize the new pool header and add to end of list */
         (*hdr_ptr).next = NULL as small_pool_ptr;
         (*hdr_ptr).bytes_used = 0i32 as size_t;
         (*hdr_ptr).bytes_left = sizeofobject.wrapping_add(slop);
         if prev_hdr_ptr.is_null() {
+            /* first pool in class? */
             (*mem).small_list[pool_id as usize] = hdr_ptr
         } else {
             (*prev_hdr_ptr).next = hdr_ptr
         }
     }
-    data_ptr = hdr_ptr as *mut c_char;
-    data_ptr = data_ptr.offset(::std::mem::size_of::<small_pool_hdr>() as c_ulong as isize);
-    if 0 != (data_ptr as size_t).wrapping_rem(ALIGN_SIZE as c_ulong) {
+    /* OK, allocate the object from the current pool */
+    data_ptr = hdr_ptr as *mut c_char; /* point to first data byte in pool... */
+    data_ptr = data_ptr.offset(::std::mem::size_of::<small_pool_hdr>() as c_ulong as isize); /* ...by skipping the header... */
+    if (data_ptr as size_t).wrapping_rem(ALIGN_SIZE as c_ulong) != 0 {
+        /* ...and adjust for alignment */
         data_ptr = data_ptr.offset(
             (ALIGN_SIZE as c_ulong)
                 .wrapping_sub((data_ptr as size_t).wrapping_rem(ALIGN_SIZE as c_ulong))
                 as isize,
         )
-    }
+    } /* point to place for object */
     data_ptr = data_ptr.offset((*hdr_ptr).bytes_used as isize);
     (*hdr_ptr).bytes_used =
         ((*hdr_ptr).bytes_used as c_ulong).wrapping_add(sizeofobject) as size_t as size_t;
@@ -332,32 +261,46 @@ unsafe extern "C" fn alloc_small(
  * structures.  The routines that create these structures (see below)
  * deliberately bunch rows together to ensure a large request size.
  */
+
 unsafe extern "C" fn alloc_large(
     mut cinfo: j_common_ptr,
     mut pool_id: c_int,
     mut sizeofobject: size_t,
-) -> *mut c_void {
+) -> *mut c_void
+/* Allocate a "large" object */ {
     let mut mem: my_mem_ptr = (*cinfo).mem as my_mem_ptr;
     let mut hdr_ptr: large_pool_ptr = 0 as *mut large_pool_struct;
     let mut data_ptr: *mut c_char = 0 as *mut c_char;
+    /*
+     * Round up the requested size to a multiple of ALIGN_SIZE so that
+     * algorithms can straddle outside the proper area up to the next
+     * alignment.
+     */
     if sizeofobject > MAX_ALLOC_CHUNK as c_ulong {
+        /* This prevents overflow/wrap-around in round_up_pow2() if sizeofobject
+        is close to SIZE_MAX. */
         out_of_memory(cinfo, 8i32);
     }
     sizeofobject = round_up_pow2(sizeofobject, ALIGN_SIZE as size_t);
+    /* Check for unsatisfiable request (do now to ensure no overflow below) */
     if (::std::mem::size_of::<large_pool_hdr>() as c_ulong)
         .wrapping_add(sizeofobject)
         .wrapping_add(ALIGN_SIZE as c_ulong)
         .wrapping_sub(1i32 as c_ulong)
         > MAX_ALLOC_CHUNK as c_ulong
     {
-        out_of_memory(cinfo, 3i32);
+        out_of_memory(cinfo, 3i32); /* request exceeds malloc's ability */
     }
+    /* Always make a new pool */
     if pool_id < 0i32 || pool_id >= JPOOL_NUMPOOLS {
-        (*(*cinfo).err).msg_code = JERR_BAD_POOL_ID as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] = pool_id;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_POOL_ID as c_int; /* safety check */
+        (*(*cinfo).err).msg_parm.i[0] = pool_id; /* jpeg_get_large failed */
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo);
     }
     hdr_ptr = jpeg_get_large(
         cinfo,
@@ -375,13 +318,18 @@ unsafe extern "C" fn alloc_large(
             .wrapping_add(ALIGN_SIZE as c_ulong)
             .wrapping_sub(1i32 as c_ulong),
     ) as size_t as size_t;
+    /* Success, initialize the new pool header and add to list */
     (*hdr_ptr).next = (*mem).large_list[pool_id as usize];
-    (*hdr_ptr).bytes_used = sizeofobject;
-    (*hdr_ptr).bytes_left = 0i32 as size_t;
+    /* We maintain space counts in each pool header for statistical purposes,
+     * even though they are not needed for allocation.
+     */
+    (*hdr_ptr).bytes_used = sizeofobject; /* point to first data byte in pool... */
+    (*hdr_ptr).bytes_left = 0i32 as size_t; /* ...by skipping the header... */
     (*mem).large_list[pool_id as usize] = hdr_ptr;
     data_ptr = hdr_ptr as *mut c_char;
     data_ptr = data_ptr.offset(::std::mem::size_of::<small_pool_hdr>() as c_ulong as isize);
-    if 0 != (data_ptr as size_t).wrapping_rem(ALIGN_SIZE as c_ulong) {
+    if (data_ptr as size_t).wrapping_rem(ALIGN_SIZE as c_ulong) != 0 {
+        /* ...and adjust for alignment */
         data_ptr = data_ptr.offset(
             (ALIGN_SIZE as c_ulong)
                 .wrapping_sub((data_ptr as size_t).wrapping_rem(ALIGN_SIZE as c_ulong))
@@ -405,12 +353,14 @@ unsafe extern "C" fn alloc_large(
  * the start) to 2 * ALIGN_SIZE so that the upsampling routines don't have
  * to be as careful about size.
  */
+
 unsafe extern "C" fn alloc_sarray(
     mut cinfo: j_common_ptr,
     mut pool_id: c_int,
     mut samplesperrow: JDIMENSION,
     mut numrows: JDIMENSION,
-) -> JSAMPARRAY {
+) -> JSAMPARRAY
+/* Allocate a 2-D sample array */ {
     let mut mem: my_mem_ptr = (*cinfo).mem as my_mem_ptr;
     let mut result: JSAMPARRAY = 0 as *mut JSAMPROW;
     let mut workspace: JSAMPROW = 0 as *mut JSAMPLE;
@@ -418,18 +368,22 @@ unsafe extern "C" fn alloc_sarray(
     let mut currow: JDIMENSION = 0;
     let mut i: JDIMENSION = 0;
     let mut ltemp: c_long = 0;
+    /* Make sure each row is properly aligned */
     if (ALIGN_SIZE as c_ulong).wrapping_rem(::std::mem::size_of::<JSAMPLE>() as c_ulong)
         != 0i32 as c_ulong
     {
-        out_of_memory(cinfo, 5i32);
+        out_of_memory(cinfo, 5i32); /* safety check */
     }
     if samplesperrow as c_long > MAX_ALLOC_CHUNK {
+        /* This prevents overflow/wrap-around in round_up_pow2() if sizeofobject
+        is close to SIZE_MAX. */
         out_of_memory(cinfo, 9i32);
     }
     samplesperrow = round_up_pow2(
         samplesperrow as size_t,
         ((2i32 * ALIGN_SIZE) as c_ulong).wrapping_div(::std::mem::size_of::<JSAMPLE>() as c_ulong),
     ) as JDIMENSION;
+    /* Calculate max # of rows allowed in one allocation chunk */
     ltemp = (MAX_ALLOC_CHUNK as c_ulong)
         .wrapping_sub(::std::mem::size_of::<large_pool_hdr>() as c_ulong)
         .wrapping_div(
@@ -437,10 +391,13 @@ unsafe extern "C" fn alloc_sarray(
                 .wrapping_mul(::std::mem::size_of::<JSAMPLE>() as c_ulong),
         ) as c_long;
     if ltemp <= 0i32 as c_long {
-        (*(*cinfo).err).msg_code = JERR_WIDTH_OVERFLOW as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_WIDTH_OVERFLOW as c_int;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo);
     }
     if ltemp < numrows as c_long {
         rowsperchunk = ltemp as JDIMENSION
@@ -448,11 +405,13 @@ unsafe extern "C" fn alloc_sarray(
         rowsperchunk = numrows
     }
     (*mem).last_rowsperchunk = rowsperchunk;
+    /* Get space for row pointers (small object) */
     result = alloc_small(
         cinfo,
         pool_id,
         (numrows as c_ulong).wrapping_mul(::std::mem::size_of::<JSAMPROW>() as c_ulong),
     ) as JSAMPARRAY;
+    /* Get the rows themselves (large objects) */
     currow = 0i32 as JDIMENSION;
     while currow < numrows {
         rowsperchunk = if rowsperchunk < numrows.wrapping_sub(currow) {
@@ -483,12 +442,14 @@ unsafe extern "C" fn alloc_sarray(
  * Creation of 2-D coefficient-block arrays.
  * This is essentially the same as the code for sample arrays, above.
  */
+
 unsafe extern "C" fn alloc_barray(
     mut cinfo: j_common_ptr,
     mut pool_id: c_int,
     mut blocksperrow: JDIMENSION,
     mut numrows: JDIMENSION,
-) -> JBLOCKARRAY {
+) -> JBLOCKARRAY
+/* Allocate a 2-D coefficient-block array */ {
     let mut mem: my_mem_ptr = (*cinfo).mem as my_mem_ptr;
     let mut result: JBLOCKARRAY = 0 as *mut JBLOCKROW;
     let mut workspace: JBLOCKROW = 0 as *mut JBLOCK;
@@ -496,11 +457,13 @@ unsafe extern "C" fn alloc_barray(
     let mut currow: JDIMENSION = 0;
     let mut i: JDIMENSION = 0;
     let mut ltemp: c_long = 0;
+    /* Make sure each row is properly aligned */
     if (::std::mem::size_of::<JBLOCK>() as c_ulong).wrapping_rem(ALIGN_SIZE as c_ulong)
         != 0i32 as c_ulong
     {
-        out_of_memory(cinfo, 6i32);
+        out_of_memory(cinfo, 6i32); /* safety check */
     }
+    /* Calculate max # of rows allowed in one allocation chunk */
     ltemp = (MAX_ALLOC_CHUNK as c_ulong)
         .wrapping_sub(::std::mem::size_of::<large_pool_hdr>() as c_ulong)
         .wrapping_div(
@@ -508,10 +471,13 @@ unsafe extern "C" fn alloc_barray(
                 .wrapping_mul(::std::mem::size_of::<JBLOCK>() as c_ulong),
         ) as c_long;
     if ltemp <= 0i32 as c_long {
-        (*(*cinfo).err).msg_code = JERR_WIDTH_OVERFLOW as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_WIDTH_OVERFLOW as c_int;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo);
     }
     if ltemp < numrows as c_long {
         rowsperchunk = ltemp as JDIMENSION
@@ -519,11 +485,13 @@ unsafe extern "C" fn alloc_barray(
         rowsperchunk = numrows
     }
     (*mem).last_rowsperchunk = rowsperchunk;
+    /* Get space for row pointers (small object) */
     result = alloc_small(
         cinfo,
         pool_id,
         (numrows as c_ulong).wrapping_mul(::std::mem::size_of::<JBLOCKROW>() as c_ulong),
     ) as JBLOCKARRAY;
+    /* Get the rows themselves (large objects) */
     currow = 0i32 as JDIMENSION;
     while currow < numrows {
         rowsperchunk = if rowsperchunk < numrows.wrapping_sub(currow) {
@@ -585,6 +553,7 @@ unsafe extern "C" fn alloc_barray(
  * boundaries.  The code will still work with overlapping access requests,
  * but it doesn't handle bufferload overlaps very efficiently.
  */
+
 unsafe extern "C" fn request_virt_sarray(
     mut cinfo: j_common_ptr,
     mut pool_id: c_int,
@@ -592,23 +561,29 @@ unsafe extern "C" fn request_virt_sarray(
     mut samplesperrow: JDIMENSION,
     mut numrows: JDIMENSION,
     mut maxaccess: JDIMENSION,
-) -> jvirt_sarray_ptr {
+) -> jvirt_sarray_ptr
+/* Request a virtual 2-D sample array */ {
     let mut mem: my_mem_ptr = (*cinfo).mem as my_mem_ptr;
     let mut result: jvirt_sarray_ptr = 0 as *mut jvirt_sarray_control;
+    /* Only IMAGE-lifetime virtual arrays are currently supported */
     if pool_id != JPOOL_IMAGE {
-        (*(*cinfo).err).msg_code = JERR_BAD_POOL_ID as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] = pool_id;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_POOL_ID as c_int; /* safety check */
+        (*(*cinfo).err).msg_parm.i[0] = pool_id;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo);
     }
+    /* get control block */
     result = alloc_small(
         cinfo,
         pool_id,
         ::std::mem::size_of::<jvirt_sarray_control>() as c_ulong,
-    ) as jvirt_sarray_ptr;
-    (*result).mem_buffer = NULL as JSAMPARRAY;
-    (*result).rows_in_array = numrows;
+    ) as jvirt_sarray_ptr; /* marks array not yet realized */
+    (*result).mem_buffer = NULL as JSAMPARRAY; /* no associated backing-store object */
+    (*result).rows_in_array = numrows; /* add to list of virtual arrays */
     (*result).samplesperrow = samplesperrow;
     (*result).maxaccess = maxaccess;
     (*result).pre_zero = pre_zero;
@@ -617,6 +592,7 @@ unsafe extern "C" fn request_virt_sarray(
     (*mem).virt_sarray_list = result;
     return result;
 }
+
 unsafe extern "C" fn request_virt_barray(
     mut cinfo: j_common_ptr,
     mut pool_id: c_int,
@@ -624,23 +600,29 @@ unsafe extern "C" fn request_virt_barray(
     mut blocksperrow: JDIMENSION,
     mut numrows: JDIMENSION,
     mut maxaccess: JDIMENSION,
-) -> jvirt_barray_ptr {
+) -> jvirt_barray_ptr
+/* Request a virtual 2-D coefficient-block array */ {
     let mut mem: my_mem_ptr = (*cinfo).mem as my_mem_ptr;
     let mut result: jvirt_barray_ptr = 0 as *mut jvirt_barray_control;
+    /* Only IMAGE-lifetime virtual arrays are currently supported */
     if pool_id != JPOOL_IMAGE {
-        (*(*cinfo).err).msg_code = JERR_BAD_POOL_ID as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] = pool_id;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_POOL_ID as c_int; /* safety check */
+        (*(*cinfo).err).msg_parm.i[0] = pool_id;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo);
     }
+    /* get control block */
     result = alloc_small(
         cinfo,
         pool_id,
         ::std::mem::size_of::<jvirt_barray_control>() as c_ulong,
-    ) as jvirt_barray_ptr;
-    (*result).mem_buffer = NULL as JBLOCKARRAY;
-    (*result).rows_in_array = numrows;
+    ) as jvirt_barray_ptr; /* marks array not yet realized */
+    (*result).mem_buffer = NULL as JBLOCKARRAY; /* no associated backing-store object */
+    (*result).rows_in_array = numrows; /* add to list of virtual arrays */
     (*result).blocksperrow = blocksperrow;
     (*result).maxaccess = maxaccess;
     (*result).pre_zero = pre_zero;
@@ -649,7 +631,10 @@ unsafe extern "C" fn request_virt_barray(
     (*mem).virt_barray_list = result;
     return result;
 }
-unsafe extern "C" fn realize_virt_arrays(mut cinfo: j_common_ptr) {
+
+unsafe extern "C" fn realize_virt_arrays(mut cinfo: j_common_ptr)
+/* Allocate the in-memory buffers for any unrealized virtual arrays */
+{
     let mut mem: my_mem_ptr = (*cinfo).mem as my_mem_ptr;
     let mut space_per_minheight: size_t = 0;
     let mut maximum_space: size_t = 0;
@@ -658,11 +643,16 @@ unsafe extern "C" fn realize_virt_arrays(mut cinfo: j_common_ptr) {
     let mut max_minheights: size_t = 0;
     let mut sptr: jvirt_sarray_ptr = 0 as *mut jvirt_sarray_control;
     let mut bptr: jvirt_barray_ptr = 0 as *mut jvirt_barray_control;
+    /* Compute the minimum space needed (maxaccess rows in each buffer)
+     * and the maximum space needed (full image height in each buffer).
+     * These may be of use to the system-dependent jpeg_mem_available routine.
+     */
     space_per_minheight = 0i32 as size_t;
     maximum_space = 0i32 as size_t;
     sptr = (*mem).virt_sarray_list;
     while !sptr.is_null() {
         if (*sptr).mem_buffer.is_null() {
+            /* if not realized yet */
             let mut new_space: size_t =
                 (((*sptr).rows_in_array as c_long * (*sptr).samplesperrow as c_long) as c_ulong)
                     .wrapping_mul(::std::mem::size_of::<JSAMPLE>() as c_ulong);
@@ -680,9 +670,10 @@ unsafe extern "C" fn realize_virt_arrays(mut cinfo: j_common_ptr) {
     bptr = (*mem).virt_barray_list;
     while !bptr.is_null() {
         if (*bptr).mem_buffer.is_null() {
+            /* if not realized yet */
             let mut new_space_0: size_t =
                 (((*bptr).rows_in_array as c_long * (*bptr).blocksperrow as c_long) as c_ulong)
-                    .wrapping_mul(::std::mem::size_of::<JBLOCK>() as c_ulong);
+                    .wrapping_mul(::std::mem::size_of::<JBLOCK>() as c_ulong); /* no unrealized arrays, no work */
             space_per_minheight = (space_per_minheight as c_ulong).wrapping_add(
                 (((*bptr).maxaccess as c_long * (*bptr).blocksperrow as c_long) as c_ulong)
                     .wrapping_mul(::std::mem::size_of::<JBLOCK>() as c_ulong),
@@ -697,28 +688,40 @@ unsafe extern "C" fn realize_virt_arrays(mut cinfo: j_common_ptr) {
     if space_per_minheight <= 0i32 as c_ulong {
         return;
     }
+    /* Determine amount of memory to actually use; this is system-dependent. */
     avail_mem = jpeg_mem_available(
         cinfo,
         space_per_minheight,
         maximum_space,
         (*mem).total_space_allocated,
     );
+    /* If the maximum space needed is available, make all the buffers full
+     * height; otherwise parcel it out with the same number of minheights
+     * in each buffer.
+     */
     if avail_mem >= maximum_space {
         max_minheights = 1000000000i64 as size_t
     } else {
         max_minheights = avail_mem.wrapping_div(space_per_minheight);
+        /* If there doesn't seem to be enough space, try to get the minimum
+         * anyway.  This allows a "stub" implementation of jpeg_mem_available().
+         */
         if max_minheights <= 0i32 as c_ulong {
             max_minheights = 1i32 as size_t
         }
     }
+    /* Allocate the in-memory buffers and initialize backing store as needed. */
     sptr = (*mem).virt_sarray_list;
     while !sptr.is_null() {
         if (*sptr).mem_buffer.is_null() {
+            /* if not realized yet */
             minheights = (((*sptr).rows_in_array as c_long - 1i64) / (*sptr).maxaccess as c_long
                 + 1i64) as size_t;
             if minheights <= max_minheights {
+                /* This buffer fits in memory */
                 (*sptr).rows_in_mem = (*sptr).rows_in_array
             } else {
+                /* It doesn't fit in memory, create backing store. */
                 (*sptr).rows_in_mem =
                     max_minheights.wrapping_mul((*sptr).maxaccess as c_ulong) as JDIMENSION;
                 jpeg_open_backing_store(
@@ -746,11 +749,14 @@ unsafe extern "C" fn realize_virt_arrays(mut cinfo: j_common_ptr) {
     bptr = (*mem).virt_barray_list;
     while !bptr.is_null() {
         if (*bptr).mem_buffer.is_null() {
+            /* if not realized yet */
             minheights = (((*bptr).rows_in_array as c_long - 1i64) / (*bptr).maxaccess as c_long
                 + 1i64) as size_t;
             if minheights <= max_minheights {
+                /* This buffer fits in memory */
                 (*bptr).rows_in_mem = (*bptr).rows_in_array
             } else {
+                /* It doesn't fit in memory, create backing store. */
                 (*bptr).rows_in_mem =
                     max_minheights.wrapping_mul((*bptr).maxaccess as c_ulong) as JDIMENSION;
                 jpeg_open_backing_store(
@@ -776,11 +782,14 @@ unsafe extern "C" fn realize_virt_arrays(mut cinfo: j_common_ptr) {
         bptr = (*bptr).next
     }
 }
+
 unsafe extern "C" fn do_sarray_io(
     mut cinfo: j_common_ptr,
     mut ptr: jvirt_sarray_ptr,
     mut writing: boolean,
-) {
+)
+/* Do backing store read or write of a virtual sample array */
+{
     let mut bytesperrow: c_long = 0;
     let mut file_offset: c_long = 0;
     let mut byte_count: c_long = 0;
@@ -790,34 +799,40 @@ unsafe extern "C" fn do_sarray_io(
     bytesperrow = ((*ptr).samplesperrow as c_long as c_ulong)
         .wrapping_mul(::std::mem::size_of::<JSAMPLE>() as c_ulong) as c_long;
     file_offset = (*ptr).cur_start_row as c_long * bytesperrow;
+    /* Loop to read or write each allocation chunk in mem_buffer */
     i = 0i32 as c_long;
     while i < (*ptr).rows_in_mem as c_long {
+        /* One chunk, but check for short chunk at end of buffer */
         rows = if ((*ptr).rowsperchunk as c_long) < (*ptr).rows_in_mem as c_long - i {
             (*ptr).rowsperchunk as c_long
         } else {
-            (*ptr).rows_in_mem as c_long - i
+            ((*ptr).rows_in_mem as c_long) - i
         };
+        /* Transfer no more than is currently defined */
         thisrow = (*ptr).cur_start_row as c_long + i;
         rows = if rows < (*ptr).first_undef_row as c_long - thisrow {
             rows
         } else {
-            (*ptr).first_undef_row as c_long - thisrow
+            ((*ptr).first_undef_row as c_long) - thisrow
         };
+        /* Transfer no more than fits in file */
         rows = if rows < (*ptr).rows_in_array as c_long - thisrow {
             rows
         } else {
-            (*ptr).rows_in_array as c_long - thisrow
+            ((*ptr).rows_in_array as c_long) - thisrow
         };
-        /* this chunk might be past end of file! */
         if rows <= 0i32 as c_long {
             break;
         }
         byte_count = rows * bytesperrow;
-        if 0 != writing {
-            (*ptr)
-                .b_s_info
-                .write_backing_store
-                .expect("non-null function pointer")(
+        if writing != 0 {
+            Some(
+                (*ptr)
+                    .b_s_info
+                    .write_backing_store
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(
                 cinfo,
                 &mut (*ptr).b_s_info,
                 *(*ptr).mem_buffer.offset(i as isize) as *mut c_void,
@@ -825,10 +840,13 @@ unsafe extern "C" fn do_sarray_io(
                 byte_count,
             );
         } else {
-            (*ptr)
-                .b_s_info
-                .read_backing_store
-                .expect("non-null function pointer")(
+            Some(
+                (*ptr)
+                    .b_s_info
+                    .read_backing_store
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(
                 cinfo,
                 &mut (*ptr).b_s_info,
                 *(*ptr).mem_buffer.offset(i as isize) as *mut c_void,
@@ -840,11 +858,14 @@ unsafe extern "C" fn do_sarray_io(
         i += (*ptr).rowsperchunk as c_long
     }
 }
+
 unsafe extern "C" fn do_barray_io(
     mut cinfo: j_common_ptr,
     mut ptr: jvirt_barray_ptr,
     mut writing: boolean,
-) {
+)
+/* Do backing store read or write of a virtual coefficient-block array */
+{
     let mut bytesperrow: c_long = 0;
     let mut file_offset: c_long = 0;
     let mut byte_count: c_long = 0;
@@ -854,34 +875,40 @@ unsafe extern "C" fn do_barray_io(
     bytesperrow = ((*ptr).blocksperrow as c_long as c_ulong)
         .wrapping_mul(::std::mem::size_of::<JBLOCK>() as c_ulong) as c_long;
     file_offset = (*ptr).cur_start_row as c_long * bytesperrow;
+    /* Loop to read or write each allocation chunk in mem_buffer */
     i = 0i32 as c_long;
     while i < (*ptr).rows_in_mem as c_long {
+        /* One chunk, but check for short chunk at end of buffer */
         rows = if ((*ptr).rowsperchunk as c_long) < (*ptr).rows_in_mem as c_long - i {
             (*ptr).rowsperchunk as c_long
         } else {
-            (*ptr).rows_in_mem as c_long - i
+            ((*ptr).rows_in_mem as c_long) - i
         };
+        /* Transfer no more than is currently defined */
         thisrow = (*ptr).cur_start_row as c_long + i;
         rows = if rows < (*ptr).first_undef_row as c_long - thisrow {
             rows
         } else {
-            (*ptr).first_undef_row as c_long - thisrow
+            ((*ptr).first_undef_row as c_long) - thisrow
         };
+        /* Transfer no more than fits in file */
         rows = if rows < (*ptr).rows_in_array as c_long - thisrow {
             rows
         } else {
-            (*ptr).rows_in_array as c_long - thisrow
+            ((*ptr).rows_in_array as c_long) - thisrow
         };
-        /* this chunk might be past end of file! */
         if rows <= 0i32 as c_long {
             break;
         }
         byte_count = rows * bytesperrow;
-        if 0 != writing {
-            (*ptr)
-                .b_s_info
-                .write_backing_store
-                .expect("non-null function pointer")(
+        if writing != 0 {
+            Some(
+                (*ptr)
+                    .b_s_info
+                    .write_backing_store
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(
                 cinfo,
                 &mut (*ptr).b_s_info,
                 *(*ptr).mem_buffer.offset(i as isize) as *mut c_void,
@@ -889,10 +916,13 @@ unsafe extern "C" fn do_barray_io(
                 byte_count,
             );
         } else {
-            (*ptr)
-                .b_s_info
-                .read_backing_store
-                .expect("non-null function pointer")(
+            Some(
+                (*ptr)
+                    .b_s_info
+                    .read_backing_store
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(
                 cinfo,
                 &mut (*ptr).b_s_info,
                 *(*ptr).mem_buffer.offset(i as isize) as *mut c_void,
@@ -904,63 +934,97 @@ unsafe extern "C" fn do_barray_io(
         i += (*ptr).rowsperchunk as c_long
     }
 }
+
 unsafe extern "C" fn access_virt_sarray(
     mut cinfo: j_common_ptr,
     mut ptr: jvirt_sarray_ptr,
     mut start_row: JDIMENSION,
     mut num_rows: JDIMENSION,
     mut writable: boolean,
-) -> JSAMPARRAY {
+) -> JSAMPARRAY
+/* Access the part of a virtual sample array starting at start_row */
+/* and extending for num_rows rows.  writable is true if  */
+/* caller intends to modify the accessed area. */ {
     let mut end_row: JDIMENSION = start_row.wrapping_add(num_rows);
     let mut undef_row: JDIMENSION = 0;
+    /* debugging check */
     if end_row > (*ptr).rows_in_array || num_rows > (*ptr).maxaccess || (*ptr).mem_buffer.is_null()
     {
-        (*(*cinfo).err).msg_code = JERR_BAD_VIRTUAL_ACCESS as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_VIRTUAL_ACCESS as c_int;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo);
     }
+    /* Make the desired part of the virtual array accessible */
     if start_row < (*ptr).cur_start_row
         || end_row > (*ptr).cur_start_row.wrapping_add((*ptr).rows_in_mem)
     {
-        if 0 == (*ptr).b_s_open {
-            (*(*cinfo).err).msg_code = JERR_VIRTUAL_BUG as c_int;
-            (*(*cinfo).err)
-                .error_exit
-                .expect("non-null function pointer")(cinfo);
+        if (*ptr).b_s_open == 0 {
+            (*(*cinfo).err).msg_code = super::jerror::JERR_VIRTUAL_BUG as c_int;
+            Some(
+                (*(*cinfo).err)
+                    .error_exit
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(cinfo);
         }
-        if 0 != (*ptr).dirty {
+        /* Flush old buffer contents if necessary */
+        if (*ptr).dirty != 0 {
             do_sarray_io(cinfo, ptr, TRUE);
             (*ptr).dirty = FALSE
         }
+        /* Decide what part of virtual array to access.
+         * Algorithm: if target address > current window, assume forward scan,
+         * load starting at target address.  If target address < current window,
+         * assume backward scan, load so that target area is top of window.
+         * Note that when switching from forward write to forward read, will have
+         * start_row = 0, so the limiting case applies and we load from 0 anyway.
+         */
         if start_row > (*ptr).cur_start_row {
             (*ptr).cur_start_row = start_row
         } else {
-            let mut ltemp: c_long = 0;
+            /* use long arithmetic here to avoid overflow & unsigned problems */
+            let mut ltemp: c_long = 0; /* don't fall off front end of file */
             ltemp = end_row as c_long - (*ptr).rows_in_mem as c_long;
             if ltemp < 0i32 as c_long {
                 ltemp = 0i32 as c_long
             }
             (*ptr).cur_start_row = ltemp as JDIMENSION
         }
+        /* Read in the selected part of the array.
+         * During the initial write pass, we will do no actual read
+         * because the selected part is all undefined.
+         */
         do_sarray_io(cinfo, ptr, FALSE);
     }
+    /* Ensure the accessed part of the array is defined; prezero if needed.
+     * To improve locality of access, we only prezero the part of the array
+     * that the caller is about to access, not the entire in-memory array.
+     */
     if (*ptr).first_undef_row < end_row {
         if (*ptr).first_undef_row < start_row {
-            if 0 != writable {
-                (*(*cinfo).err).msg_code = JERR_BAD_VIRTUAL_ACCESS as c_int;
-                (*(*cinfo).err)
-                    .error_exit
-                    .expect("non-null function pointer")(cinfo);
+            if writable != 0 {
+                /* writer skipped over a section of array */
+                (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_VIRTUAL_ACCESS as c_int;
+                Some(
+                    (*(*cinfo).err)
+                        .error_exit
+                        .expect("non-null function pointer"),
+                )
+                .expect("non-null function pointer")(cinfo);
             }
             undef_row = start_row
+        /* but reader is allowed to read ahead */
         } else {
             undef_row = (*ptr).first_undef_row
-        }
-        if 0 != writable {
+        } /* make indexes relative to buffer */
+        if writable != 0 {
             (*ptr).first_undef_row = end_row
         }
-        if 0 != (*ptr).pre_zero {
+        if (*ptr).pre_zero != 0 {
             let mut bytesperrow: size_t = ((*ptr).samplesperrow as size_t)
                 .wrapping_mul(::std::mem::size_of::<JSAMPLE>() as c_ulong);
             undef_row = (undef_row as c_uint).wrapping_sub((*ptr).cur_start_row) as JDIMENSION
@@ -974,77 +1038,117 @@ unsafe extern "C" fn access_virt_sarray(
                 );
                 undef_row = undef_row.wrapping_add(1)
             }
-        } else if 0 == writable {
-            (*(*cinfo).err).msg_code = JERR_BAD_VIRTUAL_ACCESS as c_int;
-            (*(*cinfo).err)
-                .error_exit
-                .expect("non-null function pointer")(cinfo);
+        } else if writable == 0 {
+            /* reader looking at undefined data */
+            (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_VIRTUAL_ACCESS as c_int;
+            Some(
+                (*(*cinfo).err)
+                    .error_exit
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(cinfo);
         }
     }
-    if 0 != writable {
+    /* Flag the buffer dirty if caller will write in it */
+    if writable != 0 {
         (*ptr).dirty = TRUE
     }
+    /* Return address of proper part of the buffer */
     return (*ptr)
         .mem_buffer
         .offset(start_row.wrapping_sub((*ptr).cur_start_row) as isize);
 }
+
 unsafe extern "C" fn access_virt_barray(
     mut cinfo: j_common_ptr,
     mut ptr: jvirt_barray_ptr,
     mut start_row: JDIMENSION,
     mut num_rows: JDIMENSION,
     mut writable: boolean,
-) -> JBLOCKARRAY {
+) -> JBLOCKARRAY
+/* Access the part of a virtual block array starting at start_row */
+/* and extending for num_rows rows.  writable is true if  */
+/* caller intends to modify the accessed area. */ {
     let mut end_row: JDIMENSION = start_row.wrapping_add(num_rows);
     let mut undef_row: JDIMENSION = 0;
+    /* debugging check */
     if end_row > (*ptr).rows_in_array || num_rows > (*ptr).maxaccess || (*ptr).mem_buffer.is_null()
     {
-        (*(*cinfo).err).msg_code = JERR_BAD_VIRTUAL_ACCESS as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_VIRTUAL_ACCESS as c_int;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo);
     }
+    /* Make the desired part of the virtual array accessible */
     if start_row < (*ptr).cur_start_row
         || end_row > (*ptr).cur_start_row.wrapping_add((*ptr).rows_in_mem)
     {
-        if 0 == (*ptr).b_s_open {
-            (*(*cinfo).err).msg_code = JERR_VIRTUAL_BUG as c_int;
-            (*(*cinfo).err)
-                .error_exit
-                .expect("non-null function pointer")(cinfo);
+        if (*ptr).b_s_open == 0 {
+            (*(*cinfo).err).msg_code = super::jerror::JERR_VIRTUAL_BUG as c_int;
+            Some(
+                (*(*cinfo).err)
+                    .error_exit
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(cinfo);
         }
-        if 0 != (*ptr).dirty {
+        /* Flush old buffer contents if necessary */
+        if (*ptr).dirty != 0 {
             do_barray_io(cinfo, ptr, TRUE);
             (*ptr).dirty = FALSE
         }
+        /* Decide what part of virtual array to access.
+         * Algorithm: if target address > current window, assume forward scan,
+         * load starting at target address.  If target address < current window,
+         * assume backward scan, load so that target area is top of window.
+         * Note that when switching from forward write to forward read, will have
+         * start_row = 0, so the limiting case applies and we load from 0 anyway.
+         */
         if start_row > (*ptr).cur_start_row {
             (*ptr).cur_start_row = start_row
         } else {
-            let mut ltemp: c_long = 0;
+            /* use long arithmetic here to avoid overflow & unsigned problems */
+            let mut ltemp: c_long = 0; /* don't fall off front end of file */
             ltemp = end_row as c_long - (*ptr).rows_in_mem as c_long;
             if ltemp < 0i32 as c_long {
                 ltemp = 0i32 as c_long
             }
             (*ptr).cur_start_row = ltemp as JDIMENSION
         }
+        /* Read in the selected part of the array.
+         * During the initial write pass, we will do no actual read
+         * because the selected part is all undefined.
+         */
         do_barray_io(cinfo, ptr, FALSE);
     }
+    /* Ensure the accessed part of the array is defined; prezero if needed.
+     * To improve locality of access, we only prezero the part of the array
+     * that the caller is about to access, not the entire in-memory array.
+     */
     if (*ptr).first_undef_row < end_row {
         if (*ptr).first_undef_row < start_row {
-            if 0 != writable {
-                (*(*cinfo).err).msg_code = JERR_BAD_VIRTUAL_ACCESS as c_int;
-                (*(*cinfo).err)
-                    .error_exit
-                    .expect("non-null function pointer")(cinfo);
+            if writable != 0 {
+                /* writer skipped over a section of array */
+                (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_VIRTUAL_ACCESS as c_int;
+                Some(
+                    (*(*cinfo).err)
+                        .error_exit
+                        .expect("non-null function pointer"),
+                )
+                .expect("non-null function pointer")(cinfo);
             }
             undef_row = start_row
+        /* but reader is allowed to read ahead */
         } else {
             undef_row = (*ptr).first_undef_row
-        }
-        if 0 != writable {
+        } /* make indexes relative to buffer */
+        if writable != 0 {
             (*ptr).first_undef_row = end_row
         }
-        if 0 != (*ptr).pre_zero {
+        if (*ptr).pre_zero != 0 {
             let mut bytesperrow: size_t = ((*ptr).blocksperrow as size_t)
                 .wrapping_mul(::std::mem::size_of::<JBLOCK>() as c_ulong);
             undef_row = (undef_row as c_uint).wrapping_sub((*ptr).cur_start_row) as JDIMENSION
@@ -1058,16 +1162,22 @@ unsafe extern "C" fn access_virt_barray(
                 );
                 undef_row = undef_row.wrapping_add(1)
             }
-        } else if 0 == writable {
-            (*(*cinfo).err).msg_code = JERR_BAD_VIRTUAL_ACCESS as c_int;
-            (*(*cinfo).err)
-                .error_exit
-                .expect("non-null function pointer")(cinfo);
+        } else if writable == 0 {
+            /* reader looking at undefined data */
+            (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_VIRTUAL_ACCESS as c_int;
+            Some(
+                (*(*cinfo).err)
+                    .error_exit
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(cinfo);
         }
     }
-    if 0 != writable {
+    /* Flag the buffer dirty if caller will write in it */
+    if writable != 0 {
         (*ptr).dirty = TRUE
     }
+    /* Return address of proper part of the buffer */
     return (*ptr)
         .mem_buffer
         .offset(start_row.wrapping_sub((*ptr).cur_start_row) as isize);
@@ -1075,50 +1185,60 @@ unsafe extern "C" fn access_virt_barray(
 /*
  * Release all objects belonging to a specified pool.
  */
+
 unsafe extern "C" fn free_pool(mut cinfo: j_common_ptr, mut pool_id: c_int) {
-    let mut mem: my_mem_ptr = (*cinfo).mem as my_mem_ptr;
+    let mut mem: my_mem_ptr = (*cinfo).mem as my_mem_ptr; /* safety check */
     let mut shdr_ptr: small_pool_ptr = 0 as *mut small_pool_struct;
     let mut lhdr_ptr: large_pool_ptr = 0 as *mut large_pool_struct;
     let mut space_freed: size_t = 0;
     if pool_id < 0i32 || pool_id >= JPOOL_NUMPOOLS {
-        (*(*cinfo).err).msg_code = JERR_BAD_POOL_ID as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] = pool_id;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_POOL_ID as c_int;
+        (*(*cinfo).err).msg_parm.i[0] = pool_id;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo);
     }
+    /* If freeing IMAGE pool, close any virtual arrays first */
     if pool_id == JPOOL_IMAGE {
         let mut sptr: jvirt_sarray_ptr = 0 as *mut jvirt_sarray_control;
         let mut bptr: jvirt_barray_ptr = 0 as *mut jvirt_barray_control;
         sptr = (*mem).virt_sarray_list;
         while !sptr.is_null() {
-            if 0 != (*sptr).b_s_open {
-                (*sptr).b_s_open = FALSE;
-                (*sptr)
-                    .b_s_info
-                    .close_backing_store
-                    .expect("non-null function pointer")(
-                    cinfo, &mut (*sptr).b_s_info
-                );
+            if (*sptr).b_s_open != 0 {
+                /* there may be no backing store */
+                (*sptr).b_s_open = FALSE; /* prevent recursive close if error */
+                Some(
+                    (*sptr)
+                        .b_s_info
+                        .close_backing_store
+                        .expect("non-null function pointer"),
+                )
+                .expect("non-null function pointer")(cinfo, &mut (*sptr).b_s_info);
             }
             sptr = (*sptr).next
         }
         (*mem).virt_sarray_list = NULL as jvirt_sarray_ptr;
         bptr = (*mem).virt_barray_list;
         while !bptr.is_null() {
-            if 0 != (*bptr).b_s_open {
-                (*bptr).b_s_open = FALSE;
-                (*bptr)
-                    .b_s_info
-                    .close_backing_store
-                    .expect("non-null function pointer")(
-                    cinfo, &mut (*bptr).b_s_info
-                );
+            if (*bptr).b_s_open != 0 {
+                /* there may be no backing store */
+                (*bptr).b_s_open = FALSE; /* prevent recursive close if error */
+                Some(
+                    (*bptr)
+                        .b_s_info
+                        .close_backing_store
+                        .expect("non-null function pointer"),
+                )
+                .expect("non-null function pointer")(cinfo, &mut (*bptr).b_s_info);
             }
             bptr = (*bptr).next
         }
         (*mem).virt_barray_list = NULL as jvirt_barray_ptr
     }
+    /* Release large objects */
     lhdr_ptr = (*mem).large_list[pool_id as usize];
     (*mem).large_list[pool_id as usize] = NULL as large_pool_ptr;
     while !lhdr_ptr.is_null() {
@@ -1132,6 +1252,7 @@ unsafe extern "C" fn free_pool(mut cinfo: j_common_ptr, mut pool_id: c_int) {
             ((*mem).total_space_allocated as c_ulong).wrapping_sub(space_freed) as size_t as size_t;
         lhdr_ptr = next_lhdr_ptr
     }
+    /* Release small objects */
     shdr_ptr = (*mem).small_list[pool_id as usize];
     (*mem).small_list[pool_id as usize] = NULL as small_pool_ptr;
     while !shdr_ptr.is_null() {
@@ -1150,58 +1271,141 @@ unsafe extern "C" fn free_pool(mut cinfo: j_common_ptr, mut pool_id: c_int) {
  * Close up shop entirely.
  * Note that this cannot be called unless cinfo->mem is non-NULL.
  */
+
 unsafe extern "C" fn self_destruct(mut cinfo: j_common_ptr) {
     let mut pool: c_int = 0;
+    /* Close all backing store, release all memory.
+     * Releasing pools in reverse order might help avoid fragmentation
+     * with some (brain-damaged) malloc libraries.
+     */
     pool = JPOOL_NUMPOOLS - 1i32;
     while pool >= JPOOL_PERMANENT {
         free_pool(cinfo, pool);
         pool -= 1
     }
+    /* Release the memory manager control block too. */
     jpeg_free_small(
         cinfo,
         (*cinfo).mem as *mut c_void,
         ::std::mem::size_of::<my_memory_mgr>() as c_ulong,
-    );
+    ); /* ensures I will be called only once */
     (*cinfo).mem = NULL as *mut jpeg_memory_mgr;
     jpeg_mem_term(cinfo);
+    /* system-dependent cleanup */
 }
+/* Entropy encoding */
+/* Marker writing */
+/* These routines are exported to allow insertion of extra markers */
+/* Probably only COM and APPn markers should be written this way */
+/* Declarations for decompression modules */
+/* Master control module */
+/* State variables made visible to other modules */
+/* True during 1st pass for 2-pass quant */
+/* Partial decompression variables */
+/* Input control module */
+/* State variables made visible to other modules */
+/* True if file has multiple scans */
+/* True when EOI has been consumed */
+/* Main buffer control (downsampled-data buffer) */
+/* Coefficient buffer control */
+/* Pointer to array of coefficient virtual arrays, or NULL if none */
+/* Decompression postprocessing (color quantization buffer control) */
+/* Marker reading & parsing */
+/* Read markers until SOS or EOI.
+ * Returns same codes as are defined for jpeg_consume_input:
+ * JPEG_SUSPENDED, JPEG_REACHED_SOS, or JPEG_REACHED_EOI.
+ */
+/* Read a restart marker --- exported for use by entropy decoder only */
+/* State of marker reader --- nominally internal, but applications
+ * supplying COM or APPn handlers might like to know the state.
+ */
+/* found SOI? */
+/* found SOF? */
+/* next restart number expected (0-7) */
+/* # of bytes skipped looking for a marker */
+/* Entropy decoding */
+/* This is here to share code between baseline and progressive decoders; */
+/* other modules probably should not use it */
+/* set TRUE after emitting warning */
+/* Inverse DCT (also performs dequantization) */
+/* It is useful to allow each component to have a separate IDCT method. */
+/* Upsampling (note that upsampler must also call color converter) */
+/* TRUE if need rows above & below */
+/* Colorspace conversion */
+/* Color quantization or color precision reduction */
+/* Miscellaneous useful macros */
+/* We assume that right shift corresponds to signed division by 2 with
+ * rounding towards minus infinity.  This is correct for typical "arithmetic
+ * shift" instructions that shift in copies of the sign bit.  But some
+ * C compilers implement >> with an unsigned shift.  For these machines you
+ * must define RIGHT_SHIFT_IS_UNSIGNED.
+ * RIGHT_SHIFT provides a proper signed right shift of a JLONG quantity.
+ * It is only applied with constant shift counts.  SHIFT_TEMPS must be
+ * included in the variables of any routine using RIGHT_SHIFT.
+ */
+/* Compression module initialization routines */
+/* Decompression module initialization routines */
 /* Memory manager initialization */
 /*
  * Memory manager initialization.
  * When this is called, only the error manager pointer is valid in cinfo!
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jinit_memory_mgr(mut cinfo: j_common_ptr) {
-    let mut mem: my_mem_ptr = 0 as *mut my_memory_mgr;
+    let mut mem: my_mem_ptr = 0 as *mut my_memory_mgr; /* for safety if init fails */
     let mut max_to_use: c_long = 0;
     let mut pool: c_int = 0;
     let mut test_mac: size_t = 0;
     (*cinfo).mem = NULL as *mut jpeg_memory_mgr;
+    /* Check for configuration errors.
+     * sizeof(ALIGN_TYPE) should be a power of 2; otherwise, it probably
+     * doesn't reflect any real hardware alignment requirement.
+     * The test is a little tricky: for X>0, X and X-1 have no one-bits
+     * in common if and only if X is a power of 2, ie has only one one-bit.
+     * Some compilers may give an "unreachable code" warning here; ignore it.
+     */
     if ALIGN_SIZE & ALIGN_SIZE - 1i32 != 0i32 {
-        (*(*cinfo).err).msg_code = JERR_BAD_ALIGN_TYPE as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_ALIGN_TYPE as c_int;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo);
     }
-    test_mac = MAX_ALLOC_CHUNK as size_t;
+    /* MAX_ALLOC_CHUNK must be representable as type size_t, and must be
+     * a multiple of ALIGN_SIZE.
+     * Again, an "unreachable code" warning may be ignored here.
+     * But a "constant too large" warning means you need to fix MAX_ALLOC_CHUNK.
+     */
+    test_mac = MAX_ALLOC_CHUNK as size_t; /* system-dependent initialization */
     if test_mac as c_long != MAX_ALLOC_CHUNK
         || MAX_ALLOC_CHUNK % ALIGN_SIZE as c_long != 0i32 as c_long
     {
-        (*(*cinfo).err).msg_code = JERR_BAD_ALLOC_CHUNK as c_int;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_ALLOC_CHUNK as c_int;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo);
     }
     max_to_use = jpeg_mem_init(cinfo);
-    mem = jpeg_get_small(cinfo, ::std::mem::size_of::<my_memory_mgr>() as c_ulong) as my_mem_ptr;
+    /* Attempt to allocate memory manager's control block */
+    mem = jpeg_get_small(cinfo, ::std::mem::size_of::<my_memory_mgr>() as c_ulong) as my_mem_ptr; /* system-dependent cleanup */
     if mem.is_null() {
         jpeg_mem_term(cinfo);
-        (*(*cinfo).err).msg_code = JERR_OUT_OF_MEMORY as c_int;
-        (*(*cinfo).err).msg_parm.i[0usize] = 0i32;
-        (*(*cinfo).err)
-            .error_exit
-            .expect("non-null function pointer")(cinfo);
+        (*(*cinfo).err).msg_code = super::jerror::JERR_OUT_OF_MEMORY as c_int;
+        (*(*cinfo).err).msg_parm.i[0] = 0i32;
+        Some(
+            (*(*cinfo).err)
+                .error_exit
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo);
     }
+    /* OK, fill in the method pointers */
     (*mem).pub_0.alloc_small = Some(
         alloc_small as unsafe extern "C" fn(_: j_common_ptr, _: c_int, _: size_t) -> *mut c_void,
     );
@@ -1273,7 +1477,9 @@ pub unsafe extern "C" fn jinit_memory_mgr(mut cinfo: j_common_ptr) {
     (*mem).pub_0.free_pool =
         Some(free_pool as unsafe extern "C" fn(_: j_common_ptr, _: c_int) -> ());
     (*mem).pub_0.self_destruct = Some(self_destruct as unsafe extern "C" fn(_: j_common_ptr) -> ());
+    /* Make MAX_ALLOC_CHUNK accessible to other modules */
     (*mem).pub_0.max_alloc_chunk = MAX_ALLOC_CHUNK;
+    /* Initialize working state */
     (*mem).pub_0.max_memory_to_use = max_to_use;
     pool = JPOOL_NUMPOOLS - 1i32;
     while pool >= JPOOL_PERMANENT {
@@ -1284,7 +1490,14 @@ pub unsafe extern "C" fn jinit_memory_mgr(mut cinfo: j_common_ptr) {
     (*mem).virt_sarray_list = NULL as jvirt_sarray_ptr;
     (*mem).virt_barray_list = NULL as jvirt_barray_ptr;
     (*mem).total_space_allocated = ::std::mem::size_of::<my_memory_mgr>() as c_ulong;
+    /* Declare ourselves open for business */
     (*cinfo).mem = &mut (*mem).pub_0;
+    /* Check for an environment variable JPEGMEM; if found, override the
+     * default max_memory setting from jpeg_mem_init.  Note that the
+     * surrounding application may again override this value.
+     * If your system doesn't support getenv(), define NO_GETENV to disable
+     * this feature.
+     */
     let mut memenv: *mut c_char = 0 as *mut c_char;
     memenv = getenv(b"JPEGMEM\x00" as *const u8 as *const c_char);
     if !memenv.is_null() {

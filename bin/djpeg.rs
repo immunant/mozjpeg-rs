@@ -10,8 +10,10 @@
 #![feature(extern_types)]
 #![feature(label_break_value)]
 #![feature(ptr_wrapping_offset_from)]
+#![feature(main)]
+
 pub use crate::cderror_h::{
-    C2RustUnnamed_91, JERR_BAD_CMAP_FILE, JERR_BMP_BADCMAP, JERR_BMP_BADDEPTH, JERR_BMP_BADHEADER,
+    C2RustUnnamed_4, JERR_BAD_CMAP_FILE, JERR_BMP_BADCMAP, JERR_BMP_BADDEPTH, JERR_BMP_BADHEADER,
     JERR_BMP_BADPLANES, JERR_BMP_COLORSPACE, JERR_BMP_COMPRESSED, JERR_BMP_EMPTY, JERR_BMP_NOT,
     JERR_BMP_OUTOFRANGE, JERR_GIF_BUG, JERR_GIF_CODESIZE, JERR_GIF_COLORSPACE,
     JERR_GIF_IMAGENOTFOUND, JERR_GIF_NOT, JERR_PPM_COLORSPACE, JERR_PPM_NONNUMERIC, JERR_PPM_NOT,
@@ -22,14 +24,36 @@ pub use crate::cderror_h::{
     JTRC_PGM, JTRC_PGM_TEXT, JTRC_PPM, JTRC_PPM_TEXT, JTRC_TGA, JTRC_TGA_GRAY, JTRC_TGA_MAPPED,
     JWRN_GIF_BADDATA, JWRN_GIF_CHAR, JWRN_GIF_ENDCODE, JWRN_GIF_NOMOREDATA,
 };
-pub use crate::cdjpeg::{
+pub use crate::jconfig_h::JPEG_LIB_VERSION;
+pub use crate::jconfigint_h::{BUILD, PACKAGE_NAME, VERSION};
+pub use crate::jmorecfg_h::{
+    boolean, FALSE, JCOEF, JDIMENSION, JOCTET, JSAMPLE, TRUE, UINT16, UINT8,
+};
+pub use crate::jpeglib_h::{
+    j_common_ptr, j_decompress_ptr, jpeg_CreateDecompress, jpeg_color_deconverter,
+    jpeg_color_quantizer, jpeg_common_struct, jpeg_component_info, jpeg_crop_scanline,
+    jpeg_d_coef_controller, jpeg_d_main_controller, jpeg_d_post_controller, jpeg_decomp_master,
+    jpeg_decompress_struct, jpeg_destroy_decompress, jpeg_entropy_decoder, jpeg_error_mgr,
+    jpeg_finish_decompress, jpeg_input_controller, jpeg_inverse_dct, jpeg_marker_parser_method,
+    jpeg_marker_reader, jpeg_marker_struct, jpeg_mem_src, jpeg_memory_mgr, jpeg_progress_mgr,
+    jpeg_read_header, jpeg_read_icc_profile, jpeg_read_scanlines, jpeg_save_markers,
+    jpeg_saved_marker_ptr, jpeg_set_marker_processor, jpeg_skip_scanlines, jpeg_source_mgr,
+    jpeg_start_decompress, jpeg_std_error, jpeg_stdio_src, jpeg_upsampler, jvirt_barray_control,
+    jvirt_barray_ptr, jvirt_sarray_control, jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr, JBLOCK,
+    JBLOCKARRAY, JBLOCKROW, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA,
+    JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB,
+    JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_DEFAULT, JDCT_FASTEST,
+    JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JDITHER_FS, JDITHER_NONE, JDITHER_ORDERED, JHUFF_TBL,
+    JPEG_APP0, JPEG_COM, JQUANT_TBL, JSAMPARRAY, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD,
+    J_DITHER_MODE,
+};
+pub use crate::jversion_h::{JCOPYRIGHT, JVERSION};
+pub use crate::src::cdjpeg::{
     djpeg_dest_ptr, djpeg_dest_struct, jinit_write_bmp, jinit_write_gif, jinit_write_ppm,
     jinit_write_targa, keymatch, read_color_map, read_stdin, write_stdout, EXIT_WARNING,
     READ_BINARY, WRITE_BINARY,
 };
-pub use crate::jconfig_h::JPEG_LIB_VERSION;
-pub use crate::jconfigint_h::{BUILD, PACKAGE_NAME, VERSION};
-pub use crate::jerror::{
+pub use crate::src::jerror::{
     C2RustUnnamed_3, JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
     JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID, JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
     JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE, JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
@@ -60,58 +84,35 @@ pub use crate::jerror::{
     JWRN_HUFF_BAD_CODE, JWRN_JFIF_MAJOR, JWRN_JPEG_EOF, JWRN_MUST_RESYNC, JWRN_NOT_SEQUENTIAL,
     JWRN_TOO_MUCH_DATA,
 };
-pub use crate::jmorecfg_h::{
-    boolean, FALSE, JCOEF, JDIMENSION, JOCTET, JSAMPLE, TRUE, UINT16, UINT8,
-};
-pub use crate::jpeglib_h::{
-    j_common_ptr, j_decompress_ptr, jpeg_CreateDecompress, jpeg_color_deconverter,
-    jpeg_color_quantizer, jpeg_common_struct, jpeg_component_info, jpeg_crop_scanline,
-    jpeg_d_coef_controller, jpeg_d_main_controller, jpeg_d_post_controller, jpeg_decomp_master,
-    jpeg_decompress_struct, jpeg_destroy_decompress, jpeg_entropy_decoder, jpeg_error_mgr,
-    jpeg_finish_decompress, jpeg_input_controller, jpeg_inverse_dct, jpeg_marker_parser_method,
-    jpeg_marker_reader, jpeg_marker_struct, jpeg_mem_src, jpeg_memory_mgr, jpeg_progress_mgr,
-    jpeg_read_header, jpeg_read_icc_profile, jpeg_read_scanlines, jpeg_save_markers,
-    jpeg_saved_marker_ptr, jpeg_set_marker_processor, jpeg_skip_scanlines, jpeg_source_mgr,
-    jpeg_start_decompress, jpeg_std_error, jpeg_stdio_src, jpeg_upsampler, jvirt_barray_control,
-    jvirt_barray_ptr, jvirt_sarray_control, jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr, JBLOCK,
-    JBLOCKARRAY, JBLOCKROW, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA,
-    JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB,
-    JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_DEFAULT, JDCT_FASTEST,
-    JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JDITHER_FS, JDITHER_NONE, JDITHER_ORDERED, JHUFF_TBL,
-    JPEG_APP0, JPEG_COM, JQUANT_TBL, JSAMPARRAY, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD,
-    J_DITHER_MODE,
-};
-pub use crate::jversion_h::{JCOPYRIGHT, JVERSION};
 pub use crate::stddef_h::{size_t, NULL};
+use crate::stdlib::{
+    fclose, ferror, fopen, fprintf, fread, fwrite, putc, sscanf, stderr, stdin, stdout,
+};
 pub use crate::stdlib::{
-    _IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data, __off64_t, __off_t, exit, free, realloc,
-    C2RustUnnamed_0, _ISalnum, _ISalpha, _ISblank, _IScntrl, _ISdigit, _ISgraph, _ISlower,
-    _ISprint, _ISpunct, _ISspace, _ISupper, _ISxdigit, __ctype_b_loc, EXIT_FAILURE, EXIT_SUCCESS,
+    C2RustUnnamed_0, _IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data, _ISalnum, _ISalpha,
+    _ISblank, _IScntrl, _ISdigit, _ISgraph, _ISlower, _ISprint, _ISpunct, _ISspace, _ISupper,
+    _ISxdigit, __ctype_b_loc, __off64_t, __off_t, exit, free, realloc, EXIT_FAILURE, EXIT_SUCCESS,
     FILE, _IO_FILE,
 };
-extern crate libc;
+use libc::{c_char, c_int, c_long, c_uchar, c_uint, c_ulong, c_ushort, c_void};
 use mozjpeg::*;
+use std::prelude::v1;
+use std::prelude::v1::*;
 
-/*
- * This list defines the known output image formats
- * (not all of which need be supported by a given version).
- * You can change the default output format by defining DEFAULT_FMT;
- * indeed, you had better do so if you undefine PPM_SUPPORTED.
- */
-pub type IMAGE_FORMATS = libc::c_uint;
-/* TIFF format */
+pub type IMAGE_FORMATS = c_uint;
+
 pub const FMT_TIFF: IMAGE_FORMATS = 6;
-/* Targa format */
+
 pub const FMT_TARGA: IMAGE_FORMATS = 5;
-/* RLE format */
+
 pub const FMT_RLE: IMAGE_FORMATS = 4;
-/* PPM/PGM (PBMPLUS formats) */
+
 pub const FMT_PPM: IMAGE_FORMATS = 3;
-/* BMP format (OS/2 flavor) */
+
 pub const FMT_OS2: IMAGE_FORMATS = 2;
-/* GIF format */
+
 pub const FMT_GIF: IMAGE_FORMATS = 1;
-/* BMP format (Windows flavor) */
+
 pub const FMT_BMP: IMAGE_FORMATS = 0;
 /*
  * djpeg.c
@@ -146,58 +147,61 @@ pub const FMT_BMP: IMAGE_FORMATS = 0;
 /* to declare isprint() */
 /* command-line reader for Macintosh */
 /* Create the add-on message string table. */
-static mut cdjpeg_message_table: [*const libc::c_char; 47] = [
-    0 as *const libc::c_char,
-    b"Unsupported BMP colormap format\x00" as *const u8 as *const libc::c_char,
-    b"Only 8- and 24-bit BMP files are supported\x00" as *const u8 as *const libc::c_char,
-    b"Invalid BMP file: bad header length\x00" as *const u8 as *const libc::c_char,
-    b"Invalid BMP file: biPlanes not equal to 1\x00" as *const u8 as *const libc::c_char,
-    b"BMP output must be grayscale or RGB\x00" as *const u8 as *const libc::c_char,
-    b"Sorry, compressed BMPs not yet supported\x00" as *const u8 as *const libc::c_char,
-    b"Empty BMP image\x00" as *const u8 as *const libc::c_char,
-    b"Not a BMP file - does not start with BM\x00" as *const u8 as *const libc::c_char,
-    b"Numeric value out of range in BMP file\x00" as *const u8 as *const libc::c_char,
-    b"%ux%u 24-bit BMP image\x00" as *const u8 as *const libc::c_char,
-    b"%ux%u 8-bit colormapped BMP image\x00" as *const u8 as *const libc::c_char,
-    b"%ux%u 24-bit OS2 BMP image\x00" as *const u8 as *const libc::c_char,
-    b"%ux%u 8-bit colormapped OS2 BMP image\x00" as *const u8 as *const libc::c_char,
-    b"GIF output got confused\x00" as *const u8 as *const libc::c_char,
-    b"Bogus GIF codesize %d\x00" as *const u8 as *const libc::c_char,
-    b"GIF output must be grayscale or RGB\x00" as *const u8 as *const libc::c_char,
-    b"Too few images in GIF file\x00" as *const u8 as *const libc::c_char,
-    b"Not a GIF file\x00" as *const u8 as *const libc::c_char,
-    b"%ux%ux%d GIF image\x00" as *const u8 as *const libc::c_char,
-    b"Warning: unexpected GIF version number \'%c%c%c\'\x00" as *const u8 as *const libc::c_char,
-    b"Ignoring GIF extension block of type 0x%02x\x00" as *const u8 as *const libc::c_char,
-    b"Caution: nonsquare pixels in input\x00" as *const u8 as *const libc::c_char,
-    b"Corrupt data in GIF file\x00" as *const u8 as *const libc::c_char,
-    b"Bogus char 0x%02x in GIF file, ignoring\x00" as *const u8 as *const libc::c_char,
-    b"Premature end of GIF image\x00" as *const u8 as *const libc::c_char,
-    b"Ran out of GIF bits\x00" as *const u8 as *const libc::c_char,
-    b"PPM output must be grayscale or RGB\x00" as *const u8 as *const libc::c_char,
-    b"Nonnumeric data in PPM file\x00" as *const u8 as *const libc::c_char,
-    b"Not a PPM/PGM file\x00" as *const u8 as *const libc::c_char,
-    b"Numeric value out of range in PPM file\x00" as *const u8 as *const libc::c_char,
-    b"%ux%u PGM image\x00" as *const u8 as *const libc::c_char,
-    b"%ux%u text PGM image\x00" as *const u8 as *const libc::c_char,
-    b"%ux%u PPM image\x00" as *const u8 as *const libc::c_char,
-    b"%ux%u text PPM image\x00" as *const u8 as *const libc::c_char,
-    b"Unsupported Targa colormap format\x00" as *const u8 as *const libc::c_char,
-    b"Invalid or unsupported Targa file\x00" as *const u8 as *const libc::c_char,
-    b"Targa output must be grayscale or RGB\x00" as *const u8 as *const libc::c_char,
-    b"%ux%u RGB Targa image\x00" as *const u8 as *const libc::c_char,
-    b"%ux%u grayscale Targa image\x00" as *const u8 as *const libc::c_char,
-    b"%ux%u colormapped Targa image\x00" as *const u8 as *const libc::c_char,
-    b"Color map file is invalid or of unsupported format\x00" as *const u8 as *const libc::c_char,
-    b"Output file format cannot handle %d colormap entries\x00" as *const u8 as *const libc::c_char,
-    b"ungetc failed\x00" as *const u8 as *const libc::c_char,
+
+static mut cdjpeg_message_table: [*const c_char; 47] = [
+    0 as *const c_char,
+    b"Unsupported BMP colormap format\x00" as *const u8 as *const c_char,
+    b"Only 8- and 24-bit BMP files are supported\x00" as *const u8 as *const c_char,
+    b"Invalid BMP file: bad header length\x00" as *const u8 as *const c_char,
+    b"Invalid BMP file: biPlanes not equal to 1\x00" as *const u8 as *const c_char,
+    b"BMP output must be grayscale or RGB\x00" as *const u8 as *const c_char,
+    b"Sorry, compressed BMPs not yet supported\x00" as *const u8 as *const c_char,
+    b"Empty BMP image\x00" as *const u8 as *const c_char,
+    b"Not a BMP file - does not start with BM\x00" as *const u8 as *const c_char,
+    b"Numeric value out of range in BMP file\x00" as *const u8 as *const c_char,
+    b"%ux%u 24-bit BMP image\x00" as *const u8 as *const c_char,
+    b"%ux%u 8-bit colormapped BMP image\x00" as *const u8 as *const c_char,
+    b"%ux%u 24-bit OS2 BMP image\x00" as *const u8 as *const c_char,
+    b"%ux%u 8-bit colormapped OS2 BMP image\x00" as *const u8 as *const c_char,
+    b"GIF output got confused\x00" as *const u8 as *const c_char,
+    b"Bogus GIF codesize %d\x00" as *const u8 as *const c_char,
+    b"GIF output must be grayscale or RGB\x00" as *const u8 as *const c_char,
+    b"Too few images in GIF file\x00" as *const u8 as *const c_char,
+    b"Not a GIF file\x00" as *const u8 as *const c_char,
+    b"%ux%ux%d GIF image\x00" as *const u8 as *const c_char,
+    b"Warning: unexpected GIF version number \'%c%c%c\'\x00" as *const u8 as *const c_char,
+    b"Ignoring GIF extension block of type 0x%02x\x00" as *const u8 as *const c_char,
+    b"Caution: nonsquare pixels in input\x00" as *const u8 as *const c_char,
+    b"Corrupt data in GIF file\x00" as *const u8 as *const c_char,
+    b"Bogus char 0x%02x in GIF file, ignoring\x00" as *const u8 as *const c_char,
+    b"Premature end of GIF image\x00" as *const u8 as *const c_char,
+    b"Ran out of GIF bits\x00" as *const u8 as *const c_char,
+    b"PPM output must be grayscale or RGB\x00" as *const u8 as *const c_char,
+    b"Nonnumeric data in PPM file\x00" as *const u8 as *const c_char,
+    b"Not a PPM/PGM file\x00" as *const u8 as *const c_char,
+    b"Numeric value out of range in PPM file\x00" as *const u8 as *const c_char,
+    b"%ux%u PGM image\x00" as *const u8 as *const c_char,
+    b"%ux%u text PGM image\x00" as *const u8 as *const c_char,
+    b"%ux%u PPM image\x00" as *const u8 as *const c_char,
+    b"%ux%u text PPM image\x00" as *const u8 as *const c_char,
+    b"Unsupported Targa colormap format\x00" as *const u8 as *const c_char,
+    b"Invalid or unsupported Targa file\x00" as *const u8 as *const c_char,
+    b"Targa output must be grayscale or RGB\x00" as *const u8 as *const c_char,
+    b"%ux%u RGB Targa image\x00" as *const u8 as *const c_char,
+    b"%ux%u grayscale Targa image\x00" as *const u8 as *const c_char,
+    b"%ux%u colormapped Targa image\x00" as *const u8 as *const c_char,
+    b"Color map file is invalid or of unsupported format\x00" as *const u8 as *const c_char,
+    b"Output file format cannot handle %d colormap entries\x00" as *const u8 as *const c_char,
+    b"ungetc failed\x00" as *const u8 as *const c_char,
     b"MozJPEG can\'t read the image (PNG support is disabled in this build)\x00" as *const u8
-        as *const libc::c_char,
-    b"Unsupported output file format\x00" as *const u8 as *const libc::c_char,
-    crate::stddef_h::NULL as *const libc::c_char,
+        as *const c_char,
+    b"Unsupported output file format\x00" as *const u8 as *const c_char,
+    NULL as *const c_char,
 ];
 /* so can override from CFLAGS in Makefile */
-pub const DEFAULT_FMT: libc::c_int = FMT_PPM as libc::c_int;
+
+pub const DEFAULT_FMT: c_int = FMT_PPM as c_int;
+
 static mut requested_fmt: IMAGE_FORMATS = FMT_BMP;
 /*
  * Argument-parsing code.
@@ -206,696 +210,576 @@ static mut requested_fmt: IMAGE_FORMATS = FMT_BMP;
  * to the left of a given file name affect processing of that file.
  * The main program in this file doesn't actually use this capability...
  */
+
+static mut progname: *const c_char = 0 as *const c_char;
 /* program name for error messages */
-static mut progname: *const libc::c_char = 0 as *const libc::c_char;
+
+static mut icc_filename: *mut c_char = 0 as *const c_char as *mut c_char;
 /* for -icc switch */
-static mut icc_filename: *mut libc::c_char = 0 as *const libc::c_char as *mut libc::c_char;
+
+static mut outfilename: *mut c_char = 0 as *const c_char as *mut c_char;
 /* for -outfile switch */
-static mut outfilename: *mut libc::c_char = 0 as *const libc::c_char as *mut libc::c_char;
+#[no_mangle]
+
+pub static mut memsrc: boolean = 0;
 /* for -memsrc switch */
 #[no_mangle]
-pub static mut memsrc: crate::jmorecfg_h::boolean = 0;
+
+pub static mut skip: boolean = 0;
 #[no_mangle]
-pub static mut skip: crate::jmorecfg_h::boolean = 0;
+
+pub static mut crop: boolean = 0;
 #[no_mangle]
-pub static mut crop: crate::jmorecfg_h::boolean = 0;
+
+pub static mut skip_start: JDIMENSION = 0;
 #[no_mangle]
-pub static mut skip_start: crate::jmorecfg_h::JDIMENSION = 0;
+
+pub static mut skip_end: JDIMENSION = 0;
 #[no_mangle]
-pub static mut skip_end: crate::jmorecfg_h::JDIMENSION = 0;
+
+pub static mut crop_x: JDIMENSION = 0;
 #[no_mangle]
-pub static mut crop_x: crate::jmorecfg_h::JDIMENSION = 0;
+
+pub static mut crop_y: JDIMENSION = 0;
 #[no_mangle]
-pub static mut crop_y: crate::jmorecfg_h::JDIMENSION = 0;
+
+pub static mut crop_width: JDIMENSION = 0;
 #[no_mangle]
-pub static mut crop_width: crate::jmorecfg_h::JDIMENSION = 0;
-#[no_mangle]
-pub static mut crop_height: crate::jmorecfg_h::JDIMENSION = 0;
-pub const INPUT_BUF_SIZE: libc::c_int = 4096i32;
-unsafe extern "C" fn usage() {
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
-        b"usage: %s [switches] \x00" as *const u8 as *const libc::c_char,
+
+pub static mut crop_height: JDIMENSION = 0;
+
+pub const INPUT_BUF_SIZE: c_int = 4096i32;
+
+unsafe extern "C" fn usage()
+/* complain about bad command line */
+{
+    fprintf(
+        stderr,
+        b"usage: %s [switches] \x00" as *const u8 as *const c_char,
         progname,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
-        b"[inputfile]\n\x00" as *const u8 as *const libc::c_char,
+    fprintf(stderr, b"[inputfile]\n\x00" as *const u8 as *const c_char);
+    fprintf(
+        stderr,
+        b"Switches (names may be abbreviated):\n\x00" as *const u8 as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
-        b"Switches (names may be abbreviated):\n\x00" as *const u8 as *const libc::c_char,
-    );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         b"  -colors N      Reduce image to no more than N colors\n\x00" as *const u8
-            as *const libc::c_char,
+            as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
-        b"  -fast          Fast, low-quality processing\n\x00" as *const u8 as *const libc::c_char,
+    fprintf(
+        stderr,
+        b"  -fast          Fast, low-quality processing\n\x00" as *const u8 as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
-        b"  -grayscale     Force grayscale output\n\x00" as *const u8 as *const libc::c_char,
+    fprintf(
+        stderr,
+        b"  -grayscale     Force grayscale output\n\x00" as *const u8 as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
-        b"  -rgb           Force RGB output\n\x00" as *const u8 as *const libc::c_char,
+    fprintf(
+        stderr,
+        b"  -rgb           Force RGB output\n\x00" as *const u8 as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
-        b"  -rgb565        Force RGB565 output\n\x00" as *const u8 as *const libc::c_char,
+    fprintf(
+        stderr,
+        b"  -rgb565        Force RGB565 output\n\x00" as *const u8 as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         b"  -scale M/N     Scale output image by fraction M/N, eg, 1/8\n\x00" as *const u8
-            as *const libc::c_char,
+            as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         b"  -bmp           Select BMP output format (Windows style)%s\n\x00" as *const u8
-            as *const libc::c_char,
-        if DEFAULT_FMT == FMT_BMP as libc::c_int {
-            b" (default)\x00" as *const u8 as *const libc::c_char
+            as *const c_char,
+        if DEFAULT_FMT == FMT_BMP as c_int {
+            b" (default)\x00" as *const u8 as *const c_char
         } else {
-            b"\x00" as *const u8 as *const libc::c_char
+            b"\x00" as *const u8 as *const c_char
         },
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
-        b"  -gif           Select GIF output format%s\n\x00" as *const u8 as *const libc::c_char,
-        if DEFAULT_FMT == FMT_GIF as libc::c_int {
-            b" (default)\x00" as *const u8 as *const libc::c_char
+    fprintf(
+        stderr,
+        b"  -gif           Select GIF output format%s\n\x00" as *const u8 as *const c_char,
+        if DEFAULT_FMT == FMT_GIF as c_int {
+            b" (default)\x00" as *const u8 as *const c_char
         } else {
-            b"\x00" as *const u8 as *const libc::c_char
+            b"\x00" as *const u8 as *const c_char
         },
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         b"  -os2           Select BMP output format (OS/2 style)%s\n\x00" as *const u8
-            as *const libc::c_char,
-        if DEFAULT_FMT == FMT_OS2 as libc::c_int {
-            b" (default)\x00" as *const u8 as *const libc::c_char
+            as *const c_char,
+        if DEFAULT_FMT == FMT_OS2 as c_int {
+            b" (default)\x00" as *const u8 as *const c_char
         } else {
-            b"\x00" as *const u8 as *const libc::c_char
+            b"\x00" as *const u8 as *const c_char
         },
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         b"  -pnm           Select PBMPLUS (PPM/PGM) output format%s\n\x00" as *const u8
-            as *const libc::c_char,
-        if DEFAULT_FMT == FMT_PPM as libc::c_int {
-            b" (default)\x00" as *const u8 as *const libc::c_char
+            as *const c_char,
+        if DEFAULT_FMT == FMT_PPM as c_int {
+            b" (default)\x00" as *const u8 as *const c_char
         } else {
-            b"\x00" as *const u8 as *const libc::c_char
+            b"\x00" as *const u8 as *const c_char
         },
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
-        b"  -targa         Select Targa output format%s\n\x00" as *const u8 as *const libc::c_char,
-        if DEFAULT_FMT == FMT_TARGA as libc::c_int {
-            b" (default)\x00" as *const u8 as *const libc::c_char
+    fprintf(
+        stderr,
+        b"  -targa         Select Targa output format%s\n\x00" as *const u8 as *const c_char,
+        if DEFAULT_FMT == FMT_TARGA as c_int {
+            b" (default)\x00" as *const u8 as *const c_char
         } else {
-            b"\x00" as *const u8 as *const libc::c_char
+            b"\x00" as *const u8 as *const c_char
         },
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
-        b"Switches for advanced users:\n\x00" as *const u8 as *const libc::c_char,
+    fprintf(
+        stderr,
+        b"Switches for advanced users:\n\x00" as *const u8 as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
-        b"  -dct int       Use integer DCT method%s\n\x00" as *const u8 as *const libc::c_char,
-        if crate::jpeglib_h::JDCT_DEFAULT == crate::jpeglib_h::JDCT_ISLOW as libc::c_int {
-            b" (default)\x00" as *const u8 as *const libc::c_char
+    fprintf(
+        stderr,
+        b"  -dct int       Use integer DCT method%s\n\x00" as *const u8 as *const c_char,
+        if JDCT_DEFAULT == JDCT_ISLOW as c_int {
+            b" (default)\x00" as *const u8 as *const c_char
         } else {
-            b"\x00" as *const u8 as *const libc::c_char
+            b"\x00" as *const u8 as *const c_char
         },
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         b"  -dct fast      Use fast integer DCT (less accurate)%s\n\x00" as *const u8
-            as *const libc::c_char,
-        if crate::jpeglib_h::JDCT_DEFAULT == crate::jpeglib_h::JDCT_IFAST as libc::c_int {
-            b" (default)\x00" as *const u8 as *const libc::c_char
+            as *const c_char,
+        if JDCT_DEFAULT == JDCT_IFAST as c_int {
+            b" (default)\x00" as *const u8 as *const c_char
         } else {
-            b"\x00" as *const u8 as *const libc::c_char
+            b"\x00" as *const u8 as *const c_char
         },
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
-        b"  -dct float     Use floating-point DCT method%s\n\x00" as *const u8
-            as *const libc::c_char,
-        if crate::jpeglib_h::JDCT_DEFAULT == crate::jpeglib_h::JDCT_FLOAT as libc::c_int {
-            b" (default)\x00" as *const u8 as *const libc::c_char
+    fprintf(
+        stderr,
+        b"  -dct float     Use floating-point DCT method%s\n\x00" as *const u8 as *const c_char,
+        if JDCT_DEFAULT == JDCT_FLOAT as c_int {
+            b" (default)\x00" as *const u8 as *const c_char
         } else {
-            b"\x00" as *const u8 as *const libc::c_char
+            b"\x00" as *const u8 as *const c_char
         },
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
-        b"  -dither fs     Use F-S dithering (default)\n\x00" as *const u8 as *const libc::c_char,
+    fprintf(
+        stderr,
+        b"  -dither fs     Use F-S dithering (default)\n\x00" as *const u8 as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         b"  -dither none   Don\'t use dithering in quantization\n\x00" as *const u8
-            as *const libc::c_char,
+            as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         b"  -dither ordered  Use ordered dither (medium speed, quality)\n\x00" as *const u8
-            as *const libc::c_char,
+            as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
-        b"  -icc FILE      Extract ICC profile to FILE\n\x00" as *const u8 as *const libc::c_char,
+    fprintf(
+        stderr,
+        b"  -icc FILE      Extract ICC profile to FILE\n\x00" as *const u8 as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         b"  -map FILE      Map to colors used in named image file\n\x00" as *const u8
-            as *const libc::c_char,
+            as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
-        b"  -nosmooth      Don\'t use high-quality upsampling\n\x00" as *const u8
-            as *const libc::c_char,
+    fprintf(
+        stderr,
+        b"  -nosmooth      Don\'t use high-quality upsampling\n\x00" as *const u8 as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         b"  -onepass       Use 1-pass quantization (fast, low quality)\n\x00" as *const u8
-            as *const libc::c_char,
+            as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
-        b"  -maxmemory N   Maximum memory to use (in kbytes)\n\x00" as *const u8
-            as *const libc::c_char,
+    fprintf(
+        stderr,
+        b"  -maxmemory N   Maximum memory to use (in kbytes)\n\x00" as *const u8 as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
-        b"  -outfile name  Specify name for output file\n\x00" as *const u8 as *const libc::c_char,
+    fprintf(
+        stderr,
+        b"  -outfile name  Specify name for output file\n\x00" as *const u8 as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         b"  -memsrc        Load input file into memory before decompressing\n\x00" as *const u8
-            as *const libc::c_char,
+            as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         b"  -skip Y0,Y1    Decompress all rows except those between Y0 and Y1 (inclusive)\n\x00"
-            as *const u8 as *const libc::c_char,
+            as *const u8 as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         b"  -crop WxH+X+Y  Decompress only a rectangular subregion of the image\n\x00" as *const u8
-            as *const libc::c_char,
+            as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         b"                 [requires PBMPLUS (PPM/PGM), GIF, or Targa output format]\n\x00"
-            as *const u8 as *const libc::c_char,
+            as *const u8 as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
-        b"  -verbose  or  -debug   Emit debug output\n\x00" as *const u8 as *const libc::c_char,
+    fprintf(
+        stderr,
+        b"  -verbose  or  -debug   Emit debug output\n\x00" as *const u8 as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
-        b"  -version       Print version information and exit\n\x00" as *const u8
-            as *const libc::c_char,
+    fprintf(
+        stderr,
+        b"  -version       Print version information and exit\n\x00" as *const u8 as *const c_char,
     );
-    crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+    exit(EXIT_FAILURE);
 }
+
 unsafe extern "C" fn parse_switches(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut argc: libc::c_int,
-    mut argv: *mut *mut libc::c_char,
-    mut last_file_arg_seen: libc::c_int,
-    mut for_real: crate::jmorecfg_h::boolean,
-) -> libc::c_int {
-    let mut argn: libc::c_int = 0;
-    let mut arg: *mut libc::c_char = 0 as *mut libc::c_char;
-    requested_fmt = DEFAULT_FMT as IMAGE_FORMATS;
-    icc_filename = crate::stddef_h::NULL as *mut libc::c_char;
-    outfilename = crate::stddef_h::NULL as *mut libc::c_char;
-    memsrc = crate::jmorecfg_h::FALSE;
-    skip = crate::jmorecfg_h::FALSE;
-    crop = crate::jmorecfg_h::FALSE;
+    mut cinfo: j_decompress_ptr,
+    mut argc: c_int,
+    mut argv: *mut *mut c_char,
+    mut last_file_arg_seen: c_int,
+    mut for_real: boolean,
+) -> c_int
+/* Parse optional switches.
+ * Returns argv[] index of first file-name argument (== argc if none).
+ * Any file names with indexes <= last_file_arg_seen are ignored;
+ * they have presumably been processed in a previous iteration.
+ * (Pass 0 for last_file_arg_seen on the first or only iteration.)
+ * for_real is FALSE on the first (dummy) pass; we may skip any expensive
+ * processing.
+ */ {
+    let mut argn: c_int = 0;
+    let mut arg: *mut c_char = 0 as *mut c_char;
+    /* Set up default JPEG parameters. */
+    requested_fmt = DEFAULT_FMT as IMAGE_FORMATS; /* set default output file format */
+    icc_filename = NULL as *mut c_char;
+    outfilename = NULL as *mut c_char;
+    memsrc = FALSE;
+    skip = FALSE;
+    crop = FALSE;
     (*(*cinfo).err).trace_level = 0i32;
+    /* Scan command line options, adjust parameters */
     argn = 1i32;
     while argn < argc {
         arg = *argv.offset(argn as isize);
-        if *arg as libc::c_int != '-' as i32 {
+        if *arg as c_int != '-' as i32 {
             /* Not a switch, must be a file name argument */
-            if argn <= last_file_arg_seen {
-                outfilename = crate::stddef_h::NULL as *mut libc::c_char
-            } else {
-                /* ignore this name if previously processed */
-                /* else done parsing switches */
-                break;
+            if !(argn <= last_file_arg_seen) {
+                break; /* -outfile applies to just one input file */
             }
+            outfilename = NULL as *mut c_char
+        /* ignore this name if previously processed */
+        /* else done parsing switches */
         } else {
-            arg = arg.offset(1isize);
-            if 0 != crate::cdjpeg::keymatch(
-                arg,
-                b"bmp\x00" as *const u8 as *const libc::c_char,
-                1i32,
-            ) {
+            arg = arg.offset(1); /* advance past switch marker character */
+            if keymatch(arg, b"bmp\x00" as *const u8 as *const c_char, 1i32) != 0 {
+                /* BMP output format. */
                 requested_fmt = FMT_BMP
-            } else if 0
-                != crate::cdjpeg::keymatch(
-                    arg,
-                    b"colors\x00" as *const u8 as *const libc::c_char,
-                    1i32,
-                )
-                || 0 != crate::cdjpeg::keymatch(
-                    arg,
-                    b"colours\x00" as *const u8 as *const libc::c_char,
-                    1i32,
-                )
-                || 0 != crate::cdjpeg::keymatch(
-                    arg,
-                    b"quantize\x00" as *const u8 as *const libc::c_char,
-                    1i32,
-                )
-                || 0 != crate::cdjpeg::keymatch(
-                    arg,
-                    b"quantise\x00" as *const u8 as *const libc::c_char,
-                    1i32,
-                )
+            } else if keymatch(arg, b"colors\x00" as *const u8 as *const c_char, 1i32) != 0
+                || keymatch(arg, b"colours\x00" as *const u8 as *const c_char, 1i32) != 0
+                || keymatch(arg, b"quantize\x00" as *const u8 as *const c_char, 1i32) != 0
+                || keymatch(arg, b"quantise\x00" as *const u8 as *const c_char, 1i32) != 0
             {
-                let mut val: libc::c_int = 0;
+                /* Do color quantization. */
+                let mut val: c_int = 0;
                 argn += 1;
                 if argn >= argc {
+                    /* advance to next argument */
                     usage();
                 }
-                if crate::stdlib::sscanf(
+                if sscanf(
                     *argv.offset(argn as isize),
-                    b"%d\x00" as *const u8 as *const libc::c_char,
-                    &mut val as *mut libc::c_int,
+                    b"%d\x00" as *const u8 as *const c_char,
+                    &mut val as *mut c_int,
                 ) != 1i32
                 {
                     usage();
                 }
                 (*cinfo).desired_number_of_colors = val;
-                (*cinfo).quantize_colors = crate::jmorecfg_h::TRUE
-            } else if 0
-                != crate::cdjpeg::keymatch(
-                    arg,
-                    b"dct\x00" as *const u8 as *const libc::c_char,
-                    2i32,
-                )
-            {
+                (*cinfo).quantize_colors = TRUE
+            } else if keymatch(arg, b"dct\x00" as *const u8 as *const c_char, 2i32) != 0 {
+                /* Select IDCT algorithm. */
                 argn += 1;
                 if argn >= argc {
+                    /* advance to next argument */
                     usage();
                 }
-                if 0 != crate::cdjpeg::keymatch(
+                if keymatch(
                     *argv.offset(argn as isize),
-                    b"int\x00" as *const u8 as *const libc::c_char,
+                    b"int\x00" as *const u8 as *const c_char,
                     1i32,
-                ) {
-                    (*cinfo).dct_method = crate::jpeglib_h::JDCT_ISLOW
-                } else if 0
-                    != crate::cdjpeg::keymatch(
-                        *argv.offset(argn as isize),
-                        b"fast\x00" as *const u8 as *const libc::c_char,
-                        2i32,
-                    )
+                ) != 0
                 {
-                    (*cinfo).dct_method = crate::jpeglib_h::JDCT_IFAST
-                } else if 0
-                    != crate::cdjpeg::keymatch(
-                        *argv.offset(argn as isize),
-                        b"float\x00" as *const u8 as *const libc::c_char,
-                        2i32,
-                    )
+                    (*cinfo).dct_method = JDCT_ISLOW
+                } else if keymatch(
+                    *argv.offset(argn as isize),
+                    b"fast\x00" as *const u8 as *const c_char,
+                    2i32,
+                ) != 0
                 {
-                    (*cinfo).dct_method = crate::jpeglib_h::JDCT_FLOAT
+                    (*cinfo).dct_method = JDCT_IFAST
+                } else if keymatch(
+                    *argv.offset(argn as isize),
+                    b"float\x00" as *const u8 as *const c_char,
+                    2i32,
+                ) != 0
+                {
+                    (*cinfo).dct_method = JDCT_FLOAT
                 } else {
                     usage();
                 }
-            } else if 0
-                != crate::cdjpeg::keymatch(
-                    arg,
-                    b"dither\x00" as *const u8 as *const libc::c_char,
-                    2i32,
-                )
-            {
+            } else if keymatch(arg, b"dither\x00" as *const u8 as *const c_char, 2i32) != 0 {
+                /* Select dithering algorithm. */
                 argn += 1;
                 if argn >= argc {
+                    /* advance to next argument */
                     usage();
                 }
-                if 0 != crate::cdjpeg::keymatch(
+                if keymatch(
                     *argv.offset(argn as isize),
-                    b"fs\x00" as *const u8 as *const libc::c_char,
+                    b"fs\x00" as *const u8 as *const c_char,
                     2i32,
-                ) {
-                    (*cinfo).dither_mode = crate::jpeglib_h::JDITHER_FS
-                } else if 0
-                    != crate::cdjpeg::keymatch(
-                        *argv.offset(argn as isize),
-                        b"none\x00" as *const u8 as *const libc::c_char,
-                        2i32,
-                    )
+                ) != 0
                 {
-                    (*cinfo).dither_mode = crate::jpeglib_h::JDITHER_NONE
-                } else if 0
-                    != crate::cdjpeg::keymatch(
-                        *argv.offset(argn as isize),
-                        b"ordered\x00" as *const u8 as *const libc::c_char,
-                        2i32,
-                    )
+                    (*cinfo).dither_mode = JDITHER_FS
+                } else if keymatch(
+                    *argv.offset(argn as isize),
+                    b"none\x00" as *const u8 as *const c_char,
+                    2i32,
+                ) != 0
                 {
-                    (*cinfo).dither_mode = crate::jpeglib_h::JDITHER_ORDERED
+                    (*cinfo).dither_mode = JDITHER_NONE
+                } else if keymatch(
+                    *argv.offset(argn as isize),
+                    b"ordered\x00" as *const u8 as *const c_char,
+                    2i32,
+                ) != 0
+                {
+                    (*cinfo).dither_mode = JDITHER_ORDERED
                 } else {
                     usage();
                 }
-            } else if 0
-                != crate::cdjpeg::keymatch(
-                    arg,
-                    b"debug\x00" as *const u8 as *const libc::c_char,
-                    1i32,
-                )
-                || 0 != crate::cdjpeg::keymatch(
-                    arg,
-                    b"verbose\x00" as *const u8 as *const libc::c_char,
-                    1i32,
-                )
+            } else if keymatch(arg, b"debug\x00" as *const u8 as *const c_char, 1i32) != 0
+                || keymatch(arg, b"verbose\x00" as *const u8 as *const c_char, 1i32) != 0
             {
-                static mut printed_version: crate::jmorecfg_h::boolean = crate::jmorecfg_h::FALSE;
-                if 0 == printed_version {
-                    crate::stdlib::fprintf(
-                        crate::stdlib::stderr,
-                        b"%s version %s (build %s)\n\x00" as *const u8 as *const libc::c_char,
-                        crate::jconfigint_h::PACKAGE_NAME.as_ptr(),
-                        crate::jconfigint_h::VERSION.as_ptr(),
-                        crate::jconfigint_h::BUILD.as_ptr(),
+                /* Enable debug printouts. */
+                /* On first -d, print version identification */
+                static mut printed_version: boolean = FALSE;
+                if printed_version == 0 {
+                    fprintf(
+                        stderr,
+                        b"%s version %s (build %s)\n\x00" as *const u8 as *const c_char,
+                        PACKAGE_NAME.as_ptr(),
+                        VERSION.as_ptr(),
+                        BUILD.as_ptr(),
                     );
-                    crate::stdlib::fprintf(
-                        crate::stdlib::stderr,
-                        b"%s\n\n\x00" as *const u8 as *const libc::c_char,
-                        crate::jversion_h::JCOPYRIGHT.as_ptr(),
+                    fprintf(
+                        stderr,
+                        b"%s\n\n\x00" as *const u8 as *const c_char,
+                        JCOPYRIGHT.as_ptr(),
                     );
-                    crate::stdlib::fprintf(
-                        crate::stdlib::stderr,
+                    fprintf(
+                        stderr,
                         b"Emulating The Independent JPEG Group\'s software, version %s\n\n\x00"
-                            as *const u8 as *const libc::c_char,
-                        crate::jversion_h::JVERSION.as_ptr(),
+                            as *const u8 as *const c_char,
+                        JVERSION.as_ptr(),
                     );
-                    printed_version = crate::jmorecfg_h::TRUE
+                    printed_version = TRUE
                 }
                 (*(*cinfo).err).trace_level += 1
-            } else if 0
-                != crate::cdjpeg::keymatch(
-                    arg,
-                    b"version\x00" as *const u8 as *const libc::c_char,
-                    4i32,
-                )
-            {
-                crate::stdlib::fprintf(
-                    crate::stdlib::stderr,
-                    b"%s version %s (build %s)\n\x00" as *const u8 as *const libc::c_char,
-                    crate::jconfigint_h::PACKAGE_NAME.as_ptr(),
-                    crate::jconfigint_h::VERSION.as_ptr(),
-                    crate::jconfigint_h::BUILD.as_ptr(),
+            } else if keymatch(arg, b"version\x00" as *const u8 as *const c_char, 4i32) != 0 {
+                fprintf(
+                    stderr,
+                    b"%s version %s (build %s)\n\x00" as *const u8 as *const c_char,
+                    PACKAGE_NAME.as_ptr(),
+                    VERSION.as_ptr(),
+                    BUILD.as_ptr(),
                 );
-                crate::stdlib::exit(crate::stdlib::EXIT_SUCCESS);
+                exit(EXIT_SUCCESS);
             } else {
-                if 0 != crate::cdjpeg::keymatch(
-                    arg,
-                    b"fast\x00" as *const u8 as *const libc::c_char,
-                    1i32,
-                ) {
-                    (*cinfo).two_pass_quantize = crate::jmorecfg_h::FALSE;
-                    (*cinfo).dither_mode = crate::jpeglib_h::JDITHER_ORDERED;
-                    if 0 == (*cinfo).quantize_colors {
+                if keymatch(arg, b"fast\x00" as *const u8 as *const c_char, 1i32) != 0 {
+                    /* Select recommended processing options for quick-and-dirty output. */
+                    (*cinfo).two_pass_quantize = FALSE;
+                    (*cinfo).dither_mode = JDITHER_ORDERED;
+                    if (*cinfo).quantize_colors == 0 {
+                        /* don't override an earlier -colors */
                         (*cinfo).desired_number_of_colors = 216i32
                     }
-                    (*cinfo).dct_method =
-                        crate::jpeglib_h::JDCT_FASTEST as crate::jpeglib_h::J_DCT_METHOD;
-                    (*cinfo).do_fancy_upsampling = crate::jmorecfg_h::FALSE
-                } else if 0
-                    != crate::cdjpeg::keymatch(
-                        arg,
-                        b"gif\x00" as *const u8 as *const libc::c_char,
-                        1i32,
-                    )
-                {
+                    (*cinfo).dct_method = JDCT_FASTEST as J_DCT_METHOD;
+                    (*cinfo).do_fancy_upsampling = FALSE
+                } else if keymatch(arg, b"gif\x00" as *const u8 as *const c_char, 1i32) != 0 {
+                    /* GIF output format. */
                     requested_fmt = FMT_GIF
-                } else if 0
-                    != crate::cdjpeg::keymatch(
-                        arg,
-                        b"grayscale\x00" as *const u8 as *const libc::c_char,
-                        2i32,
-                    )
-                    || 0 != crate::cdjpeg::keymatch(
-                        arg,
-                        b"greyscale\x00" as *const u8 as *const libc::c_char,
-                        2i32,
-                    )
+                } else if keymatch(arg, b"grayscale\x00" as *const u8 as *const c_char, 2i32) != 0
+                    || keymatch(arg, b"greyscale\x00" as *const u8 as *const c_char, 2i32) != 0
                 {
-                    (*cinfo).out_color_space = crate::jpeglib_h::JCS_GRAYSCALE
-                } else if 0
-                    != crate::cdjpeg::keymatch(
-                        arg,
-                        b"rgb\x00" as *const u8 as *const libc::c_char,
-                        2i32,
-                    )
-                {
-                    (*cinfo).out_color_space = crate::jpeglib_h::JCS_RGB
-                } else if 0
-                    != crate::cdjpeg::keymatch(
-                        arg,
-                        b"rgb565\x00" as *const u8 as *const libc::c_char,
-                        2i32,
-                    )
-                {
-                    (*cinfo).out_color_space = crate::jpeglib_h::JCS_RGB565
-                } else if 0
-                    != crate::cdjpeg::keymatch(
-                        arg,
-                        b"icc\x00" as *const u8 as *const libc::c_char,
-                        1i32,
-                    )
-                {
+                    /* Force monochrome output. */
+                    (*cinfo).out_color_space = JCS_GRAYSCALE
+                } else if keymatch(arg, b"rgb\x00" as *const u8 as *const c_char, 2i32) != 0 {
+                    /* Force RGB output. */
+                    (*cinfo).out_color_space = JCS_RGB
+                } else if keymatch(arg, b"rgb565\x00" as *const u8 as *const c_char, 2i32) != 0 {
+                    /* Force RGB565 output. */
+                    (*cinfo).out_color_space = JCS_RGB565
+                } else if keymatch(arg, b"icc\x00" as *const u8 as *const c_char, 1i32) != 0 {
+                    /* Set ICC filename. */
                     argn += 1;
                     if argn >= argc {
+                        /* advance to next argument */
                         usage();
                     }
                     icc_filename = *argv.offset(argn as isize);
-                    crate::jpeglib_h::jpeg_save_markers(
-                        cinfo,
-                        crate::jpeglib_h::JPEG_APP0 + 2i32,
-                        0xffffi32 as libc::c_uint,
-                    );
-                } else if 0
-                    != crate::cdjpeg::keymatch(
-                        arg,
-                        b"map\x00" as *const u8 as *const libc::c_char,
-                        3i32,
-                    )
-                {
+                    jpeg_save_markers(cinfo, JPEG_APP0 + 2i32, 0xffffi32 as c_uint);
+                } else if keymatch(arg, b"map\x00" as *const u8 as *const c_char, 3i32) != 0 {
+                    /* Quantize to a color map taken from an input file. */
                     argn += 1;
                     if argn >= argc {
+                        /* advance to next argument */
                         usage();
                     }
-                    if 0 != for_real {
-                        let mut mapfile: *mut crate::stdlib::FILE = 0 as *mut crate::stdlib::FILE;
-                        mapfile = crate::stdlib::fopen(
-                            *argv.offset(argn as isize),
-                            crate::cdjpeg::READ_BINARY.as_ptr(),
-                        );
+                    if for_real != 0 {
+                        /* too expensive to do twice! */
+                        /* otherwise can't quantize to supplied map */
+                        let mut mapfile: *mut FILE = 0 as *mut FILE;
+                        mapfile = fopen(*argv.offset(argn as isize), READ_BINARY.as_ptr());
                         if mapfile.is_null() {
-                            crate::stdlib::fprintf(
-                                crate::stdlib::stderr,
-                                b"%s: can\'t open %s\n\x00" as *const u8 as *const libc::c_char,
+                            fprintf(
+                                stderr,
+                                b"%s: can\'t open %s\n\x00" as *const u8 as *const c_char,
                                 progname,
                                 *argv.offset(argn as isize),
                             );
-                            crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+                            exit(EXIT_FAILURE);
                         }
-                        crate::cdjpeg::read_color_map(cinfo, mapfile);
-                        crate::stdlib::fclose(mapfile);
-                        (*cinfo).quantize_colors = crate::jmorecfg_h::TRUE
+                        read_color_map(cinfo, mapfile);
+                        fclose(mapfile);
+                        (*cinfo).quantize_colors = TRUE
                     }
-                } else if 0
-                    != crate::cdjpeg::keymatch(
-                        arg,
-                        b"maxmemory\x00" as *const u8 as *const libc::c_char,
-                        3i32,
-                    )
-                {
-                    let mut lval: libc::c_long = 0;
-                    let mut ch: libc::c_char = 'x' as i32 as libc::c_char;
+                } else if keymatch(arg, b"maxmemory\x00" as *const u8 as *const c_char, 3i32) != 0 {
+                    /* Maximum memory in Kb (or Mb with 'm'). */
+                    let mut lval: c_long = 0;
+                    let mut ch: c_char = 'x' as i32 as c_char;
                     argn += 1;
                     if argn >= argc {
+                        /* advance to next argument */
                         usage();
                     }
-                    if crate::stdlib::sscanf(
+                    if sscanf(
                         *argv.offset(argn as isize),
-                        b"%ld%c\x00" as *const u8 as *const libc::c_char,
-                        &mut lval as *mut libc::c_long,
-                        &mut ch as *mut libc::c_char,
+                        b"%ld%c\x00" as *const u8 as *const c_char,
+                        &mut lval as *mut c_long,
+                        &mut ch as *mut c_char,
                     ) < 1i32
                     {
                         usage();
                     }
-                    if ch as libc::c_int == 'm' as i32 || ch as libc::c_int == 'M' as i32 {
+                    if ch as c_int == 'm' as i32 || ch as c_int == 'M' as i32 {
                         lval *= 1000i64
                     }
                     (*(*cinfo).mem).max_memory_to_use = lval * 1000i64
-                } else if 0
-                    != crate::cdjpeg::keymatch(
-                        arg,
-                        b"nosmooth\x00" as *const u8 as *const libc::c_char,
-                        3i32,
-                    )
-                {
-                    (*cinfo).do_fancy_upsampling = crate::jmorecfg_h::FALSE
-                } else if 0
-                    != crate::cdjpeg::keymatch(
-                        arg,
-                        b"onepass\x00" as *const u8 as *const libc::c_char,
-                        3i32,
-                    )
-                {
-                    (*cinfo).two_pass_quantize = crate::jmorecfg_h::FALSE
-                } else if 0
-                    != crate::cdjpeg::keymatch(
-                        arg,
-                        b"os2\x00" as *const u8 as *const libc::c_char,
-                        3i32,
-                    )
-                {
+                } else if keymatch(arg, b"nosmooth\x00" as *const u8 as *const c_char, 3i32) != 0 {
+                    /* Suppress fancy upsampling */
+                    (*cinfo).do_fancy_upsampling = FALSE
+                } else if keymatch(arg, b"onepass\x00" as *const u8 as *const c_char, 3i32) != 0 {
+                    /* Use fast one-pass quantization. */
+                    (*cinfo).two_pass_quantize = FALSE
+                } else if keymatch(arg, b"os2\x00" as *const u8 as *const c_char, 3i32) != 0 {
+                    /* BMP output format (OS/2 flavor). */
                     requested_fmt = FMT_OS2
-                } else if 0
-                    != crate::cdjpeg::keymatch(
-                        arg,
-                        b"outfile\x00" as *const u8 as *const libc::c_char,
-                        4i32,
-                    )
-                {
+                } else if keymatch(arg, b"outfile\x00" as *const u8 as *const c_char, 4i32) != 0 {
+                    /* Set output file name. */
                     argn += 1;
                     if argn >= argc {
+                        /* advance to next argument */
                         usage();
                     }
                     outfilename = *argv.offset(argn as isize)
-                } else if 0
-                    != crate::cdjpeg::keymatch(
-                        arg,
-                        b"memsrc\x00" as *const u8 as *const libc::c_char,
-                        2i32,
-                    )
+                /* save it away for later use */
+                } else if keymatch(arg, b"memsrc\x00" as *const u8 as *const c_char, 2i32) != 0 {
+                    /* Use in-memory source manager */
+                    memsrc = TRUE
+                } else if keymatch(arg, b"pnm\x00" as *const u8 as *const c_char, 1i32) != 0
+                    || keymatch(arg, b"ppm\x00" as *const u8 as *const c_char, 1i32) != 0
                 {
-                    memsrc = crate::jmorecfg_h::TRUE
-                } else if 0
-                    != crate::cdjpeg::keymatch(
-                        arg,
-                        b"pnm\x00" as *const u8 as *const libc::c_char,
-                        1i32,
-                    )
-                    || 0 != crate::cdjpeg::keymatch(
-                        arg,
-                        b"ppm\x00" as *const u8 as *const libc::c_char,
-                        1i32,
-                    )
-                {
+                    /* PPM/PGM output format. */
                     requested_fmt = FMT_PPM
-                } else if 0
-                    != crate::cdjpeg::keymatch(
-                        arg,
-                        b"rle\x00" as *const u8 as *const libc::c_char,
-                        1i32,
-                    )
-                {
+                } else if keymatch(arg, b"rle\x00" as *const u8 as *const c_char, 1i32) != 0 {
+                    /* RLE output format. */
                     requested_fmt = FMT_RLE
-                } else if 0
-                    != crate::cdjpeg::keymatch(
-                        arg,
-                        b"scale\x00" as *const u8 as *const libc::c_char,
-                        2i32,
-                    )
-                {
+                } else if keymatch(arg, b"scale\x00" as *const u8 as *const c_char, 2i32) != 0 {
+                    /* Scale the output image by a fraction M/N. */
                     argn += 1;
                     if argn >= argc {
+                        /* advance to next argument */
                         usage();
                     }
-                    if crate::stdlib::sscanf(
+                    if sscanf(
                         *argv.offset(argn as isize),
-                        b"%u/%u\x00" as *const u8 as *const libc::c_char,
-                        &mut (*cinfo).scale_num as *mut libc::c_uint,
-                        &mut (*cinfo).scale_denom as *mut libc::c_uint,
+                        b"%u/%u\x00" as *const u8 as *const c_char,
+                        &mut (*cinfo).scale_num as *mut c_uint,
+                        &mut (*cinfo).scale_denom as *mut c_uint,
                     ) != 2i32
                     {
                         usage();
                     }
-                } else if 0
-                    != crate::cdjpeg::keymatch(
-                        arg,
-                        b"skip\x00" as *const u8 as *const libc::c_char,
-                        2i32,
-                    )
-                {
+                } else if keymatch(arg, b"skip\x00" as *const u8 as *const c_char, 2i32) != 0 {
                     argn += 1;
                     if argn >= argc {
                         usage();
                     }
-                    if crate::stdlib::sscanf(
+                    if sscanf(
                         *argv.offset(argn as isize),
-                        b"%u,%u\x00" as *const u8 as *const libc::c_char,
-                        &mut skip_start as *mut crate::jmorecfg_h::JDIMENSION,
-                        &mut skip_end as *mut crate::jmorecfg_h::JDIMENSION,
+                        b"%u,%u\x00" as *const u8 as *const c_char,
+                        &mut skip_start as *mut JDIMENSION,
+                        &mut skip_end as *mut JDIMENSION,
                     ) != 2i32
                         || skip_start > skip_end
                     {
                         usage();
                     }
-                    skip = crate::jmorecfg_h::TRUE
-                } else if 0
-                    != crate::cdjpeg::keymatch(
-                        arg,
-                        b"crop\x00" as *const u8 as *const libc::c_char,
-                        2i32,
-                    )
-                {
-                    let mut c: libc::c_char = 0;
+                    skip = TRUE
+                } else if keymatch(arg, b"crop\x00" as *const u8 as *const c_char, 2i32) != 0 {
+                    let mut c: c_char = 0;
                     argn += 1;
                     if argn >= argc {
                         usage();
                     }
-                    if crate::stdlib::sscanf(
+                    if sscanf(
                         *argv.offset(argn as isize),
-                        b"%u%c%u+%u+%u\x00" as *const u8 as *const libc::c_char,
-                        &mut crop_width as *mut crate::jmorecfg_h::JDIMENSION,
-                        &mut c as *mut libc::c_char,
-                        &mut crop_height as *mut crate::jmorecfg_h::JDIMENSION,
-                        &mut crop_x as *mut crate::jmorecfg_h::JDIMENSION,
-                        &mut crop_y as *mut crate::jmorecfg_h::JDIMENSION,
+                        b"%u%c%u+%u+%u\x00" as *const u8 as *const c_char,
+                        &mut crop_width as *mut JDIMENSION,
+                        &mut c as *mut c_char,
+                        &mut crop_height as *mut JDIMENSION,
+                        &mut crop_x as *mut JDIMENSION,
+                        &mut crop_y as *mut JDIMENSION,
                     ) != 5i32
-                        || c as libc::c_int != 'X' as i32 && c as libc::c_int != 'x' as i32
-                        || crop_width < 1i32 as libc::c_uint
-                        || crop_height < 1i32 as libc::c_uint
+                        || c as c_int != 'X' as i32 && c as c_int != 'x' as i32
+                        || crop_width < 1i32 as c_uint
+                        || crop_height < 1i32 as c_uint
                     {
                         usage();
                     }
-                    crop = crate::jmorecfg_h::TRUE
-                } else if 0
-                    != crate::cdjpeg::keymatch(
-                        arg,
-                        b"targa\x00" as *const u8 as *const libc::c_char,
-                        1i32,
-                    )
-                {
+                    crop = TRUE
+                } else if keymatch(arg, b"targa\x00" as *const u8 as *const c_char, 1i32) != 0 {
+                    /* Targa output format. */
                     requested_fmt = FMT_TARGA
                 } else {
                     usage();
+                    /* bogus switch */
                 }
             }
         }
         argn += 1
     }
     return argn;
+    /* return index of next arg (file name) */
 }
 /*
  * Marker processor for COM and interesting APPn markers.
@@ -903,470 +787,476 @@ unsafe extern "C" fn parse_switches(
  * We want to print out the marker as text, to the extent possible.
  * Note this code relies on a non-suspending data source.
  */
-unsafe extern "C" fn jpeg_getc(mut cinfo: crate::jpeglib_h::j_decompress_ptr) -> libc::c_uint {
-    let mut datasrc: *mut crate::jpeglib_h::jpeg_source_mgr = (*cinfo).src;
-    if (*datasrc).bytes_in_buffer == 0i32 as libc::c_ulong {
-        if 0 == (*datasrc)
-            .fill_input_buffer
-            .expect("non-null function pointer")(cinfo)
+
+unsafe extern "C" fn jpeg_getc(mut cinfo: j_decompress_ptr) -> c_uint
+/* Read next byte */ {
+    let mut datasrc: *mut jpeg_source_mgr = (*cinfo).src; /* discount the length word itself */
+    if (*datasrc).bytes_in_buffer == 0i32 as c_ulong {
+        if Some(
+            (*datasrc)
+                .fill_input_buffer
+                .expect("non-null function pointer"),
+        )
+        .expect("non-null function pointer")(cinfo)
+            == 0
         {
-            (*(*cinfo).err).msg_code = crate::jerror::JERR_CANT_SUSPEND as libc::c_int;
-            (*(*cinfo).err)
-                .error_exit
-                .expect("non-null function pointer")(
-                cinfo as crate::jpeglib_h::j_common_ptr
-            );
+            (*(*cinfo).err).msg_code = JERR_CANT_SUSPEND as c_int;
+            Some(
+                (*(*cinfo).err)
+                    .error_exit
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
     }
     (*datasrc).bytes_in_buffer = (*datasrc).bytes_in_buffer.wrapping_sub(1);
     let fresh0 = (*datasrc).next_input_byte;
     (*datasrc).next_input_byte = (*datasrc).next_input_byte.offset(1);
-    return *fresh0 as libc::c_uint;
+    return *fresh0 as c_uint;
 }
-unsafe extern "C" fn print_text_marker(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-) -> crate::jmorecfg_h::boolean {
-    let mut traceit: crate::jmorecfg_h::boolean =
-        ((*(*cinfo).err).trace_level >= 1i32) as libc::c_int;
-    let mut length: libc::c_long = 0;
-    let mut ch: libc::c_uint = 0;
-    let mut lastch: libc::c_uint = 0i32 as libc::c_uint;
-    length = (jpeg_getc(cinfo) << 8i32) as libc::c_long;
-    length += jpeg_getc(cinfo) as libc::c_long;
-    length -= 2i32 as libc::c_long;
-    if 0 != traceit {
-        if (*cinfo).unread_marker == crate::jpeglib_h::JPEG_COM {
-            crate::stdlib::fprintf(
-                crate::stdlib::stderr,
-                b"Comment, length %ld:\n\x00" as *const u8 as *const libc::c_char,
+
+unsafe extern "C" fn print_text_marker(mut cinfo: j_decompress_ptr) -> boolean {
+    let mut traceit: boolean = ((*(*cinfo).err).trace_level >= 1i32) as c_int;
+    let mut length: c_long = 0;
+    let mut ch: c_uint = 0;
+    let mut lastch: c_uint = 0i32 as c_uint;
+    length = (jpeg_getc(cinfo) << 8i32) as c_long;
+    length += jpeg_getc(cinfo) as c_long;
+    length -= 2i32 as c_long;
+    if traceit != 0 {
+        if (*cinfo).unread_marker == JPEG_COM {
+            fprintf(
+                stderr,
+                b"Comment, length %ld:\n\x00" as *const u8 as *const c_char,
                 length,
             );
         } else {
-            crate::stdlib::fprintf(
-                crate::stdlib::stderr,
-                b"APP%d, length %ld:\n\x00" as *const u8 as *const libc::c_char,
-                (*cinfo).unread_marker - crate::jpeglib_h::JPEG_APP0,
+            /* assume it is an APPn otherwise */
+            fprintf(
+                stderr,
+                b"APP%d, length %ld:\n\x00" as *const u8 as *const c_char,
+                (*cinfo).unread_marker - JPEG_APP0,
                 length,
             );
         }
     }
     loop {
         length -= 1;
-        if !(length >= 0i32 as libc::c_long) {
+        if !(length >= 0i32 as c_long) {
             break;
         }
         ch = jpeg_getc(cinfo);
-        if 0 != traceit {
-            if ch == '\r' as i32 as libc::c_uint {
-                crate::stdlib::fprintf(
-                    crate::stdlib::stderr,
-                    b"\n\x00" as *const u8 as *const libc::c_char,
-                );
-            } else if ch == '\n' as i32 as libc::c_uint {
-                if lastch != '\r' as i32 as libc::c_uint {
-                    crate::stdlib::fprintf(
-                        crate::stdlib::stderr,
-                        b"\n\x00" as *const u8 as *const libc::c_char,
-                    );
+        if traceit != 0 {
+            /* Emit the character in a readable form.
+             * Nonprintables are converted to \nnn form,
+             * while \ is converted to \\.
+             * Newlines in CR, CR/LF, or LF form will be printed as one newline.
+             */
+            if ch == '\r' as i32 as c_uint {
+                fprintf(stderr, b"\n\x00" as *const u8 as *const c_char);
+            } else if ch == '\n' as i32 as c_uint {
+                if lastch != '\r' as i32 as c_uint {
+                    fprintf(stderr, b"\n\x00" as *const u8 as *const c_char);
                 }
-            } else if ch == '\\' as i32 as libc::c_uint {
-                crate::stdlib::fprintf(
-                    crate::stdlib::stderr,
-                    b"\\\\\x00" as *const u8 as *const libc::c_char,
-                );
-            } else if 0
-                != *(*crate::stdlib::__ctype_b_loc()).offset(ch as libc::c_int as isize)
-                    as libc::c_int
-                    & crate::stdlib::_ISprint as libc::c_int as libc::c_ushort as libc::c_int
+            } else if ch == '\\' as i32 as c_uint {
+                fprintf(stderr, b"\\\\\x00" as *const u8 as *const c_char);
+            } else if *(*__ctype_b_loc()).offset(ch as c_int as isize) as c_int
+                & _ISprint as c_int as c_ushort as c_int
+                != 0
             {
-                crate::stdlib::putc(ch as libc::c_int, crate::stdlib::stderr);
+                putc(ch as c_int, stderr);
             } else {
-                crate::stdlib::fprintf(
-                    crate::stdlib::stderr,
-                    b"\\%03o\x00" as *const u8 as *const libc::c_char,
-                    ch,
-                );
+                fprintf(stderr, b"\\%03o\x00" as *const u8 as *const c_char, ch);
             }
             lastch = ch
         }
     }
-    if 0 != traceit {
-        crate::stdlib::fprintf(
-            crate::stdlib::stderr,
-            b"\n\x00" as *const u8 as *const libc::c_char,
-        );
+    if traceit != 0 {
+        fprintf(stderr, b"\n\x00" as *const u8 as *const c_char);
     }
-    return crate::jmorecfg_h::TRUE;
+    return TRUE;
 }
 /*
  * The main program.
  */
-unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> libc::c_int {
-    let mut cinfo: crate::jpeglib_h::jpeg_decompress_struct =
-        crate::jpeglib_h::jpeg_decompress_struct {
-            err: 0 as *mut crate::jpeglib_h::jpeg_error_mgr,
-            mem: 0 as *mut crate::jpeglib_h::jpeg_memory_mgr,
-            progress: 0 as *mut crate::jpeglib_h::jpeg_progress_mgr,
-            client_data: 0 as *mut libc::c_void,
-            is_decompressor: 0,
-            global_state: 0,
-            src: 0 as *mut crate::jpeglib_h::jpeg_source_mgr,
-            image_width: 0,
-            image_height: 0,
-            num_components: 0,
-            jpeg_color_space: crate::jpeglib_h::JCS_UNKNOWN,
-            out_color_space: crate::jpeglib_h::JCS_UNKNOWN,
-            scale_num: 0,
-            scale_denom: 0,
-            output_gamma: 0.,
-            buffered_image: 0,
-            raw_data_out: 0,
-            dct_method: crate::jpeglib_h::JDCT_ISLOW,
-            do_fancy_upsampling: 0,
-            do_block_smoothing: 0,
-            quantize_colors: 0,
-            dither_mode: crate::jpeglib_h::JDITHER_NONE,
-            two_pass_quantize: 0,
-            desired_number_of_colors: 0,
-            enable_1pass_quant: 0,
-            enable_external_quant: 0,
-            enable_2pass_quant: 0,
-            output_width: 0,
-            output_height: 0,
-            out_color_components: 0,
-            output_components: 0,
-            rec_outbuf_height: 0,
-            actual_number_of_colors: 0,
-            colormap: 0 as *mut crate::jpeglib_h::JSAMPROW,
-            output_scanline: 0,
-            input_scan_number: 0,
-            input_iMCU_row: 0,
-            output_scan_number: 0,
-            output_iMCU_row: 0,
-            coef_bits: 0 as *mut [libc::c_int; 64],
-            quant_tbl_ptrs: [0 as *mut crate::jpeglib_h::JQUANT_TBL; 4],
-            dc_huff_tbl_ptrs: [0 as *mut crate::jpeglib_h::JHUFF_TBL; 4],
-            ac_huff_tbl_ptrs: [0 as *mut crate::jpeglib_h::JHUFF_TBL; 4],
-            data_precision: 0,
-            comp_info: 0 as *mut crate::jpeglib_h::jpeg_component_info,
-            progressive_mode: 0,
-            arith_code: 0,
-            arith_dc_L: [0; 16],
-            arith_dc_U: [0; 16],
-            arith_ac_K: [0; 16],
-            restart_interval: 0,
-            saw_JFIF_marker: 0,
-            JFIF_major_version: 0,
-            JFIF_minor_version: 0,
-            density_unit: 0,
-            X_density: 0,
-            Y_density: 0,
-            saw_Adobe_marker: 0,
-            Adobe_transform: 0,
-            CCIR601_sampling: 0,
-            marker_list: 0 as *mut crate::jpeglib_h::jpeg_marker_struct,
-            max_h_samp_factor: 0,
-            max_v_samp_factor: 0,
-            min_DCT_scaled_size: 0,
-            total_iMCU_rows: 0,
-            sample_range_limit: 0 as *mut crate::jmorecfg_h::JSAMPLE,
-            comps_in_scan: 0,
-            cur_comp_info: [0 as *mut crate::jpeglib_h::jpeg_component_info; 4],
-            MCUs_per_row: 0,
-            MCU_rows_in_scan: 0,
-            blocks_in_MCU: 0,
-            MCU_membership: [0; 10],
-            Ss: 0,
-            Se: 0,
-            Ah: 0,
-            Al: 0,
-            unread_marker: 0,
-            master: 0 as *mut crate::jpeglib_h::jpeg_decomp_master,
-            main: 0 as *mut crate::jpeglib_h::jpeg_d_main_controller,
-            coef: 0 as *mut crate::jpeglib_h::jpeg_d_coef_controller,
-            post: 0 as *mut crate::jpeglib_h::jpeg_d_post_controller,
-            inputctl: 0 as *mut crate::jpeglib_h::jpeg_input_controller,
-            marker: 0 as *mut crate::jpeglib_h::jpeg_marker_reader,
-            entropy: 0 as *mut crate::jpeglib_h::jpeg_entropy_decoder,
-            idct: 0 as *mut crate::jpeglib_h::jpeg_inverse_dct,
-            upsample: 0 as *mut crate::jpeglib_h::jpeg_upsampler,
-            cconvert: 0 as *mut crate::jpeglib_h::jpeg_color_deconverter,
-            cquantize: 0 as *mut crate::jpeglib_h::jpeg_color_quantizer,
-        };
-    let mut jerr: crate::jpeglib_h::jpeg_error_mgr = crate::jpeglib_h::jpeg_error_mgr {
+
+unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
+    let mut cinfo: jpeg_decompress_struct = jpeg_decompress_struct {
+        err: 0 as *mut jpeg_error_mgr,
+        mem: 0 as *mut jpeg_memory_mgr,
+        progress: 0 as *mut jpeg_progress_mgr,
+        client_data: 0 as *mut c_void,
+        is_decompressor: 0,
+        global_state: 0,
+        src: 0 as *mut jpeg_source_mgr,
+        image_width: 0,
+        image_height: 0,
+        num_components: 0,
+        jpeg_color_space: JCS_UNKNOWN,
+        out_color_space: JCS_UNKNOWN,
+        scale_num: 0,
+        scale_denom: 0,
+        output_gamma: 0.,
+        buffered_image: 0,
+        raw_data_out: 0,
+        dct_method: JDCT_ISLOW,
+        do_fancy_upsampling: 0,
+        do_block_smoothing: 0,
+        quantize_colors: 0,
+        dither_mode: JDITHER_NONE,
+        two_pass_quantize: 0,
+        desired_number_of_colors: 0,
+        enable_1pass_quant: 0,
+        enable_external_quant: 0,
+        enable_2pass_quant: 0,
+        output_width: 0,
+        output_height: 0,
+        out_color_components: 0,
+        output_components: 0,
+        rec_outbuf_height: 0,
+        actual_number_of_colors: 0,
+        colormap: 0 as *mut JSAMPROW,
+        output_scanline: 0,
+        input_scan_number: 0,
+        input_iMCU_row: 0,
+        output_scan_number: 0,
+        output_iMCU_row: 0,
+        coef_bits: 0 as *mut [c_int; 64],
+        quant_tbl_ptrs: [0 as *mut JQUANT_TBL; 4],
+        dc_huff_tbl_ptrs: [0 as *mut JHUFF_TBL; 4],
+        ac_huff_tbl_ptrs: [0 as *mut JHUFF_TBL; 4],
+        data_precision: 0,
+        comp_info: 0 as *mut jpeg_component_info,
+        progressive_mode: 0,
+        arith_code: 0,
+        arith_dc_L: [0; 16],
+        arith_dc_U: [0; 16],
+        arith_ac_K: [0; 16],
+        restart_interval: 0,
+        saw_JFIF_marker: 0,
+        JFIF_major_version: 0,
+        JFIF_minor_version: 0,
+        density_unit: 0,
+        X_density: 0,
+        Y_density: 0,
+        saw_Adobe_marker: 0,
+        Adobe_transform: 0,
+        CCIR601_sampling: 0,
+        marker_list: 0 as *mut jpeg_marker_struct,
+        max_h_samp_factor: 0,
+        max_v_samp_factor: 0,
+        min_DCT_scaled_size: 0,
+        total_iMCU_rows: 0,
+        sample_range_limit: 0 as *mut JSAMPLE,
+        comps_in_scan: 0,
+        cur_comp_info: [0 as *mut jpeg_component_info; 4],
+        MCUs_per_row: 0,
+        MCU_rows_in_scan: 0,
+        blocks_in_MCU: 0,
+        MCU_membership: [0; 10],
+        Ss: 0,
+        Se: 0,
+        Ah: 0,
+        Al: 0,
+        unread_marker: 0,
+        master: 0 as *mut jpeg_decomp_master,
+        main: 0 as *mut jpeg_d_main_controller,
+        coef: 0 as *mut jpeg_d_coef_controller,
+        post: 0 as *mut jpeg_d_post_controller,
+        inputctl: 0 as *mut jpeg_input_controller,
+        marker: 0 as *mut jpeg_marker_reader,
+        entropy: 0 as *mut jpeg_entropy_decoder,
+        idct: 0 as *mut jpeg_inverse_dct,
+        upsample: 0 as *mut jpeg_upsampler,
+        cconvert: 0 as *mut jpeg_color_deconverter,
+        cquantize: 0 as *mut jpeg_color_quantizer,
+    };
+    let mut jerr: jpeg_error_mgr = jpeg_error_mgr {
         error_exit: None,
         emit_message: None,
         output_message: None,
         format_message: None,
         reset_error_mgr: None,
         msg_code: 0,
-        msg_parm: crate::jpeglib_h::C2RustUnnamed_2 { i: [0; 8] },
+        msg_parm: C2RustUnnamed_2 { i: [0; 8] },
         trace_level: 0,
         num_warnings: 0,
-        jpeg_message_table: 0 as *const *const libc::c_char,
+        jpeg_message_table: 0 as *const *const c_char,
         last_jpeg_message: 0,
-        addon_message_table: 0 as *const *const libc::c_char,
+        addon_message_table: 0 as *const *const c_char,
         first_addon_message: 0,
         last_addon_message: 0,
     };
-    let mut file_index: libc::c_int = 0;
-    let mut dest_mgr: crate::cdjpeg::djpeg_dest_ptr =
-        crate::stddef_h::NULL as crate::cdjpeg::djpeg_dest_ptr;
-    let mut input_file: *mut crate::stdlib::FILE = 0 as *mut crate::stdlib::FILE;
-    let mut output_file: *mut crate::stdlib::FILE = 0 as *mut crate::stdlib::FILE;
-    let mut inbuffer: *mut libc::c_uchar = crate::stddef_h::NULL as *mut libc::c_uchar;
-    let mut insize: libc::c_ulong = 0i32 as libc::c_ulong;
-    let mut num_scanlines: crate::jmorecfg_h::JDIMENSION = 0;
-    progname = *argv.offset(0isize);
-    if progname.is_null() || *progname.offset(0isize) as libc::c_int == 0i32 {
-        progname = b"djpeg\x00" as *const u8 as *const libc::c_char
+    let mut file_index: c_int = 0;
+    let mut dest_mgr: djpeg_dest_ptr = NULL as djpeg_dest_ptr;
+    let mut input_file: *mut FILE = 0 as *mut FILE;
+    let mut output_file: *mut FILE = 0 as *mut FILE;
+    let mut inbuffer: *mut c_uchar = NULL as *mut c_uchar;
+    let mut insize: c_ulong = 0i32 as c_ulong;
+    let mut num_scanlines: JDIMENSION = 0;
+    /* On Mac, fetch a command line. */
+    progname = *argv.offset(0); /* in case C library doesn't provide it */
+    if progname.is_null() || *progname.offset(0) as c_int == 0i32 {
+        progname = b"djpeg\x00" as *const u8 as *const c_char
     }
-    cinfo.err = crate::jpeglib_h::jpeg_std_error(&mut jerr);
-    crate::jpeglib_h::jpeg_CreateDecompress(
+    /* Initialize the JPEG decompression object with default error handling. */
+    cinfo.err = jpeg_std_error(&mut jerr);
+    jpeg_CreateDecompress(
         &mut cinfo,
-        crate::jconfig_h::JPEG_LIB_VERSION,
-        ::std::mem::size_of::<crate::jpeglib_h::jpeg_decompress_struct>() as libc::c_ulong,
+        JPEG_LIB_VERSION,
+        ::std::mem::size_of::<jpeg_decompress_struct>() as c_ulong,
     );
+    /* Add some application-specific error messages (from cderror.h) */
     jerr.addon_message_table = cdjpeg_message_table.as_ptr();
-    jerr.first_addon_message = crate::cderror_h::JMSG_FIRSTADDONCODE as libc::c_int;
-    jerr.last_addon_message = crate::cderror_h::JMSG_LASTADDONCODE as libc::c_int;
-    crate::jpeglib_h::jpeg_set_marker_processor(
+    jerr.first_addon_message = JMSG_FIRSTADDONCODE as c_int;
+    jerr.last_addon_message = JMSG_LASTADDONCODE as c_int;
+    /* Insert custom marker processor for COM and APP12.
+     * APP12 is used by some digital camera makers for textual info,
+     * so we provide the ability to display it as text.
+     * If you like, additional APPn marker types can be selected for display,
+     * but don't try to override APP0 or APP14 this way (see libjpeg.txt).
+     */
+    jpeg_set_marker_processor(
         &mut cinfo,
-        crate::jpeglib_h::JPEG_COM,
-        Some(
-            print_text_marker
-                as unsafe extern "C" fn(
-                    _: crate::jpeglib_h::j_decompress_ptr,
-                ) -> crate::jmorecfg_h::boolean,
-        ),
+        JPEG_COM,
+        Some(print_text_marker as unsafe extern "C" fn(_: j_decompress_ptr) -> boolean),
     );
-    crate::jpeglib_h::jpeg_set_marker_processor(
+    jpeg_set_marker_processor(
         &mut cinfo,
-        crate::jpeglib_h::JPEG_APP0 + 12i32,
-        Some(
-            print_text_marker
-                as unsafe extern "C" fn(
-                    _: crate::jpeglib_h::j_decompress_ptr,
-                ) -> crate::jmorecfg_h::boolean,
-        ),
+        JPEG_APP0 + 12i32,
+        Some(print_text_marker as unsafe extern "C" fn(_: j_decompress_ptr) -> boolean),
     );
-    file_index = parse_switches(&mut cinfo, argc, argv, 0i32, crate::jmorecfg_h::FALSE);
+    /* Scan command line to find file names. */
+    /* It is convenient to use just one switch-parsing routine, but the switch
+     * values read here are ignored; we will rescan the switches after opening
+     * the input file.
+     * (Exception: tracing level set here controls verbosity for COM markers
+     * found during jpeg_read_header...)
+     */
+    file_index = parse_switches(&mut cinfo, argc, argv, 0i32, FALSE);
+    /* Unix style: expect zero or one file name */
     if file_index < argc - 1i32 {
-        crate::stdlib::fprintf(
-            crate::stdlib::stderr,
-            b"%s: only one input file\n\x00" as *const u8 as *const libc::c_char,
+        fprintf(
+            stderr,
+            b"%s: only one input file\n\x00" as *const u8 as *const c_char,
             progname,
         );
         usage();
     }
+    /* TWO_FILE_COMMANDLINE */
+    /* Open the input file. */
     if file_index < argc {
-        input_file = crate::stdlib::fopen(
-            *argv.offset(file_index as isize),
-            crate::cdjpeg::READ_BINARY.as_ptr(),
-        );
+        input_file = fopen(*argv.offset(file_index as isize), READ_BINARY.as_ptr());
         if input_file.is_null() {
-            crate::stdlib::fprintf(
-                crate::stdlib::stderr,
-                b"%s: can\'t open %s\n\x00" as *const u8 as *const libc::c_char,
+            fprintf(
+                stderr,
+                b"%s: can\'t open %s\n\x00" as *const u8 as *const c_char,
                 progname,
                 *argv.offset(file_index as isize),
             );
-            crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+            exit(EXIT_FAILURE);
         }
     } else {
-        input_file = crate::cdjpeg::read_stdin()
+        /* default input file is stdin */
+        input_file = read_stdin()
     }
+    /* Open the output file. */
     if !outfilename.is_null() {
-        output_file = crate::stdlib::fopen(outfilename, crate::cdjpeg::WRITE_BINARY.as_ptr());
+        output_file = fopen(outfilename, WRITE_BINARY.as_ptr());
         if output_file.is_null() {
-            crate::stdlib::fprintf(
-                crate::stdlib::stderr,
-                b"%s: can\'t open %s\n\x00" as *const u8 as *const libc::c_char,
+            fprintf(
+                stderr,
+                b"%s: can\'t open %s\n\x00" as *const u8 as *const c_char,
                 progname,
                 outfilename,
             );
-            crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+            exit(EXIT_FAILURE);
         }
     } else {
-        output_file = crate::cdjpeg::write_stdout()
+        /* default output file is stdout */
+        output_file = write_stdout()
     }
-    if 0 != memsrc {
-        let mut nbytes: crate::stddef_h::size_t = 0;
+    /* Specify data source for decompression */
+    if memsrc != 0 {
+        let mut nbytes: size_t = 0;
         loop {
-            inbuffer = crate::stdlib::realloc(
-                inbuffer as *mut libc::c_void,
-                insize.wrapping_add(INPUT_BUF_SIZE as libc::c_ulong),
-            ) as *mut libc::c_uchar;
+            inbuffer = realloc(
+                inbuffer as *mut c_void,
+                insize.wrapping_add(INPUT_BUF_SIZE as c_ulong),
+            ) as *mut c_uchar;
             if inbuffer.is_null() {
-                crate::stdlib::fprintf(
-                    crate::stdlib::stderr,
-                    b"%s: memory allocation failure\n\x00" as *const u8 as *const libc::c_char,
+                fprintf(
+                    stderr,
+                    b"%s: memory allocation failure\n\x00" as *const u8 as *const c_char,
                     progname,
                 );
-                crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+                exit(EXIT_FAILURE);
             }
-            nbytes = crate::stdlib::fread(
-                &mut *inbuffer.offset(insize as isize) as *mut libc::c_uchar as *mut libc::c_void,
-                1i32 as crate::stddef_h::size_t,
-                4096i32 as crate::stddef_h::size_t,
+            nbytes = fread(
+                &mut *inbuffer.offset(insize as isize) as *mut c_uchar as *mut c_void,
+                1i32 as size_t,
+                4096i32 as size_t,
                 input_file,
             );
-            if nbytes < INPUT_BUF_SIZE as libc::c_ulong && 0 != crate::stdlib::ferror(input_file) {
+            if nbytes < INPUT_BUF_SIZE as c_ulong && ferror(input_file) != 0 {
                 if file_index < argc {
-                    crate::stdlib::fprintf(
-                        crate::stdlib::stderr,
-                        b"%s: can\'t read from %s\n\x00" as *const u8 as *const libc::c_char,
+                    fprintf(
+                        stderr,
+                        b"%s: can\'t read from %s\n\x00" as *const u8 as *const c_char,
                         progname,
                         *argv.offset(file_index as isize),
                     );
                 } else {
-                    crate::stdlib::fprintf(
-                        crate::stdlib::stderr,
-                        b"%s: can\'t read from stdin\n\x00" as *const u8 as *const libc::c_char,
+                    fprintf(
+                        stderr,
+                        b"%s: can\'t read from stdin\n\x00" as *const u8 as *const c_char,
                         progname,
                     );
                 }
             }
             insize = insize.wrapping_add(nbytes);
-            if !(nbytes == INPUT_BUF_SIZE as libc::c_ulong) {
+            if !(nbytes == INPUT_BUF_SIZE as c_ulong) {
                 break;
             }
         }
-        crate::stdlib::fprintf(
-            crate::stdlib::stderr,
-            b"Compressed size:  %lu bytes\n\x00" as *const u8 as *const libc::c_char,
+        fprintf(
+            stderr,
+            b"Compressed size:  %lu bytes\n\x00" as *const u8 as *const c_char,
             insize,
         );
-        crate::jpeglib_h::jpeg_mem_src(&mut cinfo, inbuffer, insize);
+        jpeg_mem_src(&mut cinfo, inbuffer, insize);
     } else {
-        crate::jpeglib_h::jpeg_stdio_src(&mut cinfo, input_file);
+        jpeg_stdio_src(&mut cinfo, input_file);
     }
-    crate::jpeglib_h::jpeg_read_header(&mut cinfo, crate::jmorecfg_h::TRUE);
-    file_index = parse_switches(&mut cinfo, argc, argv, 0i32, crate::jmorecfg_h::TRUE);
-    match requested_fmt as libc::c_uint {
-        0 => {
-            dest_mgr = crate::cdjpeg::jinit_write_bmp(
-                &mut cinfo,
-                crate::jmorecfg_h::FALSE,
-                crate::jmorecfg_h::TRUE,
-            )
-        }
-        2 => {
-            dest_mgr = crate::cdjpeg::jinit_write_bmp(
-                &mut cinfo,
-                crate::jmorecfg_h::TRUE,
-                crate::jmorecfg_h::TRUE,
-            )
-        }
-        1 => dest_mgr = crate::cdjpeg::jinit_write_gif(&mut cinfo),
-        3 => dest_mgr = crate::cdjpeg::jinit_write_ppm(&mut cinfo),
-        5 => dest_mgr = crate::cdjpeg::jinit_write_targa(&mut cinfo),
+    /* Read file header, set default decompression parameters */
+    jpeg_read_header(&mut cinfo, TRUE);
+    /* Adjust default decompression parameters by re-parsing the options */
+    file_index = parse_switches(&mut cinfo, argc, argv, 0i32, TRUE);
+    /* Initialize the output module now to let it override any crucial
+     * option settings (for instance, GIF wants to force color quantization).
+     */
+    match requested_fmt as c_uint {
+        0 => dest_mgr = jinit_write_bmp(&mut cinfo, FALSE, TRUE),
+        2 => dest_mgr = jinit_write_bmp(&mut cinfo, TRUE, TRUE),
+        1 => dest_mgr = jinit_write_gif(&mut cinfo),
+        3 => dest_mgr = jinit_write_ppm(&mut cinfo),
+        5 => dest_mgr = jinit_write_targa(&mut cinfo),
         _ => {
-            (*cinfo.err).msg_code = crate::cderror_h::JERR_UNSUPPORTED_FORMAT as libc::c_int;
-            (*cinfo.err).error_exit.expect("non-null function pointer")(
-                &mut cinfo as *mut crate::jpeglib_h::jpeg_decompress_struct
-                    as crate::jpeglib_h::j_common_ptr,
+            (*cinfo.err).msg_code = JERR_UNSUPPORTED_FORMAT as c_int;
+            Some((*cinfo.err).error_exit.expect("non-null function pointer"))
+                .expect("non-null function pointer")(
+                &mut cinfo as *mut jpeg_decompress_struct as j_common_ptr,
             );
         }
     }
     (*dest_mgr).output_file = output_file;
-    crate::jpeglib_h::jpeg_start_decompress(&mut cinfo);
-    if 0 != skip {
-        let mut tmp: crate::jmorecfg_h::JDIMENSION = 0;
-        if skip_end > cinfo.output_height.wrapping_sub(1i32 as libc::c_uint) {
-            crate::stdlib::fprintf(
-                crate::stdlib::stderr,
-                b"%s: skip region exceeds image height %d\n\x00" as *const u8
-                    as *const libc::c_char,
+    /* Start decompressor */
+    jpeg_start_decompress(&mut cinfo);
+    /* Skip rows */
+    if skip != 0 {
+        let mut tmp: JDIMENSION = 0;
+        /* Decompress a subregion */
+        if skip_end > cinfo.output_height.wrapping_sub(1i32 as c_uint) {
+            fprintf(
+                stderr,
+                b"%s: skip region exceeds image height %d\n\x00" as *const u8 as *const c_char,
                 progname,
                 cinfo.output_height,
             );
-            crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+            exit(EXIT_FAILURE);
         }
         tmp = cinfo.output_height;
-        cinfo.output_height = (cinfo.output_height as libc::c_uint).wrapping_sub(
+        cinfo.output_height = (cinfo.output_height as c_uint).wrapping_sub(
             skip_end
                 .wrapping_sub(skip_start)
-                .wrapping_add(1i32 as libc::c_uint),
-        ) as crate::jmorecfg_h::JDIMENSION
-            as crate::jmorecfg_h::JDIMENSION;
-        (*dest_mgr).start_output.expect("non-null function pointer")(&mut cinfo, dest_mgr);
+                .wrapping_add(1i32 as c_uint),
+        ) as JDIMENSION as JDIMENSION;
+        Some((*dest_mgr).start_output.expect("non-null function pointer"))
+            .expect("non-null function pointer")(&mut cinfo, dest_mgr);
         cinfo.output_height = tmp;
-        while cinfo.output_scanline < skip_start {
-            num_scanlines = crate::jpeglib_h::jpeg_read_scanlines(
-                &mut cinfo,
-                (*dest_mgr).buffer,
-                (*dest_mgr).buffer_height,
-            );
-            (*dest_mgr)
-                .put_pixel_rows
-                .expect("non-null function pointer")(
-                &mut cinfo, dest_mgr, num_scanlines
-            );
+        while cinfo.output_scanline < skip_start
+        /* Check for valid skip_end.  We cannot check this value until after
+         * jpeg_start_decompress() is called.  Note that we have already verified
+         * that skip_start <= skip_end.
+         */
+        /* Write output file header.  This is a hack to ensure that the destination
+         * manager creates an output image of the proper size.
+         */
+        /* Process data */
+        {
+            num_scanlines =
+                jpeg_read_scanlines(&mut cinfo, (*dest_mgr).buffer, (*dest_mgr).buffer_height);
+            Some(
+                (*dest_mgr)
+                    .put_pixel_rows
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(&mut cinfo, dest_mgr, num_scanlines);
         }
-        crate::jpeglib_h::jpeg_skip_scanlines(
+        jpeg_skip_scanlines(
             &mut cinfo,
             skip_end
                 .wrapping_sub(skip_start)
-                .wrapping_add(1i32 as libc::c_uint),
+                .wrapping_add(1i32 as c_uint),
         );
         while cinfo.output_scanline < cinfo.output_height {
-            num_scanlines = crate::jpeglib_h::jpeg_read_scanlines(
-                &mut cinfo,
-                (*dest_mgr).buffer,
-                (*dest_mgr).buffer_height,
-            );
-            (*dest_mgr)
-                .put_pixel_rows
-                .expect("non-null function pointer")(
-                &mut cinfo, dest_mgr, num_scanlines
-            );
+            num_scanlines =
+                jpeg_read_scanlines(&mut cinfo, (*dest_mgr).buffer, (*dest_mgr).buffer_height);
+            Some(
+                (*dest_mgr)
+                    .put_pixel_rows
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(&mut cinfo, dest_mgr, num_scanlines);
         }
-    } else if 0 != crop {
-        let mut tmp_0: crate::jmorecfg_h::JDIMENSION = 0;
+    } else if crop != 0 {
+        let mut tmp_0: JDIMENSION = 0;
+        /* Normal full-image decompress */
         if crop_x.wrapping_add(crop_width) > cinfo.output_width
             || crop_y.wrapping_add(crop_height) > cinfo.output_height
         {
-            crate::stdlib::fprintf(
-                crate::stdlib::stderr,
+            fprintf(
+                stderr,
                 b"%s: crop dimensions exceed image dimensions %d x %d\n\x00" as *const u8
-                    as *const libc::c_char,
+                    as *const c_char,
                 progname,
                 cinfo.output_width,
                 cinfo.output_height,
             );
-            crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+            exit(EXIT_FAILURE);
         }
-        crate::jpeglib_h::jpeg_crop_scanline(&mut cinfo, &mut crop_x, &mut crop_width);
+        jpeg_crop_scanline(&mut cinfo, &mut crop_x, &mut crop_width);
         if (*dest_mgr).calc_buffer_dimensions.is_some() {
-            (*dest_mgr)
-                .calc_buffer_dimensions
-                .expect("non-null function pointer")(&mut cinfo, dest_mgr);
+            Some(
+                (*dest_mgr)
+                    .calc_buffer_dimensions
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(&mut cinfo, dest_mgr);
         } else {
-            (*cinfo.err).msg_code = crate::cderror_h::JERR_UNSUPPORTED_FORMAT as libc::c_int;
-            (*cinfo.err).error_exit.expect("non-null function pointer")(
-                &mut cinfo as *mut crate::jpeglib_h::jpeg_decompress_struct
-                    as crate::jpeglib_h::j_common_ptr,
+            (*cinfo.err).msg_code = JERR_UNSUPPORTED_FORMAT as c_int;
+            Some((*cinfo.err).error_exit.expect("non-null function pointer"))
+                .expect("non-null function pointer")(
+                &mut cinfo as *mut jpeg_decompress_struct as j_common_ptr,
             );
         }
         tmp_0 = cinfo.output_height;
         cinfo.output_height = crop_height;
-        (*dest_mgr).start_output.expect("non-null function pointer")(&mut cinfo, dest_mgr);
+        Some((*dest_mgr).start_output.expect("non-null function pointer"))
+            .expect("non-null function pointer")(&mut cinfo, dest_mgr);
         cinfo.output_height = tmp_0;
-        crate::jpeglib_h::jpeg_skip_scanlines(&mut cinfo, crop_y);
+        jpeg_skip_scanlines(&mut cinfo, crop_y);
         while cinfo.output_scanline < crop_y.wrapping_add(crop_height) {
-            num_scanlines = crate::jpeglib_h::jpeg_read_scanlines(
-                &mut cinfo,
-                (*dest_mgr).buffer,
-                (*dest_mgr).buffer_height,
-            );
-            (*dest_mgr)
-                .put_pixel_rows
-                .expect("non-null function pointer")(
-                &mut cinfo, dest_mgr, num_scanlines
-            );
+            num_scanlines =
+                jpeg_read_scanlines(&mut cinfo, (*dest_mgr).buffer, (*dest_mgr).buffer_height);
+            Some(
+                (*dest_mgr)
+                    .put_pixel_rows
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(&mut cinfo, dest_mgr, num_scanlines);
         }
-        crate::jpeglib_h::jpeg_skip_scanlines(
+        jpeg_skip_scanlines(
             &mut cinfo,
             cinfo
                 .output_height
@@ -1374,86 +1264,103 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                 .wrapping_sub(crop_height),
         );
     } else {
-        (*dest_mgr).start_output.expect("non-null function pointer")(&mut cinfo, dest_mgr);
+        /* Check for valid crop dimensions.  We cannot check these values until
+         * after jpeg_start_decompress() is called.
+         */
+        /* Write output file header.  This is a hack to ensure that the destination
+         * manager creates an output image of the proper size.
+         */
+        /* Process data */
+        /* Write output file header */
+        Some((*dest_mgr).start_output.expect("non-null function pointer"))
+            .expect("non-null function pointer")(&mut cinfo, dest_mgr);
+        /* Process data */
         while cinfo.output_scanline < cinfo.output_height {
-            num_scanlines = crate::jpeglib_h::jpeg_read_scanlines(
-                &mut cinfo,
-                (*dest_mgr).buffer,
-                (*dest_mgr).buffer_height,
-            );
-            (*dest_mgr)
-                .put_pixel_rows
-                .expect("non-null function pointer")(
-                &mut cinfo, dest_mgr, num_scanlines
-            );
+            num_scanlines =
+                jpeg_read_scanlines(&mut cinfo, (*dest_mgr).buffer, (*dest_mgr).buffer_height);
+            Some(
+                (*dest_mgr)
+                    .put_pixel_rows
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(&mut cinfo, dest_mgr, num_scanlines);
         }
     }
     if !icc_filename.is_null() {
-        let mut icc_file: *mut crate::stdlib::FILE = 0 as *mut crate::stdlib::FILE;
-        let mut icc_profile: *mut crate::jmorecfg_h::JOCTET = 0 as *mut crate::jmorecfg_h::JOCTET;
-        let mut icc_len: libc::c_uint = 0;
-        icc_file = crate::stdlib::fopen(icc_filename, crate::cdjpeg::WRITE_BINARY.as_ptr());
+        let mut icc_file: *mut FILE = 0 as *mut FILE;
+        let mut icc_profile: *mut JOCTET = 0 as *mut JOCTET;
+        let mut icc_len: c_uint = 0;
+        icc_file = fopen(icc_filename, WRITE_BINARY.as_ptr());
         if icc_file.is_null() {
-            crate::stdlib::fprintf(
-                crate::stdlib::stderr,
-                b"%s: can\'t open %s\n\x00" as *const u8 as *const libc::c_char,
+            fprintf(
+                stderr,
+                b"%s: can\'t open %s\n\x00" as *const u8 as *const c_char,
                 progname,
                 icc_filename,
             );
-            crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+            exit(EXIT_FAILURE);
         }
-        if 0 != crate::jpeglib_h::jpeg_read_icc_profile(&mut cinfo, &mut icc_profile, &mut icc_len)
-        {
-            if crate::stdlib::fwrite(
-                icc_profile as *const libc::c_void,
-                icc_len as libc::c_ulong,
-                1i32 as libc::c_ulong,
+        if jpeg_read_icc_profile(&mut cinfo, &mut icc_profile, &mut icc_len) != 0 {
+            if fwrite(
+                icc_profile as *const c_void,
+                icc_len as c_ulong,
+                1i32 as c_ulong,
                 icc_file,
-            ) < 1i32 as libc::c_ulong
+            ) < 1i32 as c_ulong
             {
-                crate::stdlib::fprintf(
-                    crate::stdlib::stderr,
-                    b"%s: can\'t read ICC profile from %s\n\x00" as *const u8
-                        as *const libc::c_char,
+                fprintf(
+                    stderr,
+                    b"%s: can\'t read ICC profile from %s\n\x00" as *const u8 as *const c_char,
                     progname,
                     icc_filename,
                 );
-                crate::stdlib::free(icc_profile as *mut libc::c_void);
-                crate::stdlib::fclose(icc_file);
-                crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+                free(icc_profile as *mut c_void);
+                fclose(icc_file);
+                exit(EXIT_FAILURE);
             }
-            crate::stdlib::free(icc_profile as *mut libc::c_void);
-            crate::stdlib::fclose(icc_file);
-        } else if (*cinfo.err).msg_code != crate::jerror::JWRN_BOGUS_ICC as libc::c_int {
-            crate::stdlib::fprintf(
-                crate::stdlib::stderr,
-                b"%s: no ICC profile data in JPEG file\n\x00" as *const u8 as *const libc::c_char,
+            free(icc_profile as *mut c_void);
+            fclose(icc_file);
+        } else if (*cinfo.err).msg_code != JWRN_BOGUS_ICC as c_int {
+            fprintf(
+                stderr,
+                b"%s: no ICC profile data in JPEG file\n\x00" as *const u8 as *const c_char,
                 progname,
             );
         }
     }
-    (*dest_mgr)
-        .finish_output
-        .expect("non-null function pointer")(&mut cinfo, dest_mgr);
-    crate::jpeglib_h::jpeg_finish_decompress(&mut cinfo);
-    crate::jpeglib_h::jpeg_destroy_decompress(&mut cinfo);
-    if input_file != crate::stdlib::stdin {
-        crate::stdlib::fclose(input_file);
+    /* Finish decompression and release memory.
+     * I must do it in this order because output module has allocated memory
+     * of lifespan JPOOL_IMAGE; it needs to finish before releasing memory.
+     */
+    Some(
+        (*dest_mgr)
+            .finish_output
+            .expect("non-null function pointer"),
+    )
+    .expect("non-null function pointer")(&mut cinfo, dest_mgr);
+    jpeg_finish_decompress(&mut cinfo);
+    jpeg_destroy_decompress(&mut cinfo);
+    /* Close files, if we opened them */
+    if input_file != stdin {
+        fclose(input_file);
     }
-    if output_file != crate::stdlib::stdout {
-        crate::stdlib::fclose(output_file);
+    if output_file != stdout {
+        fclose(output_file);
     }
-    if 0 != memsrc && !inbuffer.is_null() {
-        crate::stdlib::free(inbuffer as *mut libc::c_void);
+    if memsrc != 0 && !inbuffer.is_null() {
+        free(inbuffer as *mut c_void);
     }
-    crate::stdlib::exit(if 0 != jerr.num_warnings {
-        crate::cdjpeg::EXIT_WARNING
+    /* All done. */
+    exit(if jerr.num_warnings != 0 {
+        EXIT_WARNING
     } else {
-        crate::stdlib::EXIT_SUCCESS
+        EXIT_SUCCESS
     });
+    /* suppress no-return-value warnings */
 }
+#[main]
 pub fn main() {
-    let mut args: Vec<*mut libc::c_char> = Vec::new();
+    let mut args: Vec<*mut c_char> = Vec::new();
     for arg in ::std::env::args() {
         args.push(
             ::std::ffi::CString::new(arg)
@@ -1464,8 +1371,8 @@ pub fn main() {
     args.push(::std::ptr::null_mut());
     unsafe {
         ::std::process::exit(main_0(
-            (args.len() - 1) as libc::c_int,
-            args.as_mut_ptr() as *mut *mut libc::c_char,
+            (args.len() - 1) as c_int,
+            args.as_mut_ptr() as *mut *mut c_char,
         ) as i32)
     }
 }

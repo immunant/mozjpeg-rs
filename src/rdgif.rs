@@ -1,4 +1,4 @@
-pub use crate::cdjpeg::{cjpeg_source_ptr, cjpeg_source_struct};
+pub use super::cdjpeg::{cjpeg_source_ptr, cjpeg_source_struct};
 pub use crate::jmorecfg_h::{boolean, JCOEF, JDIMENSION, JOCTET, JSAMPLE, UINT16, UINT8};
 pub use crate::jpeglib_h::{
     j_common_ptr, j_compress_ptr, jpeg_c_coef_controller, jpeg_c_main_controller,
@@ -20,6 +20,55 @@ pub use crate::stdlib::{
 };
 use crate::stdlib::{fprintf, stderr};
 use libc::{self, c_char};
+/*
+ * cdjpeg.h
+ *
+ * This file was part of the Independent JPEG Group's software:
+ * Copyright (C) 1994-1997, Thomas G. Lane.
+ * libjpeg-turbo Modifications:
+ * Copyright (C) 2017, D. R. Commander.
+ * mozjpeg Modifications:
+ * Copyright (C) 2014, Mozilla Corporation.
+ * For conditions of distribution and use, see the accompanying README.ijg file.
+ *
+ * This file contains common declarations for the sample applications
+ * cjpeg and djpeg.  It is NOT used by the core JPEG library.
+ */
+/* define proper options in jconfig.h */
+/* cjpeg.c,djpeg.c need to see xxx_SUPPORTED */
+/*
+ * Object interface for cjpeg's source file decoding modules
+ */
+/*
+ * Object interface for djpeg's output file encoding modules
+ */
+/* start_output is called after jpeg_start_decompress finishes.
+ * The color map will be ready at this time, if one is needed.
+ */
+/* Emit the specified number of pixel rows from the buffer. */
+/* Finish up at the end of the image. */
+/* Re-calculate buffer dimensions based on output dimensions (for use with
+partial image decompression.)  If this is NULL, then the output format
+does not support partial image decompression (BMP and RLE, in particular,
+cannot support partial decompression because they use an inversion buffer
+to write the image in bottom-up order.) */
+/* Target file spec; filled in by djpeg.c after object is created. */
+/* Output pixel-row buffer.  Created by module init or start_output.
+ * Width is cinfo->output_width * cinfo->output_components;
+ * height is buffer_height.
+ */
+/*
+ * cjpeg/djpeg may need to perform extra passes to convert to or from
+ * the source/destination file format.  The JPEG library does not know
+ * about these passes, but we'd like them to be counted by the progress
+ * monitor.  We use an expanded progress monitor object to hold the
+ * additional pass count.
+ */
+/* fields known to JPEG library */
+/* extra passes completed */
+/* total extra */
+/* last printed percentage stored here to avoid multiple printouts */
+/* Module selection routines for I/O modules. */
 /*
  * rdgif.c
  *
@@ -45,10 +94,15 @@ use libc::{self, c_char};
  * The module selection routine for GIF format input.
  */
 #[no_mangle]
-pub unsafe extern "C" fn jinit_read_gif(mut _cinfo: j_compress_ptr) -> cjpeg_source_ptr {
+
+pub unsafe extern "C" fn jinit_read_gif(
+    mut cinfo: j_compress_ptr,
+) -> super::cdjpeg::cjpeg_source_ptr {
     fprintf(
         stderr,
         b"GIF input is unsupported for legal reasons.  Sorry.\n\x00" as *const u8 as *const c_char,
     );
     exit(EXIT_FAILURE);
+    /* keep compiler happy */
 }
+/* GIF_SUPPORTED */

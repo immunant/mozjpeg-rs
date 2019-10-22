@@ -2,6 +2,17 @@ pub use crate::jdct_h::DCTELEM;
 pub use crate::jpegint_h::JLONG;
 pub use crate::jpeglib_h::DCTSIZE;
 use libc::{self, c_int, c_ulong};
+/* preferred floating type */
+/*
+ * Each IDCT routine is responsible for range-limiting its results and
+ * converting them to unsigned form (0..MAXJSAMPLE).  The raw outputs could
+ * be quite far out of range if the input data is corrupt, so a bulletproof
+ * range-limiting step is required.  We use a mask-and-table-lookup method
+ * to do the combined operations quickly.  See the comments with
+ * prepare_range_limit_table (in jdmaster.c) for more info.
+ */
+/* 2 bits wider than legal samples */
+/* Extern declarations for the forward and inverse DCT routines. */
 /*
  * jfdctint.c
  *
@@ -29,16 +40,6 @@ use libc::{self, c_int, c_ulong};
  * multiplication; this allows a very simple and accurate implementation in
  * scaled fixed-point arithmetic, with a minimal number of shifts.
  */
-/*
- * Each IDCT routine is responsible for range-limiting its results and
- * converting them to unsigned form (0..MAXJSAMPLE).  The raw outputs could
- * be quite far out of range if the input data is corrupt, so a bulletproof
- * range-limiting step is required.  We use a mask-and-table-lookup method
- * to do the combined operations quickly.  See the comments with
- * prepare_range_limit_table (in jdmaster.c) for more info.
- */
-/* 2 bits wider than legal samples */
-/* Extern declarations for the forward and inverse DCT routines. */
 /*
  * This module is specialized to the case DCTSIZE = 8.
  */
@@ -103,6 +104,7 @@ use libc::{self, c_int, c_ulong};
  * Perform the forward DCT on one block of samples.
  */
 #[no_mangle]
+
 pub unsafe extern "C" fn jpeg_fdct_islow(mut data: *mut DCTELEM) {
     let mut tmp0: JLONG = 0;
     let mut tmp1: JLONG = 0;
@@ -123,28 +125,32 @@ pub unsafe extern "C" fn jpeg_fdct_islow(mut data: *mut DCTELEM) {
     let mut z5: JLONG = 0;
     let mut dataptr: *mut DCTELEM = 0 as *mut DCTELEM;
     let mut ctr: c_int = 0;
+    /* Pass 1: process rows. */
+    /* Note results are scaled up by sqrt(8) compared to a true DCT; */
+    /* furthermore, we scale the results by 2**PASS1_BITS. */
     dataptr = data;
     ctr = DCTSIZE - 1i32;
     while ctr >= 0i32 {
-        tmp0 = (*dataptr.offset(0isize) as c_int + *dataptr.offset(7isize) as c_int) as JLONG;
-        tmp7 = (*dataptr.offset(0isize) as c_int - *dataptr.offset(7isize) as c_int) as JLONG;
-        tmp1 = (*dataptr.offset(1isize) as c_int + *dataptr.offset(6isize) as c_int) as JLONG;
-        tmp6 = (*dataptr.offset(1isize) as c_int - *dataptr.offset(6isize) as c_int) as JLONG;
-        tmp2 = (*dataptr.offset(2isize) as c_int + *dataptr.offset(5isize) as c_int) as JLONG;
-        tmp5 = (*dataptr.offset(2isize) as c_int - *dataptr.offset(5isize) as c_int) as JLONG;
-        tmp3 = (*dataptr.offset(3isize) as c_int + *dataptr.offset(4isize) as c_int) as JLONG;
-        tmp4 = (*dataptr.offset(3isize) as c_int - *dataptr.offset(4isize) as c_int) as JLONG;
+        tmp0 = (*dataptr.offset(0) as c_int + *dataptr.offset(7) as c_int) as JLONG;
+        tmp7 = (*dataptr.offset(0) as c_int - *dataptr.offset(7) as c_int) as JLONG;
+        tmp1 = (*dataptr.offset(1) as c_int + *dataptr.offset(6) as c_int) as JLONG;
+        tmp6 = (*dataptr.offset(1) as c_int - *dataptr.offset(6) as c_int) as JLONG;
+        tmp2 = (*dataptr.offset(2) as c_int + *dataptr.offset(5) as c_int) as JLONG;
+        tmp5 = (*dataptr.offset(2) as c_int - *dataptr.offset(5) as c_int) as JLONG;
+        tmp3 = (*dataptr.offset(3) as c_int + *dataptr.offset(4) as c_int) as JLONG;
+        tmp4 = (*dataptr.offset(3) as c_int - *dataptr.offset(4) as c_int) as JLONG;
+        /* advance pointer to next row */
         tmp10 = tmp0 + tmp3;
         tmp13 = tmp0 - tmp3;
         tmp11 = tmp1 + tmp2;
         tmp12 = tmp1 - tmp2;
-        *dataptr.offset(0isize) = (((tmp10 + tmp11) as c_ulong) << 2i32) as JLONG as DCTELEM;
-        *dataptr.offset(4isize) = (((tmp10 - tmp11) as c_ulong) << 2i32) as JLONG as DCTELEM;
+        *dataptr.offset(0) = (((tmp10 + tmp11) as c_ulong) << 2i32) as JLONG as DCTELEM;
+        *dataptr.offset(4) = (((tmp10 - tmp11) as c_ulong) << 2i32) as JLONG as DCTELEM;
         z1 = (tmp12 + tmp13) * 4433i32 as JLONG;
-        *dataptr.offset(2isize) =
+        *dataptr.offset(2) =
             (z1 + tmp13 * 6270i32 as JLONG + ((1i32 as JLONG) << 13i32 - 2i32 - 1i32)
                 >> 13i32 - 2i32) as DCTELEM;
-        *dataptr.offset(6isize) =
+        *dataptr.offset(6) =
             (z1 + tmp12 * -(15137i32 as JLONG) + ((1i32 as JLONG) << 13i32 - 2i32 - 1i32)
                 >> 13i32 - 2i32) as DCTELEM;
         z1 = tmp4 + tmp7;
@@ -162,17 +168,37 @@ pub unsafe extern "C" fn jpeg_fdct_islow(mut data: *mut DCTELEM) {
         z4 = z4 * -(3196i32 as JLONG);
         z3 += z5;
         z4 += z5;
-        *dataptr.offset(7isize) =
+        *dataptr.offset(7) =
             (tmp4 + z1 + z3 + ((1i32 as JLONG) << 13i32 - 2i32 - 1i32) >> 13i32 - 2i32) as DCTELEM;
-        *dataptr.offset(5isize) =
+        *dataptr.offset(5) =
             (tmp5 + z2 + z4 + ((1i32 as JLONG) << 13i32 - 2i32 - 1i32) >> 13i32 - 2i32) as DCTELEM;
-        *dataptr.offset(3isize) =
+        *dataptr.offset(3) =
             (tmp6 + z2 + z3 + ((1i32 as JLONG) << 13i32 - 2i32 - 1i32) >> 13i32 - 2i32) as DCTELEM;
-        *dataptr.offset(1isize) =
+        *dataptr.offset(1) =
             (tmp7 + z1 + z4 + ((1i32 as JLONG) << 13i32 - 2i32 - 1i32) >> 13i32 - 2i32) as DCTELEM;
         dataptr = dataptr.offset(DCTSIZE as isize);
         ctr -= 1
     }
+    /* Even part per LL&M figure 1 --- note that published figure is faulty;
+     * rotator "sqrt(2)*c1" should be "sqrt(2)*c6".
+     */
+    /* Odd part per figure 8 --- note paper omits factor of sqrt(2).
+     * cK represents cos(K*pi/16).
+     * i0..i3 in the paper are tmp4..tmp7 here.
+     */
+    /* sqrt(2) * c3 */
+    /* sqrt(2) * (-c1+c3+c5-c7) */
+    /* sqrt(2) * ( c1+c3-c5+c7) */
+    /* sqrt(2) * ( c1+c3+c5-c7) */
+    /* sqrt(2) * ( c1+c3-c5-c7) */
+    /* sqrt(2) * ( c7-c3) */
+    /* sqrt(2) * (-c1-c3) */
+    /* sqrt(2) * (-c3-c5) */
+    /* sqrt(2) * ( c5-c3) */
+    /* Pass 2: process columns.
+     * We remove the PASS1_BITS scaling, but leave the results scaled up
+     * by an overall factor of 8.
+     */
     dataptr = data;
     ctr = DCTSIZE - 1i32;
     while ctr >= 0i32 {
@@ -192,6 +218,7 @@ pub unsafe extern "C" fn jpeg_fdct_islow(mut data: *mut DCTELEM) {
             + *dataptr.offset((DCTSIZE * 4i32) as isize) as c_int) as JLONG;
         tmp4 = (*dataptr.offset((DCTSIZE * 3i32) as isize) as c_int
             - *dataptr.offset((DCTSIZE * 4i32) as isize) as c_int) as JLONG;
+        /* advance pointer to next column */
         tmp10 = tmp0 + tmp3;
         tmp13 = tmp0 - tmp3;
         tmp11 = tmp1 + tmp2;
@@ -230,7 +257,24 @@ pub unsafe extern "C" fn jpeg_fdct_islow(mut data: *mut DCTELEM) {
             (tmp6 + z2 + z3 + ((1i32 as JLONG) << 13i32 + 2i32 - 1i32) >> 13i32 + 2i32) as DCTELEM;
         *dataptr.offset((DCTSIZE * 1i32) as isize) =
             (tmp7 + z1 + z4 + ((1i32 as JLONG) << 13i32 + 2i32 - 1i32) >> 13i32 + 2i32) as DCTELEM;
-        dataptr = dataptr.offset(1isize);
+        dataptr = dataptr.offset(1);
         ctr -= 1
     }
 }
+/* Even part per LL&M figure 1 --- note that published figure is faulty;
+ * rotator "sqrt(2)*c1" should be "sqrt(2)*c6".
+ */
+/* Odd part per figure 8 --- note paper omits factor of sqrt(2).
+ * cK represents cos(K*pi/16).
+ * i0..i3 in the paper are tmp4..tmp7 here.
+ */
+/* sqrt(2) * c3 */
+/* sqrt(2) * (-c1+c3+c5-c7) */
+/* sqrt(2) * ( c1+c3-c5+c7) */
+/* sqrt(2) * ( c1+c3+c5-c7) */
+/* sqrt(2) * ( c1+c3-c5-c7) */
+/* sqrt(2) * ( c7-c3) */
+/* sqrt(2) * (-c1-c3) */
+/* sqrt(2) * (-c3-c5) */
+/* sqrt(2) * ( c5-c3) */
+/* DCT_ISLOW_SUPPORTED */
