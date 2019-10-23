@@ -1,11 +1,11 @@
-pub use crate::jmorecfg_h::JDIMENSION;
+use libc::c_uint;use libc::c_ulong;use libc::c_int;use libc::c_long;pub use crate::jmorecfg_h::JDIMENSION;
 pub use crate::jmorecfg_h::UINT8;
 pub use crate::jpeglib_h::j_decompress_ptr;
 pub use crate::jpeglib_h::jpeg_component_info;
 pub use crate::jpeglib_h::jpeg_upsampler;
 pub use crate::jpeglib_h::C2RustUnnamed_2;
 pub use crate::jpeglib_h::JSAMPARRAY;
-pub use crate::src::jerror::C2RustUnnamed_3;
+pub use super::jerror::C2RustUnnamed_3;
 use libc;
 
 pub use crate::jmorecfg_h::boolean;
@@ -83,160 +83,160 @@ pub use crate::jpeglib_h::JSAMPROW;
 pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::jpeglib_h::J_DITHER_MODE;
-pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
-pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
-pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
-pub use crate::src::jerror::JERR_BAD_BUFFER_MODE;
-pub use crate::src::jerror::JERR_BAD_COMPONENT_ID;
-pub use crate::src::jerror::JERR_BAD_CROP_SPEC;
-pub use crate::src::jerror::JERR_BAD_DCTSIZE;
-pub use crate::src::jerror::JERR_BAD_DCT_COEF;
-pub use crate::src::jerror::JERR_BAD_HUFF_TABLE;
-pub use crate::src::jerror::JERR_BAD_IN_COLORSPACE;
-pub use crate::src::jerror::JERR_BAD_J_COLORSPACE;
-pub use crate::src::jerror::JERR_BAD_LENGTH;
-pub use crate::src::jerror::JERR_BAD_LIB_VERSION;
-pub use crate::src::jerror::JERR_BAD_MCU_SIZE;
-pub use crate::src::jerror::JERR_BAD_PARAM;
-pub use crate::src::jerror::JERR_BAD_PARAM_VALUE;
-pub use crate::src::jerror::JERR_BAD_POOL_ID;
-pub use crate::src::jerror::JERR_BAD_PRECISION;
-pub use crate::src::jerror::JERR_BAD_PROGRESSION;
-pub use crate::src::jerror::JERR_BAD_PROG_SCRIPT;
-pub use crate::src::jerror::JERR_BAD_SAMPLING;
-pub use crate::src::jerror::JERR_BAD_SCAN_SCRIPT;
-pub use crate::src::jerror::JERR_BAD_STATE;
-pub use crate::src::jerror::JERR_BAD_STRUCT_SIZE;
-pub use crate::src::jerror::JERR_BAD_VIRTUAL_ACCESS;
-pub use crate::src::jerror::JERR_BUFFER_SIZE;
-pub use crate::src::jerror::JERR_CANT_SUSPEND;
-pub use crate::src::jerror::JERR_CCIR601_NOTIMPL;
-pub use crate::src::jerror::JERR_COMPONENT_COUNT;
-pub use crate::src::jerror::JERR_CONVERSION_NOTIMPL;
-pub use crate::src::jerror::JERR_DAC_INDEX;
-pub use crate::src::jerror::JERR_DAC_VALUE;
-pub use crate::src::jerror::JERR_DHT_INDEX;
-pub use crate::src::jerror::JERR_DQT_INDEX;
-pub use crate::src::jerror::JERR_EMPTY_IMAGE;
-pub use crate::src::jerror::JERR_EMS_READ;
-pub use crate::src::jerror::JERR_EMS_WRITE;
-pub use crate::src::jerror::JERR_EOI_EXPECTED;
-pub use crate::src::jerror::JERR_FILE_READ;
-pub use crate::src::jerror::JERR_FILE_WRITE;
-pub use crate::src::jerror::JERR_FRACT_SAMPLE_NOTIMPL;
-pub use crate::src::jerror::JERR_HUFF_CLEN_OVERFLOW;
-pub use crate::src::jerror::JERR_HUFF_MISSING_CODE;
-pub use crate::src::jerror::JERR_IMAGE_TOO_BIG;
-pub use crate::src::jerror::JERR_INPUT_EMPTY;
-pub use crate::src::jerror::JERR_INPUT_EOF;
-pub use crate::src::jerror::JERR_MISMATCHED_QUANT_TABLE;
-pub use crate::src::jerror::JERR_MISSING_DATA;
-pub use crate::src::jerror::JERR_MODE_CHANGE;
-pub use crate::src::jerror::JERR_NOTIMPL;
-pub use crate::src::jerror::JERR_NOT_COMPILED;
-pub use crate::src::jerror::JERR_NO_BACKING_STORE;
-pub use crate::src::jerror::JERR_NO_HUFF_TABLE;
-pub use crate::src::jerror::JERR_NO_IMAGE;
-pub use crate::src::jerror::JERR_NO_QUANT_TABLE;
-pub use crate::src::jerror::JERR_NO_SOI;
-pub use crate::src::jerror::JERR_OUT_OF_MEMORY;
-pub use crate::src::jerror::JERR_QUANT_COMPONENTS;
-pub use crate::src::jerror::JERR_QUANT_FEW_COLORS;
-pub use crate::src::jerror::JERR_QUANT_MANY_COLORS;
-pub use crate::src::jerror::JERR_SOF_DUPLICATE;
-pub use crate::src::jerror::JERR_SOF_NO_SOS;
-pub use crate::src::jerror::JERR_SOF_UNSUPPORTED;
-pub use crate::src::jerror::JERR_SOI_DUPLICATE;
-pub use crate::src::jerror::JERR_SOS_NO_SOF;
-pub use crate::src::jerror::JERR_TFILE_CREATE;
-pub use crate::src::jerror::JERR_TFILE_READ;
-pub use crate::src::jerror::JERR_TFILE_SEEK;
-pub use crate::src::jerror::JERR_TFILE_WRITE;
-pub use crate::src::jerror::JERR_TOO_LITTLE_DATA;
-pub use crate::src::jerror::JERR_UNKNOWN_MARKER;
-pub use crate::src::jerror::JERR_UNSUPPORTED_SUSPEND;
-pub use crate::src::jerror::JERR_VIRTUAL_BUG;
-pub use crate::src::jerror::JERR_WIDTH_OVERFLOW;
-pub use crate::src::jerror::JERR_XMS_READ;
-pub use crate::src::jerror::JERR_XMS_WRITE;
-pub use crate::src::jerror::JMSG_COPYRIGHT;
-pub use crate::src::jerror::JMSG_LASTMSGCODE;
-pub use crate::src::jerror::JMSG_NOMESSAGE;
-pub use crate::src::jerror::JMSG_VERSION;
-pub use crate::src::jerror::JTRC_16BIT_TABLES;
-pub use crate::src::jerror::JTRC_ADOBE;
-pub use crate::src::jerror::JTRC_APP0;
-pub use crate::src::jerror::JTRC_APP14;
-pub use crate::src::jerror::JTRC_DAC;
-pub use crate::src::jerror::JTRC_DHT;
-pub use crate::src::jerror::JTRC_DQT;
-pub use crate::src::jerror::JTRC_DRI;
-pub use crate::src::jerror::JTRC_EMS_CLOSE;
-pub use crate::src::jerror::JTRC_EMS_OPEN;
-pub use crate::src::jerror::JTRC_EOI;
-pub use crate::src::jerror::JTRC_HUFFBITS;
-pub use crate::src::jerror::JTRC_JFIF;
-pub use crate::src::jerror::JTRC_JFIF_BADTHUMBNAILSIZE;
-pub use crate::src::jerror::JTRC_JFIF_EXTENSION;
-pub use crate::src::jerror::JTRC_JFIF_THUMBNAIL;
-pub use crate::src::jerror::JTRC_MISC_MARKER;
-pub use crate::src::jerror::JTRC_PARMLESS_MARKER;
-pub use crate::src::jerror::JTRC_QUANTVALS;
-pub use crate::src::jerror::JTRC_QUANT_3_NCOLORS;
-pub use crate::src::jerror::JTRC_QUANT_NCOLORS;
-pub use crate::src::jerror::JTRC_QUANT_SELECTED;
-pub use crate::src::jerror::JTRC_RECOVERY_ACTION;
-pub use crate::src::jerror::JTRC_RST;
-pub use crate::src::jerror::JTRC_SMOOTH_NOTIMPL;
-pub use crate::src::jerror::JTRC_SOF;
-pub use crate::src::jerror::JTRC_SOF_COMPONENT;
-pub use crate::src::jerror::JTRC_SOI;
-pub use crate::src::jerror::JTRC_SOS;
-pub use crate::src::jerror::JTRC_SOS_COMPONENT;
-pub use crate::src::jerror::JTRC_SOS_PARAMS;
-pub use crate::src::jerror::JTRC_TFILE_CLOSE;
-pub use crate::src::jerror::JTRC_TFILE_OPEN;
-pub use crate::src::jerror::JTRC_THUMB_JPEG;
-pub use crate::src::jerror::JTRC_THUMB_PALETTE;
-pub use crate::src::jerror::JTRC_THUMB_RGB;
-pub use crate::src::jerror::JTRC_UNKNOWN_IDS;
-pub use crate::src::jerror::JTRC_XMS_CLOSE;
-pub use crate::src::jerror::JTRC_XMS_OPEN;
-pub use crate::src::jerror::JWRN_ADOBE_XFORM;
-pub use crate::src::jerror::JWRN_BOGUS_ICC;
-pub use crate::src::jerror::JWRN_BOGUS_PROGRESSION;
-pub use crate::src::jerror::JWRN_EXTRANEOUS_DATA;
-pub use crate::src::jerror::JWRN_HIT_MARKER;
-pub use crate::src::jerror::JWRN_HUFF_BAD_CODE;
-pub use crate::src::jerror::JWRN_JFIF_MAJOR;
-pub use crate::src::jerror::JWRN_JPEG_EOF;
-pub use crate::src::jerror::JWRN_MUST_RESYNC;
-pub use crate::src::jerror::JWRN_NOT_SEQUENTIAL;
-pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
-use crate::src::simd::x86_64::jsimd::jsimd_can_h2v1_fancy_upsample;
-use crate::src::simd::x86_64::jsimd::jsimd_can_h2v1_upsample;
-use crate::src::simd::x86_64::jsimd::jsimd_can_h2v2_fancy_upsample;
-use crate::src::simd::x86_64::jsimd::jsimd_can_h2v2_upsample;
-use crate::src::simd::x86_64::jsimd::jsimd_h2v1_fancy_upsample;
-use crate::src::simd::x86_64::jsimd::jsimd_h2v1_upsample;
-use crate::src::simd::x86_64::jsimd::jsimd_h2v2_fancy_upsample;
-use crate::src::simd::x86_64::jsimd::jsimd_h2v2_upsample;
+pub use super::jerror::JERR_ARITH_NOTIMPL;
+pub use super::jerror::JERR_BAD_ALIGN_TYPE;
+pub use super::jerror::JERR_BAD_ALLOC_CHUNK;
+pub use super::jerror::JERR_BAD_BUFFER_MODE;
+pub use super::jerror::JERR_BAD_COMPONENT_ID;
+pub use super::jerror::JERR_BAD_CROP_SPEC;
+pub use super::jerror::JERR_BAD_DCTSIZE;
+pub use super::jerror::JERR_BAD_DCT_COEF;
+pub use super::jerror::JERR_BAD_HUFF_TABLE;
+pub use super::jerror::JERR_BAD_IN_COLORSPACE;
+pub use super::jerror::JERR_BAD_J_COLORSPACE;
+pub use super::jerror::JERR_BAD_LENGTH;
+pub use super::jerror::JERR_BAD_LIB_VERSION;
+pub use super::jerror::JERR_BAD_MCU_SIZE;
+pub use super::jerror::JERR_BAD_PARAM;
+pub use super::jerror::JERR_BAD_PARAM_VALUE;
+pub use super::jerror::JERR_BAD_POOL_ID;
+pub use super::jerror::JERR_BAD_PRECISION;
+pub use super::jerror::JERR_BAD_PROGRESSION;
+pub use super::jerror::JERR_BAD_PROG_SCRIPT;
+pub use super::jerror::JERR_BAD_SAMPLING;
+pub use super::jerror::JERR_BAD_SCAN_SCRIPT;
+pub use super::jerror::JERR_BAD_STATE;
+pub use super::jerror::JERR_BAD_STRUCT_SIZE;
+pub use super::jerror::JERR_BAD_VIRTUAL_ACCESS;
+pub use super::jerror::JERR_BUFFER_SIZE;
+pub use super::jerror::JERR_CANT_SUSPEND;
+pub use super::jerror::JERR_CCIR601_NOTIMPL;
+pub use super::jerror::JERR_COMPONENT_COUNT;
+pub use super::jerror::JERR_CONVERSION_NOTIMPL;
+pub use super::jerror::JERR_DAC_INDEX;
+pub use super::jerror::JERR_DAC_VALUE;
+pub use super::jerror::JERR_DHT_INDEX;
+pub use super::jerror::JERR_DQT_INDEX;
+pub use super::jerror::JERR_EMPTY_IMAGE;
+pub use super::jerror::JERR_EMS_READ;
+pub use super::jerror::JERR_EMS_WRITE;
+pub use super::jerror::JERR_EOI_EXPECTED;
+pub use super::jerror::JERR_FILE_READ;
+pub use super::jerror::JERR_FILE_WRITE;
+pub use super::jerror::JERR_FRACT_SAMPLE_NOTIMPL;
+pub use super::jerror::JERR_HUFF_CLEN_OVERFLOW;
+pub use super::jerror::JERR_HUFF_MISSING_CODE;
+pub use super::jerror::JERR_IMAGE_TOO_BIG;
+pub use super::jerror::JERR_INPUT_EMPTY;
+pub use super::jerror::JERR_INPUT_EOF;
+pub use super::jerror::JERR_MISMATCHED_QUANT_TABLE;
+pub use super::jerror::JERR_MISSING_DATA;
+pub use super::jerror::JERR_MODE_CHANGE;
+pub use super::jerror::JERR_NOTIMPL;
+pub use super::jerror::JERR_NOT_COMPILED;
+pub use super::jerror::JERR_NO_BACKING_STORE;
+pub use super::jerror::JERR_NO_HUFF_TABLE;
+pub use super::jerror::JERR_NO_IMAGE;
+pub use super::jerror::JERR_NO_QUANT_TABLE;
+pub use super::jerror::JERR_NO_SOI;
+pub use super::jerror::JERR_OUT_OF_MEMORY;
+pub use super::jerror::JERR_QUANT_COMPONENTS;
+pub use super::jerror::JERR_QUANT_FEW_COLORS;
+pub use super::jerror::JERR_QUANT_MANY_COLORS;
+pub use super::jerror::JERR_SOF_DUPLICATE;
+pub use super::jerror::JERR_SOF_NO_SOS;
+pub use super::jerror::JERR_SOF_UNSUPPORTED;
+pub use super::jerror::JERR_SOI_DUPLICATE;
+pub use super::jerror::JERR_SOS_NO_SOF;
+pub use super::jerror::JERR_TFILE_CREATE;
+pub use super::jerror::JERR_TFILE_READ;
+pub use super::jerror::JERR_TFILE_SEEK;
+pub use super::jerror::JERR_TFILE_WRITE;
+pub use super::jerror::JERR_TOO_LITTLE_DATA;
+pub use super::jerror::JERR_UNKNOWN_MARKER;
+pub use super::jerror::JERR_UNSUPPORTED_SUSPEND;
+pub use super::jerror::JERR_VIRTUAL_BUG;
+pub use super::jerror::JERR_WIDTH_OVERFLOW;
+pub use super::jerror::JERR_XMS_READ;
+pub use super::jerror::JERR_XMS_WRITE;
+pub use super::jerror::JMSG_COPYRIGHT;
+pub use super::jerror::JMSG_LASTMSGCODE;
+pub use super::jerror::JMSG_NOMESSAGE;
+pub use super::jerror::JMSG_VERSION;
+pub use super::jerror::JTRC_16BIT_TABLES;
+pub use super::jerror::JTRC_ADOBE;
+pub use super::jerror::JTRC_APP0;
+pub use super::jerror::JTRC_APP14;
+pub use super::jerror::JTRC_DAC;
+pub use super::jerror::JTRC_DHT;
+pub use super::jerror::JTRC_DQT;
+pub use super::jerror::JTRC_DRI;
+pub use super::jerror::JTRC_EMS_CLOSE;
+pub use super::jerror::JTRC_EMS_OPEN;
+pub use super::jerror::JTRC_EOI;
+pub use super::jerror::JTRC_HUFFBITS;
+pub use super::jerror::JTRC_JFIF;
+pub use super::jerror::JTRC_JFIF_BADTHUMBNAILSIZE;
+pub use super::jerror::JTRC_JFIF_EXTENSION;
+pub use super::jerror::JTRC_JFIF_THUMBNAIL;
+pub use super::jerror::JTRC_MISC_MARKER;
+pub use super::jerror::JTRC_PARMLESS_MARKER;
+pub use super::jerror::JTRC_QUANTVALS;
+pub use super::jerror::JTRC_QUANT_3_NCOLORS;
+pub use super::jerror::JTRC_QUANT_NCOLORS;
+pub use super::jerror::JTRC_QUANT_SELECTED;
+pub use super::jerror::JTRC_RECOVERY_ACTION;
+pub use super::jerror::JTRC_RST;
+pub use super::jerror::JTRC_SMOOTH_NOTIMPL;
+pub use super::jerror::JTRC_SOF;
+pub use super::jerror::JTRC_SOF_COMPONENT;
+pub use super::jerror::JTRC_SOI;
+pub use super::jerror::JTRC_SOS;
+pub use super::jerror::JTRC_SOS_COMPONENT;
+pub use super::jerror::JTRC_SOS_PARAMS;
+pub use super::jerror::JTRC_TFILE_CLOSE;
+pub use super::jerror::JTRC_TFILE_OPEN;
+pub use super::jerror::JTRC_THUMB_JPEG;
+pub use super::jerror::JTRC_THUMB_PALETTE;
+pub use super::jerror::JTRC_THUMB_RGB;
+pub use super::jerror::JTRC_UNKNOWN_IDS;
+pub use super::jerror::JTRC_XMS_CLOSE;
+pub use super::jerror::JTRC_XMS_OPEN;
+pub use super::jerror::JWRN_ADOBE_XFORM;
+pub use super::jerror::JWRN_BOGUS_ICC;
+pub use super::jerror::JWRN_BOGUS_PROGRESSION;
+pub use super::jerror::JWRN_EXTRANEOUS_DATA;
+pub use super::jerror::JWRN_HIT_MARKER;
+pub use super::jerror::JWRN_HUFF_BAD_CODE;
+pub use super::jerror::JWRN_JFIF_MAJOR;
+pub use super::jerror::JWRN_JPEG_EOF;
+pub use super::jerror::JWRN_MUST_RESYNC;
+pub use super::jerror::JWRN_NOT_SEQUENTIAL;
+pub use super::jerror::JWRN_TOO_MUCH_DATA;
+use super::simd::x86_64::jsimd::jsimd_can_h2v1_fancy_upsample;
+use super::simd::x86_64::jsimd::jsimd_can_h2v1_upsample;
+use super::simd::x86_64::jsimd::jsimd_can_h2v2_fancy_upsample;
+use super::simd::x86_64::jsimd::jsimd_can_h2v2_upsample;
+use super::simd::x86_64::jsimd::jsimd_h2v1_fancy_upsample;
+use super::simd::x86_64::jsimd::jsimd_h2v1_upsample;
+use super::simd::x86_64::jsimd::jsimd_h2v2_fancy_upsample;
+use super::simd::x86_64::jsimd::jsimd_h2v2_upsample;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 // =============== BEGIN jdsample_h ================
-pub type my_upsample_ptr = *mut crate::src::jdsample::my_upsampler;
+pub type my_upsample_ptr = *mut my_upsampler;
 
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct my_upsampler {
-    pub pub_0: crate::jpeglib_h::jpeg_upsampler,
-    pub color_buf: [crate::jpeglib_h::JSAMPARRAY; 10],
-    pub methods: [crate::src::jdsample::upsample1_ptr; 10],
-    pub next_row_out: libc::c_int,
-    pub rows_to_go: crate::jmorecfg_h::JDIMENSION,
-    pub rowgroup_height: [libc::c_int; 10],
-    pub h_expand: [crate::jmorecfg_h::UINT8; 10],
-    pub v_expand: [crate::jmorecfg_h::UINT8; 10],
+    pub pub_0: jpeg_upsampler,
+    pub color_buf: [JSAMPARRAY; 10],
+    pub methods: [upsample1_ptr; 10],
+    pub next_row_out: c_int,
+    pub rows_to_go: JDIMENSION,
+    pub rowgroup_height: [c_int; 10],
+    pub h_expand: [UINT8; 10],
+    pub v_expand: [UINT8; 10],
 }
 /*
  * jdsample.h
@@ -250,10 +250,10 @@ pub struct my_upsampler {
 
 pub type upsample1_ptr = Option<
     unsafe extern "C" fn(
-        _: crate::jpeglib_h::j_decompress_ptr,
-        _: *mut crate::jpeglib_h::jpeg_component_info,
-        _: crate::jpeglib_h::JSAMPARRAY,
-        _: *mut crate::jpeglib_h::JSAMPARRAY,
+        _: j_decompress_ptr,
+        _: *mut jpeg_component_info,
+        _: JSAMPARRAY,
+        _: *mut JSAMPARRAY,
     ) -> (),
 >;
 /*
@@ -285,9 +285,9 @@ pub type upsample1_ptr = Option<
  * Initialize for an upsampling pass.
  */
 
-unsafe extern "C" fn start_pass_upsample(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
-    let mut upsample: crate::src::jdsample::my_upsample_ptr =
-        (*cinfo).upsample as crate::src::jdsample::my_upsample_ptr;
+unsafe extern "C" fn start_pass_upsample(mut cinfo: j_decompress_ptr) {
+    let mut upsample: my_upsample_ptr =
+        (*cinfo).upsample as my_upsample_ptr;
     /* Mark the conversion buffer empty */
     (*upsample).next_row_out = (*cinfo).max_v_samp_factor;
     /* Initialize total-height counter for detecting bottom of image */
@@ -302,23 +302,23 @@ unsafe extern "C" fn start_pass_upsample(mut cinfo: crate::jpeglib_h::j_decompre
  */
 
 unsafe extern "C" fn sep_upsample(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut input_buf: crate::jpeglib_h::JSAMPIMAGE,
-    mut in_row_group_ctr: *mut crate::jmorecfg_h::JDIMENSION,
-    mut in_row_groups_avail: crate::jmorecfg_h::JDIMENSION,
-    mut output_buf: crate::jpeglib_h::JSAMPARRAY,
-    mut out_row_ctr: *mut crate::jmorecfg_h::JDIMENSION,
-    mut out_rows_avail: crate::jmorecfg_h::JDIMENSION,
+    mut cinfo: j_decompress_ptr,
+    mut input_buf: JSAMPIMAGE,
+    mut in_row_group_ctr: *mut JDIMENSION,
+    mut in_row_groups_avail: JDIMENSION,
+    mut output_buf: JSAMPARRAY,
+    mut out_row_ctr: *mut JDIMENSION,
+    mut out_rows_avail: JDIMENSION,
 ) {
-     let mut upsample: crate::src::jdsample::my_upsample_ptr =
-        (*cinfo).upsample as crate::src::jdsample::my_upsample_ptr;
+     let mut upsample: my_upsample_ptr =
+        (*cinfo).upsample as my_upsample_ptr;
     
     
     
     /* Fill the conversion buffer, if it's empty */
     if (*upsample).next_row_out >= (*cinfo).max_v_samp_factor {
           
-         let mut ci:   libc::c_int =  0i32; let mut compptr:   *mut crate::jpeglib_h::jpeg_component_info =
+         let mut ci:   c_int =  0i32; let mut compptr:   *mut jpeg_component_info =
      (*cinfo).comp_info;
         while ci < (*cinfo).num_components {
             /* Invoke per-component upsample method.  Notice we pass a POINTER
@@ -332,7 +332,7 @@ unsafe extern "C" fn sep_upsample(
                 cinfo,
                 compptr,
                 (*input_buf.offset(ci as isize)).offset(
-                    (*in_row_group_ctr * (*upsample).rowgroup_height[ci as usize] as libc::c_uint)
+                    (*in_row_group_ctr * (*upsample).rowgroup_height[ci as usize] as c_uint)
                         as isize,
                 ),
                 (*upsample).color_buf.as_mut_ptr().offset(ci as isize),
@@ -342,9 +342,9 @@ unsafe extern "C" fn sep_upsample(
         }
         (*upsample).next_row_out = 0i32
     }
-     let mut num_rows:   crate::jmorecfg_h::JDIMENSION =
+     let mut num_rows:   JDIMENSION =
     
-        ((*cinfo).max_v_samp_factor - (*upsample).next_row_out) as crate::jmorecfg_h::JDIMENSION;
+        ((*cinfo).max_v_samp_factor - (*upsample).next_row_out) as JDIMENSION;
     /* Not more than the distance to the end of the image.  Need this test
      * in case the image height is not a multiple of max_v_samp_factor:
      */
@@ -364,14 +364,14 @@ unsafe extern "C" fn sep_upsample(
     .expect("non-null function pointer")(
         cinfo,
         (*upsample).color_buf.as_mut_ptr(),
-        (*upsample).next_row_out as crate::jmorecfg_h::JDIMENSION,
+        (*upsample).next_row_out as JDIMENSION,
         output_buf.offset(*out_row_ctr as isize),
-        num_rows as libc::c_int,
+        num_rows as c_int,
     );
     /* Adjust counts */
     *out_row_ctr = *out_row_ctr + num_rows;
     (*upsample).rows_to_go = (*upsample).rows_to_go - num_rows;
-    (*upsample).next_row_out = ((((*upsample).next_row_out as libc::c_uint + num_rows))) as libc::c_int;
+    (*upsample).next_row_out = ((((*upsample).next_row_out as c_uint + num_rows))) as c_int;
     /* When the buffer is emptied, declare this input row group consumed */
     if (*upsample).next_row_out >= (*cinfo).max_v_samp_factor {
         *in_row_group_ctr = *in_row_group_ctr + 1
@@ -389,10 +389,10 @@ unsafe extern "C" fn sep_upsample(
  */
 
 unsafe extern "C" fn fullsize_upsample(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut compptr: *mut crate::jpeglib_h::jpeg_component_info,
-    mut input_data: crate::jpeglib_h::JSAMPARRAY,
-    mut output_data_ptr: *mut crate::jpeglib_h::JSAMPARRAY,
+    mut cinfo: j_decompress_ptr,
+    mut compptr: *mut jpeg_component_info,
+    mut input_data: JSAMPARRAY,
+    mut output_data_ptr: *mut JSAMPARRAY,
 ) {
     *output_data_ptr = input_data;
 }
@@ -402,12 +402,12 @@ unsafe extern "C" fn fullsize_upsample(
  */
 
 unsafe extern "C" fn noop_upsample(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut compptr: *mut crate::jpeglib_h::jpeg_component_info,
-    mut input_data: crate::jpeglib_h::JSAMPARRAY,
-    mut output_data_ptr: *mut crate::jpeglib_h::JSAMPARRAY,
+    mut cinfo: j_decompress_ptr,
+    mut compptr: *mut jpeg_component_info,
+    mut input_data: JSAMPARRAY,
+    mut output_data_ptr: *mut JSAMPARRAY,
 ) {
-    *output_data_ptr = crate::stddef_h::NULL as crate::jpeglib_h::JSAMPARRAY;
+    *output_data_ptr = NULL as JSAMPARRAY;
     /* safety check */
 }
 /*
@@ -422,14 +422,14 @@ unsafe extern "C" fn noop_upsample(
  */
 
 unsafe extern "C" fn int_upsample(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut compptr: *mut crate::jpeglib_h::jpeg_component_info,
-    mut input_data: crate::jpeglib_h::JSAMPARRAY,
-    mut output_data_ptr: *mut crate::jpeglib_h::JSAMPARRAY,
+    mut cinfo: j_decompress_ptr,
+    mut compptr: *mut jpeg_component_info,
+    mut input_data: JSAMPARRAY,
+    mut output_data_ptr: *mut JSAMPARRAY,
 ) {
-        let mut upsample: crate::src::jdsample::my_upsample_ptr =
-        (*cinfo).upsample as crate::src::jdsample::my_upsample_ptr;
-    let mut output_data: crate::jpeglib_h::JSAMPARRAY = *output_data_ptr;
+        let mut upsample: my_upsample_ptr =
+        (*cinfo).upsample as my_upsample_ptr;
+    let mut output_data: JSAMPARRAY = *output_data_ptr;
     
     
     
@@ -442,21 +442,21 @@ unsafe extern "C" fn int_upsample(
     
     
     
-     let mut h_expand:   libc::c_int =
-     (*upsample).h_expand[(*compptr).component_index as usize] as libc::c_int; let mut v_expand:   libc::c_int =
-     (*upsample).v_expand[(*compptr).component_index as usize] as libc::c_int; let mut outrow:   libc::c_int =  0i32; let mut inrow:   libc::c_int =  outrow;
+     let mut h_expand:   c_int =
+     (*upsample).h_expand[(*compptr).component_index as usize] as c_int; let mut v_expand:   c_int =
+     (*upsample).v_expand[(*compptr).component_index as usize] as c_int; let mut outrow:   c_int =  0i32; let mut inrow:   c_int =  outrow;
     while outrow < (*cinfo).max_v_samp_factor {
            /* don't need GETJSAMPLE() here */
         
-         let mut inptr:   crate::jpeglib_h::JSAMPROW =
-     *input_data.offset(inrow as isize); let mut outptr:   crate::jpeglib_h::JSAMPROW =
-     *output_data.offset(outrow as isize); let mut outend:   crate::jpeglib_h::JSAMPROW =
+         let mut inptr:   JSAMPROW =
+     *input_data.offset(inrow as isize); let mut outptr:   JSAMPROW =
+     *output_data.offset(outrow as isize); let mut outend:   JSAMPROW =
      outptr.offset((*cinfo).output_width as isize);
         while outptr < outend {
               let fresh0 = inptr;
             inptr = inptr.offset(1);
             
-             let mut invalue:   crate::jmorecfg_h::JSAMPLE =  *fresh0; let mut h:   libc::c_int =  h_expand;
+             let mut invalue:   JSAMPLE =  *fresh0; let mut h:   c_int =  h_expand;
             while h > 0i32 {
                 let fresh1 = outptr;
                 outptr = outptr.offset(1);
@@ -466,7 +466,7 @@ unsafe extern "C" fn int_upsample(
         }
         /* Generate any additional output rows by duplicating the first one */
         if v_expand > 1i32 {
-            crate::jpegint_h::jcopy_sample_rows(
+            jcopy_sample_rows(
                 output_data,
                 outrow,
                 output_data,
@@ -485,29 +485,29 @@ unsafe extern "C" fn int_upsample(
  */
 
 unsafe extern "C" fn h2v1_upsample(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut compptr: *mut crate::jpeglib_h::jpeg_component_info,
-    mut input_data: crate::jpeglib_h::JSAMPARRAY,
-    mut output_data_ptr: *mut crate::jpeglib_h::JSAMPARRAY,
+    mut cinfo: j_decompress_ptr,
+    mut compptr: *mut jpeg_component_info,
+    mut input_data: JSAMPARRAY,
+    mut output_data_ptr: *mut JSAMPARRAY,
 ) {
-     let mut output_data: crate::jpeglib_h::JSAMPARRAY = *output_data_ptr; /* don't need GETJSAMPLE() here */
+     let mut output_data: JSAMPARRAY = *output_data_ptr; /* don't need GETJSAMPLE() here */
     
     
     
     
     
-     let mut inrow:   libc::c_int =  0i32;
+     let mut inrow:   c_int =  0i32;
     while inrow < (*cinfo).max_v_samp_factor {
            
         
-         let mut inptr:   crate::jpeglib_h::JSAMPROW =
-     *input_data.offset(inrow as isize); let mut outptr:   crate::jpeglib_h::JSAMPROW =
-     *output_data.offset(inrow as isize); let mut outend:   crate::jpeglib_h::JSAMPROW =
+         let mut inptr:   JSAMPROW =
+     *input_data.offset(inrow as isize); let mut outptr:   JSAMPROW =
+     *output_data.offset(inrow as isize); let mut outend:   JSAMPROW =
      outptr.offset((*cinfo).output_width as isize);
         while outptr < outend {
              let fresh2 = inptr;
             inptr = inptr.offset(1);
-             let mut invalue:   crate::jmorecfg_h::JSAMPLE =  *fresh2;
+             let mut invalue:   JSAMPLE =  *fresh2;
             let fresh3 = outptr;
             outptr = outptr.offset(1);
             *fresh3 = invalue;
@@ -524,12 +524,12 @@ unsafe extern "C" fn h2v1_upsample(
  */
 
 unsafe extern "C" fn h2v2_upsample(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut compptr: *mut crate::jpeglib_h::jpeg_component_info,
-    mut input_data: crate::jpeglib_h::JSAMPARRAY,
-    mut output_data_ptr: *mut crate::jpeglib_h::JSAMPARRAY,
+    mut cinfo: j_decompress_ptr,
+    mut compptr: *mut jpeg_component_info,
+    mut input_data: JSAMPARRAY,
+    mut output_data_ptr: *mut JSAMPARRAY,
 ) {
-      let mut output_data: crate::jpeglib_h::JSAMPARRAY = *output_data_ptr; /* don't need GETJSAMPLE() here */
+      let mut output_data: JSAMPARRAY = *output_data_ptr; /* don't need GETJSAMPLE() here */
     
     
     
@@ -537,18 +537,18 @@ unsafe extern "C" fn h2v2_upsample(
     
     
     
-     let mut outrow:   libc::c_int =  0i32; let mut inrow:   libc::c_int =  outrow;
+     let mut outrow:   c_int =  0i32; let mut inrow:   c_int =  outrow;
     while outrow < (*cinfo).max_v_samp_factor {
            
         
-         let mut inptr:   crate::jpeglib_h::JSAMPROW =
-     *input_data.offset(inrow as isize); let mut outptr:   crate::jpeglib_h::JSAMPROW =
-     *output_data.offset(outrow as isize); let mut outend:   crate::jpeglib_h::JSAMPROW =
+         let mut inptr:   JSAMPROW =
+     *input_data.offset(inrow as isize); let mut outptr:   JSAMPROW =
+     *output_data.offset(outrow as isize); let mut outend:   JSAMPROW =
      outptr.offset((*cinfo).output_width as isize);
         while outptr < outend {
              let fresh5 = inptr;
             inptr = inptr.offset(1);
-             let mut invalue:   crate::jmorecfg_h::JSAMPLE =  *fresh5;
+             let mut invalue:   JSAMPLE =  *fresh5;
             let fresh6 = outptr;
             outptr = outptr.offset(1);
             *fresh6 = invalue;
@@ -556,7 +556,7 @@ unsafe extern "C" fn h2v2_upsample(
             outptr = outptr.offset(1);
             *fresh7 = invalue
         }
-        crate::jpegint_h::jcopy_sample_rows(
+        jcopy_sample_rows(
             output_data,
             outrow,
             output_data,
@@ -584,61 +584,61 @@ unsafe extern "C" fn h2v2_upsample(
  */
 
 unsafe extern "C" fn h2v1_fancy_upsample(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut compptr: *mut crate::jpeglib_h::jpeg_component_info,
-    mut input_data: crate::jpeglib_h::JSAMPARRAY,
-    mut output_data_ptr: *mut crate::jpeglib_h::JSAMPARRAY,
+    mut cinfo: j_decompress_ptr,
+    mut compptr: *mut jpeg_component_info,
+    mut input_data: JSAMPARRAY,
+    mut output_data_ptr: *mut JSAMPARRAY,
 ) {
-     let mut output_data: crate::jpeglib_h::JSAMPARRAY = *output_data_ptr;
+     let mut output_data: JSAMPARRAY = *output_data_ptr;
     
     
     
     
     
-     let mut inrow:   libc::c_int =  0i32;
+     let mut inrow:   c_int =  0i32;
     while inrow < (*cinfo).max_v_samp_factor {
             
-         let mut inptr:   crate::jpeglib_h::JSAMPROW =
-     *input_data.offset(inrow as isize); let mut outptr:   crate::jpeglib_h::JSAMPROW =
+         let mut inptr:   JSAMPROW =
+     *input_data.offset(inrow as isize); let mut outptr:   JSAMPROW =
      *output_data.offset(inrow as isize);
         /* Special case for first column */
         let fresh8 = inptr;
         inptr = inptr.offset(1);
-         let mut invalue:   libc::c_int =  *fresh8 as libc::c_int;
+         let mut invalue:   c_int =  *fresh8 as c_int;
         let fresh9 = outptr;
         outptr = outptr.offset(1);
-        *fresh9 = invalue as crate::jmorecfg_h::JSAMPLE;
+        *fresh9 = invalue as JSAMPLE;
         let fresh10 = outptr;
         outptr = outptr.offset(1);
         *fresh10 =
-            (invalue * 3i32 + *inptr as libc::c_int + 2i32 >> 2i32) as crate::jmorecfg_h::JSAMPLE;
-         let mut colctr:   crate::jmorecfg_h::JDIMENSION =
+            (invalue * 3i32 + *inptr as c_int + 2i32 >> 2i32) as JSAMPLE;
+         let mut colctr:   JDIMENSION =
       (*compptr)
             .downsampled_width - 2u32;
         while colctr > 0u32 {
             /* General case: 3/4 * nearer pixel + 1/4 * further pixel */
             let fresh11 = inptr;
             inptr = inptr.offset(1);
-            invalue = *fresh11 as libc::c_int * 3i32;
+            invalue = *fresh11 as c_int * 3i32;
             let fresh12 = outptr;
             outptr = outptr.offset(1);
-            *fresh12 = (invalue + *inptr.offset(-2isize) as libc::c_int + 1i32 >> 2i32)
-                as crate::jmorecfg_h::JSAMPLE;
+            *fresh12 = (invalue + *inptr.offset(-2isize) as c_int + 1i32 >> 2i32)
+                as JSAMPLE;
             let fresh13 = outptr;
             outptr = outptr.offset(1);
             *fresh13 =
-                (invalue + *inptr as libc::c_int + 2i32 >> 2i32) as crate::jmorecfg_h::JSAMPLE;
+                (invalue + *inptr as c_int + 2i32 >> 2i32) as JSAMPLE;
             colctr -=  1
         }
         /* Special case for last column */
-        invalue = *inptr as libc::c_int;
+        invalue = *inptr as c_int;
         let fresh14 = outptr;
         outptr = outptr.offset(1);
-        *fresh14 = (invalue * 3i32 + *inptr.offset(-1isize) as libc::c_int + 1i32 >> 2i32)
-            as crate::jmorecfg_h::JSAMPLE;
+        *fresh14 = (invalue * 3i32 + *inptr.offset(-1isize) as c_int + 1i32 >> 2i32)
+            as JSAMPLE;
         let fresh15 = outptr;
         outptr = outptr.offset(1);
-        *fresh15 = invalue as crate::jmorecfg_h::JSAMPLE;
+        *fresh15 = invalue as JSAMPLE;
         inrow += 1
     }
 }
@@ -650,12 +650,12 @@ unsafe extern "C" fn h2v1_fancy_upsample(
  */
 
 unsafe extern "C" fn h1v2_fancy_upsample(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut compptr: *mut crate::jpeglib_h::jpeg_component_info,
-    mut input_data: crate::jpeglib_h::JSAMPARRAY,
-    mut output_data_ptr: *mut crate::jpeglib_h::JSAMPARRAY,
+    mut cinfo: j_decompress_ptr,
+    mut compptr: *mut jpeg_component_info,
+    mut input_data: JSAMPARRAY,
+    mut output_data_ptr: *mut JSAMPARRAY,
 ) {
-      let mut output_data: crate::jpeglib_h::JSAMPARRAY = *output_data_ptr;
+      let mut output_data: JSAMPARRAY = *output_data_ptr;
     
     
     
@@ -665,12 +665,12 @@ unsafe extern "C" fn h1v2_fancy_upsample(
     
     
     
-     let mut outrow:   libc::c_int =  0i32; let mut inrow:   libc::c_int =  outrow;
+     let mut outrow:   c_int =  0i32; let mut inrow:   c_int =  outrow;
     while outrow < (*cinfo).max_v_samp_factor {
-          let mut v:   libc::c_int =  0i32;
+          let mut v:   c_int =  0i32;
         while v < 2i32 {
-             let mut inptr1:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();   let mut inptr0:   crate::jpeglib_h::JSAMPROW =
+             let mut inptr1:  JSAMPROW =
+     ::std::ptr::null_mut::< JSAMPLE>();   let mut inptr0:   JSAMPROW =
      *input_data.offset(inrow as isize);
             if v == 0i32 {
                 /* next nearest is row above */
@@ -682,18 +682,18 @@ unsafe extern "C" fn h1v2_fancy_upsample(
             let fresh16 = outrow;
             outrow +=  1;
             
-             let mut outptr:   crate::jpeglib_h::JSAMPROW =
-     *output_data.offset(fresh16 as isize); let mut colctr:   crate::jmorecfg_h::JDIMENSION =  0u32;
+             let mut outptr:   JSAMPROW =
+     *output_data.offset(fresh16 as isize); let mut colctr:   JDIMENSION =  0u32;
             while colctr < (*compptr).downsampled_width {
                  let fresh17 = inptr0;
                 inptr0 = inptr0.offset(1);
                 let fresh18 = inptr1;
                 inptr1 = inptr1.offset(1);
-                 let mut thiscolsum:   libc::c_int =
-     *fresh17 as libc::c_int * 3i32 + *fresh18 as libc::c_int;
+                 let mut thiscolsum:   c_int =
+     *fresh17 as c_int * 3i32 + *fresh18 as c_int;
                 let fresh19 = outptr;
                 outptr = outptr.offset(1);
-                *fresh19 = (thiscolsum + 1i32 >> 2i32) as crate::jmorecfg_h::JSAMPLE;
+                *fresh19 = (thiscolsum + 1i32 >> 2i32) as JSAMPLE;
                 colctr +=  1
             }
             v += 1
@@ -710,12 +710,12 @@ unsafe extern "C" fn h1v2_fancy_upsample(
  */
 
 unsafe extern "C" fn h2v2_fancy_upsample(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut compptr: *mut crate::jpeglib_h::jpeg_component_info,
-    mut input_data: crate::jpeglib_h::JSAMPARRAY,
-    mut output_data_ptr: *mut crate::jpeglib_h::JSAMPARRAY,
+    mut cinfo: j_decompress_ptr,
+    mut compptr: *mut jpeg_component_info,
+    mut input_data: JSAMPARRAY,
+    mut output_data_ptr: *mut JSAMPARRAY,
 ) {
-      let mut output_data: crate::jpeglib_h::JSAMPARRAY = *output_data_ptr;
+      let mut output_data: JSAMPARRAY = *output_data_ptr;
     
     
     
@@ -727,12 +727,12 @@ unsafe extern "C" fn h2v2_fancy_upsample(
     
     
     
-     let mut outrow:   libc::c_int =  0i32; let mut inrow:   libc::c_int =  outrow;
+     let mut outrow:   c_int =  0i32; let mut inrow:   c_int =  outrow;
     while outrow < (*cinfo).max_v_samp_factor {
-          let mut v:   libc::c_int =  0i32;
+          let mut v:   c_int =  0i32;
         while v < 2i32 {
-             let mut inptr1:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();      let mut inptr0:   crate::jpeglib_h::JSAMPROW =
+             let mut inptr1:  JSAMPROW =
+     ::std::ptr::null_mut::< JSAMPLE>();      let mut inptr0:   JSAMPROW =
      *input_data.offset(inrow as isize);
             if v == 0i32 {
                 /* next nearest is row above */
@@ -743,31 +743,31 @@ unsafe extern "C" fn h2v2_fancy_upsample(
             }
             let fresh20 = outrow;
             outrow +=  1;
-             let mut outptr:   crate::jpeglib_h::JSAMPROW =
+             let mut outptr:   JSAMPROW =
      *output_data.offset(fresh20 as isize);
             /* Special case for first column */
             let fresh21 = inptr0;
             inptr0 = inptr0.offset(1);
             let fresh22 = inptr1;
             inptr1 = inptr1.offset(1);
-             let mut thiscolsum:   libc::c_int =
-     *fresh21 as libc::c_int * 3i32 + *fresh22 as libc::c_int;
+             let mut thiscolsum:   c_int =
+     *fresh21 as c_int * 3i32 + *fresh22 as c_int;
             let fresh23 = inptr0;
             inptr0 = inptr0.offset(1);
             let fresh24 = inptr1;
             inptr1 = inptr1.offset(1);
-             let mut nextcolsum:   libc::c_int =
-     *fresh23 as libc::c_int * 3i32 + *fresh24 as libc::c_int;
+             let mut nextcolsum:   c_int =
+     *fresh23 as c_int * 3i32 + *fresh24 as c_int;
             let fresh25 = outptr;
             outptr = outptr.offset(1);
-            *fresh25 = (thiscolsum * 4i32 + 8i32 >> 4i32) as crate::jmorecfg_h::JSAMPLE;
+            *fresh25 = (thiscolsum * 4i32 + 8i32 >> 4i32) as JSAMPLE;
             let fresh26 = outptr;
             outptr = outptr.offset(1);
             *fresh26 =
-                (thiscolsum * 3i32 + nextcolsum + 7i32 >> 4i32) as crate::jmorecfg_h::JSAMPLE;
-             let mut lastcolsum:   libc::c_int =  thiscolsum;
+                (thiscolsum * 3i32 + nextcolsum + 7i32 >> 4i32) as JSAMPLE;
+             let mut lastcolsum:   c_int =  thiscolsum;
             thiscolsum = nextcolsum;
-             let mut colctr:   crate::jmorecfg_h::JDIMENSION =
+             let mut colctr:   JDIMENSION =
       (*compptr)
                 .downsampled_width - 2u32;
             while colctr > 0u32 {
@@ -777,15 +777,15 @@ unsafe extern "C" fn h2v2_fancy_upsample(
                 inptr0 = inptr0.offset(1);
                 let fresh28 = inptr1;
                 inptr1 = inptr1.offset(1);
-                nextcolsum = *fresh27 as libc::c_int * 3i32 + *fresh28 as libc::c_int;
+                nextcolsum = *fresh27 as c_int * 3i32 + *fresh28 as c_int;
                 let fresh29 = outptr;
                 outptr = outptr.offset(1);
                 *fresh29 =
-                    (thiscolsum * 3i32 + lastcolsum + 8i32 >> 4i32) as crate::jmorecfg_h::JSAMPLE;
+                    (thiscolsum * 3i32 + lastcolsum + 8i32 >> 4i32) as JSAMPLE;
                 let fresh30 = outptr;
                 outptr = outptr.offset(1);
                 *fresh30 =
-                    (thiscolsum * 3i32 + nextcolsum + 7i32 >> 4i32) as crate::jmorecfg_h::JSAMPLE;
+                    (thiscolsum * 3i32 + nextcolsum + 7i32 >> 4i32) as JSAMPLE;
                 lastcolsum = thiscolsum;
                 thiscolsum = nextcolsum;
                 colctr -=  1
@@ -794,10 +794,10 @@ unsafe extern "C" fn h2v2_fancy_upsample(
             let fresh31 = outptr;
             outptr = outptr.offset(1);
             *fresh31 =
-                (thiscolsum * 3i32 + lastcolsum + 8i32 >> 4i32) as crate::jmorecfg_h::JSAMPLE;
+                (thiscolsum * 3i32 + lastcolsum + 8i32 >> 4i32) as JSAMPLE;
             let fresh32 = outptr;
             outptr = outptr.offset(1);
-            *fresh32 = (thiscolsum * 4i32 + 7i32 >> 4i32) as crate::jmorecfg_h::JSAMPLE;
+            *fresh32 = (thiscolsum * 4i32 + 7i32 >> 4i32) as JSAMPLE;
             v += 1
         }
         inrow += 1
@@ -808,7 +808,7 @@ unsafe extern "C" fn h2v2_fancy_upsample(
  */
 #[no_mangle]
 
-pub unsafe extern "C" fn jinit_upsampler(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
+pub unsafe extern "C" fn jinit_upsampler(mut cinfo: j_decompress_ptr) {
     
     
     
@@ -817,9 +817,9 @@ pub unsafe extern "C" fn jinit_upsampler(mut cinfo: crate::jpeglib_h::j_decompre
     
     
     
-     let mut upsample:  crate::src::jdsample::my_upsample_ptr =
+     let mut upsample:  my_upsample_ptr =
     
-        ::std::ptr::null_mut::< crate::src::jdsample::my_upsampler>();   
+        ::std::ptr::null_mut::< my_upsampler>();   
     if (*(*cinfo).master).jinit_upsampler_no_alloc == 0 {
         upsample = Some(
             (*(*cinfo).mem)
@@ -827,41 +827,41 @@ pub unsafe extern "C" fn jinit_upsampler(mut cinfo: crate::jpeglib_h::j_decompre
                 .expect("non-null function pointer"),
         )
         .expect("non-null function pointer")(
-            cinfo as crate::jpeglib_h::j_common_ptr,
-            crate::jpeglib_h::JPOOL_IMAGE,
-            ::std::mem::size_of::<crate::src::jdsample::my_upsampler>() as libc::c_ulong,
-        ) as crate::src::jdsample::my_upsample_ptr;
-        (*cinfo).upsample = upsample as *mut crate::jpeglib_h::jpeg_upsampler;
+            cinfo as j_common_ptr,
+            JPOOL_IMAGE,
+            ::std::mem::size_of::<my_upsampler>() as c_ulong,
+        ) as my_upsample_ptr;
+        (*cinfo).upsample = upsample as *mut jpeg_upsampler;
         (*upsample).pub_0.start_pass = Some(
             start_pass_upsample
-                as unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> (),
+                as unsafe extern "C" fn(_: j_decompress_ptr) -> (),
         );
         (*upsample).pub_0.upsample = Some(
             sep_upsample
                 as unsafe extern "C" fn(
-                    _: crate::jpeglib_h::j_decompress_ptr,
-                    _: crate::jpeglib_h::JSAMPIMAGE,
-                    _: *mut crate::jmorecfg_h::JDIMENSION,
-                    _: crate::jmorecfg_h::JDIMENSION,
-                    _: crate::jpeglib_h::JSAMPARRAY,
-                    _: *mut crate::jmorecfg_h::JDIMENSION,
-                    _: crate::jmorecfg_h::JDIMENSION,
+                    _: j_decompress_ptr,
+                    _: JSAMPIMAGE,
+                    _: *mut JDIMENSION,
+                    _: JDIMENSION,
+                    _: JSAMPARRAY,
+                    _: *mut JDIMENSION,
+                    _: JDIMENSION,
                 ) -> (),
         );
-        (*upsample).pub_0.need_context_rows = crate::jmorecfg_h::FALSE
+        (*upsample).pub_0.need_context_rows = FALSE
     /* until we find out differently */
     } else {
-        upsample = (*cinfo).upsample as crate::src::jdsample::my_upsample_ptr
+        upsample = (*cinfo).upsample as my_upsample_ptr
     }
     if (*cinfo).CCIR601_sampling != 0 {
         /* this isn't supported */
-        (*(*cinfo).err).msg_code = crate::src::jerror::JERR_CCIR601_NOTIMPL as libc::c_int;
+        (*(*cinfo).err).msg_code = super::jerror::JERR_CCIR601_NOTIMPL as c_int;
         Some(
             (*(*cinfo).err)
                 .error_exit
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     /* jdmainct.c doesn't support context rows when min_DCT_scaled_size = 1,
      * so don't ask for it.
@@ -871,9 +871,9 @@ pub unsafe extern "C" fn jinit_upsampler(mut cinfo: crate::jpeglib_h::j_decompre
      * and create storage as needed.
      */
     
-     let mut do_fancy:   crate::jmorecfg_h::boolean =
+     let mut do_fancy:   boolean =
     
-        ((*cinfo).do_fancy_upsampling != 0 && (*cinfo).min_DCT_scaled_size > 1i32) as libc::c_int; let mut ci:   libc::c_int =  0i32; let mut compptr:   *mut crate::jpeglib_h::jpeg_component_info =
+        ((*cinfo).do_fancy_upsampling != 0 && (*cinfo).min_DCT_scaled_size > 1i32) as c_int; let mut ci:   c_int =  0i32; let mut compptr:   *mut jpeg_component_info =
      (*cinfo).comp_info;
     while ci < (*cinfo).num_components {
         /* Compute size of an "input group" after IDCT scaling.  This many samples
@@ -882,79 +882,79 @@ pub unsafe extern "C" fn jinit_upsampler(mut cinfo: crate::jpeglib_h::j_decompre
               /* save for use later */
         
         
-         let mut h_in_group:   libc::c_int =
+         let mut h_in_group:   c_int =
     
-            (*compptr).h_samp_factor * (*compptr).DCT_scaled_size / (*cinfo).min_DCT_scaled_size; let mut v_in_group:   libc::c_int =
+            (*compptr).h_samp_factor * (*compptr).DCT_scaled_size / (*cinfo).min_DCT_scaled_size; let mut v_in_group:   c_int =
     
-            (*compptr).v_samp_factor * (*compptr).DCT_scaled_size / (*cinfo).min_DCT_scaled_size; let mut h_out_group:   libc::c_int =  (*cinfo).max_h_samp_factor; let mut v_out_group:   libc::c_int =  (*cinfo).max_v_samp_factor;
+            (*compptr).v_samp_factor * (*compptr).DCT_scaled_size / (*cinfo).min_DCT_scaled_size; let mut h_out_group:   c_int =  (*cinfo).max_h_samp_factor; let mut v_out_group:   c_int =  (*cinfo).max_v_samp_factor;
         (*upsample).rowgroup_height[ci as usize] = v_in_group;
-         let mut need_buffer:   crate::jmorecfg_h::boolean =  crate::jmorecfg_h::TRUE;
+         let mut need_buffer:   boolean =  TRUE;
         if (*compptr).component_needed == 0 {
             /* Don't bother to upsample an uninteresting component. */
             (*upsample).methods[ci as usize] = Some(
                 noop_upsample
                     as unsafe extern "C" fn(
-                        _: crate::jpeglib_h::j_decompress_ptr,
-                        _: *mut crate::jpeglib_h::jpeg_component_info,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: *mut crate::jpeglib_h::JSAMPARRAY,
+                        _: j_decompress_ptr,
+                        _: *mut jpeg_component_info,
+                        _: JSAMPARRAY,
+                        _: *mut JSAMPARRAY,
                     ) -> (),
             );
-            need_buffer = crate::jmorecfg_h::FALSE
+            need_buffer = FALSE
         } else if h_in_group == h_out_group && v_in_group == v_out_group {
             /* Fullsize components can be processed without any work. */
             (*upsample).methods[ci as usize] = Some(
                 fullsize_upsample
                     as unsafe extern "C" fn(
-                        _: crate::jpeglib_h::j_decompress_ptr,
-                        _: *mut crate::jpeglib_h::jpeg_component_info,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: *mut crate::jpeglib_h::JSAMPARRAY,
+                        _: j_decompress_ptr,
+                        _: *mut jpeg_component_info,
+                        _: JSAMPARRAY,
+                        _: *mut JSAMPARRAY,
                     ) -> (),
             );
-            need_buffer = crate::jmorecfg_h::FALSE
+            need_buffer = FALSE
         } else if h_in_group * 2i32 == h_out_group && v_in_group == v_out_group {
             /* Special cases for 2h1v upsampling */
             if do_fancy != 0 && (*compptr).downsampled_width > 2u32 {
-                if crate::src::simd::x86_64::jsimd::jsimd_can_h2v1_fancy_upsample() != 0 {
+                if super::simd::x86_64::jsimd::jsimd_can_h2v1_fancy_upsample() != 0 {
                     (*upsample).methods[ci as usize] = Some(
-                        crate::src::simd::x86_64::jsimd::jsimd_h2v1_fancy_upsample
+                        super::simd::x86_64::jsimd::jsimd_h2v1_fancy_upsample
                             as unsafe extern "C" fn(
-                                _: crate::jpeglib_h::j_decompress_ptr,
-                                _: *mut crate::jpeglib_h::jpeg_component_info,
-                                _: crate::jpeglib_h::JSAMPARRAY,
-                                _: *mut crate::jpeglib_h::JSAMPARRAY,
+                                _: j_decompress_ptr,
+                                _: *mut jpeg_component_info,
+                                _: JSAMPARRAY,
+                                _: *mut JSAMPARRAY,
                             ) -> (),
                     )
                 } else {
                     (*upsample).methods[ci as usize] = Some(
                         h2v1_fancy_upsample
                             as unsafe extern "C" fn(
-                                _: crate::jpeglib_h::j_decompress_ptr,
-                                _: *mut crate::jpeglib_h::jpeg_component_info,
-                                _: crate::jpeglib_h::JSAMPARRAY,
-                                _: *mut crate::jpeglib_h::JSAMPARRAY,
+                                _: j_decompress_ptr,
+                                _: *mut jpeg_component_info,
+                                _: JSAMPARRAY,
+                                _: *mut JSAMPARRAY,
                             ) -> (),
                     )
                 }
-            } else if crate::src::simd::x86_64::jsimd::jsimd_can_h2v1_upsample() != 0 {
+            } else if super::simd::x86_64::jsimd::jsimd_can_h2v1_upsample() != 0 {
                 (*upsample).methods[ci as usize] = Some(
-                    crate::src::simd::x86_64::jsimd::jsimd_h2v1_upsample
+                    super::simd::x86_64::jsimd::jsimd_h2v1_upsample
                         as unsafe extern "C" fn(
-                            _: crate::jpeglib_h::j_decompress_ptr,
-                            _: *mut crate::jpeglib_h::jpeg_component_info,
-                            _: crate::jpeglib_h::JSAMPARRAY,
-                            _: *mut crate::jpeglib_h::JSAMPARRAY,
+                            _: j_decompress_ptr,
+                            _: *mut jpeg_component_info,
+                            _: JSAMPARRAY,
+                            _: *mut JSAMPARRAY,
                         ) -> (),
                 )
             } else {
                 (*upsample).methods[ci as usize] = Some(
                     h2v1_upsample
                         as unsafe extern "C" fn(
-                            _: crate::jpeglib_h::j_decompress_ptr,
-                            _: *mut crate::jpeglib_h::jpeg_component_info,
-                            _: crate::jpeglib_h::JSAMPARRAY,
-                            _: *mut crate::jpeglib_h::JSAMPARRAY,
+                            _: j_decompress_ptr,
+                            _: *mut jpeg_component_info,
+                            _: JSAMPARRAY,
+                            _: *mut JSAMPARRAY,
                         ) -> (),
                 )
             }
@@ -963,56 +963,56 @@ pub unsafe extern "C" fn jinit_upsampler(mut cinfo: crate::jpeglib_h::j_decompre
             (*upsample).methods[ci as usize] = Some(
                 h1v2_fancy_upsample
                     as unsafe extern "C" fn(
-                        _: crate::jpeglib_h::j_decompress_ptr,
-                        _: *mut crate::jpeglib_h::jpeg_component_info,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: *mut crate::jpeglib_h::JSAMPARRAY,
+                        _: j_decompress_ptr,
+                        _: *mut jpeg_component_info,
+                        _: JSAMPARRAY,
+                        _: *mut JSAMPARRAY,
                     ) -> (),
             );
-            (*upsample).pub_0.need_context_rows = crate::jmorecfg_h::TRUE
+            (*upsample).pub_0.need_context_rows = TRUE
         } else if h_in_group * 2i32 == h_out_group && v_in_group * 2i32 == v_out_group {
             /* Special cases for 2h2v upsampling */
             if do_fancy != 0 && (*compptr).downsampled_width > 2u32 {
-                if crate::src::simd::x86_64::jsimd::jsimd_can_h2v2_fancy_upsample() != 0 {
+                if super::simd::x86_64::jsimd::jsimd_can_h2v2_fancy_upsample() != 0 {
                     (*upsample).methods[ci as usize] = Some(
-                        crate::src::simd::x86_64::jsimd::jsimd_h2v2_fancy_upsample
+                        super::simd::x86_64::jsimd::jsimd_h2v2_fancy_upsample
                             as unsafe extern "C" fn(
-                                _: crate::jpeglib_h::j_decompress_ptr,
-                                _: *mut crate::jpeglib_h::jpeg_component_info,
-                                _: crate::jpeglib_h::JSAMPARRAY,
-                                _: *mut crate::jpeglib_h::JSAMPARRAY,
+                                _: j_decompress_ptr,
+                                _: *mut jpeg_component_info,
+                                _: JSAMPARRAY,
+                                _: *mut JSAMPARRAY,
                             ) -> (),
                     )
                 } else {
                     (*upsample).methods[ci as usize] = Some(
                         h2v2_fancy_upsample
                             as unsafe extern "C" fn(
-                                _: crate::jpeglib_h::j_decompress_ptr,
-                                _: *mut crate::jpeglib_h::jpeg_component_info,
-                                _: crate::jpeglib_h::JSAMPARRAY,
-                                _: *mut crate::jpeglib_h::JSAMPARRAY,
+                                _: j_decompress_ptr,
+                                _: *mut jpeg_component_info,
+                                _: JSAMPARRAY,
+                                _: *mut JSAMPARRAY,
                             ) -> (),
                     )
                 }
-                (*upsample).pub_0.need_context_rows = crate::jmorecfg_h::TRUE
-            } else if crate::src::simd::x86_64::jsimd::jsimd_can_h2v2_upsample() != 0 {
+                (*upsample).pub_0.need_context_rows = TRUE
+            } else if super::simd::x86_64::jsimd::jsimd_can_h2v2_upsample() != 0 {
                 (*upsample).methods[ci as usize] = Some(
-                    crate::src::simd::x86_64::jsimd::jsimd_h2v2_upsample
+                    super::simd::x86_64::jsimd::jsimd_h2v2_upsample
                         as unsafe extern "C" fn(
-                            _: crate::jpeglib_h::j_decompress_ptr,
-                            _: *mut crate::jpeglib_h::jpeg_component_info,
-                            _: crate::jpeglib_h::JSAMPARRAY,
-                            _: *mut crate::jpeglib_h::JSAMPARRAY,
+                            _: j_decompress_ptr,
+                            _: *mut jpeg_component_info,
+                            _: JSAMPARRAY,
+                            _: *mut JSAMPARRAY,
                         ) -> (),
                 )
             } else {
                 (*upsample).methods[ci as usize] = Some(
                     h2v2_upsample
                         as unsafe extern "C" fn(
-                            _: crate::jpeglib_h::j_decompress_ptr,
-                            _: *mut crate::jpeglib_h::jpeg_component_info,
-                            _: crate::jpeglib_h::JSAMPARRAY,
-                            _: *mut crate::jpeglib_h::JSAMPARRAY,
+                            _: j_decompress_ptr,
+                            _: *mut jpeg_component_info,
+                            _: JSAMPARRAY,
+                            _: *mut JSAMPARRAY,
                         ) -> (),
                 )
             }
@@ -1021,25 +1021,25 @@ pub unsafe extern "C" fn jinit_upsampler(mut cinfo: crate::jpeglib_h::j_decompre
             (*upsample).methods[ci as usize] = Some(
                 int_upsample
                     as unsafe extern "C" fn(
-                        _: crate::jpeglib_h::j_decompress_ptr,
-                        _: *mut crate::jpeglib_h::jpeg_component_info,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: *mut crate::jpeglib_h::JSAMPARRAY,
+                        _: j_decompress_ptr,
+                        _: *mut jpeg_component_info,
+                        _: JSAMPARRAY,
+                        _: *mut JSAMPARRAY,
                     ) -> (),
             );
             (*upsample).h_expand[ci as usize] =
-                (h_out_group / h_in_group) as crate::jmorecfg_h::UINT8;
+                (h_out_group / h_in_group) as UINT8;
             (*upsample).v_expand[ci as usize] =
-                (v_out_group / v_in_group) as crate::jmorecfg_h::UINT8
+                (v_out_group / v_in_group) as UINT8
         } else {
-            (*(*cinfo).err).msg_code = crate::src::jerror::JERR_FRACT_SAMPLE_NOTIMPL as libc::c_int;
+            (*(*cinfo).err).msg_code = super::jerror::JERR_FRACT_SAMPLE_NOTIMPL as c_int;
             Some(
                 (*(*cinfo).err)
                     .error_exit
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(
-                cinfo as crate::jpeglib_h::j_common_ptr
+                cinfo as j_common_ptr
             );
         }
         if need_buffer != 0 && (*(*cinfo).master).jinit_upsampler_no_alloc == 0 {
@@ -1049,13 +1049,13 @@ pub unsafe extern "C" fn jinit_upsampler(mut cinfo: crate::jpeglib_h::j_decompre
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(
-                cinfo as crate::jpeglib_h::j_common_ptr,
-                crate::jpeglib_h::JPOOL_IMAGE,
-                crate::jpegint_h::jround_up(
-                    (*cinfo).output_width as libc::c_long,
-                    (*cinfo).max_h_samp_factor as libc::c_long,
-                ) as crate::jmorecfg_h::JDIMENSION,
-                (*cinfo).max_v_samp_factor as crate::jmorecfg_h::JDIMENSION,
+                cinfo as j_common_ptr,
+                JPOOL_IMAGE,
+                jround_up(
+                    (*cinfo).output_width as c_long,
+                    (*cinfo).max_h_samp_factor as c_long,
+                ) as JDIMENSION,
+                (*cinfo).max_v_samp_factor as JDIMENSION,
             )
         }
         ci += 1;

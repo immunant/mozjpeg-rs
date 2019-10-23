@@ -13,7 +13,7 @@
 #![feature(main)]
 
 
-use mozjpeg::*;
+use libc::c_void;use libc::c_char;use libc::c_int;use libc::c_ulong;use std::prelude::v1;use mozjpeg::*;
 
 
 /* Define to `unsigned int' if <sys/types.h> does not define. */
@@ -159,8 +159,8 @@ use crate::stdlib::printf;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct _error_mgr {
-    pub pub_0: crate::jpeglib_h::jpeg_error_mgr,
-    pub jb: crate::stdlib::jmp_buf,
+    pub pub_0: jpeg_error_mgr,
+    pub jb: jmp_buf,
 }
 
 pub type error_mgr = _error_mgr;
@@ -194,7 +194,7 @@ pub type error_mgr = _error_mgr;
 /* This program demonstrates how to check for the colorspace extension
 capabilities of libjpeg-turbo at both compile time and run time. */
 
-static mut lasterror: [libc::c_char; 200] = [
+static mut lasterror: [c_char; 200] = [
     78, 111, 32, 101, 114, 114, 111, 114, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -204,7 +204,7 @@ static mut lasterror: [libc::c_char; 200] = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ];
 
-unsafe extern "C" fn my_error_exit(mut cinfo: crate::jpeglib_h::j_common_ptr) {
+unsafe extern "C" fn my_error_exit(mut cinfo: j_common_ptr) {
     let mut myerr: *mut error_mgr = (*cinfo).err as *mut error_mgr;
     Some(
         (*(*cinfo).err)
@@ -212,10 +212,10 @@ unsafe extern "C" fn my_error_exit(mut cinfo: crate::jpeglib_h::j_common_ptr) {
             .expect("non-null function pointer"),
     )
     .expect("non-null function pointer")(cinfo);
-    crate::stdlib::longjmp((*myerr).jb.as_mut_ptr(), 1i32);
+    longjmp((*myerr).jb.as_mut_ptr(), 1i32);
 }
 
-unsafe extern "C" fn my_output_message(mut cinfo: crate::jpeglib_h::j_common_ptr) {
+unsafe extern "C" fn my_output_message(mut cinfo: j_common_ptr) {
     Some(
         (*(*cinfo).err)
             .format_message
@@ -224,159 +224,157 @@ unsafe extern "C" fn my_output_message(mut cinfo: crate::jpeglib_h::j_common_ptr
     .expect("non-null function pointer")(cinfo, lasterror.as_mut_ptr());
 }
 
-unsafe fn main_0() -> libc::c_int {
-    let mut jcs_valid: libc::c_int = -1i32;
-    let mut jcs_alpha_valid: libc::c_int = -1i32;
-    let mut cinfo: crate::jpeglib_h::jpeg_compress_struct =
-        crate::jpeglib_h::jpeg_compress_struct {
-            err: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_error_mgr>(),
-            mem: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_memory_mgr>(),
-            progress: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_progress_mgr>(),
-            client_data: ::std::ptr::null_mut::< libc::c_void>(),
-            is_decompressor: 0,
-            global_state: 0,
-            dest: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_destination_mgr>(),
-            image_width: 0,
-            image_height: 0,
-            input_components: 0,
-            in_color_space: crate::jpeglib_h::JCS_UNKNOWN,
-            input_gamma: 0.,
-            data_precision: 0,
-            num_components: 0,
-            jpeg_color_space: crate::jpeglib_h::JCS_UNKNOWN,
-            comp_info: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>(),
-            quant_tbl_ptrs: [::std::ptr::null_mut::< crate::jpeglib_h::JQUANT_TBL>(); 4],
-            dc_huff_tbl_ptrs: [::std::ptr::null_mut::< crate::jpeglib_h::JHUFF_TBL>(); 4],
-            ac_huff_tbl_ptrs: [::std::ptr::null_mut::< crate::jpeglib_h::JHUFF_TBL>(); 4],
-            arith_dc_L: [0; 16],
-            arith_dc_U: [0; 16],
-            arith_ac_K: [0; 16],
-            num_scans: 0,
-            scan_info: ::std::ptr::null::< crate::jpeglib_h::jpeg_scan_info>(),
-            raw_data_in: 0,
-            arith_code: 0,
-            optimize_coding: 0,
-            CCIR601_sampling: 0,
-            smoothing_factor: 0,
-            dct_method: crate::jpeglib_h::JDCT_ISLOW,
-            restart_interval: 0,
-            restart_in_rows: 0,
-            write_JFIF_header: 0,
-            JFIF_major_version: 0,
-            JFIF_minor_version: 0,
-            density_unit: 0,
-            X_density: 0,
-            Y_density: 0,
-            write_Adobe_marker: 0,
-            next_scanline: 0,
-            progressive_mode: 0,
-            max_h_samp_factor: 0,
-            max_v_samp_factor: 0,
-            total_iMCU_rows: 0,
-            comps_in_scan: 0,
-            cur_comp_info: [::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>(); 4],
-            MCUs_per_row: 0,
-            MCU_rows_in_scan: 0,
-            blocks_in_MCU: 0,
-            MCU_membership: [0; 10],
-            Ss: 0,
-            Se: 0,
-            Ah: 0,
-            Al: 0,
-            master: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_comp_master>(),
-            main: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_c_main_controller>(),
-            prep: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_c_prep_controller>(),
-            coef: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_c_coef_controller>(),
-            marker: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_marker_writer>(),
-            cconvert: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_color_converter>(),
-            downsample: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_downsampler>(),
-            fdct: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_forward_dct>(),
-            entropy: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_entropy_encoder>(),
-            script_space: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_scan_info>(),
-            script_space_size: 0,
-        };
+unsafe fn main_0() -> c_int {
+    let mut jcs_valid: c_int = -1i32;
+    let mut jcs_alpha_valid: c_int = -1i32;
+    let mut cinfo: jpeg_compress_struct =
+        jpeg_compress_struct{err:  ::std::ptr::null_mut::< jpeg_error_mgr>(),
+                     mem:  ::std::ptr::null_mut::< jpeg_memory_mgr>(),
+                     progress:  ::std::ptr::null_mut::< jpeg_progress_mgr>(),
+                     client_data:  ::std::ptr::null_mut::< c_void>(),
+                     is_decompressor:  0,
+                     global_state:  0,
+                     dest:  ::std::ptr::null_mut::< jpeg_destination_mgr>(),
+                     image_width:  0,
+                     image_height:  0,
+                     input_components:  0,
+                     in_color_space:  JCS_UNKNOWN,
+                     input_gamma:  0.,
+                     data_precision:  0,
+                     num_components:  0,
+                     jpeg_color_space:  JCS_UNKNOWN,
+                     comp_info:  ::std::ptr::null_mut::< jpeg_component_info>(),
+                     quant_tbl_ptrs:
+                          [::std::ptr::null_mut::< JQUANT_TBL>(); 4],
+                     dc_huff_tbl_ptrs:
+                          [::std::ptr::null_mut::< JHUFF_TBL>(); 4],
+                     ac_huff_tbl_ptrs:
+                          [::std::ptr::null_mut::< JHUFF_TBL>(); 4],
+                     arith_dc_L:  [0; 16],
+                     arith_dc_U:  [0; 16],
+                     arith_ac_K:  [0; 16],
+                     num_scans:  0,
+                     scan_info:  ::std::ptr::null::< jpeg_scan_info>(),
+                     raw_data_in:  0,
+                     arith_code:  0,
+                     optimize_coding:  0,
+                     CCIR601_sampling:  0,
+                     smoothing_factor:  0,
+                     dct_method:  JDCT_ISLOW,
+                     restart_interval:  0,
+                     restart_in_rows:  0,
+                     write_JFIF_header:  0,
+                     JFIF_major_version:  0,
+                     JFIF_minor_version:  0,
+                     density_unit:  0,
+                     X_density:  0,
+                     Y_density:  0,
+                     write_Adobe_marker:  0,
+                     next_scanline:  0,
+                     progressive_mode:  0,
+                     max_h_samp_factor:  0,
+                     max_v_samp_factor:  0,
+                     total_iMCU_rows:  0,
+                     comps_in_scan:  0,
+                     cur_comp_info:
+                          [::std::ptr::null_mut::< jpeg_component_info>(); 4],
+                     MCUs_per_row:  0,
+                     MCU_rows_in_scan:  0,
+                     blocks_in_MCU:  0,
+                     MCU_membership:  [0; 10],
+                     Ss:  0,
+                     Se:  0,
+                     Ah:  0,
+                     Al:  0,
+                     master:  ::std::ptr::null_mut::< jpeg_comp_master>(),
+                     main:  ::std::ptr::null_mut::< jpeg_c_main_controller>(),
+                     prep:  ::std::ptr::null_mut::< jpeg_c_prep_controller>(),
+                     coef:  ::std::ptr::null_mut::< jpeg_c_coef_controller>(),
+                     marker:  ::std::ptr::null_mut::< jpeg_marker_writer>(),
+                     cconvert:  ::std::ptr::null_mut::< jpeg_color_converter>(),
+                     downsample:  ::std::ptr::null_mut::< jpeg_downsampler>(),
+                     fdct:  ::std::ptr::null_mut::< jpeg_forward_dct>(),
+                     entropy:  ::std::ptr::null_mut::< jpeg_entropy_encoder>(),
+                     script_space:  ::std::ptr::null_mut::< jpeg_scan_info>(),
+                     script_space_size:  0,};
     let mut jerr: error_mgr = error_mgr {
-        pub_0: crate::jpeglib_h::jpeg_error_mgr {
-            error_exit: None,
-            emit_message: None,
-            output_message: None,
-            format_message: None,
-            reset_error_mgr: None,
-            msg_code: 0,
-            msg_parm: crate::jpeglib_h::C2RustUnnamed_2 { i: [0; 8] },
-            trace_level: 0,
-            num_warnings: 0,
-            jpeg_message_table: ::std::ptr::null::< *const libc::c_char>(),
-            last_jpeg_message: 0,
-            addon_message_table: ::std::ptr::null::< *const libc::c_char>(),
-            first_addon_message: 0,
-            last_addon_message: 0,
-        },
-        jb: [crate::stdlib::__jmp_buf_tag {
-            __jmpbuf: [0; 8],
-            __mask_was_saved: 0,
-            __saved_mask: crate::stdlib::__sigset_t { __val: [0; 16] },
-        }; 1],
+        pub_0: jpeg_error_mgr{error_exit:  None,
+               emit_message:  None,
+               output_message:  None,
+               format_message:  None,
+               reset_error_mgr:  None,
+               msg_code:  0,
+               msg_parm:  C2RustUnnamed_2{i:  [0; 8],},
+               trace_level:  0,
+               num_warnings:  0,
+               jpeg_message_table:  ::std::ptr::null::< *const c_char>(),
+               last_jpeg_message:  0,
+               addon_message_table:  ::std::ptr::null::< *const c_char>(),
+               first_addon_message:  0,
+               last_addon_message:  0,},
+        jb: [__jmp_buf_tag{__jmpbuf:  [0; 8],
+              __mask_was_saved:  0,
+              __saved_mask:  __sigset_t{__val:  [0; 16],},}; 1],
     };
-    crate::stdlib::printf(
+    printf(
         
-        b"libjpeg-turbo colorspace extensions:\n\x00".as_ptr() as *const libc::c_char,
+        b"libjpeg-turbo colorspace extensions:\n\x00".as_ptr() as *const c_char,
     );
-    crate::stdlib::printf(b"  Present at compile time\n\x00".as_ptr() as *const libc::c_char);
-    cinfo.err = crate::jpeglib_h::jpeg_std_error(&mut jerr.pub_0);
+    printf(b"  Present at compile time\n\x00".as_ptr() as *const c_char);
+    cinfo.err = jpeg_std_error(&mut jerr.pub_0);
     jerr.pub_0.error_exit =
-        Some(my_error_exit as unsafe extern "C" fn(_: crate::jpeglib_h::j_common_ptr) -> ());
+        Some(my_error_exit as unsafe extern "C" fn(_: j_common_ptr) -> ());
     jerr.pub_0.output_message =
-        Some(my_output_message as unsafe extern "C" fn(_: crate::jpeglib_h::j_common_ptr) -> ());
-    if crate::stdlib::_setjmp(jerr.jb.as_mut_ptr()) != 0 {
+        Some(my_output_message as unsafe extern "C" fn(_: j_common_ptr) -> ());
+    if _setjmp(jerr.jb.as_mut_ptr()) != 0 {
         /* this will execute if libjpeg has an error */
         jcs_valid = 0i32
     } else {
-        crate::jpeglib_h::jpeg_CreateCompress(
+        jpeg_CreateCompress(
             &mut cinfo,
-            crate::jconfig_h::JPEG_LIB_VERSION,
-            ::std::mem::size_of::<crate::jpeglib_h::jpeg_compress_struct>() as libc::c_ulong,
+            JPEG_LIB_VERSION,
+            ::std::mem::size_of::<jpeg_compress_struct>() as c_ulong,
         );
         cinfo.input_components = 3i32;
-        crate::jpeglib_h::jpeg_set_defaults(&mut cinfo);
-        cinfo.in_color_space = crate::jpeglib_h::JCS_EXT_RGB;
-        crate::jpeglib_h::jpeg_default_colorspace(&mut cinfo);
+        jpeg_set_defaults(&mut cinfo);
+        cinfo.in_color_space = JCS_EXT_RGB;
+        jpeg_default_colorspace(&mut cinfo);
         jcs_valid = 1i32
     }
     if jcs_valid != 0 {
-        crate::stdlib::printf(b"  Working properly\n\x00".as_ptr() as *const libc::c_char);
+        printf(b"  Working properly\n\x00".as_ptr() as *const c_char);
     } else {
-        crate::stdlib::printf(
+        printf(
             
             b"  Not working properly.  Error returned was:\n    %s\n\x00".as_ptr()
-                as *const libc::c_char,
+                as *const c_char,
             lasterror.as_mut_ptr(),
         );
     }
-    crate::stdlib::printf(
+    printf(
         
-        b"libjpeg-turbo alpha colorspace extensions:\n\x00".as_ptr() as *const libc::c_char,
+        b"libjpeg-turbo alpha colorspace extensions:\n\x00".as_ptr() as *const c_char,
     );
-    crate::stdlib::printf(b"  Present at compile time\n\x00".as_ptr() as *const libc::c_char);
-    if crate::stdlib::_setjmp(jerr.jb.as_mut_ptr()) != 0 {
+    printf(b"  Present at compile time\n\x00".as_ptr() as *const c_char);
+    if _setjmp(jerr.jb.as_mut_ptr()) != 0 {
         /* this will execute if libjpeg has an error */
         jcs_alpha_valid = 0i32
     } else {
-        cinfo.in_color_space = crate::jpeglib_h::JCS_EXT_RGBA;
-        crate::jpeglib_h::jpeg_default_colorspace(&mut cinfo);
+        cinfo.in_color_space = JCS_EXT_RGBA;
+        jpeg_default_colorspace(&mut cinfo);
         jcs_alpha_valid = 1i32
     }
     if jcs_alpha_valid != 0 {
-        crate::stdlib::printf(b"  Working properly\n\x00".as_ptr() as *const libc::c_char);
+        printf(b"  Working properly\n\x00".as_ptr() as *const c_char);
     } else {
-        crate::stdlib::printf(
+        printf(
             
             b"  Not working properly.  Error returned was:\n    %s\n\x00".as_ptr()
-                as *const libc::c_char,
+                as *const c_char,
             lasterror.as_mut_ptr(),
         );
     }
-    crate::jpeglib_h::jpeg_destroy_compress(&mut cinfo);
+    jpeg_destroy_compress(&mut cinfo);
     return 0i32;
 }
 #[main]

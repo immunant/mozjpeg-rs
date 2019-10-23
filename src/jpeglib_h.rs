@@ -1,215 +1,215 @@
-extern "C" {
+use libc::c_uchar;use libc::c_ulong;use libc::c_char;use libc::c_long;use libc::c_void;use libc::c_int;use libc::c_uint;use libc::c_double;use libc::c_float;extern "C" {
     #[no_mangle]
     pub fn jpeg_write_m_header(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        marker: libc::c_int,
-        datalen: libc::c_uint,
+        cinfo: j_compress_ptr,
+        marker: c_int,
+        datalen: c_uint,
     );
 
     #[no_mangle]
-    pub fn jpeg_write_m_byte(cinfo: crate::jpeglib_h::j_compress_ptr, val: libc::c_int);
+    pub fn jpeg_write_m_byte(cinfo: j_compress_ptr, val: c_int);
     /* Read or write raw DCT coefficients --- useful for lossless transcoding. */
     #[no_mangle]
     pub fn jpeg_read_coefficients(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-    ) -> *mut crate::jpeglib_h::jvirt_barray_ptr;
+        cinfo: j_decompress_ptr,
+    ) -> *mut jvirt_barray_ptr;
 
     #[no_mangle]
     pub fn jpeg_write_coefficients(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        coef_arrays: *mut crate::jpeglib_h::jvirt_barray_ptr,
+        cinfo: j_compress_ptr,
+        coef_arrays: *mut jvirt_barray_ptr,
     );
 
     #[no_mangle]
     pub fn jpeg_copy_critical_parameters(
-        srcinfo: crate::jpeglib_h::j_decompress_ptr,
-        dstinfo: crate::jpeglib_h::j_compress_ptr,
+        srcinfo: j_decompress_ptr,
+        dstinfo: j_compress_ptr,
     );
 
     #[no_mangle]
     pub fn jpeg_c_int_param_supported(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        param: crate::jpeglib_h::J_INT_PARAM,
-    ) -> crate::jmorecfg_h::boolean;
+        cinfo: j_compress_ptr,
+        param: J_INT_PARAM,
+    ) -> boolean;
 
     #[no_mangle]
     pub fn jpeg_alloc_quant_table(
-        cinfo: crate::jpeglib_h::j_common_ptr,
-    ) -> *mut crate::jpeglib_h::JQUANT_TBL;
+        cinfo: j_common_ptr,
+    ) -> *mut JQUANT_TBL;
 
     #[no_mangle]
     pub fn jpeg_add_quant_table(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        which_tbl: libc::c_int,
-        basic_table: *const libc::c_uint,
-        scale_factor: libc::c_int,
-        force_baseline: crate::jmorecfg_h::boolean,
+        cinfo: j_compress_ptr,
+        which_tbl: c_int,
+        basic_table: *const c_uint,
+        scale_factor: c_int,
+        force_baseline: boolean,
     );
 
     #[no_mangle]
-    pub fn jpeg_float_quality_scaling(quality: libc::c_float) -> libc::c_float;
+    pub fn jpeg_float_quality_scaling(quality: c_float) -> c_float;
 
     #[no_mangle]
     pub fn jpeg_suppress_tables(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        suppress: crate::jmorecfg_h::boolean,
+        cinfo: j_compress_ptr,
+        suppress: boolean,
     );
 
     #[no_mangle]
     pub fn jpeg_resync_to_restart(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        desired: libc::c_int,
-    ) -> crate::jmorecfg_h::boolean;
+        cinfo: j_decompress_ptr,
+        desired: c_int,
+    ) -> boolean;
     /* Generic versions of jpeg_abort and jpeg_destroy that work on either
      * flavor of JPEG object.  These may be more convenient in some places.
      */
     #[no_mangle]
-    pub fn jpeg_destroy(cinfo: crate::jpeglib_h::j_common_ptr);
+    pub fn jpeg_destroy(cinfo: j_common_ptr);
 
     #[no_mangle]
-    pub fn jpeg_abort(cinfo: crate::jpeglib_h::j_common_ptr);
+    pub fn jpeg_abort(cinfo: j_common_ptr);
 
     #[no_mangle]
     pub fn jpeg_alloc_huff_table(
-        cinfo: crate::jpeglib_h::j_common_ptr,
-    ) -> *mut crate::jpeglib_h::JHUFF_TBL;
+        cinfo: j_common_ptr,
+    ) -> *mut JHUFF_TBL;
 
     #[no_mangle]
     pub fn jpeg_std_error(
-        err: *mut crate::jpeglib_h::jpeg_error_mgr,
-    ) -> *mut crate::jpeglib_h::jpeg_error_mgr;
+        err: *mut jpeg_error_mgr,
+    ) -> *mut jpeg_error_mgr;
 
     #[no_mangle]
     pub fn jpeg_CreateCompress(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        version: libc::c_int,
-        structsize: crate::stddef_h::size_t,
+        cinfo: j_compress_ptr,
+        version: c_int,
+        structsize: size_t,
     );
 
     #[no_mangle]
-    pub fn jpeg_destroy_compress(cinfo: crate::jpeglib_h::j_compress_ptr);
+    pub fn jpeg_destroy_compress(cinfo: j_compress_ptr);
 
     #[no_mangle]
     pub fn jpeg_stdio_dest(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        outfile: *mut crate::stdlib::FILE,
+        cinfo: j_compress_ptr,
+        outfile: *mut FILE,
     );
 
     #[no_mangle]
     pub fn jpeg_mem_dest(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        outbuffer: *mut *mut libc::c_uchar,
-        outsize: *mut libc::c_ulong,
+        cinfo: j_compress_ptr,
+        outbuffer: *mut *mut c_uchar,
+        outsize: *mut c_ulong,
     );
 
     #[no_mangle]
-    pub fn jpeg_set_defaults(cinfo: crate::jpeglib_h::j_compress_ptr);
+    pub fn jpeg_set_defaults(cinfo: j_compress_ptr);
 
     #[no_mangle]
     pub fn jpeg_set_colorspace(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        colorspace: crate::jpeglib_h::J_COLOR_SPACE,
+        cinfo: j_compress_ptr,
+        colorspace: J_COLOR_SPACE,
     );
 
     #[no_mangle]
-    pub fn jpeg_default_colorspace(cinfo: crate::jpeglib_h::j_compress_ptr);
+    pub fn jpeg_default_colorspace(cinfo: j_compress_ptr);
 
     #[no_mangle]
     pub fn jpeg_set_quality(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        quality: libc::c_int,
-        force_baseline: crate::jmorecfg_h::boolean,
+        cinfo: j_compress_ptr,
+        quality: c_int,
+        force_baseline: boolean,
     );
 
     #[no_mangle]
-    pub fn jpeg_simple_progression(cinfo: crate::jpeglib_h::j_compress_ptr);
+    pub fn jpeg_simple_progression(cinfo: j_compress_ptr);
 
     #[no_mangle]
     pub fn jpeg_start_compress(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        write_all_tables: crate::jmorecfg_h::boolean,
+        cinfo: j_compress_ptr,
+        write_all_tables: boolean,
     );
 
     #[no_mangle]
     pub fn jpeg_write_scanlines(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        scanlines: crate::jpeglib_h::JSAMPARRAY,
-        num_lines: crate::jmorecfg_h::JDIMENSION,
-    ) -> crate::jmorecfg_h::JDIMENSION;
+        cinfo: j_compress_ptr,
+        scanlines: JSAMPARRAY,
+        num_lines: JDIMENSION,
+    ) -> JDIMENSION;
 
     #[no_mangle]
-    pub fn jpeg_finish_compress(cinfo: crate::jpeglib_h::j_compress_ptr);
+    pub fn jpeg_finish_compress(cinfo: j_compress_ptr);
 
     #[no_mangle]
     pub fn jpeg_write_marker(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        marker: libc::c_int,
-        dataptr: *const crate::jmorecfg_h::JOCTET,
-        datalen: libc::c_uint,
+        cinfo: j_compress_ptr,
+        marker: c_int,
+        dataptr: *const JOCTET,
+        datalen: c_uint,
     );
 
     #[no_mangle]
     pub fn jpeg_write_icc_profile(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        icc_data_ptr: *const crate::jmorecfg_h::JOCTET,
-        icc_data_len: libc::c_uint,
+        cinfo: j_compress_ptr,
+        icc_data_ptr: *const JOCTET,
+        icc_data_len: c_uint,
     );
 
     #[no_mangle]
     pub fn jpeg_c_set_bool_param(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        param: crate::jpeglib_h::J_BOOLEAN_PARAM,
-        value: crate::jmorecfg_h::boolean,
+        cinfo: j_compress_ptr,
+        param: J_BOOLEAN_PARAM,
+        value: boolean,
     );
 
     #[no_mangle]
     pub fn jpeg_c_set_float_param(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        param: crate::jpeglib_h::J_FLOAT_PARAM,
-        value: libc::c_float,
+        cinfo: j_compress_ptr,
+        param: J_FLOAT_PARAM,
+        value: c_float,
     );
 
     #[no_mangle]
     pub fn jpeg_c_set_int_param(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        param: crate::jpeglib_h::J_INT_PARAM,
-        value: libc::c_int,
+        cinfo: j_compress_ptr,
+        param: J_INT_PARAM,
+        value: c_int,
     );
 
     #[no_mangle]
     pub fn jpeg_c_get_int_param(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        param: crate::jpeglib_h::J_INT_PARAM,
-    ) -> libc::c_int;
+        cinfo: j_compress_ptr,
+        param: J_INT_PARAM,
+    ) -> c_int;
 
     #[no_mangle]
     pub fn jpeg_CreateDecompress(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        version: libc::c_int,
-        structsize: crate::stddef_h::size_t,
+        cinfo: j_decompress_ptr,
+        version: c_int,
+        structsize: size_t,
     );
 
     #[no_mangle]
-    pub fn jpeg_destroy_decompress(cinfo: crate::jpeglib_h::j_decompress_ptr);
+    pub fn jpeg_destroy_decompress(cinfo: j_decompress_ptr);
 
     #[no_mangle]
     pub fn jpeg_stdio_src(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        infile: *mut crate::stdlib::FILE,
+        cinfo: j_decompress_ptr,
+        infile: *mut FILE,
     );
 
     #[no_mangle]
     pub fn jpeg_mem_src(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        inbuffer: *const libc::c_uchar,
-        insize: libc::c_ulong,
+        cinfo: j_decompress_ptr,
+        inbuffer: *const c_uchar,
+        insize: c_ulong,
     );
     /* Decompression startup: read start of JPEG datastream to see what's there */
     #[no_mangle]
     pub fn jpeg_read_header(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        require_image: crate::jmorecfg_h::boolean,
-    ) -> libc::c_int;
+        cinfo: j_decompress_ptr,
+        require_image: boolean,
+    ) -> c_int;
     /* Return value is one of: */
     /* Suspended due to lack of input data */
     /* Found valid image datastream */
@@ -222,77 +222,77 @@ extern "C" {
     /* Main entry points for decompression */
     #[no_mangle]
     pub fn jpeg_start_decompress(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-    ) -> crate::jmorecfg_h::boolean;
+        cinfo: j_decompress_ptr,
+    ) -> boolean;
 
     #[no_mangle]
     pub fn jpeg_read_scanlines(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        scanlines: crate::jpeglib_h::JSAMPARRAY,
-        max_lines: crate::jmorecfg_h::JDIMENSION,
-    ) -> crate::jmorecfg_h::JDIMENSION;
+        cinfo: j_decompress_ptr,
+        scanlines: JSAMPARRAY,
+        max_lines: JDIMENSION,
+    ) -> JDIMENSION;
 
     #[no_mangle]
     pub fn jpeg_skip_scanlines(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        num_lines: crate::jmorecfg_h::JDIMENSION,
-    ) -> crate::jmorecfg_h::JDIMENSION;
+        cinfo: j_decompress_ptr,
+        num_lines: JDIMENSION,
+    ) -> JDIMENSION;
 
     #[no_mangle]
     pub fn jpeg_crop_scanline(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        xoffset: *mut crate::jmorecfg_h::JDIMENSION,
-        width: *mut crate::jmorecfg_h::JDIMENSION,
+        cinfo: j_decompress_ptr,
+        xoffset: *mut JDIMENSION,
+        width: *mut JDIMENSION,
     );
 
     #[no_mangle]
     pub fn jpeg_finish_decompress(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-    ) -> crate::jmorecfg_h::boolean;
+        cinfo: j_decompress_ptr,
+    ) -> boolean;
     /* Control saving of COM and APPn markers into marker_list. */
     #[no_mangle]
     pub fn jpeg_save_markers(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        marker_code: libc::c_int,
-        length_limit: libc::c_uint,
+        cinfo: j_decompress_ptr,
+        marker_code: c_int,
+        length_limit: c_uint,
     );
     /* Install a special processing method for COM or APPn markers. */
     #[no_mangle]
     pub fn jpeg_set_marker_processor(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        marker_code: libc::c_int,
-        routine: crate::jpeglib_h::jpeg_marker_parser_method,
+        cinfo: j_decompress_ptr,
+        marker_code: c_int,
+        routine: jpeg_marker_parser_method,
     );
     /* Read ICC profile.  See libjpeg.txt for usage information. */
     #[no_mangle]
     pub fn jpeg_read_icc_profile(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        icc_data_ptr: *mut *mut crate::jmorecfg_h::JOCTET,
-        icc_data_len: *mut libc::c_uint,
-    ) -> crate::jmorecfg_h::boolean;
+        cinfo: j_decompress_ptr,
+        icc_data_ptr: *mut *mut JOCTET,
+        icc_data_len: *mut c_uint,
+    ) -> boolean;
 
     #[no_mangle]
     pub fn jpeg_write_raw_data(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        data: crate::jpeglib_h::JSAMPIMAGE,
-        num_lines: crate::jmorecfg_h::JDIMENSION,
-    ) -> crate::jmorecfg_h::JDIMENSION;
+        cinfo: j_compress_ptr,
+        data: JSAMPIMAGE,
+        num_lines: JDIMENSION,
+    ) -> JDIMENSION;
 
     #[no_mangle]
     pub fn jpeg_read_raw_data(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        data: crate::jpeglib_h::JSAMPIMAGE,
-        max_lines: crate::jmorecfg_h::JDIMENSION,
-    ) -> crate::jmorecfg_h::JDIMENSION;
+        cinfo: j_decompress_ptr,
+        data: JSAMPIMAGE,
+        max_lines: JDIMENSION,
+    ) -> JDIMENSION;
 
     #[no_mangle]
-    pub fn jpeg_calc_output_dimensions(cinfo: crate::jpeglib_h::j_decompress_ptr);
+    pub fn jpeg_calc_output_dimensions(cinfo: j_decompress_ptr);
 
     #[no_mangle]
-    pub fn jpeg_abort_compress(cinfo: crate::jpeglib_h::j_compress_ptr);
+    pub fn jpeg_abort_compress(cinfo: j_compress_ptr);
 
     #[no_mangle]
-    pub fn jpeg_abort_decompress(cinfo: crate::jpeglib_h::j_decompress_ptr);
+    pub fn jpeg_abort_decompress(cinfo: j_decompress_ptr);
 }
 // =============== BEGIN jpeglib_h ================
 use crate::stdlib::FILE;
@@ -301,148 +301,148 @@ use crate::stdlib::FILE;
 pub struct jpeg_color_quantizer {
     pub start_pass: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_decompress_ptr,
-            _: crate::jmorecfg_h::boolean,
+            _: j_decompress_ptr,
+            _: boolean,
         ) -> (),
     >,
     pub color_quantize: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_decompress_ptr,
-            _: crate::jpeglib_h::JSAMPARRAY,
-            _: crate::jpeglib_h::JSAMPARRAY,
-            _: libc::c_int,
+            _: j_decompress_ptr,
+            _: JSAMPARRAY,
+            _: JSAMPARRAY,
+            _: c_int,
         ) -> (),
     >,
-    pub finish_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
-    pub new_color_map: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
+    pub finish_pass: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
+    pub new_color_map: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_color_deconverter {
-    pub start_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
+    pub start_pass: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
     pub color_convert: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_decompress_ptr,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPARRAY,
-            _: libc::c_int,
+            _: j_decompress_ptr,
+            _: JSAMPIMAGE,
+            _: JDIMENSION,
+            _: JSAMPARRAY,
+            _: c_int,
         ) -> (),
     >,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_upsampler {
-    pub start_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
+    pub start_pass: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
     pub upsample: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_decompress_ptr,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-            _: *mut crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPARRAY,
-            _: *mut crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
+            _: j_decompress_ptr,
+            _: JSAMPIMAGE,
+            _: *mut JDIMENSION,
+            _: JDIMENSION,
+            _: JSAMPARRAY,
+            _: *mut JDIMENSION,
+            _: JDIMENSION,
         ) -> (),
     >,
-    pub need_context_rows: crate::jmorecfg_h::boolean,
+    pub need_context_rows: boolean,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_inverse_dct {
-    pub start_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
-    pub inverse_DCT: [crate::jpegint_h::inverse_DCT_method_ptr; 10],
+    pub start_pass: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
+    pub inverse_DCT: [inverse_DCT_method_ptr; 10],
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_entropy_decoder {
-    pub start_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
+    pub start_pass: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
     pub decode_mcu: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_decompress_ptr,
-            _: *mut crate::jpeglib_h::JBLOCKROW,
-        ) -> crate::jmorecfg_h::boolean,
+            _: j_decompress_ptr,
+            _: *mut JBLOCKROW,
+        ) -> boolean,
     >,
-    pub insufficient_data: crate::jmorecfg_h::boolean,
+    pub insufficient_data: boolean,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_marker_reader {
     pub reset_marker_reader:
-        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
+        Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
     pub read_markers:
-        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> libc::c_int>,
-    pub read_restart_marker: crate::jpeglib_h::jpeg_marker_parser_method,
-    pub saw_SOI: crate::jmorecfg_h::boolean,
-    pub saw_SOF: crate::jmorecfg_h::boolean,
-    pub next_restart_num: libc::c_int,
-    pub discarded_bytes: libc::c_uint,
+        Option<unsafe extern "C" fn(_: j_decompress_ptr) -> c_int>,
+    pub read_restart_marker: jpeg_marker_parser_method,
+    pub saw_SOI: boolean,
+    pub saw_SOF: boolean,
+    pub next_restart_num: c_int,
+    pub discarded_bytes: c_uint,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_input_controller {
     pub consume_input:
-        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> libc::c_int>,
+        Option<unsafe extern "C" fn(_: j_decompress_ptr) -> c_int>,
     pub reset_input_controller:
-        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
-    pub start_input_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
+        Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
+    pub start_input_pass: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
     pub finish_input_pass:
-        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
-    pub has_multiple_scans: crate::jmorecfg_h::boolean,
-    pub eoi_reached: crate::jmorecfg_h::boolean,
+        Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
+    pub has_multiple_scans: boolean,
+    pub eoi_reached: boolean,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_d_post_controller {
     pub start_pass: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_decompress_ptr,
-            _: crate::jpegint_h::J_BUF_MODE,
+            _: j_decompress_ptr,
+            _: J_BUF_MODE,
         ) -> (),
     >,
     pub post_process_data: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_decompress_ptr,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-            _: *mut crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPARRAY,
-            _: *mut crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
+            _: j_decompress_ptr,
+            _: JSAMPIMAGE,
+            _: *mut JDIMENSION,
+            _: JDIMENSION,
+            _: JSAMPARRAY,
+            _: *mut JDIMENSION,
+            _: JDIMENSION,
         ) -> (),
     >,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_d_coef_controller {
-    pub start_input_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
+    pub start_input_pass: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
     pub consume_data:
-        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> libc::c_int>,
+        Option<unsafe extern "C" fn(_: j_decompress_ptr) -> c_int>,
     pub start_output_pass:
-        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
+        Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
     pub decompress_data: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_decompress_ptr,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-        ) -> libc::c_int,
+            _: j_decompress_ptr,
+            _: JSAMPIMAGE,
+        ) -> c_int,
     >,
-    pub coef_arrays: *mut crate::jpeglib_h::jvirt_barray_ptr,
+    pub coef_arrays: *mut jvirt_barray_ptr,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_d_main_controller {
     pub start_pass: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_decompress_ptr,
-            _: crate::jpegint_h::J_BUF_MODE,
+            _: j_decompress_ptr,
+            _: J_BUF_MODE,
         ) -> (),
     >,
     pub process_data: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_decompress_ptr,
-            _: crate::jpeglib_h::JSAMPARRAY,
-            _: *mut crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
+            _: j_decompress_ptr,
+            _: JSAMPARRAY,
+            _: *mut JDIMENSION,
+            _: JDIMENSION,
         ) -> (),
     >,
 }
@@ -450,20 +450,20 @@ pub struct jpeg_d_main_controller {
 #[derive(Copy, Clone)]
 pub struct jpeg_decomp_master {
     pub prepare_for_output_pass:
-        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
+        Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
     pub finish_output_pass:
-        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
-    pub is_dummy_pass: crate::jmorecfg_h::boolean,
-    pub first_iMCU_col: crate::jmorecfg_h::JDIMENSION,
-    pub last_iMCU_col: crate::jmorecfg_h::JDIMENSION,
-    pub first_MCU_col: [crate::jmorecfg_h::JDIMENSION; 10],
-    pub last_MCU_col: [crate::jmorecfg_h::JDIMENSION; 10],
-    pub jinit_upsampler_no_alloc: crate::jmorecfg_h::boolean,
+        Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
+    pub is_dummy_pass: boolean,
+    pub first_iMCU_col: JDIMENSION,
+    pub last_iMCU_col: JDIMENSION,
+    pub first_MCU_col: [JDIMENSION; 10],
+    pub last_MCU_col: [JDIMENSION; 10],
+    pub jinit_upsampler_no_alloc: boolean,
 }
 /* lasts until master record is destroyed */
 
 /* lasts until done with image/datastream */
-pub const JPOOL_NUMPOOLS: libc::c_int = 2i32;
+pub const JPOOL_NUMPOOLS: c_int = 2i32;
 /* The basic DCT block is 8x8 samples */
 
 /* DCTSIZE squared; # of elements in a block */
@@ -485,7 +485,7 @@ pub const JPOOL_NUMPOOLS: libc::c_int = 2i32;
  * we strongly discourage changing C_MAX_BLOCKS_IN_MCU; just because Adobe
  * sometimes emits noncompliant files doesn't mean you should too.
  */
-pub const C_MAX_BLOCKS_IN_MCU: libc::c_int = 10i32;
+pub const C_MAX_BLOCKS_IN_MCU: c_int = 10i32;
 /* Memory manager object.
  * Allocates "small" objects (a few K total), "large" objects (tens of K),
  * and "really big" objects (virtual arrays with backing store if needed).
@@ -498,7 +498,7 @@ pub const C_MAX_BLOCKS_IN_MCU: libc::c_int = 10i32;
  */
 
 /* lasts until master record is destroyed */
-pub const JPOOL_IMAGE: libc::c_int = 1i32;
+pub const JPOOL_IMAGE: c_int = 1i32;
 use crate::jmorecfg_h::boolean;
 use crate::jmorecfg_h::JCOEF;
 use crate::jmorecfg_h::JDIMENSION;
@@ -510,7 +510,7 @@ use crate::stddef_h::size_t;
 /* Quantization tables are numbered 0..3 */
 
 /* Huffman tables are numbered 0..3 */
-pub const NUM_ARITH_TBLS: libc::c_int = 16i32;
+pub const NUM_ARITH_TBLS: c_int = 16i32;
 /*
  * jpeglib.h
  *
@@ -543,56 +543,56 @@ pub const NUM_ARITH_TBLS: libc::c_int = 16i32;
  * All of these are specified by the JPEG standard, so don't change them
  * if you want to be compatible.
  */
-pub const DCTSIZE: libc::c_int = 8i32;
+pub const DCTSIZE: c_int = 8i32;
 /* Quantization tables are numbered 0..3 */
 
 /* Huffman tables are numbered 0..3 */
 
 /* Arith-coding tables are numbered 0..15 */
-pub const MAX_COMPS_IN_SCAN: libc::c_int = 4i32;
+pub const MAX_COMPS_IN_SCAN: c_int = 4i32;
 /* JPEG limit on # of components in one scan */
-pub const MAX_SAMP_FACTOR: libc::c_int = 4i32;
+pub const MAX_SAMP_FACTOR: c_int = 4i32;
 use crate::jpegint_h::J_BUF_MODE;
 /* a 3-D array of coefficient blocks */
-pub type JCOEFPTR = *mut crate::jmorecfg_h::JCOEF;
+pub type JCOEFPTR = *mut JCOEF;
 use crate::jpegint_h::inverse_DCT_method_ptr;
 /* The basic DCT block is 8x8 samples */
-pub const DCTSIZE2: libc::c_int = 64i32;
+pub const DCTSIZE2: c_int = 64i32;
 /* Return value is one of: */
 
 /* #define JPEG_SUSPENDED       0    Suspended due to lack of input data */
-pub const JPEG_REACHED_SOS: libc::c_int = 1i32;
+pub const JPEG_REACHED_SOS: c_int = 1i32;
 /* Reached start of new scan */
 
 /* Reached end of image */
-pub const JPEG_ROW_COMPLETED: libc::c_int = 3i32;
-pub const JPEG_REACHED_EOI: libc::c_int = 2i32;
-pub const JPEG_SUSPENDED: libc::c_int = 0i32;
+pub const JPEG_ROW_COMPLETED: c_int = 3i32;
+pub const JPEG_REACHED_EOI: c_int = 2i32;
+pub const JPEG_SUSPENDED: c_int = 0i32;
 /* These marker codes are exported since applications and data source modules
  * are likely to want to use them.
  */
 
 /* RST0 marker code */
-pub const JPEG_EOI: libc::c_int = 0xd9i32;
-pub const D_MAX_BLOCKS_IN_MCU: libc::c_int = 10i32;
-pub const JPEG_SCAN_COMPLETED: libc::c_int = 4i32;
+pub const JPEG_EOI: c_int = 0xd9i32;
+pub const D_MAX_BLOCKS_IN_MCU: c_int = 10i32;
+pub const JPEG_SCAN_COMPLETED: c_int = 4i32;
 /* Entropy encoding */
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_entropy_encoder {
     pub start_pass: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: crate::jmorecfg_h::boolean,
+            _: j_compress_ptr,
+            _: boolean,
         ) -> (),
     >,
     pub encode_mcu: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: *mut crate::jpeglib_h::JBLOCKROW,
-        ) -> crate::jmorecfg_h::boolean,
+            _: j_compress_ptr,
+            _: *mut JBLOCKROW,
+        ) -> boolean,
     >,
-    pub finish_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
+    pub finish_pass: Option<unsafe extern "C" fn(_: j_compress_ptr) -> ()>,
 }
 /* TRUE if need rows above & below */
 
@@ -600,17 +600,17 @@ pub struct jpeg_entropy_encoder {
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_forward_dct {
-    pub start_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
+    pub start_pass: Option<unsafe extern "C" fn(_: j_compress_ptr) -> ()>,
     pub forward_DCT: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: *mut crate::jpeglib_h::jpeg_component_info,
-            _: crate::jpeglib_h::JSAMPARRAY,
-            _: crate::jpeglib_h::JBLOCKROW,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JBLOCKROW,
+            _: j_compress_ptr,
+            _: *mut jpeg_component_info,
+            _: JSAMPARRAY,
+            _: JBLOCKROW,
+            _: JDIMENSION,
+            _: JDIMENSION,
+            _: JDIMENSION,
+            _: JBLOCKROW,
         ) -> (),
     >,
 }
@@ -618,30 +618,30 @@ pub struct jpeg_forward_dct {
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_downsampler {
-    pub start_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
+    pub start_pass: Option<unsafe extern "C" fn(_: j_compress_ptr) -> ()>,
     pub downsample: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-            _: crate::jmorecfg_h::JDIMENSION,
+            _: j_compress_ptr,
+            _: JSAMPIMAGE,
+            _: JDIMENSION,
+            _: JSAMPIMAGE,
+            _: JDIMENSION,
         ) -> (),
     >,
-    pub need_context_rows: crate::jmorecfg_h::boolean,
+    pub need_context_rows: boolean,
 }
 /* Colorspace conversion */
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_color_converter {
-    pub start_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
+    pub start_pass: Option<unsafe extern "C" fn(_: j_compress_ptr) -> ()>,
     pub color_convert: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: crate::jpeglib_h::JSAMPARRAY,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: libc::c_int,
+            _: j_compress_ptr,
+            _: JSAMPARRAY,
+            _: JSAMPIMAGE,
+            _: JDIMENSION,
+            _: c_int,
         ) -> (),
     >,
 }
@@ -649,20 +649,20 @@ pub struct jpeg_color_converter {
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_marker_writer {
-    pub write_file_header: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
-    pub write_frame_header: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
-    pub write_scan_header: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
-    pub write_file_trailer: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
-    pub write_tables_only: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
+    pub write_file_header: Option<unsafe extern "C" fn(_: j_compress_ptr) -> ()>,
+    pub write_frame_header: Option<unsafe extern "C" fn(_: j_compress_ptr) -> ()>,
+    pub write_scan_header: Option<unsafe extern "C" fn(_: j_compress_ptr) -> ()>,
+    pub write_file_trailer: Option<unsafe extern "C" fn(_: j_compress_ptr) -> ()>,
+    pub write_tables_only: Option<unsafe extern "C" fn(_: j_compress_ptr) -> ()>,
     pub write_marker_header: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: libc::c_int,
-            _: libc::c_uint,
+            _: j_compress_ptr,
+            _: c_int,
+            _: c_uint,
         ) -> (),
     >,
     pub write_marker_byte:
-        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr, _: libc::c_int) -> ()>,
+        Option<unsafe extern "C" fn(_: j_compress_ptr, _: c_int) -> ()>,
 }
 /* Coefficient buffer control */
 #[repr(C)]
@@ -670,15 +670,15 @@ pub struct jpeg_marker_writer {
 pub struct jpeg_c_coef_controller {
     pub start_pass: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: crate::jpegint_h::J_BUF_MODE,
+            _: j_compress_ptr,
+            _: J_BUF_MODE,
         ) -> (),
     >,
     pub compress_data: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-        ) -> crate::jmorecfg_h::boolean,
+            _: j_compress_ptr,
+            _: JSAMPIMAGE,
+        ) -> boolean,
     >,
 }
 /* Compression preprocessing (downsampling input buffer control) */
@@ -687,19 +687,19 @@ pub struct jpeg_c_coef_controller {
 pub struct jpeg_c_prep_controller {
     pub start_pass: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: crate::jpegint_h::J_BUF_MODE,
+            _: j_compress_ptr,
+            _: J_BUF_MODE,
         ) -> (),
     >,
     pub pre_process_data: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: crate::jpeglib_h::JSAMPARRAY,
-            _: *mut crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-            _: *mut crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
+            _: j_compress_ptr,
+            _: JSAMPARRAY,
+            _: *mut JDIMENSION,
+            _: JDIMENSION,
+            _: JSAMPIMAGE,
+            _: *mut JDIMENSION,
+            _: JDIMENSION,
         ) -> (),
     >,
 }
@@ -709,16 +709,16 @@ pub struct jpeg_c_prep_controller {
 pub struct jpeg_c_main_controller {
     pub start_pass: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: crate::jpegint_h::J_BUF_MODE,
+            _: j_compress_ptr,
+            _: J_BUF_MODE,
         ) -> (),
     >,
     pub process_data: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: crate::jpeglib_h::JSAMPARRAY,
-            _: *mut crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
+            _: j_compress_ptr,
+            _: JSAMPARRAY,
+            _: *mut JDIMENSION,
+            _: JDIMENSION,
         ) -> (),
     >,
 }
@@ -1249,58 +1249,58 @@ opaque alpha channel. */
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_comp_master {
-    pub prepare_for_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
-    pub pass_startup: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
-    pub finish_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
-    pub call_pass_startup: crate::jmorecfg_h::boolean,
-    pub is_last_pass: crate::jmorecfg_h::boolean,
-    pub optimize_scans: crate::jmorecfg_h::boolean,
-    pub trellis_quant: crate::jmorecfg_h::boolean,
-    pub trellis_quant_dc: crate::jmorecfg_h::boolean,
-    pub trellis_eob_opt: crate::jmorecfg_h::boolean,
-    pub use_lambda_weight_tbl: crate::jmorecfg_h::boolean,
-    pub use_scans_in_trellis: crate::jmorecfg_h::boolean,
-    pub trellis_passes: crate::jmorecfg_h::boolean,
-    pub trellis_q_opt: crate::jmorecfg_h::boolean,
-    pub overshoot_deringing: crate::jmorecfg_h::boolean,
-    pub norm_src: [[libc::c_double; 64]; 4],
-    pub norm_coef: [[libc::c_double; 64]; 4],
-    pub compress_profile: libc::c_int,
-    pub dc_scan_opt_mode: libc::c_int,
-    pub quant_tbl_master_idx: libc::c_int,
-    pub trellis_freq_split: libc::c_int,
-    pub trellis_num_loops: libc::c_int,
-    pub num_scans_luma: libc::c_int,
-    pub num_scans_luma_dc: libc::c_int,
-    pub num_scans_chroma_dc: libc::c_int,
-    pub num_frequency_splits: libc::c_int,
-    pub Al_max_luma: libc::c_int,
-    pub Al_max_chroma: libc::c_int,
-    pub lambda_log_scale1: libc::c_float,
-    pub lambda_log_scale2: libc::c_float,
-    pub trellis_delta_dc_weight: libc::c_float,
+    pub prepare_for_pass: Option<unsafe extern "C" fn(_: j_compress_ptr) -> ()>,
+    pub pass_startup: Option<unsafe extern "C" fn(_: j_compress_ptr) -> ()>,
+    pub finish_pass: Option<unsafe extern "C" fn(_: j_compress_ptr) -> ()>,
+    pub call_pass_startup: boolean,
+    pub is_last_pass: boolean,
+    pub optimize_scans: boolean,
+    pub trellis_quant: boolean,
+    pub trellis_quant_dc: boolean,
+    pub trellis_eob_opt: boolean,
+    pub use_lambda_weight_tbl: boolean,
+    pub use_scans_in_trellis: boolean,
+    pub trellis_passes: boolean,
+    pub trellis_q_opt: boolean,
+    pub overshoot_deringing: boolean,
+    pub norm_src: [[c_double; 64]; 4],
+    pub norm_coef: [[c_double; 64]; 4],
+    pub compress_profile: c_int,
+    pub dc_scan_opt_mode: c_int,
+    pub quant_tbl_master_idx: c_int,
+    pub trellis_freq_split: c_int,
+    pub trellis_num_loops: c_int,
+    pub num_scans_luma: c_int,
+    pub num_scans_luma_dc: c_int,
+    pub num_scans_chroma_dc: c_int,
+    pub num_frequency_splits: c_int,
+    pub Al_max_luma: c_int,
+    pub Al_max_chroma: c_int,
+    pub lambda_log_scale1: c_float,
+    pub lambda_log_scale2: c_float,
+    pub trellis_delta_dc_weight: c_float,
 }
-pub type JSAMPIMAGE = *mut crate::jpeglib_h::JSAMPARRAY;
+pub type JSAMPIMAGE = *mut JSAMPARRAY;
 pub type jpeg_idct_method = Option<
     unsafe extern "C" fn(
-        _: crate::jpeglib_h::j_decompress_ptr,
-        _: *mut crate::jpeglib_h::jpeg_component_info,
-        _: crate::jpeglib_h::JCOEFPTR,
-        _: crate::jpeglib_h::JSAMPARRAY,
-        _: crate::jmorecfg_h::JDIMENSION,
+        _: j_decompress_ptr,
+        _: *mut jpeg_component_info,
+        _: JCOEFPTR,
+        _: JSAMPARRAY,
+        _: JDIMENSION,
     ) -> (),
 >;
 pub type jpeg_idct_method_selector = Option<
     unsafe extern "C" fn(
-        _: crate::jpeglib_h::j_decompress_ptr,
-        _: *mut crate::jpeglib_h::jpeg_component_info,
-        _: *mut crate::jpeglib_h::jpeg_idct_method,
-        _: *mut libc::c_int,
+        _: j_decompress_ptr,
+        _: *mut jpeg_component_info,
+        _: *mut jpeg_idct_method,
+        _: *mut c_int,
     ) -> (),
 >;
-pub const JPOOL_PERMANENT: libc::c_int = 0i32;
-pub const NUM_HUFF_TBLS: libc::c_int = 4i32;
-pub const NUM_QUANT_TBLS: libc::c_int = 4i32;
+pub const JPOOL_PERMANENT: c_int = 0i32;
+pub const NUM_HUFF_TBLS: c_int = 4i32;
+pub const NUM_QUANT_TBLS: c_int = 4i32;
 /* Method pointers */
 
 /* Limit on memory allocation for this JPEG object.  (Note that this is
@@ -1363,446 +1363,446 @@ pub const NUM_QUANT_TBLS: libc::c_int = 4i32;
 /* Suspended due to lack of input data */
 
 /* Found valid image datastream */
-pub const JPEG_HEADER_TABLES_ONLY: libc::c_int = 2i32;
-pub const JPEG_HEADER_OK: libc::c_int = 1i32;
-pub type C2RustUnnamed_1 = libc::c_uint;
+pub const JPEG_HEADER_TABLES_ONLY: c_int = 2i32;
+pub const JPEG_HEADER_OK: c_int = 1i32;
+pub type C2RustUnnamed_1 = c_uint;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub union C2RustUnnamed_2 {
-    pub i: [libc::c_int; 8],
-    pub s: [libc::c_char; 80],
+    pub i: [c_int; 8],
+    pub s: [c_char; 80],
 }
-pub type JSAMPROW = *mut crate::jmorecfg_h::JSAMPLE;
-pub type JSAMPARRAY = *mut crate::jpeglib_h::JSAMPROW;
-pub type JBLOCK = [crate::jmorecfg_h::JCOEF; 64];
-pub type JBLOCKROW = *mut crate::jpeglib_h::JBLOCK;
-pub type JBLOCKARRAY = *mut crate::jpeglib_h::JBLOCKROW;
+pub type JSAMPROW = *mut JSAMPLE;
+pub type JSAMPARRAY = *mut JSAMPROW;
+pub type JBLOCK = [JCOEF; 64];
+pub type JBLOCKROW = *mut JBLOCK;
+pub type JBLOCKARRAY = *mut JBLOCKROW;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct JQUANT_TBL {
-    pub quantval: [crate::jmorecfg_h::UINT16; 64],
-    pub sent_table: crate::jmorecfg_h::boolean,
+    pub quantval: [UINT16; 64],
+    pub sent_table: boolean,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct JHUFF_TBL {
-    pub bits: [crate::jmorecfg_h::UINT8; 17],
-    pub huffval: [crate::jmorecfg_h::UINT8; 256],
-    pub sent_table: crate::jmorecfg_h::boolean,
+    pub bits: [UINT8; 17],
+    pub huffval: [UINT8; 256],
+    pub sent_table: boolean,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_component_info {
-    pub component_id: libc::c_int,
-    pub component_index: libc::c_int,
-    pub h_samp_factor: libc::c_int,
-    pub v_samp_factor: libc::c_int,
-    pub quant_tbl_no: libc::c_int,
-    pub dc_tbl_no: libc::c_int,
-    pub ac_tbl_no: libc::c_int,
-    pub width_in_blocks: crate::jmorecfg_h::JDIMENSION,
-    pub height_in_blocks: crate::jmorecfg_h::JDIMENSION,
-    pub DCT_scaled_size: libc::c_int,
-    pub downsampled_width: crate::jmorecfg_h::JDIMENSION,
-    pub downsampled_height: crate::jmorecfg_h::JDIMENSION,
-    pub component_needed: crate::jmorecfg_h::boolean,
-    pub MCU_width: libc::c_int,
-    pub MCU_height: libc::c_int,
-    pub MCU_blocks: libc::c_int,
-    pub MCU_sample_width: libc::c_int,
-    pub last_col_width: libc::c_int,
-    pub last_row_height: libc::c_int,
-    pub quant_table: *mut crate::jpeglib_h::JQUANT_TBL,
-    pub dct_table: *mut libc::c_void,
+    pub component_id: c_int,
+    pub component_index: c_int,
+    pub h_samp_factor: c_int,
+    pub v_samp_factor: c_int,
+    pub quant_tbl_no: c_int,
+    pub dc_tbl_no: c_int,
+    pub ac_tbl_no: c_int,
+    pub width_in_blocks: JDIMENSION,
+    pub height_in_blocks: JDIMENSION,
+    pub DCT_scaled_size: c_int,
+    pub downsampled_width: JDIMENSION,
+    pub downsampled_height: JDIMENSION,
+    pub component_needed: boolean,
+    pub MCU_width: c_int,
+    pub MCU_height: c_int,
+    pub MCU_blocks: c_int,
+    pub MCU_sample_width: c_int,
+    pub last_col_width: c_int,
+    pub last_row_height: c_int,
+    pub quant_table: *mut JQUANT_TBL,
+    pub dct_table: *mut c_void,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_scan_info {
-    pub comps_in_scan: libc::c_int,
-    pub component_index: [libc::c_int; 4],
-    pub Ss: libc::c_int,
-    pub Se: libc::c_int,
-    pub Ah: libc::c_int,
-    pub Al: libc::c_int,
+    pub comps_in_scan: c_int,
+    pub component_index: [c_int; 4],
+    pub Ss: c_int,
+    pub Se: c_int,
+    pub Ah: c_int,
+    pub Al: c_int,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_marker_struct {
-    pub next: crate::jpeglib_h::jpeg_saved_marker_ptr,
-    pub marker: crate::jmorecfg_h::UINT8,
-    pub original_length: libc::c_uint,
-    pub data_length: libc::c_uint,
-    pub data: *mut crate::jmorecfg_h::JOCTET,
+    pub next: jpeg_saved_marker_ptr,
+    pub marker: UINT8,
+    pub original_length: c_uint,
+    pub data_length: c_uint,
+    pub data: *mut JOCTET,
 }
-pub type jpeg_saved_marker_ptr = *mut crate::jpeglib_h::jpeg_marker_struct;
-pub type J_COLOR_SPACE = libc::c_uint;
-pub type J_DCT_METHOD = libc::c_uint;
-pub type J_BOOLEAN_PARAM = libc::c_uint;
-pub type J_FLOAT_PARAM = libc::c_uint;
-pub type J_INT_PARAM = libc::c_uint;
+pub type jpeg_saved_marker_ptr = *mut jpeg_marker_struct;
+pub type J_COLOR_SPACE = c_uint;
+pub type J_DCT_METHOD = c_uint;
+pub type J_BOOLEAN_PARAM = c_uint;
+pub type J_FLOAT_PARAM = c_uint;
+pub type J_INT_PARAM = c_uint;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_common_struct {
-    pub err: *mut crate::jpeglib_h::jpeg_error_mgr,
-    pub mem: *mut crate::jpeglib_h::jpeg_memory_mgr,
-    pub progress: *mut crate::jpeglib_h::jpeg_progress_mgr,
-    pub client_data: *mut libc::c_void,
-    pub is_decompressor: crate::jmorecfg_h::boolean,
-    pub global_state: libc::c_int,
+    pub err: *mut jpeg_error_mgr,
+    pub mem: *mut jpeg_memory_mgr,
+    pub progress: *mut jpeg_progress_mgr,
+    pub client_data: *mut c_void,
+    pub is_decompressor: boolean,
+    pub global_state: c_int,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_progress_mgr {
-    pub progress_monitor: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_common_ptr) -> ()>,
-    pub pass_counter: libc::c_long,
-    pub pass_limit: libc::c_long,
-    pub completed_passes: libc::c_int,
-    pub total_passes: libc::c_int,
+    pub progress_monitor: Option<unsafe extern "C" fn(_: j_common_ptr) -> ()>,
+    pub pass_counter: c_long,
+    pub pass_limit: c_long,
+    pub completed_passes: c_int,
+    pub total_passes: c_int,
 }
-pub type j_common_ptr = *mut crate::jpeglib_h::jpeg_common_struct;
+pub type j_common_ptr = *mut jpeg_common_struct;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_memory_mgr {
     pub alloc_small: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_common_ptr,
-            _: libc::c_int,
-            _: crate::stddef_h::size_t,
-        ) -> *mut libc::c_void,
+            _: j_common_ptr,
+            _: c_int,
+            _: size_t,
+        ) -> *mut c_void,
     >,
     pub alloc_large: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_common_ptr,
-            _: libc::c_int,
-            _: crate::stddef_h::size_t,
-        ) -> *mut libc::c_void,
+            _: j_common_ptr,
+            _: c_int,
+            _: size_t,
+        ) -> *mut c_void,
     >,
     pub alloc_sarray: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_common_ptr,
-            _: libc::c_int,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
-        ) -> crate::jpeglib_h::JSAMPARRAY,
+            _: j_common_ptr,
+            _: c_int,
+            _: JDIMENSION,
+            _: JDIMENSION,
+        ) -> JSAMPARRAY,
     >,
     pub alloc_barray: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_common_ptr,
-            _: libc::c_int,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
-        ) -> crate::jpeglib_h::JBLOCKARRAY,
+            _: j_common_ptr,
+            _: c_int,
+            _: JDIMENSION,
+            _: JDIMENSION,
+        ) -> JBLOCKARRAY,
     >,
     pub request_virt_sarray: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_common_ptr,
-            _: libc::c_int,
-            _: crate::jmorecfg_h::boolean,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
-        ) -> crate::jpeglib_h::jvirt_sarray_ptr,
+            _: j_common_ptr,
+            _: c_int,
+            _: boolean,
+            _: JDIMENSION,
+            _: JDIMENSION,
+            _: JDIMENSION,
+        ) -> jvirt_sarray_ptr,
     >,
     pub request_virt_barray: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_common_ptr,
-            _: libc::c_int,
-            _: crate::jmorecfg_h::boolean,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
-        ) -> crate::jpeglib_h::jvirt_barray_ptr,
+            _: j_common_ptr,
+            _: c_int,
+            _: boolean,
+            _: JDIMENSION,
+            _: JDIMENSION,
+            _: JDIMENSION,
+        ) -> jvirt_barray_ptr,
     >,
-    pub realize_virt_arrays: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_common_ptr) -> ()>,
+    pub realize_virt_arrays: Option<unsafe extern "C" fn(_: j_common_ptr) -> ()>,
     pub access_virt_sarray: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_common_ptr,
-            _: crate::jpeglib_h::jvirt_sarray_ptr,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::boolean,
-        ) -> crate::jpeglib_h::JSAMPARRAY,
+            _: j_common_ptr,
+            _: jvirt_sarray_ptr,
+            _: JDIMENSION,
+            _: JDIMENSION,
+            _: boolean,
+        ) -> JSAMPARRAY,
     >,
     pub access_virt_barray: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_common_ptr,
-            _: crate::jpeglib_h::jvirt_barray_ptr,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::boolean,
-        ) -> crate::jpeglib_h::JBLOCKARRAY,
+            _: j_common_ptr,
+            _: jvirt_barray_ptr,
+            _: JDIMENSION,
+            _: JDIMENSION,
+            _: boolean,
+        ) -> JBLOCKARRAY,
     >,
     pub free_pool:
-        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_common_ptr, _: libc::c_int) -> ()>,
-    pub self_destruct: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_common_ptr) -> ()>,
-    pub max_memory_to_use: libc::c_long,
-    pub max_alloc_chunk: libc::c_long,
+        Option<unsafe extern "C" fn(_: j_common_ptr, _: c_int) -> ()>,
+    pub self_destruct: Option<unsafe extern "C" fn(_: j_common_ptr) -> ()>,
+    pub max_memory_to_use: c_long,
+    pub max_alloc_chunk: c_long,
 }
-pub type jvirt_barray_ptr = *mut crate::jpeglib_h::jvirt_barray_control;
-pub type jvirt_sarray_ptr = *mut crate::jpeglib_h::jvirt_sarray_control;
+pub type jvirt_barray_ptr = *mut jvirt_barray_control;
+pub type jvirt_sarray_ptr = *mut jvirt_sarray_control;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_error_mgr {
-    pub error_exit: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_common_ptr) -> ()>,
+    pub error_exit: Option<unsafe extern "C" fn(_: j_common_ptr) -> ()>,
     pub emit_message:
-        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_common_ptr, _: libc::c_int) -> ()>,
-    pub output_message: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_common_ptr) -> ()>,
+        Option<unsafe extern "C" fn(_: j_common_ptr, _: c_int) -> ()>,
+    pub output_message: Option<unsafe extern "C" fn(_: j_common_ptr) -> ()>,
     pub format_message:
-        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_common_ptr, _: *mut libc::c_char) -> ()>,
-    pub reset_error_mgr: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_common_ptr) -> ()>,
-    pub msg_code: libc::c_int,
-    pub msg_parm: crate::jpeglib_h::C2RustUnnamed_2,
-    pub trace_level: libc::c_int,
-    pub num_warnings: libc::c_long,
-    pub jpeg_message_table: *const *const libc::c_char,
-    pub last_jpeg_message: libc::c_int,
-    pub addon_message_table: *const *const libc::c_char,
-    pub first_addon_message: libc::c_int,
-    pub last_addon_message: libc::c_int,
+        Option<unsafe extern "C" fn(_: j_common_ptr, _: *mut c_char) -> ()>,
+    pub reset_error_mgr: Option<unsafe extern "C" fn(_: j_common_ptr) -> ()>,
+    pub msg_code: c_int,
+    pub msg_parm: C2RustUnnamed_2,
+    pub trace_level: c_int,
+    pub num_warnings: c_long,
+    pub jpeg_message_table: *const *const c_char,
+    pub last_jpeg_message: c_int,
+    pub addon_message_table: *const *const c_char,
+    pub first_addon_message: c_int,
+    pub last_addon_message: c_int,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_compress_struct {
-    pub err: *mut crate::jpeglib_h::jpeg_error_mgr,
-    pub mem: *mut crate::jpeglib_h::jpeg_memory_mgr,
-    pub progress: *mut crate::jpeglib_h::jpeg_progress_mgr,
-    pub client_data: *mut libc::c_void,
-    pub is_decompressor: crate::jmorecfg_h::boolean,
-    pub global_state: libc::c_int,
-    pub dest: *mut crate::jpeglib_h::jpeg_destination_mgr,
-    pub image_width: crate::jmorecfg_h::JDIMENSION,
-    pub image_height: crate::jmorecfg_h::JDIMENSION,
-    pub input_components: libc::c_int,
-    pub in_color_space: crate::jpeglib_h::J_COLOR_SPACE,
-    pub input_gamma: libc::c_double,
-    pub data_precision: libc::c_int,
-    pub num_components: libc::c_int,
-    pub jpeg_color_space: crate::jpeglib_h::J_COLOR_SPACE,
-    pub comp_info: *mut crate::jpeglib_h::jpeg_component_info,
-    pub quant_tbl_ptrs: [*mut crate::jpeglib_h::JQUANT_TBL; 4],
-    pub dc_huff_tbl_ptrs: [*mut crate::jpeglib_h::JHUFF_TBL; 4],
-    pub ac_huff_tbl_ptrs: [*mut crate::jpeglib_h::JHUFF_TBL; 4],
-    pub arith_dc_L: [crate::jmorecfg_h::UINT8; 16],
-    pub arith_dc_U: [crate::jmorecfg_h::UINT8; 16],
-    pub arith_ac_K: [crate::jmorecfg_h::UINT8; 16],
-    pub num_scans: libc::c_int,
-    pub scan_info: *const crate::jpeglib_h::jpeg_scan_info,
-    pub raw_data_in: crate::jmorecfg_h::boolean,
-    pub arith_code: crate::jmorecfg_h::boolean,
-    pub optimize_coding: crate::jmorecfg_h::boolean,
-    pub CCIR601_sampling: crate::jmorecfg_h::boolean,
-    pub smoothing_factor: libc::c_int,
-    pub dct_method: crate::jpeglib_h::J_DCT_METHOD,
-    pub restart_interval: libc::c_uint,
-    pub restart_in_rows: libc::c_int,
-    pub write_JFIF_header: crate::jmorecfg_h::boolean,
-    pub JFIF_major_version: crate::jmorecfg_h::UINT8,
-    pub JFIF_minor_version: crate::jmorecfg_h::UINT8,
-    pub density_unit: crate::jmorecfg_h::UINT8,
-    pub X_density: crate::jmorecfg_h::UINT16,
-    pub Y_density: crate::jmorecfg_h::UINT16,
-    pub write_Adobe_marker: crate::jmorecfg_h::boolean,
-    pub next_scanline: crate::jmorecfg_h::JDIMENSION,
-    pub progressive_mode: crate::jmorecfg_h::boolean,
-    pub max_h_samp_factor: libc::c_int,
-    pub max_v_samp_factor: libc::c_int,
-    pub total_iMCU_rows: crate::jmorecfg_h::JDIMENSION,
-    pub comps_in_scan: libc::c_int,
-    pub cur_comp_info: [*mut crate::jpeglib_h::jpeg_component_info; 4],
-    pub MCUs_per_row: crate::jmorecfg_h::JDIMENSION,
-    pub MCU_rows_in_scan: crate::jmorecfg_h::JDIMENSION,
-    pub blocks_in_MCU: libc::c_int,
-    pub MCU_membership: [libc::c_int; 10],
-    pub Ss: libc::c_int,
-    pub Se: libc::c_int,
-    pub Ah: libc::c_int,
-    pub Al: libc::c_int,
-    pub master: *mut crate::jpeglib_h::jpeg_comp_master,
-    pub main: *mut crate::jpeglib_h::jpeg_c_main_controller,
-    pub prep: *mut crate::jpeglib_h::jpeg_c_prep_controller,
-    pub coef: *mut crate::jpeglib_h::jpeg_c_coef_controller,
-    pub marker: *mut crate::jpeglib_h::jpeg_marker_writer,
-    pub cconvert: *mut crate::jpeglib_h::jpeg_color_converter,
-    pub downsample: *mut crate::jpeglib_h::jpeg_downsampler,
-    pub fdct: *mut crate::jpeglib_h::jpeg_forward_dct,
-    pub entropy: *mut crate::jpeglib_h::jpeg_entropy_encoder,
-    pub script_space: *mut crate::jpeglib_h::jpeg_scan_info,
-    pub script_space_size: libc::c_int,
+    pub err: *mut jpeg_error_mgr,
+    pub mem: *mut jpeg_memory_mgr,
+    pub progress: *mut jpeg_progress_mgr,
+    pub client_data: *mut c_void,
+    pub is_decompressor: boolean,
+    pub global_state: c_int,
+    pub dest: *mut jpeg_destination_mgr,
+    pub image_width: JDIMENSION,
+    pub image_height: JDIMENSION,
+    pub input_components: c_int,
+    pub in_color_space: J_COLOR_SPACE,
+    pub input_gamma: c_double,
+    pub data_precision: c_int,
+    pub num_components: c_int,
+    pub jpeg_color_space: J_COLOR_SPACE,
+    pub comp_info: *mut jpeg_component_info,
+    pub quant_tbl_ptrs: [*mut JQUANT_TBL; 4],
+    pub dc_huff_tbl_ptrs: [*mut JHUFF_TBL; 4],
+    pub ac_huff_tbl_ptrs: [*mut JHUFF_TBL; 4],
+    pub arith_dc_L: [UINT8; 16],
+    pub arith_dc_U: [UINT8; 16],
+    pub arith_ac_K: [UINT8; 16],
+    pub num_scans: c_int,
+    pub scan_info: *const jpeg_scan_info,
+    pub raw_data_in: boolean,
+    pub arith_code: boolean,
+    pub optimize_coding: boolean,
+    pub CCIR601_sampling: boolean,
+    pub smoothing_factor: c_int,
+    pub dct_method: J_DCT_METHOD,
+    pub restart_interval: c_uint,
+    pub restart_in_rows: c_int,
+    pub write_JFIF_header: boolean,
+    pub JFIF_major_version: UINT8,
+    pub JFIF_minor_version: UINT8,
+    pub density_unit: UINT8,
+    pub X_density: UINT16,
+    pub Y_density: UINT16,
+    pub write_Adobe_marker: boolean,
+    pub next_scanline: JDIMENSION,
+    pub progressive_mode: boolean,
+    pub max_h_samp_factor: c_int,
+    pub max_v_samp_factor: c_int,
+    pub total_iMCU_rows: JDIMENSION,
+    pub comps_in_scan: c_int,
+    pub cur_comp_info: [*mut jpeg_component_info; 4],
+    pub MCUs_per_row: JDIMENSION,
+    pub MCU_rows_in_scan: JDIMENSION,
+    pub blocks_in_MCU: c_int,
+    pub MCU_membership: [c_int; 10],
+    pub Ss: c_int,
+    pub Se: c_int,
+    pub Ah: c_int,
+    pub Al: c_int,
+    pub master: *mut jpeg_comp_master,
+    pub main: *mut jpeg_c_main_controller,
+    pub prep: *mut jpeg_c_prep_controller,
+    pub coef: *mut jpeg_c_coef_controller,
+    pub marker: *mut jpeg_marker_writer,
+    pub cconvert: *mut jpeg_color_converter,
+    pub downsample: *mut jpeg_downsampler,
+    pub fdct: *mut jpeg_forward_dct,
+    pub entropy: *mut jpeg_entropy_encoder,
+    pub script_space: *mut jpeg_scan_info,
+    pub script_space_size: c_int,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_destination_mgr {
-    pub next_output_byte: *mut crate::jmorecfg_h::JOCTET,
-    pub free_in_buffer: crate::stddef_h::size_t,
-    pub init_destination: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
+    pub next_output_byte: *mut JOCTET,
+    pub free_in_buffer: size_t,
+    pub init_destination: Option<unsafe extern "C" fn(_: j_compress_ptr) -> ()>,
     pub empty_output_buffer: Option<
-        unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> crate::jmorecfg_h::boolean,
+        unsafe extern "C" fn(_: j_compress_ptr) -> boolean,
     >,
-    pub term_destination: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
+    pub term_destination: Option<unsafe extern "C" fn(_: j_compress_ptr) -> ()>,
 }
-pub type j_compress_ptr = *mut crate::jpeglib_h::jpeg_compress_struct;
+pub type j_compress_ptr = *mut jpeg_compress_struct;
 /* may be overridden in jconfig.h */
 
 /* may be overridden in jconfig.h */
 
 /* Dithering options for decompression. */
-pub type J_DITHER_MODE = libc::c_uint;
+pub type J_DITHER_MODE = c_uint;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_decompress_struct {
-    pub err: *mut crate::jpeglib_h::jpeg_error_mgr,
-    pub mem: *mut crate::jpeglib_h::jpeg_memory_mgr,
-    pub progress: *mut crate::jpeglib_h::jpeg_progress_mgr,
-    pub client_data: *mut libc::c_void,
-    pub is_decompressor: crate::jmorecfg_h::boolean,
-    pub global_state: libc::c_int,
-    pub src: *mut crate::jpeglib_h::jpeg_source_mgr,
-    pub image_width: crate::jmorecfg_h::JDIMENSION,
-    pub image_height: crate::jmorecfg_h::JDIMENSION,
-    pub num_components: libc::c_int,
-    pub jpeg_color_space: crate::jpeglib_h::J_COLOR_SPACE,
-    pub out_color_space: crate::jpeglib_h::J_COLOR_SPACE,
-    pub scale_num: libc::c_uint,
-    pub scale_denom: libc::c_uint,
-    pub output_gamma: libc::c_double,
-    pub buffered_image: crate::jmorecfg_h::boolean,
-    pub raw_data_out: crate::jmorecfg_h::boolean,
-    pub dct_method: crate::jpeglib_h::J_DCT_METHOD,
-    pub do_fancy_upsampling: crate::jmorecfg_h::boolean,
-    pub do_block_smoothing: crate::jmorecfg_h::boolean,
-    pub quantize_colors: crate::jmorecfg_h::boolean,
-    pub dither_mode: crate::jpeglib_h::J_DITHER_MODE,
-    pub two_pass_quantize: crate::jmorecfg_h::boolean,
-    pub desired_number_of_colors: libc::c_int,
-    pub enable_1pass_quant: crate::jmorecfg_h::boolean,
-    pub enable_external_quant: crate::jmorecfg_h::boolean,
-    pub enable_2pass_quant: crate::jmorecfg_h::boolean,
-    pub output_width: crate::jmorecfg_h::JDIMENSION,
-    pub output_height: crate::jmorecfg_h::JDIMENSION,
-    pub out_color_components: libc::c_int,
-    pub output_components: libc::c_int,
-    pub rec_outbuf_height: libc::c_int,
-    pub actual_number_of_colors: libc::c_int,
-    pub colormap: crate::jpeglib_h::JSAMPARRAY,
-    pub output_scanline: crate::jmorecfg_h::JDIMENSION,
-    pub input_scan_number: libc::c_int,
-    pub input_iMCU_row: crate::jmorecfg_h::JDIMENSION,
-    pub output_scan_number: libc::c_int,
-    pub output_iMCU_row: crate::jmorecfg_h::JDIMENSION,
-    pub coef_bits: *mut [libc::c_int; 64],
-    pub quant_tbl_ptrs: [*mut crate::jpeglib_h::JQUANT_TBL; 4],
-    pub dc_huff_tbl_ptrs: [*mut crate::jpeglib_h::JHUFF_TBL; 4],
-    pub ac_huff_tbl_ptrs: [*mut crate::jpeglib_h::JHUFF_TBL; 4],
-    pub data_precision: libc::c_int,
-    pub comp_info: *mut crate::jpeglib_h::jpeg_component_info,
-    pub progressive_mode: crate::jmorecfg_h::boolean,
-    pub arith_code: crate::jmorecfg_h::boolean,
-    pub arith_dc_L: [crate::jmorecfg_h::UINT8; 16],
-    pub arith_dc_U: [crate::jmorecfg_h::UINT8; 16],
-    pub arith_ac_K: [crate::jmorecfg_h::UINT8; 16],
-    pub restart_interval: libc::c_uint,
-    pub saw_JFIF_marker: crate::jmorecfg_h::boolean,
-    pub JFIF_major_version: crate::jmorecfg_h::UINT8,
-    pub JFIF_minor_version: crate::jmorecfg_h::UINT8,
-    pub density_unit: crate::jmorecfg_h::UINT8,
-    pub X_density: crate::jmorecfg_h::UINT16,
-    pub Y_density: crate::jmorecfg_h::UINT16,
-    pub saw_Adobe_marker: crate::jmorecfg_h::boolean,
-    pub Adobe_transform: crate::jmorecfg_h::UINT8,
-    pub CCIR601_sampling: crate::jmorecfg_h::boolean,
-    pub marker_list: crate::jpeglib_h::jpeg_saved_marker_ptr,
-    pub max_h_samp_factor: libc::c_int,
-    pub max_v_samp_factor: libc::c_int,
-    pub min_DCT_scaled_size: libc::c_int,
-    pub total_iMCU_rows: crate::jmorecfg_h::JDIMENSION,
-    pub sample_range_limit: *mut crate::jmorecfg_h::JSAMPLE,
-    pub comps_in_scan: libc::c_int,
-    pub cur_comp_info: [*mut crate::jpeglib_h::jpeg_component_info; 4],
-    pub MCUs_per_row: crate::jmorecfg_h::JDIMENSION,
-    pub MCU_rows_in_scan: crate::jmorecfg_h::JDIMENSION,
-    pub blocks_in_MCU: libc::c_int,
-    pub MCU_membership: [libc::c_int; 10],
-    pub Ss: libc::c_int,
-    pub Se: libc::c_int,
-    pub Ah: libc::c_int,
-    pub Al: libc::c_int,
-    pub unread_marker: libc::c_int,
-    pub master: *mut crate::jpeglib_h::jpeg_decomp_master,
-    pub main: *mut crate::jpeglib_h::jpeg_d_main_controller,
-    pub coef: *mut crate::jpeglib_h::jpeg_d_coef_controller,
-    pub post: *mut crate::jpeglib_h::jpeg_d_post_controller,
-    pub inputctl: *mut crate::jpeglib_h::jpeg_input_controller,
-    pub marker: *mut crate::jpeglib_h::jpeg_marker_reader,
-    pub entropy: *mut crate::jpeglib_h::jpeg_entropy_decoder,
-    pub idct: *mut crate::jpeglib_h::jpeg_inverse_dct,
-    pub upsample: *mut crate::jpeglib_h::jpeg_upsampler,
-    pub cconvert: *mut crate::jpeglib_h::jpeg_color_deconverter,
-    pub cquantize: *mut crate::jpeglib_h::jpeg_color_quantizer,
+    pub err: *mut jpeg_error_mgr,
+    pub mem: *mut jpeg_memory_mgr,
+    pub progress: *mut jpeg_progress_mgr,
+    pub client_data: *mut c_void,
+    pub is_decompressor: boolean,
+    pub global_state: c_int,
+    pub src: *mut jpeg_source_mgr,
+    pub image_width: JDIMENSION,
+    pub image_height: JDIMENSION,
+    pub num_components: c_int,
+    pub jpeg_color_space: J_COLOR_SPACE,
+    pub out_color_space: J_COLOR_SPACE,
+    pub scale_num: c_uint,
+    pub scale_denom: c_uint,
+    pub output_gamma: c_double,
+    pub buffered_image: boolean,
+    pub raw_data_out: boolean,
+    pub dct_method: J_DCT_METHOD,
+    pub do_fancy_upsampling: boolean,
+    pub do_block_smoothing: boolean,
+    pub quantize_colors: boolean,
+    pub dither_mode: J_DITHER_MODE,
+    pub two_pass_quantize: boolean,
+    pub desired_number_of_colors: c_int,
+    pub enable_1pass_quant: boolean,
+    pub enable_external_quant: boolean,
+    pub enable_2pass_quant: boolean,
+    pub output_width: JDIMENSION,
+    pub output_height: JDIMENSION,
+    pub out_color_components: c_int,
+    pub output_components: c_int,
+    pub rec_outbuf_height: c_int,
+    pub actual_number_of_colors: c_int,
+    pub colormap: JSAMPARRAY,
+    pub output_scanline: JDIMENSION,
+    pub input_scan_number: c_int,
+    pub input_iMCU_row: JDIMENSION,
+    pub output_scan_number: c_int,
+    pub output_iMCU_row: JDIMENSION,
+    pub coef_bits: *mut [c_int; 64],
+    pub quant_tbl_ptrs: [*mut JQUANT_TBL; 4],
+    pub dc_huff_tbl_ptrs: [*mut JHUFF_TBL; 4],
+    pub ac_huff_tbl_ptrs: [*mut JHUFF_TBL; 4],
+    pub data_precision: c_int,
+    pub comp_info: *mut jpeg_component_info,
+    pub progressive_mode: boolean,
+    pub arith_code: boolean,
+    pub arith_dc_L: [UINT8; 16],
+    pub arith_dc_U: [UINT8; 16],
+    pub arith_ac_K: [UINT8; 16],
+    pub restart_interval: c_uint,
+    pub saw_JFIF_marker: boolean,
+    pub JFIF_major_version: UINT8,
+    pub JFIF_minor_version: UINT8,
+    pub density_unit: UINT8,
+    pub X_density: UINT16,
+    pub Y_density: UINT16,
+    pub saw_Adobe_marker: boolean,
+    pub Adobe_transform: UINT8,
+    pub CCIR601_sampling: boolean,
+    pub marker_list: jpeg_saved_marker_ptr,
+    pub max_h_samp_factor: c_int,
+    pub max_v_samp_factor: c_int,
+    pub min_DCT_scaled_size: c_int,
+    pub total_iMCU_rows: JDIMENSION,
+    pub sample_range_limit: *mut JSAMPLE,
+    pub comps_in_scan: c_int,
+    pub cur_comp_info: [*mut jpeg_component_info; 4],
+    pub MCUs_per_row: JDIMENSION,
+    pub MCU_rows_in_scan: JDIMENSION,
+    pub blocks_in_MCU: c_int,
+    pub MCU_membership: [c_int; 10],
+    pub Ss: c_int,
+    pub Se: c_int,
+    pub Ah: c_int,
+    pub Al: c_int,
+    pub unread_marker: c_int,
+    pub master: *mut jpeg_decomp_master,
+    pub main: *mut jpeg_d_main_controller,
+    pub coef: *mut jpeg_d_coef_controller,
+    pub post: *mut jpeg_d_post_controller,
+    pub inputctl: *mut jpeg_input_controller,
+    pub marker: *mut jpeg_marker_reader,
+    pub entropy: *mut jpeg_entropy_decoder,
+    pub idct: *mut jpeg_inverse_dct,
+    pub upsample: *mut jpeg_upsampler,
+    pub cconvert: *mut jpeg_color_deconverter,
+    pub cquantize: *mut jpeg_color_quantizer,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_source_mgr {
-    pub next_input_byte: *const crate::jmorecfg_h::JOCTET,
-    pub bytes_in_buffer: crate::stddef_h::size_t,
-    pub init_source: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
+    pub next_input_byte: *const JOCTET,
+    pub bytes_in_buffer: size_t,
+    pub init_source: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
     pub fill_input_buffer: Option<
-        unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> crate::jmorecfg_h::boolean,
+        unsafe extern "C" fn(_: j_decompress_ptr) -> boolean,
     >,
     pub skip_input_data:
-        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr, _: libc::c_long) -> ()>,
+        Option<unsafe extern "C" fn(_: j_decompress_ptr, _: c_long) -> ()>,
     pub resync_to_restart: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_decompress_ptr,
-            _: libc::c_int,
-        ) -> crate::jmorecfg_h::boolean,
+            _: j_decompress_ptr,
+            _: c_int,
+        ) -> boolean,
     >,
-    pub term_source: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
+    pub term_source: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
 }
-pub type j_decompress_ptr = *mut crate::jpeglib_h::jpeg_decompress_struct;
+pub type j_decompress_ptr = *mut jpeg_decompress_struct;
 /* Routine signature for application-supplied marker processing methods.
  * Need not pass marker code since it is stored in cinfo->unread_marker.
  */
 pub type jpeg_marker_parser_method = Option<
-    unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> crate::jmorecfg_h::boolean,
+    unsafe extern "C" fn(_: j_decompress_ptr) -> boolean,
 >;
-pub const JCS_RGB565: crate::jpeglib_h::J_COLOR_SPACE = 16;
-pub const JCS_EXT_ARGB: crate::jpeglib_h::J_COLOR_SPACE = 15;
-pub const JCS_EXT_ABGR: crate::jpeglib_h::J_COLOR_SPACE = 14;
-pub const JCS_EXT_BGRA: crate::jpeglib_h::J_COLOR_SPACE = 13;
-pub const JCS_EXT_RGBA: crate::jpeglib_h::J_COLOR_SPACE = 12;
-pub const JCS_EXT_XRGB: crate::jpeglib_h::J_COLOR_SPACE = 11;
-pub const JCS_EXT_XBGR: crate::jpeglib_h::J_COLOR_SPACE = 10;
-pub const JCS_EXT_BGRX: crate::jpeglib_h::J_COLOR_SPACE = 9;
-pub const JCS_EXT_BGR: crate::jpeglib_h::J_COLOR_SPACE = 8;
-pub const JCS_EXT_RGBX: crate::jpeglib_h::J_COLOR_SPACE = 7;
-pub const JCS_EXT_RGB: crate::jpeglib_h::J_COLOR_SPACE = 6;
-pub const JCS_YCCK: crate::jpeglib_h::J_COLOR_SPACE = 5;
-pub const JCS_CMYK: crate::jpeglib_h::J_COLOR_SPACE = 4;
-pub const JCS_YCbCr: crate::jpeglib_h::J_COLOR_SPACE = 3;
-pub const JCS_RGB: crate::jpeglib_h::J_COLOR_SPACE = 2;
-pub const JCS_GRAYSCALE: crate::jpeglib_h::J_COLOR_SPACE = 1;
-pub const JCS_UNKNOWN: crate::jpeglib_h::J_COLOR_SPACE = 0;
-pub const JDCT_FLOAT: crate::jpeglib_h::J_DCT_METHOD = 2;
-pub const JDCT_IFAST: crate::jpeglib_h::J_DCT_METHOD = 1;
-pub const JDCT_ISLOW: crate::jpeglib_h::J_DCT_METHOD = 0;
-pub const JBOOLEAN_OVERSHOOT_DERINGING: crate::jpeglib_h::J_BOOLEAN_PARAM = 1061927929;
-pub const JBOOLEAN_TRELLIS_Q_OPT: crate::jpeglib_h::J_BOOLEAN_PARAM = 3777684073;
-pub const JBOOLEAN_USE_SCANS_IN_TRELLIS: crate::jpeglib_h::J_BOOLEAN_PARAM = 4253291573;
-pub const JBOOLEAN_USE_LAMBDA_WEIGHT_TBL: crate::jpeglib_h::J_BOOLEAN_PARAM = 865973855;
-pub const JBOOLEAN_TRELLIS_EOB_OPT: crate::jpeglib_h::J_BOOLEAN_PARAM = 3623303040;
-pub const JBOOLEAN_TRELLIS_QUANT_DC: crate::jpeglib_h::J_BOOLEAN_PARAM = 865946636;
-pub const JBOOLEAN_TRELLIS_QUANT: crate::jpeglib_h::J_BOOLEAN_PARAM = 3306299443;
-pub const JBOOLEAN_OPTIMIZE_SCANS: crate::jpeglib_h::J_BOOLEAN_PARAM = 1745618462;
-pub const JFLOAT_TRELLIS_DELTA_DC_WEIGHT: crate::jpeglib_h::J_FLOAT_PARAM = 326587475;
-pub const JFLOAT_LAMBDA_LOG_SCALE2: crate::jpeglib_h::J_FLOAT_PARAM = 3116084739;
-pub const JFLOAT_LAMBDA_LOG_SCALE1: crate::jpeglib_h::J_FLOAT_PARAM = 1533126041;
-pub const JINT_DC_SCAN_OPT_MODE: crate::jpeglib_h::J_INT_PARAM = 199732540;
-pub const JINT_BASE_QUANT_TBL_IDX: crate::jpeglib_h::J_INT_PARAM = 1145645745;
-pub const JINT_TRELLIS_NUM_LOOPS: crate::jpeglib_h::J_INT_PARAM = 3057565497;
-pub const JINT_TRELLIS_FREQ_SPLIT: crate::jpeglib_h::J_INT_PARAM = 1873801511;
-pub const JINT_COMPRESS_PROFILE: crate::jpeglib_h::J_INT_PARAM = 3918628389;
-pub const JCP_FASTEST: crate::jpeglib_h::C2RustUnnamed_1 = 720002228;
-pub const JCP_MAX_COMPRESSION: crate::jpeglib_h::C2RustUnnamed_1 = 1560820397;
+pub const JCS_RGB565: J_COLOR_SPACE = 16;
+pub const JCS_EXT_ARGB: J_COLOR_SPACE = 15;
+pub const JCS_EXT_ABGR: J_COLOR_SPACE = 14;
+pub const JCS_EXT_BGRA: J_COLOR_SPACE = 13;
+pub const JCS_EXT_RGBA: J_COLOR_SPACE = 12;
+pub const JCS_EXT_XRGB: J_COLOR_SPACE = 11;
+pub const JCS_EXT_XBGR: J_COLOR_SPACE = 10;
+pub const JCS_EXT_BGRX: J_COLOR_SPACE = 9;
+pub const JCS_EXT_BGR: J_COLOR_SPACE = 8;
+pub const JCS_EXT_RGBX: J_COLOR_SPACE = 7;
+pub const JCS_EXT_RGB: J_COLOR_SPACE = 6;
+pub const JCS_YCCK: J_COLOR_SPACE = 5;
+pub const JCS_CMYK: J_COLOR_SPACE = 4;
+pub const JCS_YCbCr: J_COLOR_SPACE = 3;
+pub const JCS_RGB: J_COLOR_SPACE = 2;
+pub const JCS_GRAYSCALE: J_COLOR_SPACE = 1;
+pub const JCS_UNKNOWN: J_COLOR_SPACE = 0;
+pub const JDCT_FLOAT: J_DCT_METHOD = 2;
+pub const JDCT_IFAST: J_DCT_METHOD = 1;
+pub const JDCT_ISLOW: J_DCT_METHOD = 0;
+pub const JBOOLEAN_OVERSHOOT_DERINGING: J_BOOLEAN_PARAM = 1061927929;
+pub const JBOOLEAN_TRELLIS_Q_OPT: J_BOOLEAN_PARAM = 3777684073;
+pub const JBOOLEAN_USE_SCANS_IN_TRELLIS: J_BOOLEAN_PARAM = 4253291573;
+pub const JBOOLEAN_USE_LAMBDA_WEIGHT_TBL: J_BOOLEAN_PARAM = 865973855;
+pub const JBOOLEAN_TRELLIS_EOB_OPT: J_BOOLEAN_PARAM = 3623303040;
+pub const JBOOLEAN_TRELLIS_QUANT_DC: J_BOOLEAN_PARAM = 865946636;
+pub const JBOOLEAN_TRELLIS_QUANT: J_BOOLEAN_PARAM = 3306299443;
+pub const JBOOLEAN_OPTIMIZE_SCANS: J_BOOLEAN_PARAM = 1745618462;
+pub const JFLOAT_TRELLIS_DELTA_DC_WEIGHT: J_FLOAT_PARAM = 326587475;
+pub const JFLOAT_LAMBDA_LOG_SCALE2: J_FLOAT_PARAM = 3116084739;
+pub const JFLOAT_LAMBDA_LOG_SCALE1: J_FLOAT_PARAM = 1533126041;
+pub const JINT_DC_SCAN_OPT_MODE: J_INT_PARAM = 199732540;
+pub const JINT_BASE_QUANT_TBL_IDX: J_INT_PARAM = 1145645745;
+pub const JINT_TRELLIS_NUM_LOOPS: J_INT_PARAM = 3057565497;
+pub const JINT_TRELLIS_FREQ_SPLIT: J_INT_PARAM = 1873801511;
+pub const JINT_COMPRESS_PROFILE: J_INT_PARAM = 3918628389;
+pub const JCP_FASTEST: C2RustUnnamed_1 = 720002228;
+pub const JCP_MAX_COMPRESSION: C2RustUnnamed_1 = 1560820397;
 /*
  * jpeglib.h
  *
@@ -2798,15 +2798,15 @@ opaque alpha channel. */
 /* RST0 marker code */
 
 /* EOI marker code */
-pub const JPEG_APP0: libc::c_int = 0xe0i32;
-pub const JDCT_DEFAULT: libc::c_int = crate::jpeglib_h::JDCT_ISLOW as libc::c_int;
+pub const JPEG_APP0: c_int = 0xe0i32;
+pub const JDCT_DEFAULT: c_int = JDCT_ISLOW as c_int;
 /* Floyd-Steinberg error diffusion dither */
 
 /* simple ordered dither */
-pub const JDITHER_FS: crate::jpeglib_h::J_DITHER_MODE = 2;
+pub const JDITHER_FS: J_DITHER_MODE = 2;
 /* no dithering */
-pub const JDITHER_ORDERED: crate::jpeglib_h::J_DITHER_MODE = 1;
-pub const JDITHER_NONE: crate::jpeglib_h::J_DITHER_MODE = 0;
+pub const JDITHER_ORDERED: J_DITHER_MODE = 1;
+pub const JDITHER_NONE: J_DITHER_MODE = 0;
 /* These marker codes are exported since applications and data source modules
  * are likely to want to use them.
  */
@@ -2816,41 +2816,41 @@ pub const JDITHER_NONE: crate::jpeglib_h::J_DITHER_MODE = 0;
 /* EOI marker code */
 
 /* APP0 marker code */
-pub const JPEG_COM: libc::c_int = 0xfei32;
-pub const JDCT_FASTEST: libc::c_int = crate::jpeglib_h::JDCT_IFAST as libc::c_int;
+pub const JPEG_COM: c_int = 0xfei32;
+pub const JDCT_FASTEST: c_int = JDCT_IFAST as c_int;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jvirt_barray_control {
-    pub mem_buffer: crate::jpeglib_h::JBLOCKARRAY,
-    pub rows_in_array: crate::jmorecfg_h::JDIMENSION,
-    pub blocksperrow: crate::jmorecfg_h::JDIMENSION,
-    pub maxaccess: crate::jmorecfg_h::JDIMENSION,
-    pub rows_in_mem: crate::jmorecfg_h::JDIMENSION,
-    pub rowsperchunk: crate::jmorecfg_h::JDIMENSION,
-    pub cur_start_row: crate::jmorecfg_h::JDIMENSION,
-    pub first_undef_row: crate::jmorecfg_h::JDIMENSION,
-    pub pre_zero: crate::jmorecfg_h::boolean,
-    pub dirty: crate::jmorecfg_h::boolean,
-    pub b_s_open: crate::jmorecfg_h::boolean,
-    pub next: crate::jpeglib_h::jvirt_barray_ptr,
-    pub b_s_info: crate::jmemsys_h::backing_store_info,
+    pub mem_buffer: JBLOCKARRAY,
+    pub rows_in_array: JDIMENSION,
+    pub blocksperrow: JDIMENSION,
+    pub maxaccess: JDIMENSION,
+    pub rows_in_mem: JDIMENSION,
+    pub rowsperchunk: JDIMENSION,
+    pub cur_start_row: JDIMENSION,
+    pub first_undef_row: JDIMENSION,
+    pub pre_zero: boolean,
+    pub dirty: boolean,
+    pub b_s_open: boolean,
+    pub next: jvirt_barray_ptr,
+    pub b_s_info: backing_store_info,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jvirt_sarray_control {
-    pub mem_buffer: crate::jpeglib_h::JSAMPARRAY,
-    pub rows_in_array: crate::jmorecfg_h::JDIMENSION,
-    pub samplesperrow: crate::jmorecfg_h::JDIMENSION,
-    pub maxaccess: crate::jmorecfg_h::JDIMENSION,
-    pub rows_in_mem: crate::jmorecfg_h::JDIMENSION,
-    pub rowsperchunk: crate::jmorecfg_h::JDIMENSION,
-    pub cur_start_row: crate::jmorecfg_h::JDIMENSION,
-    pub first_undef_row: crate::jmorecfg_h::JDIMENSION,
-    pub pre_zero: crate::jmorecfg_h::boolean,
-    pub dirty: crate::jmorecfg_h::boolean,
-    pub b_s_open: crate::jmorecfg_h::boolean,
-    pub next: crate::jpeglib_h::jvirt_sarray_ptr,
-    pub b_s_info: crate::jmemsys_h::backing_store_info,
+    pub mem_buffer: JSAMPARRAY,
+    pub rows_in_array: JDIMENSION,
+    pub samplesperrow: JDIMENSION,
+    pub maxaccess: JDIMENSION,
+    pub rows_in_mem: JDIMENSION,
+    pub rowsperchunk: JDIMENSION,
+    pub cur_start_row: JDIMENSION,
+    pub first_undef_row: JDIMENSION,
+    pub pre_zero: boolean,
+    pub dirty: boolean,
+    pub b_s_open: boolean,
+    pub next: jvirt_sarray_ptr,
+    pub b_s_info: backing_store_info,
 }
 use crate::jmemsys_h::backing_store_info;
-pub const JMSG_LENGTH_MAX: libc::c_int = 200i32;
+pub const JMSG_LENGTH_MAX: c_int = 200i32;

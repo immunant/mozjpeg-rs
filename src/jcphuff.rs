@@ -1,4 +1,4 @@
-use libc;
+use libc::c_uint;use libc::c_ulong;use libc::c_char;use libc::c_long;use libc::c_void;use libc::c_int;use libc;
 
 pub use crate::internal::__CHAR_BIT__;
 pub use crate::jmorecfg_h::boolean;
@@ -76,145 +76,145 @@ pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::jpeglib_h::NUM_HUFF_TBLS;
 pub use crate::limits_h::CHAR_BIT;
-pub use crate::src::jchuff::c_derived_tbl;
-pub use crate::src::jchuff::jpeg_gen_optimal_table;
-pub use crate::src::jchuff::jpeg_make_c_derived_tbl;
-pub use crate::src::jchuff::MAX_COEF_BITS;
-pub use crate::src::jerror::C2RustUnnamed_3;
-pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
-pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
-pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
-pub use crate::src::jerror::JERR_BAD_BUFFER_MODE;
-pub use crate::src::jerror::JERR_BAD_COMPONENT_ID;
-pub use crate::src::jerror::JERR_BAD_CROP_SPEC;
-pub use crate::src::jerror::JERR_BAD_DCTSIZE;
-pub use crate::src::jerror::JERR_BAD_DCT_COEF;
-pub use crate::src::jerror::JERR_BAD_HUFF_TABLE;
-pub use crate::src::jerror::JERR_BAD_IN_COLORSPACE;
-pub use crate::src::jerror::JERR_BAD_J_COLORSPACE;
-pub use crate::src::jerror::JERR_BAD_LENGTH;
-pub use crate::src::jerror::JERR_BAD_LIB_VERSION;
-pub use crate::src::jerror::JERR_BAD_MCU_SIZE;
-pub use crate::src::jerror::JERR_BAD_PARAM;
-pub use crate::src::jerror::JERR_BAD_PARAM_VALUE;
-pub use crate::src::jerror::JERR_BAD_POOL_ID;
-pub use crate::src::jerror::JERR_BAD_PRECISION;
-pub use crate::src::jerror::JERR_BAD_PROGRESSION;
-pub use crate::src::jerror::JERR_BAD_PROG_SCRIPT;
-pub use crate::src::jerror::JERR_BAD_SAMPLING;
-pub use crate::src::jerror::JERR_BAD_SCAN_SCRIPT;
-pub use crate::src::jerror::JERR_BAD_STATE;
-pub use crate::src::jerror::JERR_BAD_STRUCT_SIZE;
-pub use crate::src::jerror::JERR_BAD_VIRTUAL_ACCESS;
-pub use crate::src::jerror::JERR_BUFFER_SIZE;
-pub use crate::src::jerror::JERR_CANT_SUSPEND;
-pub use crate::src::jerror::JERR_CCIR601_NOTIMPL;
-pub use crate::src::jerror::JERR_COMPONENT_COUNT;
-pub use crate::src::jerror::JERR_CONVERSION_NOTIMPL;
-pub use crate::src::jerror::JERR_DAC_INDEX;
-pub use crate::src::jerror::JERR_DAC_VALUE;
-pub use crate::src::jerror::JERR_DHT_INDEX;
-pub use crate::src::jerror::JERR_DQT_INDEX;
-pub use crate::src::jerror::JERR_EMPTY_IMAGE;
-pub use crate::src::jerror::JERR_EMS_READ;
-pub use crate::src::jerror::JERR_EMS_WRITE;
-pub use crate::src::jerror::JERR_EOI_EXPECTED;
-pub use crate::src::jerror::JERR_FILE_READ;
-pub use crate::src::jerror::JERR_FILE_WRITE;
-pub use crate::src::jerror::JERR_FRACT_SAMPLE_NOTIMPL;
-pub use crate::src::jerror::JERR_HUFF_CLEN_OVERFLOW;
-pub use crate::src::jerror::JERR_HUFF_MISSING_CODE;
-pub use crate::src::jerror::JERR_IMAGE_TOO_BIG;
-pub use crate::src::jerror::JERR_INPUT_EMPTY;
-pub use crate::src::jerror::JERR_INPUT_EOF;
-pub use crate::src::jerror::JERR_MISMATCHED_QUANT_TABLE;
-pub use crate::src::jerror::JERR_MISSING_DATA;
-pub use crate::src::jerror::JERR_MODE_CHANGE;
-pub use crate::src::jerror::JERR_NOTIMPL;
-pub use crate::src::jerror::JERR_NOT_COMPILED;
-pub use crate::src::jerror::JERR_NO_BACKING_STORE;
-pub use crate::src::jerror::JERR_NO_HUFF_TABLE;
-pub use crate::src::jerror::JERR_NO_IMAGE;
-pub use crate::src::jerror::JERR_NO_QUANT_TABLE;
-pub use crate::src::jerror::JERR_NO_SOI;
-pub use crate::src::jerror::JERR_OUT_OF_MEMORY;
-pub use crate::src::jerror::JERR_QUANT_COMPONENTS;
-pub use crate::src::jerror::JERR_QUANT_FEW_COLORS;
-pub use crate::src::jerror::JERR_QUANT_MANY_COLORS;
-pub use crate::src::jerror::JERR_SOF_DUPLICATE;
-pub use crate::src::jerror::JERR_SOF_NO_SOS;
-pub use crate::src::jerror::JERR_SOF_UNSUPPORTED;
-pub use crate::src::jerror::JERR_SOI_DUPLICATE;
-pub use crate::src::jerror::JERR_SOS_NO_SOF;
-pub use crate::src::jerror::JERR_TFILE_CREATE;
-pub use crate::src::jerror::JERR_TFILE_READ;
-pub use crate::src::jerror::JERR_TFILE_SEEK;
-pub use crate::src::jerror::JERR_TFILE_WRITE;
-pub use crate::src::jerror::JERR_TOO_LITTLE_DATA;
-pub use crate::src::jerror::JERR_UNKNOWN_MARKER;
-pub use crate::src::jerror::JERR_UNSUPPORTED_SUSPEND;
-pub use crate::src::jerror::JERR_VIRTUAL_BUG;
-pub use crate::src::jerror::JERR_WIDTH_OVERFLOW;
-pub use crate::src::jerror::JERR_XMS_READ;
-pub use crate::src::jerror::JERR_XMS_WRITE;
-pub use crate::src::jerror::JMSG_COPYRIGHT;
-pub use crate::src::jerror::JMSG_LASTMSGCODE;
-pub use crate::src::jerror::JMSG_NOMESSAGE;
-pub use crate::src::jerror::JMSG_VERSION;
-pub use crate::src::jerror::JTRC_16BIT_TABLES;
-pub use crate::src::jerror::JTRC_ADOBE;
-pub use crate::src::jerror::JTRC_APP0;
-pub use crate::src::jerror::JTRC_APP14;
-pub use crate::src::jerror::JTRC_DAC;
-pub use crate::src::jerror::JTRC_DHT;
-pub use crate::src::jerror::JTRC_DQT;
-pub use crate::src::jerror::JTRC_DRI;
-pub use crate::src::jerror::JTRC_EMS_CLOSE;
-pub use crate::src::jerror::JTRC_EMS_OPEN;
-pub use crate::src::jerror::JTRC_EOI;
-pub use crate::src::jerror::JTRC_HUFFBITS;
-pub use crate::src::jerror::JTRC_JFIF;
-pub use crate::src::jerror::JTRC_JFIF_BADTHUMBNAILSIZE;
-pub use crate::src::jerror::JTRC_JFIF_EXTENSION;
-pub use crate::src::jerror::JTRC_JFIF_THUMBNAIL;
-pub use crate::src::jerror::JTRC_MISC_MARKER;
-pub use crate::src::jerror::JTRC_PARMLESS_MARKER;
-pub use crate::src::jerror::JTRC_QUANTVALS;
-pub use crate::src::jerror::JTRC_QUANT_3_NCOLORS;
-pub use crate::src::jerror::JTRC_QUANT_NCOLORS;
-pub use crate::src::jerror::JTRC_QUANT_SELECTED;
-pub use crate::src::jerror::JTRC_RECOVERY_ACTION;
-pub use crate::src::jerror::JTRC_RST;
-pub use crate::src::jerror::JTRC_SMOOTH_NOTIMPL;
-pub use crate::src::jerror::JTRC_SOF;
-pub use crate::src::jerror::JTRC_SOF_COMPONENT;
-pub use crate::src::jerror::JTRC_SOI;
-pub use crate::src::jerror::JTRC_SOS;
-pub use crate::src::jerror::JTRC_SOS_COMPONENT;
-pub use crate::src::jerror::JTRC_SOS_PARAMS;
-pub use crate::src::jerror::JTRC_TFILE_CLOSE;
-pub use crate::src::jerror::JTRC_TFILE_OPEN;
-pub use crate::src::jerror::JTRC_THUMB_JPEG;
-pub use crate::src::jerror::JTRC_THUMB_PALETTE;
-pub use crate::src::jerror::JTRC_THUMB_RGB;
-pub use crate::src::jerror::JTRC_UNKNOWN_IDS;
-pub use crate::src::jerror::JTRC_XMS_CLOSE;
-pub use crate::src::jerror::JTRC_XMS_OPEN;
-pub use crate::src::jerror::JWRN_ADOBE_XFORM;
-pub use crate::src::jerror::JWRN_BOGUS_ICC;
-pub use crate::src::jerror::JWRN_BOGUS_PROGRESSION;
-pub use crate::src::jerror::JWRN_EXTRANEOUS_DATA;
-pub use crate::src::jerror::JWRN_HIT_MARKER;
-pub use crate::src::jerror::JWRN_HUFF_BAD_CODE;
-pub use crate::src::jerror::JWRN_JFIF_MAJOR;
-pub use crate::src::jerror::JWRN_JPEG_EOF;
-pub use crate::src::jerror::JWRN_MUST_RESYNC;
-pub use crate::src::jerror::JWRN_NOT_SEQUENTIAL;
-pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
-use crate::src::simd::x86_64::jsimd::jsimd_can_encode_mcu_AC_first_prepare;
-use crate::src::simd::x86_64::jsimd::jsimd_can_encode_mcu_AC_refine_prepare;
-use crate::src::simd::x86_64::jsimd::jsimd_encode_mcu_AC_first_prepare;
-use crate::src::simd::x86_64::jsimd::jsimd_encode_mcu_AC_refine_prepare;
+pub use super::jchuff::c_derived_tbl;
+pub use super::jchuff::jpeg_gen_optimal_table;
+pub use super::jchuff::jpeg_make_c_derived_tbl;
+pub use super::jchuff::MAX_COEF_BITS;
+pub use super::jerror::C2RustUnnamed_3;
+pub use super::jerror::JERR_ARITH_NOTIMPL;
+pub use super::jerror::JERR_BAD_ALIGN_TYPE;
+pub use super::jerror::JERR_BAD_ALLOC_CHUNK;
+pub use super::jerror::JERR_BAD_BUFFER_MODE;
+pub use super::jerror::JERR_BAD_COMPONENT_ID;
+pub use super::jerror::JERR_BAD_CROP_SPEC;
+pub use super::jerror::JERR_BAD_DCTSIZE;
+pub use super::jerror::JERR_BAD_DCT_COEF;
+pub use super::jerror::JERR_BAD_HUFF_TABLE;
+pub use super::jerror::JERR_BAD_IN_COLORSPACE;
+pub use super::jerror::JERR_BAD_J_COLORSPACE;
+pub use super::jerror::JERR_BAD_LENGTH;
+pub use super::jerror::JERR_BAD_LIB_VERSION;
+pub use super::jerror::JERR_BAD_MCU_SIZE;
+pub use super::jerror::JERR_BAD_PARAM;
+pub use super::jerror::JERR_BAD_PARAM_VALUE;
+pub use super::jerror::JERR_BAD_POOL_ID;
+pub use super::jerror::JERR_BAD_PRECISION;
+pub use super::jerror::JERR_BAD_PROGRESSION;
+pub use super::jerror::JERR_BAD_PROG_SCRIPT;
+pub use super::jerror::JERR_BAD_SAMPLING;
+pub use super::jerror::JERR_BAD_SCAN_SCRIPT;
+pub use super::jerror::JERR_BAD_STATE;
+pub use super::jerror::JERR_BAD_STRUCT_SIZE;
+pub use super::jerror::JERR_BAD_VIRTUAL_ACCESS;
+pub use super::jerror::JERR_BUFFER_SIZE;
+pub use super::jerror::JERR_CANT_SUSPEND;
+pub use super::jerror::JERR_CCIR601_NOTIMPL;
+pub use super::jerror::JERR_COMPONENT_COUNT;
+pub use super::jerror::JERR_CONVERSION_NOTIMPL;
+pub use super::jerror::JERR_DAC_INDEX;
+pub use super::jerror::JERR_DAC_VALUE;
+pub use super::jerror::JERR_DHT_INDEX;
+pub use super::jerror::JERR_DQT_INDEX;
+pub use super::jerror::JERR_EMPTY_IMAGE;
+pub use super::jerror::JERR_EMS_READ;
+pub use super::jerror::JERR_EMS_WRITE;
+pub use super::jerror::JERR_EOI_EXPECTED;
+pub use super::jerror::JERR_FILE_READ;
+pub use super::jerror::JERR_FILE_WRITE;
+pub use super::jerror::JERR_FRACT_SAMPLE_NOTIMPL;
+pub use super::jerror::JERR_HUFF_CLEN_OVERFLOW;
+pub use super::jerror::JERR_HUFF_MISSING_CODE;
+pub use super::jerror::JERR_IMAGE_TOO_BIG;
+pub use super::jerror::JERR_INPUT_EMPTY;
+pub use super::jerror::JERR_INPUT_EOF;
+pub use super::jerror::JERR_MISMATCHED_QUANT_TABLE;
+pub use super::jerror::JERR_MISSING_DATA;
+pub use super::jerror::JERR_MODE_CHANGE;
+pub use super::jerror::JERR_NOTIMPL;
+pub use super::jerror::JERR_NOT_COMPILED;
+pub use super::jerror::JERR_NO_BACKING_STORE;
+pub use super::jerror::JERR_NO_HUFF_TABLE;
+pub use super::jerror::JERR_NO_IMAGE;
+pub use super::jerror::JERR_NO_QUANT_TABLE;
+pub use super::jerror::JERR_NO_SOI;
+pub use super::jerror::JERR_OUT_OF_MEMORY;
+pub use super::jerror::JERR_QUANT_COMPONENTS;
+pub use super::jerror::JERR_QUANT_FEW_COLORS;
+pub use super::jerror::JERR_QUANT_MANY_COLORS;
+pub use super::jerror::JERR_SOF_DUPLICATE;
+pub use super::jerror::JERR_SOF_NO_SOS;
+pub use super::jerror::JERR_SOF_UNSUPPORTED;
+pub use super::jerror::JERR_SOI_DUPLICATE;
+pub use super::jerror::JERR_SOS_NO_SOF;
+pub use super::jerror::JERR_TFILE_CREATE;
+pub use super::jerror::JERR_TFILE_READ;
+pub use super::jerror::JERR_TFILE_SEEK;
+pub use super::jerror::JERR_TFILE_WRITE;
+pub use super::jerror::JERR_TOO_LITTLE_DATA;
+pub use super::jerror::JERR_UNKNOWN_MARKER;
+pub use super::jerror::JERR_UNSUPPORTED_SUSPEND;
+pub use super::jerror::JERR_VIRTUAL_BUG;
+pub use super::jerror::JERR_WIDTH_OVERFLOW;
+pub use super::jerror::JERR_XMS_READ;
+pub use super::jerror::JERR_XMS_WRITE;
+pub use super::jerror::JMSG_COPYRIGHT;
+pub use super::jerror::JMSG_LASTMSGCODE;
+pub use super::jerror::JMSG_NOMESSAGE;
+pub use super::jerror::JMSG_VERSION;
+pub use super::jerror::JTRC_16BIT_TABLES;
+pub use super::jerror::JTRC_ADOBE;
+pub use super::jerror::JTRC_APP0;
+pub use super::jerror::JTRC_APP14;
+pub use super::jerror::JTRC_DAC;
+pub use super::jerror::JTRC_DHT;
+pub use super::jerror::JTRC_DQT;
+pub use super::jerror::JTRC_DRI;
+pub use super::jerror::JTRC_EMS_CLOSE;
+pub use super::jerror::JTRC_EMS_OPEN;
+pub use super::jerror::JTRC_EOI;
+pub use super::jerror::JTRC_HUFFBITS;
+pub use super::jerror::JTRC_JFIF;
+pub use super::jerror::JTRC_JFIF_BADTHUMBNAILSIZE;
+pub use super::jerror::JTRC_JFIF_EXTENSION;
+pub use super::jerror::JTRC_JFIF_THUMBNAIL;
+pub use super::jerror::JTRC_MISC_MARKER;
+pub use super::jerror::JTRC_PARMLESS_MARKER;
+pub use super::jerror::JTRC_QUANTVALS;
+pub use super::jerror::JTRC_QUANT_3_NCOLORS;
+pub use super::jerror::JTRC_QUANT_NCOLORS;
+pub use super::jerror::JTRC_QUANT_SELECTED;
+pub use super::jerror::JTRC_RECOVERY_ACTION;
+pub use super::jerror::JTRC_RST;
+pub use super::jerror::JTRC_SMOOTH_NOTIMPL;
+pub use super::jerror::JTRC_SOF;
+pub use super::jerror::JTRC_SOF_COMPONENT;
+pub use super::jerror::JTRC_SOI;
+pub use super::jerror::JTRC_SOS;
+pub use super::jerror::JTRC_SOS_COMPONENT;
+pub use super::jerror::JTRC_SOS_PARAMS;
+pub use super::jerror::JTRC_TFILE_CLOSE;
+pub use super::jerror::JTRC_TFILE_OPEN;
+pub use super::jerror::JTRC_THUMB_JPEG;
+pub use super::jerror::JTRC_THUMB_PALETTE;
+pub use super::jerror::JTRC_THUMB_RGB;
+pub use super::jerror::JTRC_UNKNOWN_IDS;
+pub use super::jerror::JTRC_XMS_CLOSE;
+pub use super::jerror::JTRC_XMS_OPEN;
+pub use super::jerror::JWRN_ADOBE_XFORM;
+pub use super::jerror::JWRN_BOGUS_ICC;
+pub use super::jerror::JWRN_BOGUS_PROGRESSION;
+pub use super::jerror::JWRN_EXTRANEOUS_DATA;
+pub use super::jerror::JWRN_HIT_MARKER;
+pub use super::jerror::JWRN_HUFF_BAD_CODE;
+pub use super::jerror::JWRN_JFIF_MAJOR;
+pub use super::jerror::JWRN_JPEG_EOF;
+pub use super::jerror::JWRN_MUST_RESYNC;
+pub use super::jerror::JWRN_NOT_SEQUENTIAL;
+pub use super::jerror::JWRN_TOO_MUCH_DATA;
+use super::simd::x86_64::jsimd::jsimd_can_encode_mcu_AC_first_prepare;
+use super::simd::x86_64::jsimd::jsimd_can_encode_mcu_AC_refine_prepare;
+use super::simd::x86_64::jsimd::jsimd_encode_mcu_AC_first_prepare;
+use super::simd::x86_64::jsimd::jsimd_encode_mcu_AC_refine_prepare;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 use crate::stdlib::memset;
@@ -224,42 +224,42 @@ pub type phuff_entropy_ptr = *mut phuff_entropy_encoder;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct phuff_entropy_encoder {
-    pub pub_0: crate::jpeglib_h::jpeg_entropy_encoder,
+    pub pub_0: jpeg_entropy_encoder,
     pub AC_first_prepare: Option<
         unsafe extern "C" fn(
-            _: *const crate::jmorecfg_h::JCOEF,
-            _: *const libc::c_int,
-            _: libc::c_int,
-            _: libc::c_int,
-            _: *mut crate::jmorecfg_h::JCOEF,
-            _: *mut crate::stddef_h::size_t,
+            _: *const JCOEF,
+            _: *const c_int,
+            _: c_int,
+            _: c_int,
+            _: *mut JCOEF,
+            _: *mut size_t,
         ) -> (),
     >,
     pub AC_refine_prepare: Option<
         unsafe extern "C" fn(
-            _: *const crate::jmorecfg_h::JCOEF,
-            _: *const libc::c_int,
-            _: libc::c_int,
-            _: libc::c_int,
-            _: *mut crate::jmorecfg_h::JCOEF,
-            _: *mut crate::stddef_h::size_t,
-        ) -> libc::c_int,
+            _: *const JCOEF,
+            _: *const c_int,
+            _: c_int,
+            _: c_int,
+            _: *mut JCOEF,
+            _: *mut size_t,
+        ) -> c_int,
     >,
-    pub gather_statistics: crate::jmorecfg_h::boolean,
-    pub next_output_byte: *mut crate::jmorecfg_h::JOCTET,
-    pub free_in_buffer: crate::stddef_h::size_t,
-    pub put_buffer: crate::stddef_h::size_t,
-    pub put_bits: libc::c_int,
-    pub cinfo: crate::jpeglib_h::j_compress_ptr,
-    pub last_dc_val: [libc::c_int; 4],
-    pub ac_tbl_no: libc::c_int,
-    pub EOBRUN: libc::c_uint,
-    pub BE: libc::c_uint,
-    pub bit_buffer: *mut libc::c_char,
-    pub restarts_to_go: libc::c_uint,
-    pub next_restart_num: libc::c_int,
-    pub derived_tbls: [*mut crate::src::jchuff::c_derived_tbl; 4],
-    pub count_ptrs: [*mut libc::c_long; 4],
+    pub gather_statistics: boolean,
+    pub next_output_byte: *mut JOCTET,
+    pub free_in_buffer: size_t,
+    pub put_buffer: size_t,
+    pub put_bits: c_int,
+    pub cinfo: j_compress_ptr,
+    pub last_dc_val: [c_int; 4],
+    pub ac_tbl_no: c_int,
+    pub EOBRUN: c_uint,
+    pub BE: c_uint,
+    pub bit_buffer: *mut c_char,
+    pub restarts_to_go: c_uint,
+    pub next_restart_num: c_int,
+    pub derived_tbls: [*mut super::jchuff::c_derived_tbl; 4],
+    pub count_ptrs: [*mut c_long; 4],
 }
 /* MAX_CORR_BITS is the number of bits the AC refinement correction-bit
  * buffer can hold.  Larger sizes may slightly improve compression, but
@@ -267,13 +267,13 @@ pub struct phuff_entropy_encoder {
  * The minimum safe size is 64 bits.
  */
 
-pub const MAX_CORR_BITS: libc::c_int = 1000i32;
+pub const MAX_CORR_BITS: c_int = 1000i32;
 /* Count bit loop zeroes */
 #[inline(always)]
 
-unsafe extern "C" fn count_zeroes(mut x: *mut crate::stddef_h::size_t) -> libc::c_int {
+unsafe extern "C" fn count_zeroes(mut x: *mut size_t) -> c_int {
      
-     let mut result:   libc::c_int =  (*x).trailing_zeros() as i32;
+     let mut result:   c_int =  (*x).trailing_zeros() as i32;
     *x >>= result;
     return result;
 }
@@ -282,8 +282,8 @@ unsafe extern "C" fn count_zeroes(mut x: *mut crate::stddef_h::size_t) -> libc::
  */
 
 unsafe extern "C" fn start_pass_phuff(
-    mut cinfo: crate::jpeglib_h::j_compress_ptr,
-    mut gather_statistics: crate::jmorecfg_h::boolean,
+    mut cinfo: j_compress_ptr,
+    mut gather_statistics: boolean,
 ) {
       let mut entropy: phuff_entropy_ptr = (*cinfo).entropy as phuff_entropy_ptr;
     
@@ -292,8 +292,8 @@ unsafe extern "C" fn start_pass_phuff(
     
     (*entropy).cinfo = cinfo;
     (*entropy).gather_statistics = gather_statistics;
-     let mut is_DC_band:   crate::jmorecfg_h::boolean =
-     ((*cinfo).Ss == 0i32) as libc::c_int;
+     let mut is_DC_band:   boolean =
+     ((*cinfo).Ss == 0i32) as c_int;
     /* We assume jcmaster.c already validated the scan parameters. */
     /* Select execution routines */
     if (*cinfo).Ah == 0i32 {
@@ -301,41 +301,41 @@ unsafe extern "C" fn start_pass_phuff(
             (*entropy).pub_0.encode_mcu = Some(
                 encode_mcu_DC_first
                     as unsafe extern "C" fn(
-                        _: crate::jpeglib_h::j_compress_ptr,
-                        _: *mut crate::jpeglib_h::JBLOCKROW,
-                    ) -> crate::jmorecfg_h::boolean,
+                        _: j_compress_ptr,
+                        _: *mut JBLOCKROW,
+                    ) -> boolean,
             )
         } else {
             (*entropy).pub_0.encode_mcu = Some(
                 encode_mcu_AC_first
                     as unsafe extern "C" fn(
-                        _: crate::jpeglib_h::j_compress_ptr,
-                        _: *mut crate::jpeglib_h::JBLOCKROW,
-                    ) -> crate::jmorecfg_h::boolean,
+                        _: j_compress_ptr,
+                        _: *mut JBLOCKROW,
+                    ) -> boolean,
             )
         }
-        if crate::src::simd::x86_64::jsimd::jsimd_can_encode_mcu_AC_first_prepare() != 0 {
+        if super::simd::x86_64::jsimd::jsimd_can_encode_mcu_AC_first_prepare() != 0 {
             (*entropy).AC_first_prepare = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_encode_mcu_AC_first_prepare
+                super::simd::x86_64::jsimd::jsimd_encode_mcu_AC_first_prepare
                     as unsafe extern "C" fn(
-                        _: *const crate::jmorecfg_h::JCOEF,
-                        _: *const libc::c_int,
-                        _: libc::c_int,
-                        _: libc::c_int,
-                        _: *mut crate::jmorecfg_h::JCOEF,
-                        _: *mut crate::stddef_h::size_t,
+                        _: *const JCOEF,
+                        _: *const c_int,
+                        _: c_int,
+                        _: c_int,
+                        _: *mut JCOEF,
+                        _: *mut size_t,
                     ) -> (),
             )
         } else {
             (*entropy).AC_first_prepare = Some(
                 encode_mcu_AC_first_prepare
                     as unsafe extern "C" fn(
-                        _: *const crate::jmorecfg_h::JCOEF,
-                        _: *const libc::c_int,
-                        _: libc::c_int,
-                        _: libc::c_int,
-                        _: *mut crate::jmorecfg_h::JCOEF,
-                        _: *mut crate::stddef_h::size_t,
+                        _: *const JCOEF,
+                        _: *const c_int,
+                        _: c_int,
+                        _: c_int,
+                        _: *mut JCOEF,
+                        _: *mut size_t,
                     ) -> (),
             )
         }
@@ -343,41 +343,41 @@ unsafe extern "C" fn start_pass_phuff(
         (*entropy).pub_0.encode_mcu = Some(
             encode_mcu_DC_refine
                 as unsafe extern "C" fn(
-                    _: crate::jpeglib_h::j_compress_ptr,
-                    _: *mut crate::jpeglib_h::JBLOCKROW,
-                ) -> crate::jmorecfg_h::boolean,
+                    _: j_compress_ptr,
+                    _: *mut JBLOCKROW,
+                ) -> boolean,
         )
     } else {
         (*entropy).pub_0.encode_mcu = Some(
             encode_mcu_AC_refine
                 as unsafe extern "C" fn(
-                    _: crate::jpeglib_h::j_compress_ptr,
-                    _: *mut crate::jpeglib_h::JBLOCKROW,
-                ) -> crate::jmorecfg_h::boolean,
+                    _: j_compress_ptr,
+                    _: *mut JBLOCKROW,
+                ) -> boolean,
         );
-        if crate::src::simd::x86_64::jsimd::jsimd_can_encode_mcu_AC_refine_prepare() != 0 {
+        if super::simd::x86_64::jsimd::jsimd_can_encode_mcu_AC_refine_prepare() != 0 {
             (*entropy).AC_refine_prepare = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_encode_mcu_AC_refine_prepare
+                super::simd::x86_64::jsimd::jsimd_encode_mcu_AC_refine_prepare
                     as unsafe extern "C" fn(
-                        _: *const crate::jmorecfg_h::JCOEF,
-                        _: *const libc::c_int,
-                        _: libc::c_int,
-                        _: libc::c_int,
-                        _: *mut crate::jmorecfg_h::JCOEF,
-                        _: *mut crate::stddef_h::size_t,
-                    ) -> libc::c_int,
+                        _: *const JCOEF,
+                        _: *const c_int,
+                        _: c_int,
+                        _: c_int,
+                        _: *mut JCOEF,
+                        _: *mut size_t,
+                    ) -> c_int,
             )
         } else {
             (*entropy).AC_refine_prepare = Some(
                 encode_mcu_AC_refine_prepare
                     as unsafe extern "C" fn(
-                        _: *const crate::jmorecfg_h::JCOEF,
-                        _: *const libc::c_int,
-                        _: libc::c_int,
-                        _: libc::c_int,
-                        _: *mut crate::jmorecfg_h::JCOEF,
-                        _: *mut crate::stddef_h::size_t,
-                    ) -> libc::c_int,
+                        _: *const JCOEF,
+                        _: *const c_int,
+                        _: c_int,
+                        _: c_int,
+                        _: *mut JCOEF,
+                        _: *mut size_t,
+                    ) -> c_int,
             )
         }
         /* AC refinement needs a correction bit buffer */
@@ -388,30 +388,30 @@ unsafe extern "C" fn start_pass_phuff(
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(
-                cinfo as crate::jpeglib_h::j_common_ptr,
-                crate::jpeglib_h::JPOOL_IMAGE,
-                MAX_CORR_BITS as libc::c_ulong *
-    ::std::mem::size_of::<libc::c_char>() as libc::c_ulong,
-            ) as *mut libc::c_char
+                cinfo as j_common_ptr,
+                JPOOL_IMAGE,
+                MAX_CORR_BITS as c_ulong *
+    ::std::mem::size_of::<c_char>() as c_ulong,
+            ) as *mut c_char
         }
     }
     if gather_statistics != 0 {
         (*entropy).pub_0.finish_pass = Some(
             finish_pass_gather_phuff
-                as unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> (),
+                as unsafe extern "C" fn(_: j_compress_ptr) -> (),
         )
     } else {
         (*entropy).pub_0.finish_pass = Some(
-            finish_pass_phuff as unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> (),
+            finish_pass_phuff as unsafe extern "C" fn(_: j_compress_ptr) -> (),
         )
     }
     
     /* Only DC coefficients may be interleaved, so cinfo->comps_in_scan = 1
      * for AC coefficients.
      */
-     let mut ci:   libc::c_int =  0i32;
+     let mut ci:   c_int =  0i32;
     while ci < (*cinfo).comps_in_scan {
-         let mut tbl:  libc::c_int =  0;  let mut current_block_45:  u64; let mut compptr:   *mut crate::jpeglib_h::jpeg_component_info =
+         let mut tbl:  c_int =  0;  let mut current_block_45:  u64; let mut compptr:   *mut jpeg_component_info =
      (*cinfo).cur_comp_info[ci as usize];
         /* Initialize DC predictions to 0 */
         (*entropy).last_dc_val[ci as usize] = 0i32;
@@ -433,9 +433,9 @@ unsafe extern "C" fn start_pass_phuff(
                 if gather_statistics != 0 {
                     /* Check for invalid table index */
                     /* (make_c_derived_tbl does this in the other path) */
-                    if tbl < 0i32 || tbl >= crate::jpeglib_h::NUM_HUFF_TBLS {
+                    if tbl < 0i32 || tbl >= NUM_HUFF_TBLS {
                         (*(*cinfo).err).msg_code =
-                            crate::src::jerror::JERR_NO_HUFF_TABLE as libc::c_int;
+                            super::jerror::JERR_NO_HUFF_TABLE as c_int;
                         (*(*cinfo).err).msg_parm.i[0] = tbl;
                         Some(
                             (*(*cinfo).err)
@@ -443,7 +443,7 @@ unsafe extern "C" fn start_pass_phuff(
                                 .expect("non-null function pointer"),
                         )
                         .expect("non-null function pointer")(
-                            cinfo as crate::jpeglib_h::j_common_ptr,
+                            cinfo as j_common_ptr,
                         );
                     }
                     /* Allocate and zero the statistics tables */
@@ -455,26 +455,26 @@ unsafe extern "C" fn start_pass_phuff(
                                 .expect("non-null function pointer"),
                         )
                         .expect("non-null function pointer")(
-                            cinfo as crate::jpeglib_h::j_common_ptr,
-                            crate::jpeglib_h::JPOOL_IMAGE,
+                            cinfo as j_common_ptr,
+                            JPOOL_IMAGE,
                             257u64 *
     
-                                ::std::mem::size_of::<libc::c_long>() as libc::c_ulong,
+                                ::std::mem::size_of::<c_long>() as c_ulong,
                         )
-                            as *mut libc::c_long
+                            as *mut c_long
                     }
-                    crate::stdlib::memset(
-                        (*entropy).count_ptrs[tbl as usize] as *mut libc::c_void,
+                    memset(
+                        (*entropy).count_ptrs[tbl as usize] as *mut c_void,
                         0i32,
                         257u64 *
-    ::std::mem::size_of::<libc::c_long>() as libc::c_ulong,
+    ::std::mem::size_of::<c_long>() as c_ulong,
                     );
                     if (*(*cinfo).master).trellis_passes != 0 {
                         
                          
-                         let mut i:   libc::c_int =  0i32;
+                         let mut i:   c_int =  0i32;
                         while i < 16i32 {
-                              let mut j:   libc::c_int =  0i32;
+                              let mut j:   c_int =  0i32;
                             while j < 12i32 {
                                 *(*entropy).count_ptrs[tbl as usize]
                                     .offset((16i32 * i + j) as isize) = 1i64;
@@ -486,7 +486,7 @@ unsafe extern "C" fn start_pass_phuff(
                 } else {
                     /* Compute derived values for Huffman table */
                     /* We may do this more than once for a table, but it's not expensive */
-                    crate::src::jchuff::jpeg_make_c_derived_tbl(
+                    super::jchuff::jpeg_make_c_derived_tbl(
                         cinfo,
                         is_DC_band,
                         tbl,
@@ -518,7 +518,7 @@ unsafe extern "C" fn start_pass_phuff(
 unsafe extern "C" fn dump_buffer(mut entropy: phuff_entropy_ptr)
 /* Empty the output buffer; we do not support suspension in this module. */
 {
-    let mut dest: *mut crate::jpeglib_h::jpeg_destination_mgr = (*(*entropy).cinfo).dest;
+    let mut dest: *mut jpeg_destination_mgr = (*(*entropy).cinfo).dest;
     if Some(
         (*dest)
             .empty_output_buffer
@@ -527,14 +527,14 @@ unsafe extern "C" fn dump_buffer(mut entropy: phuff_entropy_ptr)
     .expect("non-null function pointer")((*entropy).cinfo)
         == 0
     {
-        (*(*(*entropy).cinfo).err).msg_code = crate::src::jerror::JERR_CANT_SUSPEND as libc::c_int;
+        (*(*(*entropy).cinfo).err).msg_code = super::jerror::JERR_CANT_SUSPEND as c_int;
         Some(
             (*(*(*entropy).cinfo).err)
                 .error_exit
                 .expect("non-null function pointer"),
         )
         .expect("non-null function pointer")(
-            (*entropy).cinfo as crate::jpeglib_h::j_common_ptr
+            (*entropy).cinfo as j_common_ptr
         );
     }
     /* After a successful buffer dump, must reset buffer pointers */
@@ -550,25 +550,25 @@ unsafe extern "C" fn dump_buffer(mut entropy: phuff_entropy_ptr)
 
 unsafe extern "C" fn emit_bits(
     mut entropy: phuff_entropy_ptr,
-    mut code: libc::c_uint,
-    mut size: libc::c_int,
+    mut code: c_uint,
+    mut size: c_int,
 )
 /* Emit some bits, unless we are in gather mode */
 {
     /* This routine is heavily used, so it's worth coding tightly. */
-    let mut put_buffer: crate::stddef_h::size_t = code as crate::stddef_h::size_t;
-    let mut put_bits: libc::c_int = (*entropy).put_bits;
+    let mut put_buffer: size_t = code as size_t;
+    let mut put_bits: c_int = (*entropy).put_bits;
     /* if size is 0, caller used an invalid Huffman table entry */
     if size == 0i32 {
         (*(*(*entropy).cinfo).err).msg_code =
-            crate::src::jerror::JERR_HUFF_MISSING_CODE as libc::c_int; /* do nothing if we're only getting stats */
+            super::jerror::JERR_HUFF_MISSING_CODE as c_int; /* do nothing if we're only getting stats */
         Some(
             (*(*(*entropy).cinfo).err)
                 .error_exit
                 .expect("non-null function pointer"),
         )
         .expect("non-null function pointer")(
-            (*entropy).cinfo as crate::jpeglib_h::j_common_ptr
+            (*entropy).cinfo as j_common_ptr
         ); /* mask off any extra bits in code */
     } /* new number of bits in buffer */
     if (*entropy).gather_statistics != 0 {
@@ -579,10 +579,10 @@ unsafe extern "C" fn emit_bits(
     put_buffer <<= 24i32 - put_bits;
     put_buffer |= (*entropy).put_buffer;
     while put_bits >= 8i32 {
-        let mut c: libc::c_int = (put_buffer >> 16i32 & 0xffu64) as libc::c_int;
+        let mut c: c_int = (put_buffer >> 16i32 & 0xffu64) as c_int;
         let fresh0 = (*entropy).next_output_byte;
         (*entropy).next_output_byte = (*entropy).next_output_byte.offset(1);
-        *fresh0 = c as crate::jmorecfg_h::JOCTET;
+        *fresh0 = c as JOCTET;
         (*entropy).free_in_buffer =  (*entropy).free_in_buffer - 1;
         if (*entropy).free_in_buffer == 0u64 {
             dump_buffer(entropy);
@@ -615,19 +615,19 @@ unsafe extern "C" fn flush_bits(mut entropy: phuff_entropy_ptr) {
 
 unsafe extern "C" fn emit_symbol(
     mut entropy: phuff_entropy_ptr,
-    mut tbl_no: libc::c_int,
-    mut symbol: libc::c_int,
+    mut tbl_no: c_int,
+    mut symbol: c_int,
 ) {
     if (*entropy).gather_statistics != 0 {
         let ref mut fresh2 = *(*entropy).count_ptrs[tbl_no as usize].offset(symbol as isize);
         *fresh2 += 1
     } else {
-        let mut tbl: *mut crate::src::jchuff::c_derived_tbl =
+        let mut tbl: *mut super::jchuff::c_derived_tbl =
             (*entropy).derived_tbls[tbl_no as usize];
         emit_bits(
             entropy,
             (*tbl).ehufco[symbol as usize],
-            (*tbl).ehufsi[symbol as usize] as libc::c_int,
+            (*tbl).ehufsi[symbol as usize] as c_int,
         );
     };
 }
@@ -637,14 +637,14 @@ unsafe extern "C" fn emit_symbol(
 
 unsafe extern "C" fn emit_buffered_bits(
     mut entropy: phuff_entropy_ptr,
-    mut bufstart: *mut libc::c_char,
-    mut nbits: libc::c_uint,
+    mut bufstart: *mut c_char,
+    mut nbits: c_uint,
 ) {
     if (*entropy).gather_statistics != 0 {
         return;
     } /* no real work */
     while nbits > 0u32 {
-        emit_bits(entropy, *bufstart as libc::c_uint, 1i32);
+        emit_bits(entropy, *bufstart as c_uint, 1i32);
         bufstart = bufstart.offset(1);
         nbits -=  1
     }
@@ -658,19 +658,19 @@ unsafe extern "C" fn emit_eobrun(mut entropy: phuff_entropy_ptr) {
     
     if (*entropy).EOBRUN > 0u32 {
          
-         let mut temp:   libc::c_int =  (*entropy).EOBRUN as libc::c_int; let mut nbits:   libc::c_int =
-     crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int - 1i32;
+         let mut temp:   c_int =  (*entropy).EOBRUN as c_int; let mut nbits:   c_int =
+     jpeg_nbits_table[temp as usize] as c_int - 1i32;
         /* safety check: shouldn't happen given limited correction-bit buffer */
         if nbits > 14i32 {
             (*(*(*entropy).cinfo).err).msg_code =
-                crate::src::jerror::JERR_HUFF_MISSING_CODE as libc::c_int;
+                super::jerror::JERR_HUFF_MISSING_CODE as c_int;
             Some(
                 (*(*(*entropy).cinfo).err)
                     .error_exit
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(
-                (*entropy).cinfo as crate::jpeglib_h::j_common_ptr,
+                (*entropy).cinfo as j_common_ptr,
             );
         }
         emit_symbol(entropy, (*entropy).ac_tbl_no, nbits << 4i32);
@@ -687,7 +687,7 @@ unsafe extern "C" fn emit_eobrun(mut entropy: phuff_entropy_ptr) {
  * Emit a restart marker & resynchronize predictions.
  */
 
-unsafe extern "C" fn emit_restart(mut entropy: phuff_entropy_ptr, mut restart_num: libc::c_int) {
+unsafe extern "C" fn emit_restart(mut entropy: phuff_entropy_ptr, mut restart_num: c_int) {
     
     emit_eobrun(entropy);
     if (*entropy).gather_statistics == 0 {
@@ -701,14 +701,14 @@ unsafe extern "C" fn emit_restart(mut entropy: phuff_entropy_ptr, mut restart_nu
         }
         let fresh4 = (*entropy).next_output_byte;
         (*entropy).next_output_byte = (*entropy).next_output_byte.offset(1);
-        *fresh4 = (0xd0i32 + restart_num) as crate::jmorecfg_h::JOCTET;
+        *fresh4 = (0xd0i32 + restart_num) as JOCTET;
         (*entropy).free_in_buffer =  (*entropy).free_in_buffer - 1;
         if (*entropy).free_in_buffer == 0u64 {
             dump_buffer(entropy);
         }
     }
     if (*(*entropy).cinfo).Ss == 0i32 {
-         let mut ci:   libc::c_int =  0i32;
+         let mut ci:   c_int =  0i32;
         while ci < (*(*entropy).cinfo).comps_in_scan {
             (*entropy).last_dc_val[ci as usize] = 0i32;
             ci += 1
@@ -731,9 +731,9 @@ unsafe extern "C" fn emit_restart(mut entropy: phuff_entropy_ptr, mut restart_nu
  */
 
 unsafe extern "C" fn encode_mcu_DC_first(
-    mut cinfo: crate::jpeglib_h::j_compress_ptr,
-    mut MCU_data: *mut crate::jpeglib_h::JBLOCKROW,
-) -> crate::jmorecfg_h::boolean {
+    mut cinfo: j_compress_ptr,
+    mut MCU_data: *mut JBLOCKROW,
+) -> boolean {
      let mut entropy: phuff_entropy_ptr = (*cinfo).entropy as phuff_entropy_ptr;
     
     
@@ -741,7 +741,7 @@ unsafe extern "C" fn encode_mcu_DC_first(
     
     
     
-    let mut Al: libc::c_int = (*cinfo).Al;
+    let mut Al: c_int = (*cinfo).Al;
     
     
     (*entropy).next_output_byte = (*(*cinfo).dest).next_output_byte;
@@ -752,7 +752,7 @@ unsafe extern "C" fn encode_mcu_DC_first(
             emit_restart(entropy, (*entropy).next_restart_num);
         }
     }
-     let mut blkn:   libc::c_int =  0i32;
+     let mut blkn:   c_int =  0i32;
     while blkn < (*cinfo).blocks_in_MCU {
                
         
@@ -761,8 +761,8 @@ unsafe extern "C" fn encode_mcu_DC_first(
          * This is simply an arithmetic right shift.
          */
         
-         let mut block:   crate::jpeglib_h::JBLOCKROW =  *MCU_data.offset(blkn as isize); let mut ci:   libc::c_int =  (*cinfo).MCU_membership[blkn as usize]; let mut compptr:   *mut crate::jpeglib_h::jpeg_component_info =
-     (*cinfo).cur_comp_info[ci as usize]; let mut temp2:   libc::c_int =  (*block)[0] as libc::c_int >> Al; let mut temp:   libc::c_int =  temp2 - (*entropy).last_dc_val[ci as usize];
+         let mut block:   JBLOCKROW =  *MCU_data.offset(blkn as isize); let mut ci:   c_int =  (*cinfo).MCU_membership[blkn as usize]; let mut compptr:   *mut jpeg_component_info =
+     (*cinfo).cur_comp_info[ci as usize]; let mut temp2:   c_int =  (*block)[0] as c_int >> Al; let mut temp:   c_int =  temp2 - (*entropy).last_dc_val[ci as usize];
         (*entropy).last_dc_val[ci as usize] = temp2;
         /* Encode the DC coefficient difference per section G.1.2.1 */
         /* This is a well-known technique for obtaining the absolute value without
@@ -770,29 +770,29 @@ unsafe extern "C" fn encode_mcu_DC_first(
          * in "How to Optimize for the Pentium Processors", Copyright (c) 1996,
          * 1997 by Agner Fog.
          */
-         let mut temp3:   libc::c_int =
+         let mut temp3:   c_int =
      temp
-            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
-    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+            >> CHAR_BIT as c_ulong *
+    ::std::mem::size_of::<c_int>() as c_ulong -
     1u64; /* temp is abs value of input */
         temp ^= temp3;
         temp -= temp3;
         /* For a negative input, want temp2 = bitwise complement of abs(input) */
         temp2 = temp ^ temp3;
-         let mut nbits:   libc::c_int =
-     crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
+         let mut nbits:   c_int =
+     jpeg_nbits_table[temp as usize] as c_int;
         /* Check for out-of-range coefficient values.
          * Since we're encoding a difference, the range limit is twice as much.
          */
-        if nbits > crate::src::jchuff::MAX_COEF_BITS + 1i32 {
-            (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_DCT_COEF as libc::c_int;
+        if nbits > super::jchuff::MAX_COEF_BITS + 1i32 {
+            (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_DCT_COEF as c_int;
             Some(
                 (*(*cinfo).err)
                     .error_exit
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(
-                cinfo as crate::jpeglib_h::j_common_ptr
+                cinfo as j_common_ptr
             );
         }
         /* Count/emit the Huffman-coded symbol for the number of bits */
@@ -801,7 +801,7 @@ unsafe extern "C" fn encode_mcu_DC_first(
         /* or the complement of its magnitude, if negative. */
         if nbits != 0 {
             /* emit_bits rejects calls with size 0 */
-            emit_bits(entropy, temp2 as libc::c_uint, nbits);
+            emit_bits(entropy, temp2 as c_uint, nbits);
         }
         blkn += 1
     }
@@ -816,7 +816,7 @@ unsafe extern "C" fn encode_mcu_DC_first(
         }
         (*entropy).restarts_to_go =  (*entropy).restarts_to_go - 1
     }
-    return crate::jmorecfg_h::TRUE;
+    return TRUE;
 }
 /*
  * Data preparation for encode_mcu_AC_first().
@@ -832,36 +832,36 @@ unsafe extern "C" fn encode_mcu_DC_first(
 /* For a negative coef, want temp2 = bitwise complement of abs(coef) */
 
 unsafe extern "C" fn encode_mcu_AC_first_prepare(
-    mut block: *const crate::jmorecfg_h::JCOEF,
-    mut jpeg_natural_order_start: *const libc::c_int,
-    mut Sl: libc::c_int,
-    mut Al: libc::c_int,
-    mut values: *mut crate::jmorecfg_h::JCOEF,
-    mut bits: *mut crate::stddef_h::size_t,
+    mut block: *const JCOEF,
+    mut jpeg_natural_order_start: *const c_int,
+    mut Sl: c_int,
+    mut Al: c_int,
+    mut values: *mut JCOEF,
+    mut bits: *mut size_t,
 ) {
     
     
     
-      let mut zerobits:  crate::stddef_h::size_t =  0u64;
-    let mut Sl0: libc::c_int = Sl;
-     let mut k:   libc::c_int =  0i32;
+      let mut zerobits:  size_t =  0u64;
+    let mut Sl0: c_int = Sl;
+     let mut k:   c_int =  0i32;
     while k < Sl0 {
-          let mut temp:   libc::c_int =
-     *block.offset(*jpeg_natural_order_start.offset(k as isize) as isize) as libc::c_int;
+          let mut temp:   c_int =
+     *block.offset(*jpeg_natural_order_start.offset(k as isize) as isize) as c_int;
         if !(temp == 0i32) {
-              let mut temp2:   libc::c_int =
+              let mut temp2:   c_int =
      temp
-                >> crate::limits_h::CHAR_BIT as libc::c_ulong *
-    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+                >> CHAR_BIT as c_ulong *
+    ::std::mem::size_of::<c_int>() as c_ulong -
     1u64;
             temp ^= temp2;
             temp -= temp2;
             temp >>= Al;
             if !(temp == 0i32) {
                 temp2 ^= temp;
-                *values.offset(k as isize) = temp as crate::jmorecfg_h::JCOEF;
-                *values.offset((k + crate::jpeglib_h::DCTSIZE2) as isize) =
-                    temp2 as crate::jmorecfg_h::JCOEF;
+                *values.offset(k as isize) = temp as JCOEF;
+                *values.offset((k + DCTSIZE2) as isize) =
+                    temp2 as JCOEF;
                 zerobits |= (1u64) << k
             }
         }
@@ -882,16 +882,16 @@ unsafe extern "C" fn encode_mcu_AC_first_prepare(
 /* or the complement of its magnitude, if negative. */
 
 unsafe extern "C" fn encode_mcu_AC_first(
-    mut cinfo: crate::jpeglib_h::j_compress_ptr,
-    mut MCU_data: *mut crate::jpeglib_h::JBLOCKROW,
-) -> crate::jmorecfg_h::boolean {
-     let mut values_unaligned:  [crate::jmorecfg_h::JCOEF; 143] =  [0; 143];    let mut bits:  [crate::stddef_h::size_t; 1] =  [0; 1];let mut entropy: phuff_entropy_ptr = (*cinfo).entropy as phuff_entropy_ptr;
+    mut cinfo: j_compress_ptr,
+    mut MCU_data: *mut JBLOCKROW,
+) -> boolean {
+     let mut values_unaligned:  [JCOEF; 143] =  [0; 143];    let mut bits:  [size_t; 1] =  [0; 1];let mut entropy: phuff_entropy_ptr = (*cinfo).entropy as phuff_entropy_ptr;
     
     
     
     
-    let mut Sl: libc::c_int = (*cinfo).Se - (*cinfo).Ss + 1i32;
-    let mut Al: libc::c_int = (*cinfo).Al;
+    let mut Sl: c_int = (*cinfo).Se - (*cinfo).Ss + 1i32;
+    let mut Al: c_int = (*cinfo).Al;
     
     
     
@@ -906,16 +906,16 @@ unsafe extern "C" fn encode_mcu_AC_first(
         }
     }
     
-     let mut values:   *mut crate::jmorecfg_h::JCOEF =
-     (values_unaligned.as_mut_ptr() as crate::stddef_h::size_t +
+     let mut values:   *mut JCOEF =
+     (values_unaligned.as_mut_ptr() as size_t +
     16u64 - 1u64
-        & !(16i32 - 1i32) as libc::c_ulong) as *mut crate::jmorecfg_h::JCOEF; let mut cvalue:   *const crate::jmorecfg_h::JCOEF =  values;
+        & !(16i32 - 1i32) as c_ulong) as *mut JCOEF; let mut cvalue:   *const JCOEF =  values;
     /* Prepare data */
     (*entropy)
         .AC_first_prepare
         .expect("non-null function pointer")(
         (*(*MCU_data.offset(0)).offset(0)).as_mut_ptr(),
-        crate::jpegint_h::jpeg_natural_order
+        jpeg_natural_order
             .as_ptr()
             .offset((*cinfo).Ss as isize),
         Sl,
@@ -923,41 +923,41 @@ unsafe extern "C" fn encode_mcu_AC_first(
         values,
         bits.as_mut_ptr(),
     );
-     let mut zerobits:   crate::stddef_h::size_t =  bits[0];
+     let mut zerobits:   size_t =  bits[0];
     /* Emit any pending EOBRUN */
     if zerobits != 0 && (*entropy).EOBRUN > 0u32 {
         emit_eobrun(entropy);
     }
     /* Encode the AC coefficients per section G.1.2.2, fig. G.3 */
     while zerobits != 0 {
-             let mut r:   libc::c_int =  count_zeroes(&mut zerobits);
+             let mut r:   c_int =  count_zeroes(&mut zerobits);
         cvalue = cvalue.offset(r as isize);
         
-         let mut temp:   libc::c_int =  *cvalue.offset(0) as libc::c_int; let mut temp2:   libc::c_int =
-     *cvalue.offset(crate::jpeglib_h::DCTSIZE2 as isize) as libc::c_int;
+         let mut temp:   c_int =  *cvalue.offset(0) as c_int; let mut temp2:   c_int =
+     *cvalue.offset(DCTSIZE2 as isize) as c_int;
         while r > 15i32 {
             emit_symbol(entropy, (*entropy).ac_tbl_no, 0xf0i32);
             r -= 16i32
         }
-         let mut nbits:   libc::c_int =
-     crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
-        if nbits > crate::src::jchuff::MAX_COEF_BITS {
-            (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_DCT_COEF as libc::c_int;
+         let mut nbits:   c_int =
+     jpeg_nbits_table[temp as usize] as c_int;
+        if nbits > super::jchuff::MAX_COEF_BITS {
+            (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_DCT_COEF as c_int;
             Some(
                 (*(*cinfo).err)
                     .error_exit
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(
-                cinfo as crate::jpeglib_h::j_common_ptr
+                cinfo as j_common_ptr
             );
         }
         emit_symbol(entropy, (*entropy).ac_tbl_no, (r << 4i32) + nbits);
-        emit_bits(entropy, temp2 as libc::c_uint, nbits);
+        emit_bits(entropy, temp2 as c_uint, nbits);
         cvalue = cvalue.offset(1);
         zerobits >>= 1i32
     }
-    if cvalue < values.offset(Sl as isize) as *const crate::jmorecfg_h::JCOEF {
+    if cvalue < values.offset(Sl as isize) as *const JCOEF {
         /* If there are trailing zeroes, */
         (*entropy).EOBRUN =  (*entropy).EOBRUN + 1;
         if (*entropy).EOBRUN == 0x7fffu32 {
@@ -976,7 +976,7 @@ unsafe extern "C" fn encode_mcu_AC_first(
         }
         (*entropy).restarts_to_go =  (*entropy).restarts_to_go - 1
     }
-    return crate::jmorecfg_h::TRUE;
+    return TRUE;
 }
 /*
  * MCU encoding for DC successive approximation refinement scan.
@@ -985,13 +985,13 @@ unsafe extern "C" fn encode_mcu_AC_first(
  */
 
 unsafe extern "C" fn encode_mcu_DC_refine(
-    mut cinfo: crate::jpeglib_h::j_compress_ptr,
-    mut MCU_data: *mut crate::jpeglib_h::JBLOCKROW,
-) -> crate::jmorecfg_h::boolean {
+    mut cinfo: j_compress_ptr,
+    mut MCU_data: *mut JBLOCKROW,
+) -> boolean {
      let mut entropy: phuff_entropy_ptr = (*cinfo).entropy as phuff_entropy_ptr;
     
     
-    let mut Al: libc::c_int = (*cinfo).Al;
+    let mut Al: c_int = (*cinfo).Al;
     
     (*entropy).next_output_byte = (*(*cinfo).dest).next_output_byte;
     (*entropy).free_in_buffer = (*(*cinfo).dest).free_in_buffer;
@@ -1001,11 +1001,11 @@ unsafe extern "C" fn encode_mcu_DC_refine(
             emit_restart(entropy, (*entropy).next_restart_num);
         }
     }
-     let mut blkn:   libc::c_int =  0i32;
+     let mut blkn:   c_int =  0i32;
     while blkn < (*cinfo).blocks_in_MCU {
           
-         let mut block:   crate::jpeglib_h::JBLOCKROW =  *MCU_data.offset(blkn as isize); let mut temp:   libc::c_int =  (*block)[0] as libc::c_int;
-        emit_bits(entropy, (temp >> Al) as libc::c_uint, 1i32);
+         let mut block:   JBLOCKROW =  *MCU_data.offset(blkn as isize); let mut temp:   c_int =  (*block)[0] as c_int;
+        emit_bits(entropy, (temp >> Al) as c_uint, 1i32);
         blkn += 1
     }
     (*(*cinfo).dest).next_output_byte = (*entropy).next_output_byte;
@@ -1019,7 +1019,7 @@ unsafe extern "C" fn encode_mcu_DC_refine(
         }
         (*entropy).restarts_to_go =  (*entropy).restarts_to_go - 1
     }
-    return crate::jmorecfg_h::TRUE;
+    return TRUE;
 }
 /*
  * Data preparation for encode_mcu_AC_refine().
@@ -1037,37 +1037,37 @@ unsafe extern "C" fn encode_mcu_DC_refine(
 /* EOB = index of last newly-nonzero coef */
 
 unsafe extern "C" fn encode_mcu_AC_refine_prepare(
-    mut block: *const crate::jmorecfg_h::JCOEF,
-    mut jpeg_natural_order_start: *const libc::c_int,
-    mut Sl: libc::c_int,
-    mut Al: libc::c_int,
-    mut absvalues: *mut crate::jmorecfg_h::JCOEF,
-    mut bits: *mut crate::stddef_h::size_t,
-) -> libc::c_int {
+    mut block: *const JCOEF,
+    mut jpeg_natural_order_start: *const c_int,
+    mut Sl: c_int,
+    mut Al: c_int,
+    mut absvalues: *mut JCOEF,
+    mut bits: *mut size_t,
+) -> c_int {
     
     
     
     
     
-      let mut EOB:  libc::c_int =  0i32; let mut zerobits:  crate::stddef_h::size_t =  0u64; let mut signbits:  crate::stddef_h::size_t =  0u64;
-    let mut Sl0: libc::c_int = Sl;
-     let mut k:   libc::c_int =  0i32;
+      let mut EOB:  c_int =  0i32; let mut zerobits:  size_t =  0u64; let mut signbits:  size_t =  0u64;
+    let mut Sl0: c_int = Sl;
+     let mut k:   c_int =  0i32;
     while k < Sl0 {
           
-         let mut temp:   libc::c_int =
-     *block.offset(*jpeg_natural_order_start.offset(k as isize) as isize) as libc::c_int; let mut temp2:   libc::c_int =
+         let mut temp:   c_int =
+     *block.offset(*jpeg_natural_order_start.offset(k as isize) as isize) as c_int; let mut temp2:   c_int =
      temp
-            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
-    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+            >> CHAR_BIT as c_ulong *
+    ::std::mem::size_of::<c_int>() as c_ulong -
     1u64;
         temp ^= temp2;
         temp -= temp2;
         temp >>= Al;
         if temp != 0i32 {
             zerobits |= (1u64) << k;
-            signbits |= ((temp2 + 1i32) as crate::stddef_h::size_t) << k
+            signbits |= ((temp2 + 1i32) as size_t) << k
         }
-        *absvalues.offset(k as isize) = temp as crate::jmorecfg_h::JCOEF;
+        *absvalues.offset(k as isize) = temp as JCOEF;
         if temp == 1i32 {
             EOB = k + 0i32
         }
@@ -1100,16 +1100,16 @@ unsafe extern "C" fn encode_mcu_AC_refine_prepare(
 /* reset zero run length */
 
 unsafe extern "C" fn encode_mcu_AC_refine(
-    mut cinfo: crate::jpeglib_h::j_compress_ptr,
-    mut MCU_data: *mut crate::jpeglib_h::JBLOCKROW,
-) -> crate::jmorecfg_h::boolean {
-        let mut absvalues_unaligned:  [crate::jmorecfg_h::JCOEF; 79] =  [0; 79];      let mut bits:  [crate::stddef_h::size_t; 2] =  [0; 2];let mut entropy: phuff_entropy_ptr = (*cinfo).entropy as phuff_entropy_ptr;
+    mut cinfo: j_compress_ptr,
+    mut MCU_data: *mut JBLOCKROW,
+) -> boolean {
+        let mut absvalues_unaligned:  [JCOEF; 79] =  [0; 79];      let mut bits:  [size_t; 2] =  [0; 2];let mut entropy: phuff_entropy_ptr = (*cinfo).entropy as phuff_entropy_ptr;
     
     
     
     
-    let mut Sl: libc::c_int = (*cinfo).Se - (*cinfo).Ss + 1i32;
-    let mut Al: libc::c_int = (*cinfo).Al;
+    let mut Sl: c_int = (*cinfo).Se - (*cinfo).Ss + 1i32;
+    let mut Al: c_int = (*cinfo).Al;
     
     
     
@@ -1132,25 +1132,25 @@ unsafe extern "C" fn encode_mcu_AC_refine(
      /* BR = count of buffered bits added now */
      /* Append bits to buffer */
     
-     let mut absvalues:   *mut crate::jmorecfg_h::JCOEF =
-     (absvalues_unaligned.as_mut_ptr() as crate::stddef_h::size_t +
+     let mut absvalues:   *mut JCOEF =
+     (absvalues_unaligned.as_mut_ptr() as size_t +
     16u64 - 1u64
-        & !(16i32 - 1i32) as libc::c_ulong) as *mut crate::jmorecfg_h::JCOEF; let mut cabsvalue:   *const crate::jmorecfg_h::JCOEF =  absvalues; let mut EOBPTR:   *const crate::jmorecfg_h::JCOEF =
+        & !(16i32 - 1i32) as c_ulong) as *mut JCOEF; let mut cabsvalue:   *const JCOEF =  absvalues; let mut EOBPTR:   *const JCOEF =
      absvalues.offset((*entropy)
         .AC_refine_prepare
         .expect("non-null function pointer")(
         (*(*MCU_data.offset(0)).offset(0)).as_mut_ptr(),
-        crate::jpegint_h::jpeg_natural_order
+        jpeg_natural_order
             .as_ptr()
             .offset((*cinfo).Ss as isize),
         Sl,
         Al,
         absvalues,
         bits.as_mut_ptr(),
-    ) as isize); let mut r:   libc::c_int =  0i32; let mut BR:   libc::c_uint =  0u32; let mut BR_buffer:   *mut libc::c_char =
-     (*entropy).bit_buffer.offset((*entropy).BE as isize); let mut zerobits:   crate::stddef_h::size_t =  bits[0]; let mut signbits:   crate::stddef_h::size_t =  bits[1];
+    ) as isize); let mut r:   c_int =  0i32; let mut BR:   c_uint =  0u32; let mut BR_buffer:   *mut c_char =
+     (*entropy).bit_buffer.offset((*entropy).BE as isize); let mut zerobits:   size_t =  bits[0]; let mut signbits:   size_t =  bits[1];
     while zerobits != 0 {
-         let mut idx: libc::c_int = count_zeroes(&mut zerobits);
+         let mut idx: c_int = count_zeroes(&mut zerobits);
         r += idx;
         cabsvalue = cabsvalue.offset(idx as isize);
         signbits >>= idx;
@@ -1164,18 +1164,18 @@ unsafe extern "C" fn encode_mcu_AC_refine(
         }
         let fresh5 = cabsvalue;
         cabsvalue = cabsvalue.offset(1);
-         let mut temp:   libc::c_int =  *fresh5 as libc::c_int;
+         let mut temp:   c_int =  *fresh5 as c_int;
         if temp > 1i32 {
             let fresh6 = BR;
             BR +=  1;
-            *BR_buffer.offset(fresh6 as isize) = (temp & 1i32) as libc::c_char;
+            *BR_buffer.offset(fresh6 as isize) = (temp & 1i32) as c_char;
             signbits >>= 1i32;
             zerobits >>= 1i32
         } else {
             emit_eobrun(entropy);
             emit_symbol(entropy, (*entropy).ac_tbl_no, (r << 4i32) + 1i32);
-            temp = (signbits & 1u64) as libc::c_int;
-            emit_bits(entropy, temp as libc::c_uint, 1i32);
+            temp = (signbits & 1u64) as c_int;
+            emit_bits(entropy, temp as c_uint, 1i32);
             emit_buffered_bits(entropy, BR_buffer, BR);
             BR_buffer = (*entropy).bit_buffer;
             BR = 0u32;
@@ -1186,7 +1186,7 @@ unsafe extern "C" fn encode_mcu_AC_refine(
     }
     r |=  absvalues
         .offset(Sl as isize)
-        .wrapping_offset_from(cabsvalue) as libc::c_int;
+        .wrapping_offset_from(cabsvalue) as c_int;
     if r > 0i32 || BR > 0u32 {
         /* If there are trailing zeroes, */
         (*entropy).EOBRUN =  (*entropy).EOBRUN + 1; /* count an EOB */
@@ -1196,7 +1196,7 @@ unsafe extern "C" fn encode_mcu_AC_refine(
          * 2. overflow of the correction bit buffer during the next MCU.
          */
         if (*entropy).EOBRUN == 0x7fffu32
-            || (*entropy).BE > (MAX_CORR_BITS - crate::jpeglib_h::DCTSIZE2 + 1i32) as libc::c_uint
+            || (*entropy).BE > (MAX_CORR_BITS - DCTSIZE2 + 1i32) as c_uint
         {
             emit_eobrun(entropy);
         }
@@ -1212,13 +1212,13 @@ unsafe extern "C" fn encode_mcu_AC_refine(
         }
         (*entropy).restarts_to_go =  (*entropy).restarts_to_go - 1
     }
-    return crate::jmorecfg_h::TRUE;
+    return TRUE;
 }
 /*
  * Finish up at the end of a Huffman-compressed progressive scan.
  */
 
-unsafe extern "C" fn finish_pass_phuff(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
+unsafe extern "C" fn finish_pass_phuff(mut cinfo: j_compress_ptr) {
     let mut entropy: phuff_entropy_ptr = (*cinfo).entropy as phuff_entropy_ptr;
     (*entropy).next_output_byte = (*(*cinfo).dest).next_output_byte;
     (*entropy).free_in_buffer = (*(*cinfo).dest).free_in_buffer;
@@ -1232,8 +1232,8 @@ unsafe extern "C" fn finish_pass_phuff(mut cinfo: crate::jpeglib_h::j_compress_p
  * Finish up a statistics-gathering pass and create the new Huffman tables.
  */
 
-unsafe extern "C" fn finish_pass_gather_phuff(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
-       let mut did:  [crate::jmorecfg_h::boolean; 4] =  [0; 4];let mut entropy: phuff_entropy_ptr = (*cinfo).entropy as phuff_entropy_ptr;
+unsafe extern "C" fn finish_pass_gather_phuff(mut cinfo: j_compress_ptr) {
+       let mut did:  [boolean; 4] =  [0; 4];let mut entropy: phuff_entropy_ptr = (*cinfo).entropy as phuff_entropy_ptr;
     
     
     
@@ -1242,20 +1242,20 @@ unsafe extern "C" fn finish_pass_gather_phuff(mut cinfo: crate::jpeglib_h::j_com
     
     /* Flush out buffered data (all we care about is counting the EOB symbol) */
     emit_eobrun(entropy);
-     let mut is_DC_band:   crate::jmorecfg_h::boolean =
-     ((*cinfo).Ss == 0i32) as libc::c_int;
+     let mut is_DC_band:   boolean =
+     ((*cinfo).Ss == 0i32) as c_int;
     /* It's important not to apply jpeg_gen_optimal_table more than once
      * per table, because it clobbers the input frequency counts!
      */
-    crate::stdlib::memset(
-        did.as_mut_ptr() as *mut libc::c_void,
+    memset(
+        did.as_mut_ptr() as *mut c_void,
         0i32,
-        ::std::mem::size_of::<[crate::jmorecfg_h::boolean; 4]>() as libc::c_ulong,
+        ::std::mem::size_of::<[boolean; 4]>() as c_ulong,
     );
     
-     let mut ci:   libc::c_int =  0i32;
+     let mut ci:   c_int =  0i32;
     while ci < (*cinfo).comps_in_scan {
-         let mut tbl:  libc::c_int =  0;  let mut current_block_16:  u64; let mut compptr:   *mut crate::jpeglib_h::jpeg_component_info =
+         let mut tbl:  c_int =  0;  let mut current_block_16:  u64; let mut compptr:   *mut jpeg_component_info =
      (*cinfo).cur_comp_info[ci as usize];
         if is_DC_band != 0 {
             if (*cinfo).Ah != 0i32 {
@@ -1271,26 +1271,26 @@ unsafe extern "C" fn finish_pass_gather_phuff(mut cinfo: crate::jpeglib_h::j_com
         match current_block_16 {
             3512920355445576850 => {
                 if did[tbl as usize] == 0 {
-                     let mut htblptr:  *mut *mut crate::jpeglib_h::JHUFF_TBL =
+                     let mut htblptr:  *mut *mut JHUFF_TBL =
     
-        ::std::ptr::null_mut::< *mut crate::jpeglib_h::JHUFF_TBL>();if is_DC_band != 0 {
+        ::std::ptr::null_mut::< *mut JHUFF_TBL>();if is_DC_band != 0 {
                         htblptr = &mut *(*cinfo).dc_huff_tbl_ptrs.as_mut_ptr().offset(tbl as isize)
-                            as *mut *mut crate::jpeglib_h::JHUFF_TBL
+                            as *mut *mut JHUFF_TBL
                     } else {
                         htblptr = &mut *(*cinfo).ac_huff_tbl_ptrs.as_mut_ptr().offset(tbl as isize)
-                            as *mut *mut crate::jpeglib_h::JHUFF_TBL
+                            as *mut *mut JHUFF_TBL
                     }
                     if (*htblptr).is_null() {
-                        *htblptr = crate::jpeglib_h::jpeg_alloc_huff_table(
-                            cinfo as crate::jpeglib_h::j_common_ptr,
+                        *htblptr = jpeg_alloc_huff_table(
+                            cinfo as j_common_ptr,
                         )
                     }
-                    crate::src::jchuff::jpeg_gen_optimal_table(
+                    super::jchuff::jpeg_gen_optimal_table(
                         cinfo,
                         *htblptr,
                         (*entropy).count_ptrs[tbl as usize],
                     );
-                    did[tbl as usize] = crate::jmorecfg_h::TRUE
+                    did[tbl as usize] = TRUE
                 }
             }
             _ => {}
@@ -1304,7 +1304,7 @@ unsafe extern "C" fn finish_pass_gather_phuff(mut cinfo: crate::jpeglib_h::j_com
  */
 #[no_mangle]
 
-pub unsafe extern "C" fn jinit_phuff_encoder(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
+pub unsafe extern "C" fn jinit_phuff_encoder(mut cinfo: j_compress_ptr) {
     
       
      let mut entropy:   phuff_entropy_ptr =
@@ -1314,26 +1314,26 @@ pub unsafe extern "C" fn jinit_phuff_encoder(mut cinfo: crate::jpeglib_h::j_comp
             .expect("non-null function pointer"),
     )
     .expect("non-null function pointer")(
-        cinfo as crate::jpeglib_h::j_common_ptr,
-        crate::jpeglib_h::JPOOL_IMAGE,
-        ::std::mem::size_of::<phuff_entropy_encoder>() as libc::c_ulong,
+        cinfo as j_common_ptr,
+        JPOOL_IMAGE,
+        ::std::mem::size_of::<phuff_entropy_encoder>() as c_ulong,
     ) as phuff_entropy_ptr;
-    (*cinfo).entropy = entropy as *mut crate::jpeglib_h::jpeg_entropy_encoder;
+    (*cinfo).entropy = entropy as *mut jpeg_entropy_encoder;
     (*entropy).pub_0.start_pass = Some(
         start_pass_phuff
             as unsafe extern "C" fn(
-                _: crate::jpeglib_h::j_compress_ptr,
-                _: crate::jmorecfg_h::boolean,
+                _: j_compress_ptr,
+                _: boolean,
             ) -> (),
     );
-     let mut i:   libc::c_int =  0i32;
-    while i < crate::jpeglib_h::NUM_HUFF_TBLS {
+     let mut i:   c_int =  0i32;
+    while i < NUM_HUFF_TBLS {
         (*entropy).derived_tbls[i as usize] =
-            crate::stddef_h::NULL as *mut crate::src::jchuff::c_derived_tbl;
-        (*entropy).count_ptrs[i as usize] = crate::stddef_h::NULL as *mut libc::c_long;
+            NULL as *mut super::jchuff::c_derived_tbl;
+        (*entropy).count_ptrs[i as usize] = NULL as *mut c_long;
         i += 1
     }
-    (*entropy).bit_buffer = crate::stddef_h::NULL as *mut libc::c_char;
+    (*entropy).bit_buffer = NULL as *mut c_char;
     /* needed only in AC refinement scan */
 }
 /* C_PROGRESSIVE_SUPPORTED */

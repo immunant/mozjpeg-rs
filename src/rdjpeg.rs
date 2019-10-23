@@ -1,4 +1,4 @@
-use libc;
+use libc::c_uint;use libc::c_ulong;use libc::c_int;use libc;
 
 /* Define to `unsigned int' if <sys/types.h> does not define. */
 
@@ -169,8 +169,8 @@ pub use crate::jpeglib_h::JSAMPROW;
 pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::jpeglib_h::J_DITHER_MODE;
-pub use crate::src::cdjpeg::cjpeg_source_ptr;
-pub use crate::src::cdjpeg::cjpeg_source_struct;
+pub use super::cdjpeg::cjpeg_source_ptr;
+pub use super::cdjpeg::cjpeg_source_struct;
 /*
  * rdjpeg.c
  *
@@ -188,20 +188,20 @@ pub type jpeg_source_ptr = *mut _jpeg_source_struct;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct _jpeg_source_struct {
-    pub pub_0: crate::src::cdjpeg::cjpeg_source_struct,
-    pub cinfo: crate::jpeglib_h::j_compress_ptr,
-    pub dinfo: crate::jpeglib_h::jpeg_decompress_struct,
-    pub jerr: crate::jpeglib_h::jpeg_error_mgr,
+    pub pub_0: super::cdjpeg::cjpeg_source_struct,
+    pub cinfo: j_compress_ptr,
+    pub dinfo: jpeg_decompress_struct,
+    pub jerr: jpeg_error_mgr,
 }
 
 pub type jpeg_source_struct = _jpeg_source_struct;
 
 unsafe extern "C" fn get_rows(
-    mut cinfo: crate::jpeglib_h::j_compress_ptr,
-    mut sinfo: crate::src::cdjpeg::cjpeg_source_ptr,
-) -> crate::jmorecfg_h::JDIMENSION {
+    mut cinfo: j_compress_ptr,
+    mut sinfo: super::cdjpeg::cjpeg_source_ptr,
+) -> JDIMENSION {
     let mut source: jpeg_source_ptr = sinfo as jpeg_source_ptr;
-    return crate::jpeglib_h::jpeg_read_scanlines(
+    return jpeg_read_scanlines(
         &mut (*source).dinfo,
         (*source).pub_0.buffer,
         (*source).pub_0.buffer_height,
@@ -212,62 +212,62 @@ unsafe extern "C" fn get_rows(
  */
 
 unsafe extern "C" fn start_input_jpeg(
-    mut cinfo: crate::jpeglib_h::j_compress_ptr,
-    mut sinfo: crate::src::cdjpeg::cjpeg_source_ptr,
+    mut cinfo: j_compress_ptr,
+    mut sinfo: super::cdjpeg::cjpeg_source_ptr,
 ) {
      
     let mut source: jpeg_source_ptr = sinfo as jpeg_source_ptr;
-    (*source).dinfo.err = crate::jpeglib_h::jpeg_std_error(&mut (*source).jerr);
-    crate::jpeglib_h::jpeg_CreateDecompress(
+    (*source).dinfo.err = jpeg_std_error(&mut (*source).jerr);
+    jpeg_CreateDecompress(
         &mut (*source).dinfo,
-        crate::jconfig_h::JPEG_LIB_VERSION,
-        ::std::mem::size_of::<crate::jpeglib_h::jpeg_decompress_struct>() as libc::c_ulong,
+        JPEG_LIB_VERSION,
+        ::std::mem::size_of::<jpeg_decompress_struct>() as c_ulong,
     );
-    crate::jpeglib_h::jpeg_stdio_src(&mut (*source).dinfo, (*source).pub_0.input_file);
-    crate::jpeglib_h::jpeg_save_markers(
+    jpeg_stdio_src(&mut (*source).dinfo, (*source).pub_0.input_file);
+    jpeg_save_markers(
         &mut (*source).dinfo,
-        crate::jpeglib_h::JPEG_COM,
+        JPEG_COM,
         0xffffu32,
     );
-     let mut m:   libc::c_int =  0i32;
+     let mut m:   c_int =  0i32;
     while m < 16i32 {
-        crate::jpeglib_h::jpeg_save_markers(
+        jpeg_save_markers(
             &mut (*source).dinfo,
-            crate::jpeglib_h::JPEG_APP0 + m,
+            JPEG_APP0 + m,
             0xffffu32,
         );
         m += 1
     }
-    crate::jpeglib_h::jpeg_read_header(&mut (*source).dinfo, crate::jmorecfg_h::TRUE);
+    jpeg_read_header(&mut (*source).dinfo, TRUE);
     (*source).pub_0.marker_list = (*source).dinfo.marker_list;
-    (*source).dinfo.raw_data_out = crate::jmorecfg_h::FALSE;
-    crate::jpeglib_h::jpeg_start_decompress(&mut (*source).dinfo);
+    (*source).dinfo.raw_data_out = FALSE;
+    jpeg_start_decompress(&mut (*source).dinfo);
     (*cinfo).in_color_space = (*source).dinfo.out_color_space;
     (*cinfo).input_components = (*source).dinfo.output_components;
     (*cinfo).data_precision = (*source).dinfo.data_precision;
     (*cinfo).image_width = (*source).dinfo.image_width;
     (*cinfo).image_height = (*source).dinfo.image_height;
-    (*cinfo).raw_data_in = crate::jmorecfg_h::FALSE;
+    (*cinfo).raw_data_in = FALSE;
     (*source).pub_0.buffer = Some(
         (*(*cinfo).mem)
             .alloc_sarray
             .expect("non-null function pointer"),
     )
     .expect("non-null function pointer")(
-        cinfo as crate::jpeglib_h::j_common_ptr,
-        crate::jpeglib_h::JPOOL_IMAGE,
+        cinfo as j_common_ptr,
+        JPOOL_IMAGE,
         
         (*cinfo)
-            .image_width * (*cinfo).input_components as libc::c_uint,
+            .image_width * (*cinfo).input_components as c_uint,
         1u32,
     );
     (*source).pub_0.buffer_height = 1u32;
     (*source).pub_0.get_pixel_rows = Some(
         get_rows
             as unsafe extern "C" fn(
-                _: crate::jpeglib_h::j_compress_ptr,
-                _: crate::src::cdjpeg::cjpeg_source_ptr,
-            ) -> crate::jmorecfg_h::JDIMENSION,
+                _: j_compress_ptr,
+                _: super::cdjpeg::cjpeg_source_ptr,
+            ) -> JDIMENSION,
     );
 }
 /*
@@ -275,12 +275,12 @@ unsafe extern "C" fn start_input_jpeg(
  */
 
 unsafe extern "C" fn finish_input_jpeg(
-    mut cinfo: crate::jpeglib_h::j_compress_ptr,
-    mut sinfo: crate::src::cdjpeg::cjpeg_source_ptr,
+    mut cinfo: j_compress_ptr,
+    mut sinfo: super::cdjpeg::cjpeg_source_ptr,
 ) {
     let mut source: jpeg_source_ptr = sinfo as jpeg_source_ptr;
-    crate::jpeglib_h::jpeg_finish_decompress(&mut (*source).dinfo);
-    crate::jpeglib_h::jpeg_destroy_decompress(&mut (*source).dinfo);
+    jpeg_finish_decompress(&mut (*source).dinfo);
+    jpeg_destroy_decompress(&mut (*source).dinfo);
 }
 /*
  * cdjpeg.h
@@ -337,8 +337,8 @@ to write the image in bottom-up order.) */
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_read_jpeg(
-    mut cinfo: crate::jpeglib_h::j_compress_ptr,
-) -> crate::src::cdjpeg::cjpeg_source_ptr {
+    mut cinfo: j_compress_ptr,
+) -> super::cdjpeg::cjpeg_source_ptr {
      
      let mut source:   jpeg_source_ptr =
      Some(
@@ -347,25 +347,25 @@ pub unsafe extern "C" fn jinit_read_jpeg(
             .expect("non-null function pointer"),
     )
     .expect("non-null function pointer")(
-        cinfo as crate::jpeglib_h::j_common_ptr,
-        crate::jpeglib_h::JPOOL_IMAGE,
-        ::std::mem::size_of::<jpeg_source_struct>() as libc::c_ulong,
+        cinfo as j_common_ptr,
+        JPOOL_IMAGE,
+        ::std::mem::size_of::<jpeg_source_struct>() as c_ulong,
     ) as jpeg_source_ptr; /* make back link for subroutines */
     (*source).cinfo = cinfo;
     /* Fill in method ptrs, except get_pixel_rows which start_input sets */
     (*source).pub_0.start_input = Some(
         start_input_jpeg
             as unsafe extern "C" fn(
-                _: crate::jpeglib_h::j_compress_ptr,
-                _: crate::src::cdjpeg::cjpeg_source_ptr,
+                _: j_compress_ptr,
+                _: super::cdjpeg::cjpeg_source_ptr,
             ) -> (),
     );
     (*source).pub_0.finish_input = Some(
         finish_input_jpeg
             as unsafe extern "C" fn(
-                _: crate::jpeglib_h::j_compress_ptr,
-                _: crate::src::cdjpeg::cjpeg_source_ptr,
+                _: j_compress_ptr,
+                _: super::cdjpeg::cjpeg_source_ptr,
             ) -> (),
     );
-    return source as crate::src::cdjpeg::cjpeg_source_ptr;
+    return source as super::cdjpeg::cjpeg_source_ptr;
 }

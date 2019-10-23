@@ -1,88 +1,88 @@
-extern "C" {
+use libc::c_ushort;use libc::c_ulong;use libc::c_char;use libc::c_int;extern "C" {
     #[no_mangle]
     pub fn set_sample_factors(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        arg: *mut libc::c_char,
-    ) -> crate::jmorecfg_h::boolean;
+        cinfo: j_compress_ptr,
+        arg: *mut c_char,
+    ) -> boolean;
 
     #[no_mangle]
     pub fn set_quant_slots(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        arg: *mut libc::c_char,
-    ) -> crate::jmorecfg_h::boolean;
+        cinfo: j_compress_ptr,
+        arg: *mut c_char,
+    ) -> boolean;
 
     #[no_mangle]
     pub fn set_quality_ratings(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        arg: *mut libc::c_char,
-        force_baseline: crate::jmorecfg_h::boolean,
-    ) -> crate::jmorecfg_h::boolean;
+        cinfo: j_compress_ptr,
+        arg: *mut c_char,
+        force_baseline: boolean,
+    ) -> boolean;
 
     #[no_mangle]
     pub fn read_scan_script(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        filename: *mut libc::c_char,
-    ) -> crate::jmorecfg_h::boolean;
+        cinfo: j_compress_ptr,
+        filename: *mut c_char,
+    ) -> boolean;
 
     #[no_mangle]
     pub fn read_quant_tables(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        filename: *mut libc::c_char,
-        force_baseline: crate::jmorecfg_h::boolean,
-    ) -> crate::jmorecfg_h::boolean;
+        cinfo: j_compress_ptr,
+        filename: *mut c_char,
+        force_baseline: boolean,
+    ) -> boolean;
 
     #[no_mangle]
     pub fn jinit_read_targa(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-    ) -> crate::src::cdjpeg::cjpeg_source_ptr;
+        cinfo: j_compress_ptr,
+    ) -> cjpeg_source_ptr;
 
     #[no_mangle]
     pub fn jinit_read_jpeg(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-    ) -> crate::src::cdjpeg::cjpeg_source_ptr;
+        cinfo: j_compress_ptr,
+    ) -> cjpeg_source_ptr;
 
     #[no_mangle]
     pub fn jinit_read_bmp(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        use_inversion_array: crate::jmorecfg_h::boolean,
-    ) -> crate::src::cdjpeg::cjpeg_source_ptr;
+        cinfo: j_compress_ptr,
+        use_inversion_array: boolean,
+    ) -> cjpeg_source_ptr;
 
     #[no_mangle]
     pub fn jinit_read_gif(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-    ) -> crate::src::cdjpeg::cjpeg_source_ptr;
+        cinfo: j_compress_ptr,
+    ) -> cjpeg_source_ptr;
 
     #[no_mangle]
     pub fn jinit_read_ppm(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-    ) -> crate::src::cdjpeg::cjpeg_source_ptr;
+        cinfo: j_compress_ptr,
+    ) -> cjpeg_source_ptr;
 
     #[no_mangle]
     pub fn jinit_write_bmp(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        is_os2: crate::jmorecfg_h::boolean,
-        use_inversion_array: crate::jmorecfg_h::boolean,
-    ) -> crate::src::cdjpeg::djpeg_dest_ptr;
+        cinfo: j_decompress_ptr,
+        is_os2: boolean,
+        use_inversion_array: boolean,
+    ) -> djpeg_dest_ptr;
 
     #[no_mangle]
     pub fn jinit_write_gif(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-    ) -> crate::src::cdjpeg::djpeg_dest_ptr;
+        cinfo: j_decompress_ptr,
+    ) -> djpeg_dest_ptr;
 
     #[no_mangle]
     pub fn jinit_write_ppm(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-    ) -> crate::src::cdjpeg::djpeg_dest_ptr;
+        cinfo: j_decompress_ptr,
+    ) -> djpeg_dest_ptr;
 
     #[no_mangle]
     pub fn jinit_write_targa(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-    ) -> crate::src::cdjpeg::djpeg_dest_ptr;
+        cinfo: j_decompress_ptr,
+    ) -> djpeg_dest_ptr;
 
     #[no_mangle]
     pub fn read_color_map(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        infile: *mut crate::stdlib::FILE,
+        cinfo: j_decompress_ptr,
+        infile: *mut FILE,
     );
 }
 pub use crate::stdlib::C2RustUnnamed_0;
@@ -101,42 +101,42 @@ use crate::jpeglib_h::JSAMPARRAY;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct cdjpeg_progress_mgr {
-    pub pub_0: crate::jpeglib_h::jpeg_progress_mgr,
-    pub completed_extra_passes: libc::c_int,
-    pub total_extra_passes: libc::c_int,
-    pub percent_done: libc::c_int,
+    pub pub_0: jpeg_progress_mgr,
+    pub completed_extra_passes: c_int,
+    pub total_extra_passes: c_int,
+    pub percent_done: c_int,
 }
 
-pub type cd_progress_ptr = *mut crate::src::cdjpeg::cdjpeg_progress_mgr;
+pub type cd_progress_ptr = *mut cdjpeg_progress_mgr;
 
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct cjpeg_source_struct {
     pub start_input: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: crate::src::cdjpeg::cjpeg_source_ptr,
+            _: j_compress_ptr,
+            _: cjpeg_source_ptr,
         ) -> (),
     >,
     pub get_pixel_rows: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: crate::src::cdjpeg::cjpeg_source_ptr,
-        ) -> crate::jmorecfg_h::JDIMENSION,
+            _: j_compress_ptr,
+            _: cjpeg_source_ptr,
+        ) -> JDIMENSION,
     >,
     pub finish_input: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: crate::src::cdjpeg::cjpeg_source_ptr,
+            _: j_compress_ptr,
+            _: cjpeg_source_ptr,
         ) -> (),
     >,
-    pub input_file: *mut crate::stdlib::FILE,
-    pub buffer: crate::jpeglib_h::JSAMPARRAY,
-    pub buffer_height: crate::jmorecfg_h::JDIMENSION,
-    pub marker_list: crate::jpeglib_h::jpeg_saved_marker_ptr,
+    pub input_file: *mut FILE,
+    pub buffer: JSAMPARRAY,
+    pub buffer_height: JDIMENSION,
+    pub marker_list: jpeg_saved_marker_ptr,
 }
 
-pub type cjpeg_source_ptr = *mut crate::src::cdjpeg::cjpeg_source_struct;
+pub type cjpeg_source_ptr = *mut cjpeg_source_struct;
 pub use crate::jmorecfg_h::boolean;
 use crate::jpeglib_h::j_compress_ptr;
 use crate::jpeglib_h::j_decompress_ptr;
@@ -149,35 +149,35 @@ pub use crate::stdlib::FILE;
 pub struct djpeg_dest_struct {
     pub start_output: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_decompress_ptr,
-            _: crate::src::cdjpeg::djpeg_dest_ptr,
+            _: j_decompress_ptr,
+            _: djpeg_dest_ptr,
         ) -> (),
     >,
     pub put_pixel_rows: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_decompress_ptr,
-            _: crate::src::cdjpeg::djpeg_dest_ptr,
-            _: crate::jmorecfg_h::JDIMENSION,
+            _: j_decompress_ptr,
+            _: djpeg_dest_ptr,
+            _: JDIMENSION,
         ) -> (),
     >,
     pub finish_output: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_decompress_ptr,
-            _: crate::src::cdjpeg::djpeg_dest_ptr,
+            _: j_decompress_ptr,
+            _: djpeg_dest_ptr,
         ) -> (),
     >,
     pub calc_buffer_dimensions: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_decompress_ptr,
-            _: crate::src::cdjpeg::djpeg_dest_ptr,
+            _: j_decompress_ptr,
+            _: djpeg_dest_ptr,
         ) -> (),
     >,
-    pub output_file: *mut crate::stdlib::FILE,
-    pub buffer: crate::jpeglib_h::JSAMPARRAY,
-    pub buffer_height: crate::jmorecfg_h::JDIMENSION,
+    pub output_file: *mut FILE,
+    pub buffer: JSAMPARRAY,
+    pub buffer_height: JDIMENSION,
 }
 
-pub type djpeg_dest_ptr = *mut crate::src::cdjpeg::djpeg_dest_struct;
+pub type djpeg_dest_ptr = *mut djpeg_dest_struct;
 use crate::jpeglib_h::jpeg_decompress_struct;
 use libc;
 
@@ -266,14 +266,14 @@ to write the image in bottom-up order.) */
 /* miscellaneous useful macros */
 
 /* define mode parameters for fopen() */
-pub const WRITE_BINARY: [libc::c_char; 3] =
-    unsafe { *::std::mem::transmute::<&[u8; 3], &[libc::c_char; 3]>(b"wb\x00") };
+pub const WRITE_BINARY: [c_char; 3] =
+    unsafe { *::std::mem::transmute::<&[u8; 3], &[c_char; 3]>(b"wb\x00") };
 
-pub const READ_BINARY: [libc::c_char; 3] =
-    unsafe { *::std::mem::transmute::<&[u8; 3], &[libc::c_char; 3]>(b"rb\x00") };
+pub const READ_BINARY: [c_char; 3] =
+    unsafe { *::std::mem::transmute::<&[u8; 3], &[c_char; 3]>(b"rb\x00") };
 /* define exit() codes if not provided */
 
-pub const EXIT_WARNING: libc::c_int = 2i32;
+pub const EXIT_WARNING: c_int = 2i32;
 pub use crate::jmorecfg_h::FALSE;
 pub use crate::jmorecfg_h::TRUE;
 pub use crate::stdlib::_ISalnum;
@@ -318,61 +318,61 @@ pub use crate::stdlib::tolower;
 #[no_mangle]
 
 pub unsafe extern "C" fn keymatch(
-    mut arg: *mut libc::c_char,
-    mut keyword: *const libc::c_char,
-    mut minchars: libc::c_int,
-) -> crate::jmorecfg_h::boolean {
+    mut arg: *mut c_char,
+    mut keyword: *const c_char,
+    mut minchars: c_int,
+) -> boolean {
      /* arg longer than keyword, no good */
     
-     let mut nmatched:  libc::c_int =  0i32;
+     let mut nmatched:  c_int =  0i32;
     loop {
           let fresh0 = arg;
         arg = arg.offset(1);
-         let mut ca:   libc::c_int =  *fresh0 as libc::c_int;
+         let mut ca:   c_int =  *fresh0 as c_int;
         if !(ca != '\u{0}' as i32) {
             break;
         }
         let fresh1 = keyword;
         keyword = keyword.offset(1);
-         let mut ck:   libc::c_int =  *fresh1 as libc::c_int;
+         let mut ck:   c_int =  *fresh1 as c_int;
         if ck == '\u{0}' as i32 {
-            return crate::jmorecfg_h::FALSE;
+            return FALSE;
         }
-        if *(*crate::stdlib::__ctype_b_loc()).offset(ca as isize) as libc::c_int
-            &  crate::stdlib::_ISupper as libc::c_ushort as libc::c_int
+        if *(*__ctype_b_loc()).offset(ca as isize) as c_int
+            &  _ISupper as c_ushort as c_int
             != 0
         {
             /* count matched characters */
             /* force arg to lcase (assume ck is already) */
             ca = ({
-                 let mut __res:  libc::c_int =  0; /* no good */
-                if ::std::mem::size_of::<libc::c_int>() as libc::c_ulong > 1u64 {
+                 let mut __res:  c_int =  0; /* no good */
+                if ::std::mem::size_of::<c_int>() as c_ulong > 1u64 {
                     if 0 != 0 {
-                        let mut __c: libc::c_int = ca;
+                        let mut __c: c_int = ca;
                         __res = if __c < -128i32 || __c > 255i32 {
                             __c
                         } else {
-                            *(*crate::stdlib::__ctype_tolower_loc()).offset(__c as isize)
+                            *(*__ctype_tolower_loc()).offset(__c as isize)
                         }
                     } else {
-                        __res = crate::stdlib::tolower(ca)
+                        __res = tolower(ca)
                     }
                 } else {
-                    __res = *(*crate::stdlib::__ctype_tolower_loc()).offset(ca as isize)
+                    __res = *(*__ctype_tolower_loc()).offset(ca as isize)
                 }
                 __res
             })
         }
         if ca != ck {
-            return crate::jmorecfg_h::FALSE;
+            return FALSE;
         }
         nmatched += 1
     }
     /* reached end of argument; fail if it's too short for unique abbrev */
     if nmatched < minchars {
-        return crate::jmorecfg_h::FALSE;
+        return FALSE;
     }
-    return crate::jmorecfg_h::TRUE;
+    return TRUE;
     /* A-OK */
 }
 /*
@@ -381,8 +381,8 @@ pub unsafe extern "C" fn keymatch(
  */
 #[no_mangle]
 
-pub unsafe extern "C" fn read_stdin() -> *mut crate::stdlib::FILE {
-    let mut input_file: *mut crate::stdlib::FILE = crate::stdlib::stdin;
+pub unsafe extern "C" fn read_stdin() -> *mut FILE {
+    let mut input_file: *mut FILE = stdin;
     /* need to hack file mode? */
     /* need to re-open in binary mode? */
     return input_file;
@@ -441,8 +441,8 @@ to write the image in bottom-up order.) */
 /* common support routines (in cdjpeg.c) */
 #[no_mangle]
 
-pub unsafe extern "C" fn write_stdout() -> *mut crate::stdlib::FILE {
-    let mut output_file: *mut crate::stdlib::FILE = crate::stdlib::stdout;
+pub unsafe extern "C" fn write_stdout() -> *mut FILE {
+    let mut output_file: *mut FILE = stdout;
     /* need to hack file mode? */
     /* need to re-open in binary mode? */
     return output_file;

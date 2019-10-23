@@ -13,7 +13,7 @@
 #![feature(main)]
 
 
-use mozjpeg::*;
+use libc::c_int;use libc::c_char;use std::prelude::v1;use mozjpeg::*;
 
 
 use crate::src::md5::md5::MD5File;
@@ -60,43 +60,43 @@ pub use crate::stdlib::_IO_FILE;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> libc::c_int {
-     let mut buf:  [libc::c_char; 65] =  [0; 65];let mut md5sum: *mut libc::c_char = crate::stddef_h::NULL as *mut libc::c_char;
+unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
+     let mut buf:  [c_char; 65] =  [0; 65];let mut md5sum: *mut c_char = NULL as *mut c_char;
     
     if argc < 3i32 {
-        crate::stdlib::fprintf(
-            crate::stdlib::stderr,
+        fprintf(
+            stderr,
             
-            b"USAGE: %s <correct MD5 sum> <file>\n\x00".as_ptr() as *const libc::c_char,
+            b"USAGE: %s <correct MD5 sum> <file>\n\x00".as_ptr() as *const c_char,
             *argv.offset(0),
         );
         return -1i32;
     }
-    if crate::stdlib::strlen(*argv.offset(1)) != 32u64 {
-        crate::stdlib::fprintf(
-            crate::stdlib::stderr,
+    if strlen(*argv.offset(1)) != 32u64 {
+        fprintf(
+            stderr,
             
-            b"WARNING: MD5 hash size is wrong.\n\x00".as_ptr() as *const libc::c_char,
+            b"WARNING: MD5 hash size is wrong.\n\x00".as_ptr() as *const c_char,
         );
     }
-    md5sum = crate::src::md5::md5::MD5File(*argv.offset(2), buf.as_mut_ptr());
+    md5sum = MD5File(*argv.offset(2), buf.as_mut_ptr());
     if md5sum.is_null() {
-        crate::stdlib::perror(b"Could not obtain MD5 sum\x00".as_ptr() as *const libc::c_char);
+        perror(b"Could not obtain MD5 sum\x00".as_ptr() as *const c_char);
         return -1i32;
     }
-    if crate::stdlib::strcasecmp(md5sum, *argv.offset(1)) == 0 {
-        crate::stdlib::fprintf(
-            crate::stdlib::stderr,
+    if strcasecmp(md5sum, *argv.offset(1)) == 0 {
+        fprintf(
+            stderr,
             
-            b"%s: OK\n\x00".as_ptr() as *const libc::c_char,
+            b"%s: OK\n\x00".as_ptr() as *const c_char,
             *argv.offset(2),
         );
         return 0i32;
     } else {
-        crate::stdlib::fprintf(
-            crate::stdlib::stderr,
+        fprintf(
+            stderr,
             
-            b"%s: FAILED.  Checksum is %s\n\x00".as_ptr() as *const libc::c_char,
+            b"%s: FAILED.  Checksum is %s\n\x00".as_ptr() as *const c_char,
             *argv.offset(2),
             md5sum,
         );
@@ -105,7 +105,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
 }
 #[main]
 pub fn main() {
-     let mut args:  Vec<*mut libc::c_char> =  Vec::new();
+     let mut args:  Vec<*mut c_char> =  Vec::new();
     for arg in ::std::env::args() {
         args.push(
             ::std::ffi::CString::new(arg)
@@ -116,7 +116,7 @@ pub fn main() {
     args.push(::std::ptr::null_mut());
     unsafe {
         ::std::process::exit(main_0(
-            (args.len() - 1) as libc::c_int,
+            (args.len() - 1) as c_int,
             
             args.as_mut_ptr(),
         ))

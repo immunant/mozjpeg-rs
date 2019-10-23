@@ -13,7 +13,7 @@
 #![feature(main)]
 
 
-use mozjpeg::*;
+use libc::c_uint;use libc::c_int;use libc::c_ushort;use libc::c_ulong;use libc::c_char;use libc::c_long;use std::prelude::v1;use mozjpeg::*;
 
 
 pub use crate::stddef_h::size_t;
@@ -81,108 +81,108 @@ pub use crate::stdlib::EXIT_SUCCESS;
 /* command-line reader for Macintosh */
 /* define mode parameters for fopen() */
 
-pub const READ_BINARY: [libc::c_char; 3] =
-    unsafe { *::std::mem::transmute::<&[u8; 3], &[libc::c_char; 3]>(b"rb\x00") };
+pub const READ_BINARY: [c_char; 3] =
+    unsafe { *::std::mem::transmute::<&[u8; 3], &[c_char; 3]>(b"rb\x00") };
 /* define exit() codes if not provided */
 /* Reduce this value if your malloc() can't allocate blocks up to 64K.
  * On DOS, compiling in large model is usually a better solution.
  */
 
-pub const MAX_COM_LENGTH: libc::c_long = 65000i64;
+pub const MAX_COM_LENGTH: c_long = 65000i64;
 /* must be <= 65533 in any case */
 /*
  * These macros are used to read the input file and write the output file.
  * To reuse this code in another application, you might need to change these.
  */
 
-static mut infile: *mut crate::stdlib::FILE =
-    ::std::ptr::null::< crate::stdlib::FILE>() as *mut crate::stdlib::FILE;
+static mut infile: *mut FILE =
+    ::std::ptr::null::< FILE>() as *mut FILE;
 /* input JPEG file */
 /* Return next input byte, or EOF if no more */
 
-static mut outfile: *mut crate::stdlib::FILE =
-    ::std::ptr::null::< crate::stdlib::FILE>() as *mut crate::stdlib::FILE;
+static mut outfile: *mut FILE =
+    ::std::ptr::null::< FILE>() as *mut FILE;
 /* output JPEG file */
 /* Emit an output byte */
 /* Error exit handler */
 /* Read one byte, testing for EOF */
 
-unsafe extern "C" fn read_1_byte() -> libc::c_int {
+unsafe extern "C" fn read_1_byte() -> c_int {
      
-     let mut c:   libc::c_int =  crate::stdlib::getc(infile);
-    if c == crate::stdlib::EOF {
-        crate::stdlib::fprintf(
-            crate::stdlib::stderr,
+     let mut c:   c_int =  getc(infile);
+    if c == EOF {
+        fprintf(
+            stderr,
             
-            b"%s\n\x00".as_ptr() as *const libc::c_char,
+            b"%s\n\x00".as_ptr() as *const c_char,
             
-            b"Premature EOF in JPEG file\x00".as_ptr() as *const libc::c_char,
+            b"Premature EOF in JPEG file\x00".as_ptr() as *const c_char,
         );
-        crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
     return c;
 }
 /* Read 2 bytes, convert to unsigned int */
 /* All 2-byte quantities in JPEG markers are MSB first */
 
-unsafe extern "C" fn read_2_bytes() -> libc::c_uint {
+unsafe extern "C" fn read_2_bytes() -> c_uint {
     
       
-     let mut c1:   libc::c_int =  crate::stdlib::getc(infile);
-    if c1 == crate::stdlib::EOF {
-        crate::stdlib::fprintf(
-            crate::stdlib::stderr,
+     let mut c1:   c_int =  getc(infile);
+    if c1 == EOF {
+        fprintf(
+            stderr,
             
-            b"%s\n\x00".as_ptr() as *const libc::c_char,
+            b"%s\n\x00".as_ptr() as *const c_char,
             
-            b"Premature EOF in JPEG file\x00".as_ptr() as *const libc::c_char,
+            b"Premature EOF in JPEG file\x00".as_ptr() as *const c_char,
         );
-        crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
-     let mut c2:   libc::c_int =  crate::stdlib::getc(infile);
-    if c2 == crate::stdlib::EOF {
-        crate::stdlib::fprintf(
-            crate::stdlib::stderr,
+     let mut c2:   c_int =  getc(infile);
+    if c2 == EOF {
+        fprintf(
+            stderr,
             
-            b"%s\n\x00".as_ptr() as *const libc::c_char,
+            b"%s\n\x00".as_ptr() as *const c_char,
             
-            b"Premature EOF in JPEG file\x00".as_ptr() as *const libc::c_char,
+            b"Premature EOF in JPEG file\x00".as_ptr() as *const c_char,
         );
-        crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
-    return ((((c1 as libc::c_uint) << 8i32))) + c2 as libc::c_uint;
+    return ((((c1 as c_uint) << 8i32))) + c2 as c_uint;
 }
 /* Routines to write data to output file */
 
-unsafe extern "C" fn write_1_byte(mut c: libc::c_int) {
-    crate::stdlib::putc(c, outfile);
+unsafe extern "C" fn write_1_byte(mut c: c_int) {
+    putc(c, outfile);
 }
 
-unsafe extern "C" fn write_2_bytes(mut val: libc::c_uint) {
-    crate::stdlib::putc(
-        (val >> 8i32 & 0xffu32) as libc::c_int,
+unsafe extern "C" fn write_2_bytes(mut val: c_uint) {
+    putc(
+        (val >> 8i32 & 0xffu32) as c_int,
         outfile,
     );
-    crate::stdlib::putc((val & 0xffu32) as libc::c_int, outfile);
+    putc((val & 0xffu32) as c_int, outfile);
 }
 
-unsafe extern "C" fn write_marker(mut marker: libc::c_int) {
-    crate::stdlib::putc(0xffi32, outfile);
-    crate::stdlib::putc(marker, outfile);
+unsafe extern "C" fn write_marker(mut marker: c_int) {
+    putc(0xffi32, outfile);
+    putc(marker, outfile);
 }
 
 unsafe extern "C" fn copy_rest_of_file() {
     
     loop {
-          let mut c:   libc::c_int =  crate::stdlib::getc(infile);
-        if !(c != crate::stdlib::EOF) {
+          let mut c:   c_int =  getc(infile);
+        if !(c != EOF) {
             break;
         }
-        crate::stdlib::putc(c, outfile);
+        putc(c, outfile);
     }
 }
 
-pub const M_SOI: libc::c_int = 0xd8i32;
+pub const M_SOI: c_int = 0xd8i32;
 /* COMment */
 /*
  * Find the next JPEG marker and return its marker code.
@@ -194,10 +194,10 @@ pub const M_SOI: libc::c_int = 0xd8i32;
  * not deal correctly with FF/00 sequences in the compressed image data...
  */
 
-unsafe extern "C" fn next_marker() -> libc::c_int {
+unsafe extern "C" fn next_marker() -> c_int {
     
-      let mut discarded_bytes:  libc::c_int =  0i32;
-     let mut c:   libc::c_int =  read_1_byte();
+      let mut discarded_bytes:  c_int =  0i32;
+     let mut c:   c_int =  read_1_byte();
     while c != 0xffi32 {
         discarded_bytes += 1;
         c = read_1_byte()
@@ -213,10 +213,10 @@ unsafe extern "C" fn next_marker() -> libc::c_int {
         }
     }
     if discarded_bytes != 0i32 {
-        crate::stdlib::fprintf(
-            crate::stdlib::stderr,
+        fprintf(
+            stderr,
             
-            b"Warning: garbage data found in JPEG file\n\x00".as_ptr() as *const libc::c_char,
+            b"Warning: garbage data found in JPEG file\n\x00".as_ptr() as *const c_char,
         );
     }
     return c;
@@ -229,20 +229,20 @@ unsafe extern "C" fn next_marker() -> libc::c_int {
  * file and then return a misleading error message...
  */
 
-unsafe extern "C" fn first_marker() -> libc::c_int {
+unsafe extern "C" fn first_marker() -> c_int {
     
       
     
-     let mut c1:   libc::c_int =  crate::stdlib::getc(infile); let mut c2:   libc::c_int =  crate::stdlib::getc(infile);
+     let mut c1:   c_int =  getc(infile); let mut c2:   c_int =  getc(infile);
     if c1 != 0xffi32 || c2 != M_SOI {
-        crate::stdlib::fprintf(
-            crate::stdlib::stderr,
+        fprintf(
+            stderr,
             
-            b"%s\n\x00".as_ptr() as *const libc::c_char,
+            b"%s\n\x00".as_ptr() as *const c_char,
             
-            b"Not a JPEG file\x00".as_ptr() as *const libc::c_char,
+            b"Not a JPEG file\x00".as_ptr() as *const c_char,
         );
-        crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
     return c2;
 }
@@ -259,18 +259,18 @@ unsafe extern "C" fn copy_variable()
 /* Copy an unknown or uninteresting variable-length marker */
 {
      
-     let mut length:   libc::c_uint =  read_2_bytes();
+     let mut length:   c_uint =  read_2_bytes();
     write_2_bytes(length);
     /* Length includes itself, so must be at least 2 */
     if length < 2u32 {
-        crate::stdlib::fprintf(
-            crate::stdlib::stderr,
+        fprintf(
+            stderr,
             
-            b"%s\n\x00".as_ptr() as *const libc::c_char,
+            b"%s\n\x00".as_ptr() as *const c_char,
             
-            b"Erroneous JPEG marker length\x00".as_ptr() as *const libc::c_char,
+            b"Erroneous JPEG marker length\x00".as_ptr() as *const c_char,
         );
-        crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
     length -=  2u32;
     /* Copy the remaining bytes */
@@ -284,17 +284,17 @@ unsafe extern "C" fn skip_variable()
 /* Skip over an unknown or uninteresting variable-length marker */
 {
      
-     let mut length:   libc::c_uint =  read_2_bytes();
+     let mut length:   c_uint =  read_2_bytes();
     /* Length includes itself, so must be at least 2 */
     if length < 2u32 {
-        crate::stdlib::fprintf(
-            crate::stdlib::stderr,
+        fprintf(
+            stderr,
             
-            b"%s\n\x00".as_ptr() as *const libc::c_char,
+            b"%s\n\x00".as_ptr() as *const c_char,
             
-            b"Erroneous JPEG marker length\x00".as_ptr() as *const libc::c_char,
+            b"Erroneous JPEG marker length\x00".as_ptr() as *const c_char,
         );
-        crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
     length -=  2u32;
     /* Skip over the remaining bytes */
@@ -308,24 +308,24 @@ unsafe extern "C" fn skip_variable()
  * copy data to output, but discard COM markers unless keep_COM is true.
  */
 
-unsafe extern "C" fn scan_JPEG_header(mut keep_COM: libc::c_int) -> libc::c_int {
+unsafe extern "C" fn scan_JPEG_header(mut keep_COM: c_int) -> c_int {
     
     /* Expect SOI at start of file */
     if first_marker() != M_SOI {
-        crate::stdlib::fprintf(
-            crate::stdlib::stderr,
+        fprintf(
+            stderr,
             
-            b"%s\n\x00".as_ptr() as *const libc::c_char,
+            b"%s\n\x00".as_ptr() as *const c_char,
             
-            b"Expected SOI marker first\x00".as_ptr() as *const libc::c_char,
+            b"Expected SOI marker first\x00".as_ptr() as *const c_char,
         );
-        crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
     write_marker(M_SOI);
     loop
     /* Scan miscellaneous markers until we reach SOFn. */
     {
-          let mut marker:   libc::c_int =  next_marker();
+          let mut marker:   c_int =  next_marker();
         's_105: {
              let mut current_block_14:  u64;
             match marker {
@@ -371,14 +371,14 @@ unsafe extern "C" fn scan_JPEG_header(mut keep_COM: libc::c_int) -> libc::c_int 
                 }
                 218 => {
                     /* should not see compressed data before SOF */
-                    crate::stdlib::fprintf(
-                        crate::stdlib::stderr,
+                    fprintf(
+                        stderr,
                         
-                        b"%s\n\x00".as_ptr() as *const libc::c_char,
+                        b"%s\n\x00".as_ptr() as *const c_char,
                         
-                        b"SOS without prior SOFn\x00".as_ptr() as *const libc::c_char,
+                        b"SOS without prior SOFn\x00".as_ptr() as *const c_char,
                     );
-                    crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+                    exit(EXIT_FAILURE);
                     current_block_14 = 11584701595673473500;
                 }
                 217 => {
@@ -502,147 +502,147 @@ unsafe extern "C" fn scan_JPEG_header(mut keep_COM: libc::c_int) -> libc::c_int 
 }
 /* Command line parsing code */
 
-static mut progname: *const libc::c_char = ::std::ptr::null::< libc::c_char>();
+static mut progname: *const c_char = ::std::ptr::null::< c_char>();
 /* program name for error messages */
 
 unsafe extern "C" fn usage()
 /* complain about bad command line */
 {
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         
         b"wrjpgcom inserts a textual comment in a JPEG file.\n\x00".as_ptr()
-            as *const libc::c_char,
+            as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         
         b"You can add to or replace any existing comment(s).\n\x00".as_ptr()
-            as *const libc::c_char,
+            as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         
-        b"Usage: %s [switches] \x00".as_ptr() as *const libc::c_char,
+        b"Usage: %s [switches] \x00".as_ptr() as *const c_char,
         progname,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         
-        b"[inputfile]\n\x00".as_ptr() as *const libc::c_char,
+        b"[inputfile]\n\x00".as_ptr() as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         
-        b"Switches (names may be abbreviated):\n\x00".as_ptr() as *const libc::c_char,
+        b"Switches (names may be abbreviated):\n\x00".as_ptr() as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         
         b"  -replace         Delete any existing comments\n\x00".as_ptr()
-            as *const libc::c_char,
+            as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         
         b"  -comment \"text\"  Insert comment with given text\n\x00".as_ptr()
-            as *const libc::c_char,
+            as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         
         b"  -cfile name      Read comment from named file\n\x00".as_ptr()
-            as *const libc::c_char,
+            as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         
         b"Notice that you must put quotes around the comment text\n\x00".as_ptr()
-            as *const libc::c_char,
+            as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         
-        b"when you use -comment.\n\x00".as_ptr() as *const libc::c_char,
+        b"when you use -comment.\n\x00".as_ptr() as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         
         b"If you do not give either -comment or -cfile on the command line,\n\x00".as_ptr()
-            as *const libc::c_char,
+            as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         
         b"then the comment text is read from standard input.\n\x00".as_ptr()
-            as *const libc::c_char,
+            as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         
         b"It can be multiple lines, up to %u characters total.\n\x00".as_ptr()
-            as *const libc::c_char,
-        MAX_COM_LENGTH as libc::c_uint,
+            as *const c_char,
+        MAX_COM_LENGTH as c_uint,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         
         b"You must specify an input JPEG file name when supplying\n\x00".as_ptr()
-            as *const libc::c_char,
+            as *const c_char,
     );
-    crate::stdlib::fprintf(
-        crate::stdlib::stderr,
+    fprintf(
+        stderr,
         
-        b"comment text from standard input.\n\x00".as_ptr() as *const libc::c_char,
+        b"comment text from standard input.\n\x00".as_ptr() as *const c_char,
     );
-    crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+    exit(EXIT_FAILURE);
 }
 
 unsafe extern "C" fn keymatch(
-    mut arg: *mut libc::c_char,
-    mut keyword: *const libc::c_char,
-    mut minchars: libc::c_int,
-) -> libc::c_int
+    mut arg: *mut c_char,
+    mut keyword: *const c_char,
+    mut minchars: c_int,
+) -> c_int
 /* Case-insensitive matching of (possibly abbreviated) keyword switches. */
 /* keyword is the constant keyword (must be lower case already), */
 /* minchars is length of minimum legal abbreviation. */ {
      /* arg longer than keyword, no good */
     
-     let mut nmatched:  libc::c_int =  0i32;
+     let mut nmatched:  c_int =  0i32;
     loop {
           let fresh0 = arg;
         arg = arg.offset(1);
-         let mut ca:   libc::c_int =  *fresh0 as libc::c_int;
+         let mut ca:   c_int =  *fresh0 as c_int;
         if !(ca != '\u{0}' as i32) {
             break;
         }
         let fresh1 = keyword;
         keyword = keyword.offset(1);
-         let mut ck:   libc::c_int =  *fresh1 as libc::c_int;
+         let mut ck:   c_int =  *fresh1 as c_int;
         if ck == '\u{0}' as i32 {
             return 0i32;
         }
-        if *(*crate::stdlib::__ctype_b_loc()).offset(ca as isize) as libc::c_int
-            &  crate::stdlib::_ISupper as libc::c_ushort as libc::c_int
+        if *(*__ctype_b_loc()).offset(ca as isize) as c_int
+            &  _ISupper as c_ushort as c_int
             != 0
         {
             /* count matched characters */
             /* force arg to lcase (assume ck is already) */
             ca = ({
-                 let mut __res:  libc::c_int =  0; /* no good */
-                if ::std::mem::size_of::<libc::c_int>() as libc::c_ulong > 1u64 {
+                 let mut __res:  c_int =  0; /* no good */
+                if ::std::mem::size_of::<c_int>() as c_ulong > 1u64 {
                     if 0 != 0 {
-                        let mut __c: libc::c_int = ca;
+                        let mut __c: c_int = ca;
                         __res = if __c < -128i32 || __c > 255i32 {
                             __c
                         } else {
-                            *(*crate::stdlib::__ctype_tolower_loc()).offset(__c as isize)
+                            *(*__ctype_tolower_loc()).offset(__c as isize)
                         }
                     } else {
-                        __res = crate::stdlib::tolower(ca)
+                        __res = tolower(ca)
                     }
                 } else {
-                    __res = *(*crate::stdlib::__ctype_tolower_loc()).offset(ca as isize)
+                    __res = *(*__ctype_tolower_loc()).offset(ca as isize)
                 }
                 __res
             })
@@ -663,51 +663,51 @@ unsafe extern "C" fn keymatch(
  * The main program.
  */
 
-unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> libc::c_int {
+unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
     
     
-      let mut keep_COM:  libc::c_int =  1i32; let mut comment_length:  libc::c_uint =  0u32; 
-    let mut comment_arg: *mut libc::c_char = crate::stddef_h::NULL as *mut libc::c_char;
-    let mut comment_file: *mut crate::stdlib::FILE =
-        crate::stddef_h::NULL as *mut crate::stdlib::FILE;
+      let mut keep_COM:  c_int =  1i32; let mut comment_length:  c_uint =  0u32; 
+    let mut comment_arg: *mut c_char = NULL as *mut c_char;
+    let mut comment_file: *mut FILE =
+        NULL as *mut FILE;
     
     
     /* On Mac, fetch a command line. */
     progname = *argv.offset(0); /* in case C library doesn't provide it */
-    if progname.is_null() || *progname.offset(0) as libc::c_int == 0i32 {
-        progname =  b"wrjpgcom\x00".as_ptr() as *const libc::c_char
+    if progname.is_null() || *progname.offset(0) as c_int == 0i32 {
+        progname =  b"wrjpgcom\x00".as_ptr() as *const c_char
     }
-     let mut argn:   libc::c_int =  1i32; /* not switch, must be file name */
+     let mut argn:   c_int =  1i32; /* not switch, must be file name */
     while argn < argc {
-          let mut arg:   *mut libc::c_char =  *argv.offset(argn as isize); /* advance over '-' */
-        if *arg.offset(0) as libc::c_int != '-' as i32 {
+          let mut arg:   *mut c_char =  *argv.offset(argn as isize); /* advance over '-' */
+        if *arg.offset(0) as c_int != '-' as i32 {
             break;
         }
         arg = arg.offset(1);
-        if keymatch(arg,  b"replace\x00".as_ptr() as *const libc::c_char,
+        if keymatch(arg,  b"replace\x00".as_ptr() as *const c_char,
                     1i32) != 0 {
             keep_COM = 0i32
         } else if keymatch(arg,
                            
-                           b"cfile\x00".as_ptr() as *const libc::c_char,
+                           b"cfile\x00".as_ptr() as *const c_char,
                            2i32) != 0 {
             argn += 1;
             if argn >= argc { usage(); }
             comment_file =
-                crate::stdlib::fopen(*argv.offset(argn as isize),
+                fopen(*argv.offset(argn as isize),
                       
-                      b"r\x00".as_ptr() as *const libc::c_char);
+                      b"r\x00".as_ptr() as *const c_char);
             if comment_file.is_null() {
-                crate::stdlib::fprintf(crate::stdlib::stderr,
+                fprintf(stderr,
                         
                         b"%s: can\'t open %s\n\x00".as_ptr() as
-                            *const libc::c_char, progname,
+                            *const c_char, progname,
                         *argv.offset(argn as isize));
-                crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+                exit(EXIT_FAILURE);
             }
         } else if keymatch(arg,
                            
-                           b"comment\x00".as_ptr() as *const libc::c_char,
+                           b"comment\x00".as_ptr() as *const c_char,
                            1i32) != 0 {
             argn += 1;
             if argn >= argc { usage(); }
@@ -715,77 +715,77 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             /* If the comment text starts with '"', then we are probably running
        * under MS-DOG and must parse out the quoted string ourselves.  Sigh.
        */
-            if *comment_arg.offset(0) as libc::c_int == '\"' as i32 {
+            if *comment_arg.offset(0) as c_int == '\"' as i32 {
                 comment_arg =
-                    crate::stdlib::malloc(MAX_COM_LENGTH as crate::stddef_h::size_t) as
-                        *mut libc::c_char; /* zap terminating quote */
+                    malloc(MAX_COM_LENGTH as size_t) as
+                        *mut c_char; /* zap terminating quote */
                 if comment_arg.is_null() {
-                    crate::stdlib::fprintf(crate::stdlib::stderr,
+                    fprintf(stderr,
                             
-                            b"%s\n\x00".as_ptr() as *const libc::c_char,
+                            b"%s\n\x00".as_ptr() as *const c_char,
                             
                             b"Insufficient memory\x00".as_ptr() as
-                                *const libc::c_char);
-                    crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+                                *const c_char);
+                    exit(EXIT_FAILURE);
                 }
-                if  crate::stdlib::strlen(*argv.offset(argn as
+                if  strlen(*argv.offset(argn as
                                            isize)) + 2u64
-                       >= MAX_COM_LENGTH as crate::stddef_h::size_t {
-                    crate::stdlib::fprintf(crate::stdlib::stderr,
+                       >= MAX_COM_LENGTH as size_t {
+                    fprintf(stderr,
                             
-                            b"Comment text may not exceed %u bytes\n\x00".as_ptr() as *const libc::c_char,
-                            MAX_COM_LENGTH as libc::c_uint);
-                    crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+                            b"Comment text may not exceed %u bytes\n\x00".as_ptr() as *const c_char,
+                            MAX_COM_LENGTH as c_uint);
+                    exit(EXIT_FAILURE);
                 }
-                crate::stdlib::strcpy(comment_arg, (*argv.offset(argn as isize)).offset(1));
+                strcpy(comment_arg, (*argv.offset(argn as isize)).offset(1));
                 loop  {
-                    comment_length = crate::stdlib::strlen(comment_arg) as libc::c_uint;
+                    comment_length = strlen(comment_arg) as c_uint;
                     if comment_length > 0u32 &&
                            *comment_arg.offset((comment_length - 1u32)
-                                                   as isize) as libc::c_int ==
+                                                   as isize) as c_int ==
                                '\"' as i32 {
                         *comment_arg.offset((comment_length - 1u32)
                                                 as isize) =
                             
-                            '\u{0}' as libc::c_char;
+                            '\u{0}' as c_char;
                         break ;
                     } else {
                         argn += 1;
                         if argn >= argc {
-                            crate::stdlib::fprintf(crate::stdlib::stderr,
+                            fprintf(stderr,
                                     
                                     b"%s\n\x00".as_ptr() as
-                                        *const libc::c_char,
+                                        *const c_char,
                                     
-                                    b"Missing ending quote mark\x00".as_ptr() as *const libc::c_char);
-                            crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+                                    b"Missing ending quote mark\x00".as_ptr() as *const c_char);
+                            exit(EXIT_FAILURE);
                         }
-                        if  crate::stdlib::strlen(comment_arg) +
-    crate::stdlib::strlen(*argv.offset(argn
+                        if  strlen(comment_arg) +
+    strlen(*argv.offset(argn
                                                                                     as
                                                                                     isize)) + 2u64
-                               >= MAX_COM_LENGTH as crate::stddef_h::size_t {
-                            crate::stdlib::fprintf(crate::stdlib::stderr,
+                               >= MAX_COM_LENGTH as size_t {
+                            fprintf(stderr,
                                     
-                                    b"Comment text may not exceed %u bytes\n\x00".as_ptr() as *const libc::c_char,
-                                    MAX_COM_LENGTH as libc::c_uint);
-                            crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+                                    b"Comment text may not exceed %u bytes\n\x00".as_ptr() as *const c_char,
+                                    MAX_COM_LENGTH as c_uint);
+                            exit(EXIT_FAILURE);
                         }
-                        crate::stdlib::strcat(comment_arg,
+                        strcat(comment_arg,
                                
-                               b" \x00".as_ptr() as *const libc::c_char);
-                        crate::stdlib::strcat(comment_arg, *argv.offset(argn as isize));
+                               b" \x00".as_ptr() as *const c_char);
+                        strcat(comment_arg, *argv.offset(argn as isize));
                     }
                 }
-            } else if crate::stdlib::strlen(*argv.offset(argn as isize)) >=
-                          MAX_COM_LENGTH as crate::stddef_h::size_t {
-                crate::stdlib::fprintf(crate::stdlib::stderr,
+            } else if strlen(*argv.offset(argn as isize)) >=
+                          MAX_COM_LENGTH as size_t {
+                fprintf(stderr,
                         
-                        b"Comment text may not exceed %u bytes\n\x00".as_ptr() as *const libc::c_char,
-                        MAX_COM_LENGTH as libc::c_uint);
-                crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+                        b"Comment text may not exceed %u bytes\n\x00".as_ptr() as *const c_char,
+                        MAX_COM_LENGTH as c_uint);
+                exit(EXIT_FAILURE);
             }
-            comment_length = crate::stdlib::strlen(comment_arg) as libc::c_uint
+            comment_length = strlen(comment_arg) as c_uint
         } else { usage(); }
         argn += 1
     }
@@ -801,30 +801,30 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     }
     /* Open the input file. */
     if argn < argc {
-        infile = crate::stdlib::fopen(*argv.offset(argn as isize), READ_BINARY.as_ptr());
+        infile = fopen(*argv.offset(argn as isize), READ_BINARY.as_ptr());
         if infile.is_null() {
-            crate::stdlib::fprintf(
-                crate::stdlib::stderr,
+            fprintf(
+                stderr,
                 
-                b"%s: can\'t open %s\n\x00".as_ptr() as *const libc::c_char,
+                b"%s: can\'t open %s\n\x00".as_ptr() as *const c_char,
                 progname,
                 *argv.offset(argn as isize),
             );
-            crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+            exit(EXIT_FAILURE);
         }
     } else {
         /* default input file is stdin */
         /* need to hack file mode? */
         /* need to re-open in binary mode? */
-        infile = crate::stdlib::stdin
+        infile = stdin
     }
     /* Open the output file. */
     /* Unix style: expect zero or one file name */
     if argn < argc - 1i32 {
-        crate::stdlib::fprintf(
-            crate::stdlib::stderr,
+        fprintf(
+            stderr,
             
-            b"%s: only one input file\n\x00".as_ptr() as *const libc::c_char,
+            b"%s: only one input file\n\x00".as_ptr() as *const c_char,
             progname,
         );
         usage();
@@ -832,52 +832,52 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     /* default output file is stdout */
     /* need to hack file mode? */
     /* need to re-open in binary mode? */
-    outfile = crate::stdlib::stdout;
+    outfile = stdout;
     /* TWO_FILE_COMMANDLINE */
     /* Collect comment text from comment_file or stdin, if necessary */
     if comment_arg.is_null() {
         
          
         comment_arg =
-            crate::stdlib::malloc(MAX_COM_LENGTH as crate::stddef_h::size_t) as *mut libc::c_char;
+            malloc(MAX_COM_LENGTH as size_t) as *mut c_char;
         if comment_arg.is_null() {
-            crate::stdlib::fprintf(
-                crate::stdlib::stderr,
+            fprintf(
+                stderr,
                 
-                b"%s\n\x00".as_ptr() as *const libc::c_char,
+                b"%s\n\x00".as_ptr() as *const c_char,
                 
-                b"Insufficient memory\x00".as_ptr() as *const libc::c_char,
+                b"Insufficient memory\x00".as_ptr() as *const c_char,
             );
-            crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+            exit(EXIT_FAILURE);
         }
         comment_length = 0u32;
-         let mut src_file:   *mut crate::stdlib::FILE =
+         let mut src_file:   *mut FILE =
      if !comment_file.is_null() {
             comment_file
         } else {
-            crate::stdlib::stdin
+            stdin
         };
         loop {
-              let mut c:   libc::c_int =  crate::stdlib::getc(src_file);
-            if !(c != crate::stdlib::EOF) {
+              let mut c:   c_int =  getc(src_file);
+            if !(c != EOF) {
                 break;
             }
-            if comment_length >= MAX_COM_LENGTH as libc::c_uint {
-                crate::stdlib::fprintf(
-                    crate::stdlib::stderr,
+            if comment_length >= MAX_COM_LENGTH as c_uint {
+                fprintf(
+                    stderr,
                     
                     b"Comment text may not exceed %u bytes\n\x00".as_ptr()
-                        as *const libc::c_char,
-                    MAX_COM_LENGTH as libc::c_uint,
+                        as *const c_char,
+                    MAX_COM_LENGTH as c_uint,
                 );
-                crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+                exit(EXIT_FAILURE);
             }
             let fresh2 = comment_length;
             comment_length +=  1;
-            *comment_arg.offset(fresh2 as isize) = c as libc::c_char
+            *comment_arg.offset(fresh2 as isize) = c as c_char
         }
         if !comment_file.is_null() {
-            crate::stdlib::fclose(comment_file);
+            fclose(comment_file);
         }
     }
     /* Copy JPEG headers until SOFn marker;
@@ -886,7 +886,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
      * existing comments; and (b) ensures that comments come after any JFIF
      * or JFXX markers, as required by the JFIF specification.
      */
-     let mut marker:   libc::c_int =  scan_JPEG_header(keep_COM);
+     let mut marker:   c_int =  scan_JPEG_header(keep_COM);
     /* Insert the new COM marker, but only if nonempty text has been supplied */
     if comment_length > 0u32 {
         write_marker(0xfei32);
@@ -894,7 +894,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         while comment_length > 0u32 {
             let fresh3 = comment_arg;
             comment_arg = comment_arg.offset(1);
-            write_1_byte(*fresh3 as libc::c_int);
+            write_1_byte(*fresh3 as c_int);
             comment_length -=  1
         }
     }
@@ -904,12 +904,12 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     write_marker(marker);
     copy_rest_of_file();
     /* All done. */
-    crate::stdlib::exit(crate::stdlib::EXIT_SUCCESS);
+    exit(EXIT_SUCCESS);
     /* suppress no-return-value warnings */
 }
 #[main]
 pub fn main() {
-     let mut args:  Vec<*mut libc::c_char> =  Vec::new();
+     let mut args:  Vec<*mut c_char> =  Vec::new();
     for arg in ::std::env::args() {
         args.push(
             ::std::ffi::CString::new(arg)
@@ -920,7 +920,7 @@ pub fn main() {
     args.push(::std::ptr::null_mut());
     unsafe {
         ::std::process::exit(main_0(
-            (args.len() - 1) as libc::c_int,
+            (args.len() - 1) as c_int,
             
             args.as_mut_ptr(),
         ))

@@ -73,8 +73,8 @@ pub use crate::jpeglib_h::JSAMPARRAY;
 pub use crate::jpeglib_h::JSAMPROW;
 pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
-pub use crate::src::cdjpeg::cjpeg_source_ptr;
-pub use crate::src::cdjpeg::cjpeg_source_struct;
+pub use super::cdjpeg::cjpeg_source_ptr;
+pub use super::cdjpeg::cjpeg_source_struct;
 pub use crate::stdlib::exit;
 use crate::stdlib::fprintf;
 use crate::stdlib::stderr;
@@ -155,10 +155,10 @@ to write the image in bottom-up order.) */
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_read_gif(
-    mut cinfo: crate::jpeglib_h::j_compress_ptr,
-) -> crate::src::cdjpeg::cjpeg_source_ptr {
+    mut cinfo: j_compress_ptr,
+) -> super::cdjpeg::cjpeg_source_ptr {
      eprintln!("GIF input is unsupported for legal reasons.  Sorry.");
-    crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
+    exit(EXIT_FAILURE);
     /* keep compiler happy */
 }
 /* GIF_SUPPORTED */

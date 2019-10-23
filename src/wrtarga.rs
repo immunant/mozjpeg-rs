@@ -1,4 +1,4 @@
-use libc;
+use libc::c_uint;use libc::c_ulong;use libc::c_char;use libc::c_void;use libc::c_int;use libc;
 
 pub use crate::stddef_h::size_t;
 pub use crate::stdlib::_IO_codecvt;
@@ -127,139 +127,139 @@ pub use crate::jpeglib_h::JSAMPROW;
 pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::jpeglib_h::J_DITHER_MODE;
-pub use crate::src::cdjpeg::djpeg_dest_ptr;
-pub use crate::src::cdjpeg::djpeg_dest_struct;
-pub use crate::src::jerror::C2RustUnnamed_3;
-pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
-pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
-pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
-pub use crate::src::jerror::JERR_BAD_BUFFER_MODE;
-pub use crate::src::jerror::JERR_BAD_COMPONENT_ID;
-pub use crate::src::jerror::JERR_BAD_CROP_SPEC;
-pub use crate::src::jerror::JERR_BAD_DCTSIZE;
-pub use crate::src::jerror::JERR_BAD_DCT_COEF;
-pub use crate::src::jerror::JERR_BAD_HUFF_TABLE;
-pub use crate::src::jerror::JERR_BAD_IN_COLORSPACE;
-pub use crate::src::jerror::JERR_BAD_J_COLORSPACE;
-pub use crate::src::jerror::JERR_BAD_LENGTH;
-pub use crate::src::jerror::JERR_BAD_LIB_VERSION;
-pub use crate::src::jerror::JERR_BAD_MCU_SIZE;
-pub use crate::src::jerror::JERR_BAD_PARAM;
-pub use crate::src::jerror::JERR_BAD_PARAM_VALUE;
-pub use crate::src::jerror::JERR_BAD_POOL_ID;
-pub use crate::src::jerror::JERR_BAD_PRECISION;
-pub use crate::src::jerror::JERR_BAD_PROGRESSION;
-pub use crate::src::jerror::JERR_BAD_PROG_SCRIPT;
-pub use crate::src::jerror::JERR_BAD_SAMPLING;
-pub use crate::src::jerror::JERR_BAD_SCAN_SCRIPT;
-pub use crate::src::jerror::JERR_BAD_STATE;
-pub use crate::src::jerror::JERR_BAD_STRUCT_SIZE;
-pub use crate::src::jerror::JERR_BAD_VIRTUAL_ACCESS;
-pub use crate::src::jerror::JERR_BUFFER_SIZE;
-pub use crate::src::jerror::JERR_CANT_SUSPEND;
-pub use crate::src::jerror::JERR_CCIR601_NOTIMPL;
-pub use crate::src::jerror::JERR_COMPONENT_COUNT;
-pub use crate::src::jerror::JERR_CONVERSION_NOTIMPL;
-pub use crate::src::jerror::JERR_DAC_INDEX;
-pub use crate::src::jerror::JERR_DAC_VALUE;
-pub use crate::src::jerror::JERR_DHT_INDEX;
-pub use crate::src::jerror::JERR_DQT_INDEX;
-pub use crate::src::jerror::JERR_EMPTY_IMAGE;
-pub use crate::src::jerror::JERR_EMS_READ;
-pub use crate::src::jerror::JERR_EMS_WRITE;
-pub use crate::src::jerror::JERR_EOI_EXPECTED;
-pub use crate::src::jerror::JERR_FILE_READ;
-pub use crate::src::jerror::JERR_FILE_WRITE;
-pub use crate::src::jerror::JERR_FRACT_SAMPLE_NOTIMPL;
-pub use crate::src::jerror::JERR_HUFF_CLEN_OVERFLOW;
-pub use crate::src::jerror::JERR_HUFF_MISSING_CODE;
-pub use crate::src::jerror::JERR_IMAGE_TOO_BIG;
-pub use crate::src::jerror::JERR_INPUT_EMPTY;
-pub use crate::src::jerror::JERR_INPUT_EOF;
-pub use crate::src::jerror::JERR_MISMATCHED_QUANT_TABLE;
-pub use crate::src::jerror::JERR_MISSING_DATA;
-pub use crate::src::jerror::JERR_MODE_CHANGE;
-pub use crate::src::jerror::JERR_NOTIMPL;
-pub use crate::src::jerror::JERR_NOT_COMPILED;
-pub use crate::src::jerror::JERR_NO_BACKING_STORE;
-pub use crate::src::jerror::JERR_NO_HUFF_TABLE;
-pub use crate::src::jerror::JERR_NO_IMAGE;
-pub use crate::src::jerror::JERR_NO_QUANT_TABLE;
-pub use crate::src::jerror::JERR_NO_SOI;
-pub use crate::src::jerror::JERR_OUT_OF_MEMORY;
-pub use crate::src::jerror::JERR_QUANT_COMPONENTS;
-pub use crate::src::jerror::JERR_QUANT_FEW_COLORS;
-pub use crate::src::jerror::JERR_QUANT_MANY_COLORS;
-pub use crate::src::jerror::JERR_SOF_DUPLICATE;
-pub use crate::src::jerror::JERR_SOF_NO_SOS;
-pub use crate::src::jerror::JERR_SOF_UNSUPPORTED;
-pub use crate::src::jerror::JERR_SOI_DUPLICATE;
-pub use crate::src::jerror::JERR_SOS_NO_SOF;
-pub use crate::src::jerror::JERR_TFILE_CREATE;
-pub use crate::src::jerror::JERR_TFILE_READ;
-pub use crate::src::jerror::JERR_TFILE_SEEK;
-pub use crate::src::jerror::JERR_TFILE_WRITE;
-pub use crate::src::jerror::JERR_TOO_LITTLE_DATA;
-pub use crate::src::jerror::JERR_UNKNOWN_MARKER;
-pub use crate::src::jerror::JERR_UNSUPPORTED_SUSPEND;
-pub use crate::src::jerror::JERR_VIRTUAL_BUG;
-pub use crate::src::jerror::JERR_WIDTH_OVERFLOW;
-pub use crate::src::jerror::JERR_XMS_READ;
-pub use crate::src::jerror::JERR_XMS_WRITE;
-pub use crate::src::jerror::JMSG_COPYRIGHT;
-pub use crate::src::jerror::JMSG_LASTMSGCODE;
-pub use crate::src::jerror::JMSG_NOMESSAGE;
-pub use crate::src::jerror::JMSG_VERSION;
-pub use crate::src::jerror::JTRC_16BIT_TABLES;
-pub use crate::src::jerror::JTRC_ADOBE;
-pub use crate::src::jerror::JTRC_APP0;
-pub use crate::src::jerror::JTRC_APP14;
-pub use crate::src::jerror::JTRC_DAC;
-pub use crate::src::jerror::JTRC_DHT;
-pub use crate::src::jerror::JTRC_DQT;
-pub use crate::src::jerror::JTRC_DRI;
-pub use crate::src::jerror::JTRC_EMS_CLOSE;
-pub use crate::src::jerror::JTRC_EMS_OPEN;
-pub use crate::src::jerror::JTRC_EOI;
-pub use crate::src::jerror::JTRC_HUFFBITS;
-pub use crate::src::jerror::JTRC_JFIF;
-pub use crate::src::jerror::JTRC_JFIF_BADTHUMBNAILSIZE;
-pub use crate::src::jerror::JTRC_JFIF_EXTENSION;
-pub use crate::src::jerror::JTRC_JFIF_THUMBNAIL;
-pub use crate::src::jerror::JTRC_MISC_MARKER;
-pub use crate::src::jerror::JTRC_PARMLESS_MARKER;
-pub use crate::src::jerror::JTRC_QUANTVALS;
-pub use crate::src::jerror::JTRC_QUANT_3_NCOLORS;
-pub use crate::src::jerror::JTRC_QUANT_NCOLORS;
-pub use crate::src::jerror::JTRC_QUANT_SELECTED;
-pub use crate::src::jerror::JTRC_RECOVERY_ACTION;
-pub use crate::src::jerror::JTRC_RST;
-pub use crate::src::jerror::JTRC_SMOOTH_NOTIMPL;
-pub use crate::src::jerror::JTRC_SOF;
-pub use crate::src::jerror::JTRC_SOF_COMPONENT;
-pub use crate::src::jerror::JTRC_SOI;
-pub use crate::src::jerror::JTRC_SOS;
-pub use crate::src::jerror::JTRC_SOS_COMPONENT;
-pub use crate::src::jerror::JTRC_SOS_PARAMS;
-pub use crate::src::jerror::JTRC_TFILE_CLOSE;
-pub use crate::src::jerror::JTRC_TFILE_OPEN;
-pub use crate::src::jerror::JTRC_THUMB_JPEG;
-pub use crate::src::jerror::JTRC_THUMB_PALETTE;
-pub use crate::src::jerror::JTRC_THUMB_RGB;
-pub use crate::src::jerror::JTRC_UNKNOWN_IDS;
-pub use crate::src::jerror::JTRC_XMS_CLOSE;
-pub use crate::src::jerror::JTRC_XMS_OPEN;
-pub use crate::src::jerror::JWRN_ADOBE_XFORM;
-pub use crate::src::jerror::JWRN_BOGUS_ICC;
-pub use crate::src::jerror::JWRN_BOGUS_PROGRESSION;
-pub use crate::src::jerror::JWRN_EXTRANEOUS_DATA;
-pub use crate::src::jerror::JWRN_HIT_MARKER;
-pub use crate::src::jerror::JWRN_HUFF_BAD_CODE;
-pub use crate::src::jerror::JWRN_JFIF_MAJOR;
-pub use crate::src::jerror::JWRN_JPEG_EOF;
-pub use crate::src::jerror::JWRN_MUST_RESYNC;
-pub use crate::src::jerror::JWRN_NOT_SEQUENTIAL;
-pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
+pub use super::cdjpeg::djpeg_dest_ptr;
+pub use super::cdjpeg::djpeg_dest_struct;
+pub use super::jerror::C2RustUnnamed_3;
+pub use super::jerror::JERR_ARITH_NOTIMPL;
+pub use super::jerror::JERR_BAD_ALIGN_TYPE;
+pub use super::jerror::JERR_BAD_ALLOC_CHUNK;
+pub use super::jerror::JERR_BAD_BUFFER_MODE;
+pub use super::jerror::JERR_BAD_COMPONENT_ID;
+pub use super::jerror::JERR_BAD_CROP_SPEC;
+pub use super::jerror::JERR_BAD_DCTSIZE;
+pub use super::jerror::JERR_BAD_DCT_COEF;
+pub use super::jerror::JERR_BAD_HUFF_TABLE;
+pub use super::jerror::JERR_BAD_IN_COLORSPACE;
+pub use super::jerror::JERR_BAD_J_COLORSPACE;
+pub use super::jerror::JERR_BAD_LENGTH;
+pub use super::jerror::JERR_BAD_LIB_VERSION;
+pub use super::jerror::JERR_BAD_MCU_SIZE;
+pub use super::jerror::JERR_BAD_PARAM;
+pub use super::jerror::JERR_BAD_PARAM_VALUE;
+pub use super::jerror::JERR_BAD_POOL_ID;
+pub use super::jerror::JERR_BAD_PRECISION;
+pub use super::jerror::JERR_BAD_PROGRESSION;
+pub use super::jerror::JERR_BAD_PROG_SCRIPT;
+pub use super::jerror::JERR_BAD_SAMPLING;
+pub use super::jerror::JERR_BAD_SCAN_SCRIPT;
+pub use super::jerror::JERR_BAD_STATE;
+pub use super::jerror::JERR_BAD_STRUCT_SIZE;
+pub use super::jerror::JERR_BAD_VIRTUAL_ACCESS;
+pub use super::jerror::JERR_BUFFER_SIZE;
+pub use super::jerror::JERR_CANT_SUSPEND;
+pub use super::jerror::JERR_CCIR601_NOTIMPL;
+pub use super::jerror::JERR_COMPONENT_COUNT;
+pub use super::jerror::JERR_CONVERSION_NOTIMPL;
+pub use super::jerror::JERR_DAC_INDEX;
+pub use super::jerror::JERR_DAC_VALUE;
+pub use super::jerror::JERR_DHT_INDEX;
+pub use super::jerror::JERR_DQT_INDEX;
+pub use super::jerror::JERR_EMPTY_IMAGE;
+pub use super::jerror::JERR_EMS_READ;
+pub use super::jerror::JERR_EMS_WRITE;
+pub use super::jerror::JERR_EOI_EXPECTED;
+pub use super::jerror::JERR_FILE_READ;
+pub use super::jerror::JERR_FILE_WRITE;
+pub use super::jerror::JERR_FRACT_SAMPLE_NOTIMPL;
+pub use super::jerror::JERR_HUFF_CLEN_OVERFLOW;
+pub use super::jerror::JERR_HUFF_MISSING_CODE;
+pub use super::jerror::JERR_IMAGE_TOO_BIG;
+pub use super::jerror::JERR_INPUT_EMPTY;
+pub use super::jerror::JERR_INPUT_EOF;
+pub use super::jerror::JERR_MISMATCHED_QUANT_TABLE;
+pub use super::jerror::JERR_MISSING_DATA;
+pub use super::jerror::JERR_MODE_CHANGE;
+pub use super::jerror::JERR_NOTIMPL;
+pub use super::jerror::JERR_NOT_COMPILED;
+pub use super::jerror::JERR_NO_BACKING_STORE;
+pub use super::jerror::JERR_NO_HUFF_TABLE;
+pub use super::jerror::JERR_NO_IMAGE;
+pub use super::jerror::JERR_NO_QUANT_TABLE;
+pub use super::jerror::JERR_NO_SOI;
+pub use super::jerror::JERR_OUT_OF_MEMORY;
+pub use super::jerror::JERR_QUANT_COMPONENTS;
+pub use super::jerror::JERR_QUANT_FEW_COLORS;
+pub use super::jerror::JERR_QUANT_MANY_COLORS;
+pub use super::jerror::JERR_SOF_DUPLICATE;
+pub use super::jerror::JERR_SOF_NO_SOS;
+pub use super::jerror::JERR_SOF_UNSUPPORTED;
+pub use super::jerror::JERR_SOI_DUPLICATE;
+pub use super::jerror::JERR_SOS_NO_SOF;
+pub use super::jerror::JERR_TFILE_CREATE;
+pub use super::jerror::JERR_TFILE_READ;
+pub use super::jerror::JERR_TFILE_SEEK;
+pub use super::jerror::JERR_TFILE_WRITE;
+pub use super::jerror::JERR_TOO_LITTLE_DATA;
+pub use super::jerror::JERR_UNKNOWN_MARKER;
+pub use super::jerror::JERR_UNSUPPORTED_SUSPEND;
+pub use super::jerror::JERR_VIRTUAL_BUG;
+pub use super::jerror::JERR_WIDTH_OVERFLOW;
+pub use super::jerror::JERR_XMS_READ;
+pub use super::jerror::JERR_XMS_WRITE;
+pub use super::jerror::JMSG_COPYRIGHT;
+pub use super::jerror::JMSG_LASTMSGCODE;
+pub use super::jerror::JMSG_NOMESSAGE;
+pub use super::jerror::JMSG_VERSION;
+pub use super::jerror::JTRC_16BIT_TABLES;
+pub use super::jerror::JTRC_ADOBE;
+pub use super::jerror::JTRC_APP0;
+pub use super::jerror::JTRC_APP14;
+pub use super::jerror::JTRC_DAC;
+pub use super::jerror::JTRC_DHT;
+pub use super::jerror::JTRC_DQT;
+pub use super::jerror::JTRC_DRI;
+pub use super::jerror::JTRC_EMS_CLOSE;
+pub use super::jerror::JTRC_EMS_OPEN;
+pub use super::jerror::JTRC_EOI;
+pub use super::jerror::JTRC_HUFFBITS;
+pub use super::jerror::JTRC_JFIF;
+pub use super::jerror::JTRC_JFIF_BADTHUMBNAILSIZE;
+pub use super::jerror::JTRC_JFIF_EXTENSION;
+pub use super::jerror::JTRC_JFIF_THUMBNAIL;
+pub use super::jerror::JTRC_MISC_MARKER;
+pub use super::jerror::JTRC_PARMLESS_MARKER;
+pub use super::jerror::JTRC_QUANTVALS;
+pub use super::jerror::JTRC_QUANT_3_NCOLORS;
+pub use super::jerror::JTRC_QUANT_NCOLORS;
+pub use super::jerror::JTRC_QUANT_SELECTED;
+pub use super::jerror::JTRC_RECOVERY_ACTION;
+pub use super::jerror::JTRC_RST;
+pub use super::jerror::JTRC_SMOOTH_NOTIMPL;
+pub use super::jerror::JTRC_SOF;
+pub use super::jerror::JTRC_SOF_COMPONENT;
+pub use super::jerror::JTRC_SOI;
+pub use super::jerror::JTRC_SOS;
+pub use super::jerror::JTRC_SOS_COMPONENT;
+pub use super::jerror::JTRC_SOS_PARAMS;
+pub use super::jerror::JTRC_TFILE_CLOSE;
+pub use super::jerror::JTRC_TFILE_OPEN;
+pub use super::jerror::JTRC_THUMB_JPEG;
+pub use super::jerror::JTRC_THUMB_PALETTE;
+pub use super::jerror::JTRC_THUMB_RGB;
+pub use super::jerror::JTRC_UNKNOWN_IDS;
+pub use super::jerror::JTRC_XMS_CLOSE;
+pub use super::jerror::JTRC_XMS_OPEN;
+pub use super::jerror::JWRN_ADOBE_XFORM;
+pub use super::jerror::JWRN_BOGUS_ICC;
+pub use super::jerror::JWRN_BOGUS_PROGRESSION;
+pub use super::jerror::JWRN_EXTRANEOUS_DATA;
+pub use super::jerror::JWRN_HIT_MARKER;
+pub use super::jerror::JWRN_HUFF_BAD_CODE;
+pub use super::jerror::JWRN_JFIF_MAJOR;
+pub use super::jerror::JWRN_JPEG_EOF;
+pub use super::jerror::JWRN_MUST_RESYNC;
+pub use super::jerror::JWRN_NOT_SEQUENTIAL;
+pub use super::jerror::JWRN_TOO_MUCH_DATA;
 use crate::stdlib::ferror;
 use crate::stdlib::fflush;
 use crate::stdlib::fwrite;
@@ -271,39 +271,39 @@ pub type tga_dest_ptr = *mut tga_dest_struct;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct tga_dest_struct {
-    pub pub_0: crate::src::cdjpeg::djpeg_dest_struct,
-    pub iobuffer: *mut libc::c_char,
-    pub buffer_width: crate::jmorecfg_h::JDIMENSION,
+    pub pub_0: super::cdjpeg::djpeg_dest_struct,
+    pub iobuffer: *mut c_char,
+    pub buffer_width: JDIMENSION,
 }
 
 unsafe extern "C" fn write_header(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
-    mut num_colors: libc::c_int,
+    mut cinfo: j_decompress_ptr,
+    mut dinfo: super::cdjpeg::djpeg_dest_ptr,
+    mut num_colors: c_int,
 )
 /* Create and write a Targa header */
 {
-     let mut targaheader:  [libc::c_char; 18] =  [0; 18];
+     let mut targaheader:  [c_char; 18] =  [0; 18];
     /* Set unused fields of header to 0 */
-    crate::stdlib::memset(
-        targaheader.as_mut_ptr() as *mut libc::c_void,
+    memset(
+        targaheader.as_mut_ptr() as *mut c_void,
         0i32,
-        ::std::mem::size_of::<[libc::c_char; 18]>() as libc::c_ulong,
+        ::std::mem::size_of::<[c_char; 18]>() as c_ulong,
     ); /* color map type 1 */
     if num_colors > 0i32 {
         targaheader[1] = 1i8;
-        targaheader[5] = (num_colors & 0xffi32) as libc::c_char;
-        targaheader[6] = (num_colors >> 8i32) as libc::c_char;
+        targaheader[5] = (num_colors & 0xffi32) as c_char;
+        targaheader[6] = (num_colors >> 8i32) as c_char;
         targaheader[7] = 24i8
         /* 24 bits per cmap entry */
     } /* Top-down, non-interlaced */
-    targaheader[12] = ((*cinfo).output_width & 0xffu32) as libc::c_char; /* image type = uncompressed grayscale */
-    targaheader[13] = ((*cinfo).output_width >> 8i32) as libc::c_char;
-    targaheader[14] = ((*cinfo).output_height & 0xffu32) as libc::c_char;
-    targaheader[15] = ((*cinfo).output_height >> 8i32) as libc::c_char;
+    targaheader[12] = ((*cinfo).output_width & 0xffu32) as c_char; /* image type = uncompressed grayscale */
+    targaheader[13] = ((*cinfo).output_width >> 8i32) as c_char;
+    targaheader[14] = ((*cinfo).output_height & 0xffu32) as c_char;
+    targaheader[15] = ((*cinfo).output_height >> 8i32) as c_char;
     targaheader[17] = 0x20i8;
     if  (*cinfo).out_color_space
-        ==  crate::jpeglib_h::JCS_GRAYSCALE
+        ==  JCS_GRAYSCALE
     {
         targaheader[2] = 3i8;
         targaheader[16] = 8i8
@@ -315,20 +315,20 @@ unsafe extern "C" fn write_header(
         targaheader[2] = 2i8; /* image type = uncompressed RGB */
         targaheader[16] = 24i8
     }
-    if crate::stdlib::fwrite(
-        targaheader.as_mut_ptr() as *const libc::c_void,
+    if fwrite(
+        targaheader.as_mut_ptr() as *const c_void,
         1u64,
         18u64,
         (*dinfo).output_file,
     ) != 18u64
     {
-        (*(*cinfo).err).msg_code = crate::src::jerror::JERR_FILE_WRITE as libc::c_int;
+        (*(*cinfo).err).msg_code = super::jerror::JERR_FILE_WRITE as c_int;
         Some(
             (*(*cinfo).err)
                 .error_exit
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     };
 }
 /*
@@ -337,9 +337,9 @@ unsafe extern "C" fn write_header(
  */
 
 unsafe extern "C" fn put_pixel_rows(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
-    mut rows_supplied: crate::jmorecfg_h::JDIMENSION,
+    mut cinfo: j_decompress_ptr,
+    mut dinfo: super::cdjpeg::djpeg_dest_ptr,
+    mut rows_supplied: JDIMENSION,
 )
 /* used for unquantized full-color output */
 {
@@ -349,27 +349,27 @@ unsafe extern "C" fn put_pixel_rows(
     
     
     
-     let mut inptr:   crate::jpeglib_h::JSAMPROW =  *(*dest).pub_0.buffer.offset(0); let mut outptr:   *mut libc::c_char =  (*dest).iobuffer; let mut col:   crate::jmorecfg_h::JDIMENSION =  (*cinfo).output_width;
+     let mut inptr:   JSAMPROW =  *(*dest).pub_0.buffer.offset(0); let mut outptr:   *mut c_char =  (*dest).iobuffer; let mut col:   JDIMENSION =  (*cinfo).output_width;
     while col > 0u32 {
-        *outptr.offset(0) =  *inptr.offset(2) as libc::c_char;
-        *outptr.offset(1) =  *inptr.offset(1) as libc::c_char;
-        *outptr.offset(2) =  *inptr.offset(0) as libc::c_char;
+        *outptr.offset(0) =  *inptr.offset(2) as c_char;
+        *outptr.offset(1) =  *inptr.offset(1) as c_char;
+        *outptr.offset(2) =  *inptr.offset(0) as c_char;
         inptr = inptr.offset(3);
         outptr = outptr.offset(3);
         col -=  1
     }
-    crate::stdlib::fwrite(
-        (*dest).iobuffer as *const libc::c_void,
+    fwrite(
+        (*dest).iobuffer as *const c_void,
         1u64,
-        (*dest).buffer_width as crate::stddef_h::size_t,
+        (*dest).buffer_width as size_t,
         (*dest).pub_0.output_file,
     );
 }
 
 unsafe extern "C" fn put_gray_rows(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
-    mut rows_supplied: crate::jmorecfg_h::JDIMENSION,
+    mut cinfo: j_decompress_ptr,
+    mut dinfo: super::cdjpeg::djpeg_dest_ptr,
+    mut rows_supplied: JDIMENSION,
 )
 /* used for grayscale OR quantized color output */
 {
@@ -379,19 +379,19 @@ unsafe extern "C" fn put_gray_rows(
     
     
     
-     let mut inptr:   crate::jpeglib_h::JSAMPROW =  *(*dest).pub_0.buffer.offset(0); let mut outptr:   *mut libc::c_char =  (*dest).iobuffer; let mut col:   crate::jmorecfg_h::JDIMENSION =  (*cinfo).output_width;
+     let mut inptr:   JSAMPROW =  *(*dest).pub_0.buffer.offset(0); let mut outptr:   *mut c_char =  (*dest).iobuffer; let mut col:   JDIMENSION =  (*cinfo).output_width;
     while col > 0u32 {
         let fresh0 = inptr;
         inptr = inptr.offset(1);
         let fresh1 = outptr;
         outptr = outptr.offset(1);
-        *fresh1 =  *fresh0 as libc::c_char;
+        *fresh1 =  *fresh0 as c_char;
         col -=  1
     }
-    crate::stdlib::fwrite(
-        (*dest).iobuffer as *const libc::c_void,
+    fwrite(
+        (*dest).iobuffer as *const c_void,
         1u64,
-        (*dest).buffer_width as crate::stddef_h::size_t,
+        (*dest).buffer_width as size_t,
         (*dest).pub_0.output_file,
     );
 }
@@ -401,18 +401,18 @@ unsafe extern "C" fn put_gray_rows(
  */
 
 unsafe extern "C" fn put_demapped_gray(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
-    mut rows_supplied: crate::jmorecfg_h::JDIMENSION,
+    mut cinfo: j_decompress_ptr,
+    mut dinfo: super::cdjpeg::djpeg_dest_ptr,
+    mut rows_supplied: JDIMENSION,
 ) {
        let mut dest: tga_dest_ptr = dinfo as tga_dest_ptr;
     
     
-    let mut color_map0: crate::jpeglib_h::JSAMPROW = *(*cinfo).colormap.offset(0);
+    let mut color_map0: JSAMPROW = *(*cinfo).colormap.offset(0);
     
     
     
-     let mut inptr:   crate::jpeglib_h::JSAMPROW =  *(*dest).pub_0.buffer.offset(0); let mut outptr:   *mut libc::c_char =  (*dest).iobuffer; let mut col:   crate::jmorecfg_h::JDIMENSION =  (*cinfo).output_width;
+     let mut inptr:   JSAMPROW =  *(*dest).pub_0.buffer.offset(0); let mut outptr:   *mut c_char =  (*dest).iobuffer; let mut col:   JDIMENSION =  (*cinfo).output_width;
     while col > 0u32 {
         let fresh2 = inptr;
         inptr = inptr.offset(1);
@@ -420,13 +420,13 @@ unsafe extern "C" fn put_demapped_gray(
         outptr = outptr.offset(1);
         *fresh3 =
             
-            *color_map0.offset(*fresh2 as libc::c_int as isize) as libc::c_char;
+            *color_map0.offset(*fresh2 as c_int as isize) as c_char;
         col -=  1
     }
-    crate::stdlib::fwrite(
-        (*dest).iobuffer as *const libc::c_void,
+    fwrite(
+        (*dest).iobuffer as *const c_void,
         1u64,
-        (*dest).buffer_width as crate::stddef_h::size_t,
+        (*dest).buffer_width as size_t,
         (*dest).pub_0.output_file,
     );
 }
@@ -435,15 +435,15 @@ unsafe extern "C" fn put_demapped_gray(
  */
 
 unsafe extern "C" fn start_output_tga(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
+    mut cinfo: j_decompress_ptr,
+    mut dinfo: super::cdjpeg::djpeg_dest_ptr,
 ) {
     let mut dest: tga_dest_ptr = dinfo as tga_dest_ptr;
     
     
     
     if  (*cinfo).out_color_space
-        ==  crate::jpeglib_h::JCS_GRAYSCALE
+        ==  JCS_GRAYSCALE
     {
         /* Targa doesn't have a mapped grayscale format, so we will */
         /* demap quantized gray output.  Never emit a colormap. */
@@ -452,29 +452,29 @@ unsafe extern "C" fn start_output_tga(
             (*dest).pub_0.put_pixel_rows = Some(
                 put_demapped_gray
                     as unsafe extern "C" fn(
-                        _: crate::jpeglib_h::j_decompress_ptr,
-                        _: crate::src::cdjpeg::djpeg_dest_ptr,
-                        _: crate::jmorecfg_h::JDIMENSION,
+                        _: j_decompress_ptr,
+                        _: super::cdjpeg::djpeg_dest_ptr,
+                        _: JDIMENSION,
                     ) -> (),
             )
         } else {
             (*dest).pub_0.put_pixel_rows = Some(
                 put_gray_rows
                     as unsafe extern "C" fn(
-                        _: crate::jpeglib_h::j_decompress_ptr,
-                        _: crate::src::cdjpeg::djpeg_dest_ptr,
-                        _: crate::jmorecfg_h::JDIMENSION,
+                        _: j_decompress_ptr,
+                        _: super::cdjpeg::djpeg_dest_ptr,
+                        _: JDIMENSION,
                     ) -> (),
             )
         }
     } else if  (*cinfo).out_color_space
-        ==  crate::jpeglib_h::JCS_RGB
+        ==  JCS_RGB
     {
         if (*cinfo).quantize_colors != 0 {
             /* We only support 8-bit colormap indexes, so only 256 colors */
-                let mut num_colors:   libc::c_int =  (*cinfo).actual_number_of_colors;
+                let mut num_colors:   c_int =  (*cinfo).actual_number_of_colors;
             if num_colors > 256i32 {
-                (*(*cinfo).err).msg_code = crate::cderror_h::JERR_TOO_MANY_COLORS as libc::c_int;
+                (*(*cinfo).err).msg_code = JERR_TOO_MANY_COLORS as c_int;
                 (*(*cinfo).err).msg_parm.i[0] = num_colors;
                 Some(
                     (*(*cinfo).err)
@@ -482,24 +482,24 @@ unsafe extern "C" fn start_output_tga(
                         .expect("non-null function pointer"),
                 )
                 .expect("non-null function pointer")(
-                    cinfo as crate::jpeglib_h::j_common_ptr
+                    cinfo as j_common_ptr
                 );
             }
             write_header(cinfo, dinfo, num_colors);
             /* Write the colormap.  Note Targa uses BGR byte order */
             
-             let mut outfile:   *mut crate::stdlib::FILE =  (*dest).pub_0.output_file; let mut i:   libc::c_int =  0i32;
+             let mut outfile:   *mut FILE =  (*dest).pub_0.output_file; let mut i:   c_int =  0i32;
             while i < num_colors {
-                crate::stdlib::putc(
-                    *(*(*cinfo).colormap.offset(2)).offset(i as isize) as libc::c_int,
+                putc(
+                    *(*(*cinfo).colormap.offset(2)).offset(i as isize) as c_int,
                     outfile,
                 );
-                crate::stdlib::putc(
-                    *(*(*cinfo).colormap.offset(1)).offset(i as isize) as libc::c_int,
+                putc(
+                    *(*(*cinfo).colormap.offset(1)).offset(i as isize) as c_int,
                     outfile,
                 );
-                crate::stdlib::putc(
-                    *(*(*cinfo).colormap.offset(0)).offset(i as isize) as libc::c_int,
+                putc(
+                    *(*(*cinfo).colormap.offset(0)).offset(i as isize) as c_int,
                     outfile,
                 );
                 i += 1
@@ -507,9 +507,9 @@ unsafe extern "C" fn start_output_tga(
             (*dest).pub_0.put_pixel_rows = Some(
                 put_gray_rows
                     as unsafe extern "C" fn(
-                        _: crate::jpeglib_h::j_decompress_ptr,
-                        _: crate::src::cdjpeg::djpeg_dest_ptr,
-                        _: crate::jmorecfg_h::JDIMENSION,
+                        _: j_decompress_ptr,
+                        _: super::cdjpeg::djpeg_dest_ptr,
+                        _: JDIMENSION,
                     ) -> (),
             )
         } else {
@@ -517,20 +517,20 @@ unsafe extern "C" fn start_output_tga(
             (*dest).pub_0.put_pixel_rows = Some(
                 put_pixel_rows
                     as unsafe extern "C" fn(
-                        _: crate::jpeglib_h::j_decompress_ptr,
-                        _: crate::src::cdjpeg::djpeg_dest_ptr,
-                        _: crate::jmorecfg_h::JDIMENSION,
+                        _: j_decompress_ptr,
+                        _: super::cdjpeg::djpeg_dest_ptr,
+                        _: JDIMENSION,
                     ) -> (),
             )
         }
     } else {
-        (*(*cinfo).err).msg_code = crate::cderror_h::JERR_TGA_COLORSPACE as libc::c_int;
+        (*(*cinfo).err).msg_code = JERR_TGA_COLORSPACE as c_int;
         Some(
             (*(*cinfo).err)
                 .error_exit
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     };
 }
 /*
@@ -538,19 +538,19 @@ unsafe extern "C" fn start_output_tga(
  */
 
 unsafe extern "C" fn finish_output_tga(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
+    mut cinfo: j_decompress_ptr,
+    mut dinfo: super::cdjpeg::djpeg_dest_ptr,
 ) {
     /* Make sure we wrote the output file OK */
-    crate::stdlib::fflush((*dinfo).output_file);
-    if crate::stdlib::ferror((*dinfo).output_file) != 0 {
-        (*(*cinfo).err).msg_code = crate::src::jerror::JERR_FILE_WRITE as libc::c_int;
+    fflush((*dinfo).output_file);
+    if ferror((*dinfo).output_file) != 0 {
+        (*(*cinfo).err).msg_code = super::jerror::JERR_FILE_WRITE as c_int;
         Some(
             (*(*cinfo).err)
                 .error_exit
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     };
 }
 /*
@@ -558,12 +558,12 @@ unsafe extern "C" fn finish_output_tga(
  */
 
 unsafe extern "C" fn calc_buffer_dimensions_tga(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
+    mut cinfo: j_decompress_ptr,
+    mut dinfo: super::cdjpeg::djpeg_dest_ptr,
 ) {
     let mut dest: tga_dest_ptr = dinfo as tga_dest_ptr;
     (*dest).buffer_width =  (*cinfo)
-        .output_width * (*cinfo).output_components as libc::c_uint;
+        .output_width * (*cinfo).output_components as c_uint;
 }
 /*
  * The module selection routine for Targa format output.
@@ -571,8 +571,8 @@ unsafe extern "C" fn calc_buffer_dimensions_tga(
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_write_targa(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-) -> crate::src::cdjpeg::djpeg_dest_ptr {
+    mut cinfo: j_decompress_ptr,
+) -> super::cdjpeg::djpeg_dest_ptr {
      
     /* Create module interface object, fill in method pointers */
      let mut dest:   tga_dest_ptr =
@@ -582,49 +582,49 @@ pub unsafe extern "C" fn jinit_write_targa(
             .expect("non-null function pointer"),
     )
     .expect("non-null function pointer")(
-        cinfo as crate::jpeglib_h::j_common_ptr,
-        crate::jpeglib_h::JPOOL_IMAGE,
-        ::std::mem::size_of::<tga_dest_struct>() as libc::c_ulong,
+        cinfo as j_common_ptr,
+        JPOOL_IMAGE,
+        ::std::mem::size_of::<tga_dest_struct>() as c_ulong,
     ) as tga_dest_ptr;
     (*dest).pub_0.start_output = Some(
         start_output_tga
             as unsafe extern "C" fn(
-                _: crate::jpeglib_h::j_decompress_ptr,
-                _: crate::src::cdjpeg::djpeg_dest_ptr,
+                _: j_decompress_ptr,
+                _: super::cdjpeg::djpeg_dest_ptr,
             ) -> (),
     );
     (*dest).pub_0.finish_output = Some(
         finish_output_tga
             as unsafe extern "C" fn(
-                _: crate::jpeglib_h::j_decompress_ptr,
-                _: crate::src::cdjpeg::djpeg_dest_ptr,
+                _: j_decompress_ptr,
+                _: super::cdjpeg::djpeg_dest_ptr,
             ) -> (),
     );
     (*dest).pub_0.calc_buffer_dimensions = Some(
         calc_buffer_dimensions_tga
             as unsafe extern "C" fn(
-                _: crate::jpeglib_h::j_decompress_ptr,
-                _: crate::src::cdjpeg::djpeg_dest_ptr,
+                _: j_decompress_ptr,
+                _: super::cdjpeg::djpeg_dest_ptr,
             ) -> (),
     );
     /* Calculate output image dimensions so we can allocate space */
-    crate::jpeglib_h::jpeg_calc_output_dimensions(cinfo);
+    jpeg_calc_output_dimensions(cinfo);
     /* Create I/O buffer. */
     (*dest)
         .pub_0
         .calc_buffer_dimensions
-        .expect("non-null function pointer")(cinfo, dest as crate::src::cdjpeg::djpeg_dest_ptr);
+        .expect("non-null function pointer")(cinfo, dest as super::cdjpeg::djpeg_dest_ptr);
     (*dest).iobuffer = Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),
     )
     .expect("non-null function pointer")(
-        cinfo as crate::jpeglib_h::j_common_ptr,
-        crate::jpeglib_h::JPOOL_IMAGE,
-        (*dest).buffer_width as libc::c_ulong *
-    ::std::mem::size_of::<libc::c_char>() as libc::c_ulong,
-    ) as *mut libc::c_char;
+        cinfo as j_common_ptr,
+        JPOOL_IMAGE,
+        (*dest).buffer_width as c_ulong *
+    ::std::mem::size_of::<c_char>() as c_ulong,
+    ) as *mut c_char;
     /* Create decompressor output buffer. */
     (*dest).pub_0.buffer = Some(
         (*(*cinfo).mem)
@@ -632,12 +632,12 @@ pub unsafe extern "C" fn jinit_write_targa(
             .expect("non-null function pointer"),
     )
     .expect("non-null function pointer")(
-        cinfo as crate::jpeglib_h::j_common_ptr,
-        crate::jpeglib_h::JPOOL_IMAGE,
+        cinfo as j_common_ptr,
+        JPOOL_IMAGE,
         (*dest).buffer_width,
         1u32,
     );
     (*dest).pub_0.buffer_height = 1u32;
-    return dest as crate::src::cdjpeg::djpeg_dest_ptr;
+    return dest as super::cdjpeg::djpeg_dest_ptr;
 }
 /* TARGA_SUPPORTED */

@@ -1,4 +1,4 @@
-use libc;
+use libc::c_uint;use libc::c_ulong;use libc::c_int;use libc::c_long;use libc;
 
 pub use crate::jmorecfg_h::boolean;
 pub use crate::jmorecfg_h::FALSE;
@@ -81,137 +81,137 @@ pub use crate::jpeglib_h::JSAMPROW;
 pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::jpeglib_h::J_DITHER_MODE;
-pub use crate::src::jerror::C2RustUnnamed_3;
-pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
-pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
-pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
-pub use crate::src::jerror::JERR_BAD_BUFFER_MODE;
-pub use crate::src::jerror::JERR_BAD_COMPONENT_ID;
-pub use crate::src::jerror::JERR_BAD_CROP_SPEC;
-pub use crate::src::jerror::JERR_BAD_DCTSIZE;
-pub use crate::src::jerror::JERR_BAD_DCT_COEF;
-pub use crate::src::jerror::JERR_BAD_HUFF_TABLE;
-pub use crate::src::jerror::JERR_BAD_IN_COLORSPACE;
-pub use crate::src::jerror::JERR_BAD_J_COLORSPACE;
-pub use crate::src::jerror::JERR_BAD_LENGTH;
-pub use crate::src::jerror::JERR_BAD_LIB_VERSION;
-pub use crate::src::jerror::JERR_BAD_MCU_SIZE;
-pub use crate::src::jerror::JERR_BAD_PARAM;
-pub use crate::src::jerror::JERR_BAD_PARAM_VALUE;
-pub use crate::src::jerror::JERR_BAD_POOL_ID;
-pub use crate::src::jerror::JERR_BAD_PRECISION;
-pub use crate::src::jerror::JERR_BAD_PROGRESSION;
-pub use crate::src::jerror::JERR_BAD_PROG_SCRIPT;
-pub use crate::src::jerror::JERR_BAD_SAMPLING;
-pub use crate::src::jerror::JERR_BAD_SCAN_SCRIPT;
-pub use crate::src::jerror::JERR_BAD_STATE;
-pub use crate::src::jerror::JERR_BAD_STRUCT_SIZE;
-pub use crate::src::jerror::JERR_BAD_VIRTUAL_ACCESS;
-pub use crate::src::jerror::JERR_BUFFER_SIZE;
-pub use crate::src::jerror::JERR_CANT_SUSPEND;
-pub use crate::src::jerror::JERR_CCIR601_NOTIMPL;
-pub use crate::src::jerror::JERR_COMPONENT_COUNT;
-pub use crate::src::jerror::JERR_CONVERSION_NOTIMPL;
-pub use crate::src::jerror::JERR_DAC_INDEX;
-pub use crate::src::jerror::JERR_DAC_VALUE;
-pub use crate::src::jerror::JERR_DHT_INDEX;
-pub use crate::src::jerror::JERR_DQT_INDEX;
-pub use crate::src::jerror::JERR_EMPTY_IMAGE;
-pub use crate::src::jerror::JERR_EMS_READ;
-pub use crate::src::jerror::JERR_EMS_WRITE;
-pub use crate::src::jerror::JERR_EOI_EXPECTED;
-pub use crate::src::jerror::JERR_FILE_READ;
-pub use crate::src::jerror::JERR_FILE_WRITE;
-pub use crate::src::jerror::JERR_FRACT_SAMPLE_NOTIMPL;
-pub use crate::src::jerror::JERR_HUFF_CLEN_OVERFLOW;
-pub use crate::src::jerror::JERR_HUFF_MISSING_CODE;
-pub use crate::src::jerror::JERR_IMAGE_TOO_BIG;
-pub use crate::src::jerror::JERR_INPUT_EMPTY;
-pub use crate::src::jerror::JERR_INPUT_EOF;
-pub use crate::src::jerror::JERR_MISMATCHED_QUANT_TABLE;
-pub use crate::src::jerror::JERR_MISSING_DATA;
-pub use crate::src::jerror::JERR_MODE_CHANGE;
-pub use crate::src::jerror::JERR_NOTIMPL;
-pub use crate::src::jerror::JERR_NOT_COMPILED;
-pub use crate::src::jerror::JERR_NO_BACKING_STORE;
-pub use crate::src::jerror::JERR_NO_HUFF_TABLE;
-pub use crate::src::jerror::JERR_NO_IMAGE;
-pub use crate::src::jerror::JERR_NO_QUANT_TABLE;
-pub use crate::src::jerror::JERR_NO_SOI;
-pub use crate::src::jerror::JERR_OUT_OF_MEMORY;
-pub use crate::src::jerror::JERR_QUANT_COMPONENTS;
-pub use crate::src::jerror::JERR_QUANT_FEW_COLORS;
-pub use crate::src::jerror::JERR_QUANT_MANY_COLORS;
-pub use crate::src::jerror::JERR_SOF_DUPLICATE;
-pub use crate::src::jerror::JERR_SOF_NO_SOS;
-pub use crate::src::jerror::JERR_SOF_UNSUPPORTED;
-pub use crate::src::jerror::JERR_SOI_DUPLICATE;
-pub use crate::src::jerror::JERR_SOS_NO_SOF;
-pub use crate::src::jerror::JERR_TFILE_CREATE;
-pub use crate::src::jerror::JERR_TFILE_READ;
-pub use crate::src::jerror::JERR_TFILE_SEEK;
-pub use crate::src::jerror::JERR_TFILE_WRITE;
-pub use crate::src::jerror::JERR_TOO_LITTLE_DATA;
-pub use crate::src::jerror::JERR_UNKNOWN_MARKER;
-pub use crate::src::jerror::JERR_UNSUPPORTED_SUSPEND;
-pub use crate::src::jerror::JERR_VIRTUAL_BUG;
-pub use crate::src::jerror::JERR_WIDTH_OVERFLOW;
-pub use crate::src::jerror::JERR_XMS_READ;
-pub use crate::src::jerror::JERR_XMS_WRITE;
-pub use crate::src::jerror::JMSG_COPYRIGHT;
-pub use crate::src::jerror::JMSG_LASTMSGCODE;
-pub use crate::src::jerror::JMSG_NOMESSAGE;
-pub use crate::src::jerror::JMSG_VERSION;
-pub use crate::src::jerror::JTRC_16BIT_TABLES;
-pub use crate::src::jerror::JTRC_ADOBE;
-pub use crate::src::jerror::JTRC_APP0;
-pub use crate::src::jerror::JTRC_APP14;
-pub use crate::src::jerror::JTRC_DAC;
-pub use crate::src::jerror::JTRC_DHT;
-pub use crate::src::jerror::JTRC_DQT;
-pub use crate::src::jerror::JTRC_DRI;
-pub use crate::src::jerror::JTRC_EMS_CLOSE;
-pub use crate::src::jerror::JTRC_EMS_OPEN;
-pub use crate::src::jerror::JTRC_EOI;
-pub use crate::src::jerror::JTRC_HUFFBITS;
-pub use crate::src::jerror::JTRC_JFIF;
-pub use crate::src::jerror::JTRC_JFIF_BADTHUMBNAILSIZE;
-pub use crate::src::jerror::JTRC_JFIF_EXTENSION;
-pub use crate::src::jerror::JTRC_JFIF_THUMBNAIL;
-pub use crate::src::jerror::JTRC_MISC_MARKER;
-pub use crate::src::jerror::JTRC_PARMLESS_MARKER;
-pub use crate::src::jerror::JTRC_QUANTVALS;
-pub use crate::src::jerror::JTRC_QUANT_3_NCOLORS;
-pub use crate::src::jerror::JTRC_QUANT_NCOLORS;
-pub use crate::src::jerror::JTRC_QUANT_SELECTED;
-pub use crate::src::jerror::JTRC_RECOVERY_ACTION;
-pub use crate::src::jerror::JTRC_RST;
-pub use crate::src::jerror::JTRC_SMOOTH_NOTIMPL;
-pub use crate::src::jerror::JTRC_SOF;
-pub use crate::src::jerror::JTRC_SOF_COMPONENT;
-pub use crate::src::jerror::JTRC_SOI;
-pub use crate::src::jerror::JTRC_SOS;
-pub use crate::src::jerror::JTRC_SOS_COMPONENT;
-pub use crate::src::jerror::JTRC_SOS_PARAMS;
-pub use crate::src::jerror::JTRC_TFILE_CLOSE;
-pub use crate::src::jerror::JTRC_TFILE_OPEN;
-pub use crate::src::jerror::JTRC_THUMB_JPEG;
-pub use crate::src::jerror::JTRC_THUMB_PALETTE;
-pub use crate::src::jerror::JTRC_THUMB_RGB;
-pub use crate::src::jerror::JTRC_UNKNOWN_IDS;
-pub use crate::src::jerror::JTRC_XMS_CLOSE;
-pub use crate::src::jerror::JTRC_XMS_OPEN;
-pub use crate::src::jerror::JWRN_ADOBE_XFORM;
-pub use crate::src::jerror::JWRN_BOGUS_ICC;
-pub use crate::src::jerror::JWRN_BOGUS_PROGRESSION;
-pub use crate::src::jerror::JWRN_EXTRANEOUS_DATA;
-pub use crate::src::jerror::JWRN_HIT_MARKER;
-pub use crate::src::jerror::JWRN_HUFF_BAD_CODE;
-pub use crate::src::jerror::JWRN_JFIF_MAJOR;
-pub use crate::src::jerror::JWRN_JPEG_EOF;
-pub use crate::src::jerror::JWRN_MUST_RESYNC;
-pub use crate::src::jerror::JWRN_NOT_SEQUENTIAL;
-pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
+pub use super::jerror::C2RustUnnamed_3;
+pub use super::jerror::JERR_ARITH_NOTIMPL;
+pub use super::jerror::JERR_BAD_ALIGN_TYPE;
+pub use super::jerror::JERR_BAD_ALLOC_CHUNK;
+pub use super::jerror::JERR_BAD_BUFFER_MODE;
+pub use super::jerror::JERR_BAD_COMPONENT_ID;
+pub use super::jerror::JERR_BAD_CROP_SPEC;
+pub use super::jerror::JERR_BAD_DCTSIZE;
+pub use super::jerror::JERR_BAD_DCT_COEF;
+pub use super::jerror::JERR_BAD_HUFF_TABLE;
+pub use super::jerror::JERR_BAD_IN_COLORSPACE;
+pub use super::jerror::JERR_BAD_J_COLORSPACE;
+pub use super::jerror::JERR_BAD_LENGTH;
+pub use super::jerror::JERR_BAD_LIB_VERSION;
+pub use super::jerror::JERR_BAD_MCU_SIZE;
+pub use super::jerror::JERR_BAD_PARAM;
+pub use super::jerror::JERR_BAD_PARAM_VALUE;
+pub use super::jerror::JERR_BAD_POOL_ID;
+pub use super::jerror::JERR_BAD_PRECISION;
+pub use super::jerror::JERR_BAD_PROGRESSION;
+pub use super::jerror::JERR_BAD_PROG_SCRIPT;
+pub use super::jerror::JERR_BAD_SAMPLING;
+pub use super::jerror::JERR_BAD_SCAN_SCRIPT;
+pub use super::jerror::JERR_BAD_STATE;
+pub use super::jerror::JERR_BAD_STRUCT_SIZE;
+pub use super::jerror::JERR_BAD_VIRTUAL_ACCESS;
+pub use super::jerror::JERR_BUFFER_SIZE;
+pub use super::jerror::JERR_CANT_SUSPEND;
+pub use super::jerror::JERR_CCIR601_NOTIMPL;
+pub use super::jerror::JERR_COMPONENT_COUNT;
+pub use super::jerror::JERR_CONVERSION_NOTIMPL;
+pub use super::jerror::JERR_DAC_INDEX;
+pub use super::jerror::JERR_DAC_VALUE;
+pub use super::jerror::JERR_DHT_INDEX;
+pub use super::jerror::JERR_DQT_INDEX;
+pub use super::jerror::JERR_EMPTY_IMAGE;
+pub use super::jerror::JERR_EMS_READ;
+pub use super::jerror::JERR_EMS_WRITE;
+pub use super::jerror::JERR_EOI_EXPECTED;
+pub use super::jerror::JERR_FILE_READ;
+pub use super::jerror::JERR_FILE_WRITE;
+pub use super::jerror::JERR_FRACT_SAMPLE_NOTIMPL;
+pub use super::jerror::JERR_HUFF_CLEN_OVERFLOW;
+pub use super::jerror::JERR_HUFF_MISSING_CODE;
+pub use super::jerror::JERR_IMAGE_TOO_BIG;
+pub use super::jerror::JERR_INPUT_EMPTY;
+pub use super::jerror::JERR_INPUT_EOF;
+pub use super::jerror::JERR_MISMATCHED_QUANT_TABLE;
+pub use super::jerror::JERR_MISSING_DATA;
+pub use super::jerror::JERR_MODE_CHANGE;
+pub use super::jerror::JERR_NOTIMPL;
+pub use super::jerror::JERR_NOT_COMPILED;
+pub use super::jerror::JERR_NO_BACKING_STORE;
+pub use super::jerror::JERR_NO_HUFF_TABLE;
+pub use super::jerror::JERR_NO_IMAGE;
+pub use super::jerror::JERR_NO_QUANT_TABLE;
+pub use super::jerror::JERR_NO_SOI;
+pub use super::jerror::JERR_OUT_OF_MEMORY;
+pub use super::jerror::JERR_QUANT_COMPONENTS;
+pub use super::jerror::JERR_QUANT_FEW_COLORS;
+pub use super::jerror::JERR_QUANT_MANY_COLORS;
+pub use super::jerror::JERR_SOF_DUPLICATE;
+pub use super::jerror::JERR_SOF_NO_SOS;
+pub use super::jerror::JERR_SOF_UNSUPPORTED;
+pub use super::jerror::JERR_SOI_DUPLICATE;
+pub use super::jerror::JERR_SOS_NO_SOF;
+pub use super::jerror::JERR_TFILE_CREATE;
+pub use super::jerror::JERR_TFILE_READ;
+pub use super::jerror::JERR_TFILE_SEEK;
+pub use super::jerror::JERR_TFILE_WRITE;
+pub use super::jerror::JERR_TOO_LITTLE_DATA;
+pub use super::jerror::JERR_UNKNOWN_MARKER;
+pub use super::jerror::JERR_UNSUPPORTED_SUSPEND;
+pub use super::jerror::JERR_VIRTUAL_BUG;
+pub use super::jerror::JERR_WIDTH_OVERFLOW;
+pub use super::jerror::JERR_XMS_READ;
+pub use super::jerror::JERR_XMS_WRITE;
+pub use super::jerror::JMSG_COPYRIGHT;
+pub use super::jerror::JMSG_LASTMSGCODE;
+pub use super::jerror::JMSG_NOMESSAGE;
+pub use super::jerror::JMSG_VERSION;
+pub use super::jerror::JTRC_16BIT_TABLES;
+pub use super::jerror::JTRC_ADOBE;
+pub use super::jerror::JTRC_APP0;
+pub use super::jerror::JTRC_APP14;
+pub use super::jerror::JTRC_DAC;
+pub use super::jerror::JTRC_DHT;
+pub use super::jerror::JTRC_DQT;
+pub use super::jerror::JTRC_DRI;
+pub use super::jerror::JTRC_EMS_CLOSE;
+pub use super::jerror::JTRC_EMS_OPEN;
+pub use super::jerror::JTRC_EOI;
+pub use super::jerror::JTRC_HUFFBITS;
+pub use super::jerror::JTRC_JFIF;
+pub use super::jerror::JTRC_JFIF_BADTHUMBNAILSIZE;
+pub use super::jerror::JTRC_JFIF_EXTENSION;
+pub use super::jerror::JTRC_JFIF_THUMBNAIL;
+pub use super::jerror::JTRC_MISC_MARKER;
+pub use super::jerror::JTRC_PARMLESS_MARKER;
+pub use super::jerror::JTRC_QUANTVALS;
+pub use super::jerror::JTRC_QUANT_3_NCOLORS;
+pub use super::jerror::JTRC_QUANT_NCOLORS;
+pub use super::jerror::JTRC_QUANT_SELECTED;
+pub use super::jerror::JTRC_RECOVERY_ACTION;
+pub use super::jerror::JTRC_RST;
+pub use super::jerror::JTRC_SMOOTH_NOTIMPL;
+pub use super::jerror::JTRC_SOF;
+pub use super::jerror::JTRC_SOF_COMPONENT;
+pub use super::jerror::JTRC_SOI;
+pub use super::jerror::JTRC_SOS;
+pub use super::jerror::JTRC_SOS_COMPONENT;
+pub use super::jerror::JTRC_SOS_PARAMS;
+pub use super::jerror::JTRC_TFILE_CLOSE;
+pub use super::jerror::JTRC_TFILE_OPEN;
+pub use super::jerror::JTRC_THUMB_JPEG;
+pub use super::jerror::JTRC_THUMB_PALETTE;
+pub use super::jerror::JTRC_THUMB_RGB;
+pub use super::jerror::JTRC_UNKNOWN_IDS;
+pub use super::jerror::JTRC_XMS_CLOSE;
+pub use super::jerror::JTRC_XMS_OPEN;
+pub use super::jerror::JWRN_ADOBE_XFORM;
+pub use super::jerror::JWRN_BOGUS_ICC;
+pub use super::jerror::JWRN_BOGUS_PROGRESSION;
+pub use super::jerror::JWRN_EXTRANEOUS_DATA;
+pub use super::jerror::JWRN_HIT_MARKER;
+pub use super::jerror::JWRN_HUFF_BAD_CODE;
+pub use super::jerror::JWRN_JFIF_MAJOR;
+pub use super::jerror::JWRN_JPEG_EOF;
+pub use super::jerror::JWRN_MUST_RESYNC;
+pub use super::jerror::JWRN_NOT_SEQUENTIAL;
+pub use super::jerror::JWRN_TOO_MUCH_DATA;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 
@@ -220,20 +220,20 @@ pub type my_post_ptr = *mut my_post_controller;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct my_post_controller {
-    pub pub_0: crate::jpeglib_h::jpeg_d_post_controller,
-    pub whole_image: crate::jpeglib_h::jvirt_sarray_ptr,
-    pub buffer: crate::jpeglib_h::JSAMPARRAY,
-    pub strip_height: crate::jmorecfg_h::JDIMENSION,
-    pub starting_row: crate::jmorecfg_h::JDIMENSION,
-    pub next_row: crate::jmorecfg_h::JDIMENSION,
+    pub pub_0: jpeg_d_post_controller,
+    pub whole_image: jvirt_sarray_ptr,
+    pub buffer: JSAMPARRAY,
+    pub strip_height: JDIMENSION,
+    pub starting_row: JDIMENSION,
+    pub next_row: JDIMENSION,
 }
 /*
  * Initialize for a processing pass.
  */
 
 unsafe extern "C" fn start_pass_dpost(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut pass_mode: crate::jpegint_h::J_BUF_MODE,
+    mut cinfo: j_decompress_ptr,
+    mut pass_mode: J_BUF_MODE,
 ) {
     let mut post: my_post_ptr = (*cinfo).post as my_post_ptr;
     match  pass_mode {
@@ -243,13 +243,13 @@ unsafe extern "C" fn start_pass_dpost(
                 (*post).pub_0.post_process_data = Some(
                     post_process_1pass
                         as unsafe extern "C" fn(
-                            _: crate::jpeglib_h::j_decompress_ptr,
-                            _: crate::jpeglib_h::JSAMPIMAGE,
-                            _: *mut crate::jmorecfg_h::JDIMENSION,
-                            _: crate::jmorecfg_h::JDIMENSION,
-                            _: crate::jpeglib_h::JSAMPARRAY,
-                            _: *mut crate::jmorecfg_h::JDIMENSION,
-                            _: crate::jmorecfg_h::JDIMENSION,
+                            _: j_decompress_ptr,
+                            _: JSAMPIMAGE,
+                            _: *mut JDIMENSION,
+                            _: JDIMENSION,
+                            _: JSAMPARRAY,
+                            _: *mut JDIMENSION,
+                            _: JDIMENSION,
                         ) -> (),
                 );
                 /* We could be doing buffered-image output before starting a 2-pass
@@ -263,11 +263,11 @@ unsafe extern "C" fn start_pass_dpost(
                             .expect("non-null function pointer"),
                     )
                     .expect("non-null function pointer")(
-                        cinfo as crate::jpeglib_h::j_common_ptr,
+                        cinfo as j_common_ptr,
                         (*post).whole_image,
                         0u32,
                         (*post).strip_height,
-                        crate::jmorecfg_h::TRUE,
+                        TRUE,
                     )
                 }
             } else {
@@ -280,65 +280,65 @@ unsafe extern "C" fn start_pass_dpost(
         3 => {
             /* First pass of 2-pass quantization */
             if (*post).whole_image.is_null() {
-                (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_BUFFER_MODE as libc::c_int;
+                (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_BUFFER_MODE as c_int;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer"),
                 )
                 .expect("non-null function pointer")(
-                    cinfo as crate::jpeglib_h::j_common_ptr
+                    cinfo as j_common_ptr
                 );
             }
             (*post).pub_0.post_process_data = Some(
                 post_process_prepass
                     as unsafe extern "C" fn(
-                        _: crate::jpeglib_h::j_decompress_ptr,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: *mut crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: *mut crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jmorecfg_h::JDIMENSION,
+                        _: j_decompress_ptr,
+                        _: JSAMPIMAGE,
+                        _: *mut JDIMENSION,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: *mut JDIMENSION,
+                        _: JDIMENSION,
                     ) -> (),
             )
         }
         2 => {
             /* Second pass of 2-pass quantization */
             if (*post).whole_image.is_null() {
-                (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_BUFFER_MODE as libc::c_int;
+                (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_BUFFER_MODE as c_int;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer"),
                 )
                 .expect("non-null function pointer")(
-                    cinfo as crate::jpeglib_h::j_common_ptr
+                    cinfo as j_common_ptr
                 );
             }
             (*post).pub_0.post_process_data = Some(
                 post_process_2pass
                     as unsafe extern "C" fn(
-                        _: crate::jpeglib_h::j_decompress_ptr,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: *mut crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: *mut crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jmorecfg_h::JDIMENSION,
+                        _: j_decompress_ptr,
+                        _: JSAMPIMAGE,
+                        _: *mut JDIMENSION,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: *mut JDIMENSION,
+                        _: JDIMENSION,
                     ) -> (),
             )
         }
         _ => {
             /* QUANT_2PASS_SUPPORTED */
-            (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_BUFFER_MODE as libc::c_int;
+            (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_BUFFER_MODE as c_int;
             Some(
                 (*(*cinfo).err)
                     .error_exit
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(
-                cinfo as crate::jpeglib_h::j_common_ptr
+                cinfo as j_common_ptr
             );
         }
     }
@@ -352,23 +352,23 @@ unsafe extern "C" fn start_pass_dpost(
  */
 
 unsafe extern "C" fn post_process_1pass(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut input_buf: crate::jpeglib_h::JSAMPIMAGE,
-    mut in_row_group_ctr: *mut crate::jmorecfg_h::JDIMENSION,
-    mut in_row_groups_avail: crate::jmorecfg_h::JDIMENSION,
-    mut output_buf: crate::jpeglib_h::JSAMPARRAY,
-    mut out_row_ctr: *mut crate::jmorecfg_h::JDIMENSION,
-    mut out_rows_avail: crate::jmorecfg_h::JDIMENSION,
+    mut cinfo: j_decompress_ptr,
+    mut input_buf: JSAMPIMAGE,
+    mut in_row_group_ctr: *mut JDIMENSION,
+    mut in_row_groups_avail: JDIMENSION,
+    mut output_buf: JSAMPARRAY,
+    mut out_row_ctr: *mut JDIMENSION,
+    mut out_rows_avail: JDIMENSION,
 ) {
       let mut post: my_post_ptr = (*cinfo).post as my_post_ptr;
     
     
-     let mut max_rows:   crate::jmorecfg_h::JDIMENSION =
+     let mut max_rows:   JDIMENSION =
       out_rows_avail - *out_row_ctr;
     if max_rows > (*post).strip_height {
         max_rows = (*post).strip_height
     }
-     let mut num_rows:   crate::jmorecfg_h::JDIMENSION =  0u32;
+     let mut num_rows:   JDIMENSION =  0u32;
     Some(
         (*(*cinfo).upsample)
             .upsample
@@ -393,7 +393,7 @@ unsafe extern "C" fn post_process_1pass(
         cinfo,
         (*post).buffer,
         output_buf.offset(*out_row_ctr as isize),
-        num_rows as libc::c_int,
+        num_rows as c_int,
     );
     *out_row_ctr = *out_row_ctr + num_rows;
 }
@@ -402,13 +402,13 @@ unsafe extern "C" fn post_process_1pass(
  */
 
 unsafe extern "C" fn post_process_prepass(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut input_buf: crate::jpeglib_h::JSAMPIMAGE,
-    mut in_row_group_ctr: *mut crate::jmorecfg_h::JDIMENSION,
-    mut in_row_groups_avail: crate::jmorecfg_h::JDIMENSION,
-    mut output_buf: crate::jpeglib_h::JSAMPARRAY,
-    mut out_row_ctr: *mut crate::jmorecfg_h::JDIMENSION,
-    mut out_rows_avail: crate::jmorecfg_h::JDIMENSION,
+    mut cinfo: j_decompress_ptr,
+    mut input_buf: JSAMPIMAGE,
+    mut in_row_group_ctr: *mut JDIMENSION,
+    mut in_row_groups_avail: JDIMENSION,
+    mut output_buf: JSAMPARRAY,
+    mut out_row_ctr: *mut JDIMENSION,
+    mut out_rows_avail: JDIMENSION,
 ) {
      let mut post: my_post_ptr = (*cinfo).post as my_post_ptr;
     
@@ -421,14 +421,14 @@ unsafe extern "C" fn post_process_prepass(
                 .expect("non-null function pointer"),
         )
         .expect("non-null function pointer")(
-            cinfo as crate::jpeglib_h::j_common_ptr,
+            cinfo as j_common_ptr,
             (*post).whole_image,
             (*post).starting_row,
             (*post).strip_height,
-            crate::jmorecfg_h::TRUE,
+            TRUE,
         )
     }
-     let mut old_next_row:   crate::jmorecfg_h::JDIMENSION =  (*post).next_row;
+     let mut old_next_row:   JDIMENSION =  (*post).next_row;
     Some(
         (*(*cinfo).upsample)
             .upsample
@@ -446,7 +446,7 @@ unsafe extern "C" fn post_process_prepass(
     /* Allow quantizer to scan new data.  No data is emitted, */
     /* but we advance out_row_ctr so outer loop can tell when we're done. */
     if (*post).next_row > old_next_row {
-          let mut num_rows:   crate::jmorecfg_h::JDIMENSION =
+          let mut num_rows:   JDIMENSION =
       (*post).next_row - old_next_row;
         Some(
             (*(*cinfo).cquantize)
@@ -457,8 +457,8 @@ unsafe extern "C" fn post_process_prepass(
             cinfo,
             (*post).buffer.offset(old_next_row as isize),
             
-            crate::stddef_h::NULL as crate::jpeglib_h::JSAMPARRAY,
-            num_rows as libc::c_int,
+            NULL as JSAMPARRAY,
+            num_rows as c_int,
         );
         *out_row_ctr = *out_row_ctr + num_rows
     }
@@ -474,13 +474,13 @@ unsafe extern "C" fn post_process_prepass(
  */
 
 unsafe extern "C" fn post_process_2pass(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut input_buf: crate::jpeglib_h::JSAMPIMAGE,
-    mut in_row_group_ctr: *mut crate::jmorecfg_h::JDIMENSION,
-    mut in_row_groups_avail: crate::jmorecfg_h::JDIMENSION,
-    mut output_buf: crate::jpeglib_h::JSAMPARRAY,
-    mut out_row_ctr: *mut crate::jmorecfg_h::JDIMENSION,
-    mut out_rows_avail: crate::jmorecfg_h::JDIMENSION,
+    mut cinfo: j_decompress_ptr,
+    mut input_buf: JSAMPIMAGE,
+    mut in_row_group_ctr: *mut JDIMENSION,
+    mut in_row_groups_avail: JDIMENSION,
+    mut output_buf: JSAMPARRAY,
+    mut out_row_ctr: *mut JDIMENSION,
+    mut out_rows_avail: JDIMENSION,
 ) {
       let mut post: my_post_ptr = (*cinfo).post as my_post_ptr;
     
@@ -493,16 +493,16 @@ unsafe extern "C" fn post_process_2pass(
                 .expect("non-null function pointer"),
         )
         .expect("non-null function pointer")(
-            cinfo as crate::jpeglib_h::j_common_ptr,
+            cinfo as j_common_ptr,
             (*post).whole_image,
             (*post).starting_row,
             (*post).strip_height,
-            crate::jmorecfg_h::FALSE,
+            FALSE,
         )
     }
      /* available in strip */
-     let mut num_rows:   crate::jmorecfg_h::JDIMENSION =
-      (*post).strip_height - (*post).next_row; let mut max_rows:   crate::jmorecfg_h::JDIMENSION =
+     let mut num_rows:   JDIMENSION =
+      (*post).strip_height - (*post).next_row; let mut max_rows:   JDIMENSION =
       out_rows_avail - *out_row_ctr; /* available in output area */
     if num_rows > max_rows {
         num_rows = max_rows
@@ -522,7 +522,7 @@ unsafe extern "C" fn post_process_2pass(
         cinfo,
         (*post).buffer.offset((*post).next_row as isize),
         output_buf.offset(*out_row_ctr as isize),
-        num_rows as libc::c_int,
+        num_rows as c_int,
     );
     *out_row_ctr = *out_row_ctr + num_rows;
     /* Advance if we filled the strip. */
@@ -557,8 +557,8 @@ unsafe extern "C" fn post_process_2pass(
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_d_post_controller(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut need_full_buffer: crate::jmorecfg_h::boolean,
+    mut cinfo: j_decompress_ptr,
+    mut need_full_buffer: boolean,
 ) {
       /* flag for no virtual arrays */
      let mut post:   my_post_ptr =
@@ -568,27 +568,27 @@ pub unsafe extern "C" fn jinit_d_post_controller(
             .expect("non-null function pointer"),
     )
     .expect("non-null function pointer")(
-        cinfo as crate::jpeglib_h::j_common_ptr,
-        crate::jpeglib_h::JPOOL_IMAGE,
-        ::std::mem::size_of::<my_post_controller>() as libc::c_ulong,
+        cinfo as j_common_ptr,
+        JPOOL_IMAGE,
+        ::std::mem::size_of::<my_post_controller>() as c_ulong,
     ) as my_post_ptr; /* flag for no strip buffer */
-    (*cinfo).post = post as *mut crate::jpeglib_h::jpeg_d_post_controller;
+    (*cinfo).post = post as *mut jpeg_d_post_controller;
     (*post).pub_0.start_pass = Some(
         start_pass_dpost
             as unsafe extern "C" fn(
-                _: crate::jpeglib_h::j_decompress_ptr,
-                _: crate::jpegint_h::J_BUF_MODE,
+                _: j_decompress_ptr,
+                _: J_BUF_MODE,
             ) -> (),
     );
-    (*post).whole_image = crate::stddef_h::NULL as crate::jpeglib_h::jvirt_sarray_ptr;
-    (*post).buffer = crate::stddef_h::NULL as crate::jpeglib_h::JSAMPARRAY;
+    (*post).whole_image = NULL as jvirt_sarray_ptr;
+    (*post).buffer = NULL as JSAMPARRAY;
     /* Create the quantization buffer, if needed */
     if (*cinfo).quantize_colors != 0 {
         /* The buffer strip height is max_v_samp_factor, which is typically
          * an efficient number of rows for upsampling to return.
          * (In the presence of output rescaling, we might want to be smarter?)
          */
-        (*post).strip_height = (*cinfo).max_v_samp_factor as crate::jmorecfg_h::JDIMENSION;
+        (*post).strip_height = (*cinfo).max_v_samp_factor as JDIMENSION;
         if need_full_buffer != 0 {
             /* Two-pass color quantization: need full-image storage. */
             /* We round up the number of rows to a multiple of the strip height. */
@@ -598,16 +598,16 @@ pub unsafe extern "C" fn jinit_d_post_controller(
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(
-                cinfo as crate::jpeglib_h::j_common_ptr,
-                crate::jpeglib_h::JPOOL_IMAGE,
-                crate::jmorecfg_h::FALSE,
+                cinfo as j_common_ptr,
+                JPOOL_IMAGE,
+                FALSE,
                 
                 (*cinfo)
-                    .output_width * (*cinfo).out_color_components as libc::c_uint,
-                crate::jpegint_h::jround_up(
-                    (*cinfo).output_height as libc::c_long,
-                    (*post).strip_height as libc::c_long,
-                ) as crate::jmorecfg_h::JDIMENSION,
+                    .output_width * (*cinfo).out_color_components as c_uint,
+                jround_up(
+                    (*cinfo).output_height as c_long,
+                    (*post).strip_height as c_long,
+                ) as JDIMENSION,
                 (*post).strip_height,
             )
         /* QUANT_2PASS_SUPPORTED */
@@ -619,11 +619,11 @@ pub unsafe extern "C" fn jinit_d_post_controller(
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(
-                cinfo as crate::jpeglib_h::j_common_ptr,
-                crate::jpeglib_h::JPOOL_IMAGE,
+                cinfo as j_common_ptr,
+                JPOOL_IMAGE,
                 
                 (*cinfo)
-                    .output_width * (*cinfo).out_color_components as libc::c_uint,
+                    .output_width * (*cinfo).out_color_components as c_uint,
                 (*post).strip_height,
             )
         }

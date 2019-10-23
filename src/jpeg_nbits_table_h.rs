@@ -1,4 +1,4 @@
-pub static mut jpeg_nbits_table: [libc::c_uchar; 65536] = [
+use libc::c_uchar;pub static mut jpeg_nbits_table: [c_uchar; 65536] = [
     0u8,
     1u8,
     2u8,

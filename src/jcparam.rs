@@ -1,4 +1,4 @@
-use libc;
+use libc::c_uint;use libc::c_ulong;use libc::c_float;use libc::c_long;use libc::c_int;use libc;
 
 pub use crate::jconfig_h::BITS_IN_JSAMPLE;
 pub use crate::jmorecfg_h::boolean;
@@ -106,137 +106,137 @@ pub use crate::jpeglib_h::J_DITHER_MODE;
 pub use crate::jpeglib_h::MAX_COMPS_IN_SCAN;
 pub use crate::jpeglib_h::NUM_ARITH_TBLS;
 pub use crate::jpeglib_h::NUM_QUANT_TBLS;
-pub use crate::src::jerror::C2RustUnnamed_3;
-pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
-pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
-pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
-pub use crate::src::jerror::JERR_BAD_BUFFER_MODE;
-pub use crate::src::jerror::JERR_BAD_COMPONENT_ID;
-pub use crate::src::jerror::JERR_BAD_CROP_SPEC;
-pub use crate::src::jerror::JERR_BAD_DCTSIZE;
-pub use crate::src::jerror::JERR_BAD_DCT_COEF;
-pub use crate::src::jerror::JERR_BAD_HUFF_TABLE;
-pub use crate::src::jerror::JERR_BAD_IN_COLORSPACE;
-pub use crate::src::jerror::JERR_BAD_J_COLORSPACE;
-pub use crate::src::jerror::JERR_BAD_LENGTH;
-pub use crate::src::jerror::JERR_BAD_LIB_VERSION;
-pub use crate::src::jerror::JERR_BAD_MCU_SIZE;
-pub use crate::src::jerror::JERR_BAD_PARAM;
-pub use crate::src::jerror::JERR_BAD_PARAM_VALUE;
-pub use crate::src::jerror::JERR_BAD_POOL_ID;
-pub use crate::src::jerror::JERR_BAD_PRECISION;
-pub use crate::src::jerror::JERR_BAD_PROGRESSION;
-pub use crate::src::jerror::JERR_BAD_PROG_SCRIPT;
-pub use crate::src::jerror::JERR_BAD_SAMPLING;
-pub use crate::src::jerror::JERR_BAD_SCAN_SCRIPT;
-pub use crate::src::jerror::JERR_BAD_STATE;
-pub use crate::src::jerror::JERR_BAD_STRUCT_SIZE;
-pub use crate::src::jerror::JERR_BAD_VIRTUAL_ACCESS;
-pub use crate::src::jerror::JERR_BUFFER_SIZE;
-pub use crate::src::jerror::JERR_CANT_SUSPEND;
-pub use crate::src::jerror::JERR_CCIR601_NOTIMPL;
-pub use crate::src::jerror::JERR_COMPONENT_COUNT;
-pub use crate::src::jerror::JERR_CONVERSION_NOTIMPL;
-pub use crate::src::jerror::JERR_DAC_INDEX;
-pub use crate::src::jerror::JERR_DAC_VALUE;
-pub use crate::src::jerror::JERR_DHT_INDEX;
-pub use crate::src::jerror::JERR_DQT_INDEX;
-pub use crate::src::jerror::JERR_EMPTY_IMAGE;
-pub use crate::src::jerror::JERR_EMS_READ;
-pub use crate::src::jerror::JERR_EMS_WRITE;
-pub use crate::src::jerror::JERR_EOI_EXPECTED;
-pub use crate::src::jerror::JERR_FILE_READ;
-pub use crate::src::jerror::JERR_FILE_WRITE;
-pub use crate::src::jerror::JERR_FRACT_SAMPLE_NOTIMPL;
-pub use crate::src::jerror::JERR_HUFF_CLEN_OVERFLOW;
-pub use crate::src::jerror::JERR_HUFF_MISSING_CODE;
-pub use crate::src::jerror::JERR_IMAGE_TOO_BIG;
-pub use crate::src::jerror::JERR_INPUT_EMPTY;
-pub use crate::src::jerror::JERR_INPUT_EOF;
-pub use crate::src::jerror::JERR_MISMATCHED_QUANT_TABLE;
-pub use crate::src::jerror::JERR_MISSING_DATA;
-pub use crate::src::jerror::JERR_MODE_CHANGE;
-pub use crate::src::jerror::JERR_NOTIMPL;
-pub use crate::src::jerror::JERR_NOT_COMPILED;
-pub use crate::src::jerror::JERR_NO_BACKING_STORE;
-pub use crate::src::jerror::JERR_NO_HUFF_TABLE;
-pub use crate::src::jerror::JERR_NO_IMAGE;
-pub use crate::src::jerror::JERR_NO_QUANT_TABLE;
-pub use crate::src::jerror::JERR_NO_SOI;
-pub use crate::src::jerror::JERR_OUT_OF_MEMORY;
-pub use crate::src::jerror::JERR_QUANT_COMPONENTS;
-pub use crate::src::jerror::JERR_QUANT_FEW_COLORS;
-pub use crate::src::jerror::JERR_QUANT_MANY_COLORS;
-pub use crate::src::jerror::JERR_SOF_DUPLICATE;
-pub use crate::src::jerror::JERR_SOF_NO_SOS;
-pub use crate::src::jerror::JERR_SOF_UNSUPPORTED;
-pub use crate::src::jerror::JERR_SOI_DUPLICATE;
-pub use crate::src::jerror::JERR_SOS_NO_SOF;
-pub use crate::src::jerror::JERR_TFILE_CREATE;
-pub use crate::src::jerror::JERR_TFILE_READ;
-pub use crate::src::jerror::JERR_TFILE_SEEK;
-pub use crate::src::jerror::JERR_TFILE_WRITE;
-pub use crate::src::jerror::JERR_TOO_LITTLE_DATA;
-pub use crate::src::jerror::JERR_UNKNOWN_MARKER;
-pub use crate::src::jerror::JERR_UNSUPPORTED_SUSPEND;
-pub use crate::src::jerror::JERR_VIRTUAL_BUG;
-pub use crate::src::jerror::JERR_WIDTH_OVERFLOW;
-pub use crate::src::jerror::JERR_XMS_READ;
-pub use crate::src::jerror::JERR_XMS_WRITE;
-pub use crate::src::jerror::JMSG_COPYRIGHT;
-pub use crate::src::jerror::JMSG_LASTMSGCODE;
-pub use crate::src::jerror::JMSG_NOMESSAGE;
-pub use crate::src::jerror::JMSG_VERSION;
-pub use crate::src::jerror::JTRC_16BIT_TABLES;
-pub use crate::src::jerror::JTRC_ADOBE;
-pub use crate::src::jerror::JTRC_APP0;
-pub use crate::src::jerror::JTRC_APP14;
-pub use crate::src::jerror::JTRC_DAC;
-pub use crate::src::jerror::JTRC_DHT;
-pub use crate::src::jerror::JTRC_DQT;
-pub use crate::src::jerror::JTRC_DRI;
-pub use crate::src::jerror::JTRC_EMS_CLOSE;
-pub use crate::src::jerror::JTRC_EMS_OPEN;
-pub use crate::src::jerror::JTRC_EOI;
-pub use crate::src::jerror::JTRC_HUFFBITS;
-pub use crate::src::jerror::JTRC_JFIF;
-pub use crate::src::jerror::JTRC_JFIF_BADTHUMBNAILSIZE;
-pub use crate::src::jerror::JTRC_JFIF_EXTENSION;
-pub use crate::src::jerror::JTRC_JFIF_THUMBNAIL;
-pub use crate::src::jerror::JTRC_MISC_MARKER;
-pub use crate::src::jerror::JTRC_PARMLESS_MARKER;
-pub use crate::src::jerror::JTRC_QUANTVALS;
-pub use crate::src::jerror::JTRC_QUANT_3_NCOLORS;
-pub use crate::src::jerror::JTRC_QUANT_NCOLORS;
-pub use crate::src::jerror::JTRC_QUANT_SELECTED;
-pub use crate::src::jerror::JTRC_RECOVERY_ACTION;
-pub use crate::src::jerror::JTRC_RST;
-pub use crate::src::jerror::JTRC_SMOOTH_NOTIMPL;
-pub use crate::src::jerror::JTRC_SOF;
-pub use crate::src::jerror::JTRC_SOF_COMPONENT;
-pub use crate::src::jerror::JTRC_SOI;
-pub use crate::src::jerror::JTRC_SOS;
-pub use crate::src::jerror::JTRC_SOS_COMPONENT;
-pub use crate::src::jerror::JTRC_SOS_PARAMS;
-pub use crate::src::jerror::JTRC_TFILE_CLOSE;
-pub use crate::src::jerror::JTRC_TFILE_OPEN;
-pub use crate::src::jerror::JTRC_THUMB_JPEG;
-pub use crate::src::jerror::JTRC_THUMB_PALETTE;
-pub use crate::src::jerror::JTRC_THUMB_RGB;
-pub use crate::src::jerror::JTRC_UNKNOWN_IDS;
-pub use crate::src::jerror::JTRC_XMS_CLOSE;
-pub use crate::src::jerror::JTRC_XMS_OPEN;
-pub use crate::src::jerror::JWRN_ADOBE_XFORM;
-pub use crate::src::jerror::JWRN_BOGUS_ICC;
-pub use crate::src::jerror::JWRN_BOGUS_PROGRESSION;
-pub use crate::src::jerror::JWRN_EXTRANEOUS_DATA;
-pub use crate::src::jerror::JWRN_HIT_MARKER;
-pub use crate::src::jerror::JWRN_HUFF_BAD_CODE;
-pub use crate::src::jerror::JWRN_JFIF_MAJOR;
-pub use crate::src::jerror::JWRN_JPEG_EOF;
-pub use crate::src::jerror::JWRN_MUST_RESYNC;
-pub use crate::src::jerror::JWRN_NOT_SEQUENTIAL;
-pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
+pub use super::jerror::C2RustUnnamed_3;
+pub use super::jerror::JERR_ARITH_NOTIMPL;
+pub use super::jerror::JERR_BAD_ALIGN_TYPE;
+pub use super::jerror::JERR_BAD_ALLOC_CHUNK;
+pub use super::jerror::JERR_BAD_BUFFER_MODE;
+pub use super::jerror::JERR_BAD_COMPONENT_ID;
+pub use super::jerror::JERR_BAD_CROP_SPEC;
+pub use super::jerror::JERR_BAD_DCTSIZE;
+pub use super::jerror::JERR_BAD_DCT_COEF;
+pub use super::jerror::JERR_BAD_HUFF_TABLE;
+pub use super::jerror::JERR_BAD_IN_COLORSPACE;
+pub use super::jerror::JERR_BAD_J_COLORSPACE;
+pub use super::jerror::JERR_BAD_LENGTH;
+pub use super::jerror::JERR_BAD_LIB_VERSION;
+pub use super::jerror::JERR_BAD_MCU_SIZE;
+pub use super::jerror::JERR_BAD_PARAM;
+pub use super::jerror::JERR_BAD_PARAM_VALUE;
+pub use super::jerror::JERR_BAD_POOL_ID;
+pub use super::jerror::JERR_BAD_PRECISION;
+pub use super::jerror::JERR_BAD_PROGRESSION;
+pub use super::jerror::JERR_BAD_PROG_SCRIPT;
+pub use super::jerror::JERR_BAD_SAMPLING;
+pub use super::jerror::JERR_BAD_SCAN_SCRIPT;
+pub use super::jerror::JERR_BAD_STATE;
+pub use super::jerror::JERR_BAD_STRUCT_SIZE;
+pub use super::jerror::JERR_BAD_VIRTUAL_ACCESS;
+pub use super::jerror::JERR_BUFFER_SIZE;
+pub use super::jerror::JERR_CANT_SUSPEND;
+pub use super::jerror::JERR_CCIR601_NOTIMPL;
+pub use super::jerror::JERR_COMPONENT_COUNT;
+pub use super::jerror::JERR_CONVERSION_NOTIMPL;
+pub use super::jerror::JERR_DAC_INDEX;
+pub use super::jerror::JERR_DAC_VALUE;
+pub use super::jerror::JERR_DHT_INDEX;
+pub use super::jerror::JERR_DQT_INDEX;
+pub use super::jerror::JERR_EMPTY_IMAGE;
+pub use super::jerror::JERR_EMS_READ;
+pub use super::jerror::JERR_EMS_WRITE;
+pub use super::jerror::JERR_EOI_EXPECTED;
+pub use super::jerror::JERR_FILE_READ;
+pub use super::jerror::JERR_FILE_WRITE;
+pub use super::jerror::JERR_FRACT_SAMPLE_NOTIMPL;
+pub use super::jerror::JERR_HUFF_CLEN_OVERFLOW;
+pub use super::jerror::JERR_HUFF_MISSING_CODE;
+pub use super::jerror::JERR_IMAGE_TOO_BIG;
+pub use super::jerror::JERR_INPUT_EMPTY;
+pub use super::jerror::JERR_INPUT_EOF;
+pub use super::jerror::JERR_MISMATCHED_QUANT_TABLE;
+pub use super::jerror::JERR_MISSING_DATA;
+pub use super::jerror::JERR_MODE_CHANGE;
+pub use super::jerror::JERR_NOTIMPL;
+pub use super::jerror::JERR_NOT_COMPILED;
+pub use super::jerror::JERR_NO_BACKING_STORE;
+pub use super::jerror::JERR_NO_HUFF_TABLE;
+pub use super::jerror::JERR_NO_IMAGE;
+pub use super::jerror::JERR_NO_QUANT_TABLE;
+pub use super::jerror::JERR_NO_SOI;
+pub use super::jerror::JERR_OUT_OF_MEMORY;
+pub use super::jerror::JERR_QUANT_COMPONENTS;
+pub use super::jerror::JERR_QUANT_FEW_COLORS;
+pub use super::jerror::JERR_QUANT_MANY_COLORS;
+pub use super::jerror::JERR_SOF_DUPLICATE;
+pub use super::jerror::JERR_SOF_NO_SOS;
+pub use super::jerror::JERR_SOF_UNSUPPORTED;
+pub use super::jerror::JERR_SOI_DUPLICATE;
+pub use super::jerror::JERR_SOS_NO_SOF;
+pub use super::jerror::JERR_TFILE_CREATE;
+pub use super::jerror::JERR_TFILE_READ;
+pub use super::jerror::JERR_TFILE_SEEK;
+pub use super::jerror::JERR_TFILE_WRITE;
+pub use super::jerror::JERR_TOO_LITTLE_DATA;
+pub use super::jerror::JERR_UNKNOWN_MARKER;
+pub use super::jerror::JERR_UNSUPPORTED_SUSPEND;
+pub use super::jerror::JERR_VIRTUAL_BUG;
+pub use super::jerror::JERR_WIDTH_OVERFLOW;
+pub use super::jerror::JERR_XMS_READ;
+pub use super::jerror::JERR_XMS_WRITE;
+pub use super::jerror::JMSG_COPYRIGHT;
+pub use super::jerror::JMSG_LASTMSGCODE;
+pub use super::jerror::JMSG_NOMESSAGE;
+pub use super::jerror::JMSG_VERSION;
+pub use super::jerror::JTRC_16BIT_TABLES;
+pub use super::jerror::JTRC_ADOBE;
+pub use super::jerror::JTRC_APP0;
+pub use super::jerror::JTRC_APP14;
+pub use super::jerror::JTRC_DAC;
+pub use super::jerror::JTRC_DHT;
+pub use super::jerror::JTRC_DQT;
+pub use super::jerror::JTRC_DRI;
+pub use super::jerror::JTRC_EMS_CLOSE;
+pub use super::jerror::JTRC_EMS_OPEN;
+pub use super::jerror::JTRC_EOI;
+pub use super::jerror::JTRC_HUFFBITS;
+pub use super::jerror::JTRC_JFIF;
+pub use super::jerror::JTRC_JFIF_BADTHUMBNAILSIZE;
+pub use super::jerror::JTRC_JFIF_EXTENSION;
+pub use super::jerror::JTRC_JFIF_THUMBNAIL;
+pub use super::jerror::JTRC_MISC_MARKER;
+pub use super::jerror::JTRC_PARMLESS_MARKER;
+pub use super::jerror::JTRC_QUANTVALS;
+pub use super::jerror::JTRC_QUANT_3_NCOLORS;
+pub use super::jerror::JTRC_QUANT_NCOLORS;
+pub use super::jerror::JTRC_QUANT_SELECTED;
+pub use super::jerror::JTRC_RECOVERY_ACTION;
+pub use super::jerror::JTRC_RST;
+pub use super::jerror::JTRC_SMOOTH_NOTIMPL;
+pub use super::jerror::JTRC_SOF;
+pub use super::jerror::JTRC_SOF_COMPONENT;
+pub use super::jerror::JTRC_SOI;
+pub use super::jerror::JTRC_SOS;
+pub use super::jerror::JTRC_SOS_COMPONENT;
+pub use super::jerror::JTRC_SOS_PARAMS;
+pub use super::jerror::JTRC_TFILE_CLOSE;
+pub use super::jerror::JTRC_TFILE_OPEN;
+pub use super::jerror::JTRC_THUMB_JPEG;
+pub use super::jerror::JTRC_THUMB_PALETTE;
+pub use super::jerror::JTRC_THUMB_RGB;
+pub use super::jerror::JTRC_UNKNOWN_IDS;
+pub use super::jerror::JTRC_XMS_CLOSE;
+pub use super::jerror::JTRC_XMS_OPEN;
+pub use super::jerror::JWRN_ADOBE_XFORM;
+pub use super::jerror::JWRN_BOGUS_ICC;
+pub use super::jerror::JWRN_BOGUS_PROGRESSION;
+pub use super::jerror::JWRN_EXTRANEOUS_DATA;
+pub use super::jerror::JWRN_HIT_MARKER;
+pub use super::jerror::JWRN_HUFF_BAD_CODE;
+pub use super::jerror::JWRN_JFIF_MAJOR;
+pub use super::jerror::JWRN_JPEG_EOF;
+pub use super::jerror::JWRN_MUST_RESYNC;
+pub use super::jerror::JWRN_NOT_SEQUENTIAL;
+pub use super::jerror::JWRN_TOO_MUCH_DATA;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 
@@ -266,11 +266,11 @@ use crate::stdlib::memset;
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_add_quant_table(
-    mut cinfo: crate::jpeglib_h::j_compress_ptr,
-    mut which_tbl: libc::c_int,
-    mut basic_table: *const libc::c_uint,
-    mut scale_factor: libc::c_int,
-    mut force_baseline: crate::jmorecfg_h::boolean,
+    mut cinfo: j_compress_ptr,
+    mut which_tbl: c_int,
+    mut basic_table: *const c_uint,
+    mut scale_factor: c_int,
+    mut force_baseline: boolean,
 )
 /* Define a quantization table equal to the basic_table times
  * a scale factor (given as a percentage).
@@ -282,38 +282,38 @@ pub unsafe extern "C" fn jpeg_add_quant_table(
     
       
     /* Safety check to ensure start_compress not called yet. */
-    if (*cinfo).global_state != crate::jpegint_h::CSTATE_START {
-        (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
+    if (*cinfo).global_state != CSTATE_START {
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_STATE as c_int;
         (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
         Some(
             (*(*cinfo).err)
                 .error_exit
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
-    if which_tbl < 0i32 || which_tbl >= crate::jpeglib_h::NUM_QUANT_TBLS {
-        (*(*cinfo).err).msg_code = crate::src::jerror::JERR_DQT_INDEX as libc::c_int;
+    if which_tbl < 0i32 || which_tbl >= NUM_QUANT_TBLS {
+        (*(*cinfo).err).msg_code = super::jerror::JERR_DQT_INDEX as c_int;
         (*(*cinfo).err).msg_parm.i[0] = which_tbl;
         Some(
             (*(*cinfo).err)
                 .error_exit
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
-     let mut qtblptr:   *mut *mut crate::jpeglib_h::JQUANT_TBL =
+     let mut qtblptr:   *mut *mut JQUANT_TBL =
      &mut *(*cinfo)
         .quant_tbl_ptrs
         .as_mut_ptr()
-        .offset(which_tbl as isize) as *mut *mut crate::jpeglib_h::JQUANT_TBL;
+        .offset(which_tbl as isize) as *mut *mut JQUANT_TBL;
     if (*qtblptr).is_null() {
-        *qtblptr = crate::jpeglib_h::jpeg_alloc_quant_table(cinfo as crate::jpeglib_h::j_common_ptr)
+        *qtblptr = jpeg_alloc_quant_table(cinfo as j_common_ptr)
     }
-     let mut i:   libc::c_int =  0i32;
-    while i < crate::jpeglib_h::DCTSIZE2 {
-          let mut temp:   libc::c_long =
-     (*basic_table.offset(i as isize) as libc::c_long * scale_factor as libc::c_long
+     let mut i:   c_int =  0i32;
+    while i < DCTSIZE2 {
+          let mut temp:   c_long =
+     (*basic_table.offset(i as isize) as c_long * scale_factor as c_long
             + 50i64)
             / 100i64;
         /* limit the values to the valid range */
@@ -326,11 +326,11 @@ pub unsafe extern "C" fn jpeg_add_quant_table(
         if force_baseline != 0 && temp > 255i64 {
             temp = 255i64
         }
-        (**qtblptr).quantval[i as usize] = temp as crate::jmorecfg_h::UINT16;
+        (**qtblptr).quantval[i as usize] = temp as UINT16;
         i += 1
     }
     /* Initialize sent_table FALSE so table will be written to JPEG file. */
-    (**qtblptr).sent_table = crate::jmorecfg_h::FALSE;
+    (**qtblptr).sent_table = FALSE;
 }
 /* These are the sample quantization tables given in Annex K (Clause K.1) of
  * Recommendation ITU-T T.81 (1992) | ISO/IEC 10918-1:1994.
@@ -338,7 +338,7 @@ pub unsafe extern "C" fn jpeg_add_quant_table(
  * when divided by 2, "very good" quality.
  */
 
-static mut std_luminance_quant_tbl: [[libc::c_uint; 64]; 9] = [
+static mut std_luminance_quant_tbl: [[c_uint; 64]; 9] = [
     [
         16u32,
         11u32,
@@ -935,7 +935,7 @@ static mut std_luminance_quant_tbl: [[libc::c_uint; 64]; 9] = [
     ],
 ];
 
-static mut std_chrominance_quant_tbl: [[libc::c_uint; 64]; 9] = [
+static mut std_chrominance_quant_tbl: [[c_uint; 64]; 9] = [
     [
         17u32,
         18u32,
@@ -1534,9 +1534,9 @@ static mut std_chrominance_quant_tbl: [[libc::c_uint; 64]; 9] = [
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_set_linear_quality(
-    mut cinfo: crate::jpeglib_h::j_compress_ptr,
-    mut scale_factor: libc::c_int,
-    mut force_baseline: crate::jmorecfg_h::boolean,
+    mut cinfo: j_compress_ptr,
+    mut scale_factor: c_int,
+    mut force_baseline: boolean,
 )
 /* Set or change the 'quality' (quantization) setting, using default tables
  * and a straight percentage-scaling quality scale.  In most cases it's better
@@ -1562,12 +1562,12 @@ pub unsafe extern "C" fn jpeg_set_linear_quality(
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jpeg_quality_scaling(mut quality: libc::c_int) -> libc::c_int {
-    return jpeg_float_quality_scaling(quality as libc::c_float) as libc::c_int;
+pub unsafe extern "C" fn jpeg_quality_scaling(mut quality: c_int) -> c_int {
+    return jpeg_float_quality_scaling(quality as c_float) as c_int;
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jpeg_float_quality_scaling(mut quality: libc::c_float) -> libc::c_float
+pub unsafe extern "C" fn jpeg_float_quality_scaling(mut quality: c_float) -> c_float
 /* Convert a user-specified quality rating to a percentage scaling factor
  * for an underlying quantization table, using our recommended scaling curve.
  * The input 'quality' factor should be 0 (terrible) to 100 (very good).
@@ -1595,9 +1595,9 @@ pub unsafe extern "C" fn jpeg_float_quality_scaling(mut quality: libc::c_float) 
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_set_quality(
-    mut cinfo: crate::jpeglib_h::j_compress_ptr,
-    mut quality: libc::c_int,
-    mut force_baseline: crate::jmorecfg_h::boolean,
+    mut cinfo: j_compress_ptr,
+    mut quality: c_int,
+    mut force_baseline: boolean,
 )
 /* Set or change the 'quality' (quantization) setting, using default tables.
  * This is the standard quality-adjusting entry point for typical user
@@ -1622,18 +1622,18 @@ pub unsafe extern "C" fn jpeg_set_quality(
  */
 #[no_mangle]
 
-pub unsafe extern "C" fn jpeg_set_defaults(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
+pub unsafe extern "C" fn jpeg_set_defaults(mut cinfo: j_compress_ptr) {
      
     /* Safety check to ensure start_compress not called yet. */
-    if (*cinfo).global_state != crate::jpegint_h::CSTATE_START {
-        (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
+    if (*cinfo).global_state != CSTATE_START {
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_STATE as c_int;
         (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
         Some(
             (*(*cinfo).err)
                 .error_exit
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     /* Allocate comp_info array large enough for maximum component count.
      * Array is made permanent in case application wants to compress
@@ -1646,39 +1646,39 @@ pub unsafe extern "C" fn jpeg_set_defaults(mut cinfo: crate::jpeglib_h::j_compre
                 .expect("non-null function pointer"),
         )
         .expect("non-null function pointer")(
-            cinfo as crate::jpeglib_h::j_common_ptr,
-            crate::jpeglib_h::JPOOL_PERMANENT,
-            crate::jmorecfg_h::MAX_COMPONENTS as libc::c_ulong *
+            cinfo as j_common_ptr,
+            JPOOL_PERMANENT,
+            MAX_COMPONENTS as c_ulong *
     
-                ::std::mem::size_of::<crate::jpeglib_h::jpeg_component_info>() as libc::c_ulong,
-        ) as *mut crate::jpeglib_h::jpeg_component_info
+                ::std::mem::size_of::<jpeg_component_info>() as c_ulong,
+        ) as *mut jpeg_component_info
     }
     /* Initialize everything not dependent on the color space */
-    (*cinfo).data_precision = crate::jconfig_h::BITS_IN_JSAMPLE;
+    (*cinfo).data_precision = BITS_IN_JSAMPLE;
     /* Set up two quantization tables using default quality of 75 */
-    jpeg_set_quality(cinfo, 75i32, crate::jmorecfg_h::TRUE);
+    jpeg_set_quality(cinfo, 75i32, TRUE);
     /* Set up two Huffman tables */
-    crate::jstdhuff_c::std_huff_tables(cinfo as crate::jpeglib_h::j_common_ptr);
-     let mut i:   libc::c_int =  0i32;
-    while i < crate::jpeglib_h::NUM_ARITH_TBLS {
+    std_huff_tables(cinfo as j_common_ptr);
+     let mut i:   c_int =  0i32;
+    while i < NUM_ARITH_TBLS {
         (*cinfo).arith_dc_L[i as usize] = 0u8;
         (*cinfo).arith_dc_U[i as usize] = 1u8;
         (*cinfo).arith_ac_K[i as usize] = 5u8;
         i += 1
     }
     /* Default is no multiple-scan output */
-    (*cinfo).scan_info = crate::stddef_h::NULL as *const crate::jpeglib_h::jpeg_scan_info;
+    (*cinfo).scan_info = NULL as *const jpeg_scan_info;
     (*cinfo).num_scans = 0i32;
     /* Expect normal source image, not raw downsampled data */
-    (*cinfo).raw_data_in = crate::jmorecfg_h::FALSE;
+    (*cinfo).raw_data_in = FALSE;
     /* Use Huffman coding, not arithmetic coding, by default */
-    (*cinfo).arith_code = crate::jmorecfg_h::FALSE;
-    if (*(*cinfo).master).compress_profile == crate::jpeglib_h::JCP_MAX_COMPRESSION as libc::c_int {
+    (*cinfo).arith_code = FALSE;
+    if (*(*cinfo).master).compress_profile == JCP_MAX_COMPRESSION as c_int {
         /* By default, do extra passes to optimize entropy coding */
-        (*cinfo).optimize_coding = crate::jmorecfg_h::TRUE
+        (*cinfo).optimize_coding = TRUE
     } else {
         /* By default, don't do extra passes to optimize entropy coding */
-        (*cinfo).optimize_coding = crate::jmorecfg_h::FALSE
+        (*cinfo).optimize_coding = FALSE
     }
     /* The standard Huffman tables are only valid for 8-bit data precision.
      * If the precision is higher, force optimization on so that usable
@@ -1686,17 +1686,17 @@ pub unsafe extern "C" fn jpeg_set_defaults(mut cinfo: crate::jpeglib_h::j_compre
      * are supplied that are valid for the desired precision.
      */
     if (*cinfo).data_precision > 8i32 {
-        (*cinfo).optimize_coding = crate::jmorecfg_h::TRUE
+        (*cinfo).optimize_coding = TRUE
     }
     /* By default, use the simpler non-cosited sampling alignment */
-    (*cinfo).CCIR601_sampling = crate::jmorecfg_h::FALSE;
+    (*cinfo).CCIR601_sampling = FALSE;
     (*(*cinfo).master).overshoot_deringing = ((*(*cinfo).master).compress_profile
-        == crate::jpeglib_h::JCP_MAX_COMPRESSION as libc::c_int)
-        as libc::c_int;
+        == JCP_MAX_COMPRESSION as c_int)
+        as c_int;
     /* No input smoothing */
     (*cinfo).smoothing_factor = 0i32;
     /* DCT algorithm preference */
-    (*cinfo).dct_method = crate::jpeglib_h::JDCT_DEFAULT as crate::jpeglib_h::J_DCT_METHOD;
+    (*cinfo).dct_method = JDCT_DEFAULT as J_DCT_METHOD;
     /* No restart markers */
     (*cinfo).restart_interval = 0u32;
     (*cinfo).restart_in_rows = 0i32;
@@ -1717,30 +1717,30 @@ pub unsafe extern "C" fn jpeg_set_defaults(mut cinfo: crate::jpeglib_h::j_compre
     /* Choose JPEG colorspace based on input space, set defaults accordingly */
     jpeg_default_colorspace(cinfo);
     (*(*cinfo).master).dc_scan_opt_mode = 1i32;
-    if (*(*cinfo).master).compress_profile == crate::jpeglib_h::JCP_MAX_COMPRESSION as libc::c_int {
-        (*(*cinfo).master).optimize_scans = crate::jmorecfg_h::TRUE;
+    if (*(*cinfo).master).compress_profile == JCP_MAX_COMPRESSION as c_int {
+        (*(*cinfo).master).optimize_scans = TRUE;
         jpeg_simple_progression(cinfo);
     } else {
-        (*(*cinfo).master).optimize_scans = crate::jmorecfg_h::FALSE
+        (*(*cinfo).master).optimize_scans = FALSE
     }
     (*(*cinfo).master).trellis_quant = ((*(*cinfo).master).compress_profile
-        == crate::jpeglib_h::JCP_MAX_COMPRESSION as libc::c_int)
-        as libc::c_int;
+        == JCP_MAX_COMPRESSION as c_int)
+        as c_int;
     (*(*cinfo).master).lambda_log_scale1 = 14.75f32;
     (*(*cinfo).master).lambda_log_scale2 = 16.5f32;
     (*(*cinfo).master).quant_tbl_master_idx = if (*(*cinfo).master).compress_profile
-        == crate::jpeglib_h::JCP_MAX_COMPRESSION as libc::c_int
+        == JCP_MAX_COMPRESSION as c_int
     {
         3i32
     } else {
         0i32
     };
-    (*(*cinfo).master).use_lambda_weight_tbl = crate::jmorecfg_h::TRUE;
-    (*(*cinfo).master).use_scans_in_trellis = crate::jmorecfg_h::FALSE;
+    (*(*cinfo).master).use_lambda_weight_tbl = TRUE;
+    (*(*cinfo).master).use_scans_in_trellis = FALSE;
     (*(*cinfo).master).trellis_freq_split = 8i32;
     (*(*cinfo).master).trellis_num_loops = 1i32;
-    (*(*cinfo).master).trellis_q_opt = crate::jmorecfg_h::FALSE;
-    (*(*cinfo).master).trellis_quant_dc = crate::jmorecfg_h::TRUE;
+    (*(*cinfo).master).trellis_q_opt = FALSE;
+    (*(*cinfo).master).trellis_quant_dc = TRUE;
     (*(*cinfo).master).trellis_delta_dc_weight = 0f32;
 }
 /*
@@ -1748,35 +1748,35 @@ pub unsafe extern "C" fn jpeg_set_defaults(mut cinfo: crate::jpeglib_h::j_compre
  */
 #[no_mangle]
 
-pub unsafe extern "C" fn jpeg_default_colorspace(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
+pub unsafe extern "C" fn jpeg_default_colorspace(mut cinfo: j_compress_ptr) {
     match  (*cinfo).in_color_space {
         1 => {
-            jpeg_set_colorspace(cinfo, crate::jpeglib_h::JCS_GRAYSCALE); /* By default, no translation */
+            jpeg_set_colorspace(cinfo, JCS_GRAYSCALE); /* By default, no translation */
         }
         2 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 => {
-            jpeg_set_colorspace(cinfo, crate::jpeglib_h::JCS_YCbCr);
+            jpeg_set_colorspace(cinfo, JCS_YCbCr);
         }
         3 => {
-            jpeg_set_colorspace(cinfo, crate::jpeglib_h::JCS_YCbCr);
+            jpeg_set_colorspace(cinfo, JCS_YCbCr);
         }
         4 => {
-            jpeg_set_colorspace(cinfo, crate::jpeglib_h::JCS_CMYK);
+            jpeg_set_colorspace(cinfo, JCS_CMYK);
         }
         5 => {
-            jpeg_set_colorspace(cinfo, crate::jpeglib_h::JCS_YCCK);
+            jpeg_set_colorspace(cinfo, JCS_YCCK);
         }
         0 => {
-            jpeg_set_colorspace(cinfo, crate::jpeglib_h::JCS_UNKNOWN);
+            jpeg_set_colorspace(cinfo, JCS_UNKNOWN);
         }
         _ => {
-            (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_IN_COLORSPACE as libc::c_int;
+            (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_IN_COLORSPACE as c_int;
             Some(
                 (*(*cinfo).err)
                     .error_exit
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(
-                cinfo as crate::jpeglib_h::j_common_ptr
+                cinfo as j_common_ptr
             );
         }
     };
@@ -1788,37 +1788,37 @@ pub unsafe extern "C" fn jpeg_default_colorspace(mut cinfo: crate::jpeglib_h::j_
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_set_colorspace(
-    mut cinfo: crate::jpeglib_h::j_compress_ptr,
-    mut colorspace: crate::jpeglib_h::J_COLOR_SPACE,
+    mut cinfo: j_compress_ptr,
+    mut colorspace: J_COLOR_SPACE,
 ) {
     
-     let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
+     let mut compptr:  *mut jpeg_component_info =
     
-        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
+        ::std::ptr::null_mut::< jpeg_component_info>();
     /* Safety check to ensure start_compress not called yet. */
-    if (*cinfo).global_state != crate::jpegint_h::CSTATE_START {
-        (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
+    if (*cinfo).global_state != CSTATE_START {
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_STATE as c_int;
         (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
         Some(
             (*(*cinfo).err)
                 .error_exit
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     /* For all colorspaces, we use Q and Huff tables 0 for luminance components,
      * tables 1 for chrominance components.
      */
     (*cinfo).jpeg_color_space = colorspace; /* No marker for non-JFIF colorspaces */
-    (*cinfo).write_JFIF_header = crate::jmorecfg_h::FALSE; /* write no Adobe marker by default */
-    (*cinfo).write_Adobe_marker = crate::jmorecfg_h::FALSE; /* Write a JFIF marker */
+    (*cinfo).write_JFIF_header = FALSE; /* write no Adobe marker by default */
+    (*cinfo).write_Adobe_marker = FALSE; /* Write a JFIF marker */
     match  colorspace {
         1 => {
-            (*cinfo).write_JFIF_header = crate::jmorecfg_h::TRUE;
+            (*cinfo).write_JFIF_header = TRUE;
             (*cinfo).num_components = 1i32;
             /* JFIF specifies component ID 1 */
             compptr =
-                &mut *(*cinfo).comp_info.offset(0) as *mut crate::jpeglib_h::jpeg_component_info; /* write Adobe marker to flag RGB */
+                &mut *(*cinfo).comp_info.offset(0) as *mut jpeg_component_info; /* write Adobe marker to flag RGB */
             (*compptr).component_id = 1i32; /* Write a JFIF marker */
             (*compptr).h_samp_factor = 1i32;
             (*compptr).v_samp_factor = 1i32;
@@ -1827,10 +1827,10 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
             (*compptr).ac_tbl_no = 0i32
         }
         2 => {
-            (*cinfo).write_Adobe_marker = crate::jmorecfg_h::TRUE;
+            (*cinfo).write_Adobe_marker = TRUE;
             (*cinfo).num_components = 3i32;
             compptr =
-                &mut *(*cinfo).comp_info.offset(0) as *mut crate::jpeglib_h::jpeg_component_info;
+                &mut *(*cinfo).comp_info.offset(0) as *mut jpeg_component_info;
             (*compptr).component_id = 0x52i32;
             (*compptr).h_samp_factor = 1i32;
             (*compptr).v_samp_factor = 1i32;
@@ -1838,7 +1838,7 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
             (*compptr).dc_tbl_no = 0i32;
             (*compptr).ac_tbl_no = 0i32;
             compptr =
-                &mut *(*cinfo).comp_info.offset(1) as *mut crate::jpeglib_h::jpeg_component_info;
+                &mut *(*cinfo).comp_info.offset(1) as *mut jpeg_component_info;
             (*compptr).component_id = 0x47i32;
             (*compptr).h_samp_factor = 1i32;
             (*compptr).v_samp_factor = 1i32;
@@ -1846,7 +1846,7 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
             (*compptr).dc_tbl_no = 0i32;
             (*compptr).ac_tbl_no = 0i32;
             compptr =
-                &mut *(*cinfo).comp_info.offset(2) as *mut crate::jpeglib_h::jpeg_component_info;
+                &mut *(*cinfo).comp_info.offset(2) as *mut jpeg_component_info;
             (*compptr).component_id = 0x42i32;
             (*compptr).h_samp_factor = 1i32;
             (*compptr).v_samp_factor = 1i32;
@@ -1855,12 +1855,12 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
             (*compptr).ac_tbl_no = 0i32
         }
         3 => {
-            (*cinfo).write_JFIF_header = crate::jmorecfg_h::TRUE;
+            (*cinfo).write_JFIF_header = TRUE;
             (*cinfo).num_components = 3i32;
             /* JFIF specifies component IDs 1,2,3 */
             /* We default to 2x2 subsamples of chrominance */
             compptr =
-                &mut *(*cinfo).comp_info.offset(0) as *mut crate::jpeglib_h::jpeg_component_info; /* write Adobe marker to flag CMYK */
+                &mut *(*cinfo).comp_info.offset(0) as *mut jpeg_component_info; /* write Adobe marker to flag CMYK */
             (*compptr).component_id = 1i32; /* write Adobe marker to flag YCCK */
             (*compptr).h_samp_factor = 2i32;
             (*compptr).v_samp_factor = 2i32;
@@ -1868,7 +1868,7 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
             (*compptr).dc_tbl_no = 0i32;
             (*compptr).ac_tbl_no = 0i32;
             compptr =
-                &mut *(*cinfo).comp_info.offset(1) as *mut crate::jpeglib_h::jpeg_component_info;
+                &mut *(*cinfo).comp_info.offset(1) as *mut jpeg_component_info;
             (*compptr).component_id = 2i32;
             (*compptr).h_samp_factor = 1i32;
             (*compptr).v_samp_factor = 1i32;
@@ -1876,7 +1876,7 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
             (*compptr).dc_tbl_no = 1i32;
             (*compptr).ac_tbl_no = 1i32;
             compptr =
-                &mut *(*cinfo).comp_info.offset(2) as *mut crate::jpeglib_h::jpeg_component_info;
+                &mut *(*cinfo).comp_info.offset(2) as *mut jpeg_component_info;
             (*compptr).component_id = 3i32;
             (*compptr).h_samp_factor = 1i32;
             (*compptr).v_samp_factor = 1i32;
@@ -1885,10 +1885,10 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
             (*compptr).ac_tbl_no = 1i32
         }
         4 => {
-            (*cinfo).write_Adobe_marker = crate::jmorecfg_h::TRUE;
+            (*cinfo).write_Adobe_marker = TRUE;
             (*cinfo).num_components = 4i32;
             compptr =
-                &mut *(*cinfo).comp_info.offset(0) as *mut crate::jpeglib_h::jpeg_component_info;
+                &mut *(*cinfo).comp_info.offset(0) as *mut jpeg_component_info;
             (*compptr).component_id = 0x43i32;
             (*compptr).h_samp_factor = 1i32;
             (*compptr).v_samp_factor = 1i32;
@@ -1896,7 +1896,7 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
             (*compptr).dc_tbl_no = 0i32;
             (*compptr).ac_tbl_no = 0i32;
             compptr =
-                &mut *(*cinfo).comp_info.offset(1) as *mut crate::jpeglib_h::jpeg_component_info;
+                &mut *(*cinfo).comp_info.offset(1) as *mut jpeg_component_info;
             (*compptr).component_id = 0x4di32;
             (*compptr).h_samp_factor = 1i32;
             (*compptr).v_samp_factor = 1i32;
@@ -1904,7 +1904,7 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
             (*compptr).dc_tbl_no = 0i32;
             (*compptr).ac_tbl_no = 0i32;
             compptr =
-                &mut *(*cinfo).comp_info.offset(2) as *mut crate::jpeglib_h::jpeg_component_info;
+                &mut *(*cinfo).comp_info.offset(2) as *mut jpeg_component_info;
             (*compptr).component_id = 0x59i32;
             (*compptr).h_samp_factor = 1i32;
             (*compptr).v_samp_factor = 1i32;
@@ -1912,7 +1912,7 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
             (*compptr).dc_tbl_no = 0i32;
             (*compptr).ac_tbl_no = 0i32;
             compptr =
-                &mut *(*cinfo).comp_info.offset(3) as *mut crate::jpeglib_h::jpeg_component_info;
+                &mut *(*cinfo).comp_info.offset(3) as *mut jpeg_component_info;
             (*compptr).component_id = 0x4bi32;
             (*compptr).h_samp_factor = 1i32;
             (*compptr).v_samp_factor = 1i32;
@@ -1921,10 +1921,10 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
             (*compptr).ac_tbl_no = 0i32
         }
         5 => {
-            (*cinfo).write_Adobe_marker = crate::jmorecfg_h::TRUE;
+            (*cinfo).write_Adobe_marker = TRUE;
             (*cinfo).num_components = 4i32;
             compptr =
-                &mut *(*cinfo).comp_info.offset(0) as *mut crate::jpeglib_h::jpeg_component_info;
+                &mut *(*cinfo).comp_info.offset(0) as *mut jpeg_component_info;
             (*compptr).component_id = 1i32;
             (*compptr).h_samp_factor = 2i32;
             (*compptr).v_samp_factor = 2i32;
@@ -1932,7 +1932,7 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
             (*compptr).dc_tbl_no = 0i32;
             (*compptr).ac_tbl_no = 0i32;
             compptr =
-                &mut *(*cinfo).comp_info.offset(1) as *mut crate::jpeglib_h::jpeg_component_info;
+                &mut *(*cinfo).comp_info.offset(1) as *mut jpeg_component_info;
             (*compptr).component_id = 2i32;
             (*compptr).h_samp_factor = 1i32;
             (*compptr).v_samp_factor = 1i32;
@@ -1940,7 +1940,7 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
             (*compptr).dc_tbl_no = 1i32;
             (*compptr).ac_tbl_no = 1i32;
             compptr =
-                &mut *(*cinfo).comp_info.offset(2) as *mut crate::jpeglib_h::jpeg_component_info;
+                &mut *(*cinfo).comp_info.offset(2) as *mut jpeg_component_info;
             (*compptr).component_id = 3i32;
             (*compptr).h_samp_factor = 1i32;
             (*compptr).v_samp_factor = 1i32;
@@ -1948,7 +1948,7 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
             (*compptr).dc_tbl_no = 1i32;
             (*compptr).ac_tbl_no = 1i32;
             compptr =
-                &mut *(*cinfo).comp_info.offset(3) as *mut crate::jpeglib_h::jpeg_component_info;
+                &mut *(*cinfo).comp_info.offset(3) as *mut jpeg_component_info;
             (*compptr).component_id = 4i32;
             (*compptr).h_samp_factor = 2i32;
             (*compptr).v_samp_factor = 2i32;
@@ -1959,9 +1959,9 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
         0 => {
              (*cinfo).num_components = (*cinfo).input_components;
             if (*cinfo).num_components < 1i32
-                || (*cinfo).num_components > crate::jmorecfg_h::MAX_COMPONENTS
+                || (*cinfo).num_components > MAX_COMPONENTS
             {
-                (*(*cinfo).err).msg_code = crate::src::jerror::JERR_COMPONENT_COUNT as libc::c_int;
+                (*(*cinfo).err).msg_code = super::jerror::JERR_COMPONENT_COUNT as c_int;
                 (*(*cinfo).err).msg_parm.i[0] = (*cinfo).num_components;
                 (*(*cinfo).err).msg_parm.i[1] = 10i32;
                 Some(
@@ -1970,13 +1970,13 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
                         .expect("non-null function pointer"),
                 )
                 .expect("non-null function pointer")(
-                    cinfo as crate::jpeglib_h::j_common_ptr
+                    cinfo as j_common_ptr
                 );
             }
-             let mut ci:   libc::c_int =  0i32;
+             let mut ci:   c_int =  0i32;
             while ci < (*cinfo).num_components {
                 compptr = &mut *(*cinfo).comp_info.offset(ci as isize)
-                    as *mut crate::jpeglib_h::jpeg_component_info;
+                    as *mut jpeg_component_info;
                 (*compptr).component_id = ci;
                 (*compptr).h_samp_factor = 1i32;
                 (*compptr).v_samp_factor = 1i32;
@@ -1987,27 +1987,27 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
             }
         }
         _ => {
-            (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_J_COLORSPACE as libc::c_int;
+            (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_J_COLORSPACE as c_int;
             Some(
                 (*(*cinfo).err)
                     .error_exit
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(
-                cinfo as crate::jpeglib_h::j_common_ptr
+                cinfo as j_common_ptr
             );
         }
     };
 }
 
 unsafe extern "C" fn fill_a_scan(
-    mut scanptr: *mut crate::jpeglib_h::jpeg_scan_info,
-    mut ci: libc::c_int,
-    mut Ss: libc::c_int,
-    mut Se: libc::c_int,
-    mut Ah: libc::c_int,
-    mut Al: libc::c_int,
-) -> *mut crate::jpeglib_h::jpeg_scan_info
+    mut scanptr: *mut jpeg_scan_info,
+    mut ci: c_int,
+    mut Ss: c_int,
+    mut Se: c_int,
+    mut Ah: c_int,
+    mut Al: c_int,
+) -> *mut jpeg_scan_info
 /* Support routine: generate one scan for specified component */ {
     (*scanptr).comps_in_scan = 1i32;
     (*scanptr).component_index[0] = ci;
@@ -2020,13 +2020,13 @@ unsafe extern "C" fn fill_a_scan(
 }
 
 unsafe extern "C" fn fill_a_scan_pair(
-    mut scanptr: *mut crate::jpeglib_h::jpeg_scan_info,
-    mut ci: libc::c_int,
-    mut Ss: libc::c_int,
-    mut Se: libc::c_int,
-    mut Ah: libc::c_int,
-    mut Al: libc::c_int,
-) -> *mut crate::jpeglib_h::jpeg_scan_info
+    mut scanptr: *mut jpeg_scan_info,
+    mut ci: c_int,
+    mut Ss: c_int,
+    mut Se: c_int,
+    mut Ah: c_int,
+    mut Al: c_int,
+) -> *mut jpeg_scan_info
 /* Support routine: generate one scan for pair of components */ {
     (*scanptr).comps_in_scan = 2i32;
     (*scanptr).component_index[0] = ci;
@@ -2040,16 +2040,16 @@ unsafe extern "C" fn fill_a_scan_pair(
 }
 
 unsafe extern "C" fn fill_scans(
-    mut scanptr: *mut crate::jpeglib_h::jpeg_scan_info,
-    mut ncomps: libc::c_int,
-    mut Ss: libc::c_int,
-    mut Se: libc::c_int,
-    mut Ah: libc::c_int,
-    mut Al: libc::c_int,
-) -> *mut crate::jpeglib_h::jpeg_scan_info
+    mut scanptr: *mut jpeg_scan_info,
+    mut ncomps: c_int,
+    mut Ss: c_int,
+    mut Se: c_int,
+    mut Ah: c_int,
+    mut Al: c_int,
+) -> *mut jpeg_scan_info
 /* Support routine: generate one scan for each component */ {
      
-     let mut ci:   libc::c_int =  0i32;
+     let mut ci:   c_int =  0i32;
     while ci < ncomps {
         (*scanptr).comps_in_scan = 1i32;
         (*scanptr).component_index[0] = ci;
@@ -2064,16 +2064,16 @@ unsafe extern "C" fn fill_scans(
 }
 
 unsafe extern "C" fn fill_dc_scans(
-    mut scanptr: *mut crate::jpeglib_h::jpeg_scan_info,
-    mut ncomps: libc::c_int,
-    mut Ah: libc::c_int,
-    mut Al: libc::c_int,
-) -> *mut crate::jpeglib_h::jpeg_scan_info
+    mut scanptr: *mut jpeg_scan_info,
+    mut ncomps: c_int,
+    mut Ah: c_int,
+    mut Al: c_int,
+) -> *mut jpeg_scan_info
 /* Support routine: generate interleaved DC scan if possible, else N scans */ {
     
-    if ncomps <= crate::jpeglib_h::MAX_COMPS_IN_SCAN {
+    if ncomps <= MAX_COMPS_IN_SCAN {
         (*scanptr).comps_in_scan = ncomps;
-         let mut ci:   libc::c_int =  0i32;
+         let mut ci:   c_int =  0i32;
         while ci < ncomps {
             (*scanptr).component_index[ci as usize] = ci;
             ci += 1
@@ -2095,29 +2095,29 @@ unsafe extern "C" fn fill_dc_scans(
  */
 
 unsafe extern "C" fn jpeg_search_progression(
-    mut cinfo: crate::jpeglib_h::j_compress_ptr,
-) -> crate::jmorecfg_h::boolean {
-     let mut nscans:  libc::c_int =  0;   let mut frequency_split:  [libc::c_int; 5] =  [2i32, 8i32, 5i32, 12i32, 18i32]; let mut ncomps: libc::c_int = (*cinfo).num_components;
+    mut cinfo: j_compress_ptr,
+) -> boolean {
+     let mut nscans:  c_int =  0;   let mut frequency_split:  [c_int; 5] =  [2i32, 8i32, 5i32, 12i32, 18i32]; let mut ncomps: c_int = (*cinfo).num_components;
     
     
     
     
     
     /* Safety check to ensure start_compress not called yet. */
-    if (*cinfo).global_state != crate::jpegint_h::CSTATE_START {
-        (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
+    if (*cinfo).global_state != CSTATE_START {
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_STATE as c_int;
         (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
         Some(
             (*(*cinfo).err)
                 .error_exit
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     /* Figure space needed for script.  Calculation must match code below! */
     if ncomps == 3i32
         &&  (*cinfo).jpeg_color_space
-            ==  crate::jpeglib_h::JCS_YCbCr
+            ==  JCS_YCbCr
     {
         /* Custom script for YCbCr color images. */
         nscans = 64i32
@@ -2125,7 +2125,7 @@ unsafe extern "C" fn jpeg_search_progression(
         nscans = 23i32
     } else {
         (*(*cinfo).master).num_scans_luma = 0i32;
-        return crate::jmorecfg_h::FALSE;
+        return FALSE;
     }
     /* Allocate space for script.
      * We need to put it in the permanent pool in case the application performs
@@ -2142,14 +2142,14 @@ unsafe extern "C" fn jpeg_search_progression(
                 .expect("non-null function pointer"),
         )
         .expect("non-null function pointer")(
-            cinfo as crate::jpeglib_h::j_common_ptr,
-            crate::jpeglib_h::JPOOL_PERMANENT,
-            (*cinfo).script_space_size as libc::c_ulong *
+            cinfo as j_common_ptr,
+            JPOOL_PERMANENT,
+            (*cinfo).script_space_size as c_ulong *
     
-                    ::std::mem::size_of::<crate::jpeglib_h::jpeg_scan_info>() as libc::c_ulong,
-        ) as *mut crate::jpeglib_h::jpeg_scan_info
+                    ::std::mem::size_of::<jpeg_scan_info>() as c_ulong,
+        ) as *mut jpeg_scan_info
     }
-     let mut scanptr:   *mut crate::jpeglib_h::jpeg_scan_info =
+     let mut scanptr:   *mut jpeg_scan_info =
      (*cinfo).script_space;
     (*cinfo).scan_info = scanptr;
     (*cinfo).num_scans = nscans;
@@ -2174,7 +2174,7 @@ unsafe extern "C" fn jpeg_search_progression(
     }
     scanptr = fill_a_scan(scanptr, 0i32, 1i32, 8i32, 0i32, 0i32);
     scanptr = fill_a_scan(scanptr, 0i32, 9i32, 63i32, 0i32, 0i32);
-     let mut Al:   libc::c_int =  0i32;
+     let mut Al:   c_int =  0i32;
     while Al < (*(*cinfo).master).Al_max_luma {
         scanptr = fill_a_scan(scanptr, 0i32, 1i32, 63i32, Al + 1i32, Al);
         scanptr = fill_a_scan(scanptr, 0i32, 1i32, 8i32, 0i32, Al + 1i32);
@@ -2182,7 +2182,7 @@ unsafe extern "C" fn jpeg_search_progression(
         Al += 1
     }
     scanptr = fill_a_scan(scanptr, 0i32, 1i32, 63i32, 0i32, 0i32);
-     let mut i:   libc::c_int =  0i32;
+     let mut i:   c_int =  0i32;
     while i < (*(*cinfo).master).num_frequency_splits {
         scanptr = fill_a_scan(scanptr, 0i32, 1i32, frequency_split[i as usize], 0i32, 0i32);
         scanptr = fill_a_scan(
@@ -2246,7 +2246,7 @@ unsafe extern "C" fn jpeg_search_progression(
             i += 1
         }
     }
-    return crate::jmorecfg_h::TRUE;
+    return TRUE;
 }
 /*
  * Create a recommended progressive-JPEG script.
@@ -2254,34 +2254,34 @@ unsafe extern "C" fn jpeg_search_progression(
  */
 #[no_mangle]
 
-pub unsafe extern "C" fn jpeg_simple_progression(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
+pub unsafe extern "C" fn jpeg_simple_progression(mut cinfo: j_compress_ptr) {
     
     
-      let mut nscans:  libc::c_int =  0; 
+      let mut nscans:  c_int =  0; 
     if (*(*cinfo).master).optimize_scans != 0 {
-        if jpeg_search_progression(cinfo) == crate::jmorecfg_h::TRUE {
+        if jpeg_search_progression(cinfo) == TRUE {
             return;
         }
     }
     /* Safety check to ensure start_compress not called yet. */
-    if (*cinfo).global_state != crate::jpegint_h::CSTATE_START {
-        (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
+    if (*cinfo).global_state != CSTATE_START {
+        (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_STATE as c_int;
         (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
         Some(
             (*(*cinfo).err)
                 .error_exit
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
+        .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
-     let mut ncomps:   libc::c_int =  (*cinfo).num_components;
+     let mut ncomps:   c_int =  (*cinfo).num_components;
     if ncomps == 3i32
         &&  (*cinfo).jpeg_color_space
-            ==  crate::jpeglib_h::JCS_YCbCr
+            ==  JCS_YCbCr
     {
         /* Custom script for YCbCr color images. */
         if (*(*cinfo).master).compress_profile
-            == crate::jpeglib_h::JCP_MAX_COMPRESSION as libc::c_int
+            == JCP_MAX_COMPRESSION as c_int
         {
             if (*(*cinfo).master).dc_scan_opt_mode == 0i32 {
                 nscans = 9i32
@@ -2298,16 +2298,16 @@ pub unsafe extern "C" fn jpeg_simple_progression(mut cinfo: crate::jpeglib_h::j_
             /* 2 DC scans and 8 AC scans */
         }
     } else if (*(*cinfo).master).compress_profile
-        == crate::jpeglib_h::JCP_MAX_COMPRESSION as libc::c_int
+        == JCP_MAX_COMPRESSION as c_int
     {
-        if ncomps > crate::jpeglib_h::MAX_COMPS_IN_SCAN {
+        if ncomps > MAX_COMPS_IN_SCAN {
             /* All-purpose script for other color spaces. */
             nscans = 5i32 * ncomps
         } else {
             nscans = 1i32 + 4i32 * ncomps
         } /* 2 DC + 4 AC scans per component */
     /* 2 DC scans; 4 AC scans per component */
-    } else if ncomps > crate::jpeglib_h::MAX_COMPS_IN_SCAN {
+    } else if ncomps > MAX_COMPS_IN_SCAN {
         nscans = 6i32 * ncomps
     } else {
         nscans = 2i32 + 4i32 * ncomps
@@ -2328,24 +2328,24 @@ pub unsafe extern "C" fn jpeg_simple_progression(mut cinfo: crate::jpeglib_h::j_
                 .expect("non-null function pointer"),
         )
         .expect("non-null function pointer")(
-            cinfo as crate::jpeglib_h::j_common_ptr,
-            crate::jpeglib_h::JPOOL_PERMANENT,
-            (*cinfo).script_space_size as libc::c_ulong *
+            cinfo as j_common_ptr,
+            JPOOL_PERMANENT,
+            (*cinfo).script_space_size as c_ulong *
     
-                    ::std::mem::size_of::<crate::jpeglib_h::jpeg_scan_info>() as libc::c_ulong,
-        ) as *mut crate::jpeglib_h::jpeg_scan_info
+                    ::std::mem::size_of::<jpeg_scan_info>() as c_ulong,
+        ) as *mut jpeg_scan_info
     }
-     let mut scanptr:   *mut crate::jpeglib_h::jpeg_scan_info =
+     let mut scanptr:   *mut jpeg_scan_info =
      (*cinfo).script_space;
     (*cinfo).scan_info = scanptr;
     (*cinfo).num_scans = nscans;
     if ncomps == 3i32
         &&  (*cinfo).jpeg_color_space
-            ==  crate::jpeglib_h::JCS_YCbCr
+            ==  JCS_YCbCr
     {
         /* Custom script for YCbCr color images. */
         if (*(*cinfo).master).compress_profile
-            == crate::jpeglib_h::JCP_MAX_COMPRESSION as libc::c_int
+            == JCP_MAX_COMPRESSION as c_int
         {
             /* scan defined in jpeg_scan_rgb.txt in jpgcrush */
             /* Initial DC scan */
@@ -2395,7 +2395,7 @@ pub unsafe extern "C" fn jpeg_simple_progression(mut cinfo: crate::jpeglib_h::j_
             scanptr = fill_a_scan(scanptr, 0i32, 1i32, 63i32, 1i32, 0i32)
         }
     } else if (*(*cinfo).master).compress_profile
-        == crate::jpeglib_h::JCP_MAX_COMPRESSION as libc::c_int
+        == JCP_MAX_COMPRESSION as c_int
     {
         /* All-purpose script for other color spaces. */
         /* scan defined in jpeg_scan_bw.txt in jpgcrush */

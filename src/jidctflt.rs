@@ -1,4 +1,4 @@
-use libc;
+use libc::c_float;use libc::c_int;use libc;
 
 /* default definition */
 
@@ -177,11 +177,11 @@ pub use crate::jpeglib_h::J_DITHER_MODE;
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_idct_float(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut compptr: *mut crate::jpeglib_h::jpeg_component_info,
-    mut coef_block: crate::jpeglib_h::JCOEFPTR,
-    mut output_buf: crate::jpeglib_h::JSAMPARRAY,
-    mut output_col: crate::jmorecfg_h::JDIMENSION,
+    mut cinfo: j_decompress_ptr,
+    mut compptr: *mut jpeg_component_info,
+    mut coef_block: JCOEFPTR,
+    mut output_buf: JSAMPARRAY,
+    mut output_col: JDIMENSION,
 ) {
      /* buffers data between passes */
     
@@ -203,15 +203,15 @@ pub unsafe extern "C" fn jpeg_idct_float(
     
     
     
-     let mut tmp0:  libc::c_float =  0.; let mut tmp1:  libc::c_float =  0.; let mut tmp2:  libc::c_float =  0.; let mut tmp3:  libc::c_float =  0.; let mut tmp4:  libc::c_float =  0.; let mut tmp5:  libc::c_float =  0.; let mut tmp6:  libc::c_float =  0.; let mut tmp7:  libc::c_float =  0.; let mut tmp10:  libc::c_float =  0.; let mut tmp11:  libc::c_float =  0.; let mut tmp12:  libc::c_float =  0.; let mut tmp13:  libc::c_float =  0.; let mut z5:  libc::c_float =  0.; let mut z10:  libc::c_float =  0.; let mut z11:  libc::c_float =  0.; let mut z12:  libc::c_float =  0.; let mut z13:  libc::c_float =  0.;     let mut workspace:  [libc::c_float; 64] =  [0.; 64];
-    let mut range_limit: *mut crate::jmorecfg_h::JSAMPLE = (*cinfo).sample_range_limit;
+     let mut tmp0:  c_float =  0.; let mut tmp1:  c_float =  0.; let mut tmp2:  c_float =  0.; let mut tmp3:  c_float =  0.; let mut tmp4:  c_float =  0.; let mut tmp5:  c_float =  0.; let mut tmp6:  c_float =  0.; let mut tmp7:  c_float =  0.; let mut tmp10:  c_float =  0.; let mut tmp11:  c_float =  0.; let mut tmp12:  c_float =  0.; let mut tmp13:  c_float =  0.; let mut z5:  c_float =  0.; let mut z10:  c_float =  0.; let mut z11:  c_float =  0.; let mut z12:  c_float =  0.; let mut z13:  c_float =  0.;     let mut workspace:  [c_float; 64] =  [0.; 64];
+    let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit;
     
     
     
     
     
-     let mut inptr:   crate::jpeglib_h::JCOEFPTR =  coef_block; let mut quantptr:   *mut crate::jdct_h::FLOAT_MULT_TYPE =
-     (*compptr).dct_table as *mut crate::jdct_h::FLOAT_MULT_TYPE; let mut wsptr:   *mut libc::c_float =  workspace.as_mut_ptr(); let mut ctr:   libc::c_int =  crate::jpeglib_h::DCTSIZE;
+     let mut inptr:   JCOEFPTR =  coef_block; let mut quantptr:   *mut FLOAT_MULT_TYPE =
+     (*compptr).dct_table as *mut FLOAT_MULT_TYPE; let mut wsptr:   *mut c_float =  workspace.as_mut_ptr(); let mut ctr:   c_int =  DCTSIZE;
     while ctr > 0i32 {
         /* Due to quantization, we will usually find that many of the input
          * coefficients are zero, especially the AC terms.  We can exploit this
@@ -221,41 +221,41 @@ pub unsafe extern "C" fn jpeg_idct_float(
          * With typical images and quantization tables, half or more of the
          * column DCT calculations can be simplified this way.
          */
-        if *inptr.offset((crate::jpeglib_h::DCTSIZE * 1i32) as isize) as libc::c_int == 0i32
-            && *inptr.offset((crate::jpeglib_h::DCTSIZE * 2i32) as isize) as libc::c_int == 0i32
-            && *inptr.offset((crate::jpeglib_h::DCTSIZE * 3i32) as isize) as libc::c_int == 0i32
-            && *inptr.offset((crate::jpeglib_h::DCTSIZE * 4i32) as isize) as libc::c_int == 0i32
-            && *inptr.offset((crate::jpeglib_h::DCTSIZE * 5i32) as isize) as libc::c_int == 0i32
-            && *inptr.offset((crate::jpeglib_h::DCTSIZE * 6i32) as isize) as libc::c_int == 0i32
-            && *inptr.offset((crate::jpeglib_h::DCTSIZE * 7i32) as isize) as libc::c_int == 0i32
+        if *inptr.offset((DCTSIZE * 1i32) as isize) as c_int == 0i32
+            && *inptr.offset((DCTSIZE * 2i32) as isize) as c_int == 0i32
+            && *inptr.offset((DCTSIZE * 3i32) as isize) as c_int == 0i32
+            && *inptr.offset((DCTSIZE * 4i32) as isize) as c_int == 0i32
+            && *inptr.offset((DCTSIZE * 5i32) as isize) as c_int == 0i32
+            && *inptr.offset((DCTSIZE * 6i32) as isize) as c_int == 0i32
+            && *inptr.offset((DCTSIZE * 7i32) as isize) as c_int == 0i32
         {
             /* AC terms all zero */
-            let mut dcval: libc::c_float = *inptr.offset((8i32 * 0i32) as isize) as libc::c_float
+            let mut dcval: c_float = *inptr.offset((8i32 * 0i32) as isize) as c_float
                 * (*quantptr.offset((8i32 * 0i32) as isize)
                     * 0.125f32); /* advance pointers to next column */
-            *wsptr.offset((crate::jpeglib_h::DCTSIZE * 0i32) as isize) = dcval;
-            *wsptr.offset((crate::jpeglib_h::DCTSIZE * 1i32) as isize) = dcval;
-            *wsptr.offset((crate::jpeglib_h::DCTSIZE * 2i32) as isize) = dcval;
-            *wsptr.offset((crate::jpeglib_h::DCTSIZE * 3i32) as isize) = dcval;
-            *wsptr.offset((crate::jpeglib_h::DCTSIZE * 4i32) as isize) = dcval;
-            *wsptr.offset((crate::jpeglib_h::DCTSIZE * 5i32) as isize) = dcval;
-            *wsptr.offset((crate::jpeglib_h::DCTSIZE * 6i32) as isize) = dcval;
-            *wsptr.offset((crate::jpeglib_h::DCTSIZE * 7i32) as isize) = dcval;
+            *wsptr.offset((DCTSIZE * 0i32) as isize) = dcval;
+            *wsptr.offset((DCTSIZE * 1i32) as isize) = dcval;
+            *wsptr.offset((DCTSIZE * 2i32) as isize) = dcval;
+            *wsptr.offset((DCTSIZE * 3i32) as isize) = dcval;
+            *wsptr.offset((DCTSIZE * 4i32) as isize) = dcval;
+            *wsptr.offset((DCTSIZE * 5i32) as isize) = dcval;
+            *wsptr.offset((DCTSIZE * 6i32) as isize) = dcval;
+            *wsptr.offset((DCTSIZE * 7i32) as isize) = dcval;
             inptr = inptr.offset(1);
             quantptr = quantptr.offset(1);
             wsptr = wsptr.offset(1)
         } else {
             /* Even part */
-            tmp0 = *inptr.offset((8i32 * 0i32) as isize) as libc::c_float
+            tmp0 = *inptr.offset((8i32 * 0i32) as isize) as c_float
                 * (*quantptr.offset((8i32 * 0i32) as isize)
                     * 0.125f32); /* phase 3 */
-            tmp1 = *inptr.offset((8i32 * 2i32) as isize) as libc::c_float
+            tmp1 = *inptr.offset((8i32 * 2i32) as isize) as c_float
                 * (*quantptr.offset((8i32 * 2i32) as isize)
                     * 0.125f32); /* phases 5-3 */
-            tmp2 = *inptr.offset((8i32 * 4i32) as isize) as libc::c_float
+            tmp2 = *inptr.offset((8i32 * 4i32) as isize) as c_float
                 * (*quantptr.offset((8i32 * 4i32) as isize)
                     * 0.125f32); /* 2*c4 */
-            tmp3 = *inptr.offset((8i32 * 6i32) as isize) as libc::c_float
+            tmp3 = *inptr.offset((8i32 * 6i32) as isize) as c_float
                 * (*quantptr.offset((8i32 * 6i32) as isize)
                     * 0.125f32); /* phase 2 */
             tmp10 = tmp0 + tmp2;
@@ -267,16 +267,16 @@ pub unsafe extern "C" fn jpeg_idct_float(
             tmp1 = tmp11 + tmp12;
             tmp2 = tmp11 - tmp12;
             /* Odd part */
-            tmp4 = *inptr.offset((8i32 * 1i32) as isize) as libc::c_float
+            tmp4 = *inptr.offset((8i32 * 1i32) as isize) as c_float
                 * (*quantptr.offset((8i32 * 1i32) as isize)
                     * 0.125f32); /* phase 6 */
-            tmp5 = *inptr.offset((8i32 * 3i32) as isize) as libc::c_float
+            tmp5 = *inptr.offset((8i32 * 3i32) as isize) as c_float
                 * (*quantptr.offset((8i32 * 3i32) as isize)
                     * 0.125f32); /* phase 5 */
-            tmp6 = *inptr.offset((8i32 * 5i32) as isize) as libc::c_float
+            tmp6 = *inptr.offset((8i32 * 5i32) as isize) as c_float
                 * (*quantptr.offset((8i32 * 5i32) as isize)
                     * 0.125f32); /* 2*c4 */
-            tmp7 = *inptr.offset((8i32 * 7i32) as isize) as libc::c_float
+            tmp7 = *inptr.offset((8i32 * 7i32) as isize) as c_float
                 * (*quantptr.offset((8i32 * 7i32) as isize)
                     * 0.125f32); /* 2*c2 */
             z13 = tmp6 + tmp5; /* 2*(c2-c6) */
@@ -291,14 +291,14 @@ pub unsafe extern "C" fn jpeg_idct_float(
             tmp6 = tmp12 - tmp7;
             tmp5 = tmp11 - tmp6;
             tmp4 = tmp10 - tmp5;
-            *wsptr.offset((crate::jpeglib_h::DCTSIZE * 0i32) as isize) = tmp0 + tmp7;
-            *wsptr.offset((crate::jpeglib_h::DCTSIZE * 7i32) as isize) = tmp0 - tmp7;
-            *wsptr.offset((crate::jpeglib_h::DCTSIZE * 1i32) as isize) = tmp1 + tmp6;
-            *wsptr.offset((crate::jpeglib_h::DCTSIZE * 6i32) as isize) = tmp1 - tmp6;
-            *wsptr.offset((crate::jpeglib_h::DCTSIZE * 2i32) as isize) = tmp2 + tmp5;
-            *wsptr.offset((crate::jpeglib_h::DCTSIZE * 5i32) as isize) = tmp2 - tmp5;
-            *wsptr.offset((crate::jpeglib_h::DCTSIZE * 3i32) as isize) = tmp3 + tmp4;
-            *wsptr.offset((crate::jpeglib_h::DCTSIZE * 4i32) as isize) = tmp3 - tmp4;
+            *wsptr.offset((DCTSIZE * 0i32) as isize) = tmp0 + tmp7;
+            *wsptr.offset((DCTSIZE * 7i32) as isize) = tmp0 - tmp7;
+            *wsptr.offset((DCTSIZE * 1i32) as isize) = tmp1 + tmp6;
+            *wsptr.offset((DCTSIZE * 6i32) as isize) = tmp1 - tmp6;
+            *wsptr.offset((DCTSIZE * 2i32) as isize) = tmp2 + tmp5;
+            *wsptr.offset((DCTSIZE * 5i32) as isize) = tmp2 - tmp5;
+            *wsptr.offset((DCTSIZE * 3i32) as isize) = tmp3 + tmp4;
+            *wsptr.offset((DCTSIZE * 4i32) as isize) = tmp3 - tmp4;
             inptr = inptr.offset(1);
             quantptr = quantptr.offset(1);
             wsptr = wsptr.offset(1)
@@ -308,12 +308,12 @@ pub unsafe extern "C" fn jpeg_idct_float(
     /* Pass 2: process rows from work array, store into output array. */
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
-    while ctr < crate::jpeglib_h::DCTSIZE {
-          let mut outptr:   crate::jpeglib_h::JSAMPROW =
+    while ctr < DCTSIZE {
+          let mut outptr:   JSAMPROW =
      (*output_buf.offset(ctr as isize)).offset(output_col as isize);
         /* advance pointer to next row */
         z5 = *wsptr.offset(0)
-            + (crate::jmorecfg_h::CENTERJSAMPLE as libc::c_float + 0.5f32);
+            + (CENTERJSAMPLE as c_float + 0.5f32);
         tmp10 = z5 + *wsptr.offset(4);
         tmp11 = z5 - *wsptr.offset(4);
         tmp13 = *wsptr.offset(2) + *wsptr.offset(6);
@@ -335,22 +335,22 @@ pub unsafe extern "C" fn jpeg_idct_float(
         tmp5 = tmp11 - tmp6;
         tmp4 = tmp10 - tmp5;
         *outptr.offset(0) = *range_limit
-            .offset(((tmp0 + tmp7) as libc::c_int & crate::jdct_h::RANGE_MASK) as isize);
+            .offset(((tmp0 + tmp7) as c_int & RANGE_MASK) as isize);
         *outptr.offset(7) = *range_limit
-            .offset(((tmp0 - tmp7) as libc::c_int & crate::jdct_h::RANGE_MASK) as isize);
+            .offset(((tmp0 - tmp7) as c_int & RANGE_MASK) as isize);
         *outptr.offset(1) = *range_limit
-            .offset(((tmp1 + tmp6) as libc::c_int & crate::jdct_h::RANGE_MASK) as isize);
+            .offset(((tmp1 + tmp6) as c_int & RANGE_MASK) as isize);
         *outptr.offset(6) = *range_limit
-            .offset(((tmp1 - tmp6) as libc::c_int & crate::jdct_h::RANGE_MASK) as isize);
+            .offset(((tmp1 - tmp6) as c_int & RANGE_MASK) as isize);
         *outptr.offset(2) = *range_limit
-            .offset(((tmp2 + tmp5) as libc::c_int & crate::jdct_h::RANGE_MASK) as isize);
+            .offset(((tmp2 + tmp5) as c_int & RANGE_MASK) as isize);
         *outptr.offset(5) = *range_limit
-            .offset(((tmp2 - tmp5) as libc::c_int & crate::jdct_h::RANGE_MASK) as isize);
+            .offset(((tmp2 - tmp5) as c_int & RANGE_MASK) as isize);
         *outptr.offset(3) = *range_limit
-            .offset(((tmp3 + tmp4) as libc::c_int & crate::jdct_h::RANGE_MASK) as isize);
+            .offset(((tmp3 + tmp4) as c_int & RANGE_MASK) as isize);
         *outptr.offset(4) = *range_limit
-            .offset(((tmp3 - tmp4) as libc::c_int & crate::jdct_h::RANGE_MASK) as isize);
-        wsptr = wsptr.offset(crate::jpeglib_h::DCTSIZE as isize);
+            .offset(((tmp3 - tmp4) as c_int & RANGE_MASK) as isize);
+        wsptr = wsptr.offset(DCTSIZE as isize);
         ctr += 1
     }
 }

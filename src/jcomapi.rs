@@ -1,4 +1,4 @@
-use libc;
+use libc::c_int;use libc::c_ulong;use libc;
 
 pub use crate::jmorecfg_h::boolean;
 pub use crate::jmorecfg_h::FALSE;
@@ -109,7 +109,7 @@ pub use crate::stddef_h::NULL;
  */
 #[no_mangle]
 
-pub unsafe extern "C" fn jpeg_abort(mut cinfo: crate::jpeglib_h::j_common_ptr) {
+pub unsafe extern "C" fn jpeg_abort(mut cinfo: j_common_ptr) {
      
     /* Do nothing if called on a not-initialized or destroyed JPEG object. */
     if (*cinfo).mem.is_null() {
@@ -118,8 +118,8 @@ pub unsafe extern "C" fn jpeg_abort(mut cinfo: crate::jpeglib_h::j_common_ptr) {
     /* Releasing pools in reverse order might help avoid fragmentation
      * with some (brain-damaged) malloc libraries.
      */
-     let mut pool:   libc::c_int =  crate::jpeglib_h::JPOOL_NUMPOOLS - 1i32;
-    while pool > crate::jpeglib_h::JPOOL_PERMANENT {
+     let mut pool:   c_int =  JPOOL_NUMPOOLS - 1i32;
+    while pool > JPOOL_PERMANENT {
         Some(
             (*(*cinfo).mem)
                 .free_pool
@@ -130,14 +130,14 @@ pub unsafe extern "C" fn jpeg_abort(mut cinfo: crate::jpeglib_h::j_common_ptr) {
     }
     /* Reset overall state for possible reuse of object */
     if (*cinfo).is_decompressor != 0 {
-        (*cinfo).global_state = crate::jpegint_h::DSTATE_START;
+        (*cinfo).global_state = DSTATE_START;
         /* Try to keep application from accessing now-deleted marker list.
          * A bit kludgy to do it here, but this is the most central place.
          */
-        let ref mut fresh0 = (*(cinfo as crate::jpeglib_h::j_decompress_ptr)).marker_list;
-        *fresh0 = crate::stddef_h::NULL as crate::jpeglib_h::jpeg_saved_marker_ptr
+        let ref mut fresh0 = (*(cinfo as j_decompress_ptr)).marker_list;
+        *fresh0 = NULL as jpeg_saved_marker_ptr
     } else {
-        (*cinfo).global_state = crate::jpegint_h::CSTATE_START
+        (*cinfo).global_state = CSTATE_START
     };
 }
 /* Main entry points for compression */
@@ -190,7 +190,7 @@ pub unsafe extern "C" fn jpeg_abort(mut cinfo: crate::jpeglib_h::j_common_ptr) {
  */
 #[no_mangle]
 
-pub unsafe extern "C" fn jpeg_destroy(mut cinfo: crate::jpeglib_h::j_common_ptr) {
+pub unsafe extern "C" fn jpeg_destroy(mut cinfo: j_common_ptr) {
     /* We need only tell the memory manager to release everything. */
     /* NB: mem pointer is NULL if memory mgr failed to initialize. */
     if !(*cinfo).mem.is_null() {
@@ -201,7 +201,7 @@ pub unsafe extern "C" fn jpeg_destroy(mut cinfo: crate::jpeglib_h::j_common_ptr)
         )
         .expect("non-null function pointer")(cinfo); /* be safe if jpeg_destroy is called twice */
     }
-    (*cinfo).mem = crate::stddef_h::NULL as *mut crate::jpeglib_h::jpeg_memory_mgr;
+    (*cinfo).mem = NULL as *mut jpeg_memory_mgr;
     (*cinfo).global_state = 0i32;
     /* mark it destroyed */
 }
@@ -212,10 +212,10 @@ pub unsafe extern "C" fn jpeg_destroy(mut cinfo: crate::jpeglib_h::j_common_ptr)
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_alloc_quant_table(
-    mut cinfo: crate::jpeglib_h::j_common_ptr,
-) -> *mut crate::jpeglib_h::JQUANT_TBL {
+    mut cinfo: j_common_ptr,
+) -> *mut JQUANT_TBL {
       /* make sure this is false in any new table */
-     let mut tbl:   *mut crate::jpeglib_h::JQUANT_TBL =
+     let mut tbl:   *mut JQUANT_TBL =
      Some(
         (*(*cinfo).mem)
             .alloc_small
@@ -223,19 +223,19 @@ pub unsafe extern "C" fn jpeg_alloc_quant_table(
     )
     .expect("non-null function pointer")(
         cinfo,
-        crate::jpeglib_h::JPOOL_PERMANENT,
-        ::std::mem::size_of::<crate::jpeglib_h::JQUANT_TBL>() as libc::c_ulong,
-    ) as *mut crate::jpeglib_h::JQUANT_TBL; /* make sure this is false in any new table */
-    (*tbl).sent_table = crate::jmorecfg_h::FALSE;
+        JPOOL_PERMANENT,
+        ::std::mem::size_of::<JQUANT_TBL>() as c_ulong,
+    ) as *mut JQUANT_TBL; /* make sure this is false in any new table */
+    (*tbl).sent_table = FALSE;
     return tbl;
 }
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_alloc_huff_table(
-    mut cinfo: crate::jpeglib_h::j_common_ptr,
-) -> *mut crate::jpeglib_h::JHUFF_TBL {
+    mut cinfo: j_common_ptr,
+) -> *mut JHUFF_TBL {
      
-     let mut tbl:   *mut crate::jpeglib_h::JHUFF_TBL =
+     let mut tbl:   *mut JHUFF_TBL =
      Some(
         (*(*cinfo).mem)
             .alloc_small
@@ -243,9 +243,9 @@ pub unsafe extern "C" fn jpeg_alloc_huff_table(
     )
     .expect("non-null function pointer")(
         cinfo,
-        crate::jpeglib_h::JPOOL_PERMANENT,
-        ::std::mem::size_of::<crate::jpeglib_h::JHUFF_TBL>() as libc::c_ulong,
-    ) as *mut crate::jpeglib_h::JHUFF_TBL;
-    (*tbl).sent_table = crate::jmorecfg_h::FALSE;
+        JPOOL_PERMANENT,
+        ::std::mem::size_of::<JHUFF_TBL>() as c_ulong,
+    ) as *mut JHUFF_TBL;
+    (*tbl).sent_table = FALSE;
     return tbl;
 }

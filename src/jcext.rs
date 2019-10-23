@@ -1,4 +1,4 @@
-use libc;
+use libc::c_int;use libc::c_float;use libc;
 
 /* JERROR_H */
 
@@ -108,137 +108,137 @@ pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::jpeglib_h::J_FLOAT_PARAM;
 pub use crate::jpeglib_h::J_INT_PARAM;
-pub use crate::src::jerror::C2RustUnnamed_3;
-pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
-pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
-pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
-pub use crate::src::jerror::JERR_BAD_BUFFER_MODE;
-pub use crate::src::jerror::JERR_BAD_COMPONENT_ID;
-pub use crate::src::jerror::JERR_BAD_CROP_SPEC;
-pub use crate::src::jerror::JERR_BAD_DCTSIZE;
-pub use crate::src::jerror::JERR_BAD_DCT_COEF;
-pub use crate::src::jerror::JERR_BAD_HUFF_TABLE;
-pub use crate::src::jerror::JERR_BAD_IN_COLORSPACE;
-pub use crate::src::jerror::JERR_BAD_J_COLORSPACE;
-pub use crate::src::jerror::JERR_BAD_LENGTH;
-pub use crate::src::jerror::JERR_BAD_LIB_VERSION;
-pub use crate::src::jerror::JERR_BAD_MCU_SIZE;
-pub use crate::src::jerror::JERR_BAD_PARAM;
-pub use crate::src::jerror::JERR_BAD_PARAM_VALUE;
-pub use crate::src::jerror::JERR_BAD_POOL_ID;
-pub use crate::src::jerror::JERR_BAD_PRECISION;
-pub use crate::src::jerror::JERR_BAD_PROGRESSION;
-pub use crate::src::jerror::JERR_BAD_PROG_SCRIPT;
-pub use crate::src::jerror::JERR_BAD_SAMPLING;
-pub use crate::src::jerror::JERR_BAD_SCAN_SCRIPT;
-pub use crate::src::jerror::JERR_BAD_STATE;
-pub use crate::src::jerror::JERR_BAD_STRUCT_SIZE;
-pub use crate::src::jerror::JERR_BAD_VIRTUAL_ACCESS;
-pub use crate::src::jerror::JERR_BUFFER_SIZE;
-pub use crate::src::jerror::JERR_CANT_SUSPEND;
-pub use crate::src::jerror::JERR_CCIR601_NOTIMPL;
-pub use crate::src::jerror::JERR_COMPONENT_COUNT;
-pub use crate::src::jerror::JERR_CONVERSION_NOTIMPL;
-pub use crate::src::jerror::JERR_DAC_INDEX;
-pub use crate::src::jerror::JERR_DAC_VALUE;
-pub use crate::src::jerror::JERR_DHT_INDEX;
-pub use crate::src::jerror::JERR_DQT_INDEX;
-pub use crate::src::jerror::JERR_EMPTY_IMAGE;
-pub use crate::src::jerror::JERR_EMS_READ;
-pub use crate::src::jerror::JERR_EMS_WRITE;
-pub use crate::src::jerror::JERR_EOI_EXPECTED;
-pub use crate::src::jerror::JERR_FILE_READ;
-pub use crate::src::jerror::JERR_FILE_WRITE;
-pub use crate::src::jerror::JERR_FRACT_SAMPLE_NOTIMPL;
-pub use crate::src::jerror::JERR_HUFF_CLEN_OVERFLOW;
-pub use crate::src::jerror::JERR_HUFF_MISSING_CODE;
-pub use crate::src::jerror::JERR_IMAGE_TOO_BIG;
-pub use crate::src::jerror::JERR_INPUT_EMPTY;
-pub use crate::src::jerror::JERR_INPUT_EOF;
-pub use crate::src::jerror::JERR_MISMATCHED_QUANT_TABLE;
-pub use crate::src::jerror::JERR_MISSING_DATA;
-pub use crate::src::jerror::JERR_MODE_CHANGE;
-pub use crate::src::jerror::JERR_NOTIMPL;
-pub use crate::src::jerror::JERR_NOT_COMPILED;
-pub use crate::src::jerror::JERR_NO_BACKING_STORE;
-pub use crate::src::jerror::JERR_NO_HUFF_TABLE;
-pub use crate::src::jerror::JERR_NO_IMAGE;
-pub use crate::src::jerror::JERR_NO_QUANT_TABLE;
-pub use crate::src::jerror::JERR_NO_SOI;
-pub use crate::src::jerror::JERR_OUT_OF_MEMORY;
-pub use crate::src::jerror::JERR_QUANT_COMPONENTS;
-pub use crate::src::jerror::JERR_QUANT_FEW_COLORS;
-pub use crate::src::jerror::JERR_QUANT_MANY_COLORS;
-pub use crate::src::jerror::JERR_SOF_DUPLICATE;
-pub use crate::src::jerror::JERR_SOF_NO_SOS;
-pub use crate::src::jerror::JERR_SOF_UNSUPPORTED;
-pub use crate::src::jerror::JERR_SOI_DUPLICATE;
-pub use crate::src::jerror::JERR_SOS_NO_SOF;
-pub use crate::src::jerror::JERR_TFILE_CREATE;
-pub use crate::src::jerror::JERR_TFILE_READ;
-pub use crate::src::jerror::JERR_TFILE_SEEK;
-pub use crate::src::jerror::JERR_TFILE_WRITE;
-pub use crate::src::jerror::JERR_TOO_LITTLE_DATA;
-pub use crate::src::jerror::JERR_UNKNOWN_MARKER;
-pub use crate::src::jerror::JERR_UNSUPPORTED_SUSPEND;
-pub use crate::src::jerror::JERR_VIRTUAL_BUG;
-pub use crate::src::jerror::JERR_WIDTH_OVERFLOW;
-pub use crate::src::jerror::JERR_XMS_READ;
-pub use crate::src::jerror::JERR_XMS_WRITE;
-pub use crate::src::jerror::JMSG_COPYRIGHT;
-pub use crate::src::jerror::JMSG_LASTMSGCODE;
-pub use crate::src::jerror::JMSG_NOMESSAGE;
-pub use crate::src::jerror::JMSG_VERSION;
-pub use crate::src::jerror::JTRC_16BIT_TABLES;
-pub use crate::src::jerror::JTRC_ADOBE;
-pub use crate::src::jerror::JTRC_APP0;
-pub use crate::src::jerror::JTRC_APP14;
-pub use crate::src::jerror::JTRC_DAC;
-pub use crate::src::jerror::JTRC_DHT;
-pub use crate::src::jerror::JTRC_DQT;
-pub use crate::src::jerror::JTRC_DRI;
-pub use crate::src::jerror::JTRC_EMS_CLOSE;
-pub use crate::src::jerror::JTRC_EMS_OPEN;
-pub use crate::src::jerror::JTRC_EOI;
-pub use crate::src::jerror::JTRC_HUFFBITS;
-pub use crate::src::jerror::JTRC_JFIF;
-pub use crate::src::jerror::JTRC_JFIF_BADTHUMBNAILSIZE;
-pub use crate::src::jerror::JTRC_JFIF_EXTENSION;
-pub use crate::src::jerror::JTRC_JFIF_THUMBNAIL;
-pub use crate::src::jerror::JTRC_MISC_MARKER;
-pub use crate::src::jerror::JTRC_PARMLESS_MARKER;
-pub use crate::src::jerror::JTRC_QUANTVALS;
-pub use crate::src::jerror::JTRC_QUANT_3_NCOLORS;
-pub use crate::src::jerror::JTRC_QUANT_NCOLORS;
-pub use crate::src::jerror::JTRC_QUANT_SELECTED;
-pub use crate::src::jerror::JTRC_RECOVERY_ACTION;
-pub use crate::src::jerror::JTRC_RST;
-pub use crate::src::jerror::JTRC_SMOOTH_NOTIMPL;
-pub use crate::src::jerror::JTRC_SOF;
-pub use crate::src::jerror::JTRC_SOF_COMPONENT;
-pub use crate::src::jerror::JTRC_SOI;
-pub use crate::src::jerror::JTRC_SOS;
-pub use crate::src::jerror::JTRC_SOS_COMPONENT;
-pub use crate::src::jerror::JTRC_SOS_PARAMS;
-pub use crate::src::jerror::JTRC_TFILE_CLOSE;
-pub use crate::src::jerror::JTRC_TFILE_OPEN;
-pub use crate::src::jerror::JTRC_THUMB_JPEG;
-pub use crate::src::jerror::JTRC_THUMB_PALETTE;
-pub use crate::src::jerror::JTRC_THUMB_RGB;
-pub use crate::src::jerror::JTRC_UNKNOWN_IDS;
-pub use crate::src::jerror::JTRC_XMS_CLOSE;
-pub use crate::src::jerror::JTRC_XMS_OPEN;
-pub use crate::src::jerror::JWRN_ADOBE_XFORM;
-pub use crate::src::jerror::JWRN_BOGUS_ICC;
-pub use crate::src::jerror::JWRN_BOGUS_PROGRESSION;
-pub use crate::src::jerror::JWRN_EXTRANEOUS_DATA;
-pub use crate::src::jerror::JWRN_HIT_MARKER;
-pub use crate::src::jerror::JWRN_HUFF_BAD_CODE;
-pub use crate::src::jerror::JWRN_JFIF_MAJOR;
-pub use crate::src::jerror::JWRN_JPEG_EOF;
-pub use crate::src::jerror::JWRN_MUST_RESYNC;
-pub use crate::src::jerror::JWRN_NOT_SEQUENTIAL;
-pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
+pub use super::jerror::C2RustUnnamed_3;
+pub use super::jerror::JERR_ARITH_NOTIMPL;
+pub use super::jerror::JERR_BAD_ALIGN_TYPE;
+pub use super::jerror::JERR_BAD_ALLOC_CHUNK;
+pub use super::jerror::JERR_BAD_BUFFER_MODE;
+pub use super::jerror::JERR_BAD_COMPONENT_ID;
+pub use super::jerror::JERR_BAD_CROP_SPEC;
+pub use super::jerror::JERR_BAD_DCTSIZE;
+pub use super::jerror::JERR_BAD_DCT_COEF;
+pub use super::jerror::JERR_BAD_HUFF_TABLE;
+pub use super::jerror::JERR_BAD_IN_COLORSPACE;
+pub use super::jerror::JERR_BAD_J_COLORSPACE;
+pub use super::jerror::JERR_BAD_LENGTH;
+pub use super::jerror::JERR_BAD_LIB_VERSION;
+pub use super::jerror::JERR_BAD_MCU_SIZE;
+pub use super::jerror::JERR_BAD_PARAM;
+pub use super::jerror::JERR_BAD_PARAM_VALUE;
+pub use super::jerror::JERR_BAD_POOL_ID;
+pub use super::jerror::JERR_BAD_PRECISION;
+pub use super::jerror::JERR_BAD_PROGRESSION;
+pub use super::jerror::JERR_BAD_PROG_SCRIPT;
+pub use super::jerror::JERR_BAD_SAMPLING;
+pub use super::jerror::JERR_BAD_SCAN_SCRIPT;
+pub use super::jerror::JERR_BAD_STATE;
+pub use super::jerror::JERR_BAD_STRUCT_SIZE;
+pub use super::jerror::JERR_BAD_VIRTUAL_ACCESS;
+pub use super::jerror::JERR_BUFFER_SIZE;
+pub use super::jerror::JERR_CANT_SUSPEND;
+pub use super::jerror::JERR_CCIR601_NOTIMPL;
+pub use super::jerror::JERR_COMPONENT_COUNT;
+pub use super::jerror::JERR_CONVERSION_NOTIMPL;
+pub use super::jerror::JERR_DAC_INDEX;
+pub use super::jerror::JERR_DAC_VALUE;
+pub use super::jerror::JERR_DHT_INDEX;
+pub use super::jerror::JERR_DQT_INDEX;
+pub use super::jerror::JERR_EMPTY_IMAGE;
+pub use super::jerror::JERR_EMS_READ;
+pub use super::jerror::JERR_EMS_WRITE;
+pub use super::jerror::JERR_EOI_EXPECTED;
+pub use super::jerror::JERR_FILE_READ;
+pub use super::jerror::JERR_FILE_WRITE;
+pub use super::jerror::JERR_FRACT_SAMPLE_NOTIMPL;
+pub use super::jerror::JERR_HUFF_CLEN_OVERFLOW;
+pub use super::jerror::JERR_HUFF_MISSING_CODE;
+pub use super::jerror::JERR_IMAGE_TOO_BIG;
+pub use super::jerror::JERR_INPUT_EMPTY;
+pub use super::jerror::JERR_INPUT_EOF;
+pub use super::jerror::JERR_MISMATCHED_QUANT_TABLE;
+pub use super::jerror::JERR_MISSING_DATA;
+pub use super::jerror::JERR_MODE_CHANGE;
+pub use super::jerror::JERR_NOTIMPL;
+pub use super::jerror::JERR_NOT_COMPILED;
+pub use super::jerror::JERR_NO_BACKING_STORE;
+pub use super::jerror::JERR_NO_HUFF_TABLE;
+pub use super::jerror::JERR_NO_IMAGE;
+pub use super::jerror::JERR_NO_QUANT_TABLE;
+pub use super::jerror::JERR_NO_SOI;
+pub use super::jerror::JERR_OUT_OF_MEMORY;
+pub use super::jerror::JERR_QUANT_COMPONENTS;
+pub use super::jerror::JERR_QUANT_FEW_COLORS;
+pub use super::jerror::JERR_QUANT_MANY_COLORS;
+pub use super::jerror::JERR_SOF_DUPLICATE;
+pub use super::jerror::JERR_SOF_NO_SOS;
+pub use super::jerror::JERR_SOF_UNSUPPORTED;
+pub use super::jerror::JERR_SOI_DUPLICATE;
+pub use super::jerror::JERR_SOS_NO_SOF;
+pub use super::jerror::JERR_TFILE_CREATE;
+pub use super::jerror::JERR_TFILE_READ;
+pub use super::jerror::JERR_TFILE_SEEK;
+pub use super::jerror::JERR_TFILE_WRITE;
+pub use super::jerror::JERR_TOO_LITTLE_DATA;
+pub use super::jerror::JERR_UNKNOWN_MARKER;
+pub use super::jerror::JERR_UNSUPPORTED_SUSPEND;
+pub use super::jerror::JERR_VIRTUAL_BUG;
+pub use super::jerror::JERR_WIDTH_OVERFLOW;
+pub use super::jerror::JERR_XMS_READ;
+pub use super::jerror::JERR_XMS_WRITE;
+pub use super::jerror::JMSG_COPYRIGHT;
+pub use super::jerror::JMSG_LASTMSGCODE;
+pub use super::jerror::JMSG_NOMESSAGE;
+pub use super::jerror::JMSG_VERSION;
+pub use super::jerror::JTRC_16BIT_TABLES;
+pub use super::jerror::JTRC_ADOBE;
+pub use super::jerror::JTRC_APP0;
+pub use super::jerror::JTRC_APP14;
+pub use super::jerror::JTRC_DAC;
+pub use super::jerror::JTRC_DHT;
+pub use super::jerror::JTRC_DQT;
+pub use super::jerror::JTRC_DRI;
+pub use super::jerror::JTRC_EMS_CLOSE;
+pub use super::jerror::JTRC_EMS_OPEN;
+pub use super::jerror::JTRC_EOI;
+pub use super::jerror::JTRC_HUFFBITS;
+pub use super::jerror::JTRC_JFIF;
+pub use super::jerror::JTRC_JFIF_BADTHUMBNAILSIZE;
+pub use super::jerror::JTRC_JFIF_EXTENSION;
+pub use super::jerror::JTRC_JFIF_THUMBNAIL;
+pub use super::jerror::JTRC_MISC_MARKER;
+pub use super::jerror::JTRC_PARMLESS_MARKER;
+pub use super::jerror::JTRC_QUANTVALS;
+pub use super::jerror::JTRC_QUANT_3_NCOLORS;
+pub use super::jerror::JTRC_QUANT_NCOLORS;
+pub use super::jerror::JTRC_QUANT_SELECTED;
+pub use super::jerror::JTRC_RECOVERY_ACTION;
+pub use super::jerror::JTRC_RST;
+pub use super::jerror::JTRC_SMOOTH_NOTIMPL;
+pub use super::jerror::JTRC_SOF;
+pub use super::jerror::JTRC_SOF_COMPONENT;
+pub use super::jerror::JTRC_SOI;
+pub use super::jerror::JTRC_SOS;
+pub use super::jerror::JTRC_SOS_COMPONENT;
+pub use super::jerror::JTRC_SOS_PARAMS;
+pub use super::jerror::JTRC_TFILE_CLOSE;
+pub use super::jerror::JTRC_TFILE_OPEN;
+pub use super::jerror::JTRC_THUMB_JPEG;
+pub use super::jerror::JTRC_THUMB_PALETTE;
+pub use super::jerror::JTRC_THUMB_RGB;
+pub use super::jerror::JTRC_UNKNOWN_IDS;
+pub use super::jerror::JTRC_XMS_CLOSE;
+pub use super::jerror::JTRC_XMS_OPEN;
+pub use super::jerror::JWRN_ADOBE_XFORM;
+pub use super::jerror::JWRN_BOGUS_ICC;
+pub use super::jerror::JWRN_BOGUS_PROGRESSION;
+pub use super::jerror::JWRN_EXTRANEOUS_DATA;
+pub use super::jerror::JWRN_HIT_MARKER;
+pub use super::jerror::JWRN_HUFF_BAD_CODE;
+pub use super::jerror::JWRN_JFIF_MAJOR;
+pub use super::jerror::JWRN_JPEG_EOF;
+pub use super::jerror::JWRN_MUST_RESYNC;
+pub use super::jerror::JWRN_NOT_SEQUENTIAL;
+pub use super::jerror::JWRN_TOO_MUCH_DATA;
 /*
  * jcext.c
  *
@@ -253,22 +253,22 @@ pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_c_bool_param_supported(
-    cinfo: crate::jpeglib_h::j_compress_ptr,
-    mut param: crate::jpeglib_h::J_BOOLEAN_PARAM,
-) -> crate::jmorecfg_h::boolean {
+    cinfo: j_compress_ptr,
+    mut param: J_BOOLEAN_PARAM,
+) -> boolean {
     match  param {
         1745618462 | 3306299443 | 865946636 | 3623303040 | 865973855 | 4253291573 | 3777684073
-        | 1061927929 => return crate::jmorecfg_h::TRUE,
+        | 1061927929 => return TRUE,
         _ => {}
     }
-    return crate::jmorecfg_h::FALSE;
+    return FALSE;
 }
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_c_set_bool_param(
-    mut cinfo: crate::jpeglib_h::j_compress_ptr,
-    mut param: crate::jpeglib_h::J_BOOLEAN_PARAM,
-    mut value: crate::jmorecfg_h::boolean,
+    mut cinfo: j_compress_ptr,
+    mut param: J_BOOLEAN_PARAM,
+    mut value: boolean,
 ) {
     match  param {
         1745618462 => (*(*cinfo).master).optimize_scans = value,
@@ -280,14 +280,14 @@ pub unsafe extern "C" fn jpeg_c_set_bool_param(
         3777684073 => (*(*cinfo).master).trellis_q_opt = value,
         1061927929 => (*(*cinfo).master).overshoot_deringing = value,
         _ => {
-            (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_PARAM as libc::c_int;
+            (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_PARAM as c_int;
             Some(
                 (*(*cinfo).err)
                     .error_exit
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(
-                cinfo as crate::jpeglib_h::j_common_ptr
+                cinfo as j_common_ptr
             );
         }
     };
@@ -295,9 +295,9 @@ pub unsafe extern "C" fn jpeg_c_set_bool_param(
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_c_get_bool_param(
-    cinfo: crate::jpeglib_h::j_compress_ptr,
-    mut param: crate::jpeglib_h::J_BOOLEAN_PARAM,
-) -> crate::jmorecfg_h::boolean {
+    cinfo: j_compress_ptr,
+    mut param: J_BOOLEAN_PARAM,
+) -> boolean {
     match  param {
         1745618462 => return (*(*cinfo).master).optimize_scans,
         3306299443 => return (*(*cinfo).master).trellis_quant,
@@ -308,51 +308,51 @@ pub unsafe extern "C" fn jpeg_c_get_bool_param(
         3777684073 => return (*(*cinfo).master).trellis_q_opt,
         1061927929 => return (*(*cinfo).master).overshoot_deringing,
         _ => {
-            (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_PARAM as libc::c_int;
+            (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_PARAM as c_int;
             Some(
                 (*(*cinfo).err)
                     .error_exit
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(
-                cinfo as crate::jpeglib_h::j_common_ptr
+                cinfo as j_common_ptr
             );
         }
     }
-    return crate::jmorecfg_h::FALSE;
+    return FALSE;
 }
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_c_float_param_supported(
-    cinfo: crate::jpeglib_h::j_compress_ptr,
-    mut param: crate::jpeglib_h::J_FLOAT_PARAM,
-) -> crate::jmorecfg_h::boolean {
+    cinfo: j_compress_ptr,
+    mut param: J_FLOAT_PARAM,
+) -> boolean {
     match  param {
-        1533126041 | 3116084739 | 326587475 => return crate::jmorecfg_h::TRUE,
+        1533126041 | 3116084739 | 326587475 => return TRUE,
         _ => {}
     }
-    return crate::jmorecfg_h::FALSE;
+    return FALSE;
 }
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_c_set_float_param(
-    mut cinfo: crate::jpeglib_h::j_compress_ptr,
-    mut param: crate::jpeglib_h::J_FLOAT_PARAM,
-    mut value: libc::c_float,
+    mut cinfo: j_compress_ptr,
+    mut param: J_FLOAT_PARAM,
+    mut value: c_float,
 ) {
     match  param {
         1533126041 => (*(*cinfo).master).lambda_log_scale1 = value,
         3116084739 => (*(*cinfo).master).lambda_log_scale2 = value,
         326587475 => (*(*cinfo).master).trellis_delta_dc_weight = value,
         _ => {
-            (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_PARAM as libc::c_int;
+            (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_PARAM as c_int;
             Some(
                 (*(*cinfo).err)
                     .error_exit
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(
-                cinfo as crate::jpeglib_h::j_common_ptr
+                cinfo as j_common_ptr
             );
         }
     };
@@ -360,22 +360,22 @@ pub unsafe extern "C" fn jpeg_c_set_float_param(
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_c_get_float_param(
-    cinfo: crate::jpeglib_h::j_compress_ptr,
-    mut param: crate::jpeglib_h::J_FLOAT_PARAM,
-) -> libc::c_float {
+    cinfo: j_compress_ptr,
+    mut param: J_FLOAT_PARAM,
+) -> c_float {
     match  param {
         1533126041 => return (*(*cinfo).master).lambda_log_scale1,
         3116084739 => return (*(*cinfo).master).lambda_log_scale2,
         326587475 => return (*(*cinfo).master).trellis_delta_dc_weight,
         _ => {
-            (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_PARAM as libc::c_int;
+            (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_PARAM as c_int;
             Some(
                 (*(*cinfo).err)
                     .error_exit
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(
-                cinfo as crate::jpeglib_h::j_common_ptr
+                cinfo as j_common_ptr
             );
         }
     }
@@ -384,36 +384,36 @@ pub unsafe extern "C" fn jpeg_c_get_float_param(
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_c_int_param_supported(
-    cinfo: crate::jpeglib_h::j_compress_ptr,
-    mut param: crate::jpeglib_h::J_INT_PARAM,
-) -> crate::jmorecfg_h::boolean {
+    cinfo: j_compress_ptr,
+    mut param: J_INT_PARAM,
+) -> boolean {
     match  param {
         3918628389 | 1873801511 | 3057565497 | 1145645745 | 199732540 => {
-            return crate::jmorecfg_h::TRUE
+            return TRUE
         }
         _ => {}
     }
-    return crate::jmorecfg_h::FALSE;
+    return FALSE;
 }
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_c_set_int_param(
-    mut cinfo: crate::jpeglib_h::j_compress_ptr,
-    mut param: crate::jpeglib_h::J_INT_PARAM,
-    mut value: libc::c_int,
+    mut cinfo: j_compress_ptr,
+    mut param: J_INT_PARAM,
+    mut value: c_int,
 ) {
     match  param {
         3918628389 => match value {
             1560820397 | 720002228 => (*(*cinfo).master).compress_profile = value,
             _ => {
-                (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_PARAM_VALUE as libc::c_int;
+                (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_PARAM_VALUE as c_int;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer"),
                 )
                 .expect("non-null function pointer")(
-                    cinfo as crate::jpeglib_h::j_common_ptr
+                    cinfo as j_common_ptr
                 );
             }
         },
@@ -426,14 +426,14 @@ pub unsafe extern "C" fn jpeg_c_set_int_param(
         }
         199732540 => (*(*cinfo).master).dc_scan_opt_mode = value,
         _ => {
-            (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_PARAM as libc::c_int;
+            (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_PARAM as c_int;
             Some(
                 (*(*cinfo).err)
                     .error_exit
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(
-                cinfo as crate::jpeglib_h::j_common_ptr
+                cinfo as j_common_ptr
             );
         }
     };
@@ -481,9 +481,9 @@ pub unsafe extern "C" fn jpeg_c_set_int_param(
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_c_get_int_param(
-    cinfo: crate::jpeglib_h::j_compress_ptr,
-    mut param: crate::jpeglib_h::J_INT_PARAM,
-) -> libc::c_int {
+    cinfo: j_compress_ptr,
+    mut param: J_INT_PARAM,
+) -> c_int {
     match  param {
         3918628389 => return (*(*cinfo).master).compress_profile,
         1873801511 => return (*(*cinfo).master).trellis_freq_split,
@@ -491,14 +491,14 @@ pub unsafe extern "C" fn jpeg_c_get_int_param(
         1145645745 => return (*(*cinfo).master).quant_tbl_master_idx,
         199732540 => return (*(*cinfo).master).dc_scan_opt_mode,
         _ => {
-            (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_PARAM as libc::c_int;
+            (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_PARAM as c_int;
             Some(
                 (*(*cinfo).err)
                     .error_exit
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(
-                cinfo as crate::jpeglib_h::j_common_ptr
+                cinfo as j_common_ptr
             );
         }
     }

@@ -1,15 +1,15 @@
-extern "C" {
+use libc::c_char;use libc::c_void;use libc::c_long;extern "C" {
     #[no_mangle]
     pub fn jpeg_get_small(
-        cinfo: crate::jpeglib_h::j_common_ptr,
-        sizeofobject: crate::stddef_h::size_t,
-    ) -> *mut libc::c_void;
+        cinfo: j_common_ptr,
+        sizeofobject: size_t,
+    ) -> *mut c_void;
 
     #[no_mangle]
     pub fn jpeg_free_small(
-        cinfo: crate::jpeglib_h::j_common_ptr,
-        object: *mut libc::c_void,
-        sizeofobject: crate::stddef_h::size_t,
+        cinfo: j_common_ptr,
+        object: *mut c_void,
+        sizeofobject: size_t,
     );
     /*
      * These two functions are used to allocate and release large chunks of
@@ -20,15 +20,15 @@ extern "C" {
      */
     #[no_mangle]
     pub fn jpeg_get_large(
-        cinfo: crate::jpeglib_h::j_common_ptr,
-        sizeofobject: crate::stddef_h::size_t,
-    ) -> *mut libc::c_void;
+        cinfo: j_common_ptr,
+        sizeofobject: size_t,
+    ) -> *mut c_void;
 
     #[no_mangle]
     pub fn jpeg_free_large(
-        cinfo: crate::jpeglib_h::j_common_ptr,
-        object: *mut libc::c_void,
-        sizeofobject: crate::stddef_h::size_t,
+        cinfo: j_common_ptr,
+        object: *mut c_void,
+        sizeofobject: size_t,
     );
     /*
      * This routine computes the total space still available for allocation by
@@ -53,11 +53,11 @@ extern "C" {
      */
     #[no_mangle]
     pub fn jpeg_mem_available(
-        cinfo: crate::jpeglib_h::j_common_ptr,
-        min_bytes_needed: crate::stddef_h::size_t,
-        max_bytes_needed: crate::stddef_h::size_t,
-        already_allocated: crate::stddef_h::size_t,
-    ) -> crate::stddef_h::size_t;
+        cinfo: j_common_ptr,
+        min_bytes_needed: size_t,
+        max_bytes_needed: size_t,
+        already_allocated: size_t,
+    ) -> size_t;
     /*
      * Initial opening of a backing-store object.  This must fill in the
      * read/write/close pointers in the object.  The read/write routines
@@ -67,9 +67,9 @@ extern "C" {
      */
     #[no_mangle]
     pub fn jpeg_open_backing_store(
-        cinfo: crate::jpeglib_h::j_common_ptr,
-        info: crate::jmemsys_h::backing_store_ptr,
-        total_bytes_needed: libc::c_long,
+        cinfo: j_common_ptr,
+        info: backing_store_ptr,
+        total_bytes_needed: c_long,
     );
     /*
      * These routines take care of any system-dependent initialization and
@@ -83,44 +83,44 @@ extern "C" {
      * all opened backing-store objects have been closed.
      */
     #[no_mangle]
-    pub fn jpeg_mem_init(cinfo: crate::jpeglib_h::j_common_ptr) -> libc::c_long;
+    pub fn jpeg_mem_init(cinfo: j_common_ptr) -> c_long;
 
     #[no_mangle]
-    pub fn jpeg_mem_term(cinfo: crate::jpeglib_h::j_common_ptr);
+    pub fn jpeg_mem_term(cinfo: j_common_ptr);
 }
 // =============== BEGIN jmemsys_h ================
 use crate::jpeglib_h::j_common_ptr;
 use crate::stdlib::FILE;
-pub type backing_store_info = crate::jmemsys_h::backing_store_struct;
+pub type backing_store_info = backing_store_struct;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct backing_store_struct {
     pub read_backing_store: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_common_ptr,
-            _: crate::jmemsys_h::backing_store_ptr,
-            _: *mut libc::c_void,
-            _: libc::c_long,
-            _: libc::c_long,
+            _: j_common_ptr,
+            _: backing_store_ptr,
+            _: *mut c_void,
+            _: c_long,
+            _: c_long,
         ) -> (),
     >,
     pub write_backing_store: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_common_ptr,
-            _: crate::jmemsys_h::backing_store_ptr,
-            _: *mut libc::c_void,
-            _: libc::c_long,
-            _: libc::c_long,
+            _: j_common_ptr,
+            _: backing_store_ptr,
+            _: *mut c_void,
+            _: c_long,
+            _: c_long,
         ) -> (),
     >,
     pub close_backing_store: Option<
         unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_common_ptr,
-            _: crate::jmemsys_h::backing_store_ptr,
+            _: j_common_ptr,
+            _: backing_store_ptr,
         ) -> (),
     >,
-    pub temp_file: *mut crate::stdlib::FILE,
-    pub temp_name: [libc::c_char; 64],
+    pub temp_file: *mut FILE,
+    pub temp_name: [c_char; 64],
 }
 /* name of temp file */
 
@@ -140,7 +140,7 @@ pub struct backing_store_struct {
 /* Mac-specific junk */
 
 /* USE_MAC_MEMMGR */
-pub type backing_store_ptr = *mut crate::jmemsys_h::backing_store_struct;
+pub type backing_store_ptr = *mut backing_store_struct;
 use crate::jpeglib_h::jpeg_common_struct;
 use crate::stddef_h::size_t;
 /*
@@ -155,4 +155,4 @@ use crate::stddef_h::size_t;
  */
 
 /* may be overridden in jconfig.h */
-pub const MAX_ALLOC_CHUNK: libc::c_long = 1000000000i64;
+pub const MAX_ALLOC_CHUNK: c_long = 1000000000i64;

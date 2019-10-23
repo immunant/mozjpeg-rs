@@ -1,904 +1,904 @@
-extern "C" {
+use libc::c_uint;use libc::c_ulong;use libc::c_float;use libc::c_char;use libc::c_void;use libc::c_int;extern "C" {
     #[no_mangle]
-    pub fn jpeg_simd_cpu_support() -> libc::c_uint;
+    pub fn jpeg_simd_cpu_support() -> c_uint;
 
     #[no_mangle]
-    pub static jconst_rgb_ycc_convert_sse2: [libc::c_int; 0];
+    pub static jconst_rgb_ycc_convert_sse2: [c_int; 0];
 
     #[no_mangle]
     pub fn jsimd_rgb_ycc_convert_sse2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_extrgb_ycc_convert_sse2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_extrgbx_ycc_convert_sse2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_extbgr_ycc_convert_sse2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_extbgrx_ycc_convert_sse2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_extxbgr_ycc_convert_sse2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_extxrgb_ycc_convert_sse2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
-    pub static jconst_rgb_ycc_convert_avx2: [libc::c_int; 0];
+    pub static jconst_rgb_ycc_convert_avx2: [c_int; 0];
 
     #[no_mangle]
     pub fn jsimd_rgb_ycc_convert_avx2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_extrgb_ycc_convert_avx2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_extrgbx_ycc_convert_avx2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_extbgr_ycc_convert_avx2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_extbgrx_ycc_convert_avx2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_extxbgr_ycc_convert_avx2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_extxrgb_ycc_convert_avx2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
-    pub static jconst_rgb_gray_convert_sse2: [libc::c_int; 0];
+    pub static jconst_rgb_gray_convert_sse2: [c_int; 0];
 
     #[no_mangle]
     pub fn jsimd_rgb_gray_convert_sse2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_extrgb_gray_convert_sse2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_extrgbx_gray_convert_sse2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_extbgr_gray_convert_sse2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_extbgrx_gray_convert_sse2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_extxbgr_gray_convert_sse2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_extxrgb_gray_convert_sse2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
-    pub static jconst_rgb_gray_convert_avx2: [libc::c_int; 0];
+    pub static jconst_rgb_gray_convert_avx2: [c_int; 0];
 
     #[no_mangle]
     pub fn jsimd_rgb_gray_convert_avx2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_extrgb_gray_convert_avx2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_extrgbx_gray_convert_avx2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_extbgr_gray_convert_avx2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_extbgrx_gray_convert_avx2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_extxbgr_gray_convert_avx2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_extxrgb_gray_convert_avx2(
-        img_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_buf: crate::jpeglib_h::JSAMPIMAGE,
-        output_row: crate::jmorecfg_h::JDIMENSION,
-        num_rows: libc::c_int,
+        img_width: JDIMENSION,
+        input_buf: JSAMPARRAY,
+        output_buf: JSAMPIMAGE,
+        output_row: JDIMENSION,
+        num_rows: c_int,
     );
 
     #[no_mangle]
-    pub static jconst_ycc_rgb_convert_sse2: [libc::c_int; 0];
+    pub static jconst_ycc_rgb_convert_sse2: [c_int; 0];
 
     #[no_mangle]
     pub fn jsimd_ycc_rgb_convert_sse2(
-        out_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        input_row: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        num_rows: libc::c_int,
+        out_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        input_row: JDIMENSION,
+        output_buf: JSAMPARRAY,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_ycc_extrgb_convert_sse2(
-        out_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        input_row: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        num_rows: libc::c_int,
+        out_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        input_row: JDIMENSION,
+        output_buf: JSAMPARRAY,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_ycc_extrgbx_convert_sse2(
-        out_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        input_row: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        num_rows: libc::c_int,
+        out_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        input_row: JDIMENSION,
+        output_buf: JSAMPARRAY,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_ycc_extbgr_convert_sse2(
-        out_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        input_row: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        num_rows: libc::c_int,
+        out_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        input_row: JDIMENSION,
+        output_buf: JSAMPARRAY,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_ycc_extbgrx_convert_sse2(
-        out_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        input_row: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        num_rows: libc::c_int,
+        out_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        input_row: JDIMENSION,
+        output_buf: JSAMPARRAY,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_ycc_extxbgr_convert_sse2(
-        out_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        input_row: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        num_rows: libc::c_int,
+        out_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        input_row: JDIMENSION,
+        output_buf: JSAMPARRAY,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_ycc_extxrgb_convert_sse2(
-        out_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        input_row: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        num_rows: libc::c_int,
+        out_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        input_row: JDIMENSION,
+        output_buf: JSAMPARRAY,
+        num_rows: c_int,
     );
 
     #[no_mangle]
-    pub static jconst_ycc_rgb_convert_avx2: [libc::c_int; 0];
+    pub static jconst_ycc_rgb_convert_avx2: [c_int; 0];
 
     #[no_mangle]
     pub fn jsimd_ycc_rgb_convert_avx2(
-        out_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        input_row: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        num_rows: libc::c_int,
+        out_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        input_row: JDIMENSION,
+        output_buf: JSAMPARRAY,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_ycc_extrgb_convert_avx2(
-        out_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        input_row: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        num_rows: libc::c_int,
+        out_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        input_row: JDIMENSION,
+        output_buf: JSAMPARRAY,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_ycc_extrgbx_convert_avx2(
-        out_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        input_row: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        num_rows: libc::c_int,
+        out_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        input_row: JDIMENSION,
+        output_buf: JSAMPARRAY,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_ycc_extbgr_convert_avx2(
-        out_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        input_row: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        num_rows: libc::c_int,
+        out_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        input_row: JDIMENSION,
+        output_buf: JSAMPARRAY,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_ycc_extbgrx_convert_avx2(
-        out_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        input_row: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        num_rows: libc::c_int,
+        out_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        input_row: JDIMENSION,
+        output_buf: JSAMPARRAY,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_ycc_extxbgr_convert_avx2(
-        out_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        input_row: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        num_rows: libc::c_int,
+        out_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        input_row: JDIMENSION,
+        output_buf: JSAMPARRAY,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_ycc_extxrgb_convert_avx2(
-        out_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        input_row: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        num_rows: libc::c_int,
+        out_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        input_row: JDIMENSION,
+        output_buf: JSAMPARRAY,
+        num_rows: c_int,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v1_downsample_sse2(
-        image_width: crate::jmorecfg_h::JDIMENSION,
-        max_v_samp_factor: libc::c_int,
-        v_samp_factor: crate::jmorecfg_h::JDIMENSION,
-        width_in_blocks: crate::jmorecfg_h::JDIMENSION,
-        input_data: crate::jpeglib_h::JSAMPARRAY,
-        output_data: crate::jpeglib_h::JSAMPARRAY,
+        image_width: JDIMENSION,
+        max_v_samp_factor: c_int,
+        v_samp_factor: JDIMENSION,
+        width_in_blocks: JDIMENSION,
+        input_data: JSAMPARRAY,
+        output_data: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v1_downsample_avx2(
-        image_width: crate::jmorecfg_h::JDIMENSION,
-        max_v_samp_factor: libc::c_int,
-        v_samp_factor: crate::jmorecfg_h::JDIMENSION,
-        width_in_blocks: crate::jmorecfg_h::JDIMENSION,
-        input_data: crate::jpeglib_h::JSAMPARRAY,
-        output_data: crate::jpeglib_h::JSAMPARRAY,
+        image_width: JDIMENSION,
+        max_v_samp_factor: c_int,
+        v_samp_factor: JDIMENSION,
+        width_in_blocks: JDIMENSION,
+        input_data: JSAMPARRAY,
+        output_data: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v2_downsample_sse2(
-        image_width: crate::jmorecfg_h::JDIMENSION,
-        max_v_samp_factor: libc::c_int,
-        v_samp_factor: crate::jmorecfg_h::JDIMENSION,
-        width_in_blocks: crate::jmorecfg_h::JDIMENSION,
-        input_data: crate::jpeglib_h::JSAMPARRAY,
-        output_data: crate::jpeglib_h::JSAMPARRAY,
+        image_width: JDIMENSION,
+        max_v_samp_factor: c_int,
+        v_samp_factor: JDIMENSION,
+        width_in_blocks: JDIMENSION,
+        input_data: JSAMPARRAY,
+        output_data: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v2_downsample_avx2(
-        image_width: crate::jmorecfg_h::JDIMENSION,
-        max_v_samp_factor: libc::c_int,
-        v_samp_factor: crate::jmorecfg_h::JDIMENSION,
-        width_in_blocks: crate::jmorecfg_h::JDIMENSION,
-        input_data: crate::jpeglib_h::JSAMPARRAY,
-        output_data: crate::jpeglib_h::JSAMPARRAY,
+        image_width: JDIMENSION,
+        max_v_samp_factor: c_int,
+        v_samp_factor: JDIMENSION,
+        width_in_blocks: JDIMENSION,
+        input_data: JSAMPARRAY,
+        output_data: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v1_upsample_sse2(
-        max_v_samp_factor: libc::c_int,
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_data: crate::jpeglib_h::JSAMPARRAY,
-        output_data_ptr: *mut crate::jpeglib_h::JSAMPARRAY,
+        max_v_samp_factor: c_int,
+        output_width: JDIMENSION,
+        input_data: JSAMPARRAY,
+        output_data_ptr: *mut JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v2_upsample_sse2(
-        max_v_samp_factor: libc::c_int,
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_data: crate::jpeglib_h::JSAMPARRAY,
-        output_data_ptr: *mut crate::jpeglib_h::JSAMPARRAY,
+        max_v_samp_factor: c_int,
+        output_width: JDIMENSION,
+        input_data: JSAMPARRAY,
+        output_data_ptr: *mut JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v1_upsample_avx2(
-        max_v_samp_factor: libc::c_int,
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_data: crate::jpeglib_h::JSAMPARRAY,
-        output_data_ptr: *mut crate::jpeglib_h::JSAMPARRAY,
+        max_v_samp_factor: c_int,
+        output_width: JDIMENSION,
+        input_data: JSAMPARRAY,
+        output_data_ptr: *mut JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v2_upsample_avx2(
-        max_v_samp_factor: libc::c_int,
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_data: crate::jpeglib_h::JSAMPARRAY,
-        output_data_ptr: *mut crate::jpeglib_h::JSAMPARRAY,
+        max_v_samp_factor: c_int,
+        output_width: JDIMENSION,
+        input_data: JSAMPARRAY,
+        output_data_ptr: *mut JSAMPARRAY,
     );
 
     #[no_mangle]
-    pub static jconst_fancy_upsample_sse2: [libc::c_int; 0];
+    pub static jconst_fancy_upsample_sse2: [c_int; 0];
 
     #[no_mangle]
     pub fn jsimd_h2v1_fancy_upsample_sse2(
-        max_v_samp_factor: libc::c_int,
-        downsampled_width: crate::jmorecfg_h::JDIMENSION,
-        input_data: crate::jpeglib_h::JSAMPARRAY,
-        output_data_ptr: *mut crate::jpeglib_h::JSAMPARRAY,
+        max_v_samp_factor: c_int,
+        downsampled_width: JDIMENSION,
+        input_data: JSAMPARRAY,
+        output_data_ptr: *mut JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v2_fancy_upsample_sse2(
-        max_v_samp_factor: libc::c_int,
-        downsampled_width: crate::jmorecfg_h::JDIMENSION,
-        input_data: crate::jpeglib_h::JSAMPARRAY,
-        output_data_ptr: *mut crate::jpeglib_h::JSAMPARRAY,
+        max_v_samp_factor: c_int,
+        downsampled_width: JDIMENSION,
+        input_data: JSAMPARRAY,
+        output_data_ptr: *mut JSAMPARRAY,
     );
 
     #[no_mangle]
-    pub static jconst_fancy_upsample_avx2: [libc::c_int; 0];
+    pub static jconst_fancy_upsample_avx2: [c_int; 0];
 
     #[no_mangle]
     pub fn jsimd_h2v1_fancy_upsample_avx2(
-        max_v_samp_factor: libc::c_int,
-        downsampled_width: crate::jmorecfg_h::JDIMENSION,
-        input_data: crate::jpeglib_h::JSAMPARRAY,
-        output_data_ptr: *mut crate::jpeglib_h::JSAMPARRAY,
+        max_v_samp_factor: c_int,
+        downsampled_width: JDIMENSION,
+        input_data: JSAMPARRAY,
+        output_data_ptr: *mut JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v2_fancy_upsample_avx2(
-        max_v_samp_factor: libc::c_int,
-        downsampled_width: crate::jmorecfg_h::JDIMENSION,
-        input_data: crate::jpeglib_h::JSAMPARRAY,
-        output_data_ptr: *mut crate::jpeglib_h::JSAMPARRAY,
+        max_v_samp_factor: c_int,
+        downsampled_width: JDIMENSION,
+        input_data: JSAMPARRAY,
+        output_data_ptr: *mut JSAMPARRAY,
     );
 
     #[no_mangle]
-    pub static jconst_merged_upsample_sse2: [libc::c_int; 0];
+    pub static jconst_merged_upsample_sse2: [c_int; 0];
 
     #[no_mangle]
     pub fn jsimd_h2v1_merged_upsample_sse2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v1_extrgb_merged_upsample_sse2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v1_extrgbx_merged_upsample_sse2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v1_extbgr_merged_upsample_sse2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v1_extbgrx_merged_upsample_sse2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v1_extxbgr_merged_upsample_sse2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v1_extxrgb_merged_upsample_sse2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v2_merged_upsample_sse2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v2_extrgb_merged_upsample_sse2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v2_extrgbx_merged_upsample_sse2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v2_extbgr_merged_upsample_sse2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v2_extbgrx_merged_upsample_sse2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v2_extxbgr_merged_upsample_sse2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v2_extxrgb_merged_upsample_sse2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
-    pub static jconst_merged_upsample_avx2: [libc::c_int; 0];
+    pub static jconst_merged_upsample_avx2: [c_int; 0];
 
     #[no_mangle]
     pub fn jsimd_h2v1_merged_upsample_avx2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v1_extrgb_merged_upsample_avx2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v1_extrgbx_merged_upsample_avx2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v1_extbgr_merged_upsample_avx2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v1_extbgrx_merged_upsample_avx2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v1_extxbgr_merged_upsample_avx2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v1_extxrgb_merged_upsample_avx2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v2_merged_upsample_avx2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v2_extrgb_merged_upsample_avx2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v2_extrgbx_merged_upsample_avx2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v2_extbgr_merged_upsample_avx2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v2_extbgrx_merged_upsample_avx2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v2_extxbgr_merged_upsample_avx2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_h2v2_extxrgb_merged_upsample_avx2(
-        output_width: crate::jmorecfg_h::JDIMENSION,
-        input_buf: crate::jpeglib_h::JSAMPIMAGE,
-        in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
+        output_width: JDIMENSION,
+        input_buf: JSAMPIMAGE,
+        in_row_group_ctr: JDIMENSION,
+        output_buf: JSAMPARRAY,
     );
 
     #[no_mangle]
     pub fn jsimd_convsamp_sse2(
-        sample_data: crate::jpeglib_h::JSAMPARRAY,
-        start_col: crate::jmorecfg_h::JDIMENSION,
-        workspace: *mut crate::jdct_h::DCTELEM,
+        sample_data: JSAMPARRAY,
+        start_col: JDIMENSION,
+        workspace: *mut DCTELEM,
     );
 
     #[no_mangle]
     pub fn jsimd_convsamp_avx2(
-        sample_data: crate::jpeglib_h::JSAMPARRAY,
-        start_col: crate::jmorecfg_h::JDIMENSION,
-        workspace: *mut crate::jdct_h::DCTELEM,
+        sample_data: JSAMPARRAY,
+        start_col: JDIMENSION,
+        workspace: *mut DCTELEM,
     );
 
     #[no_mangle]
     pub fn jsimd_convsamp_float_sse2(
-        sample_data: crate::jpeglib_h::JSAMPARRAY,
-        start_col: crate::jmorecfg_h::JDIMENSION,
-        workspace: *mut libc::c_float,
+        sample_data: JSAMPARRAY,
+        start_col: JDIMENSION,
+        workspace: *mut c_float,
     );
 
     #[no_mangle]
-    pub static jconst_fdct_islow_sse2: [libc::c_int; 0];
+    pub static jconst_fdct_islow_sse2: [c_int; 0];
 
     #[no_mangle]
-    pub fn jsimd_fdct_islow_sse2(data: *mut crate::jdct_h::DCTELEM);
+    pub fn jsimd_fdct_islow_sse2(data: *mut DCTELEM);
 
     #[no_mangle]
-    pub static jconst_fdct_islow_avx2: [libc::c_int; 0];
+    pub static jconst_fdct_islow_avx2: [c_int; 0];
 
     #[no_mangle]
-    pub fn jsimd_fdct_islow_avx2(data: *mut crate::jdct_h::DCTELEM);
+    pub fn jsimd_fdct_islow_avx2(data: *mut DCTELEM);
 
     #[no_mangle]
-    pub static jconst_fdct_ifast_sse2: [libc::c_int; 0];
+    pub static jconst_fdct_ifast_sse2: [c_int; 0];
 
     #[no_mangle]
-    pub fn jsimd_fdct_ifast_sse2(data: *mut crate::jdct_h::DCTELEM);
+    pub fn jsimd_fdct_ifast_sse2(data: *mut DCTELEM);
 
     #[no_mangle]
-    pub static jconst_fdct_float_sse: [libc::c_int; 0];
+    pub static jconst_fdct_float_sse: [c_int; 0];
 
     #[no_mangle]
-    pub fn jsimd_fdct_float_sse(data: *mut libc::c_float);
+    pub fn jsimd_fdct_float_sse(data: *mut c_float);
 
     #[no_mangle]
     pub fn jsimd_quantize_sse2(
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        divisors: *mut crate::jdct_h::DCTELEM,
-        workspace: *mut crate::jdct_h::DCTELEM,
+        coef_block: JCOEFPTR,
+        divisors: *mut DCTELEM,
+        workspace: *mut DCTELEM,
     );
 
     #[no_mangle]
     pub fn jsimd_quantize_avx2(
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        divisors: *mut crate::jdct_h::DCTELEM,
-        workspace: *mut crate::jdct_h::DCTELEM,
+        coef_block: JCOEFPTR,
+        divisors: *mut DCTELEM,
+        workspace: *mut DCTELEM,
     );
 
     #[no_mangle]
     pub fn jsimd_quantize_float_sse2(
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        divisors: *mut libc::c_float,
-        workspace: *mut libc::c_float,
+        coef_block: JCOEFPTR,
+        divisors: *mut c_float,
+        workspace: *mut c_float,
     );
 
     #[no_mangle]
-    pub static jconst_idct_red_sse2: [libc::c_int; 0];
+    pub static jconst_idct_red_sse2: [c_int; 0];
 
     #[no_mangle]
     pub fn jsimd_idct_2x2_sse2(
-        dct_table: *mut libc::c_void,
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_col: crate::jmorecfg_h::JDIMENSION,
+        dct_table: *mut c_void,
+        coef_block: JCOEFPTR,
+        output_buf: JSAMPARRAY,
+        output_col: JDIMENSION,
     );
 
     #[no_mangle]
     pub fn jsimd_idct_4x4_sse2(
-        dct_table: *mut libc::c_void,
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_col: crate::jmorecfg_h::JDIMENSION,
+        dct_table: *mut c_void,
+        coef_block: JCOEFPTR,
+        output_buf: JSAMPARRAY,
+        output_col: JDIMENSION,
     );
 
     #[no_mangle]
-    pub static jconst_idct_islow_sse2: [libc::c_int; 0];
+    pub static jconst_idct_islow_sse2: [c_int; 0];
 
     #[no_mangle]
     pub fn jsimd_idct_islow_sse2(
-        dct_table: *mut libc::c_void,
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_col: crate::jmorecfg_h::JDIMENSION,
+        dct_table: *mut c_void,
+        coef_block: JCOEFPTR,
+        output_buf: JSAMPARRAY,
+        output_col: JDIMENSION,
     );
 
     #[no_mangle]
-    pub static jconst_idct_islow_avx2: [libc::c_int; 0];
+    pub static jconst_idct_islow_avx2: [c_int; 0];
 
     #[no_mangle]
     pub fn jsimd_idct_islow_avx2(
-        dct_table: *mut libc::c_void,
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_col: crate::jmorecfg_h::JDIMENSION,
+        dct_table: *mut c_void,
+        coef_block: JCOEFPTR,
+        output_buf: JSAMPARRAY,
+        output_col: JDIMENSION,
     );
 
     #[no_mangle]
-    pub static jconst_idct_ifast_sse2: [libc::c_int; 0];
+    pub static jconst_idct_ifast_sse2: [c_int; 0];
 
     #[no_mangle]
     pub fn jsimd_idct_ifast_sse2(
-        dct_table: *mut libc::c_void,
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_col: crate::jmorecfg_h::JDIMENSION,
+        dct_table: *mut c_void,
+        coef_block: JCOEFPTR,
+        output_buf: JSAMPARRAY,
+        output_col: JDIMENSION,
     );
 
     #[no_mangle]
-    pub static jconst_idct_float_sse2: [libc::c_int; 0];
+    pub static jconst_idct_float_sse2: [c_int; 0];
 
     #[no_mangle]
     pub fn jsimd_idct_float_sse2(
-        dct_table: *mut libc::c_void,
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_col: crate::jmorecfg_h::JDIMENSION,
+        dct_table: *mut c_void,
+        coef_block: JCOEFPTR,
+        output_buf: JSAMPARRAY,
+        output_col: JDIMENSION,
     );
     /* Huffman coding */
     #[no_mangle]
-    pub static jconst_huff_encode_one_block: [libc::c_int; 0];
+    pub static jconst_huff_encode_one_block: [c_int; 0];
 
     #[no_mangle]
     pub fn jsimd_huff_encode_one_block_sse2(
-        state: *mut libc::c_void,
-        buffer: *mut crate::jmorecfg_h::JOCTET,
-        block: crate::jpeglib_h::JCOEFPTR,
-        last_dc_val: libc::c_int,
-        dctbl: *mut crate::src::jchuff::c_derived_tbl,
-        actbl: *mut crate::src::jchuff::c_derived_tbl,
-    ) -> *mut crate::jmorecfg_h::JOCTET;
+        state: *mut c_void,
+        buffer: *mut JOCTET,
+        block: JCOEFPTR,
+        last_dc_val: c_int,
+        dctbl: *mut c_derived_tbl,
+        actbl: *mut c_derived_tbl,
+    ) -> *mut JOCTET;
     /* Progressive Huffman encoding */
     #[no_mangle]
     pub fn jsimd_encode_mcu_AC_first_prepare_sse2(
-        block: *const crate::jmorecfg_h::JCOEF,
-        jpeg_natural_order_start: *const libc::c_int,
-        Sl: libc::c_int,
-        Al: libc::c_int,
-        values: *mut crate::jmorecfg_h::JCOEF,
-        zerobits: *mut crate::stddef_h::size_t,
+        block: *const JCOEF,
+        jpeg_natural_order_start: *const c_int,
+        Sl: c_int,
+        Al: c_int,
+        values: *mut JCOEF,
+        zerobits: *mut size_t,
     );
 
     #[no_mangle]
     pub fn jsimd_encode_mcu_AC_refine_prepare_sse2(
-        block: *const crate::jmorecfg_h::JCOEF,
-        jpeg_natural_order_start: *const libc::c_int,
-        Sl: libc::c_int,
-        Al: libc::c_int,
-        absvalues: *mut crate::jmorecfg_h::JCOEF,
-        bits: *mut crate::stddef_h::size_t,
-    ) -> libc::c_int;
+        block: *const JCOEF,
+        jpeg_natural_order_start: *const c_int,
+        Sl: c_int,
+        Al: c_int,
+        absvalues: *mut JCOEF,
+        bits: *mut size_t,
+    ) -> c_int;
 }
 pub use crate::jdct_h::DCTELEM;
 pub use crate::jmorecfg_h::JCOEF;
@@ -1026,11 +1026,11 @@ pub use crate::jconfigint_h::SIZEOF_SIZE_T;
  */
 
 /* Bitmask for supported acceleration methods */
-pub const JSIMD_SSE: libc::c_int = 0x4i32;
+pub const JSIMD_SSE: c_int = 0x4i32;
 
-pub const JSIMD_SSE2: libc::c_int = 0x8i32;
+pub const JSIMD_SSE2: c_int = 0x8i32;
 
-pub const JSIMD_AVX2: libc::c_int = 0x80i32;
+pub const JSIMD_AVX2: c_int = 0x80i32;
 /*
  * jsimd_x86_64.c
  *
@@ -1053,9 +1053,9 @@ pub const JSIMD_AVX2: libc::c_int = 0x80i32;
 /* 16 byte alignment */
 /* 32 byte alignment */
 
-static mut simd_support: libc::c_uint = !0i32 as libc::c_uint;
+static mut simd_support: c_uint = !0i32 as c_uint;
 
-static mut simd_huffman: libc::c_uint = 1u32;
+static mut simd_huffman: c_uint = 1u32;
 /*
  * Check what SIMD accelerations are supported.
  *
@@ -1063,33 +1063,33 @@ static mut simd_huffman: libc::c_uint = 1u32;
  */
 
 unsafe extern "C" fn init_simd() {
-    let mut env: *mut libc::c_char = crate::stddef_h::NULL as *mut libc::c_char;
+    let mut env: *mut c_char = NULL as *mut c_char;
     if simd_support != !0u32 {
         return;
     }
-    simd_support = crate::src::simd::x86_64::jsimd::jpeg_simd_cpu_support();
+    simd_support = jpeg_simd_cpu_support();
     /* Force different settings through environment variables */
-    env = crate::stdlib::getenv(b"JSIMD_FORCESSE2\x00".as_ptr() as *const libc::c_char);
+    env = getenv(b"JSIMD_FORCESSE2\x00".as_ptr() as *const c_char);
     if !env.is_null()
-        && crate::stdlib::strcmp(env,  b"1\x00".as_ptr() as *const libc::c_char) == 0i32
+        && strcmp(env,  b"1\x00".as_ptr() as *const c_char) == 0i32
     {
-        simd_support &= crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint
+        simd_support &= JSIMD_SSE2 as c_uint
     }
-    env = crate::stdlib::getenv(b"JSIMD_FORCEAVX2\x00".as_ptr() as *const libc::c_char);
+    env = getenv(b"JSIMD_FORCEAVX2\x00".as_ptr() as *const c_char);
     if !env.is_null()
-        && crate::stdlib::strcmp(env,  b"1\x00".as_ptr() as *const libc::c_char) == 0i32
+        && strcmp(env,  b"1\x00".as_ptr() as *const c_char) == 0i32
     {
-        simd_support &= crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint
+        simd_support &= JSIMD_AVX2 as c_uint
     }
-    env = crate::stdlib::getenv(b"JSIMD_FORCENONE\x00".as_ptr() as *const libc::c_char);
+    env = getenv(b"JSIMD_FORCENONE\x00".as_ptr() as *const c_char);
     if !env.is_null()
-        && crate::stdlib::strcmp(env,  b"1\x00".as_ptr() as *const libc::c_char) == 0i32
+        && strcmp(env,  b"1\x00".as_ptr() as *const c_char) == 0i32
     {
         simd_support = 0u32
     }
-    env = crate::stdlib::getenv(b"JSIMD_NOHUFFENC\x00".as_ptr() as *const libc::c_char);
+    env = getenv(b"JSIMD_NOHUFFENC\x00".as_ptr() as *const c_char);
     if !env.is_null()
-        && crate::stdlib::strcmp(env,  b"1\x00".as_ptr() as *const libc::c_char) == 0i32
+        && strcmp(env,  b"1\x00".as_ptr() as *const c_char) == 0i32
     {
         simd_huffman = 0u32
     };
@@ -1108,32 +1108,32 @@ unsafe extern "C" fn init_simd() {
  */
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_rgb_ycc() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_rgb_ycc() -> c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
+    if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
         != 4u64
     {
         return 0i32;
     }
-    if crate::jmorecfg_h::RGB_PIXELSIZE != 3i32 && crate::jmorecfg_h::RGB_PIXELSIZE != 4i32 {
+    if RGB_PIXELSIZE != 3i32 && RGB_PIXELSIZE != 4i32 {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0
-        && crate::src::simd::x86_64::jsimd::jconst_rgb_ycc_convert_avx2.as_ptr()
-            as crate::stddef_h::size_t
-            & ((1i32 << 5i32) - 1i32) as libc::c_ulong
+    if simd_support & JSIMD_AVX2 as c_uint != 0
+        && jconst_rgb_ycc_convert_avx2.as_ptr()
+            as size_t
+            & ((1i32 << 5i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
-        && crate::src::simd::x86_64::jsimd::jconst_rgb_ycc_convert_sse2.as_ptr()
-            as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
+    if simd_support & JSIMD_SSE2 as c_uint != 0
+        && jconst_rgb_ycc_convert_sse2.as_ptr()
+            as size_t
+            & ((1i32 << 4i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
@@ -1142,32 +1142,32 @@ pub unsafe extern "C" fn jsimd_can_rgb_ycc() -> libc::c_int {
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_rgb_gray() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_rgb_gray() -> c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
+    if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
         != 4u64
     {
         return 0i32;
     }
-    if crate::jmorecfg_h::RGB_PIXELSIZE != 3i32 && crate::jmorecfg_h::RGB_PIXELSIZE != 4i32 {
+    if RGB_PIXELSIZE != 3i32 && RGB_PIXELSIZE != 4i32 {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0
-        && crate::src::simd::x86_64::jsimd::jconst_rgb_gray_convert_avx2.as_ptr()
-            as crate::stddef_h::size_t
-            & ((1i32 << 5i32) - 1i32) as libc::c_ulong
+    if simd_support & JSIMD_AVX2 as c_uint != 0
+        && jconst_rgb_gray_convert_avx2.as_ptr()
+            as size_t
+            & ((1i32 << 5i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
-        && crate::src::simd::x86_64::jsimd::jconst_rgb_gray_convert_sse2.as_ptr()
-            as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
+    if simd_support & JSIMD_SSE2 as c_uint != 0
+        && jconst_rgb_gray_convert_sse2.as_ptr()
+            as size_t
+            & ((1i32 << 4i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
@@ -1176,32 +1176,32 @@ pub unsafe extern "C" fn jsimd_can_rgb_gray() -> libc::c_int {
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_ycc_rgb() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_ycc_rgb() -> c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
+    if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
         != 4u64
     {
         return 0i32;
     }
-    if crate::jmorecfg_h::RGB_PIXELSIZE != 3i32 && crate::jmorecfg_h::RGB_PIXELSIZE != 4i32 {
+    if RGB_PIXELSIZE != 3i32 && RGB_PIXELSIZE != 4i32 {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0
-        && crate::src::simd::x86_64::jsimd::jconst_ycc_rgb_convert_avx2.as_ptr()
-            as crate::stddef_h::size_t
-            & ((1i32 << 5i32) - 1i32) as libc::c_ulong
+    if simd_support & JSIMD_AVX2 as c_uint != 0
+        && jconst_ycc_rgb_convert_avx2.as_ptr()
+            as size_t
+            & ((1i32 << 5i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
-        && crate::src::simd::x86_64::jsimd::jconst_ycc_rgb_convert_sse2.as_ptr()
-            as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
+    if simd_support & JSIMD_SSE2 as c_uint != 0
+        && jconst_ycc_rgb_convert_sse2.as_ptr()
+            as size_t
+            & ((1i32 << 4i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
@@ -1210,193 +1210,193 @@ pub unsafe extern "C" fn jsimd_can_ycc_rgb() -> libc::c_int {
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_ycc_rgb565() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_ycc_rgb565() -> c_int {
     return 0i32;
 }
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_rgb_ycc_convert(
-    mut cinfo: crate::jpeglib_h::j_compress_ptr,
-    mut input_buf: crate::jpeglib_h::JSAMPARRAY,
-    mut output_buf: crate::jpeglib_h::JSAMPIMAGE,
-    mut output_row: crate::jmorecfg_h::JDIMENSION,
-    mut num_rows: libc::c_int,
+    mut cinfo: j_compress_ptr,
+    mut input_buf: JSAMPARRAY,
+    mut output_buf: JSAMPIMAGE,
+    mut output_row: JDIMENSION,
+    mut num_rows: c_int,
 ) {
     let mut avx2fct: Option<
         unsafe extern "C" fn(
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPARRAY,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: libc::c_int,
+            _: JDIMENSION,
+            _: JSAMPARRAY,
+            _: JSAMPIMAGE,
+            _: JDIMENSION,
+            _: c_int,
         ) -> (),
     > = None;
     let mut sse2fct: Option<
         unsafe extern "C" fn(
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPARRAY,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: libc::c_int,
+            _: JDIMENSION,
+            _: JSAMPARRAY,
+            _: JSAMPIMAGE,
+            _: JDIMENSION,
+            _: c_int,
         ) -> (),
     > = None;
     match  (*cinfo).in_color_space {
         6 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_extrgb_ycc_convert_avx2
+                jsimd_extrgb_ycc_convert_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_extrgb_ycc_convert_sse2
+                jsimd_extrgb_ycc_convert_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             )
         }
         7 | 12 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_extrgbx_ycc_convert_avx2
+                jsimd_extrgbx_ycc_convert_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_extrgbx_ycc_convert_sse2
+                jsimd_extrgbx_ycc_convert_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             )
         }
         8 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_extbgr_ycc_convert_avx2
+                jsimd_extbgr_ycc_convert_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_extbgr_ycc_convert_sse2
+                jsimd_extbgr_ycc_convert_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             )
         }
         9 | 13 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_extbgrx_ycc_convert_avx2
+                jsimd_extbgrx_ycc_convert_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_extbgrx_ycc_convert_sse2
+                jsimd_extbgrx_ycc_convert_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             )
         }
         10 | 14 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_extxbgr_ycc_convert_avx2
+                jsimd_extxbgr_ycc_convert_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_extxbgr_ycc_convert_sse2
+                jsimd_extxbgr_ycc_convert_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             )
         }
         11 | 15 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_extxrgb_ycc_convert_avx2
+                jsimd_extxrgb_ycc_convert_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_extxrgb_ycc_convert_sse2
+                jsimd_extxrgb_ycc_convert_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             )
         }
         _ => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_rgb_ycc_convert_avx2
+                jsimd_rgb_ycc_convert_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_rgb_ycc_convert_sse2
+                jsimd_rgb_ycc_convert_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             )
         }
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
+    if simd_support & JSIMD_AVX2 as c_uint != 0 {
         avx2fct.expect("non-null function pointer")(
             (*cinfo).image_width,
             input_buf,
@@ -1417,187 +1417,187 @@ pub unsafe extern "C" fn jsimd_rgb_ycc_convert(
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_rgb_gray_convert(
-    mut cinfo: crate::jpeglib_h::j_compress_ptr,
-    mut input_buf: crate::jpeglib_h::JSAMPARRAY,
-    mut output_buf: crate::jpeglib_h::JSAMPIMAGE,
-    mut output_row: crate::jmorecfg_h::JDIMENSION,
-    mut num_rows: libc::c_int,
+    mut cinfo: j_compress_ptr,
+    mut input_buf: JSAMPARRAY,
+    mut output_buf: JSAMPIMAGE,
+    mut output_row: JDIMENSION,
+    mut num_rows: c_int,
 ) {
     let mut avx2fct: Option<
         unsafe extern "C" fn(
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPARRAY,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: libc::c_int,
+            _: JDIMENSION,
+            _: JSAMPARRAY,
+            _: JSAMPIMAGE,
+            _: JDIMENSION,
+            _: c_int,
         ) -> (),
     > = None;
     let mut sse2fct: Option<
         unsafe extern "C" fn(
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPARRAY,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: libc::c_int,
+            _: JDIMENSION,
+            _: JSAMPARRAY,
+            _: JSAMPIMAGE,
+            _: JDIMENSION,
+            _: c_int,
         ) -> (),
     > = None;
     match  (*cinfo).in_color_space {
         6 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_extrgb_gray_convert_avx2
+                jsimd_extrgb_gray_convert_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_extrgb_gray_convert_sse2
+                jsimd_extrgb_gray_convert_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             )
         }
         7 | 12 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_extrgbx_gray_convert_avx2
+                jsimd_extrgbx_gray_convert_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_extrgbx_gray_convert_sse2
+                jsimd_extrgbx_gray_convert_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             )
         }
         8 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_extbgr_gray_convert_avx2
+                jsimd_extbgr_gray_convert_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_extbgr_gray_convert_sse2
+                jsimd_extbgr_gray_convert_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             )
         }
         9 | 13 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_extbgrx_gray_convert_avx2
+                jsimd_extbgrx_gray_convert_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_extbgrx_gray_convert_sse2
+                jsimd_extbgrx_gray_convert_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             )
         }
         10 | 14 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_extxbgr_gray_convert_avx2
+                jsimd_extxbgr_gray_convert_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_extxbgr_gray_convert_sse2
+                jsimd_extxbgr_gray_convert_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             )
         }
         11 | 15 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_extxrgb_gray_convert_avx2
+                jsimd_extxrgb_gray_convert_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_extxrgb_gray_convert_sse2
+                jsimd_extxrgb_gray_convert_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             )
         }
         _ => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_rgb_gray_convert_avx2
+                jsimd_rgb_gray_convert_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_rgb_gray_convert_sse2
+                jsimd_rgb_gray_convert_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: c_int,
                     ) -> (),
             )
         }
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
+    if simd_support & JSIMD_AVX2 as c_uint != 0 {
         avx2fct.expect("non-null function pointer")(
             (*cinfo).image_width,
             input_buf,
@@ -1618,187 +1618,187 @@ pub unsafe extern "C" fn jsimd_rgb_gray_convert(
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_ycc_rgb_convert(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut input_buf: crate::jpeglib_h::JSAMPIMAGE,
-    mut input_row: crate::jmorecfg_h::JDIMENSION,
-    mut output_buf: crate::jpeglib_h::JSAMPARRAY,
-    mut num_rows: libc::c_int,
+    mut cinfo: j_decompress_ptr,
+    mut input_buf: JSAMPIMAGE,
+    mut input_row: JDIMENSION,
+    mut output_buf: JSAMPARRAY,
+    mut num_rows: c_int,
 ) {
     let mut avx2fct: Option<
         unsafe extern "C" fn(
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPARRAY,
-            _: libc::c_int,
+            _: JDIMENSION,
+            _: JSAMPIMAGE,
+            _: JDIMENSION,
+            _: JSAMPARRAY,
+            _: c_int,
         ) -> (),
     > = None;
     let mut sse2fct: Option<
         unsafe extern "C" fn(
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPARRAY,
-            _: libc::c_int,
+            _: JDIMENSION,
+            _: JSAMPIMAGE,
+            _: JDIMENSION,
+            _: JSAMPARRAY,
+            _: c_int,
         ) -> (),
     > = None;
     match  (*cinfo).out_color_space {
         6 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_ycc_extrgb_convert_avx2
+                jsimd_ycc_extrgb_convert_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: c_int,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_ycc_extrgb_convert_sse2
+                jsimd_ycc_extrgb_convert_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: c_int,
                     ) -> (),
             )
         }
         7 | 12 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_ycc_extrgbx_convert_avx2
+                jsimd_ycc_extrgbx_convert_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: c_int,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_ycc_extrgbx_convert_sse2
+                jsimd_ycc_extrgbx_convert_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: c_int,
                     ) -> (),
             )
         }
         8 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_ycc_extbgr_convert_avx2
+                jsimd_ycc_extbgr_convert_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: c_int,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_ycc_extbgr_convert_sse2
+                jsimd_ycc_extbgr_convert_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: c_int,
                     ) -> (),
             )
         }
         9 | 13 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_ycc_extbgrx_convert_avx2
+                jsimd_ycc_extbgrx_convert_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: c_int,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_ycc_extbgrx_convert_sse2
+                jsimd_ycc_extbgrx_convert_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: c_int,
                     ) -> (),
             )
         }
         10 | 14 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_ycc_extxbgr_convert_avx2
+                jsimd_ycc_extxbgr_convert_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: c_int,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_ycc_extxbgr_convert_sse2
+                jsimd_ycc_extxbgr_convert_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: c_int,
                     ) -> (),
             )
         }
         11 | 15 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_ycc_extxrgb_convert_avx2
+                jsimd_ycc_extxrgb_convert_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: c_int,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_ycc_extxrgb_convert_sse2
+                jsimd_ycc_extxrgb_convert_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: c_int,
                     ) -> (),
             )
         }
         _ => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_ycc_rgb_convert_avx2
+                jsimd_ycc_rgb_convert_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: c_int,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_ycc_rgb_convert_sse2
+                jsimd_ycc_rgb_convert_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
-                        _: libc::c_int,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
+                        _: c_int,
                     ) -> (),
             )
         }
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
+    if simd_support & JSIMD_AVX2 as c_uint != 0 {
         avx2fct.expect("non-null function pointer")(
             (*cinfo).output_width,
             input_buf,
@@ -1819,51 +1819,51 @@ pub unsafe extern "C" fn jsimd_ycc_rgb_convert(
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_ycc_rgb565_convert(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut input_buf: crate::jpeglib_h::JSAMPIMAGE,
-    mut input_row: crate::jmorecfg_h::JDIMENSION,
-    mut output_buf: crate::jpeglib_h::JSAMPARRAY,
-    mut num_rows: libc::c_int,
+    mut cinfo: j_decompress_ptr,
+    mut input_buf: JSAMPIMAGE,
+    mut input_row: JDIMENSION,
+    mut output_buf: JSAMPARRAY,
+    mut num_rows: c_int,
 ) {
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_h2v2_downsample() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_h2v2_downsample() -> c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
+    if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
         != 4u64
     {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
+    if simd_support & JSIMD_AVX2 as c_uint != 0 {
         return 1i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0 {
+    if simd_support & JSIMD_SSE2 as c_uint != 0 {
         return 1i32;
     }
     return 0i32;
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_h2v1_downsample() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_h2v1_downsample() -> c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
+    if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
         != 4u64
     {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
+    if simd_support & JSIMD_AVX2 as c_uint != 0 {
         return 1i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0 {
+    if simd_support & JSIMD_SSE2 as c_uint != 0 {
         return 1i32;
     }
     return 0i32;
@@ -1871,25 +1871,25 @@ pub unsafe extern "C" fn jsimd_can_h2v1_downsample() -> libc::c_int {
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_h2v2_downsample(
-    mut cinfo: crate::jpeglib_h::j_compress_ptr,
-    mut compptr: *mut crate::jpeglib_h::jpeg_component_info,
-    mut input_data: crate::jpeglib_h::JSAMPARRAY,
-    mut output_data: crate::jpeglib_h::JSAMPARRAY,
+    mut cinfo: j_compress_ptr,
+    mut compptr: *mut jpeg_component_info,
+    mut input_data: JSAMPARRAY,
+    mut output_data: JSAMPARRAY,
 ) {
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
-        crate::src::simd::x86_64::jsimd::jsimd_h2v2_downsample_avx2(
+    if simd_support & JSIMD_AVX2 as c_uint != 0 {
+        jsimd_h2v2_downsample_avx2(
             (*cinfo).image_width,
             (*cinfo).max_v_samp_factor,
-            (*compptr).v_samp_factor as crate::jmorecfg_h::JDIMENSION,
+            (*compptr).v_samp_factor as JDIMENSION,
             (*compptr).width_in_blocks,
             input_data,
             output_data,
         );
     } else {
-        crate::src::simd::x86_64::jsimd::jsimd_h2v2_downsample_sse2(
+        jsimd_h2v2_downsample_sse2(
             (*cinfo).image_width,
             (*cinfo).max_v_samp_factor,
-            (*compptr).v_samp_factor as crate::jmorecfg_h::JDIMENSION,
+            (*compptr).v_samp_factor as JDIMENSION,
             (*compptr).width_in_blocks,
             input_data,
             output_data,
@@ -1899,25 +1899,25 @@ pub unsafe extern "C" fn jsimd_h2v2_downsample(
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_h2v1_downsample(
-    mut cinfo: crate::jpeglib_h::j_compress_ptr,
-    mut compptr: *mut crate::jpeglib_h::jpeg_component_info,
-    mut input_data: crate::jpeglib_h::JSAMPARRAY,
-    mut output_data: crate::jpeglib_h::JSAMPARRAY,
+    mut cinfo: j_compress_ptr,
+    mut compptr: *mut jpeg_component_info,
+    mut input_data: JSAMPARRAY,
+    mut output_data: JSAMPARRAY,
 ) {
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
-        crate::src::simd::x86_64::jsimd::jsimd_h2v1_downsample_avx2(
+    if simd_support & JSIMD_AVX2 as c_uint != 0 {
+        jsimd_h2v1_downsample_avx2(
             (*cinfo).image_width,
             (*cinfo).max_v_samp_factor,
-            (*compptr).v_samp_factor as crate::jmorecfg_h::JDIMENSION,
+            (*compptr).v_samp_factor as JDIMENSION,
             (*compptr).width_in_blocks,
             input_data,
             output_data,
         );
     } else {
-        crate::src::simd::x86_64::jsimd::jsimd_h2v1_downsample_sse2(
+        jsimd_h2v1_downsample_sse2(
             (*cinfo).image_width,
             (*cinfo).max_v_samp_factor,
-            (*compptr).v_samp_factor as crate::jmorecfg_h::JDIMENSION,
+            (*compptr).v_samp_factor as JDIMENSION,
             (*compptr).width_in_blocks,
             input_data,
             output_data,
@@ -1926,42 +1926,42 @@ pub unsafe extern "C" fn jsimd_h2v1_downsample(
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_h2v2_upsample() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_h2v2_upsample() -> c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
+    if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
         != 4u64
     {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
+    if simd_support & JSIMD_AVX2 as c_uint != 0 {
         return 1i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0 {
+    if simd_support & JSIMD_SSE2 as c_uint != 0 {
         return 1i32;
     }
     return 0i32;
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_h2v1_upsample() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_h2v1_upsample() -> c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
+    if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
         != 4u64
     {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
+    if simd_support & JSIMD_AVX2 as c_uint != 0 {
         return 1i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0 {
+    if simd_support & JSIMD_SSE2 as c_uint != 0 {
         return 1i32;
     }
     return 0i32;
@@ -1969,20 +1969,20 @@ pub unsafe extern "C" fn jsimd_can_h2v1_upsample() -> libc::c_int {
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_h2v2_upsample(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut compptr: *mut crate::jpeglib_h::jpeg_component_info,
-    mut input_data: crate::jpeglib_h::JSAMPARRAY,
-    mut output_data_ptr: *mut crate::jpeglib_h::JSAMPARRAY,
+    mut cinfo: j_decompress_ptr,
+    mut compptr: *mut jpeg_component_info,
+    mut input_data: JSAMPARRAY,
+    mut output_data_ptr: *mut JSAMPARRAY,
 ) {
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
-        crate::src::simd::x86_64::jsimd::jsimd_h2v2_upsample_avx2(
+    if simd_support & JSIMD_AVX2 as c_uint != 0 {
+        jsimd_h2v2_upsample_avx2(
             (*cinfo).max_v_samp_factor,
             (*cinfo).output_width,
             input_data,
             output_data_ptr,
         );
     } else {
-        crate::src::simd::x86_64::jsimd::jsimd_h2v2_upsample_sse2(
+        jsimd_h2v2_upsample_sse2(
             (*cinfo).max_v_samp_factor,
             (*cinfo).output_width,
             input_data,
@@ -1993,20 +1993,20 @@ pub unsafe extern "C" fn jsimd_h2v2_upsample(
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_h2v1_upsample(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut compptr: *mut crate::jpeglib_h::jpeg_component_info,
-    mut input_data: crate::jpeglib_h::JSAMPARRAY,
-    mut output_data_ptr: *mut crate::jpeglib_h::JSAMPARRAY,
+    mut cinfo: j_decompress_ptr,
+    mut compptr: *mut jpeg_component_info,
+    mut input_data: JSAMPARRAY,
+    mut output_data_ptr: *mut JSAMPARRAY,
 ) {
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
-        crate::src::simd::x86_64::jsimd::jsimd_h2v1_upsample_avx2(
+    if simd_support & JSIMD_AVX2 as c_uint != 0 {
+        jsimd_h2v1_upsample_avx2(
             (*cinfo).max_v_samp_factor,
             (*cinfo).output_width,
             input_data,
             output_data_ptr,
         );
     } else {
-        crate::src::simd::x86_64::jsimd::jsimd_h2v1_upsample_sse2(
+        jsimd_h2v1_upsample_sse2(
             (*cinfo).max_v_samp_factor,
             (*cinfo).output_width,
             input_data,
@@ -2016,29 +2016,29 @@ pub unsafe extern "C" fn jsimd_h2v1_upsample(
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_h2v2_fancy_upsample() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_h2v2_fancy_upsample() -> c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
+    if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
         != 4u64
     {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0
-        && crate::src::simd::x86_64::jsimd::jconst_fancy_upsample_avx2.as_ptr()
-            as crate::stddef_h::size_t
-            & ((1i32 << 5i32) - 1i32) as libc::c_ulong
+    if simd_support & JSIMD_AVX2 as c_uint != 0
+        && jconst_fancy_upsample_avx2.as_ptr()
+            as size_t
+            & ((1i32 << 5i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
-        && crate::src::simd::x86_64::jsimd::jconst_fancy_upsample_sse2.as_ptr()
-            as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
+    if simd_support & JSIMD_SSE2 as c_uint != 0
+        && jconst_fancy_upsample_sse2.as_ptr()
+            as size_t
+            & ((1i32 << 4i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
@@ -2047,29 +2047,29 @@ pub unsafe extern "C" fn jsimd_can_h2v2_fancy_upsample() -> libc::c_int {
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_h2v1_fancy_upsample() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_h2v1_fancy_upsample() -> c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
+    if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
         != 4u64
     {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0
-        && crate::src::simd::x86_64::jsimd::jconst_fancy_upsample_avx2.as_ptr()
-            as crate::stddef_h::size_t
-            & ((1i32 << 5i32) - 1i32) as libc::c_ulong
+    if simd_support & JSIMD_AVX2 as c_uint != 0
+        && jconst_fancy_upsample_avx2.as_ptr()
+            as size_t
+            & ((1i32 << 5i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
-        && crate::src::simd::x86_64::jsimd::jconst_fancy_upsample_sse2.as_ptr()
-            as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
+    if simd_support & JSIMD_SSE2 as c_uint != 0
+        && jconst_fancy_upsample_sse2.as_ptr()
+            as size_t
+            & ((1i32 << 4i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
@@ -2079,20 +2079,20 @@ pub unsafe extern "C" fn jsimd_can_h2v1_fancy_upsample() -> libc::c_int {
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_h2v2_fancy_upsample(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut compptr: *mut crate::jpeglib_h::jpeg_component_info,
-    mut input_data: crate::jpeglib_h::JSAMPARRAY,
-    mut output_data_ptr: *mut crate::jpeglib_h::JSAMPARRAY,
+    mut cinfo: j_decompress_ptr,
+    mut compptr: *mut jpeg_component_info,
+    mut input_data: JSAMPARRAY,
+    mut output_data_ptr: *mut JSAMPARRAY,
 ) {
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
-        crate::src::simd::x86_64::jsimd::jsimd_h2v2_fancy_upsample_avx2(
+    if simd_support & JSIMD_AVX2 as c_uint != 0 {
+        jsimd_h2v2_fancy_upsample_avx2(
             (*cinfo).max_v_samp_factor,
             (*compptr).downsampled_width,
             input_data,
             output_data_ptr,
         );
     } else {
-        crate::src::simd::x86_64::jsimd::jsimd_h2v2_fancy_upsample_sse2(
+        jsimd_h2v2_fancy_upsample_sse2(
             (*cinfo).max_v_samp_factor,
             (*compptr).downsampled_width,
             input_data,
@@ -2103,20 +2103,20 @@ pub unsafe extern "C" fn jsimd_h2v2_fancy_upsample(
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_h2v1_fancy_upsample(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut compptr: *mut crate::jpeglib_h::jpeg_component_info,
-    mut input_data: crate::jpeglib_h::JSAMPARRAY,
-    mut output_data_ptr: *mut crate::jpeglib_h::JSAMPARRAY,
+    mut cinfo: j_decompress_ptr,
+    mut compptr: *mut jpeg_component_info,
+    mut input_data: JSAMPARRAY,
+    mut output_data_ptr: *mut JSAMPARRAY,
 ) {
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
-        crate::src::simd::x86_64::jsimd::jsimd_h2v1_fancy_upsample_avx2(
+    if simd_support & JSIMD_AVX2 as c_uint != 0 {
+        jsimd_h2v1_fancy_upsample_avx2(
             (*cinfo).max_v_samp_factor,
             (*compptr).downsampled_width,
             input_data,
             output_data_ptr,
         );
     } else {
-        crate::src::simd::x86_64::jsimd::jsimd_h2v1_fancy_upsample_sse2(
+        jsimd_h2v1_fancy_upsample_sse2(
             (*cinfo).max_v_samp_factor,
             (*compptr).downsampled_width,
             input_data,
@@ -2126,29 +2126,29 @@ pub unsafe extern "C" fn jsimd_h2v1_fancy_upsample(
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_h2v2_merged_upsample() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_h2v2_merged_upsample() -> c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
+    if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
         != 4u64
     {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0
-        && crate::src::simd::x86_64::jsimd::jconst_merged_upsample_avx2.as_ptr()
-            as crate::stddef_h::size_t
-            & ((1i32 << 5i32) - 1i32) as libc::c_ulong
+    if simd_support & JSIMD_AVX2 as c_uint != 0
+        && jconst_merged_upsample_avx2.as_ptr()
+            as size_t
+            & ((1i32 << 5i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
-        && crate::src::simd::x86_64::jsimd::jconst_merged_upsample_sse2.as_ptr()
-            as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
+    if simd_support & JSIMD_SSE2 as c_uint != 0
+        && jconst_merged_upsample_sse2.as_ptr()
+            as size_t
+            & ((1i32 << 4i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
@@ -2157,29 +2157,29 @@ pub unsafe extern "C" fn jsimd_can_h2v2_merged_upsample() -> libc::c_int {
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_h2v1_merged_upsample() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_h2v1_merged_upsample() -> c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
+    if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
         != 4u64
     {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0
-        && crate::src::simd::x86_64::jsimd::jconst_merged_upsample_avx2.as_ptr()
-            as crate::stddef_h::size_t
-            & ((1i32 << 5i32) - 1i32) as libc::c_ulong
+    if simd_support & JSIMD_AVX2 as c_uint != 0
+        && jconst_merged_upsample_avx2.as_ptr()
+            as size_t
+            & ((1i32 << 5i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
-        && crate::src::simd::x86_64::jsimd::jconst_merged_upsample_sse2.as_ptr()
-            as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
+    if simd_support & JSIMD_SSE2 as c_uint != 0
+        && jconst_merged_upsample_sse2.as_ptr()
+            as size_t
+            & ((1i32 << 4i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
@@ -2189,170 +2189,170 @@ pub unsafe extern "C" fn jsimd_can_h2v1_merged_upsample() -> libc::c_int {
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_h2v2_merged_upsample(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut input_buf: crate::jpeglib_h::JSAMPIMAGE,
-    mut in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-    mut output_buf: crate::jpeglib_h::JSAMPARRAY,
+    mut cinfo: j_decompress_ptr,
+    mut input_buf: JSAMPIMAGE,
+    mut in_row_group_ctr: JDIMENSION,
+    mut output_buf: JSAMPARRAY,
 ) {
     let mut avx2fct: Option<
         unsafe extern "C" fn(
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPARRAY,
+            _: JDIMENSION,
+            _: JSAMPIMAGE,
+            _: JDIMENSION,
+            _: JSAMPARRAY,
         ) -> (),
     > = None;
     let mut sse2fct: Option<
         unsafe extern "C" fn(
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPARRAY,
+            _: JDIMENSION,
+            _: JSAMPIMAGE,
+            _: JDIMENSION,
+            _: JSAMPARRAY,
         ) -> (),
     > = None;
     match  (*cinfo).out_color_space {
         6 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v2_extrgb_merged_upsample_avx2
+                jsimd_h2v2_extrgb_merged_upsample_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v2_extrgb_merged_upsample_sse2
+                jsimd_h2v2_extrgb_merged_upsample_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             )
         }
         7 | 12 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v2_extrgbx_merged_upsample_avx2
+                jsimd_h2v2_extrgbx_merged_upsample_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v2_extrgbx_merged_upsample_sse2
+                jsimd_h2v2_extrgbx_merged_upsample_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             )
         }
         8 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v2_extbgr_merged_upsample_avx2
+                jsimd_h2v2_extbgr_merged_upsample_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v2_extbgr_merged_upsample_sse2
+                jsimd_h2v2_extbgr_merged_upsample_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             )
         }
         9 | 13 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v2_extbgrx_merged_upsample_avx2
+                jsimd_h2v2_extbgrx_merged_upsample_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v2_extbgrx_merged_upsample_sse2
+                jsimd_h2v2_extbgrx_merged_upsample_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             )
         }
         10 | 14 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v2_extxbgr_merged_upsample_avx2
+                jsimd_h2v2_extxbgr_merged_upsample_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v2_extxbgr_merged_upsample_sse2
+                jsimd_h2v2_extxbgr_merged_upsample_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             )
         }
         11 | 15 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v2_extxrgb_merged_upsample_avx2
+                jsimd_h2v2_extxrgb_merged_upsample_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v2_extxrgb_merged_upsample_sse2
+                jsimd_h2v2_extxrgb_merged_upsample_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             )
         }
         _ => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v2_merged_upsample_avx2
+                jsimd_h2v2_merged_upsample_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v2_merged_upsample_sse2
+                jsimd_h2v2_merged_upsample_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             )
         }
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
+    if simd_support & JSIMD_AVX2 as c_uint != 0 {
         avx2fct.expect("non-null function pointer")(
             (*cinfo).output_width,
             input_buf,
@@ -2371,170 +2371,170 @@ pub unsafe extern "C" fn jsimd_h2v2_merged_upsample(
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_h2v1_merged_upsample(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut input_buf: crate::jpeglib_h::JSAMPIMAGE,
-    mut in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
-    mut output_buf: crate::jpeglib_h::JSAMPARRAY,
+    mut cinfo: j_decompress_ptr,
+    mut input_buf: JSAMPIMAGE,
+    mut in_row_group_ctr: JDIMENSION,
+    mut output_buf: JSAMPARRAY,
 ) {
     let mut avx2fct: Option<
         unsafe extern "C" fn(
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPARRAY,
+            _: JDIMENSION,
+            _: JSAMPIMAGE,
+            _: JDIMENSION,
+            _: JSAMPARRAY,
         ) -> (),
     > = None;
     let mut sse2fct: Option<
         unsafe extern "C" fn(
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPARRAY,
+            _: JDIMENSION,
+            _: JSAMPIMAGE,
+            _: JDIMENSION,
+            _: JSAMPARRAY,
         ) -> (),
     > = None;
     match  (*cinfo).out_color_space {
         6 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v1_extrgb_merged_upsample_avx2
+                jsimd_h2v1_extrgb_merged_upsample_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v1_extrgb_merged_upsample_sse2
+                jsimd_h2v1_extrgb_merged_upsample_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             )
         }
         7 | 12 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v1_extrgbx_merged_upsample_avx2
+                jsimd_h2v1_extrgbx_merged_upsample_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v1_extrgbx_merged_upsample_sse2
+                jsimd_h2v1_extrgbx_merged_upsample_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             )
         }
         8 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v1_extbgr_merged_upsample_avx2
+                jsimd_h2v1_extbgr_merged_upsample_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v1_extbgr_merged_upsample_sse2
+                jsimd_h2v1_extbgr_merged_upsample_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             )
         }
         9 | 13 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v1_extbgrx_merged_upsample_avx2
+                jsimd_h2v1_extbgrx_merged_upsample_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v1_extbgrx_merged_upsample_sse2
+                jsimd_h2v1_extbgrx_merged_upsample_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             )
         }
         10 | 14 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v1_extxbgr_merged_upsample_avx2
+                jsimd_h2v1_extxbgr_merged_upsample_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v1_extxbgr_merged_upsample_sse2
+                jsimd_h2v1_extxbgr_merged_upsample_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             )
         }
         11 | 15 => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v1_extxrgb_merged_upsample_avx2
+                jsimd_h2v1_extxrgb_merged_upsample_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v1_extxrgb_merged_upsample_sse2
+                jsimd_h2v1_extxrgb_merged_upsample_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             )
         }
         _ => {
             avx2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v1_merged_upsample_avx2
+                jsimd_h2v1_merged_upsample_avx2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             );
             sse2fct = Some(
-                crate::src::simd::x86_64::jsimd::jsimd_h2v1_merged_upsample_sse2
+                jsimd_h2v1_merged_upsample_sse2
                     as unsafe extern "C" fn(
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPIMAGE,
-                        _: crate::jmorecfg_h::JDIMENSION,
-                        _: crate::jpeglib_h::JSAMPARRAY,
+                        _: JDIMENSION,
+                        _: JSAMPIMAGE,
+                        _: JDIMENSION,
+                        _: JSAMPARRAY,
                     ) -> (),
             )
         }
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
+    if simd_support & JSIMD_AVX2 as c_uint != 0 {
         avx2fct.expect("non-null function pointer")(
             (*cinfo).output_width,
             input_buf,
@@ -2562,51 +2562,51 @@ pub unsafe extern "C" fn jsimd_h2v1_merged_upsample(
  */
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_convsamp() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_convsamp() -> c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
+    if DCTSIZE != 8i32 {
         return 0i32;
     }
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
+    if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
         != 4u64
     {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong != 2u64 {
+    if ::std::mem::size_of::<DCTELEM>() as c_ulong != 2u64 {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
+    if simd_support & JSIMD_AVX2 as c_uint != 0 {
         return 1i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0 {
+    if simd_support & JSIMD_SSE2 as c_uint != 0 {
         return 1i32;
     }
     return 0i32;
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_convsamp_float() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_convsamp_float() -> c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
+    if DCTSIZE != 8i32 {
         return 0i32;
     }
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
+    if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
         != 4u64
     {
         return 0i32;
     }
-    if ::std::mem::size_of::<libc::c_float>() as libc::c_ulong != 4u64 {
+    if ::std::mem::size_of::<c_float>() as c_ulong != 4u64 {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0 {
+    if simd_support & JSIMD_SSE2 as c_uint != 0 {
         return 1i32;
     }
     return 0i32;
@@ -2614,48 +2614,48 @@ pub unsafe extern "C" fn jsimd_can_convsamp_float() -> libc::c_int {
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_convsamp(
-    mut sample_data: crate::jpeglib_h::JSAMPARRAY,
-    mut start_col: crate::jmorecfg_h::JDIMENSION,
-    mut workspace: *mut crate::jdct_h::DCTELEM,
+    mut sample_data: JSAMPARRAY,
+    mut start_col: JDIMENSION,
+    mut workspace: *mut DCTELEM,
 ) {
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
-        crate::src::simd::x86_64::jsimd::jsimd_convsamp_avx2(sample_data, start_col, workspace);
+    if simd_support & JSIMD_AVX2 as c_uint != 0 {
+        jsimd_convsamp_avx2(sample_data, start_col, workspace);
     } else {
-        crate::src::simd::x86_64::jsimd::jsimd_convsamp_sse2(sample_data, start_col, workspace);
+        jsimd_convsamp_sse2(sample_data, start_col, workspace);
     };
 }
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_convsamp_float(
-    mut sample_data: crate::jpeglib_h::JSAMPARRAY,
-    mut start_col: crate::jmorecfg_h::JDIMENSION,
-    mut workspace: *mut libc::c_float,
+    mut sample_data: JSAMPARRAY,
+    mut start_col: JDIMENSION,
+    mut workspace: *mut c_float,
 ) {
-    crate::src::simd::x86_64::jsimd::jsimd_convsamp_float_sse2(sample_data, start_col, workspace);
+    jsimd_convsamp_float_sse2(sample_data, start_col, workspace);
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_fdct_islow() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_fdct_islow() -> c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
+    if DCTSIZE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong != 2u64 {
+    if ::std::mem::size_of::<DCTELEM>() as c_ulong != 2u64 {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0
-        && crate::src::simd::x86_64::jsimd::jconst_fdct_islow_avx2.as_ptr()
-            as crate::stddef_h::size_t
-            & ((1i32 << 5i32) - 1i32) as libc::c_ulong
+    if simd_support & JSIMD_AVX2 as c_uint != 0
+        && jconst_fdct_islow_avx2.as_ptr()
+            as size_t
+            & ((1i32 << 5i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
-        && crate::src::simd::x86_64::jsimd::jconst_fdct_islow_sse2.as_ptr()
-            as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
+    if simd_support & JSIMD_SSE2 as c_uint != 0
+        && jconst_fdct_islow_sse2.as_ptr()
+            as size_t
+            & ((1i32 << 4i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
@@ -2664,19 +2664,19 @@ pub unsafe extern "C" fn jsimd_can_fdct_islow() -> libc::c_int {
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_fdct_ifast() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_fdct_ifast() -> c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
+    if DCTSIZE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong != 2u64 {
+    if ::std::mem::size_of::<DCTELEM>() as c_ulong != 2u64 {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
-        && crate::src::simd::x86_64::jsimd::jconst_fdct_ifast_sse2.as_ptr()
-            as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
+    if simd_support & JSIMD_SSE2 as c_uint != 0
+        && jconst_fdct_ifast_sse2.as_ptr()
+            as size_t
+            & ((1i32 << 4i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
@@ -2685,19 +2685,19 @@ pub unsafe extern "C" fn jsimd_can_fdct_ifast() -> libc::c_int {
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_fdct_float() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_fdct_float() -> c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
+    if DCTSIZE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<libc::c_float>() as libc::c_ulong != 4u64 {
+    if ::std::mem::size_of::<c_float>() as c_ulong != 4u64 {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE as libc::c_uint != 0
-        && crate::src::simd::x86_64::jsimd::jconst_fdct_float_sse.as_ptr()
-            as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
+    if simd_support & JSIMD_SSE as c_uint != 0
+        && jconst_fdct_float_sse.as_ptr()
+            as size_t
+            & ((1i32 << 4i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
@@ -2706,60 +2706,60 @@ pub unsafe extern "C" fn jsimd_can_fdct_float() -> libc::c_int {
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_fdct_islow(mut data: *mut crate::jdct_h::DCTELEM) {
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
-        crate::src::simd::x86_64::jsimd::jsimd_fdct_islow_avx2(data);
+pub unsafe extern "C" fn jsimd_fdct_islow(mut data: *mut DCTELEM) {
+    if simd_support & JSIMD_AVX2 as c_uint != 0 {
+        jsimd_fdct_islow_avx2(data);
     } else {
-        crate::src::simd::x86_64::jsimd::jsimd_fdct_islow_sse2(data);
+        jsimd_fdct_islow_sse2(data);
     };
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_fdct_ifast(mut data: *mut crate::jdct_h::DCTELEM) {
-    crate::src::simd::x86_64::jsimd::jsimd_fdct_ifast_sse2(data);
+pub unsafe extern "C" fn jsimd_fdct_ifast(mut data: *mut DCTELEM) {
+    jsimd_fdct_ifast_sse2(data);
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_fdct_float(mut data: *mut libc::c_float) {
-    crate::src::simd::x86_64::jsimd::jsimd_fdct_float_sse(data);
+pub unsafe extern "C" fn jsimd_fdct_float(mut data: *mut c_float) {
+    jsimd_fdct_float_sse(data);
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_quantize() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_quantize() -> c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
+    if DCTSIZE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong != 2u64 {
+    if ::std::mem::size_of::<JCOEF>() as c_ulong != 2u64 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong != 2u64 {
+    if ::std::mem::size_of::<DCTELEM>() as c_ulong != 2u64 {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
+    if simd_support & JSIMD_AVX2 as c_uint != 0 {
         return 1i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0 {
+    if simd_support & JSIMD_SSE2 as c_uint != 0 {
         return 1i32;
     }
     return 0i32;
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_quantize_float() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_quantize_float() -> c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
+    if DCTSIZE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong != 2u64 {
+    if ::std::mem::size_of::<JCOEF>() as c_ulong != 2u64 {
         return 0i32;
     }
-    if ::std::mem::size_of::<libc::c_float>() as libc::c_ulong != 4u64 {
+    if ::std::mem::size_of::<c_float>() as c_ulong != 4u64 {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0 {
+    if simd_support & JSIMD_SSE2 as c_uint != 0 {
         return 1i32;
     }
     return 0i32;
@@ -2767,52 +2767,52 @@ pub unsafe extern "C" fn jsimd_can_quantize_float() -> libc::c_int {
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_quantize(
-    mut coef_block: crate::jpeglib_h::JCOEFPTR,
-    mut divisors: *mut crate::jdct_h::DCTELEM,
-    mut workspace: *mut crate::jdct_h::DCTELEM,
+    mut coef_block: JCOEFPTR,
+    mut divisors: *mut DCTELEM,
+    mut workspace: *mut DCTELEM,
 ) {
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
-        crate::src::simd::x86_64::jsimd::jsimd_quantize_avx2(coef_block, divisors, workspace);
+    if simd_support & JSIMD_AVX2 as c_uint != 0 {
+        jsimd_quantize_avx2(coef_block, divisors, workspace);
     } else {
-        crate::src::simd::x86_64::jsimd::jsimd_quantize_sse2(coef_block, divisors, workspace);
+        jsimd_quantize_sse2(coef_block, divisors, workspace);
     };
 }
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_quantize_float(
-    mut coef_block: crate::jpeglib_h::JCOEFPTR,
-    mut divisors: *mut libc::c_float,
-    mut workspace: *mut libc::c_float,
+    mut coef_block: JCOEFPTR,
+    mut divisors: *mut c_float,
+    mut workspace: *mut c_float,
 ) {
-    crate::src::simd::x86_64::jsimd::jsimd_quantize_float_sse2(coef_block, divisors, workspace);
+    jsimd_quantize_float_sse2(coef_block, divisors, workspace);
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_idct_2x2() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_idct_2x2() -> c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
+    if DCTSIZE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong != 2u64 {
+    if ::std::mem::size_of::<JCOEF>() as c_ulong != 2u64 {
         return 0i32;
     }
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
+    if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
         != 4u64
     {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jdct_h::ISLOW_MULT_TYPE>() as libc::c_ulong
+    if ::std::mem::size_of::<ISLOW_MULT_TYPE>() as c_ulong
         != 2u64
     {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
-        && crate::src::simd::x86_64::jsimd::jconst_idct_red_sse2.as_ptr() as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
+    if simd_support & JSIMD_SSE2 as c_uint != 0
+        && jconst_idct_red_sse2.as_ptr() as size_t
+            & ((1i32 << 4i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
@@ -2821,31 +2821,31 @@ pub unsafe extern "C" fn jsimd_can_idct_2x2() -> libc::c_int {
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_idct_4x4() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_idct_4x4() -> c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
+    if DCTSIZE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong != 2u64 {
+    if ::std::mem::size_of::<JCOEF>() as c_ulong != 2u64 {
         return 0i32;
     }
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
+    if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
         != 4u64
     {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jdct_h::ISLOW_MULT_TYPE>() as libc::c_ulong
+    if ::std::mem::size_of::<ISLOW_MULT_TYPE>() as c_ulong
         != 2u64
     {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
-        && crate::src::simd::x86_64::jsimd::jconst_idct_red_sse2.as_ptr() as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
+    if simd_support & JSIMD_SSE2 as c_uint != 0
+        && jconst_idct_red_sse2.as_ptr() as size_t
+            & ((1i32 << 4i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
@@ -2855,13 +2855,13 @@ pub unsafe extern "C" fn jsimd_can_idct_4x4() -> libc::c_int {
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_idct_2x2(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut compptr: *mut crate::jpeglib_h::jpeg_component_info,
-    mut coef_block: crate::jpeglib_h::JCOEFPTR,
-    mut output_buf: crate::jpeglib_h::JSAMPARRAY,
-    mut output_col: crate::jmorecfg_h::JDIMENSION,
+    mut cinfo: j_decompress_ptr,
+    mut compptr: *mut jpeg_component_info,
+    mut coef_block: JCOEFPTR,
+    mut output_buf: JSAMPARRAY,
+    mut output_col: JDIMENSION,
 ) {
-    crate::src::simd::x86_64::jsimd::jsimd_idct_2x2_sse2(
+    jsimd_idct_2x2_sse2(
         (*compptr).dct_table,
         coef_block,
         output_buf,
@@ -2871,13 +2871,13 @@ pub unsafe extern "C" fn jsimd_idct_2x2(
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_idct_4x4(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut compptr: *mut crate::jpeglib_h::jpeg_component_info,
-    mut coef_block: crate::jpeglib_h::JCOEFPTR,
-    mut output_buf: crate::jpeglib_h::JSAMPARRAY,
-    mut output_col: crate::jmorecfg_h::JDIMENSION,
+    mut cinfo: j_decompress_ptr,
+    mut compptr: *mut jpeg_component_info,
+    mut coef_block: JCOEFPTR,
+    mut output_buf: JSAMPARRAY,
+    mut output_col: JDIMENSION,
 ) {
-    crate::src::simd::x86_64::jsimd::jsimd_idct_4x4_sse2(
+    jsimd_idct_4x4_sse2(
         (*compptr).dct_table,
         coef_block,
         output_buf,
@@ -2886,40 +2886,40 @@ pub unsafe extern "C" fn jsimd_idct_4x4(
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_idct_islow() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_idct_islow() -> c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
+    if DCTSIZE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong != 2u64 {
+    if ::std::mem::size_of::<JCOEF>() as c_ulong != 2u64 {
         return 0i32;
     }
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
+    if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
         != 4u64
     {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jdct_h::ISLOW_MULT_TYPE>() as libc::c_ulong
+    if ::std::mem::size_of::<ISLOW_MULT_TYPE>() as c_ulong
         != 2u64
     {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0
-        && crate::src::simd::x86_64::jsimd::jconst_idct_islow_avx2.as_ptr()
-            as crate::stddef_h::size_t
-            & ((1i32 << 5i32) - 1i32) as libc::c_ulong
+    if simd_support & JSIMD_AVX2 as c_uint != 0
+        && jconst_idct_islow_avx2.as_ptr()
+            as size_t
+            & ((1i32 << 5i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
-        && crate::src::simd::x86_64::jsimd::jconst_idct_islow_sse2.as_ptr()
-            as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
+    if simd_support & JSIMD_SSE2 as c_uint != 0
+        && jconst_idct_islow_sse2.as_ptr()
+            as size_t
+            & ((1i32 << 4i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
@@ -2928,35 +2928,35 @@ pub unsafe extern "C" fn jsimd_can_idct_islow() -> libc::c_int {
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_idct_ifast() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_idct_ifast() -> c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
+    if DCTSIZE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong != 2u64 {
+    if ::std::mem::size_of::<JCOEF>() as c_ulong != 2u64 {
         return 0i32;
     }
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
+    if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
         != 4u64
     {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jdct_h::IFAST_MULT_TYPE>() as libc::c_ulong
+    if ::std::mem::size_of::<IFAST_MULT_TYPE>() as c_ulong
         != 2u64
     {
         return 0i32;
     }
-    if crate::jdct_h::IFAST_SCALE_BITS != 2i32 {
+    if IFAST_SCALE_BITS != 2i32 {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
-        && crate::src::simd::x86_64::jsimd::jconst_idct_ifast_sse2.as_ptr()
-            as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
+    if simd_support & JSIMD_SSE2 as c_uint != 0
+        && jconst_idct_ifast_sse2.as_ptr()
+            as size_t
+            & ((1i32 << 4i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
@@ -2965,34 +2965,34 @@ pub unsafe extern "C" fn jsimd_can_idct_ifast() -> libc::c_int {
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_idct_float() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_idct_float() -> c_int {
     init_simd();
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
+    if DCTSIZE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong != 2u64 {
+    if ::std::mem::size_of::<JCOEF>() as c_ulong != 2u64 {
         return 0i32;
     }
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
+    if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
         != 4u64
     {
         return 0i32;
     }
-    if ::std::mem::size_of::<libc::c_float>() as libc::c_ulong != 4u64 {
+    if ::std::mem::size_of::<c_float>() as c_ulong != 4u64 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jdct_h::FLOAT_MULT_TYPE>() as libc::c_ulong
+    if ::std::mem::size_of::<FLOAT_MULT_TYPE>() as c_ulong
         != 4u64
     {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
-        && crate::src::simd::x86_64::jsimd::jconst_idct_float_sse2.as_ptr()
-            as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
+    if simd_support & JSIMD_SSE2 as c_uint != 0
+        && jconst_idct_float_sse2.as_ptr()
+            as size_t
+            & ((1i32 << 4i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
@@ -3002,21 +3002,21 @@ pub unsafe extern "C" fn jsimd_can_idct_float() -> libc::c_int {
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_idct_islow(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut compptr: *mut crate::jpeglib_h::jpeg_component_info,
-    mut coef_block: crate::jpeglib_h::JCOEFPTR,
-    mut output_buf: crate::jpeglib_h::JSAMPARRAY,
-    mut output_col: crate::jmorecfg_h::JDIMENSION,
+    mut cinfo: j_decompress_ptr,
+    mut compptr: *mut jpeg_component_info,
+    mut coef_block: JCOEFPTR,
+    mut output_buf: JSAMPARRAY,
+    mut output_col: JDIMENSION,
 ) {
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
-        crate::src::simd::x86_64::jsimd::jsimd_idct_islow_avx2(
+    if simd_support & JSIMD_AVX2 as c_uint != 0 {
+        jsimd_idct_islow_avx2(
             (*compptr).dct_table,
             coef_block,
             output_buf,
             output_col,
         );
     } else {
-        crate::src::simd::x86_64::jsimd::jsimd_idct_islow_sse2(
+        jsimd_idct_islow_sse2(
             (*compptr).dct_table,
             coef_block,
             output_buf,
@@ -3027,13 +3027,13 @@ pub unsafe extern "C" fn jsimd_idct_islow(
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_idct_ifast(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut compptr: *mut crate::jpeglib_h::jpeg_component_info,
-    mut coef_block: crate::jpeglib_h::JCOEFPTR,
-    mut output_buf: crate::jpeglib_h::JSAMPARRAY,
-    mut output_col: crate::jmorecfg_h::JDIMENSION,
+    mut cinfo: j_decompress_ptr,
+    mut compptr: *mut jpeg_component_info,
+    mut coef_block: JCOEFPTR,
+    mut output_buf: JSAMPARRAY,
+    mut output_col: JDIMENSION,
 ) {
-    crate::src::simd::x86_64::jsimd::jsimd_idct_ifast_sse2(
+    jsimd_idct_ifast_sse2(
         (*compptr).dct_table,
         coef_block,
         output_buf,
@@ -3043,13 +3043,13 @@ pub unsafe extern "C" fn jsimd_idct_ifast(
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_idct_float(
-    mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut compptr: *mut crate::jpeglib_h::jpeg_component_info,
-    mut coef_block: crate::jpeglib_h::JCOEFPTR,
-    mut output_buf: crate::jpeglib_h::JSAMPARRAY,
-    mut output_col: crate::jmorecfg_h::JDIMENSION,
+    mut cinfo: j_decompress_ptr,
+    mut compptr: *mut jpeg_component_info,
+    mut coef_block: JCOEFPTR,
+    mut output_buf: JSAMPARRAY,
+    mut output_col: JDIMENSION,
 ) {
-    crate::src::simd::x86_64::jsimd::jsimd_idct_float_sse2(
+    jsimd_idct_float_sse2(
         (*compptr).dct_table,
         coef_block,
         output_buf,
@@ -3058,19 +3058,19 @@ pub unsafe extern "C" fn jsimd_idct_float(
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_huff_encode_one_block() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_huff_encode_one_block() -> c_int {
     init_simd();
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
+    if DCTSIZE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong != 2u64 {
+    if ::std::mem::size_of::<JCOEF>() as c_ulong != 2u64 {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
+    if simd_support & JSIMD_SSE2 as c_uint != 0
         && simd_huffman != 0
-        && crate::src::simd::x86_64::jsimd::jconst_huff_encode_one_block.as_ptr()
-            as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
+        && jconst_huff_encode_one_block.as_ptr()
+            as size_t
+            & ((1i32 << 4i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
@@ -3080,14 +3080,14 @@ pub unsafe extern "C" fn jsimd_can_huff_encode_one_block() -> libc::c_int {
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_huff_encode_one_block(
-    mut state: *mut libc::c_void,
-    mut buffer: *mut crate::jmorecfg_h::JOCTET,
-    mut block: crate::jpeglib_h::JCOEFPTR,
-    mut last_dc_val: libc::c_int,
-    mut dctbl: *mut crate::src::jchuff::c_derived_tbl,
-    mut actbl: *mut crate::src::jchuff::c_derived_tbl,
-) -> *mut crate::jmorecfg_h::JOCTET {
-    return crate::src::simd::x86_64::jsimd::jsimd_huff_encode_one_block_sse2(
+    mut state: *mut c_void,
+    mut buffer: *mut JOCTET,
+    mut block: JCOEFPTR,
+    mut last_dc_val: c_int,
+    mut dctbl: *mut c_derived_tbl,
+    mut actbl: *mut c_derived_tbl,
+) -> *mut JOCTET {
+    return jsimd_huff_encode_one_block_sse2(
         state,
         buffer,
         block,
@@ -3098,18 +3098,18 @@ pub unsafe extern "C" fn jsimd_huff_encode_one_block(
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_encode_mcu_AC_first_prepare() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_encode_mcu_AC_first_prepare() -> c_int {
     init_simd();
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
+    if DCTSIZE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong != 2u64 {
+    if ::std::mem::size_of::<JCOEF>() as c_ulong != 2u64 {
         return 0i32;
     }
-    if crate::jconfigint_h::SIZEOF_SIZE_T != 8i32 {
+    if SIZEOF_SIZE_T != 8i32 {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0 {
+    if simd_support & JSIMD_SSE2 as c_uint != 0 {
         return 1i32;
     }
     return 0i32;
@@ -3117,14 +3117,14 @@ pub unsafe extern "C" fn jsimd_can_encode_mcu_AC_first_prepare() -> libc::c_int 
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_encode_mcu_AC_first_prepare(
-    mut block: *const crate::jmorecfg_h::JCOEF,
-    mut jpeg_natural_order_start: *const libc::c_int,
-    mut Sl: libc::c_int,
-    mut Al: libc::c_int,
-    mut values: *mut crate::jmorecfg_h::JCOEF,
-    mut zerobits: *mut crate::stddef_h::size_t,
+    mut block: *const JCOEF,
+    mut jpeg_natural_order_start: *const c_int,
+    mut Sl: c_int,
+    mut Al: c_int,
+    mut values: *mut JCOEF,
+    mut zerobits: *mut size_t,
 ) {
-    crate::src::simd::x86_64::jsimd::jsimd_encode_mcu_AC_first_prepare_sse2(
+    jsimd_encode_mcu_AC_first_prepare_sse2(
         block,
         jpeg_natural_order_start,
         Sl,
@@ -3135,18 +3135,18 @@ pub unsafe extern "C" fn jsimd_encode_mcu_AC_first_prepare(
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jsimd_can_encode_mcu_AC_refine_prepare() -> libc::c_int {
+pub unsafe extern "C" fn jsimd_can_encode_mcu_AC_refine_prepare() -> c_int {
     init_simd();
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
+    if DCTSIZE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong != 2u64 {
+    if ::std::mem::size_of::<JCOEF>() as c_ulong != 2u64 {
         return 0i32;
     }
-    if crate::jconfigint_h::SIZEOF_SIZE_T != 8i32 {
+    if SIZEOF_SIZE_T != 8i32 {
         return 0i32;
     }
-    if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0 {
+    if simd_support & JSIMD_SSE2 as c_uint != 0 {
         return 1i32;
     }
     return 0i32;
@@ -3154,14 +3154,14 @@ pub unsafe extern "C" fn jsimd_can_encode_mcu_AC_refine_prepare() -> libc::c_int
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_encode_mcu_AC_refine_prepare(
-    mut block: *const crate::jmorecfg_h::JCOEF,
-    mut jpeg_natural_order_start: *const libc::c_int,
-    mut Sl: libc::c_int,
-    mut Al: libc::c_int,
-    mut absvalues: *mut crate::jmorecfg_h::JCOEF,
-    mut bits: *mut crate::stddef_h::size_t,
-) -> libc::c_int {
-    return crate::src::simd::x86_64::jsimd::jsimd_encode_mcu_AC_refine_prepare_sse2(
+    mut block: *const JCOEF,
+    mut jpeg_natural_order_start: *const c_int,
+    mut Sl: c_int,
+    mut Al: c_int,
+    mut absvalues: *mut JCOEF,
+    mut bits: *mut size_t,
+) -> c_int {
+    return jsimd_encode_mcu_AC_refine_prepare_sse2(
         block,
         jpeg_natural_order_start,
         Sl,
