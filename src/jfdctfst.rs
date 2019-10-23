@@ -107,27 +107,28 @@ pub use crate::jpeglib_h::DCTSIZE;
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_fdct_ifast(mut data: *mut crate::jdct_h::DCTELEM) {
-    let mut tmp0: crate::jdct_h::DCTELEM = 0;
-    let mut tmp1: crate::jdct_h::DCTELEM = 0;
-    let mut tmp2: crate::jdct_h::DCTELEM = 0;
-    let mut tmp3: crate::jdct_h::DCTELEM = 0;
-    let mut tmp4: crate::jdct_h::DCTELEM = 0;
-    let mut tmp5: crate::jdct_h::DCTELEM = 0;
-    let mut tmp6: crate::jdct_h::DCTELEM = 0;
-    let mut tmp7: crate::jdct_h::DCTELEM = 0;
-    let mut tmp10: crate::jdct_h::DCTELEM = 0;
-    let mut tmp11: crate::jdct_h::DCTELEM = 0;
-    let mut tmp12: crate::jdct_h::DCTELEM = 0;
-    let mut tmp13: crate::jdct_h::DCTELEM = 0;
-    let mut z1: crate::jdct_h::DCTELEM = 0;
-    let mut z2: crate::jdct_h::DCTELEM = 0;
-    let mut z3: crate::jdct_h::DCTELEM = 0;
-    let mut z4: crate::jdct_h::DCTELEM = 0;
-    let mut z5: crate::jdct_h::DCTELEM = 0;
-    let mut z11: crate::jdct_h::DCTELEM = 0;
-    let mut z13: crate::jdct_h::DCTELEM = 0;
-    let mut dataptr: *mut crate::jdct_h::DCTELEM = ::std::ptr::null_mut::< crate::jdct_h::DCTELEM>();
-    let mut ctr: libc::c_int = 0;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+     let mut tmp0:  crate::jdct_h::DCTELEM =  0; let mut tmp1:  crate::jdct_h::DCTELEM =  0; let mut tmp2:  crate::jdct_h::DCTELEM =  0; let mut tmp3:  crate::jdct_h::DCTELEM =  0; let mut tmp4:  crate::jdct_h::DCTELEM =  0; let mut tmp5:  crate::jdct_h::DCTELEM =  0; let mut tmp6:  crate::jdct_h::DCTELEM =  0; let mut tmp7:  crate::jdct_h::DCTELEM =  0; let mut tmp10:  crate::jdct_h::DCTELEM =  0; let mut tmp11:  crate::jdct_h::DCTELEM =  0; let mut tmp12:  crate::jdct_h::DCTELEM =  0; let mut tmp13:  crate::jdct_h::DCTELEM =  0; let mut z1:  crate::jdct_h::DCTELEM =  0; let mut z2:  crate::jdct_h::DCTELEM =  0; let mut z3:  crate::jdct_h::DCTELEM =  0; let mut z4:  crate::jdct_h::DCTELEM =  0; let mut z5:  crate::jdct_h::DCTELEM =  0; let mut z11:  crate::jdct_h::DCTELEM =  0; let mut z13:  crate::jdct_h::DCTELEM =  0; let mut dataptr:  *mut crate::jdct_h::DCTELEM =
+     ::std::ptr::null_mut::< crate::jdct_h::DCTELEM>(); let mut ctr:  libc::c_int =  0;
     /* Pass 1: process rows. */
     dataptr = data;
     ctr = crate::jpeglib_h::DCTSIZE - 1i32;

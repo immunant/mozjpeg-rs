@@ -404,7 +404,7 @@ unsafe extern "C" fn get_soi(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
 ) -> crate::jmorecfg_h::boolean
 /* Process an SOI marker */ {
-    let mut i: libc::c_int = 0;
+     let mut i:  libc::c_int =  0;
     (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_SOI as libc::c_int;
     Some(
         (*(*cinfo).err)
@@ -451,10 +451,11 @@ unsafe extern "C" fn get_sof(
     mut is_arith: crate::jmorecfg_h::boolean,
 ) -> crate::jmorecfg_h::boolean
 /* Process a SOFn marker */ {
-    let mut length: crate::jpegint_h::JLONG = 0;
-    let mut c: libc::c_int = 0;
-    let mut ci: libc::c_int = 0;
-    let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
+    
+    
+    
+     let mut length:  crate::jpegint_h::JLONG =  0; let mut ci:  libc::c_int =  0; let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
+    
         ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     let mut datasrc: *mut crate::jpeglib_h::jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const crate::jmorecfg_h::JOCTET = (*datasrc).next_input_byte;
@@ -671,7 +672,7 @@ unsafe extern "C" fn get_sof(
     ci = 0i32;
     compptr = (*cinfo).comp_info;
     while ci < (*cinfo).num_components {
-        (*compptr).component_index = ci;
+         let mut c:  libc::c_int =  0;(*compptr).component_index = ci;
         if bytes_in_buffer == 0u64 {
             if Some(
                 (*datasrc)
@@ -753,15 +754,14 @@ unsafe extern "C" fn get_sos(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
 ) -> crate::jmorecfg_h::boolean
 /* Process a SOS marker */ {
-    let mut length: crate::jpegint_h::JLONG = 0; /* Number of components */
-    let mut i: libc::c_int = 0;
-    let mut ci: libc::c_int = 0;
-    let mut n: libc::c_int = 0;
-    let mut c: libc::c_int = 0;
-    let mut cc: libc::c_int = 0;
-    let mut pi: libc::c_int = 0;
-    let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
+     /* Number of components */
+    
+    
+    
+    
+    
+    
+     let mut length:  crate::jpegint_h::JLONG =  0; let mut i:  libc::c_int =  0; let mut n:  libc::c_int =  0; let mut c:  libc::c_int =  0;
     let mut datasrc: *mut crate::jpeglib_h::jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const crate::jmorecfg_h::JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: crate::stddef_h::size_t = (*datasrc).bytes_in_buffer;
@@ -858,7 +858,9 @@ unsafe extern "C" fn get_sos(
     }
     i = 0i32;
     while i < n {
-        let mut current_block_80: u64;
+         let mut ci:  libc::c_int =  0; let mut cc:  libc::c_int =  0; let mut pi:  libc::c_int =  0; let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
+    
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>(); let mut current_block_80:  u64;
         if bytes_in_buffer == 0u64 {
             if Some(
                 (*datasrc)
@@ -1043,14 +1045,13 @@ unsafe extern "C" fn get_dht(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
 ) -> crate::jmorecfg_h::boolean
 /* Process a DHT marker */ {
-    let mut length: crate::jpegint_h::JLONG = 0;
-    let mut bits: [crate::jmorecfg_h::UINT8; 17] = [0; 17];
-    let mut huffval: [crate::jmorecfg_h::UINT8; 256] = [0; 256];
-    let mut i: libc::c_int = 0;
-    let mut index: libc::c_int = 0;
-    let mut count: libc::c_int = 0;
-    let mut htblptr: *mut *mut crate::jpeglib_h::JHUFF_TBL =
-        ::std::ptr::null_mut::< *mut crate::jpeglib_h::JHUFF_TBL>();
+    
+    
+    
+    
+    
+    
+     let mut length:  crate::jpegint_h::JLONG =  0;
     let mut datasrc: *mut crate::jpeglib_h::jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const crate::jmorecfg_h::JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: crate::stddef_h::size_t = (*datasrc).bytes_in_buffer;
@@ -1092,7 +1093,9 @@ unsafe extern "C" fn get_dht(
     length += *fresh20 as libc::c_long;
     length -= 2i64;
     while length > 16i64 {
-        if bytes_in_buffer == 0u64 {
+         let mut bits:  [crate::jmorecfg_h::UINT8; 17] =  [0; 17]; let mut huffval:  [crate::jmorecfg_h::UINT8; 256] =  [0; 256]; let mut i:  libc::c_int =  0; let mut index:  libc::c_int =  0; let mut count:  libc::c_int =  0; let mut htblptr:  *mut *mut crate::jpeglib_h::JHUFF_TBL =
+    
+        ::std::ptr::null_mut::< *mut crate::jpeglib_h::JHUFF_TBL>();if bytes_in_buffer == 0u64 {
             if Some(
                 (*datasrc)
                     .fill_input_buffer
@@ -1292,12 +1295,12 @@ unsafe extern "C" fn get_dqt(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
 ) -> crate::jmorecfg_h::boolean
 /* Process a DQT marker */ {
-    let mut length: crate::jpegint_h::JLONG = 0;
-    let mut n: libc::c_int = 0;
-    let mut i: libc::c_int = 0;
-    let mut prec: libc::c_int = 0;
-    let mut tmp: libc::c_uint = 0;
-    let mut quant_ptr: *mut crate::jpeglib_h::JQUANT_TBL = ::std::ptr::null_mut::< crate::jpeglib_h::JQUANT_TBL>();
+    
+    
+    
+    
+    
+     let mut length:  crate::jpegint_h::JLONG =  0;
     let mut datasrc: *mut crate::jpeglib_h::jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const crate::jmorecfg_h::JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: crate::stddef_h::size_t = (*datasrc).bytes_in_buffer;
@@ -1339,7 +1342,8 @@ unsafe extern "C" fn get_dqt(
     length += *fresh25 as libc::c_long;
     length -= 2i64;
     while length > 0i64 {
-        if bytes_in_buffer == 0u64 {
+         let mut n:  libc::c_int =  0; let mut i:  libc::c_int =  0; let mut prec:  libc::c_int =  0; let mut quant_ptr:  *mut crate::jpeglib_h::JQUANT_TBL =
+     ::std::ptr::null_mut::< crate::jpeglib_h::JQUANT_TBL>();if bytes_in_buffer == 0u64 {
             if Some(
                 (*datasrc)
                     .fill_input_buffer
@@ -1387,7 +1391,7 @@ unsafe extern "C" fn get_dqt(
         quant_ptr = (*cinfo).quant_tbl_ptrs[n as usize];
         i = 0i32;
         while i < crate::jpeglib_h::DCTSIZE2 {
-            if prec != 0 {
+             let mut tmp:  libc::c_uint =  0;if prec != 0 {
                 if bytes_in_buffer == 0u64 {
                     if Some(
                         (*datasrc)
@@ -1497,8 +1501,8 @@ unsafe extern "C" fn get_dri(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
 ) -> crate::jmorecfg_h::boolean
 /* Process a DRI marker */ {
-    let mut length: crate::jpegint_h::JLONG = 0;
-    let mut tmp: libc::c_uint = 0;
+    
+     let mut length:  crate::jpegint_h::JLONG =  0; let mut tmp:  libc::c_uint =  0;
     let mut datasrc: *mut crate::jpeglib_h::jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const crate::jmorecfg_h::JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: crate::stddef_h::size_t = (*datasrc).bytes_in_buffer;
@@ -1793,10 +1797,10 @@ unsafe extern "C" fn examine_app14(
  * datalen is # of bytes at data[], remaining is length of rest of marker data.
  */
 {
-    let mut version: libc::c_uint = 0;
-    let mut flags0: libc::c_uint = 0;
-    let mut flags1: libc::c_uint = 0;
-    let mut transform: libc::c_uint = 0;
+    
+    
+    
+    
     if datalen >= APP14_DATA_LEN as libc::c_uint
         && *data.offset(0) as libc::c_int == 0x41i32
         && *data.offset(1) as libc::c_int == 0x64i32
@@ -1805,7 +1809,7 @@ unsafe extern "C" fn examine_app14(
         && *data.offset(4) as libc::c_int == 0x65i32
     {
         /* Found Adobe APP14 marker */
-        version = (((*data.offset(5) as libc::c_int) << 8i32) + *data.offset(6) as libc::c_int)
+         let mut version:  libc::c_uint =  0; let mut flags0:  libc::c_uint =  0; let mut flags1:  libc::c_uint =  0; let mut transform:  libc::c_uint =  0;version = (((*data.offset(5) as libc::c_int) << 8i32) + *data.offset(6) as libc::c_int)
             as libc::c_uint;
         flags0 = (((*data.offset(7) as libc::c_int) << 8i32) + *data.offset(8) as libc::c_int)
             as libc::c_uint;
@@ -1843,10 +1847,10 @@ unsafe extern "C" fn get_interesting_appn(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
 ) -> crate::jmorecfg_h::boolean
 /* Process an APP0 or APP14 marker without saving it */ {
-    let mut length: crate::jpegint_h::JLONG = 0;
-    let mut b: [crate::jmorecfg_h::JOCTET; 14] = [0; 14];
-    let mut i: libc::c_uint = 0;
-    let mut numtoread: libc::c_uint = 0;
+    
+    
+    
+     let mut length:  crate::jpegint_h::JLONG =  0; let mut b:  [crate::jmorecfg_h::JOCTET; 14] =  [0; 14]; let mut i:  libc::c_uint =  0; let mut numtoread:  libc::c_uint =  0;
     let mut datasrc: *mut crate::jpeglib_h::jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const crate::jmorecfg_h::JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: crate::stddef_h::size_t = (*datasrc).bytes_in_buffer;
@@ -1958,12 +1962,13 @@ unsafe extern "C" fn save_marker(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
 ) -> crate::jmorecfg_h::boolean
 /* Save an APPn or COM marker into the marker list */ {
-    let mut marker: my_marker_ptr = (*cinfo).marker as my_marker_ptr;
+     let mut bytes_read:  libc::c_uint =  0; let mut data_length:  libc::c_uint =  0; let mut data:  *mut crate::jmorecfg_h::JOCTET =
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>(); let mut length:  crate::jpegint_h::JLONG =  0i64;let mut marker: my_marker_ptr = (*cinfo).marker as my_marker_ptr;
     let mut cur_marker: crate::jpeglib_h::jpeg_saved_marker_ptr = (*marker).cur_marker;
-    let mut bytes_read: libc::c_uint = 0;
-    let mut data_length: libc::c_uint = 0;
-    let mut data: *mut crate::jmorecfg_h::JOCTET = ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>();
-    let mut length: crate::jpegint_h::JLONG = 0i64;
+    
+    
+    
+    
     let mut datasrc: *mut crate::jpeglib_h::jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const crate::jmorecfg_h::JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: crate::stddef_h::size_t = (*datasrc).bytes_in_buffer;
@@ -2007,9 +2012,7 @@ unsafe extern "C" fn save_marker(
         length += *fresh38 as libc::c_long;
         length -= 2i64;
         if length >= 0i64 {
-            /* watch out for bogus length word */
-            /* figure out how much we want to save */
-            let mut limit: libc::c_uint = 0;
+             let mut limit:  libc::c_uint =  0;
             if (*cinfo).unread_marker == M_COM as libc::c_int {
                 limit = (*marker).length_limit_COM
             } else {
@@ -2144,7 +2147,7 @@ unsafe extern "C" fn skip_variable(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
 ) -> crate::jmorecfg_h::boolean
 /* Skip over an unknown or uninteresting variable-length marker */ {
-    let mut length: crate::jpegint_h::JLONG = 0; /* do before skip_input_data */
+     let mut length:  crate::jpegint_h::JLONG =  0; /* do before skip_input_data */
     let mut datasrc: *mut crate::jpeglib_h::jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const crate::jmorecfg_h::JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: crate::stddef_h::size_t = (*datasrc).bytes_in_buffer;
@@ -2218,7 +2221,7 @@ unsafe extern "C" fn skip_variable(
 unsafe extern "C" fn next_marker(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
 ) -> crate::jmorecfg_h::boolean {
-    let mut c: libc::c_int = 0;
+     let mut c:  libc::c_int =  0;
     let mut datasrc: *mut crate::jpeglib_h::jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const crate::jmorecfg_h::JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: crate::stddef_h::size_t = (*datasrc).bytes_in_buffer;
@@ -2336,8 +2339,8 @@ unsafe extern "C" fn first_marker(
  * If an application wants to process non-JFIF files, it must seek to the
  * SOI before calling the JPEG library.
  */ {
-    let mut c: libc::c_int = 0;
-    let mut c2: libc::c_int = 0;
+    
+     let mut c:  libc::c_int =  0; let mut c2:  libc::c_int =  0;
     let mut datasrc: *mut crate::jpeglib_h::jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const crate::jmorecfg_h::JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: crate::stddef_h::size_t = (*datasrc).bytes_in_buffer;
@@ -2406,7 +2409,7 @@ unsafe extern "C" fn read_markers(mut cinfo: crate::jpeglib_h::j_decompress_ptr)
     /* Collect the marker proper, unless we already did. */
     /* NB: first_marker() enforces the requirement that SOI appear first. */
     {
-        if (*cinfo).unread_marker == 0i32 {
+         let mut current_block_42:  u64;if (*cinfo).unread_marker == 0i32 {
             if (*(*cinfo).marker).saw_SOI == 0 {
                 if first_marker(cinfo) == 0 {
                     return crate::jpeglib_h::JPEG_SUSPENDED;
@@ -2415,7 +2418,7 @@ unsafe extern "C" fn read_markers(mut cinfo: crate::jpeglib_h::j_decompress_ptr)
                 return crate::jpeglib_h::JPEG_SUSPENDED;
             }
         }
-        let mut current_block_42: u64;
+        
         /* At this point cinfo->unread_marker contains the marker code and the
          * input point is just past the marker proper, but before any parameters.
          * A suspension will cause us to return with this state still true.
@@ -2771,7 +2774,7 @@ pub unsafe extern "C" fn jpeg_resync_to_restart(
     mut desired: libc::c_int,
 ) -> crate::jmorecfg_h::boolean {
     let mut marker: libc::c_int = (*cinfo).unread_marker;
-    let mut action: libc::c_int = 1i32;
+    
     /* Always put up a warning. */
     (*(*cinfo).err).msg_code = crate::src::jerror::JWRN_MUST_RESYNC as libc::c_int;
     (*(*cinfo).err).msg_parm.i[0] = marker;
@@ -2785,7 +2788,7 @@ pub unsafe extern "C" fn jpeg_resync_to_restart(
     loop
     /* Outer loop handles repeated decision after scanning forward. */
     {
-        if marker < M_SOF0 as libc::c_int {
+         let mut action:  libc::c_int =  1i32;if marker < M_SOF0 as libc::c_int {
             action = 2i32
         } else if marker < M_RST0 as libc::c_int || marker > M_RST7 as libc::c_int {
             /* invalid marker */
@@ -2857,8 +2860,8 @@ unsafe extern "C" fn reset_marker_reader(mut cinfo: crate::jpeglib_h::j_decompre
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_marker_reader(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
-    let mut marker: my_marker_ptr = ::std::ptr::null_mut::< my_marker_reader>();
-    let mut i: libc::c_int = 0;
+    
+     let mut marker:  my_marker_ptr =  ::std::ptr::null_mut::< my_marker_reader>(); let mut i:  libc::c_int =  0;
     /* Create subobject in permanent pool */
     marker = Some(
         (*(*cinfo).mem)
@@ -2932,8 +2935,8 @@ pub unsafe extern "C" fn jpeg_save_markers(
     mut marker_code: libc::c_int,
     mut length_limit: libc::c_uint,
 ) {
-    let mut marker: my_marker_ptr = (*cinfo).marker as my_marker_ptr;
-    let mut maxlength: libc::c_long = 0;
+     let mut maxlength:  libc::c_long =  0;let mut marker: my_marker_ptr = (*cinfo).marker as my_marker_ptr;
+    
     let mut processor: crate::jpeglib_h::jpeg_marker_parser_method = None;
     /* Length limit mustn't be larger than what we can allocate
      * (should only be a concern in a 16-bit environment).

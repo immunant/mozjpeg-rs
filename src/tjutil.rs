@@ -37,7 +37,8 @@ pub use crate::stdlib::timezone;
 #[no_mangle]
 
 pub unsafe extern "C" fn getTime() -> libc::c_double {
-    let mut tv: crate::stdlib::timeval = crate::stdlib::timeval {
+     let mut tv:  crate::stdlib::timeval =
+     crate::stdlib::timeval {
         tv_sec: 0,
         tv_usec: 0,
     };

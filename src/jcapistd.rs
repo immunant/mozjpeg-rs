@@ -318,8 +318,8 @@ pub unsafe extern "C" fn jpeg_write_scanlines(
     mut scanlines: crate::jpeglib_h::JSAMPARRAY,
     mut num_lines: crate::jmorecfg_h::JDIMENSION,
 ) -> crate::jmorecfg_h::JDIMENSION {
-    let mut row_ctr: crate::jmorecfg_h::JDIMENSION = 0;
-    let mut rows_left: crate::jmorecfg_h::JDIMENSION = 0;
+    
+     let mut row_ctr:  crate::jmorecfg_h::JDIMENSION =  0; let mut rows_left:  crate::jmorecfg_h::JDIMENSION =  0;
     if (*cinfo).global_state != crate::jpegint_h::CSTATE_SCANNING {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
         (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
@@ -390,7 +390,7 @@ pub unsafe extern "C" fn jpeg_write_raw_data(
     mut data: crate::jpeglib_h::JSAMPIMAGE,
     mut num_lines: crate::jmorecfg_h::JDIMENSION,
 ) -> crate::jmorecfg_h::JDIMENSION {
-    let mut lines_per_iMCU_row: crate::jmorecfg_h::JDIMENSION = 0;
+     let mut lines_per_iMCU_row:  crate::jmorecfg_h::JDIMENSION =  0;
     if (*cinfo).global_state != crate::jpegint_h::CSTATE_RAW_OK {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
         (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;

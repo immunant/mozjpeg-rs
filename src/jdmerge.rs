@@ -233,9 +233,9 @@ pub const RGB_PIXELSIZE: libc::c_int = crate::jmorecfg_h::EXT_XRGB_PIXELSIZE;
  */
 
 unsafe extern "C" fn build_ycc_rgb_table(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
-    let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
-    let mut i: libc::c_int = 0;
-    let mut x: crate::jpegint_h::JLONG = 0;
+     let mut i:  libc::c_int =  0; let mut x:  crate::jpegint_h::JLONG =  0;let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
+    
+    
     (*upsample).Cr_r_tab = Some(
         (*(*cinfo).mem)
             .alloc_small
@@ -341,9 +341,9 @@ unsafe extern "C" fn merged_2v_upsample(
 )
 /* 2:1 vertical sampling case: may need a spare row. */
 {
-    let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr; /* number of rows returned to caller */
-    let mut work_ptrs: [crate::jpeglib_h::JSAMPROW; 2] = [::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); 2];
-    let mut num_rows: crate::jmorecfg_h::JDIMENSION = 0;
+     let mut num_rows:  crate::jmorecfg_h::JDIMENSION =  0;let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr; /* number of rows returned to caller */
+    
+    
     if (*upsample).spare_full != 0 {
         /* If we have a spare row saved from a previous cycle, just return it. */
         let mut size: crate::jmorecfg_h::JDIMENSION = (*upsample).out_row_width;
@@ -364,7 +364,8 @@ unsafe extern "C" fn merged_2v_upsample(
         (*upsample).spare_full = crate::jmorecfg_h::FALSE
     } else {
         /* Figure number of rows to return to caller. */
-        num_rows = 2u32;
+         let mut work_ptrs:  [crate::jpeglib_h::JSAMPROW; 2] =
+     [::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); 2];num_rows = 2u32;
         /* Not more than the distance to the end of the image. */
         if num_rows > (*upsample).rows_to_go {
             num_rows = (*upsample).rows_to_go
@@ -592,7 +593,7 @@ pub(crate) static mut dither_matrix: [crate::jpegint_h::JLONG; 4] = [
 #[inline(always)]
 
 unsafe extern "C" fn is_big_endian() -> crate::jmorecfg_h::boolean {
-    let mut test_value: libc::c_int = 1i32;
+     let mut test_value:  libc::c_int =  1i32;
     if *(&mut test_value as *mut libc::c_int as *mut libc::c_char) as libc::c_int != 1i32 {
         return crate::jmorecfg_h::TRUE;
     }
@@ -700,7 +701,7 @@ unsafe extern "C" fn h2v2_merged_upsample_565D(
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_merged_upsampler(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
-    let mut upsample: my_upsample_ptr = ::std::ptr::null_mut::< my_upsampler>();
+     let mut upsample:  my_upsample_ptr =  ::std::ptr::null_mut::< my_upsampler>();
     upsample = Some(
         (*(*cinfo).mem)
             .alloc_small

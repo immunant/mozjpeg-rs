@@ -240,8 +240,9 @@ pub struct my_input_controller {
 unsafe extern "C" fn initial_setup(mut cinfo: crate::jpeglib_h::j_decompress_ptr)
 /* Called once, when first SOS marker is reached */
 {
-    let mut ci: libc::c_int = 0;
-    let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
+    
+     let mut ci:  libc::c_int =  0; let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
+    
         ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     /* Make sure image isn't bigger than I can handle */
     if (*cinfo).image_height as libc::c_long > crate::jmorecfg_h::JPEG_MAX_DIMENSION
@@ -375,10 +376,11 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: crate::jpeglib_h::j_decompress_pt
 /* Do computations that are needed before processing a JPEG scan */
 /* cinfo->comps_in_scan and cinfo->cur_comp_info[] were set from SOS marker */
 {
-    let mut ci: libc::c_int = 0;
-    let mut mcublks: libc::c_int = 0;
-    let mut tmp: libc::c_int = 0;
-    let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
+    
+    
+    
+     let mut tmp:  libc::c_int =  0; let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
+    
         ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     if (*cinfo).comps_in_scan == 1i32 {
         /* Noninterleaved (single-component) scan */
@@ -406,7 +408,7 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: crate::jpeglib_h::j_decompress_pt
         (*cinfo).MCU_membership[0] = 0i32
     } else {
         /* Interleaved (multi-component) scan */
-        if (*cinfo).comps_in_scan <= 0i32
+         let mut ci:  libc::c_int =  0;if (*cinfo).comps_in_scan <= 0i32
             || (*cinfo).comps_in_scan > crate::jpeglib_h::MAX_COMPS_IN_SCAN
         {
             (*(*cinfo).err).msg_code = crate::src::jerror::JERR_COMPONENT_COUNT as libc::c_int;
@@ -433,7 +435,7 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: crate::jpeglib_h::j_decompress_pt
         (*cinfo).blocks_in_MCU = 0i32;
         ci = 0i32;
         while ci < (*cinfo).comps_in_scan {
-            compptr = (*cinfo).cur_comp_info[ci as usize];
+             let mut mcublks:  libc::c_int =  0;compptr = (*cinfo).cur_comp_info[ci as usize];
             /* Sampling factors give # of blocks of component in each MCU */
             (*compptr).MCU_width = (*compptr).h_samp_factor;
             (*compptr).MCU_height = (*compptr).v_samp_factor;
@@ -503,18 +505,20 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: crate::jpeglib_h::j_decompress_pt
  */
 
 unsafe extern "C" fn latch_quant_tables(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
-    let mut ci: libc::c_int = 0;
-    let mut qtblno: libc::c_int = 0;
-    let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
-    let mut qtbl: *mut crate::jpeglib_h::JQUANT_TBL = ::std::ptr::null_mut::< crate::jpeglib_h::JQUANT_TBL>();
+    
+    
+    
+     let mut ci:  libc::c_int =  0;
     ci = 0i32;
     while ci < (*cinfo).comps_in_scan {
-        compptr = (*cinfo).cur_comp_info[ci as usize];
+         let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
+    
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();compptr = (*cinfo).cur_comp_info[ci as usize];
         /* No work if we already saved Q-table for this component */
         if (*compptr).quant_table.is_null() {
             /* Make sure specified quantization table is present */
-            qtblno = (*compptr).quant_tbl_no;
+             let mut qtblno:  libc::c_int =  0; let mut qtbl:  *mut crate::jpeglib_h::JQUANT_TBL =
+     ::std::ptr::null_mut::< crate::jpeglib_h::JQUANT_TBL>();qtblno = (*compptr).quant_tbl_no;
             if qtblno < 0i32
                 || qtblno >= crate::jpeglib_h::NUM_QUANT_TBLS
                 || (*cinfo).quant_tbl_ptrs[qtblno as usize].is_null()
@@ -599,8 +603,8 @@ unsafe extern "C" fn finish_input_pass(mut cinfo: crate::jpeglib_h::j_decompress
  */
 
 unsafe extern "C" fn consume_markers(mut cinfo: crate::jpeglib_h::j_decompress_ptr) -> libc::c_int {
-    let mut inputctl: my_inputctl_ptr = (*cinfo).inputctl as my_inputctl_ptr;
-    let mut val: libc::c_int = 0;
+     let mut val:  libc::c_int =  0;let mut inputctl: my_inputctl_ptr = (*cinfo).inputctl as my_inputctl_ptr;
+    
     if (*inputctl).pub_0.eoi_reached != 0 {
         /* After hitting EOI, read no further */
         return 2i32;
@@ -700,7 +704,8 @@ unsafe extern "C" fn reset_input_controller(mut cinfo: crate::jpeglib_h::j_decom
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_input_controller(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
-    let mut inputctl: my_inputctl_ptr = ::std::ptr::null_mut::< my_input_controller>();
+     let mut inputctl:  my_inputctl_ptr =
+     ::std::ptr::null_mut::< my_input_controller>();
     /* Create subobject in permanent pool */
     inputctl = Some(
         (*(*cinfo).mem)

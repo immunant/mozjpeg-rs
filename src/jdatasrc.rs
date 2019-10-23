@@ -282,8 +282,8 @@ unsafe extern "C" fn init_mem_source(mut cinfo: crate::jpeglib_h::j_decompress_p
 unsafe extern "C" fn fill_input_buffer(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
 ) -> crate::jmorecfg_h::boolean {
-    let mut src: my_src_ptr = (*cinfo).src as my_src_ptr;
-    let mut nbytes: crate::stddef_h::size_t = 0;
+     let mut nbytes:  crate::stddef_h::size_t =  0;let mut src: my_src_ptr = (*cinfo).src as my_src_ptr;
+    
     nbytes = crate::stdlib::fread(
         (*src).buffer as *mut libc::c_void,
         1u64,
@@ -412,7 +412,7 @@ pub unsafe extern "C" fn jpeg_stdio_src(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
     mut infile: *mut crate::stdlib::FILE,
 ) {
-    let mut src: my_src_ptr = ::std::ptr::null_mut::< my_source_mgr>();
+     let mut src:  my_src_ptr =  ::std::ptr::null_mut::< my_source_mgr>();
     /* The source object and input buffer are made permanent so that a series
      * of JPEG images can be read from the same file by calling jpeg_stdio_src
      * only before the first one.  (If we discarded the buffer at the end of
@@ -498,7 +498,8 @@ pub unsafe extern "C" fn jpeg_mem_src(
     mut inbuffer: *const libc::c_uchar,
     mut insize: libc::c_ulong,
 ) {
-    let mut src: *mut crate::jpeglib_h::jpeg_source_mgr =
+     let mut src:  *mut crate::jpeglib_h::jpeg_source_mgr =
+    
         ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_source_mgr>();
     if inbuffer.is_null() || insize == 0u64 {
         /* Treat empty input as fatal error */

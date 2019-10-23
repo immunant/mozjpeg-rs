@@ -79,8 +79,8 @@ pub unsafe extern "C" fn MD5End(
     mut ctx: *mut crate::src::md5::md5::MD5_CTX,
     mut buf: *mut libc::c_char,
 ) -> *mut libc::c_char {
-    let mut i: libc::c_int = 0;
-    let mut digest: [libc::c_uchar; 16] = [0; 16];
+    
+     let mut i:  libc::c_int =  0; let mut digest:  [libc::c_uchar; 16] =  [0; 16];
     static mut hex: [libc::c_char; 17] = [
         48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 97, 98, 99, 100, 101, 102, 0,
     ];
@@ -122,13 +122,19 @@ pub unsafe extern "C" fn MD5FileChunk(
     mut ofs: crate::stdlib::off_t,
     mut len: crate::stdlib::off_t,
 ) -> *mut libc::c_char {
-    let mut buffer: [libc::c_uchar; 8192] = [0; 8192];
-    let mut ctx: crate::src::md5::md5::MD5_CTX = crate::src::md5::md5::MD5_CTX {
+    
+    
+    
+    
+    
+    
+     let mut ctx:  crate::src::md5::md5::MD5_CTX =
+     crate::src::md5::md5::MD5_CTX {
         buf: [0; 4],
         bits: [0; 2],
         in_0: [0; 64],
-    };
-    let mut stbuf: crate::stdlib::stat = crate::stdlib::stat {
+    }; let mut stbuf:  crate::stdlib::stat =
+     crate::stdlib::stat {
         st_dev: 0,
         st_ino: 0,
         st_nlink: 0,
@@ -153,11 +159,7 @@ pub unsafe extern "C" fn MD5FileChunk(
             tv_nsec: 0,
         },
         __glibc_reserved: [0; 3],
-    };
-    let mut f: libc::c_int = 0;
-    let mut i: libc::c_int = 0;
-    let mut e: libc::c_int = 0;
-    let mut n: crate::stdlib::off_t = 0;
+    }; let mut f:  libc::c_int =  0; let mut i:  libc::c_int =  0; let mut e:  libc::c_int =  0; let mut n:  crate::stdlib::off_t =  0;
     crate::src::md5::md5::MD5Init(&mut ctx);
     f = crate::stdlib::open(filename, crate::stdlib::O_RDONLY);
     if f < 0i32 {
@@ -178,7 +180,7 @@ pub unsafe extern "C" fn MD5FileChunk(
     n = len;
     i = 0i32;
     while n > 0i64 {
-        if n as libc::c_ulong > ::std::mem::size_of::<[libc::c_uchar; 8192]>() as libc::c_ulong {
+         let mut buffer:  [libc::c_uchar; 8192] =  [0; 8192];if n as libc::c_ulong > ::std::mem::size_of::<[libc::c_uchar; 8192]>() as libc::c_ulong {
             i = crate::stdlib::read(
                 f,
                 buffer.as_mut_ptr() as *mut libc::c_void,
@@ -212,7 +214,8 @@ pub unsafe extern "C" fn MD5Data(
     mut len: libc::c_uint,
     mut buf: *mut libc::c_char,
 ) -> *mut libc::c_char {
-    let mut ctx: crate::src::md5::md5::MD5_CTX = crate::src::md5::md5::MD5_CTX {
+     let mut ctx:  crate::src::md5::md5::MD5_CTX =
+     crate::src::md5::md5::MD5_CTX {
         buf: [0; 4],
         bits: [0; 2],
         in_0: [0; 64],

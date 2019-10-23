@@ -255,9 +255,9 @@ pub unsafe extern "C" fn jpeg_write_icc_profile(
     mut icc_data_ptr: *const crate::jmorecfg_h::JOCTET,
     mut icc_data_len: libc::c_uint,
 ) {
-    let mut num_markers: libc::c_uint = 0; /* total number of markers we'll write */
-    let mut cur_marker: libc::c_int = 1i32; /* per spec, counting starts at 1 */
-    let mut length: libc::c_uint = 0; /* number of bytes to write in this marker */
+     /* total number of markers we'll write */
+     /* per spec, counting starts at 1 */
+     let mut num_markers:  libc::c_uint =  0; /* number of bytes to write in this marker */
     if icc_data_ptr.is_null() || icc_data_len == 0u32 {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BUFFER_SIZE as libc::c_int;
         Some(
@@ -284,7 +284,7 @@ pub unsafe extern "C" fn jpeg_write_icc_profile(
     }
     while icc_data_len > 0u32 {
         /* length of profile to put in this marker */
-        length = icc_data_len;
+         let mut cur_marker:  libc::c_int =  1i32; let mut length:  libc::c_uint =  0;length = icc_data_len;
         if length > MAX_DATA_BYTES_IN_MARKER as libc::c_uint {
             length = MAX_DATA_BYTES_IN_MARKER as libc::c_uint
         }

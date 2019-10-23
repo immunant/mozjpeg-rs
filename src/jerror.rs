@@ -687,7 +687,7 @@ unsafe extern "C" fn error_exit(mut cinfo: crate::jpeglib_h::j_common_ptr) {
  */
 
 unsafe extern "C" fn output_message(mut cinfo: crate::jpeglib_h::j_common_ptr) {
-    let mut buffer: [libc::c_char; 200] = [0; 200];
+     let mut buffer:  [libc::c_char; 200] =  [0; 200];
     /* Create the message */
     Some(
         (*(*cinfo).err)
@@ -695,7 +695,7 @@ unsafe extern "C" fn output_message(mut cinfo: crate::jpeglib_h::j_common_ptr) {
             .expect("non-null function pointer"),
     )
     .expect("non-null function pointer")(cinfo, buffer.as_mut_ptr());
-       eprintln!("{:}",
+        eprintln!("{:}",
           unsafe {
     std::ffi::CStr::from_ptr(buffer.as_mut_ptr() as
                                  *const libc::c_char).to_str().unwrap()
@@ -745,12 +745,12 @@ unsafe extern "C" fn format_message(
     mut cinfo: crate::jpeglib_h::j_common_ptr,
     mut buffer: *mut libc::c_char,
 ) {
-    let mut err: *mut crate::jpeglib_h::jpeg_error_mgr = (*cinfo).err;
+     let mut msgptr:  *const libc::c_char =  ::std::ptr::null::< libc::c_char>(); let mut isstring:  crate::jmorecfg_h::boolean =  0;let mut err: *mut crate::jpeglib_h::jpeg_error_mgr = (*cinfo).err;
     let mut msg_code: libc::c_int = (*err).msg_code;
     let mut msgtext: *const libc::c_char = crate::stddef_h::NULL as *const libc::c_char;
-    let mut msgptr: *const libc::c_char = ::std::ptr::null::< libc::c_char>();
-    let mut ch: libc::c_char = 0;
-    let mut isstring: crate::jmorecfg_h::boolean = 0;
+    
+    
+    
     /* Look up message string in proper table */
     if msg_code > 0i32 && msg_code <= (*err).last_jpeg_message {
         msgtext = *(*err).jpeg_message_table.offset(msg_code as isize)
@@ -771,7 +771,7 @@ unsafe extern "C" fn format_message(
     isstring = crate::jmorecfg_h::FALSE;
     msgptr = msgtext;
     loop {
-        let fresh0 = msgptr;
+         let mut ch:  libc::c_char =  0;let fresh0 = msgptr;
         msgptr = msgptr.offset(1);
         ch = *fresh0;
         if !(ch as libc::c_int != '\u{0}' as i32) {

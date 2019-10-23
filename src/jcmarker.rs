@@ -398,9 +398,9 @@ unsafe extern "C" fn emit_dqt(
 ) -> libc::c_int
 /* Emit a DQT marker */
 /* Returns the precision used (0 = 8bits, 1 = 16bits) for baseline checking */ {
-    let mut qtbl: *mut crate::jpeglib_h::JQUANT_TBL = (*cinfo).quant_tbl_ptrs[index as usize];
-    let mut prec: libc::c_int = 0;
-    let mut i: libc::c_int = 0;
+     let mut prec:  libc::c_int =  0; let mut i:  libc::c_int =  0;let mut qtbl: *mut crate::jpeglib_h::JQUANT_TBL = (*cinfo).quant_tbl_ptrs[index as usize];
+    
+    
     if qtbl.is_null() {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_NO_QUANT_TABLE as libc::c_int;
         (*(*cinfo).err).msg_parm.i[0] = index;
@@ -451,18 +451,18 @@ unsafe extern "C" fn emit_dqt(
 unsafe extern "C" fn emit_multi_dqt(mut cinfo: crate::jpeglib_h::j_compress_ptr) -> libc::c_int
 /* Emits a DQT marker containing all quantization tables */
 /* Returns number of emitted 16-bit tables, or -1 for failed for baseline checking. */ {
-    let mut prec: [libc::c_int; 10] = [0; 10];
-    let mut seen: [libc::c_int; 10] = [0i32, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    let mut fin_prec: libc::c_int = 0i32;
-    let mut ci: libc::c_int = 0;
-    let mut size: libc::c_int = 0i32;
+    
+    
+    
+    
+     let mut prec:  [libc::c_int; 10] =  [0; 10]; let mut fin_prec:  libc::c_int =  0i32; let mut ci:  libc::c_int =  0; let mut size:  libc::c_int =  0i32;
     if (*(*cinfo).master).compress_profile == crate::jpeglib_h::JCP_FASTEST as libc::c_int {
         return -1i32;
     }
     ci = 0i32;
     while ci < (*cinfo).num_components {
-        let mut tbl_num: libc::c_int = (*(*cinfo).comp_info.offset(ci as isize)).quant_tbl_no;
-        let mut i: libc::c_int = 0;
+         let mut i:  libc::c_int =  0;let mut tbl_num: libc::c_int = (*(*cinfo).comp_info.offset(ci as isize)).quant_tbl_no;
+        
         let mut qtbl: *mut crate::jpeglib_h::JQUANT_TBL = (*cinfo).quant_tbl_ptrs[tbl_num as usize];
         if qtbl.is_null() || (*qtbl).sent_table == crate::jmorecfg_h::TRUE {
             return -1i32;
@@ -481,7 +481,7 @@ unsafe extern "C" fn emit_multi_dqt(mut cinfo: crate::jpeglib_h::j_compress_ptr)
     emit_marker(cinfo, M_DQT);
     ci = 0i32;
     while ci < (*cinfo).num_components {
-        let mut tbl_num_0: libc::c_int = (*(*cinfo).comp_info.offset(ci as isize)).quant_tbl_no;
+         let mut seen:  [libc::c_int; 10] =  [0i32, 0, 0, 0, 0, 0, 0, 0, 0, 0];let mut tbl_num_0: libc::c_int = (*(*cinfo).comp_info.offset(ci as isize)).quant_tbl_no;
         if seen[tbl_num_0 as usize] == 0 {
             size += crate::jpeglib_h::DCTSIZE2 * (prec[ci as usize] + 1i32) + 1i32;
             seen[tbl_num_0 as usize] = 1i32
@@ -493,11 +493,11 @@ unsafe extern "C" fn emit_multi_dqt(mut cinfo: crate::jpeglib_h::j_compress_ptr)
     ci = 0i32;
     while ci < (*cinfo).num_components {
         let mut tbl_num_1: libc::c_int = (*(*cinfo).comp_info.offset(ci as isize)).quant_tbl_no;
-        let mut i_0: libc::c_int = 0;
+        
         let mut qtbl_0: *mut crate::jpeglib_h::JQUANT_TBL =
             (*cinfo).quant_tbl_ptrs[tbl_num_1 as usize];
         if !((*qtbl_0).sent_table == crate::jmorecfg_h::TRUE) {
-            emit_byte(cinfo, tbl_num_1 + (prec[ci as usize] << 4i32));
+             let mut i_0:  libc::c_int =  0;emit_byte(cinfo, tbl_num_1 + (prec[ci as usize] << 4i32));
             i_0 = 0i32;
             while i_0 < crate::jpeglib_h::DCTSIZE2 {
                 let mut qval: libc::c_uint =
@@ -524,9 +524,10 @@ unsafe extern "C" fn emit_dht(
 )
 /* Emit a DHT marker */
 {
-    let mut htbl: *mut crate::jpeglib_h::JHUFF_TBL = ::std::ptr::null_mut::< crate::jpeglib_h::JHUFF_TBL>();
-    let mut length: libc::c_int = 0;
-    let mut i: libc::c_int = 0;
+    
+    
+     let mut htbl:  *mut crate::jpeglib_h::JHUFF_TBL =
+     ::std::ptr::null_mut::< crate::jpeglib_h::JHUFF_TBL>();
     if is_ac != 0 {
         htbl = (*cinfo).ac_huff_tbl_ptrs[index as usize];
         index += 0x10i32
@@ -545,7 +546,7 @@ unsafe extern "C" fn emit_dht(
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
     if (*htbl).sent_table == 0 {
-        emit_marker(cinfo, M_DHT);
+         let mut length:  libc::c_int =  0; let mut i:  libc::c_int =  0;emit_marker(cinfo, M_DHT);
         length = 0i32;
         i = 1i32;
         while i <= 16i32 {
@@ -573,11 +574,11 @@ unsafe extern "C" fn emit_multi_dht(
 ) -> crate::jmorecfg_h::boolean
 /* Emit all DHT markers */
 /* Returns FALSE on failure, TRUE otherwise. */ {
-    let mut i: libc::c_int = 0;
-    let mut j: libc::c_int = 0;
-    let mut length: libc::c_int = 2i32;
-    let mut dclens: [libc::c_int; 4] = [0i32, 0, 0, 0];
-    let mut aclens: [libc::c_int; 4] = [0i32, 0, 0, 0];
+    
+    
+    
+    
+     let mut i:  libc::c_int =  0; let mut j:  libc::c_int =  0; let mut length:  libc::c_int =  2i32; let mut dclens:  [libc::c_int; 4] =  [0i32, 0, 0, 0]; let mut aclens:  [libc::c_int; 4] =  [0i32, 0, 0, 0];
     let mut dcseen: [*mut crate::jpeglib_h::JHUFF_TBL; 4] = [
         crate::stddef_h::NULL as *mut crate::jpeglib_h::JHUFF_TBL,
         ::std::ptr::null_mut::< crate::jpeglib_h::JHUFF_TBL>(),
@@ -593,17 +594,17 @@ unsafe extern "C" fn emit_multi_dht(
     if (*(*cinfo).master).compress_profile == crate::jpeglib_h::JCP_FASTEST as libc::c_int {
         return 0i32;
     }
-    let mut current_block_23: u64;
+    
     /* Calclate the total length. */
     i = 0i32;
     while i < (*cinfo).comps_in_scan {
-        let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
+         let mut current_block_23:  u64; let mut seen:  libc::c_int =  0i32;let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
             (*cinfo).cur_comp_info[i as usize];
         let mut dcidx: libc::c_int = (*compptr).dc_tbl_no;
         let mut acidx: libc::c_int = (*compptr).ac_tbl_no;
         let mut dctbl: *mut crate::jpeglib_h::JHUFF_TBL = (*cinfo).dc_huff_tbl_ptrs[dcidx as usize];
         let mut actbl: *mut crate::jpeglib_h::JHUFF_TBL = (*cinfo).ac_huff_tbl_ptrs[acidx as usize];
-        let mut seen: libc::c_int = 0i32;
+        
         /* Handle DC table lenghts */
         if (*cinfo).Ss == 0i32 && (*cinfo).Ah == 0i32 {
             if dctbl.is_null() {
@@ -753,8 +754,9 @@ unsafe extern "C" fn emit_dri(mut cinfo: crate::jpeglib_h::j_compress_ptr)
 unsafe extern "C" fn emit_sof(mut cinfo: crate::jpeglib_h::j_compress_ptr, mut code: JPEG_MARKER)
 /* Emit a SOF marker */
 {
-    let mut ci: libc::c_int = 0; /* length */
-    let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
+     /* length */
+     let mut ci:  libc::c_int =  0; let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
+    
         ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     emit_marker(cinfo, code);
     emit_2bytes(cinfo, 3i32 * (*cinfo).num_components + 2i32 + 5i32 + 1i32);
@@ -792,17 +794,18 @@ unsafe extern "C" fn emit_sof(mut cinfo: crate::jpeglib_h::j_compress_ptr, mut c
 unsafe extern "C" fn emit_sos(mut cinfo: crate::jpeglib_h::j_compress_ptr)
 /* Emit a SOS marker */
 {
-    let mut i: libc::c_int = 0; /* length */
-    let mut td: libc::c_int = 0;
-    let mut ta: libc::c_int = 0;
-    let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
+     /* length */
+    
+    
+     let mut i:  libc::c_int =  0;
     emit_marker(cinfo, M_SOS);
     emit_2bytes(cinfo, 2i32 * (*cinfo).comps_in_scan + 2i32 + 1i32 + 3i32);
     emit_byte(cinfo, (*cinfo).comps_in_scan);
     i = 0i32;
     while i < (*cinfo).comps_in_scan {
-        compptr = (*cinfo).cur_comp_info[i as usize];
+         let mut td:  libc::c_int =  0; let mut ta:  libc::c_int =  0; let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
+    
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();compptr = (*cinfo).cur_comp_info[i as usize];
         emit_byte(cinfo, (*compptr).component_id);
         /* We emit 0 for unused field(s); this is recommended by the P&M text
          * but does not seem to be specified in the standard.
@@ -976,10 +979,11 @@ unsafe extern "C" fn write_file_header(mut cinfo: crate::jpeglib_h::j_compress_p
  */
 
 unsafe extern "C" fn write_frame_header(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
-    let mut ci: libc::c_int = 0;
-    let mut prec: libc::c_int = 0;
-    let mut is_baseline: crate::jmorecfg_h::boolean = 0;
-    let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
+    
+    
+    
+     let mut ci:  libc::c_int =  0; let mut prec:  libc::c_int =  0; let mut is_baseline:  crate::jmorecfg_h::boolean =  0; let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
+    
         ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     /* Emit DQT for each quantization table.
      * Note that emit_dqt() suppresses any duplicate tables.
@@ -1052,9 +1056,8 @@ unsafe extern "C" fn write_frame_header(mut cinfo: crate::jpeglib_h::j_compress_
 
 unsafe extern "C" fn write_scan_header(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
     let mut marker: my_marker_ptr = (*cinfo).marker as my_marker_ptr;
-    let mut i: libc::c_int = 0;
-    let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
+    
+    
     if (*cinfo).arith_code != 0 {
         /* Emit arith conditioning info.  We may have some duplication
          * if the file has multiple scans, but it's so small it's hardly
@@ -1062,9 +1065,11 @@ unsafe extern "C" fn write_scan_header(mut cinfo: crate::jpeglib_h::j_compress_p
          */
         emit_dac(cinfo);
     } else if emit_multi_dht(cinfo) == 0 {
-        i = 0i32;
+         let mut i:  libc::c_int =  0;i = 0i32;
         while i < (*cinfo).comps_in_scan {
-            compptr = (*cinfo).cur_comp_info[i as usize];
+             let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
+    
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();compptr = (*cinfo).cur_comp_info[i as usize];
             /* Emit Huffman tables.
              * Note that emit_dht() suppresses any duplicate tables.
              */
@@ -1103,7 +1108,7 @@ unsafe extern "C" fn write_file_trailer(mut cinfo: crate::jpeglib_h::j_compress_
  */
 
 unsafe extern "C" fn write_tables_only(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
-    let mut i: libc::c_int = 0;
+     let mut i:  libc::c_int =  0;
     emit_marker(cinfo, M_SOI);
     i = 0i32;
     while i < crate::jpeglib_h::NUM_QUANT_TBLS {
@@ -1132,7 +1137,7 @@ unsafe extern "C" fn write_tables_only(mut cinfo: crate::jpeglib_h::j_compress_p
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_marker_writer(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
-    let mut marker: my_marker_ptr = ::std::ptr::null_mut::< my_marker_writer>();
+     let mut marker:  my_marker_ptr =  ::std::ptr::null_mut::< my_marker_writer>();
     /* Create the subobject */
     marker = Some(
         (*(*cinfo).mem)

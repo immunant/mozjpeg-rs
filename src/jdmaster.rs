@@ -413,8 +413,9 @@ unsafe extern "C" fn jpeg_core_output_dimensions(mut cinfo: crate::jpeglib_h::j_
  * This function is used for transcoding and full decompression.
  */
 {
-    let mut ci: libc::c_int = 0;
-    let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
+    
+     let mut ci:  libc::c_int =  0; let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
+    
         ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     /* Compute actual output image dimensions and DCT scaling choices. */
     if  (*cinfo)
@@ -687,8 +688,9 @@ pub unsafe extern "C" fn jpeg_calc_output_dimensions(
 )
 /* Do computations that are needed before master selection phase */
 {
-    let mut ci: libc::c_int = 0;
-    let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
+    
+     let mut ci:  libc::c_int =  0; let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
+    
         ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     /* Prevent application from calling me at wrong times */
     if (*cinfo).global_state != crate::jpegint_h::DSTATE_READY {
@@ -817,8 +819,9 @@ pub unsafe extern "C" fn jpeg_calc_output_dimensions(
 unsafe extern "C" fn prepare_range_limit_table(mut cinfo: crate::jpeglib_h::j_decompress_ptr)
 /* Allocate and fill in the sample_range_limit table */
 {
-    let mut table: *mut crate::jmorecfg_h::JSAMPLE = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); /* allow negative subscripts of simple table */
-    let mut i: libc::c_int = 0;
+     /* allow negative subscripts of simple table */
+     let mut table:  *mut crate::jmorecfg_h::JSAMPLE =
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut i:  libc::c_int =  0;
     table = Some(
         (*(*cinfo).mem)
             .alloc_small
@@ -879,11 +882,11 @@ unsafe extern "C" fn prepare_range_limit_table(mut cinfo: crate::jpeglib_h::j_de
  */
 
 unsafe extern "C" fn master_selection(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
-    let mut master: crate::src::jdmaster::my_master_ptr =
+     let mut use_c_buffer:  crate::jmorecfg_h::boolean =  0; let mut samplesperrow:  libc::c_long =  0; let mut jd_samplesperrow:  crate::jmorecfg_h::JDIMENSION =  0;let mut master: crate::src::jdmaster::my_master_ptr =
         (*cinfo).master as crate::src::jdmaster::my_master_ptr;
-    let mut use_c_buffer: crate::jmorecfg_h::boolean = 0;
-    let mut samplesperrow: libc::c_long = 0;
-    let mut jd_samplesperrow: crate::jmorecfg_h::JDIMENSION = 0;
+    
+    
+    
     /* Initialize dimensions and other stuff */
     jpeg_calc_output_dimensions(cinfo);
     prepare_range_limit_table(cinfo);
@@ -1013,7 +1016,7 @@ unsafe extern "C" fn master_selection(mut cinfo: crate::jpeglib_h::j_decompress_
         && (*cinfo).buffered_image == 0
         && (*(*cinfo).inputctl).has_multiple_scans != 0
     {
-        let mut nscans: libc::c_int = 0;
+         let mut nscans:  libc::c_int =  0;
         /* Estimate number of scans to set pass_limit. */
         if (*cinfo).progressive_mode != 0 {
             /* Arbitrarily estimate 2 interleaved DC scans + 3 AC scans/component. */

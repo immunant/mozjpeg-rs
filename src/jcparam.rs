@@ -278,10 +278,11 @@ pub unsafe extern "C" fn jpeg_add_quant_table(
  * are limited to 1..255 for JPEG baseline compatibility.
  */
 {
-    let mut qtblptr: *mut *mut crate::jpeglib_h::JQUANT_TBL =
-        ::std::ptr::null_mut::< *mut crate::jpeglib_h::JQUANT_TBL>();
-    let mut i: libc::c_int = 0;
-    let mut temp: libc::c_long = 0;
+    
+    
+     let mut qtblptr:  *mut *mut crate::jpeglib_h::JQUANT_TBL =
+    
+        ::std::ptr::null_mut::< *mut crate::jpeglib_h::JQUANT_TBL>(); let mut i:  libc::c_int =  0;
     /* Safety check to ensure start_compress not called yet. */
     if (*cinfo).global_state != crate::jpegint_h::CSTATE_START {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
@@ -312,7 +313,7 @@ pub unsafe extern "C" fn jpeg_add_quant_table(
     }
     i = 0i32;
     while i < crate::jpeglib_h::DCTSIZE2 {
-        temp = (*basic_table.offset(i as isize) as libc::c_long * scale_factor as libc::c_long
+         let mut temp:  libc::c_long =  0;temp = (*basic_table.offset(i as isize) as libc::c_long * scale_factor as libc::c_long
             + 50i64)
             / 100i64;
         /* limit the values to the valid range */
@@ -1622,7 +1623,7 @@ pub unsafe extern "C" fn jpeg_set_quality(
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_set_defaults(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
-    let mut i: libc::c_int = 0;
+     let mut i:  libc::c_int =  0;
     /* Safety check to ensure start_compress not called yet. */
     if (*cinfo).global_state != crate::jpegint_h::CSTATE_START {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
@@ -1791,9 +1792,10 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
     mut colorspace: crate::jpeglib_h::J_COLOR_SPACE,
 ) {
-    let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
+    
+     let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
+    
         ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
-    let mut ci: libc::c_int = 0;
     /* Safety check to ensure start_compress not called yet. */
     if (*cinfo).global_state != crate::jpegint_h::CSTATE_START {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
@@ -1956,7 +1958,7 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
             (*compptr).ac_tbl_no = 0i32
         }
         0 => {
-            (*cinfo).num_components = (*cinfo).input_components;
+             let mut ci:  libc::c_int =  0;(*cinfo).num_components = (*cinfo).input_components;
             if (*cinfo).num_components < 1i32
                 || (*cinfo).num_components > crate::jmorecfg_h::MAX_COMPONENTS
             {
@@ -2047,7 +2049,7 @@ unsafe extern "C" fn fill_scans(
     mut Al: libc::c_int,
 ) -> *mut crate::jpeglib_h::jpeg_scan_info
 /* Support routine: generate one scan for each component */ {
-    let mut ci: libc::c_int = 0;
+     let mut ci:  libc::c_int =  0;
     ci = 0i32;
     while ci < ncomps {
         (*scanptr).comps_in_scan = 1i32;
@@ -2069,10 +2071,10 @@ unsafe extern "C" fn fill_dc_scans(
     mut Al: libc::c_int,
 ) -> *mut crate::jpeglib_h::jpeg_scan_info
 /* Support routine: generate interleaved DC scan if possible, else N scans */ {
-    let mut ci: libc::c_int = 0;
+    
     if ncomps <= crate::jpeglib_h::MAX_COMPS_IN_SCAN {
         /* Single interleaved DC scan */
-        (*scanptr).comps_in_scan = ncomps;
+         let mut ci:  libc::c_int =  0;(*scanptr).comps_in_scan = ncomps;
         ci = 0i32;
         while ci < ncomps {
             (*scanptr).component_index[ci as usize] = ci;
@@ -2097,13 +2099,14 @@ unsafe extern "C" fn fill_dc_scans(
 unsafe extern "C" fn jpeg_search_progression(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
 ) -> crate::jmorecfg_h::boolean {
-    let mut ncomps: libc::c_int = (*cinfo).num_components;
-    let mut nscans: libc::c_int = 0;
-    let mut scanptr: *mut crate::jpeglib_h::jpeg_scan_info =
-        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_scan_info>();
-    let mut Al: libc::c_int = 0;
-    let mut frequency_split: [libc::c_int; 5] = [2i32, 8i32, 5i32, 12i32, 18i32];
-    let mut i: libc::c_int = 0;
+     let mut nscans:  libc::c_int =  0; let mut scanptr:  *mut crate::jpeglib_h::jpeg_scan_info =
+    
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_scan_info>(); let mut Al:  libc::c_int =  0; let mut frequency_split:  [libc::c_int; 5] =  [2i32, 8i32, 5i32, 12i32, 18i32]; let mut i:  libc::c_int =  0;let mut ncomps: libc::c_int = (*cinfo).num_components;
+    
+    
+    
+    
+    
     /* Safety check to ensure start_compress not called yet. */
     if (*cinfo).global_state != crate::jpegint_h::CSTATE_START {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
@@ -2255,9 +2258,10 @@ unsafe extern "C" fn jpeg_search_progression(
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_simple_progression(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
-    let mut ncomps: libc::c_int = 0;
-    let mut nscans: libc::c_int = 0;
-    let mut scanptr: *mut crate::jpeglib_h::jpeg_scan_info =
+    
+    
+     let mut ncomps:  libc::c_int =  0; let mut nscans:  libc::c_int =  0; let mut scanptr:  *mut crate::jpeglib_h::jpeg_scan_info =
+    
         ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_scan_info>();
     if (*(*cinfo).master).optimize_scans != 0 {
         if jpeg_search_progression(cinfo) == crate::jmorecfg_h::TRUE {

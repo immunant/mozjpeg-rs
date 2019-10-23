@@ -444,12 +444,12 @@ unsafe extern "C" fn emit_header(
 /* Output the GIF file header, including color map */
 /* If colormap==NULL, synthesize a grayscale colormap */
 {
-    let mut BitsPerPixel: libc::c_int = 0;
-    let mut ColorMapSize: libc::c_int = 0;
-    let mut InitCodeSize: libc::c_int = 0;
-    let mut FlagByte: libc::c_int = 0;
+    
+    
+    
+     let mut BitsPerPixel:  libc::c_int =  0; let mut ColorMapSize:  libc::c_int =  0; let mut InitCodeSize:  libc::c_int =  0; let mut FlagByte:  libc::c_int =  0; let mut i:  libc::c_int =  0;
     let mut cshift: libc::c_int = (*(*dinfo).cinfo).data_precision - 8i32;
-    let mut i: libc::c_int = 0;
+    
     if num_colors > 256i32 {
         (*(*(*dinfo).cinfo).err).msg_code = crate::cderror_h::JERR_TOO_MANY_COLORS as libc::c_int;
         (*(*(*dinfo).cinfo).err).msg_parm.i[0] = num_colors;
@@ -578,9 +578,10 @@ unsafe extern "C" fn put_pixel_rows(
     mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
     mut rows_supplied: crate::jmorecfg_h::JDIMENSION,
 ) {
-    let mut dest: gif_dest_ptr = dinfo as gif_dest_ptr;
-    let mut ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
-    let mut col: crate::jmorecfg_h::JDIMENSION = 0;
+     let mut ptr:  crate::jpeglib_h::JSAMPROW =
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut col:  crate::jmorecfg_h::JDIMENSION =  0;let mut dest: gif_dest_ptr = dinfo as gif_dest_ptr;
+    
+    
     ptr = *(*dest).pub_0.buffer.offset(0);
     col = (*cinfo).output_width;
     while col > 0u32 {
@@ -683,7 +684,7 @@ to write the image in bottom-up order.) */
 pub unsafe extern "C" fn jinit_write_gif(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
 ) -> crate::src::cdjpeg::djpeg_dest_ptr {
-    let mut dest: gif_dest_ptr = ::std::ptr::null_mut::< gif_dest_struct>();
+     let mut dest:  gif_dest_ptr =  ::std::ptr::null_mut::< gif_dest_struct>();
     /* Create module interface object, fill in method pointers */
     dest = Some(
         (*(*cinfo).mem)

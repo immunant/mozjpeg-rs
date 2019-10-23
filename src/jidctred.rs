@@ -196,24 +196,26 @@ pub unsafe extern "C" fn jpeg_idct_4x4(
     mut output_buf: crate::jpeglib_h::JSAMPARRAY,
     mut output_col: crate::jmorecfg_h::JDIMENSION,
 ) {
-    let mut tmp0: crate::jpegint_h::JLONG = 0; /* buffers data between passes */
-    let mut tmp2: crate::jpegint_h::JLONG = 0;
-    let mut tmp10: crate::jpegint_h::JLONG = 0;
-    let mut tmp12: crate::jpegint_h::JLONG = 0;
-    let mut z1: crate::jpegint_h::JLONG = 0;
-    let mut z2: crate::jpegint_h::JLONG = 0;
-    let mut z3: crate::jpegint_h::JLONG = 0;
-    let mut z4: crate::jpegint_h::JLONG = 0;
-    let mut inptr: crate::jpeglib_h::JCOEFPTR = ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>();
-    let mut quantptr: *mut crate::jdct_h::ISLOW_MULT_TYPE =
-        ::std::ptr::null_mut::< crate::jdct_h::ISLOW_MULT_TYPE>();
-    let mut wsptr: *mut libc::c_int = ::std::ptr::null_mut::< libc::c_int>();
-    let mut outptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
+     /* buffers data between passes */
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+     let mut tmp0:  crate::jpegint_h::JLONG =  0; let mut tmp2:  crate::jpegint_h::JLONG =  0; let mut tmp10:  crate::jpegint_h::JLONG =  0; let mut tmp12:  crate::jpegint_h::JLONG =  0; let mut z1:  crate::jpegint_h::JLONG =  0; let mut z2:  crate::jpegint_h::JLONG =  0; let mut z3:  crate::jpegint_h::JLONG =  0; let mut z4:  crate::jpegint_h::JLONG =  0; let mut inptr:  crate::jpeglib_h::JCOEFPTR =
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>(); let mut quantptr:  *mut crate::jdct_h::ISLOW_MULT_TYPE =
+    
+        ::std::ptr::null_mut::< crate::jdct_h::ISLOW_MULT_TYPE>(); let mut wsptr:  *mut libc::c_int =  ::std::ptr::null_mut::< libc::c_int>(); let mut ctr:  libc::c_int =  0; let mut workspace:  [libc::c_int; 32] =  [0; 32];
     let mut range_limit: *mut crate::jmorecfg_h::JSAMPLE = (*cinfo)
         .sample_range_limit
         .offset(crate::jmorecfg_h::CENTERJSAMPLE as isize);
-    let mut ctr: libc::c_int = 0;
-    let mut workspace: [libc::c_int; 32] = [0; 32];
+    
+    
     /* Pass 1: process columns from input, store into work array. */
     inptr = coef_block;
     quantptr = (*compptr).dct_table as *mut crate::jdct_h::ISLOW_MULT_TYPE;
@@ -231,10 +233,10 @@ pub unsafe extern "C" fn jpeg_idct_4x4(
             {
                 /* AC terms all zero; we need not examine term 4 for 4x4 output */
                 let mut dcval: libc::c_int =
-                    ((((*inptr.offset((8i32 * 0i32) as isize) as libc::c_int
+                    (((((*inptr.offset((8i32 * 0i32) as isize) as libc::c_int
                         * *quantptr.offset((8i32 * 0i32) as isize) as libc::c_int)
                         as libc::c_ulong)
-                        << 2i32)) as libc::c_int;
+                        << 2i32))) as libc::c_int;
                 *wsptr.offset((crate::jpeglib_h::DCTSIZE * 0i32) as isize) = dcval;
                 *wsptr.offset((crate::jpeglib_h::DCTSIZE * 1i32) as isize) = dcval;
                 *wsptr.offset((crate::jpeglib_h::DCTSIZE * 2i32) as isize) = dcval;
@@ -306,7 +308,8 @@ pub unsafe extern "C" fn jpeg_idct_4x4(
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 4i32 {
-        outptr = (*output_buf.offset(ctr as isize)).offset(output_col as isize);
+         let mut outptr:  crate::jpeglib_h::JSAMPROW =
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();outptr = (*output_buf.offset(ctr as isize)).offset(output_col as isize);
         /* advance pointer to next row */
         /* It's not clear whether a zero row test is worthwhile here ... */
         if *wsptr.offset(1) == 0i32
@@ -396,19 +399,21 @@ pub unsafe extern "C" fn jpeg_idct_2x2(
     mut output_buf: crate::jpeglib_h::JSAMPARRAY,
     mut output_col: crate::jmorecfg_h::JDIMENSION,
 ) {
-    let mut tmp0: crate::jpegint_h::JLONG = 0; /* buffers data between passes */
-    let mut tmp10: crate::jpegint_h::JLONG = 0;
-    let mut z1: crate::jpegint_h::JLONG = 0;
-    let mut inptr: crate::jpeglib_h::JCOEFPTR = ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>();
-    let mut quantptr: *mut crate::jdct_h::ISLOW_MULT_TYPE =
-        ::std::ptr::null_mut::< crate::jdct_h::ISLOW_MULT_TYPE>();
-    let mut wsptr: *mut libc::c_int = ::std::ptr::null_mut::< libc::c_int>();
-    let mut outptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
+     /* buffers data between passes */
+    
+    
+    
+    
+    
+     let mut tmp0:  crate::jpegint_h::JLONG =  0; let mut tmp10:  crate::jpegint_h::JLONG =  0; let mut inptr:  crate::jpeglib_h::JCOEFPTR =
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>(); let mut quantptr:  *mut crate::jdct_h::ISLOW_MULT_TYPE =
+    
+        ::std::ptr::null_mut::< crate::jdct_h::ISLOW_MULT_TYPE>(); let mut wsptr:  *mut libc::c_int =  ::std::ptr::null_mut::< libc::c_int>(); let mut ctr:  libc::c_int =  0; let mut workspace:  [libc::c_int; 16] =  [0; 16];
     let mut range_limit: *mut crate::jmorecfg_h::JSAMPLE = (*cinfo)
         .sample_range_limit
         .offset(crate::jmorecfg_h::CENTERJSAMPLE as isize);
-    let mut ctr: libc::c_int = 0;
-    let mut workspace: [libc::c_int; 16] = [0; 16];
+    
+    
     /* Pass 1: process columns from input, store into work array. */
     inptr = coef_block;
     quantptr = (*compptr).dct_table as *mut crate::jdct_h::ISLOW_MULT_TYPE;
@@ -427,15 +432,15 @@ pub unsafe extern "C" fn jpeg_idct_2x2(
             {
                 /* AC terms all zero; we need not examine terms 2,4,6 for 2x2 output */
                 let mut dcval: libc::c_int =
-                    ((((*inptr.offset((8i32 * 0i32) as isize) as libc::c_int
+                    (((((*inptr.offset((8i32 * 0i32) as isize) as libc::c_int
                         * *quantptr.offset((8i32 * 0i32) as isize) as libc::c_int)
                         as libc::c_ulong)
-                        << 2i32)) as libc::c_int;
+                        << 2i32))) as libc::c_int;
                 *wsptr.offset((crate::jpeglib_h::DCTSIZE * 0i32) as isize) = dcval;
                 *wsptr.offset((crate::jpeglib_h::DCTSIZE * 1i32) as isize) = dcval
             } else {
                 /* Even part */
-                z1 = (*inptr.offset((8i32 * 0i32) as isize) as libc::c_int
+                 let mut z1:  crate::jpegint_h::JLONG =  0;z1 = (*inptr.offset((8i32 * 0i32) as isize) as libc::c_int
                     * *quantptr.offset((8i32 * 0i32) as isize) as libc::c_int)
                     as crate::jpegint_h::JLONG;
                 tmp10 = ((z1 as libc::c_ulong) << 13i32 + 2i32) as crate::jpegint_h::JLONG;
@@ -477,7 +482,8 @@ pub unsafe extern "C" fn jpeg_idct_2x2(
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < 2i32 {
-        outptr = (*output_buf.offset(ctr as isize)).offset(output_col as isize);
+         let mut outptr:  crate::jpeglib_h::JSAMPROW =
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();outptr = (*output_buf.offset(ctr as isize)).offset(output_col as isize);
         /* advance pointer to next row */
         /* It's not clear whether a zero row test is worthwhile here ... */
         if *wsptr.offset(1) == 0i32
@@ -538,8 +544,9 @@ pub unsafe extern "C" fn jpeg_idct_1x1(
     mut output_buf: crate::jpeglib_h::JSAMPARRAY,
     mut output_col: crate::jmorecfg_h::JDIMENSION,
 ) {
-    let mut dcval: libc::c_int = 0;
-    let mut quantptr: *mut crate::jdct_h::ISLOW_MULT_TYPE =
+    
+     let mut dcval:  libc::c_int =  0; let mut quantptr:  *mut crate::jdct_h::ISLOW_MULT_TYPE =
+    
         ::std::ptr::null_mut::< crate::jdct_h::ISLOW_MULT_TYPE>();
     let mut range_limit: *mut crate::jmorecfg_h::JSAMPLE = (*cinfo)
         .sample_range_limit

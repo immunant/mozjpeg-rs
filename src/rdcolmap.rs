@@ -345,11 +345,11 @@ unsafe extern "C" fn add_map_entry(
     mut G: libc::c_int,
     mut B: libc::c_int,
 ) {
-    let mut colormap0: crate::jpeglib_h::JSAMPROW = *(*cinfo).colormap.offset(0);
+     let mut index:  libc::c_int =  0;let mut colormap0: crate::jpeglib_h::JSAMPROW = *(*cinfo).colormap.offset(0);
     let mut colormap1: crate::jpeglib_h::JSAMPROW = *(*cinfo).colormap.offset(1);
     let mut colormap2: crate::jpeglib_h::JSAMPROW = *(*cinfo).colormap.offset(2);
     let mut ncolors: libc::c_int = (*cinfo).actual_number_of_colors;
-    let mut index: libc::c_int = 0;
+    
     /* Check for duplicate color. */
     index = 0i32;
     while index < ncolors {
@@ -387,12 +387,12 @@ unsafe extern "C" fn read_gif_map(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
     mut infile: *mut crate::stdlib::FILE,
 ) {
-    let mut header: [libc::c_int; 13] = [0; 13];
-    let mut i: libc::c_int = 0;
-    let mut colormaplen: libc::c_int = 0;
-    let mut R: libc::c_int = 0;
-    let mut G: libc::c_int = 0;
-    let mut B: libc::c_int = 0;
+    
+    
+    
+    
+    
+     let mut header:  [libc::c_int; 13] =  [0; 13]; let mut i:  libc::c_int =  0; let mut colormaplen:  libc::c_int =  0;
     /* Initial 'G' has already been read by read_color_map */
     /* Read the rest of the GIF header and logical screen descriptor */
     i = 1i32;
@@ -435,7 +435,7 @@ unsafe extern "C" fn read_gif_map(
     colormaplen = 2i32 << (header[10] & 0x7i32);
     i = 0i32;
     while i < colormaplen {
-        R = crate::stdlib::getc(infile);
+         let mut R:  libc::c_int =  0; let mut G:  libc::c_int =  0; let mut B:  libc::c_int =  0;R = crate::stdlib::getc(infile);
         G = crate::stdlib::getc(infile);
         B = crate::stdlib::getc(infile);
         if R == crate::stdlib::EOF || G == crate::stdlib::EOF || B == crate::stdlib::EOF {
@@ -463,7 +463,7 @@ unsafe extern "C" fn read_gif_map(
 unsafe extern "C" fn pbm_getc(mut infile: *mut crate::stdlib::FILE) -> libc::c_int
 /* Read next char, skipping over any comments */
 /* A comment/newline sequence is returned as a newline */ {
-    let mut ch: libc::c_int = 0;
+     let mut ch:  libc::c_int =  0;
     ch = crate::stdlib::getc(infile);
     if ch == '#' as i32 {
         loop {
@@ -484,8 +484,8 @@ unsafe extern "C" fn read_pbm_integer(
 /* Swallows one trailing character after the integer */
 /* Note that on a 16-bit-int machine, only values up to 64k can be read. */
 /* This should not be a problem in practice. */ {
-    let mut ch: libc::c_int = 0;
-    let mut val: libc::c_uint = 0;
+    
+     let mut ch:  libc::c_int =  0; let mut val:  libc::c_uint =  0;
     loop
     /* Skip any leading whitespace */
     {
@@ -533,15 +533,15 @@ unsafe extern "C" fn read_ppm_map(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
     mut infile: *mut crate::stdlib::FILE,
 ) {
-    let mut c: libc::c_int = 0;
-    let mut w: libc::c_uint = 0;
-    let mut h: libc::c_uint = 0;
-    let mut maxval: libc::c_uint = 0;
-    let mut row: libc::c_uint = 0;
-    let mut col: libc::c_uint = 0;
-    let mut R: libc::c_int = 0;
-    let mut G: libc::c_int = 0;
-    let mut B: libc::c_int = 0;
+    
+    
+    
+    
+    
+    
+    
+    
+     let mut c:  libc::c_int =  0; let mut w:  libc::c_uint =  0; let mut h:  libc::c_uint =  0; let mut maxval:  libc::c_uint =  0; let mut row:  libc::c_uint =  0; let mut col:  libc::c_uint =  0; let mut R:  libc::c_int =  0; let mut G:  libc::c_int =  0; let mut B:  libc::c_int =  0;
     /* Initial 'P' has already been read by read_color_map */
     c = crate::stdlib::getc(infile); /* save format discriminator for a sec */
     /* while we fetch the remaining header info */

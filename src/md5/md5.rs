@@ -89,7 +89,7 @@ pub unsafe extern "C" fn MD5Update(
     mut buf: *mut libc::c_uchar,
     mut len: libc::c_uint,
 ) {
-    let mut t: crate::src::md5::md5::uint32 = 0;
+     let mut t:  crate::src::md5::md5::uint32 =  0;
     /* Update bitcount */
     t = (*ctx).bits[0]; /* Carry from low to high */
     (*ctx).bits[0] =  t + (((len << 3i32))); /* Bytes already in shsInfo->data */
@@ -153,8 +153,8 @@ pub unsafe extern "C" fn MD5Final(
     mut digest: *mut libc::c_uchar,
     mut ctx: *mut crate::src::md5::md5::MD5Context,
 ) {
-    let mut count: libc::c_uint = 0;
-    let mut p: *mut libc::c_uchar = ::std::ptr::null_mut::< libc::c_uchar>();
+    
+     let mut count:  libc::c_uint =  0; let mut p:  *mut libc::c_uchar =  ::std::ptr::null_mut::< libc::c_uchar>();
     let mut in32: *mut crate::src::md5::md5::uint32 =
         (*ctx).in_0.as_mut_ptr() as *mut crate::src::md5::md5::uint32;
     /* Compute number of bytes mod 64 */
@@ -253,10 +253,10 @@ pub unsafe extern "C" fn MD5Transform(
     mut buf: *mut crate::src::md5::md5::uint32,
     mut in_0: *mut crate::src::md5::md5::uint32,
 ) {
-    let mut a: crate::src::md5::md5::uint32 = 0;
-    let mut b: crate::src::md5::md5::uint32 = 0;
-    let mut c: crate::src::md5::md5::uint32 = 0;
-    let mut d: crate::src::md5::md5::uint32 = 0;
+    
+    
+    
+     let mut a:  crate::src::md5::md5::uint32 =  0; let mut b:  crate::src::md5::md5::uint32 =  0; let mut c:  crate::src::md5::md5::uint32 =  0; let mut d:  crate::src::md5::md5::uint32 =  0;
     a = *buf.offset(0);
     b = *buf.offset(1);
     c = *buf.offset(2);

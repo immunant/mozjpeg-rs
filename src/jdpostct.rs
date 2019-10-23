@@ -360,9 +360,9 @@ unsafe extern "C" fn post_process_1pass(
     mut out_row_ctr: *mut crate::jmorecfg_h::JDIMENSION,
     mut out_rows_avail: crate::jmorecfg_h::JDIMENSION,
 ) {
-    let mut post: my_post_ptr = (*cinfo).post as my_post_ptr;
-    let mut num_rows: crate::jmorecfg_h::JDIMENSION = 0;
-    let mut max_rows: crate::jmorecfg_h::JDIMENSION = 0;
+     let mut num_rows:  crate::jmorecfg_h::JDIMENSION =  0; let mut max_rows:  crate::jmorecfg_h::JDIMENSION =  0;let mut post: my_post_ptr = (*cinfo).post as my_post_ptr;
+    
+    
     /* Fill the buffer, but not more than what we can dump out in one go. */
     /* Note we rely on the upsampler to detect bottom of image. */
     max_rows =  out_rows_avail - *out_row_ctr;
@@ -411,9 +411,9 @@ unsafe extern "C" fn post_process_prepass(
     mut out_row_ctr: *mut crate::jmorecfg_h::JDIMENSION,
     mut out_rows_avail: crate::jmorecfg_h::JDIMENSION,
 ) {
-    let mut post: my_post_ptr = (*cinfo).post as my_post_ptr;
-    let mut old_next_row: crate::jmorecfg_h::JDIMENSION = 0;
-    let mut num_rows: crate::jmorecfg_h::JDIMENSION = 0;
+     let mut old_next_row:  crate::jmorecfg_h::JDIMENSION =  0;let mut post: my_post_ptr = (*cinfo).post as my_post_ptr;
+    
+    
     /* Reposition virtual buffer if at start of strip. */
     if (*post).next_row == 0u32 {
         (*post).buffer = Some(
@@ -448,7 +448,7 @@ unsafe extern "C" fn post_process_prepass(
     /* Allow quantizer to scan new data.  No data is emitted, */
     /* but we advance out_row_ctr so outer loop can tell when we're done. */
     if (*post).next_row > old_next_row {
-        num_rows =  (*post).next_row - old_next_row;
+         let mut num_rows:  crate::jmorecfg_h::JDIMENSION =  0;num_rows =  (*post).next_row - old_next_row;
         Some(
             (*(*cinfo).cquantize)
                 .color_quantize
@@ -483,9 +483,9 @@ unsafe extern "C" fn post_process_2pass(
     mut out_row_ctr: *mut crate::jmorecfg_h::JDIMENSION,
     mut out_rows_avail: crate::jmorecfg_h::JDIMENSION,
 ) {
-    let mut post: my_post_ptr = (*cinfo).post as my_post_ptr;
-    let mut num_rows: crate::jmorecfg_h::JDIMENSION = 0;
-    let mut max_rows: crate::jmorecfg_h::JDIMENSION = 0;
+     let mut num_rows:  crate::jmorecfg_h::JDIMENSION =  0; let mut max_rows:  crate::jmorecfg_h::JDIMENSION =  0;let mut post: my_post_ptr = (*cinfo).post as my_post_ptr;
+    
+    
     /* Reposition virtual buffer if at start of strip. */
     if (*post).next_row == 0u32 {
         (*post).buffer = Some(
@@ -560,7 +560,7 @@ pub unsafe extern "C" fn jinit_d_post_controller(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
     mut need_full_buffer: crate::jmorecfg_h::boolean,
 ) {
-    let mut post: my_post_ptr = ::std::ptr::null_mut::< my_post_controller>(); /* flag for no virtual arrays */
+     let mut post:  my_post_ptr =  ::std::ptr::null_mut::< my_post_controller>(); /* flag for no virtual arrays */
     post = Some(
         (*(*cinfo).mem)
             .alloc_small

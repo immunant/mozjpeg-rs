@@ -144,7 +144,7 @@ pub use crate::stdlib::EOF;
 unsafe extern "C" fn text_getc(mut file: *mut crate::stdlib::FILE) -> libc::c_int
 /* Read next char, skipping over any comments (# to end of line) */
 /* A comment/newline sequence is returned as a newline */ {
-    let mut ch: libc::c_int = 0;
+     let mut ch:  libc::c_int =  0;
     ch = crate::stdlib::getc(file);
     if ch == '#' as i32 {
         loop {
@@ -164,8 +164,8 @@ unsafe extern "C" fn read_text_integer(
 ) -> crate::jmorecfg_h::boolean
 /* Read an unsigned decimal integer from a file, store it in result */
 /* Reads one trailing character after the integer; returns it in termchar */ {
-    let mut ch: libc::c_int = 0;
-    let mut val: libc::c_long = 0;
+    
+     let mut ch:  libc::c_int =  0; let mut val:  libc::c_long =  0;
     loop
     /* Skip any leading whitespace, detect EOF */
     {
@@ -225,15 +225,16 @@ pub unsafe extern "C" fn read_quant_tables(
  * table 0 for luminance (or primary) components, 1 for chrominance components.
  * You must use -qslots if you want a different component->table mapping.
  */ {
-    let mut fp: *mut crate::stdlib::FILE = ::std::ptr::null_mut::< crate::stdlib::FILE>();
-    let mut tblno: libc::c_int = 0;
-    let mut i: libc::c_int = 0;
-    let mut termchar: libc::c_int = 0;
-    let mut val: libc::c_long = 0;
-    let mut table: [libc::c_uint; 64] = [0; 64];
+    
+    
+    
+    
+    
+     let mut fp:  *mut crate::stdlib::FILE =
+     ::std::ptr::null_mut::< crate::stdlib::FILE>(); let mut tblno:  libc::c_int =  0; let mut termchar:  libc::c_int =  0; let mut val:  libc::c_long =  0;
     fp = crate::stdlib::fopen(filename,  b"r\x00".as_ptr() as *const libc::c_char);
     if fp.is_null() {
-           eprintln!("Can\'t open table file {:}",
+            eprintln!("Can\'t open table file {:}",
           unsafe {
     std::ffi::CStr::from_ptr(filename as
                                  *const libc::c_char).to_str().unwrap()
@@ -243,8 +244,8 @@ pub unsafe extern "C" fn read_quant_tables(
     tblno = 0i32;
     while read_text_integer(fp, &mut val, &mut termchar) != 0 {
         /* read 1st element of table */
-        if tblno >= crate::jpeglib_h::NUM_QUANT_TBLS {
-               eprintln!("Too many tables in file {:}",
+         let mut i:  libc::c_int =  0; let mut table:  [libc::c_uint; 64] =  [0; 64];if tblno >= crate::jpeglib_h::NUM_QUANT_TBLS {
+                eprintln!("Too many tables in file {:}",
           unsafe {
     std::ffi::CStr::from_ptr(filename as
                                  *const libc::c_char).to_str().unwrap()
@@ -256,7 +257,7 @@ pub unsafe extern "C" fn read_quant_tables(
         i = 1i32;
         while i < crate::jpeglib_h::DCTSIZE2 {
             if read_text_integer(fp, &mut val, &mut termchar) == 0 {
-                   eprintln!("Invalid table data in file {:}",
+                    eprintln!("Invalid table data in file {:}",
           unsafe {
     std::ffi::CStr::from_ptr(filename as
                                  *const libc::c_char).to_str().unwrap()
@@ -277,7 +278,7 @@ pub unsafe extern "C" fn read_quant_tables(
         tblno += 1
     }
     if termchar != crate::stdlib::EOF {
-           eprintln!("Non-numeric data in file {:}",
+            eprintln!("Non-numeric data in file {:}",
           unsafe {
     std::ffi::CStr::from_ptr(filename as
                                  *const libc::c_char).to_str().unwrap()
@@ -297,7 +298,7 @@ unsafe extern "C" fn read_scan_integer(
 /* Variant of read_text_integer that always looks for a non-space termchar;
  * this simplifies parsing of punctuation in scan scripts.
  */ {
-    let mut ch: libc::c_int = 0;
+     let mut ch:  libc::c_int =  0;
     if read_text_integer(file, result, termchar) == 0 {
         return crate::jmorecfg_h::FALSE;
     }
@@ -348,16 +349,18 @@ pub unsafe extern "C" fn read_scan_script(
  * Note: we do very little validity checking here;
  * jcmaster.c will validate the script parameters.
  */ {
-    let mut current_block: u64;
-    let mut fp: *mut crate::stdlib::FILE = ::std::ptr::null_mut::< crate::stdlib::FILE>();
-    let mut scanno: libc::c_int = 0;
-    let mut ncomps: libc::c_int = 0;
-    let mut termchar: libc::c_int = 0;
-    let mut val: libc::c_long = 0;
-    let mut scanptr: *mut crate::jpeglib_h::jpeg_scan_info =
-        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_scan_info>();
-    /* quite arbitrary limit */
-    let mut scans: [crate::jpeglib_h::jpeg_scan_info; 100] = [crate::jpeglib_h::jpeg_scan_info {
+    
+    
+    
+    
+    
+    
+    
+     let mut fp:  *mut crate::stdlib::FILE =
+     ::std::ptr::null_mut::< crate::stdlib::FILE>(); let mut scanno:  libc::c_int =  0; let mut termchar:  libc::c_int =  0; let mut val:  libc::c_long =  0; let mut scanptr:  *mut crate::jpeglib_h::jpeg_scan_info =
+    
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_scan_info>(); let mut scans:  [crate::jpeglib_h::jpeg_scan_info; 100] =
+     [crate::jpeglib_h::jpeg_scan_info {
         comps_in_scan: 0,
         component_index: [0; 4],
         Ss: 0,
@@ -367,7 +370,7 @@ pub unsafe extern "C" fn read_scan_script(
     }; 100];
     fp = crate::stdlib::fopen(filename,  b"r\x00".as_ptr() as *const libc::c_char);
     if fp.is_null() {
-           eprintln!("Can\'t open scan definition file {:}",
+            eprintln!("Can\'t open scan definition file {:}",
           unsafe {
     std::ffi::CStr::from_ptr(filename as
                                  *const libc::c_char).to_str().unwrap()
@@ -377,8 +380,8 @@ pub unsafe extern "C" fn read_scan_script(
     scanptr = scans.as_mut_ptr();
     scanno = 0i32;
     while read_scan_integer(fp, &mut val, &mut termchar) != 0 {
-        if scanno >= MAX_SCANS {
-               eprintln!("Too many scans defined in file {:}",
+         let mut current_block:  u64; let mut ncomps:  libc::c_int =  0;if scanno >= MAX_SCANS {
+                eprintln!("Too many scans defined in file {:}",
           unsafe {
     std::ffi::CStr::from_ptr(filename as
                                  *const libc::c_char).to_str().unwrap()
@@ -394,7 +397,7 @@ pub unsafe extern "C" fn read_scan_script(
                 break;
             }
             if ncomps >= crate::jpeglib_h::MAX_COMPS_IN_SCAN {
-                   eprintln!("Too many components in one scan in file {:}",
+                    eprintln!("Too many components in one scan in file {:}",
           unsafe {
     std::ffi::CStr::from_ptr(filename as
                                  *const libc::c_char).to_str().unwrap()
@@ -460,7 +463,7 @@ pub unsafe extern "C" fn read_scan_script(
             }
             _ => {}
         }
-           eprintln!("Invalid scan entry format in file {:}",
+            eprintln!("Invalid scan entry format in file {:}",
           unsafe {
     std::ffi::CStr::from_ptr(filename as
                                  *const libc::c_char).to_str().unwrap()
@@ -469,7 +472,7 @@ pub unsafe extern "C" fn read_scan_script(
         return crate::jmorecfg_h::FALSE;
     }
     if termchar != crate::stdlib::EOF {
-           eprintln!("Non-numeric data in file {:}",
+            eprintln!("Non-numeric data in file {:}",
           unsafe {
     std::ffi::CStr::from_ptr(filename as
                                  *const libc::c_char).to_str().unwrap()
@@ -1722,7 +1725,7 @@ unsafe extern "C" fn jpeg_default_qtables(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
     mut force_baseline: crate::jmorecfg_h::boolean,
 ) {
-    let mut quant_tbl_master_idx: libc::c_int = 0i32;
+     let mut quant_tbl_master_idx:  libc::c_int =  0i32;
     if crate::jpeglib_h::jpeg_c_int_param_supported(
         cinfo,
         crate::jpeglib_h::JINT_BASE_QUANT_TBL_IDX,
@@ -1757,13 +1760,13 @@ pub unsafe extern "C" fn set_quality_ratings(
  *     N[,N,...]
  * If there are more q-table slots than parameters, the last value is replicated.
  */ {
-    let mut val: libc::c_float = 75.0f32; /* default value */
-    let mut tblno: libc::c_int = 0; /* if not set by sscanf, will be ',' */
-    let mut ch: libc::c_char = 0;
+     /* default value */
+     /* if not set by sscanf, will be ',' */
+     let mut val:  libc::c_float =  75.0f32; let mut tblno:  libc::c_int =  0;
     tblno = 0i32;
     while tblno < crate::jpeglib_h::NUM_QUANT_TBLS {
         if *arg != 0 {
-            ch =  ',' as libc::c_char;
+             let mut ch:  libc::c_char =  0;ch =  ',' as libc::c_char;
             if crate::stdlib::sscanf(
                 arg,
                 
@@ -1828,13 +1831,13 @@ pub unsafe extern "C" fn set_quant_slots(
  *     N[,N,...]
  * If there are more components than parameters, the last value is replicated.
  */ {
-    let mut val: libc::c_int = 0i32; /* default table # */
-    let mut ci: libc::c_int = 0; /* if not set by sscanf, will be ',' */
-    let mut ch: libc::c_char = 0;
+     /* default table # */
+     /* if not set by sscanf, will be ',' */
+     let mut ci:  libc::c_int =  0;
     ci = 0i32;
     while ci < crate::jmorecfg_h::MAX_COMPONENTS {
-        if *arg != 0 {
-            ch =  ',' as libc::c_char;
+         let mut val:  libc::c_int =  0i32;if *arg != 0 {
+             let mut ch:  libc::c_char =  0;ch =  ',' as libc::c_char;
             if crate::stdlib::sscanf(
                 arg,
                 
@@ -1850,7 +1853,7 @@ pub unsafe extern "C" fn set_quant_slots(
                 return crate::jmorecfg_h::FALSE;
             }
             if val < 0i32 || val >= crate::jpeglib_h::NUM_QUANT_TBLS {
-                   eprintln!("JPEG quantization tables are numbered 0..{:}",
+                    eprintln!("JPEG quantization tables are numbered 0..{:}",
           crate::jpeglib_h::NUM_QUANT_TBLS - 1i32);
                 return crate::jmorecfg_h::FALSE;
             }
@@ -1929,15 +1932,15 @@ pub unsafe extern "C" fn set_sample_factors(
  *     HxV[,HxV,...]
  * If there are more components than parameters, "1x1" is assumed for the rest.
  */ {
-    let mut ci: libc::c_int = 0; /* if not set by sscanf, will be ',' */
-    let mut val1: libc::c_int = 0;
-    let mut val2: libc::c_int = 0;
-    let mut ch1: libc::c_char = 0;
-    let mut ch2: libc::c_char = 0;
+     /* if not set by sscanf, will be ',' */
+    
+    
+    
+     let mut ci:  libc::c_int =  0;
     ci = 0i32;
     while ci < crate::jmorecfg_h::MAX_COMPONENTS {
         if *arg != 0 {
-            ch2 =  ',' as libc::c_char;
+             let mut val1:  libc::c_int =  0; let mut val2:  libc::c_int =  0; let mut ch1:  libc::c_char =  0; let mut ch2:  libc::c_char =  0;ch2 =  ',' as libc::c_char;
             if crate::stdlib::sscanf(
                 arg,
                 

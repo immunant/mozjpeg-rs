@@ -349,10 +349,9 @@ pub unsafe extern "C" fn jinit_c_main_controller(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
     mut need_full_buffer: crate::jmorecfg_h::boolean,
 ) {
-    let mut main_ptr: my_main_ptr = ::std::ptr::null_mut::< my_main_controller>();
-    let mut ci: libc::c_int = 0;
-    let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
+    
+    
+     let mut main_ptr:  my_main_ptr =  ::std::ptr::null_mut::< my_main_controller>();
     main_ptr = Some(
         (*(*cinfo).mem)
             .alloc_small
@@ -388,7 +387,9 @@ pub unsafe extern "C" fn jinit_c_main_controller(
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     } else {
         /* Allocate a strip buffer for each component */
-        ci = 0i32;
+         let mut ci:  libc::c_int =  0; let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
+    
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();ci = 0i32;
         compptr = (*cinfo).comp_info;
         while ci < (*cinfo).num_components {
             (*main_ptr).buffer[ci as usize] = Some(

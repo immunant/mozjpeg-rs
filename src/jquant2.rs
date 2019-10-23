@@ -459,20 +459,21 @@ unsafe extern "C" fn prescan_quantize(
     mut output_buf: crate::jpeglib_h::JSAMPARRAY,
     mut num_rows: libc::c_int,
 ) {
-    let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr;
-    let mut ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
-    let mut histp: histptr = ::std::ptr::null_mut::< histcell>();
+     let mut row:  libc::c_int =  0;let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr;
+    
+    
     let mut histogram: hist3d = (*cquantize).histogram;
-    let mut row: libc::c_int = 0;
-    let mut col: crate::jmorecfg_h::JDIMENSION = 0;
+    
+    
     let mut width: crate::jmorecfg_h::JDIMENSION = (*cinfo).output_width;
     row = 0i32;
     while row < num_rows {
-        ptr = *input_buf.offset(row as isize);
+         let mut ptr:  crate::jpeglib_h::JSAMPROW =
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut col:  crate::jmorecfg_h::JDIMENSION =  0;ptr = *input_buf.offset(row as isize);
         col = width;
         while col > 0u32 {
             /* get pixel value and index into the histogram */
-            histp = &mut *(*(*histogram
+             let mut histp:  histptr =  ::std::ptr::null_mut::< histcell>();histp = &mut *(*(*histogram
                 .offset((*ptr.offset(0) as libc::c_int >> C0_SHIFT) as isize))
             .offset((*ptr.offset(1) as libc::c_int >> C1_SHIFT) as isize))
             .as_mut_ptr()
@@ -496,14 +497,14 @@ unsafe extern "C" fn find_biggest_color_pop(
 ) -> boxptr
 /* Find the splittable box with the largest color population */
 /* Returns NULL if no splittable boxes remain */ {
-    let mut boxp: boxptr = ::std::ptr::null_mut::< box_0>();
-    let mut i: libc::c_int = 0;
-    let mut maxc: libc::c_long = 0i64;
+    
+    
+     let mut boxp:  boxptr =  ::std::ptr::null_mut::< box_0>(); let mut i:  libc::c_int =  0;
     let mut which: boxptr = crate::stddef_h::NULL as boxptr;
     i = 0i32;
     boxp = boxlist;
     while i < numboxes {
-        if (*boxp).colorcount > maxc && (*boxp).volume > 0i64 {
+         let mut maxc:  libc::c_long =  0i64;if (*boxp).colorcount > maxc && (*boxp).volume > 0i64 {
             which = boxp;
             maxc = (*boxp).colorcount
         }
@@ -516,14 +517,14 @@ unsafe extern "C" fn find_biggest_color_pop(
 unsafe extern "C" fn find_biggest_volume(mut boxlist: boxptr, mut numboxes: libc::c_int) -> boxptr
 /* Find the splittable box with the largest (scaled) volume */
 /* Returns NULL if no splittable boxes remain */ {
-    let mut boxp: boxptr = ::std::ptr::null_mut::< box_0>();
-    let mut i: libc::c_int = 0;
-    let mut maxv: crate::jpegint_h::JLONG = 0i64;
+    
+    
+     let mut boxp:  boxptr =  ::std::ptr::null_mut::< box_0>(); let mut i:  libc::c_int =  0;
     let mut which: boxptr = crate::stddef_h::NULL as boxptr;
     i = 0i32;
     boxp = boxlist;
     while i < numboxes {
-        if (*boxp).volume > maxv {
+         let mut maxv:  crate::jpegint_h::JLONG =  0i64;if (*boxp).volume > maxv {
             which = boxp;
             maxv = (*boxp).volume
         }
@@ -537,22 +538,22 @@ unsafe extern "C" fn update_box(mut cinfo: crate::jpeglib_h::j_decompress_ptr, m
 /* Shrink the min/max bounds of a box to enclose only nonzero elements, */
 /* and recompute its volume and population */
 {
-    let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr;
+     let mut histp:  histptr =  ::std::ptr::null_mut::< histcell>(); let mut c0:  libc::c_int =  0; let mut c1:  libc::c_int =  0; let mut c2:  libc::c_int =  0; let mut c0min:  libc::c_int =  0; let mut c0max:  libc::c_int =  0; let mut c1min:  libc::c_int =  0; let mut c1max:  libc::c_int =  0; let mut c2min:  libc::c_int =  0; let mut c2max:  libc::c_int =  0; let mut dist0:  crate::jpegint_h::JLONG =  0; let mut dist1:  crate::jpegint_h::JLONG =  0; let mut dist2:  crate::jpegint_h::JLONG =  0; let mut ccount:  libc::c_long =  0;let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr;
     let mut histogram: hist3d = (*cquantize).histogram;
-    let mut histp: histptr = ::std::ptr::null_mut::< histcell>();
-    let mut c0: libc::c_int = 0;
-    let mut c1: libc::c_int = 0;
-    let mut c2: libc::c_int = 0;
-    let mut c0min: libc::c_int = 0;
-    let mut c0max: libc::c_int = 0;
-    let mut c1min: libc::c_int = 0;
-    let mut c1max: libc::c_int = 0;
-    let mut c2min: libc::c_int = 0;
-    let mut c2max: libc::c_int = 0;
-    let mut dist0: crate::jpegint_h::JLONG = 0;
-    let mut dist1: crate::jpegint_h::JLONG = 0;
-    let mut dist2: crate::jpegint_h::JLONG = 0;
-    let mut ccount: libc::c_long = 0;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     c0min = (*boxp).c0min;
     c0max = (*boxp).c0max;
     c1min = (*boxp).c1min;
@@ -756,19 +757,19 @@ unsafe extern "C" fn median_cut(
     mut desired_colors: libc::c_int,
 ) -> libc::c_int
 /* Repeatedly select and split the largest box until we have enough boxes */ {
-    let mut n: libc::c_int = 0;
-    let mut lb: libc::c_int = 0;
-    let mut c0: libc::c_int = 0;
-    let mut c1: libc::c_int = 0;
-    let mut c2: libc::c_int = 0;
-    let mut cmax: libc::c_int = 0;
-    let mut b1: boxptr = ::std::ptr::null_mut::< box_0>();
-    let mut b2: boxptr = ::std::ptr::null_mut::< box_0>();
+    
+    
+    
+    
+    
+    
+    
+    
     while numboxes < desired_colors {
         /* Select box to split.
          * Current algorithm: by population for first half, then by volume.
          */
-        if numboxes * 2i32 <= desired_colors {
+         let mut n:  libc::c_int =  0; let mut lb:  libc::c_int =  0; let mut c0:  libc::c_int =  0; let mut c1:  libc::c_int =  0; let mut c2:  libc::c_int =  0; let mut cmax:  libc::c_int =  0; let mut b1:  boxptr =  ::std::ptr::null_mut::< box_0>(); let mut b2:  boxptr =  ::std::ptr::null_mut::< box_0>();if numboxes * 2i32 <= desired_colors {
             b1 = find_biggest_color_pop(boxlist, numboxes)
         } else {
             b1 = find_biggest_volume(boxlist, numboxes)
@@ -859,23 +860,23 @@ unsafe extern "C" fn compute_color(
 {
     /* Current algorithm: mean weighted by pixels (not colors) */
     /* Note it is important to get the rounding correct! */
-    let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr;
+     let mut c0:  libc::c_int =  0; let mut c0min:  libc::c_int =  0; let mut c0max:  libc::c_int =  0; let mut c1min:  libc::c_int =  0; let mut c1max:  libc::c_int =  0; let mut c2min:  libc::c_int =  0; let mut c2max:  libc::c_int =  0; let mut total:  libc::c_long =  0i64; let mut c0total:  libc::c_long =  0i64; let mut c1total:  libc::c_long =  0i64; let mut c2total:  libc::c_long =  0i64;let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr;
     let mut histogram: hist3d = (*cquantize).histogram;
-    let mut histp: histptr = ::std::ptr::null_mut::< histcell>();
-    let mut c0: libc::c_int = 0;
-    let mut c1: libc::c_int = 0;
-    let mut c2: libc::c_int = 0;
-    let mut c0min: libc::c_int = 0;
-    let mut c0max: libc::c_int = 0;
-    let mut c1min: libc::c_int = 0;
-    let mut c1max: libc::c_int = 0;
-    let mut c2min: libc::c_int = 0;
-    let mut c2max: libc::c_int = 0;
-    let mut count: libc::c_long = 0;
-    let mut total: libc::c_long = 0i64;
-    let mut c0total: libc::c_long = 0i64;
-    let mut c1total: libc::c_long = 0i64;
-    let mut c2total: libc::c_long = 0i64;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     c0min = (*boxp).c0min;
     c0max = (*boxp).c0max;
     c1min = (*boxp).c1min;
@@ -884,14 +885,14 @@ unsafe extern "C" fn compute_color(
     c2max = (*boxp).c2max;
     c0 = c0min;
     while c0 <= c0max {
-        c1 = c1min;
+         let mut c1:  libc::c_int =  0;c1 = c1min;
         while c1 <= c1max {
-            histp = &mut *(*(*histogram.offset(c0 as isize)).offset(c1 as isize))
+             let mut histp:  histptr =  ::std::ptr::null_mut::< histcell>(); let mut c2:  libc::c_int =  0;histp = &mut *(*(*histogram.offset(c0 as isize)).offset(c1 as isize))
                 .as_mut_ptr()
                 .offset(c2min as isize) as *mut histcell;
             c2 = c2min;
             while c2 <= c2max {
-                let fresh4 = histp;
+                 let mut count:  libc::c_long =  0;let fresh4 = histp;
                 histp = histp.offset(1);
                 count = *fresh4 as libc::c_long;
                 if count != 0i64 {
@@ -923,9 +924,9 @@ unsafe extern "C" fn select_colors(
 )
 /* Master routine for color selection */
 {
-    let mut boxlist: boxptr = ::std::ptr::null_mut::< box_0>();
-    let mut numboxes: libc::c_int = 0;
-    let mut i: libc::c_int = 0;
+    
+    
+     let mut boxlist:  boxptr =  ::std::ptr::null_mut::< box_0>(); let mut numboxes:  libc::c_int =  0; let mut i:  libc::c_int =  0;
     /* Allocate workspace for box list */
     boxlist = Some(
         (*(*cinfo).mem)
@@ -1061,21 +1062,21 @@ unsafe extern "C" fn find_nearby_colors(
  * This routine uses Heckbert's "locally sorted search" criterion to select
  * the colors that need further consideration.
  */ {
-    let mut numcolors: libc::c_int = (*cinfo).actual_number_of_colors; /* min distance to colormap entry i */
-    let mut maxc0: libc::c_int = 0;
-    let mut maxc1: libc::c_int = 0;
-    let mut maxc2: libc::c_int = 0;
-    let mut centerc0: libc::c_int = 0;
-    let mut centerc1: libc::c_int = 0;
-    let mut centerc2: libc::c_int = 0;
-    let mut i: libc::c_int = 0;
-    let mut x: libc::c_int = 0;
-    let mut ncolors: libc::c_int = 0;
-    let mut minmaxdist: crate::jpegint_h::JLONG = 0;
-    let mut min_dist: crate::jpegint_h::JLONG = 0;
-    let mut max_dist: crate::jpegint_h::JLONG = 0;
-    let mut tdist: crate::jpegint_h::JLONG = 0;
-    let mut mindist: [crate::jpegint_h::JLONG; 256] = [0; 256];
+     let mut maxc0:  libc::c_int =  0; let mut maxc1:  libc::c_int =  0; let mut maxc2:  libc::c_int =  0; let mut centerc0:  libc::c_int =  0; let mut centerc1:  libc::c_int =  0; let mut centerc2:  libc::c_int =  0; let mut i:  libc::c_int =  0; let mut ncolors:  libc::c_int =  0; let mut minmaxdist:  crate::jpegint_h::JLONG =  0; let mut mindist:  [crate::jpegint_h::JLONG; 256] =  [0; 256];let mut numcolors: libc::c_int = (*cinfo).actual_number_of_colors; /* min distance to colormap entry i */
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /* Compute true coordinates of update box's upper corner and center.
      * Actually we compute the coordinates of the center of the upper-corner
      * histogram cell, which are the upper bounds of the volume we care about.
@@ -1100,7 +1101,7 @@ unsafe extern "C" fn find_nearby_colors(
     i = 0i32;
     while i < numcolors {
         /* We compute the squared-c0-distance term, then add in the other two. */
-        x = *(*(*cinfo).colormap.offset(0)).offset(i as isize) as libc::c_int;
+         let mut x:  libc::c_int =  0; let mut min_dist:  crate::jpegint_h::JLONG =  0; let mut max_dist:  crate::jpegint_h::JLONG =  0; let mut tdist:  crate::jpegint_h::JLONG =  0;x = *(*(*cinfo).colormap.offset(0)).offset(i as isize) as libc::c_int;
         if x < minc0 {
             tdist = ((x - minc0)
                 * c_scales[crate::jmorecfg_h::rgb_red[(*cinfo).out_color_space as usize] as usize])
@@ -1243,24 +1244,24 @@ unsafe extern "C" fn find_best_colors(
  * find the distance from a colormap entry to successive cells in the box.
  */
 {
-    let mut ic0: libc::c_int = 0; /* pointer into bestdist[] array */
-    let mut ic1: libc::c_int = 0; /* pointer into bestcolor[] array */
-    let mut ic2: libc::c_int = 0; /* initial distance values */
-    let mut i: libc::c_int = 0; /* current distance in inner loop */
-    let mut icolor: libc::c_int = 0; /* distance increments */
-    let mut bptr: *mut crate::jpegint_h::JLONG = ::std::ptr::null_mut::< crate::jpegint_h::JLONG>(); /* initial values for increments */
-    let mut cptr: *mut crate::jmorecfg_h::JSAMPLE = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
-    let mut dist0: crate::jpegint_h::JLONG = 0;
-    let mut dist1: crate::jpegint_h::JLONG = 0;
-    let mut dist2: crate::jpegint_h::JLONG = 0;
-    let mut xx0: crate::jpegint_h::JLONG = 0;
-    let mut xx1: crate::jpegint_h::JLONG = 0;
-    let mut xx2: crate::jpegint_h::JLONG = 0;
-    let mut inc0: crate::jpegint_h::JLONG = 0;
-    let mut inc1: crate::jpegint_h::JLONG = 0;
-    let mut inc2: crate::jpegint_h::JLONG = 0;
-    /* This array holds the distance to the nearest-so-far color for each cell */
-    let mut bestdist: [crate::jpegint_h::JLONG; 128] = [0; 128];
+     /* pointer into bestdist[] array */
+     /* pointer into bestcolor[] array */
+     /* initial distance values */
+     /* current distance in inner loop */
+     /* distance increments */
+     /* initial values for increments */
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+     let mut i:  libc::c_int =  0; let mut bptr:  *mut crate::jpegint_h::JLONG =
+     ::std::ptr::null_mut::< crate::jpegint_h::JLONG>(); let mut bestdist:  [crate::jpegint_h::JLONG; 128] =  [0; 128];
     /* Initialize best-distance for each cell of the update box */
     bptr = bestdist.as_mut_ptr();
     i = BOX_C0_ELEMS * BOX_C1_ELEMS * BOX_C2_ELEMS - 1i32;
@@ -1277,7 +1278,8 @@ unsafe extern "C" fn find_best_colors(
     /* Nominal steps between cell centers ("x" in Thomas article) */
     i = 0i32;
     while i < numcolors {
-        icolor = *colorlist.offset(i as isize) as libc::c_int;
+         let mut ic0:  libc::c_int =  0; let mut icolor:  libc::c_int =  0; let mut cptr:  *mut crate::jmorecfg_h::JSAMPLE =
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut dist0:  crate::jpegint_h::JLONG =  0; let mut xx0:  crate::jpegint_h::JLONG =  0; let mut inc0:  crate::jpegint_h::JLONG =  0; let mut inc1:  crate::jpegint_h::JLONG =  0; let mut inc2:  crate::jpegint_h::JLONG =  0;icolor = *colorlist.offset(i as isize) as libc::c_int;
         /* Compute (square of) distance from minc0/c1/c2 to this color */
         inc0 = ((minc0 - *(*(*cinfo).colormap.offset(0)).offset(icolor as isize) as libc::c_int)
             * c_scales[crate::jmorecfg_h::rgb_red[(*cinfo).out_color_space as usize] as usize])
@@ -1334,11 +1336,11 @@ unsafe extern "C" fn find_best_colors(
         xx0 = inc0;
         ic0 = BOX_C0_ELEMS - 1i32;
         while ic0 >= 0i32 {
-            dist1 = dist0;
+             let mut ic1:  libc::c_int =  0; let mut dist1:  crate::jpegint_h::JLONG =  0; let mut xx1:  crate::jpegint_h::JLONG =  0;dist1 = dist0;
             xx1 = inc1;
             ic1 = BOX_C1_ELEMS - 1i32;
             while ic1 >= 0i32 {
-                dist2 = dist1;
+                 let mut ic2:  libc::c_int =  0; let mut dist2:  crate::jpegint_h::JLONG =  0; let mut xx2:  crate::jpegint_h::JLONG =  0;dist2 = dist1;
                 xx2 = inc2;
                 ic2 = BOX_C2_ELEMS - 1i32;
                 while ic2 >= 0i32 {
@@ -1395,21 +1397,20 @@ unsafe extern "C" fn fill_inverse_cmap(
 /* histogram cell c0/c1/c2.  (Only that one cell MUST be filled, but */
 /* we can fill as many others as we wish.) */
 {
-    let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr; /* lower left corner of update box */
+     let mut minc0:  libc::c_int =  0; let mut minc1:  libc::c_int =  0; let mut minc2:  libc::c_int =  0; let mut ic0:  libc::c_int =  0; let mut cptr:  *mut crate::jmorecfg_h::JSAMPLE =
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut colorlist:  [crate::jmorecfg_h::JSAMPLE; 256] =  [0; 256]; let mut numcolors:  libc::c_int =  0; let mut bestcolor:  [crate::jmorecfg_h::JSAMPLE; 128] =  [0; 128];let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr; /* lower left corner of update box */
     let mut histogram: hist3d = (*cquantize).histogram; /* pointer into bestcolor[] array */
-    let mut minc0: libc::c_int = 0; /* pointer into main cache array */
-    let mut minc1: libc::c_int = 0;
-    let mut minc2: libc::c_int = 0;
-    let mut ic0: libc::c_int = 0;
-    let mut ic1: libc::c_int = 0;
-    let mut ic2: libc::c_int = 0;
-    let mut cptr: *mut crate::jmorecfg_h::JSAMPLE = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
-    let mut cachep: histptr = ::std::ptr::null_mut::< histcell>();
-    /* This array lists the candidate colormap indexes. */
-    let mut colorlist: [crate::jmorecfg_h::JSAMPLE; 256] = [0; 256]; /* number of candidate colors */
-    let mut numcolors: libc::c_int = 0;
-    /* This array holds the actually closest colormap index for each cell. */
-    let mut bestcolor: [crate::jmorecfg_h::JSAMPLE; 128] = [0; 128];
+     /* pointer into main cache array */
+    
+    
+    
+    
+    
+    
+    
+     /* number of candidate colors */
+    
+    
     /* Convert cell coordinates to update box ID */
     c0 >>= BOX_C0_LOG;
     c1 >>= BOX_C1_LOG;
@@ -1442,9 +1443,9 @@ unsafe extern "C" fn fill_inverse_cmap(
     cptr = bestcolor.as_mut_ptr();
     ic0 = 0i32;
     while ic0 < BOX_C0_ELEMS {
-        ic1 = 0i32;
+         let mut ic1:  libc::c_int =  0;ic1 = 0i32;
         while ic1 < BOX_C1_ELEMS {
-            cachep = &mut *(*(*histogram.offset((c0 + ic0) as isize)).offset((c1 + ic1) as isize))
+             let mut ic2:  libc::c_int =  0; let mut cachep:  histptr =  ::std::ptr::null_mut::< histcell>();cachep = &mut *(*(*histogram.offset((c0 + ic0) as isize)).offset((c1 + ic1) as isize))
                 .as_mut_ptr()
                 .offset(c2 as isize) as *mut histcell;
             ic2 = 0i32;
@@ -1473,25 +1474,27 @@ unsafe extern "C" fn pass2_no_dither(
 )
 /* This version performs no dithering */
 {
-    let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr;
+     let mut row:  libc::c_int =  0;let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr;
     let mut histogram: hist3d = (*cquantize).histogram;
-    let mut inptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
-    let mut outptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
-    let mut cachep: histptr = ::std::ptr::null_mut::< histcell>();
-    let mut c0: libc::c_int = 0;
-    let mut c1: libc::c_int = 0;
-    let mut c2: libc::c_int = 0;
-    let mut row: libc::c_int = 0;
-    let mut col: crate::jmorecfg_h::JDIMENSION = 0;
+    
+    
+    
+    
+    
+    
+    
+    
     let mut width: crate::jmorecfg_h::JDIMENSION = (*cinfo).output_width;
     row = 0i32;
     while row < num_rows {
-        inptr = *input_buf.offset(row as isize);
+         let mut inptr:  crate::jpeglib_h::JSAMPROW =
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut outptr:  crate::jpeglib_h::JSAMPROW =
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut col:  crate::jmorecfg_h::JDIMENSION =  0;inptr = *input_buf.offset(row as isize);
         outptr = *output_buf.offset(row as isize);
         col = width;
         while col > 0u32 {
             /* get pixel value and index into the cache */
-            let fresh9 = inptr;
+             let mut cachep:  histptr =  ::std::ptr::null_mut::< histcell>(); let mut c0:  libc::c_int =  0; let mut c1:  libc::c_int =  0; let mut c2:  libc::c_int =  0;let fresh9 = inptr;
             inptr = inptr.offset(1);
             c0 = *fresh9 as libc::c_int >> C0_SHIFT;
             let fresh10 = inptr;
@@ -1526,25 +1529,25 @@ unsafe extern "C" fn pass2_fs_dither(
 )
 /* This version performs Floyd-Steinberg dithering */
 {
-    let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr; /* current error or pixel value */
+     let mut row:  libc::c_int =  0;let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr; /* current error or pixel value */
     let mut histogram: hist3d = (*cquantize).histogram; /* error for pixel below cur */
-    let mut cur0: LOCFSERROR = 0; /* error for below/prev col */
-    let mut cur1: LOCFSERROR = 0; /* => fserrors[] at column before current */
-    let mut cur2: LOCFSERROR = 0; /* => current input pixel */
-    let mut belowerr0: LOCFSERROR = 0; /* => current output pixel */
-    let mut belowerr1: LOCFSERROR = 0; /* +1 or -1 depending on direction */
-    let mut belowerr2: LOCFSERROR = 0; /* 3*dir, for advancing inptr & errorptr */
-    let mut bpreverr0: LOCFSERROR = 0;
-    let mut bpreverr1: LOCFSERROR = 0;
-    let mut bpreverr2: LOCFSERROR = 0;
-    let mut errorptr: FSERRPTR = ::std::ptr::null_mut::< FSERROR>();
-    let mut inptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
-    let mut outptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
-    let mut cachep: histptr = ::std::ptr::null_mut::< histcell>();
-    let mut dir: libc::c_int = 0;
-    let mut dir3: libc::c_int = 0;
-    let mut row: libc::c_int = 0;
-    let mut col: crate::jmorecfg_h::JDIMENSION = 0;
+     /* error for below/prev col */
+     /* => fserrors[] at column before current */
+     /* => current input pixel */
+     /* => current output pixel */
+     /* +1 or -1 depending on direction */
+     /* 3*dir, for advancing inptr & errorptr */
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     let mut width: crate::jmorecfg_h::JDIMENSION = (*cinfo).output_width;
     let mut range_limit: *mut crate::jmorecfg_h::JSAMPLE = (*cinfo).sample_range_limit;
     let mut error_limit: *mut libc::c_int = (*cquantize).error_limiter;
@@ -1553,7 +1556,9 @@ unsafe extern "C" fn pass2_fs_dither(
     let mut colormap2: crate::jpeglib_h::JSAMPROW = *(*cinfo).colormap.offset(2);
     row = 0i32;
     while row < num_rows {
-        inptr = *input_buf.offset(row as isize);
+         let mut cur0:  LOCFSERROR =  0; let mut cur1:  LOCFSERROR =  0; let mut cur2:  LOCFSERROR =  0; let mut belowerr0:  LOCFSERROR =  0; let mut belowerr1:  LOCFSERROR =  0; let mut belowerr2:  LOCFSERROR =  0; let mut bpreverr0:  LOCFSERROR =  0; let mut bpreverr1:  LOCFSERROR =  0; let mut bpreverr2:  LOCFSERROR =  0; let mut errorptr:  FSERRPTR =  ::std::ptr::null_mut::< FSERROR>(); let mut inptr:  crate::jpeglib_h::JSAMPROW =
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut outptr:  crate::jpeglib_h::JSAMPROW =
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut dir:  libc::c_int =  0; let mut dir3:  libc::c_int =  0; let mut col:  crate::jmorecfg_h::JDIMENSION =  0;inptr = *input_buf.offset(row as isize);
         outptr = *output_buf.offset(row as isize);
         if (*cquantize).on_odd_row != 0 {
             /* work right to left in this row */
@@ -1599,7 +1604,7 @@ unsafe extern "C" fn pass2_fs_dither(
              * for either sign of the error value.
              * Note: errorptr points to *previous* column's array entry.
              */
-            cur0 = cur0 + *errorptr.offset((dir3 + 0i32) as isize) as libc::c_int + 8i32 >> 4i32;
+             let mut cachep:  histptr =  ::std::ptr::null_mut::< histcell>(); let mut bnexterr:  LOCFSERROR =  0;cur0 = cur0 + *errorptr.offset((dir3 + 0i32) as isize) as libc::c_int + 8i32 >> 4i32;
             cur1 = cur1 + *errorptr.offset((dir3 + 1i32) as isize) as libc::c_int + 8i32 >> 4i32;
             cur2 = cur2 + *errorptr.offset((dir3 + 2i32) as isize) as libc::c_int + 8i32 >> 4i32;
             /* advance errorptr to current column */
@@ -1624,7 +1629,7 @@ unsafe extern "C" fn pass2_fs_dither(
             cur0 -= *colormap0.offset(pixcode as isize) as libc::c_int;
             cur1 -= *colormap1.offset(pixcode as isize) as libc::c_int;
             cur2 -= *colormap2.offset(pixcode as isize) as libc::c_int;
-            let mut bnexterr: LOCFSERROR = 0;
+            
             bnexterr = cur0;
             *errorptr.offset(0) = (bpreverr0 + cur0 * 3i32) as FSERROR;
             bpreverr0 = belowerr0 + cur0 * 5i32;
@@ -1699,10 +1704,10 @@ unsafe extern "C" fn pass2_fs_dither(
 unsafe extern "C" fn init_error_limit(mut cinfo: crate::jpeglib_h::j_decompress_ptr)
 /* Allocate and fill in the error_limiter table */
 {
-    let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr; /* so can index -MAXJSAMPLE .. +MAXJSAMPLE */
-    let mut table: *mut libc::c_int = ::std::ptr::null_mut::< libc::c_int>();
-    let mut in_0: libc::c_int = 0;
-    let mut out: libc::c_int = 0;
+     let mut table:  *mut libc::c_int =  ::std::ptr::null_mut::< libc::c_int>(); let mut in_0:  libc::c_int =  0; let mut out:  libc::c_int =  0;let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr; /* so can index -MAXJSAMPLE .. +MAXJSAMPLE */
+    
+    
+    
     table = Some(
         (*(*cinfo).mem)
             .alloc_small
@@ -1765,9 +1770,9 @@ unsafe extern "C" fn start_pass_2_quant(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
     mut is_pre_scan: crate::jmorecfg_h::boolean,
 ) {
-    let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr;
+     let mut i:  libc::c_int =  0;let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr;
     let mut histogram: hist3d = (*cquantize).histogram;
-    let mut i: libc::c_int = 0;
+    
     /* Only F-S dithering or no dithering is supported. */
     /* If user asks for ordered dither, give him F-S. */
     if  (*cinfo).dither_mode
@@ -1901,8 +1906,8 @@ unsafe extern "C" fn new_color_map_2_quant(mut cinfo: crate::jpeglib_h::j_decomp
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_2pass_quantizer(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
-    let mut cquantize: my_cquantize_ptr = ::std::ptr::null_mut::< my_cquantizer>(); /* flag optional arrays not allocated */
-    let mut i: libc::c_int = 0;
+     /* flag optional arrays not allocated */
+     let mut cquantize:  my_cquantize_ptr =  ::std::ptr::null_mut::< my_cquantizer>(); let mut i:  libc::c_int =  0;
     cquantize = Some(
         (*(*cinfo).mem)
             .alloc_small

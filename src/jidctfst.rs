@@ -225,33 +225,35 @@ pub unsafe extern "C" fn jpeg_idct_ifast(
     mut output_buf: crate::jpeglib_h::JSAMPARRAY,
     mut output_col: crate::jmorecfg_h::JDIMENSION,
 ) {
-    let mut tmp0: crate::jdct_h::DCTELEM = 0; /* buffers data between passes */
-    let mut tmp1: crate::jdct_h::DCTELEM = 0;
-    let mut tmp2: crate::jdct_h::DCTELEM = 0;
-    let mut tmp3: crate::jdct_h::DCTELEM = 0;
-    let mut tmp4: crate::jdct_h::DCTELEM = 0;
-    let mut tmp5: crate::jdct_h::DCTELEM = 0;
-    let mut tmp6: crate::jdct_h::DCTELEM = 0;
-    let mut tmp7: crate::jdct_h::DCTELEM = 0;
-    let mut tmp10: crate::jdct_h::DCTELEM = 0;
-    let mut tmp11: crate::jdct_h::DCTELEM = 0;
-    let mut tmp12: crate::jdct_h::DCTELEM = 0;
-    let mut tmp13: crate::jdct_h::DCTELEM = 0;
-    let mut z5: crate::jdct_h::DCTELEM = 0;
-    let mut z10: crate::jdct_h::DCTELEM = 0;
-    let mut z11: crate::jdct_h::DCTELEM = 0;
-    let mut z12: crate::jdct_h::DCTELEM = 0;
-    let mut z13: crate::jdct_h::DCTELEM = 0;
-    let mut inptr: crate::jpeglib_h::JCOEFPTR = ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>();
-    let mut quantptr: *mut crate::jdct_h::IFAST_MULT_TYPE =
-        ::std::ptr::null_mut::< crate::jdct_h::IFAST_MULT_TYPE>();
-    let mut wsptr: *mut libc::c_int = ::std::ptr::null_mut::< libc::c_int>();
-    let mut outptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
+     /* buffers data between passes */
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+     let mut tmp0:  crate::jdct_h::DCTELEM =  0; let mut tmp1:  crate::jdct_h::DCTELEM =  0; let mut tmp2:  crate::jdct_h::DCTELEM =  0; let mut tmp3:  crate::jdct_h::DCTELEM =  0; let mut tmp4:  crate::jdct_h::DCTELEM =  0; let mut tmp5:  crate::jdct_h::DCTELEM =  0; let mut tmp6:  crate::jdct_h::DCTELEM =  0; let mut tmp7:  crate::jdct_h::DCTELEM =  0; let mut tmp10:  crate::jdct_h::DCTELEM =  0; let mut tmp11:  crate::jdct_h::DCTELEM =  0; let mut tmp12:  crate::jdct_h::DCTELEM =  0; let mut tmp13:  crate::jdct_h::DCTELEM =  0; let mut z5:  crate::jdct_h::DCTELEM =  0; let mut z10:  crate::jdct_h::DCTELEM =  0; let mut z11:  crate::jdct_h::DCTELEM =  0; let mut z12:  crate::jdct_h::DCTELEM =  0; let mut z13:  crate::jdct_h::DCTELEM =  0; let mut inptr:  crate::jpeglib_h::JCOEFPTR =
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JCOEF>(); let mut quantptr:  *mut crate::jdct_h::IFAST_MULT_TYPE =
+    
+        ::std::ptr::null_mut::< crate::jdct_h::IFAST_MULT_TYPE>(); let mut wsptr:  *mut libc::c_int =  ::std::ptr::null_mut::< libc::c_int>(); let mut ctr:  libc::c_int =  0; let mut workspace:  [libc::c_int; 64] =  [0; 64];
     let mut range_limit: *mut crate::jmorecfg_h::JSAMPLE = (*cinfo)
         .sample_range_limit
         .offset(crate::jmorecfg_h::CENTERJSAMPLE as isize);
-    let mut ctr: libc::c_int = 0;
-    let mut workspace: [libc::c_int; 64] = [0; 64];
+    
+    
     /* for DESCALE */
     /* for IDESCALE */
     /* Pass 1: process columns from input, store into work array. */
@@ -376,7 +378,8 @@ pub unsafe extern "C" fn jpeg_idct_ifast(
     wsptr = workspace.as_mut_ptr();
     ctr = 0i32;
     while ctr < crate::jpeglib_h::DCTSIZE {
-        outptr = (*output_buf.offset(ctr as isize)).offset(output_col as isize);
+         let mut outptr:  crate::jpeglib_h::JSAMPROW =
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();outptr = (*output_buf.offset(ctr as isize)).offset(output_col as isize);
         /* advance pointer to next row */
         /* Rows of zeroes can be exploited in the same way as we did with columns.
          * However, the column calculation has created many nonzero AC terms, so

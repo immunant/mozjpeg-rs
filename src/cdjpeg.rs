@@ -322,11 +322,11 @@ pub unsafe extern "C" fn keymatch(
     mut keyword: *const libc::c_char,
     mut minchars: libc::c_int,
 ) -> crate::jmorecfg_h::boolean {
-    let mut ca: libc::c_int = 0; /* arg longer than keyword, no good */
-    let mut ck: libc::c_int = 0;
-    let mut nmatched: libc::c_int = 0i32;
+     /* arg longer than keyword, no good */
+    
+     let mut nmatched:  libc::c_int =  0i32;
     loop {
-        let fresh0 = arg;
+         let mut ca:  libc::c_int =  0; let mut ck:  libc::c_int =  0;let fresh0 = arg;
         arg = arg.offset(1);
         ca = *fresh0 as libc::c_int;
         if !(ca != '\u{0}' as i32) {
@@ -345,7 +345,7 @@ pub unsafe extern "C" fn keymatch(
             /* count matched characters */
             /* force arg to lcase (assume ck is already) */
             ca = ({
-                let mut __res: libc::c_int = 0; /* no good */
+                 let mut __res:  libc::c_int =  0; /* no good */
                 if ::std::mem::size_of::<libc::c_int>() as libc::c_ulong > 1u64 {
                     if 0 != 0 {
                         let mut __c: libc::c_int = ca;

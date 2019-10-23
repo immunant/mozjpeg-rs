@@ -134,25 +134,26 @@ pub use crate::jpeglib_h::DCTSIZE;
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_fdct_islow(mut data: *mut crate::jdct_h::DCTELEM) {
-    let mut tmp0: crate::jpegint_h::JLONG = 0;
-    let mut tmp1: crate::jpegint_h::JLONG = 0;
-    let mut tmp2: crate::jpegint_h::JLONG = 0;
-    let mut tmp3: crate::jpegint_h::JLONG = 0;
-    let mut tmp4: crate::jpegint_h::JLONG = 0;
-    let mut tmp5: crate::jpegint_h::JLONG = 0;
-    let mut tmp6: crate::jpegint_h::JLONG = 0;
-    let mut tmp7: crate::jpegint_h::JLONG = 0;
-    let mut tmp10: crate::jpegint_h::JLONG = 0;
-    let mut tmp11: crate::jpegint_h::JLONG = 0;
-    let mut tmp12: crate::jpegint_h::JLONG = 0;
-    let mut tmp13: crate::jpegint_h::JLONG = 0;
-    let mut z1: crate::jpegint_h::JLONG = 0;
-    let mut z2: crate::jpegint_h::JLONG = 0;
-    let mut z3: crate::jpegint_h::JLONG = 0;
-    let mut z4: crate::jpegint_h::JLONG = 0;
-    let mut z5: crate::jpegint_h::JLONG = 0;
-    let mut dataptr: *mut crate::jdct_h::DCTELEM = ::std::ptr::null_mut::< crate::jdct_h::DCTELEM>();
-    let mut ctr: libc::c_int = 0;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+     let mut tmp0:  crate::jpegint_h::JLONG =  0; let mut tmp1:  crate::jpegint_h::JLONG =  0; let mut tmp2:  crate::jpegint_h::JLONG =  0; let mut tmp3:  crate::jpegint_h::JLONG =  0; let mut tmp4:  crate::jpegint_h::JLONG =  0; let mut tmp5:  crate::jpegint_h::JLONG =  0; let mut tmp6:  crate::jpegint_h::JLONG =  0; let mut tmp7:  crate::jpegint_h::JLONG =  0; let mut tmp10:  crate::jpegint_h::JLONG =  0; let mut tmp11:  crate::jpegint_h::JLONG =  0; let mut tmp12:  crate::jpegint_h::JLONG =  0; let mut tmp13:  crate::jpegint_h::JLONG =  0; let mut z1:  crate::jpegint_h::JLONG =  0; let mut z2:  crate::jpegint_h::JLONG =  0; let mut z3:  crate::jpegint_h::JLONG =  0; let mut z4:  crate::jpegint_h::JLONG =  0; let mut z5:  crate::jpegint_h::JLONG =  0; let mut dataptr:  *mut crate::jdct_h::DCTELEM =
+     ::std::ptr::null_mut::< crate::jdct_h::DCTELEM>(); let mut ctr:  libc::c_int =  0;
     /* Pass 1: process rows. */
     /* Note results are scaled up by sqrt(8) compared to a true DCT; */
     /* furthermore, we scale the results by 2**PASS1_BITS. */
@@ -180,9 +181,9 @@ pub unsafe extern "C" fn jpeg_fdct_islow(mut data: *mut crate::jdct_h::DCTELEM) 
         tmp13 = tmp0 - tmp3;
         tmp11 = tmp1 + tmp2;
         tmp12 = tmp1 - tmp2;
-        *dataptr.offset(0) = ((((tmp10 + tmp11) as libc::c_ulong) << 2i32))
+        *dataptr.offset(0) = (((((tmp10 + tmp11) as libc::c_ulong) << 2i32)))
             as crate::jdct_h::DCTELEM;
-        *dataptr.offset(4) = ((((tmp10 - tmp11) as libc::c_ulong) << 2i32))
+        *dataptr.offset(4) = (((((tmp10 - tmp11) as libc::c_ulong) << 2i32)))
             as crate::jdct_h::DCTELEM;
         z1 = (tmp12 + tmp13) * 4433i64;
         *dataptr.offset(2) = (z1

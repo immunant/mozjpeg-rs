@@ -258,7 +258,7 @@ unsafe extern "C" fn expand_bottom_edge(
     mut input_rows: libc::c_int,
     mut output_rows: libc::c_int,
 ) {
-    let mut row: libc::c_int = 0;
+     let mut row:  libc::c_int =  0;
     row = input_rows;
     while row < output_rows {
         crate::jpegint_h::jcopy_sample_rows(
@@ -291,14 +291,15 @@ unsafe extern "C" fn pre_process_data(
     mut out_row_groups_avail: crate::jmorecfg_h::JDIMENSION,
 ) {
     let mut prep: my_prep_ptr = (*cinfo).prep as my_prep_ptr;
-    let mut numrows: libc::c_int = 0;
-    let mut ci: libc::c_int = 0;
-    let mut inrows: crate::jmorecfg_h::JDIMENSION = 0;
-    let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
+    
+    
+    
+    
     while *in_row_ctr < in_rows_avail && *out_row_group_ctr < out_row_groups_avail {
         /* Do color conversion to fill the conversion buffer. */
-        inrows =  in_rows_avail - *in_row_ctr;
+         let mut numrows:  libc::c_int =  0; let mut ci:  libc::c_int =  0; let mut inrows:  crate::jmorecfg_h::JDIMENSION =  0; let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
+    
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();inrows =  in_rows_avail - *in_row_ctr;
         numrows = (*cinfo).max_v_samp_factor - (*prep).next_buf_row;
         numrows = if (numrows as crate::jmorecfg_h::JDIMENSION) < inrows {
             numrows as crate::jmorecfg_h::JDIMENSION
@@ -398,14 +399,14 @@ unsafe extern "C" fn pre_process_context(
     mut out_row_groups_avail: crate::jmorecfg_h::JDIMENSION,
 ) {
     let mut prep: my_prep_ptr = (*cinfo).prep as my_prep_ptr;
-    let mut numrows: libc::c_int = 0;
-    let mut ci: libc::c_int = 0;
+    
+    
     let mut buf_height: libc::c_int = (*cinfo).max_v_samp_factor * 3i32;
-    let mut inrows: crate::jmorecfg_h::JDIMENSION = 0;
+    
     while *out_row_group_ctr < out_row_groups_avail {
-        if *in_row_ctr < in_rows_avail {
+         let mut ci:  libc::c_int =  0;if *in_row_ctr < in_rows_avail {
             /* Do color conversion to fill the conversion buffer. */
-            inrows =  in_rows_avail - *in_row_ctr;
+             let mut numrows:  libc::c_int =  0; let mut inrows:  crate::jmorecfg_h::JDIMENSION =  0;inrows =  in_rows_avail - *in_row_ctr;
             numrows = (*prep).next_buf_stop - (*prep).next_buf_row;
             numrows = if (numrows as crate::jmorecfg_h::JDIMENSION) < inrows {
                 numrows as crate::jmorecfg_h::JDIMENSION
@@ -428,7 +429,7 @@ unsafe extern "C" fn pre_process_context(
             if (*prep).rows_to_go == (*cinfo).image_height {
                 ci = 0i32;
                 while ci < (*cinfo).num_components {
-                    let mut row: libc::c_int = 0;
+                     let mut row:  libc::c_int =  0;
                     row = 1i32;
                     while row <= (*cinfo).max_v_samp_factor {
                         crate::jpegint_h::jcopy_sample_rows(
@@ -499,14 +500,16 @@ unsafe extern "C" fn pre_process_context(
  */
 
 unsafe extern "C" fn create_context_buffer(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
-    let mut prep: my_prep_ptr = (*cinfo).prep as my_prep_ptr;
+     let mut ci:  libc::c_int =  0; let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
+    
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>(); let mut fake_buffer:  crate::jpeglib_h::JSAMPARRAY =
+     ::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>();let mut prep: my_prep_ptr = (*cinfo).prep as my_prep_ptr;
     let mut rgroup_height: libc::c_int = (*cinfo).max_v_samp_factor;
-    let mut ci: libc::c_int = 0;
-    let mut i: libc::c_int = 0;
-    let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
-    let mut true_buffer: crate::jpeglib_h::JSAMPARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>();
-    let mut fake_buffer: crate::jpeglib_h::JSAMPARRAY = ::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>();
+    
+    
+    
+    
+    
     /* Grab enough space for fake row pointers for all the components;
      * we need five row groups' worth of pointers for each component.
      */
@@ -528,7 +531,8 @@ unsafe extern "C" fn create_context_buffer(mut cinfo: crate::jpeglib_h::j_compre
          * We make the buffer wide enough to allow the downsampler to edge-expand
          * horizontally within the buffer, if it so chooses.
          */
-        true_buffer = Some(
+         let mut i:  libc::c_int =  0; let mut true_buffer:  crate::jpeglib_h::JSAMPARRAY =
+     ::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>();true_buffer = Some(
             (*(*cinfo).mem)
                 .alloc_sarray
                 .expect("non-null function pointer"),
@@ -576,10 +580,9 @@ pub unsafe extern "C" fn jinit_c_prep_controller(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
     mut need_full_buffer: crate::jmorecfg_h::boolean,
 ) {
-    let mut prep: my_prep_ptr = ::std::ptr::null_mut::< my_prep_controller>();
-    let mut ci: libc::c_int = 0;
-    let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
-        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
+    
+    
+     let mut prep:  my_prep_ptr =  ::std::ptr::null_mut::< my_prep_controller>();
     if need_full_buffer != 0 {
         /* safety check */
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_BUFFER_MODE as libc::c_int;
@@ -629,7 +632,9 @@ pub unsafe extern "C" fn jinit_c_prep_controller(
         create_context_buffer(cinfo);
     } else {
         /* No context, just make it tall enough for one row group */
-        (*prep).pub_0.pre_process_data = Some(
+         let mut ci:  libc::c_int =  0; let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
+    
+        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();(*prep).pub_0.pre_process_data = Some(
             pre_process_data
                 as unsafe extern "C" fn(
                     _: crate::jpeglib_h::j_compress_ptr,

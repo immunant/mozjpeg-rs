@@ -254,7 +254,7 @@ pub unsafe extern "C" fn jpeg_CreateCompress(
     mut version: libc::c_int,
     mut structsize: crate::stddef_h::size_t,
 ) {
-    let mut i: libc::c_int = 0;
+     let mut i:  libc::c_int =  0;
     /* Guard against version mismatches between library and caller. */
     (*cinfo).mem = crate::stddef_h::NULL as *mut crate::jpeglib_h::jpeg_memory_mgr; /* so jpeg_destroy knows mem mgr not called */
     if version != crate::jconfig_h::JPEG_LIB_VERSION {
@@ -410,12 +410,13 @@ pub unsafe extern "C" fn jpeg_suppress_tables(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
     mut suppress: crate::jmorecfg_h::boolean,
 ) {
-    let mut i: libc::c_int = 0;
-    let mut qtbl: *mut crate::jpeglib_h::JQUANT_TBL = ::std::ptr::null_mut::< crate::jpeglib_h::JQUANT_TBL>();
-    let mut htbl: *mut crate::jpeglib_h::JHUFF_TBL = ::std::ptr::null_mut::< crate::jpeglib_h::JHUFF_TBL>();
+    
+    
+     let mut i:  libc::c_int =  0;
     i = 0i32;
     while i < crate::jpeglib_h::NUM_QUANT_TBLS {
-        qtbl = (*cinfo).quant_tbl_ptrs[i as usize];
+         let mut qtbl:  *mut crate::jpeglib_h::JQUANT_TBL =
+     ::std::ptr::null_mut::< crate::jpeglib_h::JQUANT_TBL>();qtbl = (*cinfo).quant_tbl_ptrs[i as usize];
         if !qtbl.is_null() {
             (*qtbl).sent_table = suppress
         }
@@ -423,7 +424,8 @@ pub unsafe extern "C" fn jpeg_suppress_tables(
     }
     i = 0i32;
     while i < crate::jpeglib_h::NUM_HUFF_TBLS {
-        htbl = (*cinfo).dc_huff_tbl_ptrs[i as usize];
+         let mut htbl:  *mut crate::jpeglib_h::JHUFF_TBL =
+     ::std::ptr::null_mut::< crate::jpeglib_h::JHUFF_TBL>();htbl = (*cinfo).dc_huff_tbl_ptrs[i as usize];
         if !htbl.is_null() {
             (*htbl).sent_table = suppress
         }
@@ -443,7 +445,7 @@ pub unsafe extern "C" fn jpeg_suppress_tables(
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_finish_compress(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
-    let mut iMCU_row: crate::jmorecfg_h::JDIMENSION = 0;
+    
     if (*cinfo).global_state == crate::jpegint_h::CSTATE_SCANNING
         || (*cinfo).global_state == crate::jpegint_h::CSTATE_RAW_OK
     {
@@ -477,7 +479,7 @@ pub unsafe extern "C" fn jpeg_finish_compress(mut cinfo: crate::jpeglib_h::j_com
     }
     /* Perform any remaining passes */
     while (*(*cinfo).master).is_last_pass == 0 {
-        Some(
+         let mut iMCU_row:  crate::jmorecfg_h::JDIMENSION =  0;Some(
             (*(*cinfo).master)
                 .prepare_for_pass
                 .expect("non-null function pointer"),

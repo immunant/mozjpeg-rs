@@ -88,16 +88,18 @@ pub unsafe extern "C" fn jcopy_sample_rows(
  * The source and destination arrays must be at least as wide as num_cols.
  */
 {
-    let mut inptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
-    let mut outptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
+    
+     let mut row:  libc::c_int =  0;
     let mut count: crate::stddef_h::size_t = num_cols as libc::c_ulong *
     ::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong;
-    let mut row: libc::c_int = 0;
+    
     input_array = input_array.offset(source_row as isize);
     output_array = output_array.offset(dest_row as isize);
     row = num_rows;
     while row > 0i32 {
-        let fresh0 = input_array;
+         let mut inptr:  crate::jpeglib_h::JSAMPROW =
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut outptr:  crate::jpeglib_h::JSAMPROW =
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();let fresh0 = input_array;
         input_array = input_array.offset(1);
         inptr = *fresh0;
         let fresh1 = output_array;

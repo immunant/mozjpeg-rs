@@ -257,7 +257,7 @@ pub unsafe extern "C" fn jpeg_read_coefficients(
         loop
         /* Absorb whole file into the coef buffer */
         {
-            let mut retcode: libc::c_int = 0;
+             let mut retcode:  libc::c_int =  0;
             /* Call progress monitor hook if present */
             if !(*cinfo).progress.is_null() {
                 Some(
@@ -374,7 +374,7 @@ unsafe extern "C" fn transdecode_master_selection(mut cinfo: crate::jpeglib_h::j
     .expect("non-null function pointer")(cinfo);
     /* Initialize progress monitoring. */
     if !(*cinfo).progress.is_null() {
-        let mut nscans: libc::c_int = 0;
+         let mut nscans:  libc::c_int =  0;
         /* Estimate number of scans to set pass_limit. */
         if (*cinfo).progressive_mode != 0 {
             /* Arbitrarily estimate 2 interleaved DC scans + 3 AC scans/component. */

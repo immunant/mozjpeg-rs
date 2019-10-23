@@ -4,8 +4,8 @@ pub unsafe extern "C" fn add_huff_table(
     mut bits: *const crate::jmorecfg_h::UINT8,
     mut val: *const crate::jmorecfg_h::UINT8,
 ) {
-    let mut nsymbols: libc::c_int = 0;
-    let mut len: libc::c_int = 0;
+    
+     let mut nsymbols:  libc::c_int =  0; let mut len:  libc::c_int =  0;
     if (*htblptr).is_null() {
         *htblptr = crate::jpeglib_h::jpeg_alloc_huff_table(cinfo)
     } else {
@@ -53,9 +53,11 @@ pub unsafe extern "C" fn add_huff_table(
     (**htblptr).sent_table = crate::jmorecfg_h::FALSE;
 }
 pub unsafe extern "C" fn std_huff_tables(mut cinfo: crate::jpeglib_h::j_common_ptr) {
-    let mut dc_huff_tbl_ptrs: *mut *mut crate::jpeglib_h::JHUFF_TBL =
-        ::std::ptr::null_mut::< *mut crate::jpeglib_h::JHUFF_TBL>();
-    let mut ac_huff_tbl_ptrs: *mut *mut crate::jpeglib_h::JHUFF_TBL =
+    
+     let mut dc_huff_tbl_ptrs:  *mut *mut crate::jpeglib_h::JHUFF_TBL =
+    
+        ::std::ptr::null_mut::< *mut crate::jpeglib_h::JHUFF_TBL>(); let mut ac_huff_tbl_ptrs:  *mut *mut crate::jpeglib_h::JHUFF_TBL =
+    
         ::std::ptr::null_mut::< *mut crate::jpeglib_h::JHUFF_TBL>();
     pub static mut bits_dc_luminance: [crate::jmorecfg_h::UINT8; 17] = [
         0u8,
