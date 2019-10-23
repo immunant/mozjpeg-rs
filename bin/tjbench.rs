@@ -1477,9 +1477,8 @@ pub unsafe extern "C" fn fullTest(
             ntilesw = (w + tilew - 1i32) / tilew;
             ntilesh = (h + tileh - 1i32) / tileh;
             jpegBuf = crate::stdlib::malloc(
-                (::std::mem::size_of::<*mut libc::c_uchar>() as libc::c_ulong)
-                    .wrapping_mul(ntilesw as libc::c_ulong)
-                    .wrapping_mul(ntilesh as libc::c_ulong),
+                ::std::mem::size_of::<*mut libc::c_uchar>() as libc::c_ulong *
+    ntilesw as libc::c_ulong * ntilesh as libc::c_ulong,
             ) as *mut *mut libc::c_uchar;
             if jpegBuf.is_null() {
                 crate::stdlib::printf(
@@ -1496,14 +1495,12 @@ pub unsafe extern "C" fn fullTest(
                 crate::stdlib::memset(
                     jpegBuf as *mut libc::c_void,
                     0i32,
-                    (::std::mem::size_of::<*mut libc::c_uchar>() as libc::c_ulong)
-                        .wrapping_mul(ntilesw as libc::c_ulong)
-                        .wrapping_mul(ntilesh as libc::c_ulong),
+                    ::std::mem::size_of::<*mut libc::c_uchar>() as libc::c_ulong *
+    ntilesw as libc::c_ulong * ntilesh as libc::c_ulong,
                 );
                 jpegSize = crate::stdlib::malloc(
-                    (::std::mem::size_of::<libc::c_ulong>() as libc::c_ulong)
-                        .wrapping_mul(ntilesw as libc::c_ulong)
-                        .wrapping_mul(ntilesh as libc::c_ulong),
+                    ::std::mem::size_of::<libc::c_ulong>() as libc::c_ulong *
+    ntilesw as libc::c_ulong * ntilesh as libc::c_ulong,
                 ) as *mut libc::c_ulong;
                 if jpegSize.is_null() {
                     crate::stdlib::printf(
@@ -1520,9 +1517,8 @@ pub unsafe extern "C" fn fullTest(
                     crate::stdlib::memset(
                         jpegSize as *mut libc::c_void,
                         0i32,
-                        (::std::mem::size_of::<libc::c_ulong>() as libc::c_ulong)
-                            .wrapping_mul(ntilesw as libc::c_ulong)
-                            .wrapping_mul(ntilesh as libc::c_ulong),
+                        ::std::mem::size_of::<libc::c_ulong>() as libc::c_ulong *
+    ntilesw as libc::c_ulong * ntilesh as libc::c_ulong,
                     );
                     if flags & crate::src::turbojpeg::TJFLAG_NOREALLOC != 0i32 {
                         i = 0i32;
@@ -1968,8 +1964,7 @@ pub unsafe extern "C" fn fullTest(
                                         break 's_73;
                                     }
                                 }
-                                totalJpegSize = (totalJpegSize as libc::c_ulong)
-                                    .wrapping_add(*jpegSize.offset(tile as isize))
+                                totalJpegSize = (totalJpegSize as libc::c_ulong + *jpegSize.offset(tile as isize))
                                     as libc::c_int
                                     as libc::c_int;
                                 col += 1;
@@ -2700,9 +2695,8 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                 ntilesw = (w + tilew - 1i32) / tilew;
                                 ntilesh = (h + tileh - 1i32) / tileh;
                                 jpegBuf = crate::stdlib::malloc(
-                                    (::std::mem::size_of::<*mut libc::c_uchar>() as libc::c_ulong)
-                                        .wrapping_mul(ntilesw as libc::c_ulong)
-                                        .wrapping_mul(ntilesh as libc::c_ulong),
+                                    ::std::mem::size_of::<*mut libc::c_uchar>() as libc::c_ulong *
+    ntilesw as libc::c_ulong * ntilesh as libc::c_ulong,
                                 )
                                     as *mut *mut libc::c_uchar;
                                 if jpegBuf.is_null() {
@@ -2722,15 +2716,13 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                     crate::stdlib::memset(
                                         jpegBuf as *mut libc::c_void,
                                         0i32,
-                                        (::std::mem::size_of::<*mut libc::c_uchar>()
-                                            as libc::c_ulong)
-                                            .wrapping_mul(ntilesw as libc::c_ulong)
-                                            .wrapping_mul(ntilesh as libc::c_ulong),
+                                        ::std::mem::size_of::<*mut libc::c_uchar>()
+                                            as libc::c_ulong *
+    ntilesw as libc::c_ulong * ntilesh as libc::c_ulong,
                                     );
                                     jpegSize = crate::stdlib::malloc(
-                                        (::std::mem::size_of::<libc::c_ulong>() as libc::c_ulong)
-                                            .wrapping_mul(ntilesw as libc::c_ulong)
-                                            .wrapping_mul(ntilesh as libc::c_ulong),
+                                        ::std::mem::size_of::<libc::c_ulong>() as libc::c_ulong *
+    ntilesw as libc::c_ulong * ntilesh as libc::c_ulong,
                                     )
                                         as *mut libc::c_ulong;
                                     if jpegSize.is_null() {
@@ -2752,10 +2744,9 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                         crate::stdlib::memset(
                                             jpegSize as *mut libc::c_void,
                                             0i32,
-                                            (::std::mem::size_of::<libc::c_ulong>()
-                                                as libc::c_ulong)
-                                                .wrapping_mul(ntilesw as libc::c_ulong)
-                                                .wrapping_mul(ntilesh as libc::c_ulong),
+                                            ::std::mem::size_of::<libc::c_ulong>()
+                                                as libc::c_ulong *
+    ntilesw as libc::c_ulong * ntilesh as libc::c_ulong,
                                         );
                                         if flags & crate::src::turbojpeg::TJFLAG_NOREALLOC != 0i32
                                             || doTile == 0
@@ -2855,12 +2846,11 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                             || customFilter.is_some()
                                         {
                                             t = crate::stdlib::malloc(
-                                                (::std::mem::size_of::<
+                                                ::std::mem::size_of::<
                                                     crate::src::turbojpeg::tjtransform,
                                                 >()
-                                                    as libc::c_ulong)
-                                                    .wrapping_mul(ntilesw as libc::c_ulong)
-                                                    .wrapping_mul(ntilesh as libc::c_ulong),
+                                                    as libc::c_ulong *
+    ntilesw as libc::c_ulong * ntilesh as libc::c_ulong,
                                             )
                                                 as *mut crate::src::turbojpeg::tjtransform;
                                             if t.is_null() {
@@ -3159,9 +3149,8 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                                 tile = 0i32;
                                                 totalJpegSize = 0i32 as libc::c_ulong;
                                                 while tile < tntilesw * tntilesh {
-                                                    totalJpegSize = totalJpegSize.wrapping_add(
-                                                        *jpegSize.offset(tile as isize),
-                                                    );
+                                                    totalJpegSize =  totalJpegSize + 
+                                                        *jpegSize.offset(tile as isize);
                                                     tile += 1
                                                 }
                                                 if quiet != 0 {
