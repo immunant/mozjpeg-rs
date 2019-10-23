@@ -418,7 +418,7 @@ pub unsafe extern "C" fn decomp(
         );
     let mut qualStr: [libc::c_char; 6] =
         *::std::mem::transmute::<&[u8; 6], &mut [libc::c_char; 6]>(b"\x00\x00\x00\x00\x00\x00");
-    let mut ptr: *mut libc::c_char = 0 as *mut libc::c_char;
+    let mut ptr: *mut libc::c_char = ::std::ptr::null_mut::< libc::c_char>();
     let mut file: *mut crate::stdlib::FILE = crate::stddef_h::NULL_0 as *mut crate::stdlib::FILE;
     let mut handle: crate::src::turbojpeg::tjhandle = crate::stddef_h::NULL_0 as *mut libc::c_void;
     let mut row: libc::c_int = 0;
@@ -434,8 +434,8 @@ pub unsafe extern "C" fn decomp(
     let mut pitch: libc::c_int = scaledw * ps;
     let mut ntilesw: libc::c_int = (w + tilew - 1i32) / tilew;
     let mut ntilesh: libc::c_int = (h + tileh - 1i32) / tileh;
-    let mut dstPtr: *mut libc::c_uchar = 0 as *mut libc::c_uchar;
-    let mut dstPtr2: *mut libc::c_uchar = 0 as *mut libc::c_uchar;
+    let mut dstPtr: *mut libc::c_uchar = ::std::ptr::null_mut::< libc::c_uchar>();
+    let mut dstPtr2: *mut libc::c_uchar = ::std::ptr::null_mut::< libc::c_uchar>();
     let mut yuvBuf: *mut libc::c_uchar = crate::stddef_h::NULL_0 as *mut libc::c_uchar;
     if jpegQual > 0i32 {
         crate::stdlib::snprintf(
@@ -1356,8 +1356,8 @@ pub unsafe extern "C" fn fullTest(
     let mut jpegBuf: *mut *mut libc::c_uchar = crate::stddef_h::NULL_0 as *mut *mut libc::c_uchar;
     let mut yuvBuf: *mut libc::c_uchar = crate::stddef_h::NULL_0 as *mut libc::c_uchar;
     let mut tmpBuf: *mut libc::c_uchar = crate::stddef_h::NULL_0 as *mut libc::c_uchar;
-    let mut srcPtr: *mut libc::c_uchar = 0 as *mut libc::c_uchar;
-    let mut srcPtr2: *mut libc::c_uchar = 0 as *mut libc::c_uchar;
+    let mut srcPtr: *mut libc::c_uchar = ::std::ptr::null_mut::< libc::c_uchar>();
+    let mut srcPtr2: *mut libc::c_uchar = ::std::ptr::null_mut::< libc::c_uchar>();
     let mut start: libc::c_double = 0.;
     let mut elapsed: libc::c_double = 0.;
     let mut elapsedEncode: libc::c_double = 0.;
@@ -3401,7 +3401,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     let mut j: libc::c_int = 0;
     let mut minQual: libc::c_int = -1i32;
     let mut maxQual: libc::c_int = -1i32;
-    let mut temp: *mut libc::c_char = 0 as *mut libc::c_char;
+    let mut temp: *mut libc::c_char = ::std::ptr::null_mut::< libc::c_char>();
     let mut minArg: libc::c_int = 2i32;
     let mut retval: libc::c_int = 0i32;
     let mut subsamp: libc::c_int = -1i32;
