@@ -90,7 +90,7 @@ pub const READ_BINARY: [libc::c_char; 3] =
  */
 
 static mut infile: *mut crate::stdlib::FILE =
-    0 as *const crate::stdlib::FILE as *mut crate::stdlib::FILE;
+    ::std::ptr::null::< crate::stdlib::FILE>() as *mut crate::stdlib::FILE;
 /* input JPEG file */
 /* Return next input byte, or EOF if no more */
 /* Error exit handler */
@@ -302,7 +302,7 @@ unsafe extern "C" fn process_SOFn(mut marker: libc::c_int) {
     let mut image_width: libc::c_uint = 0;
     let mut data_precision: libc::c_int = 0;
     let mut num_components: libc::c_int = 0;
-    let mut process: *const libc::c_char = 0 as *const libc::c_char;
+    let mut process: *const libc::c_char = ::std::ptr::null::< libc::c_char>();
     let mut ci: libc::c_int = 0;
     length = read_2_bytes();
     data_precision = read_1_byte();
@@ -576,7 +576,7 @@ unsafe extern "C" fn scan_JPEG_header(
 }
 /* Command line parsing code */
 
-static mut progname: *const libc::c_char = 0 as *const libc::c_char;
+static mut progname: *const libc::c_char = ::std::ptr::null::< libc::c_char>();
 /* program name for error messages */
 
 unsafe extern "C" fn usage()
@@ -676,7 +676,7 @@ unsafe extern "C" fn keymatch(
 
 unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> libc::c_int {
     let mut argn: libc::c_int = 0;
-    let mut arg: *mut libc::c_char = 0 as *mut libc::c_char;
+    let mut arg: *mut libc::c_char = ::std::ptr::null_mut::< libc::c_char>();
     let mut verbose: libc::c_int = 0i32;
     let mut raw: libc::c_int = 0i32;
     /* On Mac, fetch a command line. */
