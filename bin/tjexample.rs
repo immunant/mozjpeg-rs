@@ -362,14 +362,14 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         },
         op: 0,
         options: 0,
-        data: 0 as *mut libc::c_void,
+        data: ::std::ptr::null_mut::< libc::c_void>(),
         customFilter: None,
     };
     let mut flags: libc::c_int = 0i32;
     let mut width: libc::c_int = 0;
     let mut height: libc::c_int = 0;
-    let mut inFormat: *mut libc::c_char = 0 as *mut libc::c_char;
-    let mut outFormat: *mut libc::c_char = 0 as *mut libc::c_char;
+    let mut inFormat: *mut libc::c_char = ::std::ptr::null_mut::< libc::c_char>();
+    let mut outFormat: *mut libc::c_char = ::std::ptr::null_mut::< libc::c_char>();
     let mut jpegFile: *mut crate::stdlib::FILE =
         crate::stddef_h::NULL_0 as *mut crate::stdlib::FILE;
     let mut imgBuf: *mut libc::c_uchar = crate::stddef_h::NULL_0 as *mut libc::c_uchar;
