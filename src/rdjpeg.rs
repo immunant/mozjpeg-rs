@@ -215,7 +215,7 @@ unsafe extern "C" fn start_input_jpeg(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
     mut sinfo: crate::src::cdjpeg::cjpeg_source_ptr,
 ) {
-     let mut m:  libc::c_int =  0;
+     
     let mut source: jpeg_source_ptr = sinfo as jpeg_source_ptr;
     (*source).dinfo.err = crate::jpeglib_h::jpeg_std_error(&mut (*source).jerr);
     crate::jpeglib_h::jpeg_CreateDecompress(
@@ -229,7 +229,7 @@ unsafe extern "C" fn start_input_jpeg(
         crate::jpeglib_h::JPEG_COM,
         0xffffu32,
     );
-    m = 0i32;
+     let mut m:   libc::c_int =  0i32;
     while m < 16i32 {
         crate::jpeglib_h::jpeg_save_markers(
             &mut (*source).dinfo,
@@ -339,10 +339,9 @@ to write the image in bottom-up order.) */
 pub unsafe extern "C" fn jinit_read_jpeg(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
 ) -> crate::src::cdjpeg::cjpeg_source_ptr {
-     let mut source:  jpeg_source_ptr =
-     ::std::ptr::null_mut::< _jpeg_source_struct>();
-    /* Create module interface object */
-    source = Some(
+     
+     let mut source:   jpeg_source_ptr =
+     Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),

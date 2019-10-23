@@ -320,12 +320,11 @@ unsafe extern "C" fn empty_mem_output_buffer(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
 ) -> crate::jmorecfg_h::boolean {
     
-     let mut nextsize:  crate::stddef_h::size_t =  0; let mut nextbuffer:  *mut crate::jmorecfg_h::JOCTET =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>();
+      
     let mut dest: my_mem_dest_ptr = (*cinfo).dest as my_mem_dest_ptr;
-    /* Try to allocate new buffer with double size */
-    nextsize =  (*dest).bufsize * 2u64;
-    nextbuffer = crate::stdlib::malloc(nextsize) as *mut crate::jmorecfg_h::JOCTET;
+    
+     let mut nextsize:   crate::stddef_h::size_t =   (*dest).bufsize * 2u64; let mut nextbuffer:   *mut crate::jmorecfg_h::JOCTET =
+     crate::stdlib::malloc(nextsize) as *mut crate::jmorecfg_h::JOCTET;
     if nextbuffer.is_null() {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_OUT_OF_MEMORY as libc::c_int;
         (*(*cinfo).err).msg_parm.i[0] = 10i32;
@@ -415,7 +414,7 @@ pub unsafe extern "C" fn jpeg_stdio_dest(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
     mut outfile: *mut crate::stdlib::FILE,
 ) {
-     let mut dest:  my_dest_ptr =  ::std::ptr::null_mut::< my_destination_mgr>();
+     
     /* The destination object is made permanent so that multiple JPEG images
      * can be written to the same file without re-executing jpeg_stdio_dest.
      */
@@ -448,7 +447,7 @@ pub unsafe extern "C" fn jpeg_stdio_dest(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    dest = (*cinfo).dest as my_dest_ptr;
+     let mut dest:   my_dest_ptr =  (*cinfo).dest as my_dest_ptr;
     (*dest).pub_0.init_destination =
         Some(init_destination as unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ());
     (*dest).pub_0.empty_output_buffer = Some(
@@ -482,8 +481,7 @@ pub unsafe extern "C" fn jpeg_mem_dest_internal(
     mut outsize: *mut libc::c_ulong,
     mut pool_id: libc::c_int,
 ) {
-     let mut dest:  my_mem_dest_ptr =
-     ::std::ptr::null_mut::< my_mem_destination_mgr>();
+     
     if outbuffer.is_null() || outsize.is_null() {
         /* sanity check */
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BUFFER_SIZE as libc::c_int;
@@ -525,7 +523,7 @@ pub unsafe extern "C" fn jpeg_mem_dest_internal(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    dest = (*cinfo).dest as my_mem_dest_ptr;
+     let mut dest:   my_mem_dest_ptr =  (*cinfo).dest as my_mem_dest_ptr;
     (*dest).pub_0.init_destination = Some(
         init_mem_destination as unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> (),
     );

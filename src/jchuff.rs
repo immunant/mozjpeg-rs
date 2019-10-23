@@ -306,7 +306,7 @@ unsafe extern "C" fn start_pass_huff(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
     mut gather_statistics: crate::jmorecfg_h::boolean,
 ) {
-     let mut ci:  libc::c_int =  0;let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
+     let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
     
     
     
@@ -335,13 +335,12 @@ unsafe extern "C" fn start_pass_huff(
         )
     }
     (*entropy).simd = crate::src::simd::x86_64::jsimd::jsimd_can_huff_encode_one_block();
-    ci = 0i32;
+     let mut ci:   libc::c_int =  0i32;
     while ci < (*cinfo).comps_in_scan {
-         let mut dctbl:  libc::c_int =  0; let mut actbl:  libc::c_int =  0; let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
-    
-        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();compptr = (*cinfo).cur_comp_info[ci as usize];
-        dctbl = (*compptr).dc_tbl_no;
-        actbl = (*compptr).ac_tbl_no;
+           
+        
+         let mut compptr:   *mut crate::jpeglib_h::jpeg_component_info =
+     (*cinfo).cur_comp_info[ci as usize]; let mut dctbl:   libc::c_int =  (*compptr).dc_tbl_no; let mut actbl:   libc::c_int =  (*compptr).ac_tbl_no;
         if gather_statistics != 0 {
             /* Check for invalid table indexes */
             /* (make_c_derived_tbl does this in the other path) */
@@ -466,10 +465,7 @@ pub unsafe extern "C" fn jpeg_make_c_derived_tbl(
     
     
     
-     let mut htbl:  *mut crate::jpeglib_h::JHUFF_TBL =
-     ::std::ptr::null_mut::< crate::jpeglib_h::JHUFF_TBL>(); let mut dtbl:  *mut crate::src::jchuff::c_derived_tbl =
-    
-        ::std::ptr::null_mut::< crate::src::jchuff::c_derived_tbl>(); let mut p:  libc::c_int =  0; let mut i:  libc::c_int =  0; let mut l:  libc::c_int =  0; let mut lastp:  libc::c_int =  0; let mut si:  libc::c_int =  0; let mut maxsymbol:  libc::c_int =  0; let mut huffsize:  [libc::c_char; 257] =  [0; 257]; let mut huffcode:  [libc::c_uint; 257] =  [0; 257]; let mut code:  libc::c_uint =  0;
+        let mut i:  libc::c_int =  0;     let mut huffsize:  [libc::c_char; 257] =  [0; 257]; let mut huffcode:  [libc::c_uint; 257] =  [0; 257]; 
     /* Note that huffsize[] and huffcode[] are filled in code-length order,
      * paralleling the order of the symbols themselves in htbl->huffval[].
      */
@@ -484,7 +480,8 @@ pub unsafe extern "C" fn jpeg_make_c_derived_tbl(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    htbl = if isDC != 0 {
+     let mut htbl:   *mut crate::jpeglib_h::JHUFF_TBL =
+     if isDC != 0 {
         (*cinfo).dc_huff_tbl_ptrs[tblno as usize]
     } else {
         (*cinfo).ac_huff_tbl_ptrs[tblno as usize]
@@ -512,10 +509,9 @@ pub unsafe extern "C" fn jpeg_make_c_derived_tbl(
             ::std::mem::size_of::<crate::src::jchuff::c_derived_tbl>() as libc::c_ulong,
         ) as *mut crate::src::jchuff::c_derived_tbl
     }
-    dtbl = *pdtbl;
-    /* Figure C.1: make table of Huffman code length for each symbol */
-    p = 0i32;
-    l = 1i32;
+    
+    
+     let mut dtbl:   *mut crate::src::jchuff::c_derived_tbl =  *pdtbl; let mut p:   libc::c_int =  0i32; let mut l:   libc::c_int =  1i32;
     while l <= 16i32 {
         i = (*htbl).bits[l as usize] as libc::c_int;
         if i < 0i32 || p + i > 256i32 {
@@ -543,11 +539,9 @@ pub unsafe extern "C" fn jpeg_make_c_derived_tbl(
         l += 1
     }
     huffsize[p as usize] = 0i8;
-    lastp = p;
-    /* Figure C.2: generate the codes themselves */
-    /* We also validate that the counts represent a legal Huffman code tree. */
-    code = 0u32;
-    si = huffsize[0] as libc::c_int;
+    
+    
+     let mut lastp:   libc::c_int =  p; let mut code:   libc::c_uint =  0u32; let mut si:   libc::c_int =  huffsize[0] as libc::c_int;
     p = 0i32;
     while huffsize[p as usize] != 0 {
         while huffsize[p as usize] as libc::c_int == si {
@@ -589,7 +583,7 @@ pub unsafe extern "C" fn jpeg_make_c_derived_tbl(
      * but only 0..15 for DC.  (We could constrain them further
      * based on data depth and mode, but this seems enough.)
      */
-    maxsymbol = if isDC != 0 { 15i32 } else { 255i32 };
+     let mut maxsymbol:   libc::c_int =  if isDC != 0 { 15i32 } else { 255i32 };
     p = 0i32;
     while p < lastp {
         i = (*htbl).huffval[p as usize] as libc::c_int;
@@ -659,9 +653,9 @@ unsafe extern "C" fn flush_bits(mut state: *mut working_state) -> crate::jmorecf
     
     
      let mut _buffer:  [crate::jmorecfg_h::JOCTET; 256] =  [0; 256]; let mut buffer:  *mut crate::jmorecfg_h::JOCTET =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>(); let mut put_buffer:  crate::stddef_h::size_t =  0; let mut put_bits:  libc::c_int =  0; let mut localbuf:  libc::c_int =  0i32;
-    put_buffer = (*state).cur.put_buffer;
-    put_bits = (*state).cur.put_bits;
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>();   let mut localbuf:  libc::c_int =  0i32;
+    
+     let mut put_buffer:   crate::stddef_h::size_t =  (*state).cur.put_buffer; let mut put_bits:   libc::c_int =  (*state).cur.put_bits;
     if (*state).free_in_buffer < BUFSIZE as libc::c_ulong {
         localbuf = 1i32;
         buffer = _buffer.as_mut_ptr()
@@ -672,9 +666,10 @@ unsafe extern "C" fn flush_bits(mut state: *mut working_state) -> crate::jmorecf
     put_bits += 7i32; /* and reset bit-buffer to empty */
     put_buffer = put_buffer << 7i32 | 0x7fu64;
     while put_bits >= 8i32 {
-         let mut c:  crate::jmorecfg_h::JOCTET =  0;
+         
         put_bits -= 8i32;
-        c = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+         let mut c:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
         let fresh3 = buffer;
         buffer = buffer.offset(1);
         *fresh3 = c;
@@ -687,11 +682,13 @@ unsafe extern "C" fn flush_bits(mut state: *mut working_state) -> crate::jmorecf
     (*state).cur.put_buffer = 0u64;
     (*state).cur.put_bits = 0i32;
     if localbuf != 0 {
-         let mut bytes:  crate::stddef_h::size_t =  0;bytes =  buffer.wrapping_offset_from(_buffer.as_mut_ptr())
+          let mut bytes:   crate::stddef_h::size_t =
+      buffer.wrapping_offset_from(_buffer.as_mut_ptr())
             as crate::stddef_h::size_t;
         buffer = _buffer.as_mut_ptr();
         while bytes > 0u64 {
-             let mut bytestocopy:  crate::stddef_h::size_t =  0;bytestocopy = if bytes < (*state).free_in_buffer {
+              let mut bytestocopy:   crate::stddef_h::size_t =
+     if bytes < (*state).free_in_buffer {
                 bytes
             } else {
                 (*state).free_in_buffer
@@ -752,11 +749,13 @@ unsafe extern "C" fn encode_one_block_simd(
         actbl,
     );
     if localbuf != 0 {
-         let mut bytes:  crate::stddef_h::size_t =  0;bytes =  buffer.wrapping_offset_from(_buffer.as_mut_ptr())
+          let mut bytes:   crate::stddef_h::size_t =
+      buffer.wrapping_offset_from(_buffer.as_mut_ptr())
             as crate::stddef_h::size_t;
         buffer = _buffer.as_mut_ptr();
         while bytes > 0u64 {
-             let mut bytestocopy:  crate::stddef_h::size_t =  0;bytestocopy = if bytes < (*state).free_in_buffer {
+              let mut bytestocopy:   crate::stddef_h::size_t =
+     if bytes < (*state).free_in_buffer {
                 bytes
             } else {
                 (*state).free_in_buffer
@@ -805,30 +804,30 @@ unsafe extern "C" fn encode_one_block(
     
     
     
-     let mut temp:  libc::c_int =  0; let mut temp2:  libc::c_int =  0; let mut temp3:  libc::c_int =  0; let mut nbits:  libc::c_int =  0; let mut r:  libc::c_int =  0; let mut code:  libc::c_int =  0; let mut size:  libc::c_int =  0; let mut _buffer:  [crate::jmorecfg_h::JOCTET; 256] =  [0; 256]; let mut buffer:  *mut crate::jmorecfg_h::JOCTET =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>(); let mut put_buffer:  crate::stddef_h::size_t =  0; let mut put_bits:  libc::c_int =  0; let mut localbuf:  libc::c_int =  0i32;
+            let mut _buffer:  [crate::jmorecfg_h::JOCTET; 256] =  [0; 256]; let mut buffer:  *mut crate::jmorecfg_h::JOCTET =
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>();   let mut localbuf:  libc::c_int =  0i32;
     let mut code_0xf0: libc::c_int = (*actbl).ehufco[0xf0usize] as libc::c_int;
     let mut size_0xf0: libc::c_int = (*actbl).ehufsi[0xf0usize] as libc::c_int;
     
     
     
-    put_buffer = (*state).cur.put_buffer;
-    put_bits = (*state).cur.put_bits;
+    
+     let mut put_buffer:   crate::stddef_h::size_t =  (*state).cur.put_buffer; let mut put_bits:   libc::c_int =  (*state).cur.put_bits;
     if (*state).free_in_buffer < BUFSIZE as libc::c_ulong {
         localbuf = 1i32;
         buffer = _buffer.as_mut_ptr()
     } else {
         buffer = (*state).next_output_byte
     }
-    /* Encode the DC coefficient difference per section F.1.2.1 */
-    temp2 = *block.offset(0) as libc::c_int - last_dc_val;
-    temp = temp2;
+    
+    
     /* This is a well-known technique for obtaining the absolute value without a
      * branch.  It is derived from an assembly language technique presented in
      * "How to Optimize for the Pentium Processors", Copyright (c) 1996, 1997 by
      * Agner Fog.
      */
-    temp3 = temp
+     let mut temp2:   libc::c_int =  *block.offset(0) as libc::c_int - last_dc_val; let mut temp:   libc::c_int =  temp2; let mut temp3:   libc::c_int =
+     temp
         >> crate::limits_h::CHAR_BIT as libc::c_ulong *
     ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
     1u64;
@@ -837,15 +836,15 @@ unsafe extern "C" fn encode_one_block(
     /* For a negative input, want temp2 = bitwise complement of abs(input) */
     /* This code assumes we are on a two's complement machine */
     temp2 += temp3;
-    /* Find the number of bits needed for the magnitude of the coefficient */
-    nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
-    /* Emit the Huffman-coded symbol for the number of bits */
-    code = (*dctbl).ehufco[nbits as usize] as libc::c_int;
-    size = (*dctbl).ehufsi[nbits as usize] as libc::c_int;
+    
+    
+     let mut nbits:   libc::c_int =
+     crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int; let mut code:   libc::c_int =  (*dctbl).ehufco[nbits as usize] as libc::c_int; let mut size:   libc::c_int =  (*dctbl).ehufsi[nbits as usize] as libc::c_int;
     if put_bits > 47i32 {
-         let mut c:  crate::jmorecfg_h::JOCTET =  0; let mut c_0:  crate::jmorecfg_h::JOCTET =  0; let mut c_1:  crate::jmorecfg_h::JOCTET =  0; let mut c_2:  crate::jmorecfg_h::JOCTET =  0; let mut c_3:  crate::jmorecfg_h::JOCTET =  0; let mut c_4:  crate::jmorecfg_h::JOCTET =  0;
+              
         put_bits -= 8i32;
-        c = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+         let mut c:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
         let fresh5 = buffer;
         buffer = buffer.offset(1);
         *fresh5 = c;
@@ -856,7 +855,8 @@ unsafe extern "C" fn encode_one_block(
         }
         
         put_bits -= 8i32;
-        c_0 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+         let mut c_0:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
         let fresh7 = buffer;
         buffer = buffer.offset(1);
         *fresh7 = c_0;
@@ -867,7 +867,8 @@ unsafe extern "C" fn encode_one_block(
         }
         
         put_bits -= 8i32;
-        c_1 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+         let mut c_1:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
         let fresh9 = buffer;
         buffer = buffer.offset(1);
         *fresh9 = c_1;
@@ -878,7 +879,8 @@ unsafe extern "C" fn encode_one_block(
         }
         
         put_bits -= 8i32;
-        c_2 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+         let mut c_2:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
         let fresh11 = buffer;
         buffer = buffer.offset(1);
         *fresh11 = c_2;
@@ -889,7 +891,8 @@ unsafe extern "C" fn encode_one_block(
         }
         
         put_bits -= 8i32;
-        c_3 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+         let mut c_3:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
         let fresh13 = buffer;
         buffer = buffer.offset(1);
         *fresh13 = c_3;
@@ -900,7 +903,8 @@ unsafe extern "C" fn encode_one_block(
         }
         
         put_bits -= 8i32;
-        c_4 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+         let mut c_4:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
         let fresh15 = buffer;
         buffer = buffer.offset(1);
         *fresh15 = c_4;
@@ -919,9 +923,10 @@ unsafe extern "C" fn encode_one_block(
     /* Emit that number of bits of the value, if positive, */
     /* or the complement of its magnitude, if negative. */
     if put_bits > 47i32 {
-         let mut c_5:  crate::jmorecfg_h::JOCTET =  0; let mut c_6:  crate::jmorecfg_h::JOCTET =  0; let mut c_7:  crate::jmorecfg_h::JOCTET =  0; let mut c_8:  crate::jmorecfg_h::JOCTET =  0; let mut c_9:  crate::jmorecfg_h::JOCTET =  0; let mut c_10:  crate::jmorecfg_h::JOCTET =  0;
+              
         put_bits -= 8i32;
-        c_5 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+         let mut c_5:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
         let fresh17 = buffer;
         buffer = buffer.offset(1);
         *fresh17 = c_5;
@@ -932,7 +937,8 @@ unsafe extern "C" fn encode_one_block(
         }
         
         put_bits -= 8i32;
-        c_6 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+         let mut c_6:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
         let fresh19 = buffer;
         buffer = buffer.offset(1);
         *fresh19 = c_6;
@@ -943,7 +949,8 @@ unsafe extern "C" fn encode_one_block(
         }
         
         put_bits -= 8i32;
-        c_7 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+         let mut c_7:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
         let fresh21 = buffer;
         buffer = buffer.offset(1);
         *fresh21 = c_7;
@@ -954,7 +961,8 @@ unsafe extern "C" fn encode_one_block(
         }
         
         put_bits -= 8i32;
-        c_8 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+         let mut c_8:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
         let fresh23 = buffer;
         buffer = buffer.offset(1);
         *fresh23 = c_8;
@@ -965,7 +973,8 @@ unsafe extern "C" fn encode_one_block(
         }
         
         put_bits -= 8i32;
-        c_9 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+         let mut c_9:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
         let fresh25 = buffer;
         buffer = buffer.offset(1);
         *fresh25 = c_9;
@@ -976,7 +985,8 @@ unsafe extern "C" fn encode_one_block(
         }
         
         put_bits -= 8i32;
-        c_10 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+         let mut c_10:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
         let fresh27 = buffer;
         buffer = buffer.offset(1);
         *fresh27 = c_10;
@@ -988,8 +998,7 @@ unsafe extern "C" fn encode_one_block(
     }
     put_bits += nbits;
     put_buffer = put_buffer << nbits | temp2 as libc::c_ulong;
-    /* Encode the AC coefficients per section F.1.2.2 */
-    r = 0i32; /* r = run length of zeros */
+     let mut r:   libc::c_int =  0i32; /* r = run length of zeros */
     /* Manually unroll the k loop to eliminate the counter variable.  This
      * improves performance greatly on systems with a limited number of
      * registers (such as x86.)
@@ -1013,9 +1022,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_11:  crate::jmorecfg_h::JOCTET =  0; let mut c_12:  crate::jmorecfg_h::JOCTET =  0; let mut c_13:  crate::jmorecfg_h::JOCTET =  0; let mut c_14:  crate::jmorecfg_h::JOCTET =  0; let mut c_15:  crate::jmorecfg_h::JOCTET =  0; let mut c_16:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_11 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_11:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh29 = buffer;
                 buffer = buffer.offset(1);
                 *fresh29 = c_11;
@@ -1026,7 +1036,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_12 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_12:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh31 = buffer;
                 buffer = buffer.offset(1);
                 *fresh31 = c_12;
@@ -1037,7 +1048,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_13 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_13:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh33 = buffer;
                 buffer = buffer.offset(1);
                 *fresh33 = c_13;
@@ -1048,7 +1060,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_14 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_14:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh35 = buffer;
                 buffer = buffer.offset(1);
                 *fresh35 = c_14;
@@ -1059,7 +1072,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_15 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_15:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh37 = buffer;
                 buffer = buffer.offset(1);
                 *fresh37 = c_15;
@@ -1070,7 +1084,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_16 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_16:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh39 = buffer;
                 buffer = buffer.offset(1);
                 *fresh39 = c_16;
@@ -1091,9 +1106,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_17:  crate::jmorecfg_h::JOCTET =  0; let mut c_18:  crate::jmorecfg_h::JOCTET =  0; let mut c_19:  crate::jmorecfg_h::JOCTET =  0; let mut c_20:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_17 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_17:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh41 = buffer;
             buffer = buffer.offset(1);
             *fresh41 = c_17;
@@ -1104,7 +1120,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_18 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_18:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh43 = buffer;
             buffer = buffer.offset(1);
             *fresh43 = c_18;
@@ -1115,7 +1132,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_19 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_19:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh45 = buffer;
             buffer = buffer.offset(1);
             *fresh45 = c_19;
@@ -1126,7 +1144,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_20 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_20:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh47 = buffer;
             buffer = buffer.offset(1);
             *fresh47 = c_20;
@@ -1157,9 +1176,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_21:  crate::jmorecfg_h::JOCTET =  0; let mut c_22:  crate::jmorecfg_h::JOCTET =  0; let mut c_23:  crate::jmorecfg_h::JOCTET =  0; let mut c_24:  crate::jmorecfg_h::JOCTET =  0; let mut c_25:  crate::jmorecfg_h::JOCTET =  0; let mut c_26:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_21 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_21:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh49 = buffer;
                 buffer = buffer.offset(1);
                 *fresh49 = c_21;
@@ -1170,7 +1190,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_22 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_22:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh51 = buffer;
                 buffer = buffer.offset(1);
                 *fresh51 = c_22;
@@ -1181,7 +1202,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_23 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_23:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh53 = buffer;
                 buffer = buffer.offset(1);
                 *fresh53 = c_23;
@@ -1192,7 +1214,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_24 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_24:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh55 = buffer;
                 buffer = buffer.offset(1);
                 *fresh55 = c_24;
@@ -1203,7 +1226,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_25 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_25:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh57 = buffer;
                 buffer = buffer.offset(1);
                 *fresh57 = c_25;
@@ -1214,7 +1238,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_26 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_26:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh59 = buffer;
                 buffer = buffer.offset(1);
                 *fresh59 = c_26;
@@ -1235,9 +1260,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_27:  crate::jmorecfg_h::JOCTET =  0; let mut c_28:  crate::jmorecfg_h::JOCTET =  0; let mut c_29:  crate::jmorecfg_h::JOCTET =  0; let mut c_30:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_27 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_27:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh61 = buffer;
             buffer = buffer.offset(1);
             *fresh61 = c_27;
@@ -1248,7 +1274,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_28 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_28:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh63 = buffer;
             buffer = buffer.offset(1);
             *fresh63 = c_28;
@@ -1259,7 +1286,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_29 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_29:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh65 = buffer;
             buffer = buffer.offset(1);
             *fresh65 = c_29;
@@ -1270,7 +1298,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_30 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_30:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh67 = buffer;
             buffer = buffer.offset(1);
             *fresh67 = c_30;
@@ -1301,9 +1330,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_31:  crate::jmorecfg_h::JOCTET =  0; let mut c_32:  crate::jmorecfg_h::JOCTET =  0; let mut c_33:  crate::jmorecfg_h::JOCTET =  0; let mut c_34:  crate::jmorecfg_h::JOCTET =  0; let mut c_35:  crate::jmorecfg_h::JOCTET =  0; let mut c_36:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_31 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_31:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh69 = buffer;
                 buffer = buffer.offset(1);
                 *fresh69 = c_31;
@@ -1314,7 +1344,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_32 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_32:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh71 = buffer;
                 buffer = buffer.offset(1);
                 *fresh71 = c_32;
@@ -1325,7 +1356,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_33 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_33:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh73 = buffer;
                 buffer = buffer.offset(1);
                 *fresh73 = c_33;
@@ -1336,7 +1368,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_34 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_34:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh75 = buffer;
                 buffer = buffer.offset(1);
                 *fresh75 = c_34;
@@ -1347,7 +1380,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_35 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_35:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh77 = buffer;
                 buffer = buffer.offset(1);
                 *fresh77 = c_35;
@@ -1358,7 +1392,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_36 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_36:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh79 = buffer;
                 buffer = buffer.offset(1);
                 *fresh79 = c_36;
@@ -1379,9 +1414,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_37:  crate::jmorecfg_h::JOCTET =  0; let mut c_38:  crate::jmorecfg_h::JOCTET =  0; let mut c_39:  crate::jmorecfg_h::JOCTET =  0; let mut c_40:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_37 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_37:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh81 = buffer;
             buffer = buffer.offset(1);
             *fresh81 = c_37;
@@ -1392,7 +1428,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_38 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_38:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh83 = buffer;
             buffer = buffer.offset(1);
             *fresh83 = c_38;
@@ -1403,7 +1440,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_39 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_39:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh85 = buffer;
             buffer = buffer.offset(1);
             *fresh85 = c_39;
@@ -1414,7 +1452,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_40 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_40:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh87 = buffer;
             buffer = buffer.offset(1);
             *fresh87 = c_40;
@@ -1445,9 +1484,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_41:  crate::jmorecfg_h::JOCTET =  0; let mut c_42:  crate::jmorecfg_h::JOCTET =  0; let mut c_43:  crate::jmorecfg_h::JOCTET =  0; let mut c_44:  crate::jmorecfg_h::JOCTET =  0; let mut c_45:  crate::jmorecfg_h::JOCTET =  0; let mut c_46:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_41 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_41:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh89 = buffer;
                 buffer = buffer.offset(1);
                 *fresh89 = c_41;
@@ -1458,7 +1498,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_42 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_42:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh91 = buffer;
                 buffer = buffer.offset(1);
                 *fresh91 = c_42;
@@ -1469,7 +1510,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_43 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_43:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh93 = buffer;
                 buffer = buffer.offset(1);
                 *fresh93 = c_43;
@@ -1480,7 +1522,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_44 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_44:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh95 = buffer;
                 buffer = buffer.offset(1);
                 *fresh95 = c_44;
@@ -1491,7 +1534,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_45 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_45:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh97 = buffer;
                 buffer = buffer.offset(1);
                 *fresh97 = c_45;
@@ -1502,7 +1546,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_46 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_46:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh99 = buffer;
                 buffer = buffer.offset(1);
                 *fresh99 = c_46;
@@ -1523,9 +1568,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_47:  crate::jmorecfg_h::JOCTET =  0; let mut c_48:  crate::jmorecfg_h::JOCTET =  0; let mut c_49:  crate::jmorecfg_h::JOCTET =  0; let mut c_50:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_47 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_47:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh101 = buffer;
             buffer = buffer.offset(1);
             *fresh101 = c_47;
@@ -1536,7 +1582,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_48 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_48:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh103 = buffer;
             buffer = buffer.offset(1);
             *fresh103 = c_48;
@@ -1547,7 +1594,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_49 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_49:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh105 = buffer;
             buffer = buffer.offset(1);
             *fresh105 = c_49;
@@ -1558,7 +1606,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_50 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_50:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh107 = buffer;
             buffer = buffer.offset(1);
             *fresh107 = c_50;
@@ -1589,9 +1638,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_51:  crate::jmorecfg_h::JOCTET =  0; let mut c_52:  crate::jmorecfg_h::JOCTET =  0; let mut c_53:  crate::jmorecfg_h::JOCTET =  0; let mut c_54:  crate::jmorecfg_h::JOCTET =  0; let mut c_55:  crate::jmorecfg_h::JOCTET =  0; let mut c_56:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_51 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_51:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh109 = buffer;
                 buffer = buffer.offset(1);
                 *fresh109 = c_51;
@@ -1602,7 +1652,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_52 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_52:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh111 = buffer;
                 buffer = buffer.offset(1);
                 *fresh111 = c_52;
@@ -1613,7 +1664,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_53 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_53:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh113 = buffer;
                 buffer = buffer.offset(1);
                 *fresh113 = c_53;
@@ -1624,7 +1676,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_54 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_54:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh115 = buffer;
                 buffer = buffer.offset(1);
                 *fresh115 = c_54;
@@ -1635,7 +1688,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_55 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_55:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh117 = buffer;
                 buffer = buffer.offset(1);
                 *fresh117 = c_55;
@@ -1646,7 +1700,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_56 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_56:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh119 = buffer;
                 buffer = buffer.offset(1);
                 *fresh119 = c_56;
@@ -1667,9 +1722,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_57:  crate::jmorecfg_h::JOCTET =  0; let mut c_58:  crate::jmorecfg_h::JOCTET =  0; let mut c_59:  crate::jmorecfg_h::JOCTET =  0; let mut c_60:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_57 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_57:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh121 = buffer;
             buffer = buffer.offset(1);
             *fresh121 = c_57;
@@ -1680,7 +1736,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_58 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_58:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh123 = buffer;
             buffer = buffer.offset(1);
             *fresh123 = c_58;
@@ -1691,7 +1748,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_59 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_59:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh125 = buffer;
             buffer = buffer.offset(1);
             *fresh125 = c_59;
@@ -1702,7 +1760,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_60 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_60:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh127 = buffer;
             buffer = buffer.offset(1);
             *fresh127 = c_60;
@@ -1733,9 +1792,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_61:  crate::jmorecfg_h::JOCTET =  0; let mut c_62:  crate::jmorecfg_h::JOCTET =  0; let mut c_63:  crate::jmorecfg_h::JOCTET =  0; let mut c_64:  crate::jmorecfg_h::JOCTET =  0; let mut c_65:  crate::jmorecfg_h::JOCTET =  0; let mut c_66:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_61 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_61:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh129 = buffer;
                 buffer = buffer.offset(1);
                 *fresh129 = c_61;
@@ -1746,7 +1806,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_62 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_62:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh131 = buffer;
                 buffer = buffer.offset(1);
                 *fresh131 = c_62;
@@ -1757,7 +1818,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_63 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_63:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh133 = buffer;
                 buffer = buffer.offset(1);
                 *fresh133 = c_63;
@@ -1768,7 +1830,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_64 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_64:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh135 = buffer;
                 buffer = buffer.offset(1);
                 *fresh135 = c_64;
@@ -1779,7 +1842,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_65 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_65:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh137 = buffer;
                 buffer = buffer.offset(1);
                 *fresh137 = c_65;
@@ -1790,7 +1854,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_66 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_66:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh139 = buffer;
                 buffer = buffer.offset(1);
                 *fresh139 = c_66;
@@ -1811,9 +1876,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_67:  crate::jmorecfg_h::JOCTET =  0; let mut c_68:  crate::jmorecfg_h::JOCTET =  0; let mut c_69:  crate::jmorecfg_h::JOCTET =  0; let mut c_70:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_67 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_67:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh141 = buffer;
             buffer = buffer.offset(1);
             *fresh141 = c_67;
@@ -1824,7 +1890,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_68 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_68:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh143 = buffer;
             buffer = buffer.offset(1);
             *fresh143 = c_68;
@@ -1835,7 +1902,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_69 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_69:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh145 = buffer;
             buffer = buffer.offset(1);
             *fresh145 = c_69;
@@ -1846,7 +1914,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_70 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_70:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh147 = buffer;
             buffer = buffer.offset(1);
             *fresh147 = c_70;
@@ -1877,9 +1946,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_71:  crate::jmorecfg_h::JOCTET =  0; let mut c_72:  crate::jmorecfg_h::JOCTET =  0; let mut c_73:  crate::jmorecfg_h::JOCTET =  0; let mut c_74:  crate::jmorecfg_h::JOCTET =  0; let mut c_75:  crate::jmorecfg_h::JOCTET =  0; let mut c_76:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_71 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_71:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh149 = buffer;
                 buffer = buffer.offset(1);
                 *fresh149 = c_71;
@@ -1890,7 +1960,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_72 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_72:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh151 = buffer;
                 buffer = buffer.offset(1);
                 *fresh151 = c_72;
@@ -1901,7 +1972,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_73 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_73:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh153 = buffer;
                 buffer = buffer.offset(1);
                 *fresh153 = c_73;
@@ -1912,7 +1984,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_74 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_74:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh155 = buffer;
                 buffer = buffer.offset(1);
                 *fresh155 = c_74;
@@ -1923,7 +1996,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_75 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_75:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh157 = buffer;
                 buffer = buffer.offset(1);
                 *fresh157 = c_75;
@@ -1934,7 +2008,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_76 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_76:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh159 = buffer;
                 buffer = buffer.offset(1);
                 *fresh159 = c_76;
@@ -1955,9 +2030,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_77:  crate::jmorecfg_h::JOCTET =  0; let mut c_78:  crate::jmorecfg_h::JOCTET =  0; let mut c_79:  crate::jmorecfg_h::JOCTET =  0; let mut c_80:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_77 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_77:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh161 = buffer;
             buffer = buffer.offset(1);
             *fresh161 = c_77;
@@ -1968,7 +2044,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_78 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_78:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh163 = buffer;
             buffer = buffer.offset(1);
             *fresh163 = c_78;
@@ -1979,7 +2056,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_79 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_79:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh165 = buffer;
             buffer = buffer.offset(1);
             *fresh165 = c_79;
@@ -1990,7 +2068,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_80 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_80:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh167 = buffer;
             buffer = buffer.offset(1);
             *fresh167 = c_80;
@@ -2021,9 +2100,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_81:  crate::jmorecfg_h::JOCTET =  0; let mut c_82:  crate::jmorecfg_h::JOCTET =  0; let mut c_83:  crate::jmorecfg_h::JOCTET =  0; let mut c_84:  crate::jmorecfg_h::JOCTET =  0; let mut c_85:  crate::jmorecfg_h::JOCTET =  0; let mut c_86:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_81 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_81:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh169 = buffer;
                 buffer = buffer.offset(1);
                 *fresh169 = c_81;
@@ -2034,7 +2114,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_82 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_82:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh171 = buffer;
                 buffer = buffer.offset(1);
                 *fresh171 = c_82;
@@ -2045,7 +2126,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_83 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_83:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh173 = buffer;
                 buffer = buffer.offset(1);
                 *fresh173 = c_83;
@@ -2056,7 +2138,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_84 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_84:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh175 = buffer;
                 buffer = buffer.offset(1);
                 *fresh175 = c_84;
@@ -2067,7 +2150,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_85 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_85:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh177 = buffer;
                 buffer = buffer.offset(1);
                 *fresh177 = c_85;
@@ -2078,7 +2162,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_86 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_86:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh179 = buffer;
                 buffer = buffer.offset(1);
                 *fresh179 = c_86;
@@ -2099,9 +2184,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_87:  crate::jmorecfg_h::JOCTET =  0; let mut c_88:  crate::jmorecfg_h::JOCTET =  0; let mut c_89:  crate::jmorecfg_h::JOCTET =  0; let mut c_90:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_87 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_87:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh181 = buffer;
             buffer = buffer.offset(1);
             *fresh181 = c_87;
@@ -2112,7 +2198,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_88 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_88:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh183 = buffer;
             buffer = buffer.offset(1);
             *fresh183 = c_88;
@@ -2123,7 +2210,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_89 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_89:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh185 = buffer;
             buffer = buffer.offset(1);
             *fresh185 = c_89;
@@ -2134,7 +2222,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_90 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_90:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh187 = buffer;
             buffer = buffer.offset(1);
             *fresh187 = c_90;
@@ -2165,9 +2254,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_91:  crate::jmorecfg_h::JOCTET =  0; let mut c_92:  crate::jmorecfg_h::JOCTET =  0; let mut c_93:  crate::jmorecfg_h::JOCTET =  0; let mut c_94:  crate::jmorecfg_h::JOCTET =  0; let mut c_95:  crate::jmorecfg_h::JOCTET =  0; let mut c_96:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_91 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_91:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh189 = buffer;
                 buffer = buffer.offset(1);
                 *fresh189 = c_91;
@@ -2178,7 +2268,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_92 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_92:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh191 = buffer;
                 buffer = buffer.offset(1);
                 *fresh191 = c_92;
@@ -2189,7 +2280,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_93 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_93:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh193 = buffer;
                 buffer = buffer.offset(1);
                 *fresh193 = c_93;
@@ -2200,7 +2292,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_94 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_94:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh195 = buffer;
                 buffer = buffer.offset(1);
                 *fresh195 = c_94;
@@ -2211,7 +2304,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_95 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_95:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh197 = buffer;
                 buffer = buffer.offset(1);
                 *fresh197 = c_95;
@@ -2222,7 +2316,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_96 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_96:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh199 = buffer;
                 buffer = buffer.offset(1);
                 *fresh199 = c_96;
@@ -2243,9 +2338,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_97:  crate::jmorecfg_h::JOCTET =  0; let mut c_98:  crate::jmorecfg_h::JOCTET =  0; let mut c_99:  crate::jmorecfg_h::JOCTET =  0; let mut c_100:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_97 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_97:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh201 = buffer;
             buffer = buffer.offset(1);
             *fresh201 = c_97;
@@ -2256,7 +2352,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_98 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_98:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh203 = buffer;
             buffer = buffer.offset(1);
             *fresh203 = c_98;
@@ -2267,7 +2364,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_99 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_99:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh205 = buffer;
             buffer = buffer.offset(1);
             *fresh205 = c_99;
@@ -2278,7 +2376,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_100 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_100:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh207 = buffer;
             buffer = buffer.offset(1);
             *fresh207 = c_100;
@@ -2309,9 +2408,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_101:  crate::jmorecfg_h::JOCTET =  0; let mut c_102:  crate::jmorecfg_h::JOCTET =  0; let mut c_103:  crate::jmorecfg_h::JOCTET =  0; let mut c_104:  crate::jmorecfg_h::JOCTET =  0; let mut c_105:  crate::jmorecfg_h::JOCTET =  0; let mut c_106:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_101 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_101:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh209 = buffer;
                 buffer = buffer.offset(1);
                 *fresh209 = c_101;
@@ -2322,7 +2422,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_102 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_102:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh211 = buffer;
                 buffer = buffer.offset(1);
                 *fresh211 = c_102;
@@ -2333,7 +2434,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_103 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_103:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh213 = buffer;
                 buffer = buffer.offset(1);
                 *fresh213 = c_103;
@@ -2344,7 +2446,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_104 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_104:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh215 = buffer;
                 buffer = buffer.offset(1);
                 *fresh215 = c_104;
@@ -2355,7 +2458,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_105 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_105:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh217 = buffer;
                 buffer = buffer.offset(1);
                 *fresh217 = c_105;
@@ -2366,7 +2470,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_106 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_106:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh219 = buffer;
                 buffer = buffer.offset(1);
                 *fresh219 = c_106;
@@ -2387,9 +2492,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_107:  crate::jmorecfg_h::JOCTET =  0; let mut c_108:  crate::jmorecfg_h::JOCTET =  0; let mut c_109:  crate::jmorecfg_h::JOCTET =  0; let mut c_110:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_107 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_107:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh221 = buffer;
             buffer = buffer.offset(1);
             *fresh221 = c_107;
@@ -2400,7 +2506,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_108 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_108:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh223 = buffer;
             buffer = buffer.offset(1);
             *fresh223 = c_108;
@@ -2411,7 +2518,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_109 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_109:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh225 = buffer;
             buffer = buffer.offset(1);
             *fresh225 = c_109;
@@ -2422,7 +2530,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_110 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_110:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh227 = buffer;
             buffer = buffer.offset(1);
             *fresh227 = c_110;
@@ -2453,9 +2562,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_111:  crate::jmorecfg_h::JOCTET =  0; let mut c_112:  crate::jmorecfg_h::JOCTET =  0; let mut c_113:  crate::jmorecfg_h::JOCTET =  0; let mut c_114:  crate::jmorecfg_h::JOCTET =  0; let mut c_115:  crate::jmorecfg_h::JOCTET =  0; let mut c_116:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_111 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_111:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh229 = buffer;
                 buffer = buffer.offset(1);
                 *fresh229 = c_111;
@@ -2466,7 +2576,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_112 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_112:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh231 = buffer;
                 buffer = buffer.offset(1);
                 *fresh231 = c_112;
@@ -2477,7 +2588,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_113 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_113:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh233 = buffer;
                 buffer = buffer.offset(1);
                 *fresh233 = c_113;
@@ -2488,7 +2600,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_114 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_114:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh235 = buffer;
                 buffer = buffer.offset(1);
                 *fresh235 = c_114;
@@ -2499,7 +2612,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_115 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_115:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh237 = buffer;
                 buffer = buffer.offset(1);
                 *fresh237 = c_115;
@@ -2510,7 +2624,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_116 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_116:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh239 = buffer;
                 buffer = buffer.offset(1);
                 *fresh239 = c_116;
@@ -2531,9 +2646,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_117:  crate::jmorecfg_h::JOCTET =  0; let mut c_118:  crate::jmorecfg_h::JOCTET =  0; let mut c_119:  crate::jmorecfg_h::JOCTET =  0; let mut c_120:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_117 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_117:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh241 = buffer;
             buffer = buffer.offset(1);
             *fresh241 = c_117;
@@ -2544,7 +2660,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_118 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_118:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh243 = buffer;
             buffer = buffer.offset(1);
             *fresh243 = c_118;
@@ -2555,7 +2672,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_119 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_119:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh245 = buffer;
             buffer = buffer.offset(1);
             *fresh245 = c_119;
@@ -2566,7 +2684,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_120 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_120:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh247 = buffer;
             buffer = buffer.offset(1);
             *fresh247 = c_120;
@@ -2597,9 +2716,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_121:  crate::jmorecfg_h::JOCTET =  0; let mut c_122:  crate::jmorecfg_h::JOCTET =  0; let mut c_123:  crate::jmorecfg_h::JOCTET =  0; let mut c_124:  crate::jmorecfg_h::JOCTET =  0; let mut c_125:  crate::jmorecfg_h::JOCTET =  0; let mut c_126:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_121 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_121:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh249 = buffer;
                 buffer = buffer.offset(1);
                 *fresh249 = c_121;
@@ -2610,7 +2730,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_122 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_122:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh251 = buffer;
                 buffer = buffer.offset(1);
                 *fresh251 = c_122;
@@ -2621,7 +2742,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_123 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_123:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh253 = buffer;
                 buffer = buffer.offset(1);
                 *fresh253 = c_123;
@@ -2632,7 +2754,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_124 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_124:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh255 = buffer;
                 buffer = buffer.offset(1);
                 *fresh255 = c_124;
@@ -2643,7 +2766,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_125 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_125:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh257 = buffer;
                 buffer = buffer.offset(1);
                 *fresh257 = c_125;
@@ -2654,7 +2778,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_126 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_126:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh259 = buffer;
                 buffer = buffer.offset(1);
                 *fresh259 = c_126;
@@ -2675,9 +2800,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_127:  crate::jmorecfg_h::JOCTET =  0; let mut c_128:  crate::jmorecfg_h::JOCTET =  0; let mut c_129:  crate::jmorecfg_h::JOCTET =  0; let mut c_130:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_127 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_127:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh261 = buffer;
             buffer = buffer.offset(1);
             *fresh261 = c_127;
@@ -2688,7 +2814,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_128 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_128:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh263 = buffer;
             buffer = buffer.offset(1);
             *fresh263 = c_128;
@@ -2699,7 +2826,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_129 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_129:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh265 = buffer;
             buffer = buffer.offset(1);
             *fresh265 = c_129;
@@ -2710,7 +2838,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_130 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_130:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh267 = buffer;
             buffer = buffer.offset(1);
             *fresh267 = c_130;
@@ -2741,9 +2870,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_131:  crate::jmorecfg_h::JOCTET =  0; let mut c_132:  crate::jmorecfg_h::JOCTET =  0; let mut c_133:  crate::jmorecfg_h::JOCTET =  0; let mut c_134:  crate::jmorecfg_h::JOCTET =  0; let mut c_135:  crate::jmorecfg_h::JOCTET =  0; let mut c_136:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_131 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_131:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh269 = buffer;
                 buffer = buffer.offset(1);
                 *fresh269 = c_131;
@@ -2754,7 +2884,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_132 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_132:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh271 = buffer;
                 buffer = buffer.offset(1);
                 *fresh271 = c_132;
@@ -2765,7 +2896,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_133 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_133:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh273 = buffer;
                 buffer = buffer.offset(1);
                 *fresh273 = c_133;
@@ -2776,7 +2908,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_134 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_134:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh275 = buffer;
                 buffer = buffer.offset(1);
                 *fresh275 = c_134;
@@ -2787,7 +2920,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_135 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_135:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh277 = buffer;
                 buffer = buffer.offset(1);
                 *fresh277 = c_135;
@@ -2798,7 +2932,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_136 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_136:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh279 = buffer;
                 buffer = buffer.offset(1);
                 *fresh279 = c_136;
@@ -2819,9 +2954,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_137:  crate::jmorecfg_h::JOCTET =  0; let mut c_138:  crate::jmorecfg_h::JOCTET =  0; let mut c_139:  crate::jmorecfg_h::JOCTET =  0; let mut c_140:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_137 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_137:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh281 = buffer;
             buffer = buffer.offset(1);
             *fresh281 = c_137;
@@ -2832,7 +2968,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_138 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_138:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh283 = buffer;
             buffer = buffer.offset(1);
             *fresh283 = c_138;
@@ -2843,7 +2980,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_139 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_139:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh285 = buffer;
             buffer = buffer.offset(1);
             *fresh285 = c_139;
@@ -2854,7 +2992,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_140 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_140:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh287 = buffer;
             buffer = buffer.offset(1);
             *fresh287 = c_140;
@@ -2885,9 +3024,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_141:  crate::jmorecfg_h::JOCTET =  0; let mut c_142:  crate::jmorecfg_h::JOCTET =  0; let mut c_143:  crate::jmorecfg_h::JOCTET =  0; let mut c_144:  crate::jmorecfg_h::JOCTET =  0; let mut c_145:  crate::jmorecfg_h::JOCTET =  0; let mut c_146:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_141 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_141:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh289 = buffer;
                 buffer = buffer.offset(1);
                 *fresh289 = c_141;
@@ -2898,7 +3038,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_142 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_142:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh291 = buffer;
                 buffer = buffer.offset(1);
                 *fresh291 = c_142;
@@ -2909,7 +3050,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_143 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_143:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh293 = buffer;
                 buffer = buffer.offset(1);
                 *fresh293 = c_143;
@@ -2920,7 +3062,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_144 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_144:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh295 = buffer;
                 buffer = buffer.offset(1);
                 *fresh295 = c_144;
@@ -2931,7 +3074,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_145 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_145:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh297 = buffer;
                 buffer = buffer.offset(1);
                 *fresh297 = c_145;
@@ -2942,7 +3086,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_146 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_146:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh299 = buffer;
                 buffer = buffer.offset(1);
                 *fresh299 = c_146;
@@ -2963,9 +3108,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_147:  crate::jmorecfg_h::JOCTET =  0; let mut c_148:  crate::jmorecfg_h::JOCTET =  0; let mut c_149:  crate::jmorecfg_h::JOCTET =  0; let mut c_150:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_147 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_147:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh301 = buffer;
             buffer = buffer.offset(1);
             *fresh301 = c_147;
@@ -2976,7 +3122,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_148 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_148:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh303 = buffer;
             buffer = buffer.offset(1);
             *fresh303 = c_148;
@@ -2987,7 +3134,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_149 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_149:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh305 = buffer;
             buffer = buffer.offset(1);
             *fresh305 = c_149;
@@ -2998,7 +3146,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_150 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_150:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh307 = buffer;
             buffer = buffer.offset(1);
             *fresh307 = c_150;
@@ -3029,9 +3178,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_151:  crate::jmorecfg_h::JOCTET =  0; let mut c_152:  crate::jmorecfg_h::JOCTET =  0; let mut c_153:  crate::jmorecfg_h::JOCTET =  0; let mut c_154:  crate::jmorecfg_h::JOCTET =  0; let mut c_155:  crate::jmorecfg_h::JOCTET =  0; let mut c_156:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_151 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_151:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh309 = buffer;
                 buffer = buffer.offset(1);
                 *fresh309 = c_151;
@@ -3042,7 +3192,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_152 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_152:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh311 = buffer;
                 buffer = buffer.offset(1);
                 *fresh311 = c_152;
@@ -3053,7 +3204,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_153 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_153:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh313 = buffer;
                 buffer = buffer.offset(1);
                 *fresh313 = c_153;
@@ -3064,7 +3216,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_154 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_154:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh315 = buffer;
                 buffer = buffer.offset(1);
                 *fresh315 = c_154;
@@ -3075,7 +3228,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_155 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_155:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh317 = buffer;
                 buffer = buffer.offset(1);
                 *fresh317 = c_155;
@@ -3086,7 +3240,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_156 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_156:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh319 = buffer;
                 buffer = buffer.offset(1);
                 *fresh319 = c_156;
@@ -3107,9 +3262,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_157:  crate::jmorecfg_h::JOCTET =  0; let mut c_158:  crate::jmorecfg_h::JOCTET =  0; let mut c_159:  crate::jmorecfg_h::JOCTET =  0; let mut c_160:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_157 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_157:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh321 = buffer;
             buffer = buffer.offset(1);
             *fresh321 = c_157;
@@ -3120,7 +3276,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_158 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_158:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh323 = buffer;
             buffer = buffer.offset(1);
             *fresh323 = c_158;
@@ -3131,7 +3288,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_159 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_159:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh325 = buffer;
             buffer = buffer.offset(1);
             *fresh325 = c_159;
@@ -3142,7 +3300,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_160 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_160:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh327 = buffer;
             buffer = buffer.offset(1);
             *fresh327 = c_160;
@@ -3173,9 +3332,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_161:  crate::jmorecfg_h::JOCTET =  0; let mut c_162:  crate::jmorecfg_h::JOCTET =  0; let mut c_163:  crate::jmorecfg_h::JOCTET =  0; let mut c_164:  crate::jmorecfg_h::JOCTET =  0; let mut c_165:  crate::jmorecfg_h::JOCTET =  0; let mut c_166:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_161 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_161:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh329 = buffer;
                 buffer = buffer.offset(1);
                 *fresh329 = c_161;
@@ -3186,7 +3346,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_162 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_162:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh331 = buffer;
                 buffer = buffer.offset(1);
                 *fresh331 = c_162;
@@ -3197,7 +3358,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_163 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_163:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh333 = buffer;
                 buffer = buffer.offset(1);
                 *fresh333 = c_163;
@@ -3208,7 +3370,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_164 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_164:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh335 = buffer;
                 buffer = buffer.offset(1);
                 *fresh335 = c_164;
@@ -3219,7 +3382,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_165 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_165:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh337 = buffer;
                 buffer = buffer.offset(1);
                 *fresh337 = c_165;
@@ -3230,7 +3394,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_166 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_166:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh339 = buffer;
                 buffer = buffer.offset(1);
                 *fresh339 = c_166;
@@ -3251,9 +3416,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_167:  crate::jmorecfg_h::JOCTET =  0; let mut c_168:  crate::jmorecfg_h::JOCTET =  0; let mut c_169:  crate::jmorecfg_h::JOCTET =  0; let mut c_170:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_167 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_167:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh341 = buffer;
             buffer = buffer.offset(1);
             *fresh341 = c_167;
@@ -3264,7 +3430,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_168 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_168:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh343 = buffer;
             buffer = buffer.offset(1);
             *fresh343 = c_168;
@@ -3275,7 +3442,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_169 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_169:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh345 = buffer;
             buffer = buffer.offset(1);
             *fresh345 = c_169;
@@ -3286,7 +3454,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_170 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_170:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh347 = buffer;
             buffer = buffer.offset(1);
             *fresh347 = c_170;
@@ -3317,9 +3486,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_171:  crate::jmorecfg_h::JOCTET =  0; let mut c_172:  crate::jmorecfg_h::JOCTET =  0; let mut c_173:  crate::jmorecfg_h::JOCTET =  0; let mut c_174:  crate::jmorecfg_h::JOCTET =  0; let mut c_175:  crate::jmorecfg_h::JOCTET =  0; let mut c_176:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_171 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_171:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh349 = buffer;
                 buffer = buffer.offset(1);
                 *fresh349 = c_171;
@@ -3330,7 +3500,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_172 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_172:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh351 = buffer;
                 buffer = buffer.offset(1);
                 *fresh351 = c_172;
@@ -3341,7 +3512,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_173 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_173:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh353 = buffer;
                 buffer = buffer.offset(1);
                 *fresh353 = c_173;
@@ -3352,7 +3524,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_174 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_174:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh355 = buffer;
                 buffer = buffer.offset(1);
                 *fresh355 = c_174;
@@ -3363,7 +3536,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_175 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_175:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh357 = buffer;
                 buffer = buffer.offset(1);
                 *fresh357 = c_175;
@@ -3374,7 +3548,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_176 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_176:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh359 = buffer;
                 buffer = buffer.offset(1);
                 *fresh359 = c_176;
@@ -3395,9 +3570,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_177:  crate::jmorecfg_h::JOCTET =  0; let mut c_178:  crate::jmorecfg_h::JOCTET =  0; let mut c_179:  crate::jmorecfg_h::JOCTET =  0; let mut c_180:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_177 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_177:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh361 = buffer;
             buffer = buffer.offset(1);
             *fresh361 = c_177;
@@ -3408,7 +3584,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_178 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_178:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh363 = buffer;
             buffer = buffer.offset(1);
             *fresh363 = c_178;
@@ -3419,7 +3596,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_179 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_179:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh365 = buffer;
             buffer = buffer.offset(1);
             *fresh365 = c_179;
@@ -3430,7 +3608,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_180 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_180:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh367 = buffer;
             buffer = buffer.offset(1);
             *fresh367 = c_180;
@@ -3461,9 +3640,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_181:  crate::jmorecfg_h::JOCTET =  0; let mut c_182:  crate::jmorecfg_h::JOCTET =  0; let mut c_183:  crate::jmorecfg_h::JOCTET =  0; let mut c_184:  crate::jmorecfg_h::JOCTET =  0; let mut c_185:  crate::jmorecfg_h::JOCTET =  0; let mut c_186:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_181 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_181:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh369 = buffer;
                 buffer = buffer.offset(1);
                 *fresh369 = c_181;
@@ -3474,7 +3654,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_182 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_182:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh371 = buffer;
                 buffer = buffer.offset(1);
                 *fresh371 = c_182;
@@ -3485,7 +3666,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_183 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_183:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh373 = buffer;
                 buffer = buffer.offset(1);
                 *fresh373 = c_183;
@@ -3496,7 +3678,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_184 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_184:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh375 = buffer;
                 buffer = buffer.offset(1);
                 *fresh375 = c_184;
@@ -3507,7 +3690,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_185 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_185:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh377 = buffer;
                 buffer = buffer.offset(1);
                 *fresh377 = c_185;
@@ -3518,7 +3702,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_186 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_186:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh379 = buffer;
                 buffer = buffer.offset(1);
                 *fresh379 = c_186;
@@ -3539,9 +3724,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_187:  crate::jmorecfg_h::JOCTET =  0; let mut c_188:  crate::jmorecfg_h::JOCTET =  0; let mut c_189:  crate::jmorecfg_h::JOCTET =  0; let mut c_190:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_187 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_187:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh381 = buffer;
             buffer = buffer.offset(1);
             *fresh381 = c_187;
@@ -3552,7 +3738,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_188 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_188:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh383 = buffer;
             buffer = buffer.offset(1);
             *fresh383 = c_188;
@@ -3563,7 +3750,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_189 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_189:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh385 = buffer;
             buffer = buffer.offset(1);
             *fresh385 = c_189;
@@ -3574,7 +3762,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_190 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_190:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh387 = buffer;
             buffer = buffer.offset(1);
             *fresh387 = c_190;
@@ -3605,9 +3794,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_191:  crate::jmorecfg_h::JOCTET =  0; let mut c_192:  crate::jmorecfg_h::JOCTET =  0; let mut c_193:  crate::jmorecfg_h::JOCTET =  0; let mut c_194:  crate::jmorecfg_h::JOCTET =  0; let mut c_195:  crate::jmorecfg_h::JOCTET =  0; let mut c_196:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_191 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_191:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh389 = buffer;
                 buffer = buffer.offset(1);
                 *fresh389 = c_191;
@@ -3618,7 +3808,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_192 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_192:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh391 = buffer;
                 buffer = buffer.offset(1);
                 *fresh391 = c_192;
@@ -3629,7 +3820,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_193 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_193:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh393 = buffer;
                 buffer = buffer.offset(1);
                 *fresh393 = c_193;
@@ -3640,7 +3832,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_194 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_194:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh395 = buffer;
                 buffer = buffer.offset(1);
                 *fresh395 = c_194;
@@ -3651,7 +3844,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_195 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_195:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh397 = buffer;
                 buffer = buffer.offset(1);
                 *fresh397 = c_195;
@@ -3662,7 +3856,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_196 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_196:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh399 = buffer;
                 buffer = buffer.offset(1);
                 *fresh399 = c_196;
@@ -3683,9 +3878,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_197:  crate::jmorecfg_h::JOCTET =  0; let mut c_198:  crate::jmorecfg_h::JOCTET =  0; let mut c_199:  crate::jmorecfg_h::JOCTET =  0; let mut c_200:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_197 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_197:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh401 = buffer;
             buffer = buffer.offset(1);
             *fresh401 = c_197;
@@ -3696,7 +3892,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_198 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_198:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh403 = buffer;
             buffer = buffer.offset(1);
             *fresh403 = c_198;
@@ -3707,7 +3904,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_199 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_199:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh405 = buffer;
             buffer = buffer.offset(1);
             *fresh405 = c_199;
@@ -3718,7 +3916,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_200 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_200:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh407 = buffer;
             buffer = buffer.offset(1);
             *fresh407 = c_200;
@@ -3749,9 +3948,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_201:  crate::jmorecfg_h::JOCTET =  0; let mut c_202:  crate::jmorecfg_h::JOCTET =  0; let mut c_203:  crate::jmorecfg_h::JOCTET =  0; let mut c_204:  crate::jmorecfg_h::JOCTET =  0; let mut c_205:  crate::jmorecfg_h::JOCTET =  0; let mut c_206:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_201 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_201:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh409 = buffer;
                 buffer = buffer.offset(1);
                 *fresh409 = c_201;
@@ -3762,7 +3962,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_202 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_202:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh411 = buffer;
                 buffer = buffer.offset(1);
                 *fresh411 = c_202;
@@ -3773,7 +3974,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_203 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_203:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh413 = buffer;
                 buffer = buffer.offset(1);
                 *fresh413 = c_203;
@@ -3784,7 +3986,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_204 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_204:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh415 = buffer;
                 buffer = buffer.offset(1);
                 *fresh415 = c_204;
@@ -3795,7 +3998,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_205 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_205:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh417 = buffer;
                 buffer = buffer.offset(1);
                 *fresh417 = c_205;
@@ -3806,7 +4010,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_206 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_206:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh419 = buffer;
                 buffer = buffer.offset(1);
                 *fresh419 = c_206;
@@ -3827,9 +4032,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_207:  crate::jmorecfg_h::JOCTET =  0; let mut c_208:  crate::jmorecfg_h::JOCTET =  0; let mut c_209:  crate::jmorecfg_h::JOCTET =  0; let mut c_210:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_207 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_207:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh421 = buffer;
             buffer = buffer.offset(1);
             *fresh421 = c_207;
@@ -3840,7 +4046,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_208 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_208:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh423 = buffer;
             buffer = buffer.offset(1);
             *fresh423 = c_208;
@@ -3851,7 +4058,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_209 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_209:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh425 = buffer;
             buffer = buffer.offset(1);
             *fresh425 = c_209;
@@ -3862,7 +4070,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_210 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_210:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh427 = buffer;
             buffer = buffer.offset(1);
             *fresh427 = c_210;
@@ -3893,9 +4102,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_211:  crate::jmorecfg_h::JOCTET =  0; let mut c_212:  crate::jmorecfg_h::JOCTET =  0; let mut c_213:  crate::jmorecfg_h::JOCTET =  0; let mut c_214:  crate::jmorecfg_h::JOCTET =  0; let mut c_215:  crate::jmorecfg_h::JOCTET =  0; let mut c_216:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_211 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_211:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh429 = buffer;
                 buffer = buffer.offset(1);
                 *fresh429 = c_211;
@@ -3906,7 +4116,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_212 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_212:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh431 = buffer;
                 buffer = buffer.offset(1);
                 *fresh431 = c_212;
@@ -3917,7 +4128,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_213 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_213:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh433 = buffer;
                 buffer = buffer.offset(1);
                 *fresh433 = c_213;
@@ -3928,7 +4140,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_214 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_214:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh435 = buffer;
                 buffer = buffer.offset(1);
                 *fresh435 = c_214;
@@ -3939,7 +4152,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_215 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_215:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh437 = buffer;
                 buffer = buffer.offset(1);
                 *fresh437 = c_215;
@@ -3950,7 +4164,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_216 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_216:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh439 = buffer;
                 buffer = buffer.offset(1);
                 *fresh439 = c_216;
@@ -3971,9 +4186,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_217:  crate::jmorecfg_h::JOCTET =  0; let mut c_218:  crate::jmorecfg_h::JOCTET =  0; let mut c_219:  crate::jmorecfg_h::JOCTET =  0; let mut c_220:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_217 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_217:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh441 = buffer;
             buffer = buffer.offset(1);
             *fresh441 = c_217;
@@ -3984,7 +4200,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_218 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_218:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh443 = buffer;
             buffer = buffer.offset(1);
             *fresh443 = c_218;
@@ -3995,7 +4212,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_219 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_219:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh445 = buffer;
             buffer = buffer.offset(1);
             *fresh445 = c_219;
@@ -4006,7 +4224,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_220 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_220:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh447 = buffer;
             buffer = buffer.offset(1);
             *fresh447 = c_220;
@@ -4037,9 +4256,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_221:  crate::jmorecfg_h::JOCTET =  0; let mut c_222:  crate::jmorecfg_h::JOCTET =  0; let mut c_223:  crate::jmorecfg_h::JOCTET =  0; let mut c_224:  crate::jmorecfg_h::JOCTET =  0; let mut c_225:  crate::jmorecfg_h::JOCTET =  0; let mut c_226:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_221 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_221:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh449 = buffer;
                 buffer = buffer.offset(1);
                 *fresh449 = c_221;
@@ -4050,7 +4270,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_222 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_222:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh451 = buffer;
                 buffer = buffer.offset(1);
                 *fresh451 = c_222;
@@ -4061,7 +4282,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_223 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_223:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh453 = buffer;
                 buffer = buffer.offset(1);
                 *fresh453 = c_223;
@@ -4072,7 +4294,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_224 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_224:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh455 = buffer;
                 buffer = buffer.offset(1);
                 *fresh455 = c_224;
@@ -4083,7 +4306,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_225 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_225:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh457 = buffer;
                 buffer = buffer.offset(1);
                 *fresh457 = c_225;
@@ -4094,7 +4318,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_226 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_226:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh459 = buffer;
                 buffer = buffer.offset(1);
                 *fresh459 = c_226;
@@ -4115,9 +4340,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_227:  crate::jmorecfg_h::JOCTET =  0; let mut c_228:  crate::jmorecfg_h::JOCTET =  0; let mut c_229:  crate::jmorecfg_h::JOCTET =  0; let mut c_230:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_227 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_227:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh461 = buffer;
             buffer = buffer.offset(1);
             *fresh461 = c_227;
@@ -4128,7 +4354,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_228 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_228:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh463 = buffer;
             buffer = buffer.offset(1);
             *fresh463 = c_228;
@@ -4139,7 +4366,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_229 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_229:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh465 = buffer;
             buffer = buffer.offset(1);
             *fresh465 = c_229;
@@ -4150,7 +4378,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_230 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_230:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh467 = buffer;
             buffer = buffer.offset(1);
             *fresh467 = c_230;
@@ -4181,9 +4410,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_231:  crate::jmorecfg_h::JOCTET =  0; let mut c_232:  crate::jmorecfg_h::JOCTET =  0; let mut c_233:  crate::jmorecfg_h::JOCTET =  0; let mut c_234:  crate::jmorecfg_h::JOCTET =  0; let mut c_235:  crate::jmorecfg_h::JOCTET =  0; let mut c_236:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_231 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_231:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh469 = buffer;
                 buffer = buffer.offset(1);
                 *fresh469 = c_231;
@@ -4194,7 +4424,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_232 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_232:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh471 = buffer;
                 buffer = buffer.offset(1);
                 *fresh471 = c_232;
@@ -4205,7 +4436,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_233 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_233:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh473 = buffer;
                 buffer = buffer.offset(1);
                 *fresh473 = c_233;
@@ -4216,7 +4448,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_234 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_234:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh475 = buffer;
                 buffer = buffer.offset(1);
                 *fresh475 = c_234;
@@ -4227,7 +4460,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_235 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_235:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh477 = buffer;
                 buffer = buffer.offset(1);
                 *fresh477 = c_235;
@@ -4238,7 +4472,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_236 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_236:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh479 = buffer;
                 buffer = buffer.offset(1);
                 *fresh479 = c_236;
@@ -4259,9 +4494,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_237:  crate::jmorecfg_h::JOCTET =  0; let mut c_238:  crate::jmorecfg_h::JOCTET =  0; let mut c_239:  crate::jmorecfg_h::JOCTET =  0; let mut c_240:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_237 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_237:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh481 = buffer;
             buffer = buffer.offset(1);
             *fresh481 = c_237;
@@ -4272,7 +4508,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_238 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_238:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh483 = buffer;
             buffer = buffer.offset(1);
             *fresh483 = c_238;
@@ -4283,7 +4520,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_239 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_239:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh485 = buffer;
             buffer = buffer.offset(1);
             *fresh485 = c_239;
@@ -4294,7 +4532,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_240 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_240:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh487 = buffer;
             buffer = buffer.offset(1);
             *fresh487 = c_240;
@@ -4325,9 +4564,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_241:  crate::jmorecfg_h::JOCTET =  0; let mut c_242:  crate::jmorecfg_h::JOCTET =  0; let mut c_243:  crate::jmorecfg_h::JOCTET =  0; let mut c_244:  crate::jmorecfg_h::JOCTET =  0; let mut c_245:  crate::jmorecfg_h::JOCTET =  0; let mut c_246:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_241 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_241:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh489 = buffer;
                 buffer = buffer.offset(1);
                 *fresh489 = c_241;
@@ -4338,7 +4578,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_242 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_242:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh491 = buffer;
                 buffer = buffer.offset(1);
                 *fresh491 = c_242;
@@ -4349,7 +4590,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_243 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_243:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh493 = buffer;
                 buffer = buffer.offset(1);
                 *fresh493 = c_243;
@@ -4360,7 +4602,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_244 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_244:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh495 = buffer;
                 buffer = buffer.offset(1);
                 *fresh495 = c_244;
@@ -4371,7 +4614,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_245 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_245:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh497 = buffer;
                 buffer = buffer.offset(1);
                 *fresh497 = c_245;
@@ -4382,7 +4626,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_246 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_246:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh499 = buffer;
                 buffer = buffer.offset(1);
                 *fresh499 = c_246;
@@ -4403,9 +4648,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_247:  crate::jmorecfg_h::JOCTET =  0; let mut c_248:  crate::jmorecfg_h::JOCTET =  0; let mut c_249:  crate::jmorecfg_h::JOCTET =  0; let mut c_250:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_247 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_247:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh501 = buffer;
             buffer = buffer.offset(1);
             *fresh501 = c_247;
@@ -4416,7 +4662,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_248 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_248:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh503 = buffer;
             buffer = buffer.offset(1);
             *fresh503 = c_248;
@@ -4427,7 +4674,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_249 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_249:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh505 = buffer;
             buffer = buffer.offset(1);
             *fresh505 = c_249;
@@ -4438,7 +4686,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_250 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_250:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh507 = buffer;
             buffer = buffer.offset(1);
             *fresh507 = c_250;
@@ -4469,9 +4718,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_251:  crate::jmorecfg_h::JOCTET =  0; let mut c_252:  crate::jmorecfg_h::JOCTET =  0; let mut c_253:  crate::jmorecfg_h::JOCTET =  0; let mut c_254:  crate::jmorecfg_h::JOCTET =  0; let mut c_255:  crate::jmorecfg_h::JOCTET =  0; let mut c_256:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_251 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_251:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh509 = buffer;
                 buffer = buffer.offset(1);
                 *fresh509 = c_251;
@@ -4482,7 +4732,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_252 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_252:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh511 = buffer;
                 buffer = buffer.offset(1);
                 *fresh511 = c_252;
@@ -4493,7 +4744,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_253 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_253:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh513 = buffer;
                 buffer = buffer.offset(1);
                 *fresh513 = c_253;
@@ -4504,7 +4756,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_254 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_254:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh515 = buffer;
                 buffer = buffer.offset(1);
                 *fresh515 = c_254;
@@ -4515,7 +4768,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_255 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_255:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh517 = buffer;
                 buffer = buffer.offset(1);
                 *fresh517 = c_255;
@@ -4526,7 +4780,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_256 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_256:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh519 = buffer;
                 buffer = buffer.offset(1);
                 *fresh519 = c_256;
@@ -4547,9 +4802,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_257:  crate::jmorecfg_h::JOCTET =  0; let mut c_258:  crate::jmorecfg_h::JOCTET =  0; let mut c_259:  crate::jmorecfg_h::JOCTET =  0; let mut c_260:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_257 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_257:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh521 = buffer;
             buffer = buffer.offset(1);
             *fresh521 = c_257;
@@ -4560,7 +4816,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_258 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_258:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh523 = buffer;
             buffer = buffer.offset(1);
             *fresh523 = c_258;
@@ -4571,7 +4828,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_259 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_259:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh525 = buffer;
             buffer = buffer.offset(1);
             *fresh525 = c_259;
@@ -4582,7 +4840,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_260 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_260:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh527 = buffer;
             buffer = buffer.offset(1);
             *fresh527 = c_260;
@@ -4613,9 +4872,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_261:  crate::jmorecfg_h::JOCTET =  0; let mut c_262:  crate::jmorecfg_h::JOCTET =  0; let mut c_263:  crate::jmorecfg_h::JOCTET =  0; let mut c_264:  crate::jmorecfg_h::JOCTET =  0; let mut c_265:  crate::jmorecfg_h::JOCTET =  0; let mut c_266:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_261 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_261:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh529 = buffer;
                 buffer = buffer.offset(1);
                 *fresh529 = c_261;
@@ -4626,7 +4886,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_262 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_262:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh531 = buffer;
                 buffer = buffer.offset(1);
                 *fresh531 = c_262;
@@ -4637,7 +4898,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_263 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_263:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh533 = buffer;
                 buffer = buffer.offset(1);
                 *fresh533 = c_263;
@@ -4648,7 +4910,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_264 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_264:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh535 = buffer;
                 buffer = buffer.offset(1);
                 *fresh535 = c_264;
@@ -4659,7 +4922,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_265 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_265:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh537 = buffer;
                 buffer = buffer.offset(1);
                 *fresh537 = c_265;
@@ -4670,7 +4934,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_266 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_266:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh539 = buffer;
                 buffer = buffer.offset(1);
                 *fresh539 = c_266;
@@ -4691,9 +4956,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_267:  crate::jmorecfg_h::JOCTET =  0; let mut c_268:  crate::jmorecfg_h::JOCTET =  0; let mut c_269:  crate::jmorecfg_h::JOCTET =  0; let mut c_270:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_267 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_267:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh541 = buffer;
             buffer = buffer.offset(1);
             *fresh541 = c_267;
@@ -4704,7 +4970,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_268 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_268:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh543 = buffer;
             buffer = buffer.offset(1);
             *fresh543 = c_268;
@@ -4715,7 +4982,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_269 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_269:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh545 = buffer;
             buffer = buffer.offset(1);
             *fresh545 = c_269;
@@ -4726,7 +4994,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_270 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_270:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh547 = buffer;
             buffer = buffer.offset(1);
             *fresh547 = c_270;
@@ -4757,9 +5026,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_271:  crate::jmorecfg_h::JOCTET =  0; let mut c_272:  crate::jmorecfg_h::JOCTET =  0; let mut c_273:  crate::jmorecfg_h::JOCTET =  0; let mut c_274:  crate::jmorecfg_h::JOCTET =  0; let mut c_275:  crate::jmorecfg_h::JOCTET =  0; let mut c_276:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_271 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_271:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh549 = buffer;
                 buffer = buffer.offset(1);
                 *fresh549 = c_271;
@@ -4770,7 +5040,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_272 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_272:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh551 = buffer;
                 buffer = buffer.offset(1);
                 *fresh551 = c_272;
@@ -4781,7 +5052,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_273 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_273:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh553 = buffer;
                 buffer = buffer.offset(1);
                 *fresh553 = c_273;
@@ -4792,7 +5064,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_274 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_274:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh555 = buffer;
                 buffer = buffer.offset(1);
                 *fresh555 = c_274;
@@ -4803,7 +5076,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_275 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_275:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh557 = buffer;
                 buffer = buffer.offset(1);
                 *fresh557 = c_275;
@@ -4814,7 +5088,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_276 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_276:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh559 = buffer;
                 buffer = buffer.offset(1);
                 *fresh559 = c_276;
@@ -4835,9 +5110,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_277:  crate::jmorecfg_h::JOCTET =  0; let mut c_278:  crate::jmorecfg_h::JOCTET =  0; let mut c_279:  crate::jmorecfg_h::JOCTET =  0; let mut c_280:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_277 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_277:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh561 = buffer;
             buffer = buffer.offset(1);
             *fresh561 = c_277;
@@ -4848,7 +5124,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_278 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_278:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh563 = buffer;
             buffer = buffer.offset(1);
             *fresh563 = c_278;
@@ -4859,7 +5136,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_279 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_279:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh565 = buffer;
             buffer = buffer.offset(1);
             *fresh565 = c_279;
@@ -4870,7 +5148,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_280 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_280:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh567 = buffer;
             buffer = buffer.offset(1);
             *fresh567 = c_280;
@@ -4901,9 +5180,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_281:  crate::jmorecfg_h::JOCTET =  0; let mut c_282:  crate::jmorecfg_h::JOCTET =  0; let mut c_283:  crate::jmorecfg_h::JOCTET =  0; let mut c_284:  crate::jmorecfg_h::JOCTET =  0; let mut c_285:  crate::jmorecfg_h::JOCTET =  0; let mut c_286:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_281 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_281:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh569 = buffer;
                 buffer = buffer.offset(1);
                 *fresh569 = c_281;
@@ -4914,7 +5194,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_282 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_282:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh571 = buffer;
                 buffer = buffer.offset(1);
                 *fresh571 = c_282;
@@ -4925,7 +5206,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_283 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_283:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh573 = buffer;
                 buffer = buffer.offset(1);
                 *fresh573 = c_283;
@@ -4936,7 +5218,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_284 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_284:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh575 = buffer;
                 buffer = buffer.offset(1);
                 *fresh575 = c_284;
@@ -4947,7 +5230,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_285 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_285:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh577 = buffer;
                 buffer = buffer.offset(1);
                 *fresh577 = c_285;
@@ -4958,7 +5242,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_286 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_286:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh579 = buffer;
                 buffer = buffer.offset(1);
                 *fresh579 = c_286;
@@ -4979,9 +5264,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_287:  crate::jmorecfg_h::JOCTET =  0; let mut c_288:  crate::jmorecfg_h::JOCTET =  0; let mut c_289:  crate::jmorecfg_h::JOCTET =  0; let mut c_290:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_287 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_287:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh581 = buffer;
             buffer = buffer.offset(1);
             *fresh581 = c_287;
@@ -4992,7 +5278,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_288 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_288:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh583 = buffer;
             buffer = buffer.offset(1);
             *fresh583 = c_288;
@@ -5003,7 +5290,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_289 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_289:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh585 = buffer;
             buffer = buffer.offset(1);
             *fresh585 = c_289;
@@ -5014,7 +5302,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_290 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_290:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh587 = buffer;
             buffer = buffer.offset(1);
             *fresh587 = c_290;
@@ -5045,9 +5334,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_291:  crate::jmorecfg_h::JOCTET =  0; let mut c_292:  crate::jmorecfg_h::JOCTET =  0; let mut c_293:  crate::jmorecfg_h::JOCTET =  0; let mut c_294:  crate::jmorecfg_h::JOCTET =  0; let mut c_295:  crate::jmorecfg_h::JOCTET =  0; let mut c_296:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_291 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_291:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh589 = buffer;
                 buffer = buffer.offset(1);
                 *fresh589 = c_291;
@@ -5058,7 +5348,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_292 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_292:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh591 = buffer;
                 buffer = buffer.offset(1);
                 *fresh591 = c_292;
@@ -5069,7 +5360,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_293 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_293:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh593 = buffer;
                 buffer = buffer.offset(1);
                 *fresh593 = c_293;
@@ -5080,7 +5372,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_294 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_294:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh595 = buffer;
                 buffer = buffer.offset(1);
                 *fresh595 = c_294;
@@ -5091,7 +5384,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_295 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_295:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh597 = buffer;
                 buffer = buffer.offset(1);
                 *fresh597 = c_295;
@@ -5102,7 +5396,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_296 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_296:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh599 = buffer;
                 buffer = buffer.offset(1);
                 *fresh599 = c_296;
@@ -5123,9 +5418,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_297:  crate::jmorecfg_h::JOCTET =  0; let mut c_298:  crate::jmorecfg_h::JOCTET =  0; let mut c_299:  crate::jmorecfg_h::JOCTET =  0; let mut c_300:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_297 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_297:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh601 = buffer;
             buffer = buffer.offset(1);
             *fresh601 = c_297;
@@ -5136,7 +5432,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_298 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_298:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh603 = buffer;
             buffer = buffer.offset(1);
             *fresh603 = c_298;
@@ -5147,7 +5444,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_299 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_299:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh605 = buffer;
             buffer = buffer.offset(1);
             *fresh605 = c_299;
@@ -5158,7 +5456,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_300 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_300:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh607 = buffer;
             buffer = buffer.offset(1);
             *fresh607 = c_300;
@@ -5189,9 +5488,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_301:  crate::jmorecfg_h::JOCTET =  0; let mut c_302:  crate::jmorecfg_h::JOCTET =  0; let mut c_303:  crate::jmorecfg_h::JOCTET =  0; let mut c_304:  crate::jmorecfg_h::JOCTET =  0; let mut c_305:  crate::jmorecfg_h::JOCTET =  0; let mut c_306:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_301 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_301:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh609 = buffer;
                 buffer = buffer.offset(1);
                 *fresh609 = c_301;
@@ -5202,7 +5502,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_302 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_302:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh611 = buffer;
                 buffer = buffer.offset(1);
                 *fresh611 = c_302;
@@ -5213,7 +5514,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_303 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_303:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh613 = buffer;
                 buffer = buffer.offset(1);
                 *fresh613 = c_303;
@@ -5224,7 +5526,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_304 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_304:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh615 = buffer;
                 buffer = buffer.offset(1);
                 *fresh615 = c_304;
@@ -5235,7 +5538,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_305 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_305:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh617 = buffer;
                 buffer = buffer.offset(1);
                 *fresh617 = c_305;
@@ -5246,7 +5550,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_306 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_306:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh619 = buffer;
                 buffer = buffer.offset(1);
                 *fresh619 = c_306;
@@ -5267,9 +5572,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_307:  crate::jmorecfg_h::JOCTET =  0; let mut c_308:  crate::jmorecfg_h::JOCTET =  0; let mut c_309:  crate::jmorecfg_h::JOCTET =  0; let mut c_310:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_307 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_307:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh621 = buffer;
             buffer = buffer.offset(1);
             *fresh621 = c_307;
@@ -5280,7 +5586,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_308 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_308:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh623 = buffer;
             buffer = buffer.offset(1);
             *fresh623 = c_308;
@@ -5291,7 +5598,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_309 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_309:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh625 = buffer;
             buffer = buffer.offset(1);
             *fresh625 = c_309;
@@ -5302,7 +5610,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_310 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_310:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh627 = buffer;
             buffer = buffer.offset(1);
             *fresh627 = c_310;
@@ -5333,9 +5642,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_311:  crate::jmorecfg_h::JOCTET =  0; let mut c_312:  crate::jmorecfg_h::JOCTET =  0; let mut c_313:  crate::jmorecfg_h::JOCTET =  0; let mut c_314:  crate::jmorecfg_h::JOCTET =  0; let mut c_315:  crate::jmorecfg_h::JOCTET =  0; let mut c_316:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_311 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_311:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh629 = buffer;
                 buffer = buffer.offset(1);
                 *fresh629 = c_311;
@@ -5346,7 +5656,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_312 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_312:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh631 = buffer;
                 buffer = buffer.offset(1);
                 *fresh631 = c_312;
@@ -5357,7 +5668,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_313 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_313:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh633 = buffer;
                 buffer = buffer.offset(1);
                 *fresh633 = c_313;
@@ -5368,7 +5680,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_314 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_314:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh635 = buffer;
                 buffer = buffer.offset(1);
                 *fresh635 = c_314;
@@ -5379,7 +5692,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_315 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_315:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh637 = buffer;
                 buffer = buffer.offset(1);
                 *fresh637 = c_315;
@@ -5390,7 +5704,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_316 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_316:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh639 = buffer;
                 buffer = buffer.offset(1);
                 *fresh639 = c_316;
@@ -5411,9 +5726,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_317:  crate::jmorecfg_h::JOCTET =  0; let mut c_318:  crate::jmorecfg_h::JOCTET =  0; let mut c_319:  crate::jmorecfg_h::JOCTET =  0; let mut c_320:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_317 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_317:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh641 = buffer;
             buffer = buffer.offset(1);
             *fresh641 = c_317;
@@ -5424,7 +5740,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_318 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_318:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh643 = buffer;
             buffer = buffer.offset(1);
             *fresh643 = c_318;
@@ -5435,7 +5752,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_319 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_319:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh645 = buffer;
             buffer = buffer.offset(1);
             *fresh645 = c_319;
@@ -5446,7 +5764,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_320 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_320:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh647 = buffer;
             buffer = buffer.offset(1);
             *fresh647 = c_320;
@@ -5477,9 +5796,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_321:  crate::jmorecfg_h::JOCTET =  0; let mut c_322:  crate::jmorecfg_h::JOCTET =  0; let mut c_323:  crate::jmorecfg_h::JOCTET =  0; let mut c_324:  crate::jmorecfg_h::JOCTET =  0; let mut c_325:  crate::jmorecfg_h::JOCTET =  0; let mut c_326:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_321 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_321:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh649 = buffer;
                 buffer = buffer.offset(1);
                 *fresh649 = c_321;
@@ -5490,7 +5810,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_322 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_322:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh651 = buffer;
                 buffer = buffer.offset(1);
                 *fresh651 = c_322;
@@ -5501,7 +5822,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_323 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_323:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh653 = buffer;
                 buffer = buffer.offset(1);
                 *fresh653 = c_323;
@@ -5512,7 +5834,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_324 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_324:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh655 = buffer;
                 buffer = buffer.offset(1);
                 *fresh655 = c_324;
@@ -5523,7 +5846,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_325 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_325:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh657 = buffer;
                 buffer = buffer.offset(1);
                 *fresh657 = c_325;
@@ -5534,7 +5858,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_326 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_326:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh659 = buffer;
                 buffer = buffer.offset(1);
                 *fresh659 = c_326;
@@ -5555,9 +5880,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_327:  crate::jmorecfg_h::JOCTET =  0; let mut c_328:  crate::jmorecfg_h::JOCTET =  0; let mut c_329:  crate::jmorecfg_h::JOCTET =  0; let mut c_330:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_327 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_327:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh661 = buffer;
             buffer = buffer.offset(1);
             *fresh661 = c_327;
@@ -5568,7 +5894,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_328 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_328:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh663 = buffer;
             buffer = buffer.offset(1);
             *fresh663 = c_328;
@@ -5579,7 +5906,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_329 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_329:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh665 = buffer;
             buffer = buffer.offset(1);
             *fresh665 = c_329;
@@ -5590,7 +5918,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_330 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_330:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh667 = buffer;
             buffer = buffer.offset(1);
             *fresh667 = c_330;
@@ -5621,9 +5950,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_331:  crate::jmorecfg_h::JOCTET =  0; let mut c_332:  crate::jmorecfg_h::JOCTET =  0; let mut c_333:  crate::jmorecfg_h::JOCTET =  0; let mut c_334:  crate::jmorecfg_h::JOCTET =  0; let mut c_335:  crate::jmorecfg_h::JOCTET =  0; let mut c_336:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_331 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_331:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh669 = buffer;
                 buffer = buffer.offset(1);
                 *fresh669 = c_331;
@@ -5634,7 +5964,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_332 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_332:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh671 = buffer;
                 buffer = buffer.offset(1);
                 *fresh671 = c_332;
@@ -5645,7 +5976,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_333 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_333:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh673 = buffer;
                 buffer = buffer.offset(1);
                 *fresh673 = c_333;
@@ -5656,7 +5988,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_334 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_334:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh675 = buffer;
                 buffer = buffer.offset(1);
                 *fresh675 = c_334;
@@ -5667,7 +6000,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_335 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_335:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh677 = buffer;
                 buffer = buffer.offset(1);
                 *fresh677 = c_335;
@@ -5678,7 +6012,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_336 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_336:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh679 = buffer;
                 buffer = buffer.offset(1);
                 *fresh679 = c_336;
@@ -5699,9 +6034,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_337:  crate::jmorecfg_h::JOCTET =  0; let mut c_338:  crate::jmorecfg_h::JOCTET =  0; let mut c_339:  crate::jmorecfg_h::JOCTET =  0; let mut c_340:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_337 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_337:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh681 = buffer;
             buffer = buffer.offset(1);
             *fresh681 = c_337;
@@ -5712,7 +6048,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_338 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_338:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh683 = buffer;
             buffer = buffer.offset(1);
             *fresh683 = c_338;
@@ -5723,7 +6060,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_339 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_339:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh685 = buffer;
             buffer = buffer.offset(1);
             *fresh685 = c_339;
@@ -5734,7 +6072,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_340 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_340:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh687 = buffer;
             buffer = buffer.offset(1);
             *fresh687 = c_340;
@@ -5765,9 +6104,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_341:  crate::jmorecfg_h::JOCTET =  0; let mut c_342:  crate::jmorecfg_h::JOCTET =  0; let mut c_343:  crate::jmorecfg_h::JOCTET =  0; let mut c_344:  crate::jmorecfg_h::JOCTET =  0; let mut c_345:  crate::jmorecfg_h::JOCTET =  0; let mut c_346:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_341 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_341:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh689 = buffer;
                 buffer = buffer.offset(1);
                 *fresh689 = c_341;
@@ -5778,7 +6118,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_342 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_342:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh691 = buffer;
                 buffer = buffer.offset(1);
                 *fresh691 = c_342;
@@ -5789,7 +6130,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_343 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_343:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh693 = buffer;
                 buffer = buffer.offset(1);
                 *fresh693 = c_343;
@@ -5800,7 +6142,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_344 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_344:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh695 = buffer;
                 buffer = buffer.offset(1);
                 *fresh695 = c_344;
@@ -5811,7 +6154,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_345 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_345:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh697 = buffer;
                 buffer = buffer.offset(1);
                 *fresh697 = c_345;
@@ -5822,7 +6166,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_346 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_346:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh699 = buffer;
                 buffer = buffer.offset(1);
                 *fresh699 = c_346;
@@ -5843,9 +6188,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_347:  crate::jmorecfg_h::JOCTET =  0; let mut c_348:  crate::jmorecfg_h::JOCTET =  0; let mut c_349:  crate::jmorecfg_h::JOCTET =  0; let mut c_350:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_347 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_347:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh701 = buffer;
             buffer = buffer.offset(1);
             *fresh701 = c_347;
@@ -5856,7 +6202,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_348 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_348:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh703 = buffer;
             buffer = buffer.offset(1);
             *fresh703 = c_348;
@@ -5867,7 +6214,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_349 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_349:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh705 = buffer;
             buffer = buffer.offset(1);
             *fresh705 = c_349;
@@ -5878,7 +6226,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_350 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_350:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh707 = buffer;
             buffer = buffer.offset(1);
             *fresh707 = c_350;
@@ -5909,9 +6258,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_351:  crate::jmorecfg_h::JOCTET =  0; let mut c_352:  crate::jmorecfg_h::JOCTET =  0; let mut c_353:  crate::jmorecfg_h::JOCTET =  0; let mut c_354:  crate::jmorecfg_h::JOCTET =  0; let mut c_355:  crate::jmorecfg_h::JOCTET =  0; let mut c_356:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_351 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_351:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh709 = buffer;
                 buffer = buffer.offset(1);
                 *fresh709 = c_351;
@@ -5922,7 +6272,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_352 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_352:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh711 = buffer;
                 buffer = buffer.offset(1);
                 *fresh711 = c_352;
@@ -5933,7 +6284,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_353 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_353:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh713 = buffer;
                 buffer = buffer.offset(1);
                 *fresh713 = c_353;
@@ -5944,7 +6296,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_354 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_354:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh715 = buffer;
                 buffer = buffer.offset(1);
                 *fresh715 = c_354;
@@ -5955,7 +6308,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_355 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_355:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh717 = buffer;
                 buffer = buffer.offset(1);
                 *fresh717 = c_355;
@@ -5966,7 +6320,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_356 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_356:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh719 = buffer;
                 buffer = buffer.offset(1);
                 *fresh719 = c_356;
@@ -5987,9 +6342,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_357:  crate::jmorecfg_h::JOCTET =  0; let mut c_358:  crate::jmorecfg_h::JOCTET =  0; let mut c_359:  crate::jmorecfg_h::JOCTET =  0; let mut c_360:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_357 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_357:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh721 = buffer;
             buffer = buffer.offset(1);
             *fresh721 = c_357;
@@ -6000,7 +6356,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_358 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_358:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh723 = buffer;
             buffer = buffer.offset(1);
             *fresh723 = c_358;
@@ -6011,7 +6368,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_359 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_359:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh725 = buffer;
             buffer = buffer.offset(1);
             *fresh725 = c_359;
@@ -6022,7 +6380,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_360 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_360:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh727 = buffer;
             buffer = buffer.offset(1);
             *fresh727 = c_360;
@@ -6053,9 +6412,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_361:  crate::jmorecfg_h::JOCTET =  0; let mut c_362:  crate::jmorecfg_h::JOCTET =  0; let mut c_363:  crate::jmorecfg_h::JOCTET =  0; let mut c_364:  crate::jmorecfg_h::JOCTET =  0; let mut c_365:  crate::jmorecfg_h::JOCTET =  0; let mut c_366:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_361 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_361:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh729 = buffer;
                 buffer = buffer.offset(1);
                 *fresh729 = c_361;
@@ -6066,7 +6426,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_362 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_362:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh731 = buffer;
                 buffer = buffer.offset(1);
                 *fresh731 = c_362;
@@ -6077,7 +6438,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_363 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_363:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh733 = buffer;
                 buffer = buffer.offset(1);
                 *fresh733 = c_363;
@@ -6088,7 +6450,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_364 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_364:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh735 = buffer;
                 buffer = buffer.offset(1);
                 *fresh735 = c_364;
@@ -6099,7 +6462,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_365 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_365:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh737 = buffer;
                 buffer = buffer.offset(1);
                 *fresh737 = c_365;
@@ -6110,7 +6474,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_366 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_366:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh739 = buffer;
                 buffer = buffer.offset(1);
                 *fresh739 = c_366;
@@ -6131,9 +6496,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_367:  crate::jmorecfg_h::JOCTET =  0; let mut c_368:  crate::jmorecfg_h::JOCTET =  0; let mut c_369:  crate::jmorecfg_h::JOCTET =  0; let mut c_370:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_367 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_367:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh741 = buffer;
             buffer = buffer.offset(1);
             *fresh741 = c_367;
@@ -6144,7 +6510,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_368 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_368:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh743 = buffer;
             buffer = buffer.offset(1);
             *fresh743 = c_368;
@@ -6155,7 +6522,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_369 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_369:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh745 = buffer;
             buffer = buffer.offset(1);
             *fresh745 = c_369;
@@ -6166,7 +6534,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_370 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_370:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh747 = buffer;
             buffer = buffer.offset(1);
             *fresh747 = c_370;
@@ -6197,9 +6566,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_371:  crate::jmorecfg_h::JOCTET =  0; let mut c_372:  crate::jmorecfg_h::JOCTET =  0; let mut c_373:  crate::jmorecfg_h::JOCTET =  0; let mut c_374:  crate::jmorecfg_h::JOCTET =  0; let mut c_375:  crate::jmorecfg_h::JOCTET =  0; let mut c_376:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_371 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_371:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh749 = buffer;
                 buffer = buffer.offset(1);
                 *fresh749 = c_371;
@@ -6210,7 +6580,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_372 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_372:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh751 = buffer;
                 buffer = buffer.offset(1);
                 *fresh751 = c_372;
@@ -6221,7 +6592,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_373 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_373:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh753 = buffer;
                 buffer = buffer.offset(1);
                 *fresh753 = c_373;
@@ -6232,7 +6604,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_374 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_374:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh755 = buffer;
                 buffer = buffer.offset(1);
                 *fresh755 = c_374;
@@ -6243,7 +6616,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_375 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_375:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh757 = buffer;
                 buffer = buffer.offset(1);
                 *fresh757 = c_375;
@@ -6254,7 +6628,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_376 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_376:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh759 = buffer;
                 buffer = buffer.offset(1);
                 *fresh759 = c_376;
@@ -6275,9 +6650,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_377:  crate::jmorecfg_h::JOCTET =  0; let mut c_378:  crate::jmorecfg_h::JOCTET =  0; let mut c_379:  crate::jmorecfg_h::JOCTET =  0; let mut c_380:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_377 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_377:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh761 = buffer;
             buffer = buffer.offset(1);
             *fresh761 = c_377;
@@ -6288,7 +6664,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_378 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_378:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh763 = buffer;
             buffer = buffer.offset(1);
             *fresh763 = c_378;
@@ -6299,7 +6676,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_379 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_379:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh765 = buffer;
             buffer = buffer.offset(1);
             *fresh765 = c_379;
@@ -6310,7 +6688,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_380 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_380:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh767 = buffer;
             buffer = buffer.offset(1);
             *fresh767 = c_380;
@@ -6341,9 +6720,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_381:  crate::jmorecfg_h::JOCTET =  0; let mut c_382:  crate::jmorecfg_h::JOCTET =  0; let mut c_383:  crate::jmorecfg_h::JOCTET =  0; let mut c_384:  crate::jmorecfg_h::JOCTET =  0; let mut c_385:  crate::jmorecfg_h::JOCTET =  0; let mut c_386:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_381 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_381:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh769 = buffer;
                 buffer = buffer.offset(1);
                 *fresh769 = c_381;
@@ -6354,7 +6734,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_382 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_382:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh771 = buffer;
                 buffer = buffer.offset(1);
                 *fresh771 = c_382;
@@ -6365,7 +6746,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_383 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_383:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh773 = buffer;
                 buffer = buffer.offset(1);
                 *fresh773 = c_383;
@@ -6376,7 +6758,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_384 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_384:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh775 = buffer;
                 buffer = buffer.offset(1);
                 *fresh775 = c_384;
@@ -6387,7 +6770,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_385 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_385:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh777 = buffer;
                 buffer = buffer.offset(1);
                 *fresh777 = c_385;
@@ -6398,7 +6782,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_386 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_386:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh779 = buffer;
                 buffer = buffer.offset(1);
                 *fresh779 = c_386;
@@ -6419,9 +6804,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_387:  crate::jmorecfg_h::JOCTET =  0; let mut c_388:  crate::jmorecfg_h::JOCTET =  0; let mut c_389:  crate::jmorecfg_h::JOCTET =  0; let mut c_390:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_387 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_387:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh781 = buffer;
             buffer = buffer.offset(1);
             *fresh781 = c_387;
@@ -6432,7 +6818,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_388 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_388:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh783 = buffer;
             buffer = buffer.offset(1);
             *fresh783 = c_388;
@@ -6443,7 +6830,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_389 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_389:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh785 = buffer;
             buffer = buffer.offset(1);
             *fresh785 = c_389;
@@ -6454,7 +6842,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_390 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_390:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh787 = buffer;
             buffer = buffer.offset(1);
             *fresh787 = c_390;
@@ -6485,9 +6874,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_391:  crate::jmorecfg_h::JOCTET =  0; let mut c_392:  crate::jmorecfg_h::JOCTET =  0; let mut c_393:  crate::jmorecfg_h::JOCTET =  0; let mut c_394:  crate::jmorecfg_h::JOCTET =  0; let mut c_395:  crate::jmorecfg_h::JOCTET =  0; let mut c_396:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_391 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_391:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh789 = buffer;
                 buffer = buffer.offset(1);
                 *fresh789 = c_391;
@@ -6498,7 +6888,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_392 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_392:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh791 = buffer;
                 buffer = buffer.offset(1);
                 *fresh791 = c_392;
@@ -6509,7 +6900,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_393 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_393:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh793 = buffer;
                 buffer = buffer.offset(1);
                 *fresh793 = c_393;
@@ -6520,7 +6912,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_394 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_394:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh795 = buffer;
                 buffer = buffer.offset(1);
                 *fresh795 = c_394;
@@ -6531,7 +6924,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_395 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_395:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh797 = buffer;
                 buffer = buffer.offset(1);
                 *fresh797 = c_395;
@@ -6542,7 +6936,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_396 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_396:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh799 = buffer;
                 buffer = buffer.offset(1);
                 *fresh799 = c_396;
@@ -6563,9 +6958,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_397:  crate::jmorecfg_h::JOCTET =  0; let mut c_398:  crate::jmorecfg_h::JOCTET =  0; let mut c_399:  crate::jmorecfg_h::JOCTET =  0; let mut c_400:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_397 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_397:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh801 = buffer;
             buffer = buffer.offset(1);
             *fresh801 = c_397;
@@ -6576,7 +6972,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_398 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_398:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh803 = buffer;
             buffer = buffer.offset(1);
             *fresh803 = c_398;
@@ -6587,7 +6984,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_399 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_399:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh805 = buffer;
             buffer = buffer.offset(1);
             *fresh805 = c_399;
@@ -6598,7 +6996,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_400 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_400:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh807 = buffer;
             buffer = buffer.offset(1);
             *fresh807 = c_400;
@@ -6629,9 +7028,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_401:  crate::jmorecfg_h::JOCTET =  0; let mut c_402:  crate::jmorecfg_h::JOCTET =  0; let mut c_403:  crate::jmorecfg_h::JOCTET =  0; let mut c_404:  crate::jmorecfg_h::JOCTET =  0; let mut c_405:  crate::jmorecfg_h::JOCTET =  0; let mut c_406:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_401 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_401:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh809 = buffer;
                 buffer = buffer.offset(1);
                 *fresh809 = c_401;
@@ -6642,7 +7042,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_402 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_402:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh811 = buffer;
                 buffer = buffer.offset(1);
                 *fresh811 = c_402;
@@ -6653,7 +7054,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_403 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_403:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh813 = buffer;
                 buffer = buffer.offset(1);
                 *fresh813 = c_403;
@@ -6664,7 +7066,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_404 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_404:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh815 = buffer;
                 buffer = buffer.offset(1);
                 *fresh815 = c_404;
@@ -6675,7 +7078,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_405 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_405:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh817 = buffer;
                 buffer = buffer.offset(1);
                 *fresh817 = c_405;
@@ -6686,7 +7090,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_406 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_406:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh819 = buffer;
                 buffer = buffer.offset(1);
                 *fresh819 = c_406;
@@ -6707,9 +7112,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_407:  crate::jmorecfg_h::JOCTET =  0; let mut c_408:  crate::jmorecfg_h::JOCTET =  0; let mut c_409:  crate::jmorecfg_h::JOCTET =  0; let mut c_410:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_407 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_407:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh821 = buffer;
             buffer = buffer.offset(1);
             *fresh821 = c_407;
@@ -6720,7 +7126,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_408 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_408:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh823 = buffer;
             buffer = buffer.offset(1);
             *fresh823 = c_408;
@@ -6731,7 +7138,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_409 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_409:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh825 = buffer;
             buffer = buffer.offset(1);
             *fresh825 = c_409;
@@ -6742,7 +7150,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_410 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_410:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh827 = buffer;
             buffer = buffer.offset(1);
             *fresh827 = c_410;
@@ -6773,9 +7182,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_411:  crate::jmorecfg_h::JOCTET =  0; let mut c_412:  crate::jmorecfg_h::JOCTET =  0; let mut c_413:  crate::jmorecfg_h::JOCTET =  0; let mut c_414:  crate::jmorecfg_h::JOCTET =  0; let mut c_415:  crate::jmorecfg_h::JOCTET =  0; let mut c_416:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_411 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_411:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh829 = buffer;
                 buffer = buffer.offset(1);
                 *fresh829 = c_411;
@@ -6786,7 +7196,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_412 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_412:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh831 = buffer;
                 buffer = buffer.offset(1);
                 *fresh831 = c_412;
@@ -6797,7 +7208,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_413 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_413:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh833 = buffer;
                 buffer = buffer.offset(1);
                 *fresh833 = c_413;
@@ -6808,7 +7220,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_414 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_414:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh835 = buffer;
                 buffer = buffer.offset(1);
                 *fresh835 = c_414;
@@ -6819,7 +7232,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_415 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_415:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh837 = buffer;
                 buffer = buffer.offset(1);
                 *fresh837 = c_415;
@@ -6830,7 +7244,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_416 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_416:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh839 = buffer;
                 buffer = buffer.offset(1);
                 *fresh839 = c_416;
@@ -6851,9 +7266,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_417:  crate::jmorecfg_h::JOCTET =  0; let mut c_418:  crate::jmorecfg_h::JOCTET =  0; let mut c_419:  crate::jmorecfg_h::JOCTET =  0; let mut c_420:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_417 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_417:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh841 = buffer;
             buffer = buffer.offset(1);
             *fresh841 = c_417;
@@ -6864,7 +7280,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_418 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_418:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh843 = buffer;
             buffer = buffer.offset(1);
             *fresh843 = c_418;
@@ -6875,7 +7292,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_419 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_419:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh845 = buffer;
             buffer = buffer.offset(1);
             *fresh845 = c_419;
@@ -6886,7 +7304,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_420 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_420:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh847 = buffer;
             buffer = buffer.offset(1);
             *fresh847 = c_420;
@@ -6917,9 +7336,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_421:  crate::jmorecfg_h::JOCTET =  0; let mut c_422:  crate::jmorecfg_h::JOCTET =  0; let mut c_423:  crate::jmorecfg_h::JOCTET =  0; let mut c_424:  crate::jmorecfg_h::JOCTET =  0; let mut c_425:  crate::jmorecfg_h::JOCTET =  0; let mut c_426:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_421 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_421:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh849 = buffer;
                 buffer = buffer.offset(1);
                 *fresh849 = c_421;
@@ -6930,7 +7350,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_422 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_422:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh851 = buffer;
                 buffer = buffer.offset(1);
                 *fresh851 = c_422;
@@ -6941,7 +7362,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_423 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_423:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh853 = buffer;
                 buffer = buffer.offset(1);
                 *fresh853 = c_423;
@@ -6952,7 +7374,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_424 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_424:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh855 = buffer;
                 buffer = buffer.offset(1);
                 *fresh855 = c_424;
@@ -6963,7 +7386,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_425 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_425:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh857 = buffer;
                 buffer = buffer.offset(1);
                 *fresh857 = c_425;
@@ -6974,7 +7398,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_426 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_426:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh859 = buffer;
                 buffer = buffer.offset(1);
                 *fresh859 = c_426;
@@ -6995,9 +7420,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_427:  crate::jmorecfg_h::JOCTET =  0; let mut c_428:  crate::jmorecfg_h::JOCTET =  0; let mut c_429:  crate::jmorecfg_h::JOCTET =  0; let mut c_430:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_427 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_427:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh861 = buffer;
             buffer = buffer.offset(1);
             *fresh861 = c_427;
@@ -7008,7 +7434,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_428 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_428:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh863 = buffer;
             buffer = buffer.offset(1);
             *fresh863 = c_428;
@@ -7019,7 +7446,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_429 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_429:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh865 = buffer;
             buffer = buffer.offset(1);
             *fresh865 = c_429;
@@ -7030,7 +7458,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_430 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_430:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh867 = buffer;
             buffer = buffer.offset(1);
             *fresh867 = c_430;
@@ -7061,9 +7490,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_431:  crate::jmorecfg_h::JOCTET =  0; let mut c_432:  crate::jmorecfg_h::JOCTET =  0; let mut c_433:  crate::jmorecfg_h::JOCTET =  0; let mut c_434:  crate::jmorecfg_h::JOCTET =  0; let mut c_435:  crate::jmorecfg_h::JOCTET =  0; let mut c_436:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_431 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_431:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh869 = buffer;
                 buffer = buffer.offset(1);
                 *fresh869 = c_431;
@@ -7074,7 +7504,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_432 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_432:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh871 = buffer;
                 buffer = buffer.offset(1);
                 *fresh871 = c_432;
@@ -7085,7 +7516,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_433 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_433:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh873 = buffer;
                 buffer = buffer.offset(1);
                 *fresh873 = c_433;
@@ -7096,7 +7528,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_434 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_434:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh875 = buffer;
                 buffer = buffer.offset(1);
                 *fresh875 = c_434;
@@ -7107,7 +7540,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_435 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_435:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh877 = buffer;
                 buffer = buffer.offset(1);
                 *fresh877 = c_435;
@@ -7118,7 +7552,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_436 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_436:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh879 = buffer;
                 buffer = buffer.offset(1);
                 *fresh879 = c_436;
@@ -7139,9 +7574,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_437:  crate::jmorecfg_h::JOCTET =  0; let mut c_438:  crate::jmorecfg_h::JOCTET =  0; let mut c_439:  crate::jmorecfg_h::JOCTET =  0; let mut c_440:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_437 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_437:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh881 = buffer;
             buffer = buffer.offset(1);
             *fresh881 = c_437;
@@ -7152,7 +7588,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_438 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_438:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh883 = buffer;
             buffer = buffer.offset(1);
             *fresh883 = c_438;
@@ -7163,7 +7600,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_439 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_439:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh885 = buffer;
             buffer = buffer.offset(1);
             *fresh885 = c_439;
@@ -7174,7 +7612,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_440 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_440:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh887 = buffer;
             buffer = buffer.offset(1);
             *fresh887 = c_440;
@@ -7205,9 +7644,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_441:  crate::jmorecfg_h::JOCTET =  0; let mut c_442:  crate::jmorecfg_h::JOCTET =  0; let mut c_443:  crate::jmorecfg_h::JOCTET =  0; let mut c_444:  crate::jmorecfg_h::JOCTET =  0; let mut c_445:  crate::jmorecfg_h::JOCTET =  0; let mut c_446:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_441 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_441:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh889 = buffer;
                 buffer = buffer.offset(1);
                 *fresh889 = c_441;
@@ -7218,7 +7658,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_442 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_442:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh891 = buffer;
                 buffer = buffer.offset(1);
                 *fresh891 = c_442;
@@ -7229,7 +7670,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_443 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_443:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh893 = buffer;
                 buffer = buffer.offset(1);
                 *fresh893 = c_443;
@@ -7240,7 +7682,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_444 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_444:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh895 = buffer;
                 buffer = buffer.offset(1);
                 *fresh895 = c_444;
@@ -7251,7 +7694,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_445 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_445:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh897 = buffer;
                 buffer = buffer.offset(1);
                 *fresh897 = c_445;
@@ -7262,7 +7706,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_446 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_446:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh899 = buffer;
                 buffer = buffer.offset(1);
                 *fresh899 = c_446;
@@ -7283,9 +7728,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_447:  crate::jmorecfg_h::JOCTET =  0; let mut c_448:  crate::jmorecfg_h::JOCTET =  0; let mut c_449:  crate::jmorecfg_h::JOCTET =  0; let mut c_450:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_447 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_447:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh901 = buffer;
             buffer = buffer.offset(1);
             *fresh901 = c_447;
@@ -7296,7 +7742,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_448 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_448:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh903 = buffer;
             buffer = buffer.offset(1);
             *fresh903 = c_448;
@@ -7307,7 +7754,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_449 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_449:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh905 = buffer;
             buffer = buffer.offset(1);
             *fresh905 = c_449;
@@ -7318,7 +7766,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_450 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_450:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh907 = buffer;
             buffer = buffer.offset(1);
             *fresh907 = c_450;
@@ -7349,9 +7798,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_451:  crate::jmorecfg_h::JOCTET =  0; let mut c_452:  crate::jmorecfg_h::JOCTET =  0; let mut c_453:  crate::jmorecfg_h::JOCTET =  0; let mut c_454:  crate::jmorecfg_h::JOCTET =  0; let mut c_455:  crate::jmorecfg_h::JOCTET =  0; let mut c_456:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_451 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_451:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh909 = buffer;
                 buffer = buffer.offset(1);
                 *fresh909 = c_451;
@@ -7362,7 +7812,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_452 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_452:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh911 = buffer;
                 buffer = buffer.offset(1);
                 *fresh911 = c_452;
@@ -7373,7 +7824,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_453 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_453:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh913 = buffer;
                 buffer = buffer.offset(1);
                 *fresh913 = c_453;
@@ -7384,7 +7836,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_454 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_454:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh915 = buffer;
                 buffer = buffer.offset(1);
                 *fresh915 = c_454;
@@ -7395,7 +7848,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_455 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_455:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh917 = buffer;
                 buffer = buffer.offset(1);
                 *fresh917 = c_455;
@@ -7406,7 +7860,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_456 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_456:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh919 = buffer;
                 buffer = buffer.offset(1);
                 *fresh919 = c_456;
@@ -7427,9 +7882,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_457:  crate::jmorecfg_h::JOCTET =  0; let mut c_458:  crate::jmorecfg_h::JOCTET =  0; let mut c_459:  crate::jmorecfg_h::JOCTET =  0; let mut c_460:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_457 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_457:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh921 = buffer;
             buffer = buffer.offset(1);
             *fresh921 = c_457;
@@ -7440,7 +7896,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_458 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_458:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh923 = buffer;
             buffer = buffer.offset(1);
             *fresh923 = c_458;
@@ -7451,7 +7908,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_459 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_459:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh925 = buffer;
             buffer = buffer.offset(1);
             *fresh925 = c_459;
@@ -7462,7 +7920,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_460 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_460:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh927 = buffer;
             buffer = buffer.offset(1);
             *fresh927 = c_460;
@@ -7493,9 +7952,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_461:  crate::jmorecfg_h::JOCTET =  0; let mut c_462:  crate::jmorecfg_h::JOCTET =  0; let mut c_463:  crate::jmorecfg_h::JOCTET =  0; let mut c_464:  crate::jmorecfg_h::JOCTET =  0; let mut c_465:  crate::jmorecfg_h::JOCTET =  0; let mut c_466:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_461 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_461:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh929 = buffer;
                 buffer = buffer.offset(1);
                 *fresh929 = c_461;
@@ -7506,7 +7966,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_462 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_462:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh931 = buffer;
                 buffer = buffer.offset(1);
                 *fresh931 = c_462;
@@ -7517,7 +7978,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_463 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_463:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh933 = buffer;
                 buffer = buffer.offset(1);
                 *fresh933 = c_463;
@@ -7528,7 +7990,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_464 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_464:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh935 = buffer;
                 buffer = buffer.offset(1);
                 *fresh935 = c_464;
@@ -7539,7 +8002,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_465 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_465:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh937 = buffer;
                 buffer = buffer.offset(1);
                 *fresh937 = c_465;
@@ -7550,7 +8014,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_466 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_466:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh939 = buffer;
                 buffer = buffer.offset(1);
                 *fresh939 = c_466;
@@ -7571,9 +8036,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_467:  crate::jmorecfg_h::JOCTET =  0; let mut c_468:  crate::jmorecfg_h::JOCTET =  0; let mut c_469:  crate::jmorecfg_h::JOCTET =  0; let mut c_470:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_467 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_467:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh941 = buffer;
             buffer = buffer.offset(1);
             *fresh941 = c_467;
@@ -7584,7 +8050,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_468 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_468:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh943 = buffer;
             buffer = buffer.offset(1);
             *fresh943 = c_468;
@@ -7595,7 +8062,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_469 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_469:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh945 = buffer;
             buffer = buffer.offset(1);
             *fresh945 = c_469;
@@ -7606,7 +8074,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_470 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_470:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh947 = buffer;
             buffer = buffer.offset(1);
             *fresh947 = c_470;
@@ -7637,9 +8106,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_471:  crate::jmorecfg_h::JOCTET =  0; let mut c_472:  crate::jmorecfg_h::JOCTET =  0; let mut c_473:  crate::jmorecfg_h::JOCTET =  0; let mut c_474:  crate::jmorecfg_h::JOCTET =  0; let mut c_475:  crate::jmorecfg_h::JOCTET =  0; let mut c_476:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_471 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_471:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh949 = buffer;
                 buffer = buffer.offset(1);
                 *fresh949 = c_471;
@@ -7650,7 +8120,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_472 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_472:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh951 = buffer;
                 buffer = buffer.offset(1);
                 *fresh951 = c_472;
@@ -7661,7 +8132,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_473 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_473:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh953 = buffer;
                 buffer = buffer.offset(1);
                 *fresh953 = c_473;
@@ -7672,7 +8144,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_474 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_474:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh955 = buffer;
                 buffer = buffer.offset(1);
                 *fresh955 = c_474;
@@ -7683,7 +8156,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_475 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_475:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh957 = buffer;
                 buffer = buffer.offset(1);
                 *fresh957 = c_475;
@@ -7694,7 +8168,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_476 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_476:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh959 = buffer;
                 buffer = buffer.offset(1);
                 *fresh959 = c_476;
@@ -7715,9 +8190,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_477:  crate::jmorecfg_h::JOCTET =  0; let mut c_478:  crate::jmorecfg_h::JOCTET =  0; let mut c_479:  crate::jmorecfg_h::JOCTET =  0; let mut c_480:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_477 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_477:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh961 = buffer;
             buffer = buffer.offset(1);
             *fresh961 = c_477;
@@ -7728,7 +8204,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_478 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_478:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh963 = buffer;
             buffer = buffer.offset(1);
             *fresh963 = c_478;
@@ -7739,7 +8216,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_479 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_479:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh965 = buffer;
             buffer = buffer.offset(1);
             *fresh965 = c_479;
@@ -7750,7 +8228,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_480 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_480:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh967 = buffer;
             buffer = buffer.offset(1);
             *fresh967 = c_480;
@@ -7781,9 +8260,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_481:  crate::jmorecfg_h::JOCTET =  0; let mut c_482:  crate::jmorecfg_h::JOCTET =  0; let mut c_483:  crate::jmorecfg_h::JOCTET =  0; let mut c_484:  crate::jmorecfg_h::JOCTET =  0; let mut c_485:  crate::jmorecfg_h::JOCTET =  0; let mut c_486:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_481 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_481:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh969 = buffer;
                 buffer = buffer.offset(1);
                 *fresh969 = c_481;
@@ -7794,7 +8274,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_482 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_482:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh971 = buffer;
                 buffer = buffer.offset(1);
                 *fresh971 = c_482;
@@ -7805,7 +8286,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_483 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_483:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh973 = buffer;
                 buffer = buffer.offset(1);
                 *fresh973 = c_483;
@@ -7816,7 +8298,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_484 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_484:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh975 = buffer;
                 buffer = buffer.offset(1);
                 *fresh975 = c_484;
@@ -7827,7 +8310,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_485 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_485:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh977 = buffer;
                 buffer = buffer.offset(1);
                 *fresh977 = c_485;
@@ -7838,7 +8322,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_486 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_486:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh979 = buffer;
                 buffer = buffer.offset(1);
                 *fresh979 = c_486;
@@ -7859,9 +8344,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_487:  crate::jmorecfg_h::JOCTET =  0; let mut c_488:  crate::jmorecfg_h::JOCTET =  0; let mut c_489:  crate::jmorecfg_h::JOCTET =  0; let mut c_490:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_487 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_487:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh981 = buffer;
             buffer = buffer.offset(1);
             *fresh981 = c_487;
@@ -7872,7 +8358,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_488 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_488:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh983 = buffer;
             buffer = buffer.offset(1);
             *fresh983 = c_488;
@@ -7883,7 +8370,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_489 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_489:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh985 = buffer;
             buffer = buffer.offset(1);
             *fresh985 = c_489;
@@ -7894,7 +8382,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_490 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_490:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh987 = buffer;
             buffer = buffer.offset(1);
             *fresh987 = c_490;
@@ -7925,9 +8414,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_491:  crate::jmorecfg_h::JOCTET =  0; let mut c_492:  crate::jmorecfg_h::JOCTET =  0; let mut c_493:  crate::jmorecfg_h::JOCTET =  0; let mut c_494:  crate::jmorecfg_h::JOCTET =  0; let mut c_495:  crate::jmorecfg_h::JOCTET =  0; let mut c_496:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_491 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_491:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh989 = buffer;
                 buffer = buffer.offset(1);
                 *fresh989 = c_491;
@@ -7938,7 +8428,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_492 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_492:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh991 = buffer;
                 buffer = buffer.offset(1);
                 *fresh991 = c_492;
@@ -7949,7 +8440,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_493 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_493:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh993 = buffer;
                 buffer = buffer.offset(1);
                 *fresh993 = c_493;
@@ -7960,7 +8452,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_494 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_494:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh995 = buffer;
                 buffer = buffer.offset(1);
                 *fresh995 = c_494;
@@ -7971,7 +8464,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_495 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_495:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh997 = buffer;
                 buffer = buffer.offset(1);
                 *fresh997 = c_495;
@@ -7982,7 +8476,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_496 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_496:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh999 = buffer;
                 buffer = buffer.offset(1);
                 *fresh999 = c_496;
@@ -8003,9 +8498,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_497:  crate::jmorecfg_h::JOCTET =  0; let mut c_498:  crate::jmorecfg_h::JOCTET =  0; let mut c_499:  crate::jmorecfg_h::JOCTET =  0; let mut c_500:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_497 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_497:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1001 = buffer;
             buffer = buffer.offset(1);
             *fresh1001 = c_497;
@@ -8016,7 +8512,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_498 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_498:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1003 = buffer;
             buffer = buffer.offset(1);
             *fresh1003 = c_498;
@@ -8027,7 +8524,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_499 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_499:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1005 = buffer;
             buffer = buffer.offset(1);
             *fresh1005 = c_499;
@@ -8038,7 +8536,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_500 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_500:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1007 = buffer;
             buffer = buffer.offset(1);
             *fresh1007 = c_500;
@@ -8069,9 +8568,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_501:  crate::jmorecfg_h::JOCTET =  0; let mut c_502:  crate::jmorecfg_h::JOCTET =  0; let mut c_503:  crate::jmorecfg_h::JOCTET =  0; let mut c_504:  crate::jmorecfg_h::JOCTET =  0; let mut c_505:  crate::jmorecfg_h::JOCTET =  0; let mut c_506:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_501 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_501:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1009 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1009 = c_501;
@@ -8082,7 +8582,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_502 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_502:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1011 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1011 = c_502;
@@ -8093,7 +8594,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_503 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_503:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1013 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1013 = c_503;
@@ -8104,7 +8606,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_504 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_504:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1015 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1015 = c_504;
@@ -8115,7 +8618,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_505 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_505:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1017 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1017 = c_505;
@@ -8126,7 +8630,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_506 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_506:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1019 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1019 = c_506;
@@ -8147,9 +8652,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_507:  crate::jmorecfg_h::JOCTET =  0; let mut c_508:  crate::jmorecfg_h::JOCTET =  0; let mut c_509:  crate::jmorecfg_h::JOCTET =  0; let mut c_510:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_507 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_507:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1021 = buffer;
             buffer = buffer.offset(1);
             *fresh1021 = c_507;
@@ -8160,7 +8666,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_508 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_508:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1023 = buffer;
             buffer = buffer.offset(1);
             *fresh1023 = c_508;
@@ -8171,7 +8678,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_509 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_509:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1025 = buffer;
             buffer = buffer.offset(1);
             *fresh1025 = c_509;
@@ -8182,7 +8690,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_510 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_510:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1027 = buffer;
             buffer = buffer.offset(1);
             *fresh1027 = c_510;
@@ -8213,9 +8722,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_511:  crate::jmorecfg_h::JOCTET =  0; let mut c_512:  crate::jmorecfg_h::JOCTET =  0; let mut c_513:  crate::jmorecfg_h::JOCTET =  0; let mut c_514:  crate::jmorecfg_h::JOCTET =  0; let mut c_515:  crate::jmorecfg_h::JOCTET =  0; let mut c_516:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_511 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_511:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1029 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1029 = c_511;
@@ -8226,7 +8736,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_512 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_512:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1031 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1031 = c_512;
@@ -8237,7 +8748,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_513 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_513:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1033 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1033 = c_513;
@@ -8248,7 +8760,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_514 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_514:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1035 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1035 = c_514;
@@ -8259,7 +8772,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_515 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_515:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1037 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1037 = c_515;
@@ -8270,7 +8784,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_516 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_516:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1039 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1039 = c_516;
@@ -8291,9 +8806,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_517:  crate::jmorecfg_h::JOCTET =  0; let mut c_518:  crate::jmorecfg_h::JOCTET =  0; let mut c_519:  crate::jmorecfg_h::JOCTET =  0; let mut c_520:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_517 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_517:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1041 = buffer;
             buffer = buffer.offset(1);
             *fresh1041 = c_517;
@@ -8304,7 +8820,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_518 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_518:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1043 = buffer;
             buffer = buffer.offset(1);
             *fresh1043 = c_518;
@@ -8315,7 +8832,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_519 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_519:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1045 = buffer;
             buffer = buffer.offset(1);
             *fresh1045 = c_519;
@@ -8326,7 +8844,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_520 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_520:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1047 = buffer;
             buffer = buffer.offset(1);
             *fresh1047 = c_520;
@@ -8357,9 +8876,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_521:  crate::jmorecfg_h::JOCTET =  0; let mut c_522:  crate::jmorecfg_h::JOCTET =  0; let mut c_523:  crate::jmorecfg_h::JOCTET =  0; let mut c_524:  crate::jmorecfg_h::JOCTET =  0; let mut c_525:  crate::jmorecfg_h::JOCTET =  0; let mut c_526:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_521 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_521:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1049 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1049 = c_521;
@@ -8370,7 +8890,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_522 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_522:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1051 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1051 = c_522;
@@ -8381,7 +8902,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_523 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_523:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1053 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1053 = c_523;
@@ -8392,7 +8914,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_524 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_524:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1055 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1055 = c_524;
@@ -8403,7 +8926,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_525 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_525:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1057 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1057 = c_525;
@@ -8414,7 +8938,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_526 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_526:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1059 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1059 = c_526;
@@ -8435,9 +8960,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_527:  crate::jmorecfg_h::JOCTET =  0; let mut c_528:  crate::jmorecfg_h::JOCTET =  0; let mut c_529:  crate::jmorecfg_h::JOCTET =  0; let mut c_530:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_527 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_527:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1061 = buffer;
             buffer = buffer.offset(1);
             *fresh1061 = c_527;
@@ -8448,7 +8974,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_528 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_528:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1063 = buffer;
             buffer = buffer.offset(1);
             *fresh1063 = c_528;
@@ -8459,7 +8986,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_529 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_529:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1065 = buffer;
             buffer = buffer.offset(1);
             *fresh1065 = c_529;
@@ -8470,7 +8998,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_530 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_530:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1067 = buffer;
             buffer = buffer.offset(1);
             *fresh1067 = c_530;
@@ -8501,9 +9030,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_531:  crate::jmorecfg_h::JOCTET =  0; let mut c_532:  crate::jmorecfg_h::JOCTET =  0; let mut c_533:  crate::jmorecfg_h::JOCTET =  0; let mut c_534:  crate::jmorecfg_h::JOCTET =  0; let mut c_535:  crate::jmorecfg_h::JOCTET =  0; let mut c_536:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_531 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_531:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1069 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1069 = c_531;
@@ -8514,7 +9044,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_532 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_532:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1071 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1071 = c_532;
@@ -8525,7 +9056,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_533 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_533:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1073 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1073 = c_533;
@@ -8536,7 +9068,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_534 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_534:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1075 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1075 = c_534;
@@ -8547,7 +9080,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_535 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_535:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1077 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1077 = c_535;
@@ -8558,7 +9092,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_536 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_536:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1079 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1079 = c_536;
@@ -8579,9 +9114,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_537:  crate::jmorecfg_h::JOCTET =  0; let mut c_538:  crate::jmorecfg_h::JOCTET =  0; let mut c_539:  crate::jmorecfg_h::JOCTET =  0; let mut c_540:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_537 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_537:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1081 = buffer;
             buffer = buffer.offset(1);
             *fresh1081 = c_537;
@@ -8592,7 +9128,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_538 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_538:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1083 = buffer;
             buffer = buffer.offset(1);
             *fresh1083 = c_538;
@@ -8603,7 +9140,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_539 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_539:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1085 = buffer;
             buffer = buffer.offset(1);
             *fresh1085 = c_539;
@@ -8614,7 +9152,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_540 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_540:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1087 = buffer;
             buffer = buffer.offset(1);
             *fresh1087 = c_540;
@@ -8645,9 +9184,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_541:  crate::jmorecfg_h::JOCTET =  0; let mut c_542:  crate::jmorecfg_h::JOCTET =  0; let mut c_543:  crate::jmorecfg_h::JOCTET =  0; let mut c_544:  crate::jmorecfg_h::JOCTET =  0; let mut c_545:  crate::jmorecfg_h::JOCTET =  0; let mut c_546:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_541 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_541:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1089 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1089 = c_541;
@@ -8658,7 +9198,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_542 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_542:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1091 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1091 = c_542;
@@ -8669,7 +9210,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_543 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_543:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1093 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1093 = c_543;
@@ -8680,7 +9222,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_544 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_544:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1095 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1095 = c_544;
@@ -8691,7 +9234,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_545 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_545:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1097 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1097 = c_545;
@@ -8702,7 +9246,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_546 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_546:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1099 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1099 = c_546;
@@ -8723,9 +9268,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_547:  crate::jmorecfg_h::JOCTET =  0; let mut c_548:  crate::jmorecfg_h::JOCTET =  0; let mut c_549:  crate::jmorecfg_h::JOCTET =  0; let mut c_550:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_547 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_547:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1101 = buffer;
             buffer = buffer.offset(1);
             *fresh1101 = c_547;
@@ -8736,7 +9282,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_548 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_548:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1103 = buffer;
             buffer = buffer.offset(1);
             *fresh1103 = c_548;
@@ -8747,7 +9294,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_549 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_549:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1105 = buffer;
             buffer = buffer.offset(1);
             *fresh1105 = c_549;
@@ -8758,7 +9306,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_550 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_550:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1107 = buffer;
             buffer = buffer.offset(1);
             *fresh1107 = c_550;
@@ -8789,9 +9338,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_551:  crate::jmorecfg_h::JOCTET =  0; let mut c_552:  crate::jmorecfg_h::JOCTET =  0; let mut c_553:  crate::jmorecfg_h::JOCTET =  0; let mut c_554:  crate::jmorecfg_h::JOCTET =  0; let mut c_555:  crate::jmorecfg_h::JOCTET =  0; let mut c_556:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_551 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_551:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1109 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1109 = c_551;
@@ -8802,7 +9352,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_552 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_552:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1111 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1111 = c_552;
@@ -8813,7 +9364,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_553 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_553:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1113 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1113 = c_553;
@@ -8824,7 +9376,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_554 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_554:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1115 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1115 = c_554;
@@ -8835,7 +9388,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_555 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_555:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1117 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1117 = c_555;
@@ -8846,7 +9400,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_556 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_556:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1119 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1119 = c_556;
@@ -8867,9 +9422,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_557:  crate::jmorecfg_h::JOCTET =  0; let mut c_558:  crate::jmorecfg_h::JOCTET =  0; let mut c_559:  crate::jmorecfg_h::JOCTET =  0; let mut c_560:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_557 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_557:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1121 = buffer;
             buffer = buffer.offset(1);
             *fresh1121 = c_557;
@@ -8880,7 +9436,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_558 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_558:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1123 = buffer;
             buffer = buffer.offset(1);
             *fresh1123 = c_558;
@@ -8891,7 +9448,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_559 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_559:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1125 = buffer;
             buffer = buffer.offset(1);
             *fresh1125 = c_559;
@@ -8902,7 +9460,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_560 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_560:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1127 = buffer;
             buffer = buffer.offset(1);
             *fresh1127 = c_560;
@@ -8933,9 +9492,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_561:  crate::jmorecfg_h::JOCTET =  0; let mut c_562:  crate::jmorecfg_h::JOCTET =  0; let mut c_563:  crate::jmorecfg_h::JOCTET =  0; let mut c_564:  crate::jmorecfg_h::JOCTET =  0; let mut c_565:  crate::jmorecfg_h::JOCTET =  0; let mut c_566:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_561 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_561:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1129 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1129 = c_561;
@@ -8946,7 +9506,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_562 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_562:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1131 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1131 = c_562;
@@ -8957,7 +9518,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_563 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_563:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1133 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1133 = c_563;
@@ -8968,7 +9530,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_564 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_564:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1135 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1135 = c_564;
@@ -8979,7 +9542,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_565 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_565:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1137 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1137 = c_565;
@@ -8990,7 +9554,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_566 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_566:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1139 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1139 = c_566;
@@ -9011,9 +9576,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_567:  crate::jmorecfg_h::JOCTET =  0; let mut c_568:  crate::jmorecfg_h::JOCTET =  0; let mut c_569:  crate::jmorecfg_h::JOCTET =  0; let mut c_570:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_567 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_567:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1141 = buffer;
             buffer = buffer.offset(1);
             *fresh1141 = c_567;
@@ -9024,7 +9590,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_568 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_568:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1143 = buffer;
             buffer = buffer.offset(1);
             *fresh1143 = c_568;
@@ -9035,7 +9602,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_569 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_569:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1145 = buffer;
             buffer = buffer.offset(1);
             *fresh1145 = c_569;
@@ -9046,7 +9614,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_570 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_570:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1147 = buffer;
             buffer = buffer.offset(1);
             *fresh1147 = c_570;
@@ -9077,9 +9646,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_571:  crate::jmorecfg_h::JOCTET =  0; let mut c_572:  crate::jmorecfg_h::JOCTET =  0; let mut c_573:  crate::jmorecfg_h::JOCTET =  0; let mut c_574:  crate::jmorecfg_h::JOCTET =  0; let mut c_575:  crate::jmorecfg_h::JOCTET =  0; let mut c_576:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_571 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_571:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1149 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1149 = c_571;
@@ -9090,7 +9660,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_572 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_572:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1151 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1151 = c_572;
@@ -9101,7 +9672,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_573 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_573:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1153 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1153 = c_573;
@@ -9112,7 +9684,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_574 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_574:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1155 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1155 = c_574;
@@ -9123,7 +9696,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_575 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_575:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1157 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1157 = c_575;
@@ -9134,7 +9708,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_576 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_576:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1159 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1159 = c_576;
@@ -9155,9 +9730,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_577:  crate::jmorecfg_h::JOCTET =  0; let mut c_578:  crate::jmorecfg_h::JOCTET =  0; let mut c_579:  crate::jmorecfg_h::JOCTET =  0; let mut c_580:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_577 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_577:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1161 = buffer;
             buffer = buffer.offset(1);
             *fresh1161 = c_577;
@@ -9168,7 +9744,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_578 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_578:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1163 = buffer;
             buffer = buffer.offset(1);
             *fresh1163 = c_578;
@@ -9179,7 +9756,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_579 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_579:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1165 = buffer;
             buffer = buffer.offset(1);
             *fresh1165 = c_579;
@@ -9190,7 +9768,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_580 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_580:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1167 = buffer;
             buffer = buffer.offset(1);
             *fresh1167 = c_580;
@@ -9221,9 +9800,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_581:  crate::jmorecfg_h::JOCTET =  0; let mut c_582:  crate::jmorecfg_h::JOCTET =  0; let mut c_583:  crate::jmorecfg_h::JOCTET =  0; let mut c_584:  crate::jmorecfg_h::JOCTET =  0; let mut c_585:  crate::jmorecfg_h::JOCTET =  0; let mut c_586:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_581 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_581:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1169 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1169 = c_581;
@@ -9234,7 +9814,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_582 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_582:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1171 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1171 = c_582;
@@ -9245,7 +9826,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_583 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_583:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1173 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1173 = c_583;
@@ -9256,7 +9838,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_584 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_584:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1175 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1175 = c_584;
@@ -9267,7 +9850,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_585 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_585:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1177 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1177 = c_585;
@@ -9278,7 +9862,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_586 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_586:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1179 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1179 = c_586;
@@ -9299,9 +9884,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_587:  crate::jmorecfg_h::JOCTET =  0; let mut c_588:  crate::jmorecfg_h::JOCTET =  0; let mut c_589:  crate::jmorecfg_h::JOCTET =  0; let mut c_590:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_587 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_587:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1181 = buffer;
             buffer = buffer.offset(1);
             *fresh1181 = c_587;
@@ -9312,7 +9898,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_588 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_588:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1183 = buffer;
             buffer = buffer.offset(1);
             *fresh1183 = c_588;
@@ -9323,7 +9910,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_589 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_589:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1185 = buffer;
             buffer = buffer.offset(1);
             *fresh1185 = c_589;
@@ -9334,7 +9922,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_590 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_590:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1187 = buffer;
             buffer = buffer.offset(1);
             *fresh1187 = c_590;
@@ -9365,9 +9954,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_591:  crate::jmorecfg_h::JOCTET =  0; let mut c_592:  crate::jmorecfg_h::JOCTET =  0; let mut c_593:  crate::jmorecfg_h::JOCTET =  0; let mut c_594:  crate::jmorecfg_h::JOCTET =  0; let mut c_595:  crate::jmorecfg_h::JOCTET =  0; let mut c_596:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_591 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_591:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1189 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1189 = c_591;
@@ -9378,7 +9968,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_592 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_592:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1191 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1191 = c_592;
@@ -9389,7 +9980,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_593 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_593:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1193 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1193 = c_593;
@@ -9400,7 +9992,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_594 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_594:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1195 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1195 = c_594;
@@ -9411,7 +10004,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_595 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_595:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1197 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1197 = c_595;
@@ -9422,7 +10016,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_596 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_596:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1199 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1199 = c_596;
@@ -9443,9 +10038,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_597:  crate::jmorecfg_h::JOCTET =  0; let mut c_598:  crate::jmorecfg_h::JOCTET =  0; let mut c_599:  crate::jmorecfg_h::JOCTET =  0; let mut c_600:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_597 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_597:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1201 = buffer;
             buffer = buffer.offset(1);
             *fresh1201 = c_597;
@@ -9456,7 +10052,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_598 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_598:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1203 = buffer;
             buffer = buffer.offset(1);
             *fresh1203 = c_598;
@@ -9467,7 +10064,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_599 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_599:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1205 = buffer;
             buffer = buffer.offset(1);
             *fresh1205 = c_599;
@@ -9478,7 +10076,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_600 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_600:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1207 = buffer;
             buffer = buffer.offset(1);
             *fresh1207 = c_600;
@@ -9509,9 +10108,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_601:  crate::jmorecfg_h::JOCTET =  0; let mut c_602:  crate::jmorecfg_h::JOCTET =  0; let mut c_603:  crate::jmorecfg_h::JOCTET =  0; let mut c_604:  crate::jmorecfg_h::JOCTET =  0; let mut c_605:  crate::jmorecfg_h::JOCTET =  0; let mut c_606:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_601 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_601:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1209 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1209 = c_601;
@@ -9522,7 +10122,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_602 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_602:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1211 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1211 = c_602;
@@ -9533,7 +10134,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_603 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_603:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1213 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1213 = c_603;
@@ -9544,7 +10146,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_604 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_604:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1215 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1215 = c_604;
@@ -9555,7 +10158,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_605 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_605:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1217 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1217 = c_605;
@@ -9566,7 +10170,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_606 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_606:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1219 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1219 = c_606;
@@ -9587,9 +10192,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_607:  crate::jmorecfg_h::JOCTET =  0; let mut c_608:  crate::jmorecfg_h::JOCTET =  0; let mut c_609:  crate::jmorecfg_h::JOCTET =  0; let mut c_610:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_607 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_607:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1221 = buffer;
             buffer = buffer.offset(1);
             *fresh1221 = c_607;
@@ -9600,7 +10206,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_608 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_608:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1223 = buffer;
             buffer = buffer.offset(1);
             *fresh1223 = c_608;
@@ -9611,7 +10218,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_609 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_609:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1225 = buffer;
             buffer = buffer.offset(1);
             *fresh1225 = c_609;
@@ -9622,7 +10230,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_610 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_610:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1227 = buffer;
             buffer = buffer.offset(1);
             *fresh1227 = c_610;
@@ -9653,9 +10262,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_611:  crate::jmorecfg_h::JOCTET =  0; let mut c_612:  crate::jmorecfg_h::JOCTET =  0; let mut c_613:  crate::jmorecfg_h::JOCTET =  0; let mut c_614:  crate::jmorecfg_h::JOCTET =  0; let mut c_615:  crate::jmorecfg_h::JOCTET =  0; let mut c_616:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_611 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_611:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1229 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1229 = c_611;
@@ -9666,7 +10276,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_612 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_612:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1231 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1231 = c_612;
@@ -9677,7 +10288,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_613 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_613:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1233 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1233 = c_613;
@@ -9688,7 +10300,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_614 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_614:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1235 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1235 = c_614;
@@ -9699,7 +10312,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_615 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_615:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1237 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1237 = c_615;
@@ -9710,7 +10324,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_616 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_616:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1239 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1239 = c_616;
@@ -9731,9 +10346,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_617:  crate::jmorecfg_h::JOCTET =  0; let mut c_618:  crate::jmorecfg_h::JOCTET =  0; let mut c_619:  crate::jmorecfg_h::JOCTET =  0; let mut c_620:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_617 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_617:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1241 = buffer;
             buffer = buffer.offset(1);
             *fresh1241 = c_617;
@@ -9744,7 +10360,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_618 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_618:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1243 = buffer;
             buffer = buffer.offset(1);
             *fresh1243 = c_618;
@@ -9755,7 +10372,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_619 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_619:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1245 = buffer;
             buffer = buffer.offset(1);
             *fresh1245 = c_619;
@@ -9766,7 +10384,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_620 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_620:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1247 = buffer;
             buffer = buffer.offset(1);
             *fresh1247 = c_620;
@@ -9797,9 +10416,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_621:  crate::jmorecfg_h::JOCTET =  0; let mut c_622:  crate::jmorecfg_h::JOCTET =  0; let mut c_623:  crate::jmorecfg_h::JOCTET =  0; let mut c_624:  crate::jmorecfg_h::JOCTET =  0; let mut c_625:  crate::jmorecfg_h::JOCTET =  0; let mut c_626:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_621 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_621:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1249 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1249 = c_621;
@@ -9810,7 +10430,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_622 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_622:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1251 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1251 = c_622;
@@ -9821,7 +10442,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_623 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_623:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1253 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1253 = c_623;
@@ -9832,7 +10454,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_624 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_624:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1255 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1255 = c_624;
@@ -9843,7 +10466,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_625 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_625:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1257 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1257 = c_625;
@@ -9854,7 +10478,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_626 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_626:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1259 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1259 = c_626;
@@ -9875,9 +10500,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_627:  crate::jmorecfg_h::JOCTET =  0; let mut c_628:  crate::jmorecfg_h::JOCTET =  0; let mut c_629:  crate::jmorecfg_h::JOCTET =  0; let mut c_630:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_627 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_627:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1261 = buffer;
             buffer = buffer.offset(1);
             *fresh1261 = c_627;
@@ -9888,7 +10514,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_628 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_628:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1263 = buffer;
             buffer = buffer.offset(1);
             *fresh1263 = c_628;
@@ -9899,7 +10526,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_629 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_629:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1265 = buffer;
             buffer = buffer.offset(1);
             *fresh1265 = c_629;
@@ -9910,7 +10538,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_630 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_630:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1267 = buffer;
             buffer = buffer.offset(1);
             *fresh1267 = c_630;
@@ -9941,9 +10570,10 @@ unsafe extern "C" fn encode_one_block(
         nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[temp as usize] as libc::c_int;
         while r > 15i32 {
             if put_bits > 47i32 {
-                 let mut c_631:  crate::jmorecfg_h::JOCTET =  0; let mut c_632:  crate::jmorecfg_h::JOCTET =  0; let mut c_633:  crate::jmorecfg_h::JOCTET =  0; let mut c_634:  crate::jmorecfg_h::JOCTET =  0; let mut c_635:  crate::jmorecfg_h::JOCTET =  0; let mut c_636:  crate::jmorecfg_h::JOCTET =  0;
+                      
                 put_bits -= 8i32;
-                c_631 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_631:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1269 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1269 = c_631;
@@ -9954,7 +10584,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_632 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_632:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1271 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1271 = c_632;
@@ -9965,7 +10596,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_633 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_633:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1273 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1273 = c_633;
@@ -9976,7 +10608,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_634 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_634:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1275 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1275 = c_634;
@@ -9987,7 +10620,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_635 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_635:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1277 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1277 = c_635;
@@ -9998,7 +10632,8 @@ unsafe extern "C" fn encode_one_block(
                 }
                 
                 put_bits -= 8i32;
-                c_636 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+                 let mut c_636:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
                 let fresh1279 = buffer;
                 buffer = buffer.offset(1);
                 *fresh1279 = c_636;
@@ -10019,9 +10654,10 @@ unsafe extern "C" fn encode_one_block(
             & ((1i64) << nbits) - 1i64)
             as libc::c_int;
         if put_bits > 31i32 {
-             let mut c_637:  crate::jmorecfg_h::JOCTET =  0; let mut c_638:  crate::jmorecfg_h::JOCTET =  0; let mut c_639:  crate::jmorecfg_h::JOCTET =  0; let mut c_640:  crate::jmorecfg_h::JOCTET =  0;
+                
             put_bits -= 8i32;
-            c_637 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_637:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1281 = buffer;
             buffer = buffer.offset(1);
             *fresh1281 = c_637;
@@ -10032,7 +10668,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_638 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_638:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1283 = buffer;
             buffer = buffer.offset(1);
             *fresh1283 = c_638;
@@ -10043,7 +10680,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_639 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_639:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1285 = buffer;
             buffer = buffer.offset(1);
             *fresh1285 = c_639;
@@ -10054,7 +10692,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_640 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_640:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1287 = buffer;
             buffer = buffer.offset(1);
             *fresh1287 = c_640;
@@ -10075,9 +10714,10 @@ unsafe extern "C" fn encode_one_block(
         code = (*actbl).ehufco[0] as libc::c_int;
         size = (*actbl).ehufsi[0] as libc::c_int;
         if put_bits > 47i32 {
-             let mut c_641:  crate::jmorecfg_h::JOCTET =  0; let mut c_642:  crate::jmorecfg_h::JOCTET =  0; let mut c_643:  crate::jmorecfg_h::JOCTET =  0; let mut c_644:  crate::jmorecfg_h::JOCTET =  0; let mut c_645:  crate::jmorecfg_h::JOCTET =  0; let mut c_646:  crate::jmorecfg_h::JOCTET =  0;
+                  
             put_bits -= 8i32;
-            c_641 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_641:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1289 = buffer;
             buffer = buffer.offset(1);
             *fresh1289 = c_641;
@@ -10088,7 +10728,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_642 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_642:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1291 = buffer;
             buffer = buffer.offset(1);
             *fresh1291 = c_642;
@@ -10099,7 +10740,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_643 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_643:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1293 = buffer;
             buffer = buffer.offset(1);
             *fresh1293 = c_643;
@@ -10110,7 +10752,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_644 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_644:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1295 = buffer;
             buffer = buffer.offset(1);
             *fresh1295 = c_644;
@@ -10121,7 +10764,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_645 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_645:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1297 = buffer;
             buffer = buffer.offset(1);
             *fresh1297 = c_645;
@@ -10132,7 +10776,8 @@ unsafe extern "C" fn encode_one_block(
             }
             
             put_bits -= 8i32;
-            c_646 = (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
+             let mut c_646:   crate::jmorecfg_h::JOCTET =
+     (put_buffer >> put_bits) as crate::jmorecfg_h::JOCTET;
             let fresh1299 = buffer;
             buffer = buffer.offset(1);
             *fresh1299 = c_646;
@@ -10148,11 +10793,13 @@ unsafe extern "C" fn encode_one_block(
     (*state).cur.put_buffer = put_buffer;
     (*state).cur.put_bits = put_bits;
     if localbuf != 0 {
-         let mut bytes:  crate::stddef_h::size_t =  0;bytes =  buffer.wrapping_offset_from(_buffer.as_mut_ptr())
+          let mut bytes:   crate::stddef_h::size_t =
+      buffer.wrapping_offset_from(_buffer.as_mut_ptr())
             as crate::stddef_h::size_t;
         buffer = _buffer.as_mut_ptr();
         while bytes > 0u64 {
-             let mut bytestocopy:  crate::stddef_h::size_t =  0;bytestocopy = if bytes < (*state).free_in_buffer {
+              let mut bytestocopy:   crate::stddef_h::size_t =
+     if bytes < (*state).free_in_buffer {
                 bytes
             } else {
                 (*state).free_in_buffer
@@ -10191,7 +10838,7 @@ unsafe extern "C" fn emit_restart(
     mut state: *mut working_state,
     mut restart_num: libc::c_int,
 ) -> crate::jmorecfg_h::boolean {
-     let mut ci:  libc::c_int =  0;
+     
     if flush_bits(state) == 0 {
         return crate::jmorecfg_h::FALSE;
     }
@@ -10213,8 +10860,7 @@ unsafe extern "C" fn emit_restart(
             return 0i32;
         }
     }
-    /* Re-initialize DC predictions to 0 */
-    ci = 0i32;
+     let mut ci:   libc::c_int =  0i32;
     while ci < (*(*state).cinfo).comps_in_scan {
         (*state).cur.last_dc_val[ci as usize] = 0i32;
         ci += 1
@@ -10377,14 +11023,12 @@ unsafe extern "C" fn htest_one_block(
     
     
     
-     let mut temp:  libc::c_int =  0; let mut nbits:  libc::c_int =  0; let mut k:  libc::c_int =  0; let mut r:  libc::c_int =  0;
-    /* Encode the DC coefficient difference per section F.1.2.1 */
-    temp = *block.offset(0) as libc::c_int - last_dc_val;
+        
+     let mut temp:   libc::c_int =  *block.offset(0) as libc::c_int - last_dc_val;
     if temp < 0i32 {
         temp = -temp
     }
-    /* Find the number of bits needed for the magnitude of the coefficient */
-    nbits = 0i32;
+     let mut nbits:   libc::c_int =  0i32;
     while temp != 0 {
         nbits += 1;
         temp >>= 1i32
@@ -10404,9 +11048,8 @@ unsafe extern "C" fn htest_one_block(
     /* Count the Huffman symbol for the number of bits */
     let ref mut fresh1303 = *dc_counts.offset(nbits as isize);
     *fresh1303 += 1;
-    /* Encode the AC coefficients per section F.1.2.2 */
-    r = 0i32; /* r = run length of zeros */
-    k = 1i32;
+     /* r = run length of zeros */
+     let mut r:   libc::c_int =  0i32; let mut k:   libc::c_int =  1i32;
     while k < crate::jpeglib_h::DCTSIZE2 {
         temp = *block.offset(
             *crate::jpegint_h::jpeg_natural_order
@@ -10469,7 +11112,7 @@ unsafe extern "C" fn encode_mcu_gather(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
     mut MCU_data: *mut crate::jpeglib_h::JBLOCKROW,
 ) -> crate::jmorecfg_h::boolean {
-     let mut blkn:  libc::c_int =  0; let mut ci:  libc::c_int =  0;let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
+      let mut ci:  libc::c_int =  0;let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
     
     
     
@@ -10487,12 +11130,11 @@ unsafe extern "C" fn encode_mcu_gather(
         }
         (*entropy).restarts_to_go =  (*entropy).restarts_to_go - 1
     }
-    blkn = 0i32;
+     let mut blkn:   libc::c_int =  0i32;
     while blkn < (*cinfo).blocks_in_MCU {
-         let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
-    
-        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();ci = (*cinfo).MCU_membership[blkn as usize];
-        compptr = (*cinfo).cur_comp_info[ci as usize];
+         ci = (*cinfo).MCU_membership[blkn as usize];
+         let mut compptr:   *mut crate::jpeglib_h::jpeg_component_info =
+     (*cinfo).cur_comp_info[ci as usize];
         htest_one_block(
             cinfo,
             (*(*MCU_data.offset(blkn as isize)).offset(0)).as_mut_ptr(),
@@ -10575,7 +11217,7 @@ pub unsafe extern "C" fn jpeg_gen_optimal_table(
     
     
     
-     let mut bits:  [crate::jmorecfg_h::UINT8; 33] =  [0; 33]; let mut codesize:  [libc::c_int; 257] =  [0; 257]; let mut others:  [libc::c_int; 257] =  [0; 257]; let mut p:  libc::c_int =  0; let mut i:  libc::c_int =  0; let mut j:  libc::c_int =  0;
+     let mut bits:  [crate::jmorecfg_h::UINT8; 33] =  [0; 33]; let mut codesize:  [libc::c_int; 257] =  [0; 257]; let mut others:  [libc::c_int; 257] =  [0; 257];   let mut j:  libc::c_int =  0;
     /* This algorithm is explained in section K.2 of the JPEG standard */
     crate::stdlib::memset(
         bits.as_mut_ptr() as *mut libc::c_void,
@@ -10587,7 +11229,7 @@ pub unsafe extern "C" fn jpeg_gen_optimal_table(
         0i32,
         ::std::mem::size_of::<[libc::c_int; 257]>() as libc::c_ulong,
     ); /* make sure 256 has a nonzero count */
-    i = 0i32;
+     let mut i:   libc::c_int =  0i32;
     while i < 257i32 {
         others[i as usize] = -1i32;
         i += 1
@@ -10602,8 +11244,8 @@ pub unsafe extern "C" fn jpeg_gen_optimal_table(
     /* Find the smallest nonzero frequency, set c1 = its symbol */
     /* In case of ties, take the larger symbol number */
     {
-         let mut c1:  libc::c_int =  0; let mut c2:  libc::c_int =  0; let mut v:  libc::c_long =  0;c1 = -1i32;
-        v = 1000000000i64;
+           
+         let mut c1:   libc::c_int =  -1i32; let mut v:   libc::c_long =  1000000000i64;
         i = 0i32;
         while i <= 256i32 {
             if *freq.offset(i as isize) != 0 && *freq.offset(i as isize) <= v {
@@ -10612,9 +11254,7 @@ pub unsafe extern "C" fn jpeg_gen_optimal_table(
             }
             i += 1
         }
-        /* Find the next smallest nonzero frequency, set c2 = its symbol */
-        /* In case of ties, take the larger symbol number */
-        c2 = -1i32;
+         let mut c2:   libc::c_int =  -1i32;
         v = 1000000000i64;
         i = 0i32;
         while i <= 256i32 {
@@ -10712,7 +11352,7 @@ pub unsafe extern "C" fn jpeg_gen_optimal_table(
      * changes made above, but Rec. ITU-T T.81 | ISO/IEC 10918-1 seems to think
      * this works.
      */
-    p = 0i32;
+     let mut p:   libc::c_int =  0i32;
     i = 1i32;
     while i <= MAX_CLEN {
         j = 0i32;
@@ -10735,7 +11375,7 @@ pub const MAX_CLEN: libc::c_int = 32i32;
  */
 
 unsafe extern "C" fn finish_pass_gather(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
-     let mut ci:  libc::c_int =  0; let mut did_dc:  [crate::jmorecfg_h::boolean; 4] =  [0; 4]; let mut did_ac:  [crate::jmorecfg_h::boolean; 4] =  [0; 4];let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
+      let mut did_dc:  [crate::jmorecfg_h::boolean; 4] =  [0; 4]; let mut did_ac:  [crate::jmorecfg_h::boolean; 4] =  [0; 4];let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
     
     
     
@@ -10756,15 +11396,14 @@ unsafe extern "C" fn finish_pass_gather(mut cinfo: crate::jpeglib_h::j_compress_
         0i32,
         ::std::mem::size_of::<[crate::jmorecfg_h::boolean; 4]>() as libc::c_ulong,
     );
-    ci = 0i32;
+     let mut ci:   libc::c_int =  0i32;
     while ci < (*cinfo).comps_in_scan {
-         let mut dctbl:  libc::c_int =  0; let mut actbl:  libc::c_int =  0; let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
+            let mut htblptr:  *mut *mut crate::jpeglib_h::JHUFF_TBL =
     
-        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>(); let mut htblptr:  *mut *mut crate::jpeglib_h::JHUFF_TBL =
-    
-        ::std::ptr::null_mut::< *mut crate::jpeglib_h::JHUFF_TBL>();compptr = (*cinfo).cur_comp_info[ci as usize];
-        dctbl = (*compptr).dc_tbl_no;
-        actbl = (*compptr).ac_tbl_no;
+        ::std::ptr::null_mut::< *mut crate::jpeglib_h::JHUFF_TBL>();
+        
+         let mut compptr:   *mut crate::jpeglib_h::jpeg_component_info =
+     (*cinfo).cur_comp_info[ci as usize]; let mut dctbl:   libc::c_int =  (*compptr).dc_tbl_no; let mut actbl:   libc::c_int =  (*compptr).ac_tbl_no;
         if did_dc[dctbl as usize] == 0 {
             htblptr = &mut *(*cinfo)
                 .dc_huff_tbl_ptrs
@@ -10818,9 +11457,9 @@ unsafe extern "C" fn finish_pass_gather(mut cinfo: crate::jpeglib_h::j_compress_
 
 pub unsafe extern "C" fn jinit_huff_encoder(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
     
-     let mut entropy:  huff_entropy_ptr =
-     ::std::ptr::null_mut::< huff_entropy_encoder>(); let mut i:  libc::c_int =  0;
-    entropy = Some(
+      
+     let mut entropy:   huff_entropy_ptr =
+     Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),
@@ -10838,8 +11477,7 @@ pub unsafe extern "C" fn jinit_huff_encoder(mut cinfo: crate::jpeglib_h::j_compr
                 _: crate::jmorecfg_h::boolean,
             ) -> (),
     );
-    /* Mark tables unallocated */
-    i = 0i32;
+     let mut i:   libc::c_int =  0i32;
     while i < crate::jpeglib_h::NUM_HUFF_TBLS {
         (*entropy).ac_derived_tbls[i as usize] =
             crate::stddef_h::NULL as *mut crate::src::jchuff::c_derived_tbl;

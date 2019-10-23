@@ -402,9 +402,9 @@ static mut alpha_index: [libc::c_int; 17] = [
 
 unsafe extern "C" fn read_byte(mut sinfo: bmp_source_ptr) -> libc::c_int
 /* Read next byte from BMP file */ {
-     let mut c:  libc::c_int =  0;let mut infile: *mut crate::stdlib::FILE = (*sinfo).pub_0.input_file;
+     let mut infile: *mut crate::stdlib::FILE = (*sinfo).pub_0.input_file;
     
-    c = crate::stdlib::getc(infile);
+     let mut c:   libc::c_int =  crate::stdlib::getc(infile);
     if c == crate::stdlib::EOF {
         (*(*(*sinfo).cinfo).err).msg_code = crate::src::jerror::JERR_INPUT_EOF as libc::c_int;
         Some(
@@ -517,8 +517,7 @@ unsafe extern "C" fn get_8bit_row(
 ) -> crate::jmorecfg_h::JDIMENSION
 /* This version is for reading 8-bit colormap indexes */ {
      let mut t:  libc::c_int =  0; let mut inptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut outptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut col:  crate::jmorecfg_h::JDIMENSION =  0;let mut source: bmp_source_ptr = sinfo as bmp_source_ptr;
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();  let mut col:  crate::jmorecfg_h::JDIMENSION =  0;let mut source: bmp_source_ptr = sinfo as bmp_source_ptr;
     let mut colormap: crate::jpeglib_h::JSAMPARRAY = (*source).colormap;
     let mut cmaplen: libc::c_int = (*source).cmap_length;
     
@@ -527,10 +526,9 @@ unsafe extern "C" fn get_8bit_row(
     
     
     if (*source).use_inversion_array != 0 {
-        /* Fetch next row from virtual array */
-         let mut image_ptr:  crate::jpeglib_h::JSAMPARRAY =
-     ::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>();(*source).source_row =  (*source).source_row - 1;
-        image_ptr = Some(
+        (*source).source_row =  (*source).source_row - 1;
+         let mut image_ptr:   crate::jpeglib_h::JSAMPARRAY =
+     Some(
             (*(*cinfo).mem)
                 .access_virt_sarray
                 .expect("non-null function pointer"),
@@ -563,8 +561,8 @@ unsafe extern "C" fn get_8bit_row(
         }
         inptr = (*source).iobuffer
     }
-    /* Expand the colormap indexes to real data */
-    outptr = *(*source).pub_0.buffer.offset(0);
+     let mut outptr:   crate::jpeglib_h::JSAMPROW =
+     *(*source).pub_0.buffer.offset(0);
     if  (*cinfo).in_color_space
         ==  crate::jpeglib_h::JCS_GRAYSCALE
     {
@@ -685,17 +683,15 @@ unsafe extern "C" fn get_24bit_row(
 ) -> crate::jmorecfg_h::JDIMENSION
 /* This version is for reading 24-bit pixels */ {
      let mut inptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut outptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut col:  crate::jmorecfg_h::JDIMENSION =  0;let mut source: bmp_source_ptr = sinfo as bmp_source_ptr;
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();  let mut col:  crate::jmorecfg_h::JDIMENSION =  0;let mut source: bmp_source_ptr = sinfo as bmp_source_ptr;
     
     
     
     
     if (*source).use_inversion_array != 0 {
-        /* Fetch next row from virtual array */
-         let mut image_ptr:  crate::jpeglib_h::JSAMPARRAY =
-     ::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>();(*source).source_row =  (*source).source_row - 1;
-        image_ptr = Some(
+        (*source).source_row =  (*source).source_row - 1;
+         let mut image_ptr:   crate::jpeglib_h::JSAMPARRAY =
+     Some(
             (*(*cinfo).mem)
                 .access_virt_sarray
                 .expect("non-null function pointer"),
@@ -731,7 +727,8 @@ unsafe extern "C" fn get_24bit_row(
     /* Transfer data.  Note source values are in BGR order
      * (even though Microsoft's own documents say the opposite).
      */
-    outptr = *(*source).pub_0.buffer.offset(0);
+     let mut outptr:   crate::jpeglib_h::JSAMPROW =
+     *(*source).pub_0.buffer.offset(0);
     if  (*cinfo).in_color_space
         ==  crate::jpeglib_h::JCS_EXT_BGR
     {
@@ -816,17 +813,15 @@ unsafe extern "C" fn get_32bit_row(
 ) -> crate::jmorecfg_h::JDIMENSION
 /* This version is for reading 32-bit pixels */ {
      let mut inptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut outptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut col:  crate::jmorecfg_h::JDIMENSION =  0;let mut source: bmp_source_ptr = sinfo as bmp_source_ptr;
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();  let mut col:  crate::jmorecfg_h::JDIMENSION =  0;let mut source: bmp_source_ptr = sinfo as bmp_source_ptr;
     
     
     
     
     if (*source).use_inversion_array != 0 {
-        /* Fetch next row from virtual array */
-         let mut image_ptr:  crate::jpeglib_h::JSAMPARRAY =
-     ::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>();(*source).source_row =  (*source).source_row - 1;
-        image_ptr = Some(
+        (*source).source_row =  (*source).source_row - 1;
+         let mut image_ptr:   crate::jpeglib_h::JSAMPARRAY =
+     Some(
             (*(*cinfo).mem)
                 .access_virt_sarray
                 .expect("non-null function pointer"),
@@ -862,7 +857,8 @@ unsafe extern "C" fn get_32bit_row(
     /* Transfer data.  Note source values are in BGR order
      * (even though Microsoft's own documents say the opposite).
      */
-    outptr = *(*source).pub_0.buffer.offset(0);
+     let mut outptr:   crate::jpeglib_h::JSAMPROW =
+     *(*source).pub_0.buffer.offset(0);
     if  (*cinfo).in_color_space
         ==  crate::jpeglib_h::JCS_EXT_BGRX
         ||  (*cinfo).in_color_space
@@ -956,19 +952,16 @@ unsafe extern "C" fn preload_image(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
     mut sinfo: crate::src::cdjpeg::cjpeg_source_ptr,
 ) -> crate::jmorecfg_h::JDIMENSION {
-     let mut row:  crate::jmorecfg_h::JDIMENSION =  0;let mut source: bmp_source_ptr = sinfo as bmp_source_ptr;
+     let mut source: bmp_source_ptr = sinfo as bmp_source_ptr;
     let mut infile: *mut crate::stdlib::FILE = (*source).pub_0.input_file;
     
     
     
     let mut progress: crate::src::cdjpeg::cd_progress_ptr =
         (*cinfo).progress as crate::src::cdjpeg::cd_progress_ptr;
-    /* Read the data into a virtual array in input-file row order. */
-    row = 0u32;
+     let mut row:   crate::jmorecfg_h::JDIMENSION =  0u32;
     while row < (*cinfo).image_height {
-         let mut out_ptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut image_ptr:  crate::jpeglib_h::JSAMPARRAY =
-     ::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>();if !progress.is_null() {
+          if !progress.is_null() {
             (*progress).pub_0.pass_counter = row as libc::c_long;
             (*progress).pub_0.pass_limit = (*cinfo).image_height as libc::c_long;
             Some(
@@ -981,7 +974,9 @@ unsafe extern "C" fn preload_image(
                 cinfo as crate::jpeglib_h::j_common_ptr
             );
         }
-        image_ptr = Some(
+        
+         let mut image_ptr:   crate::jpeglib_h::JSAMPARRAY =
+     Some(
             (*(*cinfo).mem)
                 .access_virt_sarray
                 .expect("non-null function pointer"),
@@ -992,8 +987,7 @@ unsafe extern "C" fn preload_image(
             row,
             1u32,
             crate::jmorecfg_h::TRUE,
-        );
-        out_ptr = *image_ptr.offset(0);
+        ); let mut out_ptr:   crate::jpeglib_h::JSAMPROW =  *image_ptr.offset(0);
         if crate::stdlib::fread(
             out_ptr as *mut libc::c_void,
             1u64,
@@ -1087,7 +1081,7 @@ unsafe extern "C" fn start_input_bmp(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
     mut sinfo: crate::src::cdjpeg::cjpeg_source_ptr,
 ) {
-     let mut bmpfileheader:  [U_CHAR; 14] =  [0; 14]; let mut bmpinfoheader:  [U_CHAR; 64] =  [0; 64]; let mut bfOffBits:  libc::c_uint =  0; let mut headerSize:  libc::c_uint =  0; let mut biWidth:  libc::c_int =  0; let mut biHeight:  libc::c_int =  0; let mut biPlanes:  libc::c_ushort =  0; let mut biClrUsed:  libc::c_uint =  0u32; let mut mapentrysize:  libc::c_int =  0i32; let mut bPad:  libc::c_int =  0; let mut row_width:  crate::jmorecfg_h::JDIMENSION =  0u32;let mut source: bmp_source_ptr = sinfo as bmp_source_ptr; /* 0 indicates no colormap */
+     let mut bmpfileheader:  [U_CHAR; 14] =  [0; 14]; let mut bmpinfoheader:  [U_CHAR; 64] =  [0; 64];   let mut biWidth:  libc::c_int =  0; let mut biHeight:  libc::c_int =  0; let mut biPlanes:  libc::c_ushort =  0; let mut biClrUsed:  libc::c_uint =  0u32; let mut mapentrysize:  libc::c_int =  0i32;  let mut row_width:  crate::jmorecfg_h::JDIMENSION =  0u32;let mut source: bmp_source_ptr = sinfo as bmp_source_ptr; /* 0 indicates no colormap */
     
     
     
@@ -1132,7 +1126,8 @@ unsafe extern "C" fn start_input_bmp(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    bfOffBits =  bmpfileheader[10] as libc::c_uint +
+     let mut bfOffBits:   libc::c_uint =
+      bmpfileheader[10] as libc::c_uint +
     (((
             (bmpfileheader[(10i32 + 1i32) as usize] as libc::c_uint) << 8i32))) +
     (((
@@ -1158,7 +1153,8 @@ unsafe extern "C" fn start_input_bmp(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    headerSize =  bmpinfoheader[0] as libc::c_uint +
+     let mut headerSize:   libc::c_uint =
+      bmpinfoheader[0] as libc::c_uint +
     (((
             (bmpinfoheader[(0i32 + 1i32) as usize] as libc::c_uint) << 8i32))) +
     (((
@@ -1256,9 +1252,7 @@ unsafe extern "C" fn start_input_bmp(
             }
         }
         40 | 64 => {
-            /* Decode Windows 3.x header (Microsoft calls this a BITMAPINFOHEADER) */
-            /* or OS/2 2.x header, which has additional fields that we ignore */
-             let mut biCompression:  libc::c_uint =  0; let mut biXPelsPerMeter:  libc::c_int =  0; let mut biYPelsPerMeter:  libc::c_int =  0;biWidth = (bmpinfoheader[4] as libc::c_uint +
+              biWidth = (bmpinfoheader[4] as libc::c_uint +
     (((
                     (bmpinfoheader[(4i32 + 1i32) as usize] as libc::c_uint) << 8i32))) +
     (((
@@ -1281,7 +1275,10 @@ unsafe extern "C" fn start_input_bmp(
                 + ((bmpinfoheader[(14i32 + 1i32) as usize]
                     as libc::c_int)
                     << 8i32);
-            biCompression =  bmpinfoheader[16] as libc::c_uint +
+            
+            
+             let mut biCompression:   libc::c_uint =
+      bmpinfoheader[16] as libc::c_uint +
     (((
                     (bmpinfoheader[(16i32 + 1i32) as usize] as libc::c_uint) << 8i32))) +
     (((
@@ -1289,8 +1286,8 @@ unsafe extern "C" fn start_input_bmp(
                         << 16i32))) +
     (((
                     (bmpinfoheader[(16i32 + 3i32) as usize] as libc::c_uint)
-                        << 24i32)));
-            biXPelsPerMeter = (bmpinfoheader[24] as libc::c_uint +
+                        << 24i32))); let mut biXPelsPerMeter:   libc::c_int =
+     (bmpinfoheader[24] as libc::c_uint +
     (((
                     (bmpinfoheader[(24i32 + 1i32) as usize] as libc::c_uint) << 8i32))) +
     (((
@@ -1298,8 +1295,8 @@ unsafe extern "C" fn start_input_bmp(
                         << 16i32))) +
     (((
                     (bmpinfoheader[(24i32 + 3i32) as usize] as libc::c_uint)
-                        << 24i32)))) as libc::c_int;
-            biYPelsPerMeter = (bmpinfoheader[28] as libc::c_uint +
+                        << 24i32)))) as libc::c_int; let mut biYPelsPerMeter:   libc::c_int =
+     (bmpinfoheader[28] as libc::c_uint +
     (((
                     (bmpinfoheader[(28i32 + 1i32) as usize] as libc::c_uint) << 8i32))) +
     (((
@@ -1431,8 +1428,7 @@ unsafe extern "C" fn start_input_bmp(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    /* Compute distance to bitmap data --- will adjust for colormap below */
-    bPad = ( bfOffBits - (headerSize + 14u32)) as libc::c_int;
+     let mut bPad:   libc::c_int =  ( bfOffBits - (headerSize + 14u32)) as libc::c_int;
     /* Read the colormap, if any */
     if mapentrysize > 0i32 {
         if biClrUsed <= 0u32 {
@@ -1735,9 +1731,9 @@ pub unsafe extern "C" fn jinit_read_bmp(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
     mut use_inversion_array: crate::jmorecfg_h::boolean,
 ) -> crate::src::cdjpeg::cjpeg_source_ptr {
-     let mut source:  bmp_source_ptr =  ::std::ptr::null_mut::< _bmp_source_struct>();
-    /* Create module interface object */
-    source = Some(
+     
+     let mut source:   bmp_source_ptr =
+     Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),

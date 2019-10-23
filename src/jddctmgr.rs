@@ -363,9 +363,7 @@ pub unsafe extern "C" fn jpeg_set_idct_method_selector(
  */
 
 unsafe extern "C" fn start_pass(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
-     let mut ci:  libc::c_int =  0; let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
-    
-        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();let mut idct: my_idct_ptr = (*cinfo).idct as my_idct_ptr;
+      let mut idct: my_idct_ptr = (*cinfo).idct as my_idct_ptr;
     
     
     
@@ -376,13 +374,12 @@ unsafe extern "C" fn start_pass(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
         );
     
     
-    ci = 0i32;
-    compptr = (*cinfo).comp_info;
+    
+     let mut ci:   libc::c_int =  0i32; let mut compptr:   *mut crate::jpeglib_h::jpeg_component_info =
+     (*cinfo).comp_info;
     while ci < (*cinfo).num_components {
         /* Select the proper IDCT routine for this component's scaling */
-         let mut method:  libc::c_int =  0i32; let mut master:  crate::src::jdmaster::my_master_ptr =
-    
-        ::std::ptr::null_mut::< crate::src::jdmaster::my_decomp_master>();match (*compptr).DCT_scaled_size {
+         let mut method:  libc::c_int =  0i32; match (*compptr).DCT_scaled_size {
             1 => {
                 method_ptr = Some(
                     crate::jdct_h::jpeg_idct_1x1
@@ -717,8 +714,8 @@ unsafe extern "C" fn start_pass(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
                 );
             }
         }
-        // Allow custom idct function to be set dynamically
-        master = (*cinfo).master as crate::src::jdmaster::my_master_ptr;
+         let mut master:   crate::src::jdmaster::my_master_ptr =
+     (*cinfo).master as crate::src::jdmaster::my_master_ptr;
         if (*master).custom_idct_selector.is_some() {
             (*master)
                 .custom_idct_selector
@@ -735,8 +732,7 @@ unsafe extern "C" fn start_pass(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
          * coefficient controller's buffer anyway.
          */
         if !((*compptr).component_needed == 0 || (*idct).cur_method[ci as usize] == method) {
-             let mut qtbl:  *mut crate::jpeglib_h::JQUANT_TBL =
-     ::std::ptr::null_mut::< crate::jpeglib_h::JQUANT_TBL>();qtbl = (*compptr).quant_table;
+              let mut qtbl:   *mut crate::jpeglib_h::JQUANT_TBL =  (*compptr).quant_table;
             if !qtbl.is_null() {
                  let mut i:  libc::c_int =  0;(*idct).cur_method[ci as usize] = method;
                 match method {
@@ -846,7 +842,7 @@ unsafe extern "C" fn start_pass(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
                          *   scalefactor[0] = 1
                          *   scalefactor[k] = cos(k*PI/16) * sqrt(2)    for k=1..7
                          */
-                         let mut row:  libc::c_int =  0;let mut fmtbl: *mut crate::jdct_h::FLOAT_MULT_TYPE =
+                         let mut fmtbl: *mut crate::jdct_h::FLOAT_MULT_TYPE =
                             (*compptr).dct_table as *mut crate::jdct_h::FLOAT_MULT_TYPE;
                         
                         
@@ -861,9 +857,9 @@ unsafe extern "C" fn start_pass(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
                             0.275899379f64,
                         ];
                         i = 0i32;
-                        row = 0i32;
+                         let mut row:   libc::c_int =  0i32;
                         while row < 8i32 {
-                             let mut col:  libc::c_int =  0;col = 0i32;
+                              let mut col:   libc::c_int =  0i32;
                             while col < 8i32 {
                                 *fmtbl.offset(i as isize) = ((*qtbl).quantval[i as usize]
                                     as libc::c_double
@@ -904,10 +900,9 @@ unsafe extern "C" fn start_pass(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
 pub unsafe extern "C" fn jinit_inverse_dct(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
     
     
-     let mut idct:  my_idct_ptr =  ::std::ptr::null_mut::< my_idct_controller>(); let mut ci:  libc::c_int =  0; let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
-    
-        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
-    idct = Some(
+       
+     let mut idct:   my_idct_ptr =
+     Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),
@@ -920,8 +915,9 @@ pub unsafe extern "C" fn jinit_inverse_dct(mut cinfo: crate::jpeglib_h::j_decomp
     (*cinfo).idct = idct as *mut crate::jpeglib_h::jpeg_inverse_dct;
     (*idct).pub_0.start_pass =
         Some(start_pass as unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ());
-    ci = 0i32;
-    compptr = (*cinfo).comp_info;
+    
+     let mut ci:   libc::c_int =  0i32; let mut compptr:   *mut crate::jpeglib_h::jpeg_component_info =
+     (*cinfo).comp_info;
     while ci < (*cinfo).num_components {
         /* Allocate and pre-zero a multiplier table for each component */
         (*compptr).dct_table = Some(

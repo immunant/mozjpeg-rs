@@ -356,9 +356,7 @@ pub unsafe extern "C" fn jpeg_mem_src_tj(
     mut inbuffer: *const libc::c_uchar,
     mut insize: libc::c_ulong,
 ) {
-     let mut src:  *mut crate::jpeglib_h::jpeg_source_mgr =
-    
-        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_source_mgr>();
+     
     if inbuffer.is_null() || insize == 0u64 {
         /* Treat empty input as fatal error */
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_INPUT_EMPTY as libc::c_int;
@@ -401,7 +399,7 @@ pub unsafe extern "C" fn jpeg_mem_src_tj(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    src = (*cinfo).src;
+     let mut src:   *mut crate::jpeglib_h::jpeg_source_mgr =  (*cinfo).src;
     (*src).init_source =
         Some(init_mem_source as unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ());
     (*src).fill_input_buffer = Some(

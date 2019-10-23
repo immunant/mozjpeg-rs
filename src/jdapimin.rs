@@ -259,7 +259,7 @@ pub unsafe extern "C" fn jpeg_CreateDecompress(
     mut version: libc::c_int,
     mut structsize: crate::stddef_h::size_t,
 ) {
-     let mut i:  libc::c_int =  0;
+     
     /* Guard against version mismatches between library and caller. */
     (*cinfo).mem = crate::stddef_h::NULL as *mut crate::jpeglib_h::jpeg_memory_mgr; /* so jpeg_destroy knows mem mgr not called */
     if version != crate::jconfig_h::JPEG_LIB_VERSION {
@@ -309,7 +309,7 @@ pub unsafe extern "C" fn jpeg_CreateDecompress(
     /* Zero out pointers to permanent structures. */
     (*cinfo).progress = crate::stddef_h::NULL as *mut crate::jpeglib_h::jpeg_progress_mgr;
     (*cinfo).src = crate::stddef_h::NULL as *mut crate::jpeglib_h::jpeg_source_mgr;
-    i = 0i32;
+     let mut i:   libc::c_int =  0i32;
     while i < crate::jpeglib_h::NUM_QUANT_TBLS {
         (*cinfo).quant_tbl_ptrs[i as usize] =
             crate::stddef_h::NULL as *mut crate::jpeglib_h::JQUANT_TBL;
@@ -522,7 +522,7 @@ pub unsafe extern "C" fn jpeg_read_header(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
     mut require_image: crate::jmorecfg_h::boolean,
 ) -> libc::c_int {
-     let mut retcode:  libc::c_int =  0;
+     
     if (*cinfo).global_state != 200i32 && (*cinfo).global_state != 201i32 {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
         (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
@@ -533,7 +533,7 @@ pub unsafe extern "C" fn jpeg_read_header(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    retcode = jpeg_consume_input(cinfo);
+     let mut retcode:   libc::c_int =  jpeg_consume_input(cinfo);
     match retcode {
         1 => retcode = crate::jpeglib_h::JPEG_HEADER_OK,
         2 => {

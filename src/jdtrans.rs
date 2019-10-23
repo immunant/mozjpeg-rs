@@ -257,7 +257,7 @@ pub unsafe extern "C" fn jpeg_read_coefficients(
         loop
         /* Absorb whole file into the coef buffer */
         {
-             let mut retcode:  libc::c_int =  0;
+             
             /* Call progress monitor hook if present */
             if !(*cinfo).progress.is_null() {
                 Some(
@@ -269,8 +269,8 @@ pub unsafe extern "C" fn jpeg_read_coefficients(
                     cinfo as crate::jpeglib_h::j_common_ptr
                 );
             }
-            /* Absorb some more input */
-            retcode = Some(
+             let mut retcode:   libc::c_int =
+     Some(
                 (*(*cinfo).inputctl)
                     .consume_input
                     .expect("non-null function pointer"),

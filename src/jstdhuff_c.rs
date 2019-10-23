@@ -5,7 +5,7 @@ pub unsafe extern "C" fn add_huff_table(
     mut val: *const crate::jmorecfg_h::UINT8,
 ) {
     
-     let mut nsymbols:  libc::c_int =  0; let mut len:  libc::c_int =  0;
+      
     if (*htblptr).is_null() {
         *htblptr = crate::jpeglib_h::jpeg_alloc_huff_table(cinfo)
     } else {
@@ -21,8 +21,8 @@ pub unsafe extern "C" fn add_huff_table(
      * number of symbols from the val[] array, without risking marching off
      * the end of memory.  jchuff.c will do a more thorough test later.
      */
-    nsymbols = 0i32;
-    len = 1i32;
+    
+     let mut nsymbols:   libc::c_int =  0i32; let mut len:   libc::c_int =  1i32;
     while len <= 16i32 {
         nsymbols += *bits.offset(len as isize) as libc::c_int;
         len += 1

@@ -447,7 +447,7 @@ unsafe extern "C" fn emit_header(
     
     
     
-     let mut BitsPerPixel:  libc::c_int =  0; let mut ColorMapSize:  libc::c_int =  0; let mut InitCodeSize:  libc::c_int =  0; let mut FlagByte:  libc::c_int =  0; let mut i:  libc::c_int =  0;
+       let mut InitCodeSize:  libc::c_int =  0;  
     let mut cshift: libc::c_int = (*(*dinfo).cinfo).data_precision - 8i32;
     
     if num_colors > 256i32 {
@@ -463,11 +463,11 @@ unsafe extern "C" fn emit_header(
         );
     }
     /* Compute bits/pixel and related values */
-    BitsPerPixel = 1i32;
+     let mut BitsPerPixel:   libc::c_int =  1i32;
     while num_colors > 1i32 << BitsPerPixel {
         BitsPerPixel += 1
     }
-    ColorMapSize = 1i32 << BitsPerPixel;
+     let mut ColorMapSize:   libc::c_int =  1i32 << BitsPerPixel;
     if BitsPerPixel <= 1i32 {
         InitCodeSize = 2i32
     } else {
@@ -486,7 +486,7 @@ unsafe extern "C" fn emit_header(
     /* Write the Logical Screen Descriptor */
     put_word(dinfo, (*(*dinfo).cinfo).output_width); /* Yes, there is a global color table */
     put_word(dinfo, (*(*dinfo).cinfo).output_height); /* color resolution */
-    FlagByte = 0x80i32; /* size of global color table */
+     let mut FlagByte:   libc::c_int =  0x80i32; /* size of global color table */
     FlagByte |= BitsPerPixel - 1i32 << 4i32; /* Background color index */
     FlagByte |= BitsPerPixel - 1i32; /* Reserved (aspect ratio in GIF89) */
     crate::stdlib::putc(FlagByte, (*dinfo).pub_0.output_file);
@@ -495,7 +495,7 @@ unsafe extern "C" fn emit_header(
     /* Write the Global Color Map */
     /* If the color map is more than 8 bits precision, */
     /* we reduce it to 8 bits by shifting */
-    i = 0i32;
+     let mut i:   libc::c_int =  0i32;
     while i < ColorMapSize {
         if i < num_colors {
             if !colormap.is_null() {
@@ -578,12 +578,11 @@ unsafe extern "C" fn put_pixel_rows(
     mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
     mut rows_supplied: crate::jmorecfg_h::JDIMENSION,
 ) {
-     let mut ptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut col:  crate::jmorecfg_h::JDIMENSION =  0;let mut dest: gif_dest_ptr = dinfo as gif_dest_ptr;
+      let mut dest: gif_dest_ptr = dinfo as gif_dest_ptr;
     
     
-    ptr = *(*dest).pub_0.buffer.offset(0);
-    col = (*cinfo).output_width;
+    
+     let mut ptr:   crate::jpeglib_h::JSAMPROW =  *(*dest).pub_0.buffer.offset(0); let mut col:   crate::jmorecfg_h::JDIMENSION =  (*cinfo).output_width;
     while col > 0u32 {
         let fresh1 = ptr;
         ptr = ptr.offset(1);
@@ -684,9 +683,10 @@ to write the image in bottom-up order.) */
 pub unsafe extern "C" fn jinit_write_gif(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
 ) -> crate::src::cdjpeg::djpeg_dest_ptr {
-     let mut dest:  gif_dest_ptr =  ::std::ptr::null_mut::< gif_dest_struct>();
+     
     /* Create module interface object, fill in method pointers */
-    dest = Some(
+     let mut dest:   gif_dest_ptr =
+     Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),

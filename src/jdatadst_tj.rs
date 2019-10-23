@@ -271,8 +271,7 @@ unsafe extern "C" fn empty_mem_output_buffer(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
 ) -> crate::jmorecfg_h::boolean {
     
-     let mut nextsize:  crate::stddef_h::size_t =  0; let mut nextbuffer:  *mut crate::jmorecfg_h::JOCTET =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>();
+      
     let mut dest: my_mem_dest_ptr = (*cinfo).dest as my_mem_dest_ptr;
     if (*dest).alloc == 0 {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BUFFER_SIZE as libc::c_int;
@@ -283,9 +282,9 @@ unsafe extern "C" fn empty_mem_output_buffer(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    /* Try to allocate new buffer with double size */
-    nextsize =  (*dest).bufsize * 2u64;
-    nextbuffer = crate::stdlib::malloc(nextsize) as *mut crate::jmorecfg_h::JOCTET;
+    
+     let mut nextsize:   crate::stddef_h::size_t =   (*dest).bufsize * 2u64; let mut nextbuffer:   *mut crate::jmorecfg_h::JOCTET =
+     crate::stdlib::malloc(nextsize) as *mut crate::jmorecfg_h::JOCTET;
     if nextbuffer.is_null() {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_OUT_OF_MEMORY as libc::c_int;
         (*(*cinfo).err).msg_parm.i[0] = 10i32;

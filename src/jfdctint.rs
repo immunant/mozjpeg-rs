@@ -152,13 +152,9 @@ pub unsafe extern "C" fn jpeg_fdct_islow(mut data: *mut crate::jdct_h::DCTELEM) 
     
     
     
-     let mut tmp0:  crate::jpegint_h::JLONG =  0; let mut tmp1:  crate::jpegint_h::JLONG =  0; let mut tmp2:  crate::jpegint_h::JLONG =  0; let mut tmp3:  crate::jpegint_h::JLONG =  0; let mut tmp4:  crate::jpegint_h::JLONG =  0; let mut tmp5:  crate::jpegint_h::JLONG =  0; let mut tmp6:  crate::jpegint_h::JLONG =  0; let mut tmp7:  crate::jpegint_h::JLONG =  0; let mut tmp10:  crate::jpegint_h::JLONG =  0; let mut tmp11:  crate::jpegint_h::JLONG =  0; let mut tmp12:  crate::jpegint_h::JLONG =  0; let mut tmp13:  crate::jpegint_h::JLONG =  0; let mut z1:  crate::jpegint_h::JLONG =  0; let mut z2:  crate::jpegint_h::JLONG =  0; let mut z3:  crate::jpegint_h::JLONG =  0; let mut z4:  crate::jpegint_h::JLONG =  0; let mut z5:  crate::jpegint_h::JLONG =  0; let mut dataptr:  *mut crate::jdct_h::DCTELEM =
-     ::std::ptr::null_mut::< crate::jdct_h::DCTELEM>(); let mut ctr:  libc::c_int =  0;
-    /* Pass 1: process rows. */
-    /* Note results are scaled up by sqrt(8) compared to a true DCT; */
-    /* furthermore, we scale the results by 2**PASS1_BITS. */
-    dataptr = data;
-    ctr = crate::jpeglib_h::DCTSIZE - 1i32;
+     let mut tmp0:  crate::jpegint_h::JLONG =  0; let mut tmp1:  crate::jpegint_h::JLONG =  0; let mut tmp2:  crate::jpegint_h::JLONG =  0; let mut tmp3:  crate::jpegint_h::JLONG =  0; let mut tmp4:  crate::jpegint_h::JLONG =  0; let mut tmp5:  crate::jpegint_h::JLONG =  0; let mut tmp6:  crate::jpegint_h::JLONG =  0; let mut tmp7:  crate::jpegint_h::JLONG =  0; let mut tmp10:  crate::jpegint_h::JLONG =  0; let mut tmp11:  crate::jpegint_h::JLONG =  0; let mut tmp12:  crate::jpegint_h::JLONG =  0; let mut tmp13:  crate::jpegint_h::JLONG =  0; let mut z1:  crate::jpegint_h::JLONG =  0; let mut z2:  crate::jpegint_h::JLONG =  0; let mut z3:  crate::jpegint_h::JLONG =  0; let mut z4:  crate::jpegint_h::JLONG =  0; let mut z5:  crate::jpegint_h::JLONG =  0;  
+    
+     let mut dataptr:   *mut crate::jdct_h::DCTELEM =  data; let mut ctr:   libc::c_int =  crate::jpeglib_h::DCTSIZE - 1i32;
     while ctr >= 0i32 {
         tmp0 = (*dataptr.offset(0) as libc::c_int + *dataptr.offset(7) as libc::c_int)
             as crate::jpegint_h::JLONG;

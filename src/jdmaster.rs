@@ -414,9 +414,7 @@ unsafe extern "C" fn jpeg_core_output_dimensions(mut cinfo: crate::jpeglib_h::j_
  */
 {
     
-     let mut ci:  libc::c_int =  0; let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
-    
-        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
+      
     /* Compute actual output image dimensions and DCT scaling choices. */
     if  (*cinfo)
         .scale_num * crate::jpeglib_h::DCTSIZE as libc::c_uint
@@ -656,9 +654,9 @@ unsafe extern "C" fn jpeg_core_output_dimensions(mut cinfo: crate::jpeglib_h::j_
         (*cinfo).min_DCT_scaled_size = 16i32;
         (*cinfo).min_DCT_scaled_size = 16i32
     }
-    /* Recompute dimensions of components */
-    ci = 0i32;
-    compptr = (*cinfo).comp_info;
+    
+     let mut ci:   libc::c_int =  0i32; let mut compptr:   *mut crate::jpeglib_h::jpeg_component_info =
+     (*cinfo).comp_info;
     while ci < (*cinfo).num_components {
         (*compptr).DCT_scaled_size = (*cinfo).min_DCT_scaled_size;
         (*compptr).DCT_scaled_size = (*cinfo).min_DCT_scaled_size;
@@ -689,9 +687,7 @@ pub unsafe extern "C" fn jpeg_calc_output_dimensions(
 /* Do computations that are needed before master selection phase */
 {
     
-     let mut ci:  libc::c_int =  0; let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
-    
-        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
+      
     /* Prevent application from calling me at wrong times */
     if (*cinfo).global_state != crate::jpegint_h::DSTATE_READY {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
@@ -710,8 +706,9 @@ pub unsafe extern "C" fn jpeg_calc_output_dimensions(
      * This saves time if the upsampler gets to use 1:1 scaling.
      * Note this code adapts subsampling ratios which are powers of 2.
      */
-    ci = 0i32;
-    compptr = (*cinfo).comp_info;
+    
+     let mut ci:   libc::c_int =  0i32; let mut compptr:   *mut crate::jpeglib_h::jpeg_component_info =
+     (*cinfo).comp_info;
     while ci < (*cinfo).num_components {
         let mut ssize: libc::c_int = (*cinfo).min_DCT_scaled_size;
         while ssize < crate::jpeglib_h::DCTSIZE
@@ -819,10 +816,9 @@ pub unsafe extern "C" fn jpeg_calc_output_dimensions(
 unsafe extern "C" fn prepare_range_limit_table(mut cinfo: crate::jpeglib_h::j_decompress_ptr)
 /* Allocate and fill in the sample_range_limit table */
 {
-     /* allow negative subscripts of simple table */
-     let mut table:  *mut crate::jmorecfg_h::JSAMPLE =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut i:  libc::c_int =  0;
-    table = Some(
+      
+     let mut table:   *mut crate::jmorecfg_h::JSAMPLE =
+     Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),
@@ -843,8 +839,7 @@ unsafe extern "C" fn prepare_range_limit_table(mut cinfo: crate::jpeglib_h::j_de
         (255i32 + 1i32) as libc::c_ulong *
     ::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong,
     );
-    /* Main part of "simple" table: limit[x] = x */
-    i = 0i32; /* Point to where post-IDCT table starts */
+     let mut i:   libc::c_int =  0i32; /* Point to where post-IDCT table starts */
     while i <= crate::jmorecfg_h::MAXJSAMPLE {
         *table.offset(i as isize) = i as crate::jmorecfg_h::JSAMPLE;
         i += 1
@@ -882,7 +877,7 @@ unsafe extern "C" fn prepare_range_limit_table(mut cinfo: crate::jpeglib_h::j_de
  */
 
 unsafe extern "C" fn master_selection(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
-     let mut use_c_buffer:  crate::jmorecfg_h::boolean =  0; let mut samplesperrow:  libc::c_long =  0; let mut jd_samplesperrow:  crate::jmorecfg_h::JDIMENSION =  0;let mut master: crate::src::jdmaster::my_master_ptr =
+       let mut master: crate::src::jdmaster::my_master_ptr =
         (*cinfo).master as crate::src::jdmaster::my_master_ptr;
     
     
@@ -890,10 +885,11 @@ unsafe extern "C" fn master_selection(mut cinfo: crate::jpeglib_h::j_decompress_
     /* Initialize dimensions and other stuff */
     jpeg_calc_output_dimensions(cinfo);
     prepare_range_limit_table(cinfo);
-    /* Width of an output scanline must be representable as JDIMENSION. */
-    samplesperrow =
-        (*cinfo).output_width as libc::c_long * (*cinfo).out_color_components as libc::c_long;
-    jd_samplesperrow = samplesperrow as crate::jmorecfg_h::JDIMENSION;
+    
+     let mut samplesperrow:   libc::c_long =
+    
+        (*cinfo).output_width as libc::c_long * (*cinfo).out_color_components as libc::c_long; let mut jd_samplesperrow:   crate::jmorecfg_h::JDIMENSION =
+     samplesperrow as crate::jmorecfg_h::JDIMENSION;
     if jd_samplesperrow as libc::c_long != samplesperrow {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_WIDTH_OVERFLOW as libc::c_int;
         Some(
@@ -982,8 +978,8 @@ unsafe extern "C" fn master_selection(mut cinfo: crate::jpeglib_h::j_decompress_
     } else {
         crate::jpegint_h::jinit_huff_decoder(cinfo);
     }
-    /* Initialize principal buffer controllers. */
-    use_c_buffer = ((*(*cinfo).inputctl).has_multiple_scans != 0 || (*cinfo).buffered_image != 0)
+     let mut use_c_buffer:   crate::jmorecfg_h::boolean =
+     ((*(*cinfo).inputctl).has_multiple_scans != 0 || (*cinfo).buffered_image != 0)
         as libc::c_int;
     crate::jpegint_h::jinit_d_coef_controller(cinfo, use_c_buffer);
     if (*cinfo).raw_data_out == 0 {

@@ -288,12 +288,7 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
     
     
     
-     /* 1 if marker found */
-     /* size of profile data in marker */
-     let mut marker:  crate::jpeglib_h::jpeg_saved_marker_ptr =
-    
-        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_marker_struct>(); let mut num_markers:  libc::c_int =  0i32; let mut seq_no:  libc::c_int =  0; let mut icc_data:  *mut crate::jmorecfg_h::JOCTET =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>(); let mut total_length:  libc::c_uint =  0; let mut marker_present:  [libc::c_char; 256] =  [0; 256]; let mut data_length:  [libc::c_uint; 256] =  [0; 256]; let mut data_offset:  [libc::c_uint; 256] =  [0; 256]; /* offset for data in marker */
+      let mut num_markers:  libc::c_int =  0i32;    let mut marker_present:  [libc::c_char; 256] =  [0; 256]; let mut data_length:  [libc::c_uint; 256] =  [0; 256]; let mut data_offset:  [libc::c_uint; 256] =  [0; 256]; /* offset for data in marker */
     if icc_data_ptr.is_null() || icc_data_len.is_null() {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BUFFER_SIZE as libc::c_int; /* avoid confusion if FALSE return */
         Some(
@@ -318,12 +313,13 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
     /* This first pass over the saved markers discovers whether there are
      * any ICC markers and verifies the consistency of the marker numbering.
      */
-    seq_no = 1i32; /* inconsistent num_markers fields */
+     let mut seq_no:   libc::c_int =  1i32; /* inconsistent num_markers fields */
     while seq_no <= MAX_SEQ_NO {
         marker_present[seq_no as usize] = 0i8; /* bogus sequence number */
         seq_no += 1
     } /* duplicate sequence numbers */
-    marker = (*cinfo).marker_list;
+     let mut marker:   crate::jpeglib_h::jpeg_saved_marker_ptr =
+     (*cinfo).marker_list;
     while !marker.is_null() {
         if marker_is_icc(marker) != 0 {
             if num_markers == 0i32 {
@@ -380,7 +376,7 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
     /* Check for missing markers, count total space needed,
      * compute offset of each marker's part of the data.
      */
-    total_length = 0u32; /* missing sequence number */
+     let mut total_length:   libc::c_uint =  0u32; /* missing sequence number */
     seq_no = 1i32; /* found only empty markers? */
     while seq_no <= num_markers {
         if marker_present[seq_no as usize] as libc::c_int == 0i32 {
@@ -409,8 +405,8 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, -1i32);
         return crate::jmorecfg_h::FALSE;
     }
-    /* Allocate space for assembled data */
-    icc_data = crate::stdlib::malloc(
+     let mut icc_data:   *mut crate::jmorecfg_h::JOCTET =
+     crate::stdlib::malloc(
         total_length as libc::c_ulong *
     ::std::mem::size_of::<crate::jmorecfg_h::JOCTET>() as libc::c_ulong,
     ) as *mut crate::jmorecfg_h::JOCTET; /* oops, out of memory */
@@ -430,13 +426,13 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
         if marker_is_icc(marker) != 0 {
             
             
-             let mut src_ptr:  *mut crate::jmorecfg_h::JOCTET =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>(); let mut dst_ptr:  *mut crate::jmorecfg_h::JOCTET =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>(); let mut length:  libc::c_uint =  0;
+               
             seq_no = *(*marker).data.offset(12) as libc::c_int;
-            dst_ptr = icc_data.offset(data_offset[seq_no as usize] as isize);
-            src_ptr = (*marker).data.offset(ICC_OVERHEAD_LEN as isize);
-            length = data_length[seq_no as usize];
+            
+            
+             let mut dst_ptr:   *mut crate::jmorecfg_h::JOCTET =
+     icc_data.offset(data_offset[seq_no as usize] as isize); let mut src_ptr:   *mut crate::jmorecfg_h::JOCTET =
+     (*marker).data.offset(ICC_OVERHEAD_LEN as isize); let mut length:   libc::c_uint =  data_length[seq_no as usize];
             loop {
                 let fresh0 = length;
                 length =  length - 1;

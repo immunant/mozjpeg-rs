@@ -265,7 +265,7 @@ pub unsafe extern "C" fn jpeg_start_decompress(
         /* If file has multiple scans, absorb them all into the coef buffer */
         if (*(*cinfo).inputctl).has_multiple_scans != 0 {
             loop {
-                 let mut retcode:  libc::c_int =  0;
+                 
                 /* Call progress monitor hook if present */
                 if !(*cinfo).progress.is_null() {
                     Some(
@@ -277,8 +277,8 @@ pub unsafe extern "C" fn jpeg_start_decompress(
                         cinfo as crate::jpeglib_h::j_common_ptr
                     );
                 }
-                /* Absorb some more input */
-                retcode = Some(
+                 let mut retcode:   libc::c_int =
+     Some(
                     (*(*cinfo).inputctl)
                         .consume_input
                         .expect("non-null function pointer"),
@@ -364,7 +364,7 @@ unsafe extern "C" fn output_pass_setup(
     while (*(*cinfo).master).is_dummy_pass != 0 {
         /* Crank through the dummy pass */
         while (*cinfo).output_scanline < (*cinfo).output_height {
-             let mut last_scanline:  crate::jmorecfg_h::JDIMENSION =  0;
+             
             /* No progress made, must suspend */
             if !(*cinfo).progress.is_null() {
                 (*(*cinfo).progress).pass_counter = (*cinfo).output_scanline as libc::c_long;
@@ -378,7 +378,8 @@ unsafe extern "C" fn output_pass_setup(
                     cinfo as crate::jpeglib_h::j_common_ptr
                 );
             }
-            last_scanline = (*cinfo).output_scanline;
+             let mut last_scanline:   crate::jmorecfg_h::JDIMENSION =
+     (*cinfo).output_scanline;
             Some(
                 (*(*cinfo).main)
                     .process_data
@@ -441,9 +442,7 @@ pub unsafe extern "C" fn jpeg_crop_scanline(
     
     
     
-     let mut ci:  libc::c_int =  0; let mut align:  libc::c_int =  0; let mut input_xoffset:  crate::jmorecfg_h::JDIMENSION =  0; let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
-    
-        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
+      let mut align:  libc::c_int =  0;  
     let mut reinit_upsampler: crate::jmorecfg_h::boolean = crate::jmorecfg_h::FALSE;
     
     if (*cinfo).global_state != crate::jpegint_h::DSTATE_SCANNING
@@ -504,8 +503,7 @@ pub unsafe extern "C" fn jpeg_crop_scanline(
     } else {
         align = (*cinfo).min_DCT_scaled_size * (*cinfo).max_h_samp_factor
     }
-    /* Adjust xoffset to the nearest iMCU boundary <= the requested value */
-    input_xoffset = *xoffset;
+     let mut input_xoffset:   crate::jmorecfg_h::JDIMENSION =  *xoffset;
     *xoffset =  input_xoffset / align as libc::c_uint * align as libc::c_uint;
     /* Adjust the width so that the right edge of the output image is as
      * requested (only the left edge is altered.)  It is important that calling
@@ -524,17 +522,18 @@ pub unsafe extern "C" fn jpeg_crop_scanline(
         (*xoffset + (*cinfo).output_width) as libc::c_long,
         align as libc::c_long,
     ) as crate::jmorecfg_h::JDIMENSION - 1u32;
-    ci = 0i32;
-    compptr = (*cinfo).comp_info;
+    
+     let mut ci:   libc::c_int =  0i32; let mut compptr:   *mut crate::jpeglib_h::jpeg_component_info =
+     (*cinfo).comp_info;
     while ci < (*cinfo).num_components {
-         let mut orig_downsampled_width:  libc::c_int =  0;let mut hsf: libc::c_int =
+         let mut hsf: libc::c_int =
             if (*cinfo).comps_in_scan == 1i32 && (*cinfo).num_components == 1i32 {
                 1i32
             } else {
                 (*compptr).h_samp_factor
             };
-        /* Set downsampled_width to the new output width. */
-        orig_downsampled_width = (*compptr).downsampled_width as libc::c_int;
+         let mut orig_downsampled_width:   libc::c_int =
+     (*compptr).downsampled_width as libc::c_int;
         (*compptr).downsampled_width = crate::jpegint_h::jdiv_round_up(
             (
             (*cinfo)
@@ -582,7 +581,7 @@ pub unsafe extern "C" fn jpeg_read_scanlines(
     mut scanlines: crate::jpeglib_h::JSAMPARRAY,
     mut max_lines: crate::jmorecfg_h::JDIMENSION,
 ) -> crate::jmorecfg_h::JDIMENSION {
-     let mut row_ctr:  crate::jmorecfg_h::JDIMENSION =  0;
+     
     if (*cinfo).global_state != crate::jpegint_h::DSTATE_SCANNING {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
         (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
@@ -614,8 +613,7 @@ pub unsafe extern "C" fn jpeg_read_scanlines(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    /* Process some data */
-    row_ctr = 0u32;
+     let mut row_ctr:   crate::jmorecfg_h::JDIMENSION =  0u32;
     Some(
         (*(*cinfo).main)
             .process_data
@@ -656,7 +654,7 @@ unsafe extern "C" fn read_and_discard_scanlines(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
     mut num_lines: crate::jmorecfg_h::JDIMENSION,
 ) {
-     let mut n:  crate::jmorecfg_h::JDIMENSION =  0;
+     
     let mut color_convert: Option<
         unsafe extern "C" fn(
             _: crate::jpeglib_h::j_decompress_ptr,
@@ -720,7 +718,7 @@ unsafe extern "C" fn read_and_discard_scanlines(
                 ) -> (),
         )
     }
-    n = 0u32;
+     let mut n:   crate::jmorecfg_h::JDIMENSION =  0u32;
     while n < num_lines {
         jpeg_read_scanlines(
             cinfo,
@@ -745,7 +743,7 @@ unsafe extern "C" fn increment_simple_rowgroup_ctr(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
     mut rows: crate::jmorecfg_h::JDIMENSION,
 ) {
-     let mut rows_left:  crate::jmorecfg_h::JDIMENSION =  0;
+     
     let mut main_ptr: crate::src::jdmainct::my_main_ptr =
         (*cinfo).main as crate::src::jdmainct::my_main_ptr;
     /* Increment the counter to the next row group after the skipped rows. */
@@ -754,7 +752,8 @@ unsafe extern "C" fn increment_simple_rowgroup_ctr(
     /* Partially skipping a row group would involve modifying the internal state
      * of the upsampler, so read the remaining rows into a dummy buffer instead.
      */
-    rows_left =  rows % (*cinfo).max_v_samp_factor as libc::c_uint;
+     let mut rows_left:   crate::jmorecfg_h::JDIMENSION =
+      rows % (*cinfo).max_v_samp_factor as libc::c_uint;
     (*cinfo).output_scanline =
         (*cinfo).output_scanline + (rows - rows_left);
     read_and_discard_scanlines(cinfo, rows_left);
@@ -775,7 +774,7 @@ pub unsafe extern "C" fn jpeg_skip_scanlines(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
     mut num_lines: crate::jmorecfg_h::JDIMENSION,
 ) -> crate::jmorecfg_h::JDIMENSION {
-     let mut i:  crate::jmorecfg_h::JDIMENSION =  0; let mut lines_per_iMCU_row:  crate::jmorecfg_h::JDIMENSION =  0; let mut lines_left_in_iMCU_row:  crate::jmorecfg_h::JDIMENSION =  0; let mut lines_after_iMCU_row:  crate::jmorecfg_h::JDIMENSION =  0; let mut lines_to_skip:  crate::jmorecfg_h::JDIMENSION =  0; let mut lines_to_read:  crate::jmorecfg_h::JDIMENSION =  0;let mut main_ptr: crate::src::jdmainct::my_main_ptr =
+         let mut lines_to_skip:  crate::jmorecfg_h::JDIMENSION =  0; let mut main_ptr: crate::src::jdmainct::my_main_ptr =
         (*cinfo).main as crate::src::jdmainct::my_main_ptr;
     let mut coef: crate::src::jdcoefct::my_coef_ptr =
         (*cinfo).coef as crate::src::jdcoefct::my_coef_ptr;
@@ -815,11 +814,14 @@ pub unsafe extern "C" fn jpeg_skip_scanlines(
     if num_lines == 0u32 {
         return 0u32;
     }
-    lines_per_iMCU_row = ((*cinfo).min_DCT_scaled_size * (*cinfo).max_v_samp_factor)
-        as crate::jmorecfg_h::JDIMENSION;
-    lines_left_in_iMCU_row = ( lines_per_iMCU_row - (*cinfo).output_scanline % lines_per_iMCU_row) %
-    lines_per_iMCU_row;
-    lines_after_iMCU_row =  num_lines - lines_left_in_iMCU_row;
+    
+    
+     let mut lines_per_iMCU_row:   crate::jmorecfg_h::JDIMENSION =
+     ((*cinfo).min_DCT_scaled_size * (*cinfo).max_v_samp_factor)
+        as crate::jmorecfg_h::JDIMENSION; let mut lines_left_in_iMCU_row:   crate::jmorecfg_h::JDIMENSION =
+     ( lines_per_iMCU_row - (*cinfo).output_scanline % lines_per_iMCU_row) %
+    lines_per_iMCU_row; let mut lines_after_iMCU_row:   crate::jmorecfg_h::JDIMENSION =
+      num_lines - lines_left_in_iMCU_row;
     /* Skip the lines remaining in the current iMCU row.  When upsampling
      * requires context rows, we need the previous and next rows in order to read
      * the current row.  This adds some complexity.
@@ -888,7 +890,8 @@ pub unsafe extern "C" fn jpeg_skip_scanlines(
      * of the full iMCU rows that we can.  We will not read these lines unless we
      * have to.
      */
-    lines_to_read =  lines_after_iMCU_row - lines_to_skip;
+     let mut lines_to_read:   crate::jmorecfg_h::JDIMENSION =
+      lines_after_iMCU_row - lines_to_skip;
     /* For images requiring multiple scans (progressive, non-interleaved, etc.),
      * all of the entropy decoding occurs in jpeg_start_decompress(), assuming
      * that the input data source is non-suspending.  This makes skipping easy.
@@ -911,12 +914,11 @@ pub unsafe extern "C" fn jpeg_skip_scanlines(
             .output_height - (*cinfo).output_scanline;
         return num_lines;
     }
-    /* Skip the iMCU rows that we can safely skip. */
-    i = 0u32;
+     let mut i:   crate::jmorecfg_h::JDIMENSION =  0u32;
     while i < lines_to_skip {
-         let mut y:  libc::c_int =  0;y = 0i32;
+          let mut y:   libc::c_int =  0i32;
         while y < (*coef).MCU_rows_per_iMCU_row {
-             let mut x:  crate::jmorecfg_h::JDIMENSION =  0;x = 0u32;
+              let mut x:   crate::jmorecfg_h::JDIMENSION =  0u32;
             while x < (*cinfo).MCUs_per_row {
                 /* Calling decode_mcu() with a NULL pointer causes it to discard the
                  * decoded coefficients.  This is ~5% faster for large subsets, but
@@ -981,7 +983,7 @@ pub unsafe extern "C" fn jpeg_read_raw_data(
     mut data: crate::jpeglib_h::JSAMPIMAGE,
     mut max_lines: crate::jmorecfg_h::JDIMENSION,
 ) -> crate::jmorecfg_h::JDIMENSION {
-     let mut lines_per_iMCU_row:  crate::jmorecfg_h::JDIMENSION =  0;
+     
     if (*cinfo).global_state != crate::jpegint_h::DSTATE_RAW_OK {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
         (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
@@ -1013,8 +1015,8 @@ pub unsafe extern "C" fn jpeg_read_raw_data(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    /* Verify that at least one iMCU row can be returned. */
-    lines_per_iMCU_row = ((*cinfo).max_v_samp_factor * (*cinfo).min_DCT_scaled_size)
+     let mut lines_per_iMCU_row:   crate::jmorecfg_h::JDIMENSION =
+     ((*cinfo).max_v_samp_factor * (*cinfo).min_DCT_scaled_size)
         as crate::jmorecfg_h::JDIMENSION;
     if max_lines < lines_per_iMCU_row {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BUFFER_SIZE as libc::c_int;

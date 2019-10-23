@@ -1433,7 +1433,7 @@ unsafe extern "C" fn setCompDefaults(
 }
 
 unsafe extern "C" fn getSubsamp(mut dinfo: crate::jpeglib_h::j_decompress_ptr) -> libc::c_int {
-     let mut i:  libc::c_int =  0;let mut retval: libc::c_int = -1i32;
+     let mut retval: libc::c_int = -1i32;
     
     
     /* The sampling factors actually have no meaning with grayscale JPEG files,
@@ -1446,7 +1446,7 @@ unsafe extern "C" fn getSubsamp(mut dinfo: crate::jpeglib_h::j_decompress_ptr) -
     {
         return crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int;
     }
-    i = 0i32;
+     let mut i:   libc::c_int =  0i32;
     while i < crate::src::turbojpeg::NUMSUBOPT {
         if (*dinfo).num_components == pixelsize[i as usize]
             || ((*dinfo).jpeg_color_space
@@ -1788,9 +1788,12 @@ pub unsafe extern "C" fn tjBufSize(
         /* This allows for rare corner cases in which a JPEG image can actually be
         larger than the uncompressed input (we wouldn't mention it if it hadn't
         happened before.) */
-         let mut mcuw:  libc::c_int =  0; let mut mcuh:  libc::c_int =  0; let mut chromasf:  libc::c_int =  0;mcuw = crate::src::turbojpeg::tjMCUWidth[jpegSubsamp as usize];
-        mcuh = crate::src::turbojpeg::tjMCUHeight[jpegSubsamp as usize];
-        chromasf = if jpegSubsamp == crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int {
+           
+        
+         let mut mcuw:   libc::c_int =
+     crate::src::turbojpeg::tjMCUWidth[jpegSubsamp as usize]; let mut mcuh:   libc::c_int =
+     crate::src::turbojpeg::tjMCUHeight[jpegSubsamp as usize]; let mut chromasf:   libc::c_int =
+     if jpegSubsamp == crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int {
             0i32
         } else {
             (4i32 * 64i32) / (mcuw * mcuh)
@@ -1869,12 +1872,13 @@ pub unsafe extern "C" fn tjBufSizeYUV2(
         );
         retval = -1i32
     } else {
-         let mut nc:  libc::c_int =  0; let mut i:  libc::c_int =  0;nc = if subsamp == crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int {
+          
+         let mut nc:   libc::c_int =
+     if subsamp == crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int {
             1i32
         } else {
             3i32
-        };
-        i = 0i32;
+        }; let mut i:   libc::c_int =  0i32;
         while i < nc {
             let mut pw: libc::c_int = tjPlaneWidth(i, width, subsamp);
             let mut stride: libc::c_int = pw + pad - 1i32 & !(pad - 1i32);
@@ -1942,7 +1946,8 @@ pub unsafe extern "C" fn tjPlaneWidth(
         );
         retval = -1i32
     } else {
-         let mut nc:  libc::c_int =  0;nc = if subsamp == crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int {
+          let mut nc:   libc::c_int =
+     if subsamp == crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int {
             1i32
         } else {
             3i32
@@ -1958,7 +1963,8 @@ pub unsafe extern "C" fn tjPlaneWidth(
             );
             retval = -1i32
         } else {
-             let mut pw:  libc::c_int =  0;pw = width + crate::src::turbojpeg::tjMCUWidth[subsamp as usize] / 8i32 - 1i32
+              let mut pw:   libc::c_int =
+     width + crate::src::turbojpeg::tjMCUWidth[subsamp as usize] / 8i32 - 1i32
                 & !(crate::src::turbojpeg::tjMCUWidth[subsamp as usize] / 8i32 - 1i32);
             if componentID == 0i32 {
                 retval = pw
@@ -2004,7 +2010,8 @@ pub unsafe extern "C" fn tjPlaneHeight(
         );
         retval = -1i32
     } else {
-         let mut nc:  libc::c_int =  0;nc = if subsamp == crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int {
+          let mut nc:   libc::c_int =
+     if subsamp == crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int {
             1i32
         } else {
             3i32
@@ -2020,7 +2027,8 @@ pub unsafe extern "C" fn tjPlaneHeight(
             );
             retval = -1i32
         } else {
-             let mut ph:  libc::c_int =  0;ph = height + crate::src::turbojpeg::tjMCUHeight[subsamp as usize] / 8i32 - 1i32
+              let mut ph:   libc::c_int =
+     height + crate::src::turbojpeg::tjMCUHeight[subsamp as usize] / 8i32 - 1i32
                 & !(crate::src::turbojpeg::tjMCUHeight[subsamp as usize] / 8i32 - 1i32);
             if componentID == 0i32 {
                 retval = ph
@@ -2079,8 +2087,8 @@ pub unsafe extern "C" fn tjPlaneSizeYUV(
         );
         retval = -1i32 as libc::c_ulong
     } else {
-         let mut pw:  libc::c_int =  0; let mut ph:  libc::c_int =  0;pw = tjPlaneWidth(componentID, width, subsamp);
-        ph = tjPlaneHeight(componentID, height, subsamp);
+          
+         let mut pw:   libc::c_int =  tjPlaneWidth(componentID, width, subsamp); let mut ph:   libc::c_int =  tjPlaneHeight(componentID, height, subsamp);
         if pw < 0i32 || ph < 0i32 {
             return -1i32 as libc::c_ulong;
         }
@@ -2276,7 +2284,7 @@ pub unsafe extern "C" fn tjCompress2(
             /* If we get here, the JPEG code has signaled an error. */
             retval = -1i32
         } else {
-             let mut i:  libc::c_int =  0; let mut alloc:  libc::c_int =  1i32;(*cinfo).image_width = width as crate::jmorecfg_h::JDIMENSION;
+              let mut alloc:  libc::c_int =  1i32;(*cinfo).image_width = width as crate::jmorecfg_h::JDIMENSION;
             (*cinfo).image_height = height as crate::jmorecfg_h::JDIMENSION;
             if flags & crate::src::turbojpeg::TJFLAG_FORCEMMX != 0 {
                 crate::stdlib::putenv(
@@ -2312,7 +2320,7 @@ pub unsafe extern "C" fn tjCompress2(
                 return -1i32;
             }
             crate::jpeglib_h::jpeg_start_compress(cinfo, crate::jmorecfg_h::TRUE);
-            i = 0i32;
+             let mut i:   libc::c_int =  0i32;
             while i < height {
                 if flags & crate::src::turbojpeg::TJFLAG_BOTTOMUP != 0 {
                     let ref mut fresh0 = *row_pointer.offset(i as isize);
@@ -2475,7 +2483,7 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
     
         [::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>(); 10]; let mut outbuf:  [*mut crate::jpeglib_h::JSAMPROW; 10] =
     
-        [::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>(); 10]; let mut i:  libc::c_int =  0; let mut retval:  libc::c_int =  0i32;
+        [::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>(); 10];  let mut retval:  libc::c_int =  0i32;
     let mut row_pointer: *mut crate::jpeglib_h::JSAMPROW =
         crate::stddef_h::NULL as *mut crate::jpeglib_h::JSAMPROW;
     
@@ -2512,7 +2520,7 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
     } else {
         crate::jmorecfg_h::FALSE
     };
-    i = 0i32;
+     let mut i:   libc::c_int =  0i32;
     while i < crate::jmorecfg_h::MAX_COMPONENTS {
         tmpbuf[i as usize] = crate::stddef_h::NULL as *mut crate::jpeglib_h::JSAMPROW;
         _tmpbuf[i as usize] = crate::stddef_h::NULL as *mut crate::jmorecfg_h::JSAMPLE;
@@ -2675,7 +2683,7 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                 );
                 retval = -1i32
             } else {
-                 let mut pw0:  libc::c_int =  0; let mut ph0:  libc::c_int =  0;Some(
+                  Some(
                     (*(*cinfo).err)
                         .reset_error_mgr
                         .expect("non-null function pointer"),
@@ -2692,9 +2700,11 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                         .expect("non-null function pointer"),
                 )
                 .expect("non-null function pointer")(cinfo);
-                pw0 = width + (*cinfo).max_h_samp_factor - 1i32
-                    & !((*cinfo).max_h_samp_factor - 1i32);
-                ph0 = height + (*cinfo).max_v_samp_factor - 1i32
+                
+                 let mut pw0:   libc::c_int =
+     width + (*cinfo).max_h_samp_factor - 1i32
+                    & !((*cinfo).max_h_samp_factor - 1i32); let mut ph0:   libc::c_int =
+     height + (*cinfo).max_v_samp_factor - 1i32
                     & !((*cinfo).max_v_samp_factor - 1i32);
                 row_pointer = crate::stdlib::malloc(
                     ::std::mem::size_of::<crate::jpeglib_h::JSAMPROW>() as libc::c_ulong *
@@ -2956,8 +2966,7 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                                             current_block = 11274834565634332203;
                                             break;
                                         } else {
-                                             let mut ptr:  *mut crate::jmorecfg_h::JSAMPLE =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();ptr = *dstPlanes.offset(i as isize);
+                                              let mut ptr:   *mut crate::jmorecfg_h::JSAMPLE =  *dstPlanes.offset(i as isize);
                                             row = 0i32;
                                             while row < ph[i as usize] {
                                                 let ref mut fresh7 =
@@ -3177,8 +3186,8 @@ pub unsafe extern "C" fn tjEncodeYUV3(
             retval = -1i32
         } else {
              let mut dstPlanes:  [*mut libc::c_uchar; 3] =
-     [::std::ptr::null_mut::< libc::c_uchar>(); 3]; let mut pw0:  libc::c_int =  0; let mut ph0:  libc::c_int =  0; let mut strides:  [libc::c_int; 3] =  [0; 3];pw0 = tjPlaneWidth(0i32, width, subsamp);
-            ph0 = tjPlaneHeight(0i32, height, subsamp);
+     [::std::ptr::null_mut::< libc::c_uchar>(); 3];   let mut strides:  [libc::c_int; 3] =  [0; 3];
+             let mut pw0:   libc::c_int =  tjPlaneWidth(0i32, width, subsamp); let mut ph0:   libc::c_int =  tjPlaneHeight(0i32, height, subsamp);
             dstPlanes[0] = dstBuf;
             strides[0] = pw0 + pad - 1i32 & !(pad - 1i32);
             if subsamp == crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int {
@@ -3351,7 +3360,7 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
     
     
     
-     let mut i:  libc::c_int =  0; let mut retval:  libc::c_int =  0i32; let mut inbuf:  [*mut crate::jpeglib_h::JSAMPROW; 10] =
+      let mut retval:  libc::c_int =  0i32; let mut inbuf:  [*mut crate::jpeglib_h::JSAMPROW; 10] =
     
         [::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>(); 10]; let mut tmpbuf:  [*mut crate::jpeglib_h::JSAMPROW; 10] =
     
@@ -3381,7 +3390,7 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
     } else {
         crate::jmorecfg_h::FALSE
     };
-    i = 0i32;
+     let mut i:   libc::c_int =  0i32;
     while i < crate::jmorecfg_h::MAX_COMPONENTS {
         tmpbuf[i as usize] = crate::stddef_h::NULL as *mut crate::jpeglib_h::JSAMPROW;
         inbuf[i as usize] = crate::stddef_h::NULL as *mut crate::jpeglib_h::JSAMPROW;
@@ -3505,7 +3514,7 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
         crate::jpeglib_h::jpeg_start_compress(cinfo, crate::jmorecfg_h::TRUE);
         i = 0i32;
         loop {
-             let mut ih:  libc::c_int =  0;if !(i < (*cinfo).num_components) {
+             if !(i < (*cinfo).num_components) {
                 current_block = 7385833325316299293;
                 break;
             }
@@ -3516,7 +3525,8 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
             iw[i as usize] = ( (*compptr)
                 .width_in_blocks * crate::jpeglib_h::DCTSIZE as libc::c_uint)
                 as libc::c_int;
-            ih = ( (*compptr)
+             let mut ih:   libc::c_int =
+     ( (*compptr)
                 .height_in_blocks * crate::jpeglib_h::DCTSIZE as libc::c_uint)
                 as libc::c_int;
             pw[i as usize] = (((((*cinfo)
@@ -3687,8 +3697,8 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
                                         / (*cinfo).max_v_samp_factor;
                                     if usetmpbuf != 0 {
                                         
-                                         let mut j:  libc::c_int =  0;
-                                        j = 0i32;
+                                         
+                                         let mut j:   libc::c_int =  0i32;
                                         while j
                                             < (if th[i as usize] < ph[i as usize] - crow[i as usize]
                                             {
@@ -3697,7 +3707,7 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
                                                 (ph[i as usize]) - crow[i as usize]
                                             })
                                         {
-                                             let mut k:  libc::c_int =  0;crate::stdlib::memcpy(
+                                             crate::stdlib::memcpy(
                                                 *tmpbuf[i as usize].offset(j as isize)
                                                     as *mut libc::c_void,
                                                 *inbuf[i as usize]
@@ -3705,8 +3715,7 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
                                                     as *const libc::c_void,
                                                 pw[i as usize] as libc::c_ulong,
                                             );
-                                            /* Duplicate last sample in row to fill out MCU */
-                                            k = pw[i as usize];
+                                             let mut k:   libc::c_int =  pw[i as usize];
                                             while k < iw[i as usize] {
                                                 *(*tmpbuf[i as usize].offset(j as isize))
                                                     .offset(k as isize) = *(*tmpbuf[i as usize]
@@ -3897,8 +3906,8 @@ pub unsafe extern "C" fn tjCompressFromYUV(
             retval = -1i32
         } else {
              let mut srcPlanes:  [*const libc::c_uchar; 3] =
-     [::std::ptr::null::< libc::c_uchar>(); 3]; let mut pw0:  libc::c_int =  0; let mut ph0:  libc::c_int =  0; let mut strides:  [libc::c_int; 3] =  [0; 3];pw0 = tjPlaneWidth(0i32, width, subsamp);
-            ph0 = tjPlaneHeight(0i32, height, subsamp);
+     [::std::ptr::null::< libc::c_uchar>(); 3];   let mut strides:  [libc::c_int; 3] =  [0; 3];
+             let mut pw0:   libc::c_int =  tjPlaneWidth(0i32, width, subsamp); let mut ph0:   libc::c_int =  tjPlaneHeight(0i32, height, subsamp);
             srcPlanes[0] = srcBuf;
             strides[0] = pw0 + pad - 1i32 & !(pad - 1i32);
             if subsamp == crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int {
@@ -3980,8 +3989,9 @@ unsafe extern "C" fn _tjInitDecompress(
 #[no_mangle]
 
 pub unsafe extern "C" fn tjInitDecompress() -> crate::src::turbojpeg::tjhandle {
-     let mut this:  *mut tjinstance =  ::std::ptr::null_mut::< tjinstance>();
-    this = crate::stdlib::malloc(::std::mem::size_of::<tjinstance>() as libc::c_ulong)
+     
+     let mut this:   *mut tjinstance =
+     crate::stdlib::malloc(::std::mem::size_of::<tjinstance>() as libc::c_ulong)
         as *mut tjinstance;
     if this.is_null() {
         crate::stdlib::snprintf(
@@ -4414,7 +4424,7 @@ pub unsafe extern "C" fn tjDecompress2(
             /* If we get here, the JPEG code has signaled an error. */
             retval = -1i32
         } else {
-             let mut i:  libc::c_int =  0; let mut jpegwidth:  libc::c_int =  0; let mut jpegheight:  libc::c_int =  0; let mut scaledw:  libc::c_int =  0; let mut scaledh:  libc::c_int =  0;jpeg_mem_src_tj(dinfo, jpegBuf, jpegSize);
+                let mut scaledw:  libc::c_int =  0; let mut scaledh:  libc::c_int =  0;jpeg_mem_src_tj(dinfo, jpegBuf, jpegSize);
             crate::jpeglib_h::jpeg_read_header(dinfo, crate::jmorecfg_h::TRUE);
             (*this).dinfo.out_color_space = pf2cs[pixelFormat as usize];
             if flags & crate::src::turbojpeg::TJFLAG_FASTDCT != 0 {
@@ -4424,15 +4434,15 @@ pub unsafe extern "C" fn tjDecompress2(
             if flags & crate::src::turbojpeg::TJFLAG_FASTUPSAMPLE != 0 {
                 (*dinfo).do_fancy_upsampling = crate::jmorecfg_h::FALSE
             }
-            jpegwidth = (*dinfo).image_width as libc::c_int;
-            jpegheight = (*dinfo).image_height as libc::c_int;
+            
+             let mut jpegwidth:   libc::c_int =  (*dinfo).image_width as libc::c_int; let mut jpegheight:   libc::c_int =  (*dinfo).image_height as libc::c_int;
             if width == 0i32 {
                 width = jpegwidth
             }
             if height == 0i32 {
                 height = jpegheight
             }
-            i = 0i32;
+             let mut i:   libc::c_int =  0i32;
             while i < NUMSF {
                 scaledw = (jpegwidth * sf[i as usize].num + sf[i as usize].denom - 1i32)
                     / sf[i as usize].denom;
@@ -4582,7 +4592,7 @@ unsafe extern "C" fn setDecodeDefaults(
     mut subsamp: libc::c_int,
     mut flags: libc::c_int,
 ) -> libc::c_int {
-     let mut i:  libc::c_int =  0;
+     
     (*dinfo).scale_denom = 1u32;
     (*dinfo).scale_num = (*dinfo).scale_denom;
     if subsamp == crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int {
@@ -4607,7 +4617,7 @@ unsafe extern "C" fn setDecodeDefaults(
             crate::jpeglib_h::jpeg_component_info,
         >() as libc::c_ulong,
     ) as *mut crate::jpeglib_h::jpeg_component_info;
-    i = 0i32;
+     let mut i:   libc::c_int =  0i32;
     while i < (*dinfo).num_components {
         let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
             &mut *(*dinfo).comp_info.offset(i as isize)
@@ -4724,7 +4734,7 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
     
         [::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>(); 10]; let mut inbuf:  [*mut crate::jpeglib_h::JSAMPROW; 10] =
     
-        [::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>(); 10]; let mut i:  libc::c_int =  0; let mut retval:  libc::c_int =  0i32;
+        [::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>(); 10];  let mut retval:  libc::c_int =  0i32;
     let mut row_pointer: *mut crate::jpeglib_h::JSAMPROW =
         crate::stddef_h::NULL as *mut crate::jpeglib_h::JSAMPROW;
     
@@ -4765,7 +4775,7 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
     } else {
         crate::jmorecfg_h::FALSE
     };
-    i = 0i32;
+     let mut i:   libc::c_int =  0i32;
     while i < crate::jmorecfg_h::MAX_COMPONENTS {
         tmpbuf[i as usize] = crate::stddef_h::NULL as *mut crate::jpeglib_h::JSAMPROW;
         _tmpbuf[i as usize] = crate::stddef_h::NULL as *mut crate::jmorecfg_h::JSAMPLE;
@@ -4896,7 +4906,7 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
         if setDecodeDefaults(dinfo, pixelFormat, subsamp, flags) == -1i32 {
             retval = -1i32
         } else {
-             let mut pw0:  libc::c_int =  0; let mut ph0:  libc::c_int =  0;old_read_markers = (*(*dinfo).marker).read_markers;
+              old_read_markers = (*(*dinfo).marker).read_markers;
             (*(*dinfo).marker).read_markers = Some(
                 my_read_markers
                     as unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> libc::c_int,
@@ -4923,8 +4933,10 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(dinfo);
-            pw0 = width + (*dinfo).max_h_samp_factor - 1i32 & !((*dinfo).max_h_samp_factor - 1i32);
-            ph0 = height + (*dinfo).max_v_samp_factor - 1i32 & !((*dinfo).max_v_samp_factor - 1i32);
+            
+             let mut pw0:   libc::c_int =
+     width + (*dinfo).max_h_samp_factor - 1i32 & !((*dinfo).max_h_samp_factor - 1i32); let mut ph0:   libc::c_int =
+     height + (*dinfo).max_v_samp_factor - 1i32 & !((*dinfo).max_v_samp_factor - 1i32);
             if pitch == 0i32 {
                 pitch = ( (*dinfo).output_width *
     
@@ -5099,8 +5111,8 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
                                 current_block = 5377760937109324610;
                                 break;
                             } else {
-                                 let mut ptr:  *mut crate::jmorecfg_h::JSAMPLE =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();ptr = *srcPlanes.offset(i as isize)
+                                  let mut ptr:   *mut crate::jmorecfg_h::JSAMPLE =
+     *srcPlanes.offset(i as isize)
                                     as *mut crate::jmorecfg_h::JSAMPLE;
                                 row = 0i32;
                                 while row < ph[i as usize] {
@@ -5301,8 +5313,8 @@ pub unsafe extern "C" fn tjDecodeYUV(
             retval = -1i32
         } else {
              let mut srcPlanes:  [*const libc::c_uchar; 3] =
-     [::std::ptr::null::< libc::c_uchar>(); 3]; let mut pw0:  libc::c_int =  0; let mut ph0:  libc::c_int =  0; let mut strides:  [libc::c_int; 3] =  [0; 3];pw0 = tjPlaneWidth(0i32, width, subsamp);
-            ph0 = tjPlaneHeight(0i32, height, subsamp);
+     [::std::ptr::null::< libc::c_uchar>(); 3];   let mut strides:  [libc::c_int; 3] =  [0; 3];
+             let mut pw0:   libc::c_int =  tjPlaneWidth(0i32, width, subsamp); let mut ph0:   libc::c_int =  tjPlaneHeight(0i32, height, subsamp);
             srcPlanes[0] = srcBuf;
             strides[0] = pw0 + pad - 1i32 & !(pad - 1i32);
             if subsamp == crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int {
@@ -5413,7 +5425,7 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
     
     
     
-     let mut i:  libc::c_int =  0; let mut retval:  libc::c_int =  0i32; let mut outbuf:  [*mut crate::jpeglib_h::JSAMPROW; 10] =
+      let mut retval:  libc::c_int =  0i32; let mut outbuf:  [*mut crate::jpeglib_h::JSAMPROW; 10] =
     
         [::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>(); 10]; let mut tmpbuf:  [*mut crate::jpeglib_h::JSAMPROW; 10] =
     
@@ -5444,7 +5456,7 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
     } else {
         crate::jmorecfg_h::FALSE
     };
-    i = 0i32;
+     let mut i:   libc::c_int =  0i32;
     while i < crate::jmorecfg_h::MAX_COMPONENTS {
         tmpbuf[i as usize] = crate::stddef_h::NULL as *mut crate::jpeglib_h::JSAMPROW;
         outbuf[i as usize] = crate::stddef_h::NULL as *mut crate::jpeglib_h::JSAMPROW;
@@ -5521,12 +5533,12 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
             /* If we get here, the JPEG code has signaled an error. */
             retval = -1i32
         } else {
-             let mut jpegSubsamp:  libc::c_int =  0;if (*this).headerRead == 0 {
+             if (*this).headerRead == 0 {
                 jpeg_mem_src_tj(dinfo, jpegBuf, jpegSize);
                 crate::jpeglib_h::jpeg_read_header(dinfo, crate::jmorecfg_h::TRUE);
             }
             (*this).headerRead = 0i32;
-            jpegSubsamp = getSubsamp(dinfo);
+             let mut jpegSubsamp:   libc::c_int =  getSubsamp(dinfo);
             if jpegSubsamp < 0i32 {
                 crate::stdlib::snprintf((*this).errStr.as_mut_ptr(),
                          crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
@@ -5566,8 +5578,8 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                 );
                 retval = -1i32
             } else {
-                 let mut jpegwidth:  libc::c_int =  0; let mut jpegheight:  libc::c_int =  0; let mut scaledw:  libc::c_int =  0; let mut scaledh:  libc::c_int =  0;jpegwidth = (*dinfo).image_width as libc::c_int;
-                jpegheight = (*dinfo).image_height as libc::c_int;
+                   let mut scaledw:  libc::c_int =  0; let mut scaledh:  libc::c_int =  0;
+                 let mut jpegwidth:   libc::c_int =  (*dinfo).image_width as libc::c_int; let mut jpegheight:   libc::c_int =  (*dinfo).image_height as libc::c_int;
                 if width == 0i32 {
                     width = jpegwidth
                 }
@@ -5620,18 +5632,19 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                     );
                     retval = -1i32
                 } else {
-                     let mut current_block:  u64; let mut sfi:  libc::c_int =  0; let mut row:  libc::c_int =  0; let mut pw:  [libc::c_int; 10] =  [0; 10]; let mut ph:  [libc::c_int; 10] =  [0; 10]; let mut iw:  [libc::c_int; 10] =  [0; 10]; let mut tmpbufsize:  libc::c_int =  0i32; let mut usetmpbuf:  libc::c_int =  0i32; let mut th:  [libc::c_int; 10] =  [0; 10]; let mut ptr:  *mut crate::jmorecfg_h::JSAMPLE =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut dctsize:  libc::c_int =  0;width = scaledw;
+                     let mut current_block:  u64;  let mut row:  libc::c_int =  0; let mut pw:  [libc::c_int; 10] =  [0; 10]; let mut ph:  [libc::c_int; 10] =  [0; 10]; let mut iw:  [libc::c_int; 10] =  [0; 10]; let mut tmpbufsize:  libc::c_int =  0i32; let mut usetmpbuf:  libc::c_int =  0i32; let mut th:  [libc::c_int; 10] =  [0; 10]; let mut ptr:  *mut crate::jmorecfg_h::JSAMPLE =
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); width = scaledw;
                     height = scaledh;
                     (*dinfo).scale_num = sf[i as usize].num as libc::c_uint;
                     (*dinfo).scale_denom = sf[i as usize].denom as libc::c_uint;
-                    sfi = i;
+                     let mut sfi:   libc::c_int =  i;
                     crate::jpeglib_h::jpeg_calc_output_dimensions(dinfo);
-                    dctsize =
+                     let mut dctsize:   libc::c_int =
+    
                         crate::jpeglib_h::DCTSIZE * sf[sfi as usize].num / sf[sfi as usize].denom;
                     i = 0i32;
                     loop {
-                         let mut ih:  libc::c_int =  0;if !(i < (*dinfo).num_components) {
+                         if !(i < (*dinfo).num_components) {
                             current_block = 11064061988481400464;
                             break;
                         }
@@ -5642,7 +5655,8 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                         iw[i as usize] = ( (*compptr)
                             .width_in_blocks * dctsize as libc::c_uint)
                             as libc::c_int;
-                        ih = ( (*compptr)
+                         let mut ih:   libc::c_int =
+     ( (*compptr)
                             .height_in_blocks * dctsize as libc::c_uint)
                             as libc::c_int;
                         pw[i as usize] = (((((*dinfo)
@@ -5876,7 +5890,7 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                                                 
                                                 i = 0i32;
                                                 while i < (*dinfo).num_components {
-                                                     let mut j:  libc::c_int =  0;j = 0i32;
+                                                      let mut j:   libc::c_int =  0i32;
                                                     while j
                                                         < (if th[i as usize]
                                                             < ph[i as usize] - crow[i as usize]
@@ -6078,19 +6092,21 @@ pub unsafe extern "C" fn tjDecompressToYUV2(
             );
             retval = -1i32
         } else {
-             let mut i:  libc::c_int =  0; let mut jpegwidth:  libc::c_int =  0; let mut jpegheight:  libc::c_int =  0;jpegwidth = (*dinfo).image_width as libc::c_int;
-            jpegheight = (*dinfo).image_height as libc::c_int;
+               
+             let mut jpegwidth:   libc::c_int =  (*dinfo).image_width as libc::c_int; let mut jpegheight:   libc::c_int =  (*dinfo).image_height as libc::c_int;
             if width == 0i32 {
                 width = jpegwidth
             }
             if height == 0i32 {
                 height = jpegheight
             }
-            i = 0i32;
+             let mut i:   libc::c_int =  0i32;
             while i < NUMSF {
-                 let mut scaledw:  libc::c_int =  0; let mut scaledh:  libc::c_int =  0;scaledw = (jpegwidth * sf[i as usize].num + sf[i as usize].denom - 1i32)
-                    / sf[i as usize].denom;
-                scaledh = (jpegheight * sf[i as usize].num + sf[i as usize].denom - 1i32)
+                  
+                 let mut scaledw:   libc::c_int =
+     (jpegwidth * sf[i as usize].num + sf[i as usize].denom - 1i32)
+                    / sf[i as usize].denom; let mut scaledh:   libc::c_int =
+     (jpegheight * sf[i as usize].num + sf[i as usize].denom - 1i32)
                     / sf[i as usize].denom;
                 if scaledw <= width && scaledh <= height {
                     break;
@@ -6118,8 +6134,8 @@ pub unsafe extern "C" fn tjDecompressToYUV2(
                 retval = -1i32
             } else {
                  let mut dstPlanes:  [*mut libc::c_uchar; 3] =
-     [::std::ptr::null_mut::< libc::c_uchar>(); 3]; let mut pw0:  libc::c_int =  0; let mut ph0:  libc::c_int =  0; let mut strides:  [libc::c_int; 3] =  [0; 3];pw0 = tjPlaneWidth(0i32, width, jpegSubsamp);
-                ph0 = tjPlaneHeight(0i32, height, jpegSubsamp);
+     [::std::ptr::null_mut::< libc::c_uchar>(); 3];   let mut strides:  [libc::c_int; 3] =  [0; 3];
+                 let mut pw0:   libc::c_int =  tjPlaneWidth(0i32, width, jpegSubsamp); let mut ph0:   libc::c_int =  tjPlaneHeight(0i32, height, jpegSubsamp);
                 dstPlanes[0] = dstBuf;
                 strides[0] = pw0 + pad - 1i32 & !(pad - 1i32);
                 if jpegSubsamp == crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int {
@@ -6413,8 +6429,8 @@ pub unsafe extern "C" fn tjTransform(
                 /* If we get here, the JPEG code has signaled an error. */
                 retval = -1i32
             } else {
-                 let mut i:  libc::c_int =  0; let mut jpegSubsamp:  libc::c_int =  0; let mut saveMarkers:  libc::c_int =  0i32;jpeg_mem_src_tj(dinfo, jpegBuf, jpegSize);
-                i = 0i32;
+                   let mut saveMarkers:  libc::c_int =  0i32;jpeg_mem_src_tj(dinfo, jpegBuf, jpegSize);
+                 let mut i:   libc::c_int =  0i32;
                 while i < n {
                     (*xinfo.offset(i as isize)).transform =
                         xformtypes[(*t.offset(i as isize)).op as usize];
@@ -6503,7 +6519,7 @@ pub unsafe extern "C" fn tjTransform(
                     } as crate::src::transupp::JCOPY_OPTION,
                 );
                 crate::jpeglib_h::jpeg_read_header(dinfo, crate::jmorecfg_h::TRUE);
-                jpegSubsamp = getSubsamp(dinfo);
+                 let mut jpegSubsamp:   libc::c_int =  getSubsamp(dinfo);
                 if jpegSubsamp < 0i32 {
                     crate::stdlib::snprintf(
                         (*this).errStr.as_mut_ptr(),
@@ -6586,14 +6602,11 @@ pub unsafe extern "C" fn tjTransform(
                     match current_block {
                         1538248363559331145 => {}
                         _ => {
-                             let mut srccoefs:  *mut crate::jpeglib_h::jvirt_barray_ptr =
-    
-        ::std::ptr::null_mut::< crate::jpeglib_h::jvirt_barray_ptr>();srccoefs = crate::jpeglib_h::jpeg_read_coefficients(dinfo);
+                              let mut srccoefs:   *mut crate::jpeglib_h::jvirt_barray_ptr =
+     crate::jpeglib_h::jpeg_read_coefficients(dinfo);
                             i = 0i32;
                             's_452: loop {
-                                 let mut dstcoefs:  *mut crate::jpeglib_h::jvirt_barray_ptr =
-    
-        ::std::ptr::null_mut::< crate::jpeglib_h::jvirt_barray_ptr>(); let mut w:  libc::c_int =  0; let mut h:  libc::c_int =  0; let mut alloc:  libc::c_int =  1i32;if !(i < n) {
+                                  let mut w:  libc::c_int =  0; let mut h:  libc::c_int =  0; let mut alloc:  libc::c_int =  1i32;if !(i < n) {
                                     current_block = 7761909515536616543;
                                     break;
                                 }
@@ -6623,7 +6636,8 @@ pub unsafe extern "C" fn tjTransform(
                                     );
                                 }
                                 crate::jpeglib_h::jpeg_copy_critical_parameters(dinfo, cinfo);
-                                dstcoefs = crate::src::transupp::jtransform_adjust_parameters(
+                                 let mut dstcoefs:   *mut crate::jpeglib_h::jvirt_barray_ptr =
+     crate::src::transupp::jtransform_adjust_parameters(
                                     dinfo,
                                     cinfo,
                                     srccoefs,
@@ -6669,10 +6683,10 @@ pub unsafe extern "C" fn tjTransform(
                                 if (*t.offset(i as isize)).customFilter.is_some() {
                                     
                                     
-                                     let mut ci:  libc::c_int =  0;
-                                    ci = 0i32;
+                                     
+                                     let mut ci:   libc::c_int =  0i32;
                                     while ci < (*cinfo).num_components {
-                                         let mut by:  crate::jmorecfg_h::JDIMENSION =  0;let mut compptr:
+                                         let mut compptr:
                                                     *mut crate::jpeglib_h::jpeg_component_info =
                                                 &mut *(*cinfo).comp_info.offset(ci
                                                                                     as
@@ -6703,9 +6717,9 @@ pub unsafe extern "C" fn tjTransform(
                                             };
                                             init
                                         };
-                                        by = 0u32;
+                                         let mut by:   crate::jmorecfg_h::JDIMENSION =  0u32;
                                         while by < (*compptr).height_in_blocks {
-                                             let mut y:  libc::c_int =  0;let mut barray: crate::jpeglib_h::JBLOCKARRAY =
+                                             let mut barray: crate::jpeglib_h::JBLOCKARRAY =
                                                 (*(*dinfo).mem)
                                                     .access_virt_barray
                                                     .expect("non-null function pointer")(
@@ -6716,7 +6730,7 @@ pub unsafe extern "C" fn tjTransform(
                                                         as crate::jmorecfg_h::JDIMENSION,
                                                     crate::jmorecfg_h::TRUE,
                                                 );
-                                            y = 0i32;
+                                             let mut y:   libc::c_int =  0i32;
                                             while y < (*compptr).v_samp_factor {
                                                 if (*t.offset(i as isize))
                                                     .customFilter
@@ -6897,11 +6911,11 @@ pub unsafe extern "C" fn tjLoadImage(
         );
         retval = -1i32
     } else {
-         let mut this:  *mut tjinstance =  ::std::ptr::null_mut::< tjinstance>();handle = tjInitCompress();
+         handle = tjInitCompress();
         if handle.is_null() {
             return crate::stddef_h::NULL as *mut libc::c_uchar;
         }
-        this = handle as *mut tjinstance;
+         let mut this:   *mut tjinstance =  handle as *mut tjinstance;
         cinfo = &mut (*this).cinfo;
         file = crate::stdlib::fopen(filename,  b"rb\x00".as_ptr() as *const libc::c_char);
         if file.is_null() {
@@ -6916,7 +6930,7 @@ pub unsafe extern "C" fn tjLoadImage(
             );
             retval = -1i32
         } else {
-             let mut tempc:  libc::c_int =  0;tempc = crate::stdlib::getc(file);
+              let mut tempc:   libc::c_int =  crate::stdlib::getc(file);
             if tempc < 0i32 || crate::stdlib::ungetc(tempc, file) == crate::stdlib::EOF {
                 crate::stdlib::snprintf(
                     errStr.as_mut_ptr(),
@@ -7005,7 +7019,7 @@ pub unsafe extern "C" fn tjLoadImage(
                 match current_block {
                     7323915231371106940 => {}
                     _ => {
-                         let mut pitch:  libc::c_int =  0;(*src).input_file = file;
+                         (*src).input_file = file;
                         Some((*src).start_input.expect("non-null function pointer"))
                             .expect("non-null function pointer")(cinfo, src);
                         Some(
@@ -7019,7 +7033,8 @@ pub unsafe extern "C" fn tjLoadImage(
                         *width = (*cinfo).image_width as libc::c_int;
                         *height = (*cinfo).image_height as libc::c_int;
                         *pixelFormat = cs2pf[(*cinfo).in_color_space as usize];
-                        pitch = *width * crate::src::turbojpeg::tjPixelSize[*pixelFormat as usize]
+                         let mut pitch:   libc::c_int =
+     *width * crate::src::turbojpeg::tjPixelSize[*pixelFormat as usize]
                             + align
                             - 1i32
                             & !(align - 1i32);
@@ -7043,17 +7058,18 @@ pub unsafe extern "C" fn tjLoadImage(
                             retval = -1i32
                         } else {
                             while (*cinfo).next_scanline < (*cinfo).image_height {
-                                 let mut i:  libc::c_int =  0;
+                                 
                                 let mut nlines: libc::c_int =
                                     Some((*src).get_pixel_rows.expect("non-null function pointer"))
                                         .expect("non-null function pointer")(
                                         cinfo, src
                                     ) as libc::c_int;
-                                i = 0i32;
+                                 let mut i:   libc::c_int =  0i32;
                                 while i < nlines {
                                     
-                                     let mut dstptr:  *mut libc::c_uchar =  ::std::ptr::null_mut::< libc::c_uchar>(); let mut row:  libc::c_int =  0;
-                                    row = ( (*cinfo).next_scanline + i as libc::c_uint)
+                                     let mut dstptr:  *mut libc::c_uchar =  ::std::ptr::null_mut::< libc::c_uchar>(); 
+                                     let mut row:   libc::c_int =
+     ( (*cinfo).next_scanline + i as libc::c_uint)
                                         as libc::c_int;
                                     if invert != 0 {
                                         dstptr = &mut *dstBuf
@@ -7168,11 +7184,11 @@ pub unsafe extern "C" fn tjSaveImage(
         );
         retval = -1i32
     } else {
-         let mut this:  *mut tjinstance =  ::std::ptr::null_mut::< tjinstance>();handle = tjInitDecompress();
+         handle = tjInitDecompress();
         if handle.is_null() {
             return -1i32;
         }
-        this = handle as *mut tjinstance;
+         let mut this:   *mut tjinstance =  handle as *mut tjinstance;
         dinfo = &mut (*this).dinfo;
         file = crate::stdlib::fopen(filename,  b"wb\x00".as_ptr() as *const libc::c_char);
         if file.is_null() {

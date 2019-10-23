@@ -80,7 +80,7 @@ pub unsafe extern "C" fn MD5End(
     mut buf: *mut libc::c_char,
 ) -> *mut libc::c_char {
     
-     let mut i:  libc::c_int =  0; let mut digest:  [libc::c_uchar; 16] =  [0; 16];
+      let mut digest:  [libc::c_uchar; 16] =  [0; 16];
     static mut hex: [libc::c_char; 17] = [
         48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 97, 98, 99, 100, 101, 102, 0,
     ];
@@ -91,7 +91,7 @@ pub unsafe extern "C" fn MD5End(
         return ::std::ptr::null_mut::< libc::c_char>();
     }
     crate::src::md5::md5::MD5Final(digest.as_mut_ptr(), ctx);
-    i = 0i32;
+     let mut i:   libc::c_int =  0i32;
     while i < LENGTH {
         *buf.offset((i + i) as isize) = hex[(digest[i as usize] as libc::c_int >> 4i32) as usize];
         *buf.offset((i + i + 1i32) as isize) =
@@ -159,9 +159,10 @@ pub unsafe extern "C" fn MD5FileChunk(
             tv_nsec: 0,
         },
         __glibc_reserved: [0; 3],
-    }; let mut f:  libc::c_int =  0; let mut i:  libc::c_int =  0; let mut e:  libc::c_int =  0; let mut n:  crate::stdlib::off_t =  0;
+    };    
     crate::src::md5::md5::MD5Init(&mut ctx);
-    f = crate::stdlib::open(filename, crate::stdlib::O_RDONLY);
+     let mut f:   libc::c_int =
+     crate::stdlib::open(filename, crate::stdlib::O_RDONLY);
     if f < 0i32 {
         return ::std::ptr::null_mut::< libc::c_char>();
     }
@@ -177,8 +178,8 @@ pub unsafe extern "C" fn MD5FileChunk(
     if crate::stdlib::lseek(f, ofs, crate::stdlib::SEEK_SET) < 0i64 {
         return ::std::ptr::null_mut::< libc::c_char>();
     }
-    n = len;
-    i = 0i32;
+    
+     let mut n:   crate::stdlib::off_t =  len; let mut i:   libc::c_int =  0i32;
     while n > 0i64 {
          let mut buffer:  [libc::c_uchar; 8192] =  [0; 8192];if n as libc::c_ulong > ::std::mem::size_of::<[libc::c_uchar; 8192]>() as libc::c_ulong {
             i = crate::stdlib::read(
@@ -199,7 +200,7 @@ pub unsafe extern "C" fn MD5FileChunk(
         crate::src::md5::md5::MD5Update(&mut ctx, buffer.as_mut_ptr(), i as libc::c_uint);
         n -= i as libc::c_long
     }
-    e = *crate::stdlib::__errno_location();
+     let mut e:   libc::c_int =  *crate::stdlib::__errno_location();
     crate::stdlib::close(f);
     *crate::stdlib::__errno_location() = e;
     if i < 0i32 {

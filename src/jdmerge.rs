@@ -233,7 +233,7 @@ pub const RGB_PIXELSIZE: libc::c_int = crate::jmorecfg_h::EXT_XRGB_PIXELSIZE;
  */
 
 unsafe extern "C" fn build_ycc_rgb_table(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
-     let mut i:  libc::c_int =  0; let mut x:  crate::jpegint_h::JLONG =  0;let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
+      let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
     
     
     (*upsample).Cr_r_tab = Some(
@@ -280,8 +280,9 @@ unsafe extern "C" fn build_ycc_rgb_table(mut cinfo: crate::jpeglib_h::j_decompre
         (crate::jmorecfg_h::MAXJSAMPLE + 1i32) as libc::c_ulong *
     ::std::mem::size_of::<crate::jpegint_h::JLONG>() as libc::c_ulong,
     ) as *mut crate::jpegint_h::JLONG;
-    i = 0i32;
-    x = -crate::jmorecfg_h::CENTERJSAMPLE as crate::jpegint_h::JLONG;
+    
+     let mut i:   libc::c_int =  0i32; let mut x:   crate::jpegint_h::JLONG =
+     -crate::jmorecfg_h::CENTERJSAMPLE as crate::jpegint_h::JLONG;
     while i <= crate::jmorecfg_h::MAXJSAMPLE {
         /* i is the actual input pixel value, in the range 0..MAXJSAMPLE */
         /* The Cb or Cr value we are thinking of is x = i - CENTERJSAMPLE */
@@ -701,8 +702,9 @@ unsafe extern "C" fn h2v2_merged_upsample_565D(
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_merged_upsampler(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
-     let mut upsample:  my_upsample_ptr =  ::std::ptr::null_mut::< my_upsampler>();
-    upsample = Some(
+     
+     let mut upsample:   my_upsample_ptr =
+     Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),

@@ -328,7 +328,7 @@ pub type huff_entropy_ptr = *mut huff_entropy_decoder;
  */
 
 unsafe extern "C" fn start_pass_huff_decoder(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
-     let mut ci:  libc::c_int =  0; let mut blkn:  libc::c_int =  0; let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
+       let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
     
         ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
     
@@ -354,16 +354,13 @@ unsafe extern "C" fn start_pass_huff_decoder(mut cinfo: crate::jpeglib_h::j_deco
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, -1i32);
     }
-    ci = 0i32;
+     let mut ci:   libc::c_int =  0i32;
     while ci < (*cinfo).comps_in_scan {
-         let mut dctbl:  libc::c_int =  0; let mut actbl:  libc::c_int =  0; let mut pdtbl:  *mut *mut crate::src::jdhuff::d_derived_tbl =
-    
-        ::std::ptr::null_mut::< *mut crate::src::jdhuff::d_derived_tbl>();compptr = (*cinfo).cur_comp_info[ci as usize];
-        dctbl = (*compptr).dc_tbl_no;
-        actbl = (*compptr).ac_tbl_no;
-        /* Compute derived values for Huffman tables */
-        /* We may do this more than once for a table, but it's not expensive */
-        pdtbl = (*entropy)
+           compptr = (*cinfo).cur_comp_info[ci as usize];
+        
+        
+         let mut dctbl:   libc::c_int =  (*compptr).dc_tbl_no; let mut actbl:   libc::c_int =  (*compptr).ac_tbl_no; let mut pdtbl:   *mut *mut crate::src::jdhuff::d_derived_tbl =
+     (*entropy)
             .dc_derived_tbls
             .as_mut_ptr()
             .offset(dctbl as isize);
@@ -377,8 +374,7 @@ unsafe extern "C" fn start_pass_huff_decoder(mut cinfo: crate::jpeglib_h::j_deco
         (*entropy).saved.last_dc_val[ci as usize] = 0i32;
         ci += 1
     }
-    /* Precalculate decoding info for each block in an MCU of this scan */
-    blkn = 0i32;
+     let mut blkn:   libc::c_int =  0i32;
     while blkn < (*cinfo).blocks_in_MCU {
         ci = (*cinfo).MCU_membership[blkn as usize];
         compptr = (*cinfo).cur_comp_info[ci as usize];
@@ -431,10 +427,7 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
     
     
     
-     let mut htbl:  *mut crate::jpeglib_h::JHUFF_TBL =
-     ::std::ptr::null_mut::< crate::jpeglib_h::JHUFF_TBL>(); let mut dtbl:  *mut crate::src::jdhuff::d_derived_tbl =
-    
-        ::std::ptr::null_mut::< crate::src::jdhuff::d_derived_tbl>(); let mut p:  libc::c_int =  0; let mut i:  libc::c_int =  0; let mut l:  libc::c_int =  0; let mut si:  libc::c_int =  0; let mut numsymbols:  libc::c_int =  0; let mut huffsize:  [libc::c_char; 257] =  [0; 257]; let mut huffcode:  [libc::c_uint; 257] =  [0; 257]; let mut code:  libc::c_uint =  0;
+        let mut i:  libc::c_int =  0;    let mut huffsize:  [libc::c_char; 257] =  [0; 257]; let mut huffcode:  [libc::c_uint; 257] =  [0; 257]; 
     /* Note that huffsize[] and huffcode[] are filled in code-length order,
      * paralleling the order of the symbols themselves in htbl->huffval[].
      */
@@ -449,7 +442,8 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    htbl = if isDC != 0 {
+     let mut htbl:   *mut crate::jpeglib_h::JHUFF_TBL =
+     if isDC != 0 {
         (*cinfo).dc_huff_tbl_ptrs[tblno as usize]
     } else {
         (*cinfo).ac_huff_tbl_ptrs[tblno as usize]
@@ -477,11 +471,10 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
             ::std::mem::size_of::<crate::src::jdhuff::d_derived_tbl>() as libc::c_ulong,
         ) as *mut crate::src::jdhuff::d_derived_tbl
     } /* fill in back link */
-    dtbl = *pdtbl;
+     let mut dtbl:   *mut crate::src::jdhuff::d_derived_tbl =  *pdtbl;
     (*dtbl).pub_0 = htbl;
-    /* Figure C.1: make table of Huffman code length for each symbol */
-    p = 0i32;
-    l = 1i32;
+    
+     let mut p:   libc::c_int =  0i32; let mut l:   libc::c_int =  1i32;
     while l <= 16i32 {
         i = (*htbl).bits[l as usize] as libc::c_int;
         if i < 0i32 || p + i > 256i32 {
@@ -509,11 +502,9 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
         l += 1
     }
     huffsize[p as usize] = 0i8;
-    numsymbols = p;
-    /* Figure C.2: generate the codes themselves */
-    /* We also validate that the counts represent a legal Huffman code tree. */
-    code = 0u32;
-    si = huffsize[0] as libc::c_int;
+    
+    
+     let mut numsymbols:   libc::c_int =  p; let mut code:   libc::c_uint =  0u32; let mut si:   libc::c_int =  huffsize[0] as libc::c_int;
     p = 0i32;
     while huffsize[p as usize] != 0 {
         while huffsize[p as usize] as libc::c_int == si {
@@ -579,9 +570,10 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
         while i <= (*htbl).bits[l as usize] as libc::c_int {
             /* l = current code's length, p = its index in huffcode[] & huffval[]. */
             /* Generate left-justified code followed by all possible bit sequences */
-             let mut lookbits:  libc::c_int =  0; let mut ctr:  libc::c_int =  0;lookbits =
-                (huffcode[p as usize] << crate::src::jdhuff::HUFF_LOOKAHEAD - l) as libc::c_int;
-            ctr = 1i32 << crate::src::jdhuff::HUFF_LOOKAHEAD - l;
+              
+             let mut lookbits:   libc::c_int =
+    
+                (huffcode[p as usize] << crate::src::jdhuff::HUFF_LOOKAHEAD - l) as libc::c_int; let mut ctr:   libc::c_int =  1i32 << crate::src::jdhuff::HUFF_LOOKAHEAD - l;
             while ctr > 0i32 {
                 (*dtbl).lookup[lookbits as usize] = l << crate::src::jdhuff::HUFF_LOOKAHEAD
                     | (*htbl).huffval[p as usize] as libc::c_int;
@@ -672,7 +664,7 @@ pub unsafe extern "C" fn jpeg_fill_bit_buffer(
     /* We fail to do so only if we hit a marker or are forced to suspend. */
     if (*cinfo).unread_marker == 0i32 {
         loop {
-             let mut c:  libc::c_int =  0;if !(bits_left < MIN_GET_BITS) {
+             if !(bits_left < MIN_GET_BITS) {
                 current_block_30 = 6417057564578538666;
                 break;
                 /* end while */
@@ -696,7 +688,7 @@ pub unsafe extern "C" fn jpeg_fill_bit_buffer(
             bytes_in_buffer =  bytes_in_buffer - 1;
             let fresh3 = next_input_byte;
             next_input_byte = next_input_byte.offset(1);
-            c = *fresh3 as libc::c_int;
+             let mut c:   libc::c_int =  *fresh3 as libc::c_int;
             /* If it's 0xFF, check and discard stuffed zero byte */
             if c == 0xffi32 {
                 loop
@@ -834,7 +826,7 @@ pub unsafe extern "C" fn jpeg_huff_decode(
     mut htbl: *mut crate::src::jdhuff::d_derived_tbl,
     mut min_bits: libc::c_int,
 ) -> libc::c_int {
-     let mut code:  crate::jpegint_h::JLONG =  0;let mut l: libc::c_int = min_bits;
+     let mut l: libc::c_int = min_bits;
     
     /* HUFF_DECODE has determined that the code is at least min_bits */
     /* bits long, so fetch that many bits in one swoop. */
@@ -846,7 +838,8 @@ pub unsafe extern "C" fn jpeg_huff_decode(
         bits_left = (*state).bits_left
     }
     bits_left -= l;
-    code =
+     let mut code:   crate::jpegint_h::JLONG =
+    
         ((get_buffer >> bits_left) as libc::c_int & (1i32 << l) - 1i32) as crate::jpegint_h::JLONG;
     /* Collect the rest of the Huffman code one bit at a time. */
     /* This is per Figure F.16. */
@@ -893,7 +886,7 @@ pub unsafe extern "C" fn jpeg_huff_decode(
 unsafe extern "C" fn process_restart(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
 ) -> crate::jmorecfg_h::boolean {
-     let mut ci:  libc::c_int =  0;let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
+     let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
     
     /* Throw away any unused bits remaining in bit buffer; */
     /* include any full bytes in next_marker's count of discarded bytes */
@@ -913,7 +906,7 @@ unsafe extern "C" fn process_restart(
         return crate::jmorecfg_h::FALSE;
     }
     /* Re-initialize DC predictions to 0 */
-    ci = 0i32;
+     let mut ci:   libc::c_int =  0i32;
     while ci < (*cinfo).comps_in_scan {
         (*entropy).saved.last_dc_val[ci as usize] = 0i32;
         ci += 1
@@ -935,7 +928,7 @@ unsafe extern "C" fn decode_mcu_slow(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
     mut MCU_data: *mut crate::jpeglib_h::JBLOCKROW,
 ) -> crate::jmorecfg_h::boolean {
-     let mut get_buffer:  crate::src::jdhuff::bit_buf_type =  0; let mut bits_left:  libc::c_int =  0; let mut br_state:  crate::src::jdhuff::bitread_working_state =
+       let mut br_state:  crate::src::jdhuff::bitread_working_state =
     
         crate::src::jdhuff::bitread_working_state {
             next_input_byte: ::std::ptr::null::< crate::jmorecfg_h::JOCTET>(),
@@ -943,9 +936,7 @@ unsafe extern "C" fn decode_mcu_slow(
             get_buffer: 0,
             bits_left: 0,
             cinfo: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_decompress_struct>(),
-        }; let mut blkn:  libc::c_int =  0; let mut state:  savable_state =  savable_state {
-        last_dc_val: [0; 4],
-    };let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
+        };  let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
     
     
     
@@ -956,10 +947,11 @@ unsafe extern "C" fn decode_mcu_slow(
     br_state.cinfo = cinfo;
     br_state.next_input_byte = (*(*cinfo).src).next_input_byte;
     br_state.bytes_in_buffer = (*(*cinfo).src).bytes_in_buffer;
-    get_buffer = (*entropy).bitstate.get_buffer;
-    bits_left = (*entropy).bitstate.bits_left;
-    state = (*entropy).saved;
-    blkn = 0i32;
+    
+    
+    
+     let mut get_buffer:   crate::src::jdhuff::bit_buf_type =
+     (*entropy).bitstate.get_buffer; let mut bits_left:   libc::c_int =  (*entropy).bitstate.bits_left; let mut state:   savable_state =  (*entropy).saved; let mut blkn:   libc::c_int =  0i32;
     while blkn < (*cinfo).blocks_in_MCU {
          let mut s:  libc::c_int =  0; let mut k:  libc::c_int =  0; let mut r:  libc::c_int =  0; let mut current_block_22:  u64; let mut nb:  libc::c_int =  0;let mut block: crate::jpeglib_h::JBLOCKROW = if !MCU_data.is_null() {
             *MCU_data.offset(blkn as isize)
@@ -995,7 +987,8 @@ unsafe extern "C" fn decode_mcu_slow(
         }
         match current_block_22 {
             14576567515993809846 => {
-                 let mut look:  libc::c_int =  0;look = (get_buffer >> bits_left - 8i32) as libc::c_int & (1i32 << 8i32) - 1i32;
+                  let mut look:   libc::c_int =
+     (get_buffer >> bits_left - 8i32) as libc::c_int & (1i32 << 8i32) - 1i32;
                 nb = (*dctbl).lookup[look as usize] >> crate::src::jdhuff::HUFF_LOOKAHEAD;
                 if nb <= crate::src::jdhuff::HUFF_LOOKAHEAD {
                     bits_left -= nb;
@@ -1069,7 +1062,8 @@ unsafe extern "C" fn decode_mcu_slow(
                 }
                 match current_block_60 {
                     3580086814630675314 => {
-                         let mut look_0:  libc::c_int =  0;look_0 =
+                          let mut look_0:   libc::c_int =
+    
                             (get_buffer >> bits_left - 8i32) as libc::c_int & (1i32 << 8i32) - 1i32;
                         nb_0 =
                             (*actbl).lookup[look_0 as usize] >> crate::src::jdhuff::HUFF_LOOKAHEAD;
@@ -1152,7 +1146,8 @@ unsafe extern "C" fn decode_mcu_slow(
                 }
                 match current_block_97 {
                     9521147444787763968 => {
-                         let mut look_1:  libc::c_int =  0;look_1 =
+                          let mut look_1:   libc::c_int =
+    
                             (get_buffer >> bits_left - 8i32) as libc::c_int & (1i32 << 8i32) - 1i32;
                         nb_1 =
                             (*actbl).lookup[look_1 as usize] >> crate::src::jdhuff::HUFF_LOOKAHEAD;
@@ -1214,7 +1209,7 @@ unsafe extern "C" fn decode_mcu_fast(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
     mut MCU_data: *mut crate::jpeglib_h::JBLOCKROW,
 ) -> crate::jmorecfg_h::boolean {
-     let mut get_buffer:  crate::src::jdhuff::bit_buf_type =  0; let mut bits_left:  libc::c_int =  0; let mut br_state:  crate::src::jdhuff::bitread_working_state =
+       let mut br_state:  crate::src::jdhuff::bitread_working_state =
     
         crate::src::jdhuff::bitread_working_state {
             next_input_byte: ::std::ptr::null::< crate::jmorecfg_h::JOCTET>(),
@@ -1222,10 +1217,7 @@ unsafe extern "C" fn decode_mcu_fast(
             get_buffer: 0,
             bits_left: 0,
             cinfo: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_decompress_struct>(),
-        }; let mut buffer:  *mut crate::jmorecfg_h::JOCTET =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>(); let mut blkn:  libc::c_int =  0; let mut state:  savable_state =  savable_state {
-        last_dc_val: [0; 4],
-    };let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
+        };   let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
     
     
     
@@ -1237,13 +1229,15 @@ unsafe extern "C" fn decode_mcu_fast(
     br_state.cinfo = cinfo;
     br_state.next_input_byte = (*(*cinfo).src).next_input_byte;
     br_state.bytes_in_buffer = (*(*cinfo).src).bytes_in_buffer;
-    get_buffer = (*entropy).bitstate.get_buffer;
-    bits_left = (*entropy).bitstate.bits_left;
-    buffer = br_state.next_input_byte as *mut crate::jmorecfg_h::JOCTET;
-    state = (*entropy).saved;
-    blkn = 0i32;
+    
+    
+    
+    
+     let mut get_buffer:   crate::src::jdhuff::bit_buf_type =
+     (*entropy).bitstate.get_buffer; let mut bits_left:   libc::c_int =  (*entropy).bitstate.bits_left; let mut buffer:   *mut crate::jmorecfg_h::JOCTET =
+     br_state.next_input_byte as *mut crate::jmorecfg_h::JOCTET; let mut state:   savable_state =  (*entropy).saved; let mut blkn:   libc::c_int =  0i32;
     while blkn < (*cinfo).blocks_in_MCU {
-         let mut s:  libc::c_int =  0; let mut k:  libc::c_int =  0; let mut r:  libc::c_int =  0; let mut l:  libc::c_int =  0;let mut block: crate::jpeglib_h::JBLOCKROW = if !MCU_data.is_null() {
+          let mut k:  libc::c_int =  0; let mut r:  libc::c_int =  0; let mut block: crate::jpeglib_h::JBLOCKROW = if !MCU_data.is_null() {
             *MCU_data.offset(blkn as isize)
         } else {
             crate::stddef_h::NULL as crate::jpeglib_h::JBLOCKROW
@@ -1258,11 +1252,11 @@ unsafe extern "C" fn decode_mcu_fast(
         
         if bits_left <= 16i32 {
             
-             let mut c0:  libc::c_int =  0; let mut c1:  libc::c_int =  0; let mut c0_0:  libc::c_int =  0; let mut c1_0:  libc::c_int =  0; let mut c0_1:  libc::c_int =  0; let mut c1_1:  libc::c_int =  0; let mut c0_2:  libc::c_int =  0; let mut c1_2:  libc::c_int =  0; let mut c0_3:  libc::c_int =  0; let mut c1_3:  libc::c_int =  0; let mut c0_4:  libc::c_int =  0; let mut c1_4:  libc::c_int =  0;
+                        
             let fresh5 = buffer;
             buffer = buffer.offset(1);
-            c0 = *fresh5 as libc::c_int;
-            c1 = *buffer as libc::c_int;
+            
+             let mut c0:   libc::c_int =  *fresh5 as libc::c_int; let mut c1:   libc::c_int =  *buffer as libc::c_int;
             get_buffer = get_buffer << 8i32 | c0 as libc::c_ulong;
             bits_left += 8i32;
             if c0 == 0xffi32 {
@@ -1277,8 +1271,8 @@ unsafe extern "C" fn decode_mcu_fast(
             
             let fresh6 = buffer;
             buffer = buffer.offset(1);
-            c0_0 = *fresh6 as libc::c_int;
-            c1_0 = *buffer as libc::c_int;
+            
+             let mut c0_0:   libc::c_int =  *fresh6 as libc::c_int; let mut c1_0:   libc::c_int =  *buffer as libc::c_int;
             get_buffer = get_buffer << 8i32 | c0_0 as libc::c_ulong;
             bits_left += 8i32;
             if c0_0 == 0xffi32 {
@@ -1293,8 +1287,8 @@ unsafe extern "C" fn decode_mcu_fast(
             
             let fresh7 = buffer;
             buffer = buffer.offset(1);
-            c0_1 = *fresh7 as libc::c_int;
-            c1_1 = *buffer as libc::c_int;
+            
+             let mut c0_1:   libc::c_int =  *fresh7 as libc::c_int; let mut c1_1:   libc::c_int =  *buffer as libc::c_int;
             get_buffer = get_buffer << 8i32 | c0_1 as libc::c_ulong;
             bits_left += 8i32;
             if c0_1 == 0xffi32 {
@@ -1309,8 +1303,8 @@ unsafe extern "C" fn decode_mcu_fast(
             
             let fresh8 = buffer;
             buffer = buffer.offset(1);
-            c0_2 = *fresh8 as libc::c_int;
-            c1_2 = *buffer as libc::c_int;
+            
+             let mut c0_2:   libc::c_int =  *fresh8 as libc::c_int; let mut c1_2:   libc::c_int =  *buffer as libc::c_int;
             get_buffer = get_buffer << 8i32 | c0_2 as libc::c_ulong;
             bits_left += 8i32;
             if c0_2 == 0xffi32 {
@@ -1325,8 +1319,8 @@ unsafe extern "C" fn decode_mcu_fast(
             
             let fresh9 = buffer;
             buffer = buffer.offset(1);
-            c0_3 = *fresh9 as libc::c_int;
-            c1_3 = *buffer as libc::c_int;
+            
+             let mut c0_3:   libc::c_int =  *fresh9 as libc::c_int; let mut c1_3:   libc::c_int =  *buffer as libc::c_int;
             get_buffer = get_buffer << 8i32 | c0_3 as libc::c_ulong;
             bits_left += 8i32;
             if c0_3 == 0xffi32 {
@@ -1341,8 +1335,8 @@ unsafe extern "C" fn decode_mcu_fast(
             
             let fresh10 = buffer;
             buffer = buffer.offset(1);
-            c0_4 = *fresh10 as libc::c_int;
-            c1_4 = *buffer as libc::c_int;
+            
+             let mut c0_4:   libc::c_int =  *fresh10 as libc::c_int; let mut c1_4:   libc::c_int =  *buffer as libc::c_int;
             get_buffer = get_buffer << 8i32 | c0_4 as libc::c_ulong;
             bits_left += 8i32;
             if c0_4 == 0xffi32 {
@@ -1354,9 +1348,10 @@ unsafe extern "C" fn decode_mcu_fast(
                 }
             }
         }
-        s = (get_buffer >> bits_left - 8i32) as libc::c_int & (1i32 << 8i32) - 1i32;
+         let mut s:   libc::c_int =
+     (get_buffer >> bits_left - 8i32) as libc::c_int & (1i32 << 8i32) - 1i32;
         s = (*dctbl).lookup[s as usize];
-        l = s >> crate::src::jdhuff::HUFF_LOOKAHEAD;
+         let mut l:   libc::c_int =  s >> crate::src::jdhuff::HUFF_LOOKAHEAD;
         bits_left -= l;
         s = s & (1i32 << crate::src::jdhuff::HUFF_LOOKAHEAD) - 1i32;
         if l > crate::src::jdhuff::HUFF_LOOKAHEAD {
@@ -1374,11 +1369,11 @@ unsafe extern "C" fn decode_mcu_fast(
         if s != 0 {
             if bits_left <= 16i32 {
                 
-                 let mut c0_5:  libc::c_int =  0; let mut c1_5:  libc::c_int =  0; let mut c0_6:  libc::c_int =  0; let mut c1_6:  libc::c_int =  0; let mut c0_7:  libc::c_int =  0; let mut c1_7:  libc::c_int =  0; let mut c0_8:  libc::c_int =  0; let mut c1_8:  libc::c_int =  0; let mut c0_9:  libc::c_int =  0; let mut c1_9:  libc::c_int =  0; let mut c0_10:  libc::c_int =  0; let mut c1_10:  libc::c_int =  0;
+                            
                 let fresh11 = buffer;
                 buffer = buffer.offset(1);
-                c0_5 = *fresh11 as libc::c_int;
-                c1_5 = *buffer as libc::c_int;
+                
+                 let mut c0_5:   libc::c_int =  *fresh11 as libc::c_int; let mut c1_5:   libc::c_int =  *buffer as libc::c_int;
                 get_buffer = get_buffer << 8i32 | c0_5 as libc::c_ulong;
                 bits_left += 8i32;
                 if c0_5 == 0xffi32 {
@@ -1393,8 +1388,8 @@ unsafe extern "C" fn decode_mcu_fast(
                 
                 let fresh12 = buffer;
                 buffer = buffer.offset(1);
-                c0_6 = *fresh12 as libc::c_int;
-                c1_6 = *buffer as libc::c_int;
+                
+                 let mut c0_6:   libc::c_int =  *fresh12 as libc::c_int; let mut c1_6:   libc::c_int =  *buffer as libc::c_int;
                 get_buffer = get_buffer << 8i32 | c0_6 as libc::c_ulong;
                 bits_left += 8i32;
                 if c0_6 == 0xffi32 {
@@ -1409,8 +1404,8 @@ unsafe extern "C" fn decode_mcu_fast(
                 
                 let fresh13 = buffer;
                 buffer = buffer.offset(1);
-                c0_7 = *fresh13 as libc::c_int;
-                c1_7 = *buffer as libc::c_int;
+                
+                 let mut c0_7:   libc::c_int =  *fresh13 as libc::c_int; let mut c1_7:   libc::c_int =  *buffer as libc::c_int;
                 get_buffer = get_buffer << 8i32 | c0_7 as libc::c_ulong;
                 bits_left += 8i32;
                 if c0_7 == 0xffi32 {
@@ -1425,8 +1420,8 @@ unsafe extern "C" fn decode_mcu_fast(
                 
                 let fresh14 = buffer;
                 buffer = buffer.offset(1);
-                c0_8 = *fresh14 as libc::c_int;
-                c1_8 = *buffer as libc::c_int;
+                
+                 let mut c0_8:   libc::c_int =  *fresh14 as libc::c_int; let mut c1_8:   libc::c_int =  *buffer as libc::c_int;
                 get_buffer = get_buffer << 8i32 | c0_8 as libc::c_ulong;
                 bits_left += 8i32;
                 if c0_8 == 0xffi32 {
@@ -1441,8 +1436,8 @@ unsafe extern "C" fn decode_mcu_fast(
                 
                 let fresh15 = buffer;
                 buffer = buffer.offset(1);
-                c0_9 = *fresh15 as libc::c_int;
-                c1_9 = *buffer as libc::c_int;
+                
+                 let mut c0_9:   libc::c_int =  *fresh15 as libc::c_int; let mut c1_9:   libc::c_int =  *buffer as libc::c_int;
                 get_buffer = get_buffer << 8i32 | c0_9 as libc::c_ulong;
                 bits_left += 8i32;
                 if c0_9 == 0xffi32 {
@@ -1457,8 +1452,8 @@ unsafe extern "C" fn decode_mcu_fast(
                 
                 let fresh16 = buffer;
                 buffer = buffer.offset(1);
-                c0_10 = *fresh16 as libc::c_int;
-                c1_10 = *buffer as libc::c_int;
+                
+                 let mut c0_10:   libc::c_int =  *fresh16 as libc::c_int; let mut c1_10:   libc::c_int =  *buffer as libc::c_int;
                 get_buffer = get_buffer << 8i32 | c0_10 as libc::c_ulong;
                 bits_left += 8i32;
                 if c0_10 == 0xffi32 {
@@ -1490,11 +1485,11 @@ unsafe extern "C" fn decode_mcu_fast(
             while k < crate::jpeglib_h::DCTSIZE2 {
                 if bits_left <= 16i32 {
                     
-                     let mut c0_11:  libc::c_int =  0; let mut c1_11:  libc::c_int =  0; let mut c0_12:  libc::c_int =  0; let mut c1_12:  libc::c_int =  0; let mut c0_13:  libc::c_int =  0; let mut c1_13:  libc::c_int =  0; let mut c0_14:  libc::c_int =  0; let mut c1_14:  libc::c_int =  0; let mut c0_15:  libc::c_int =  0; let mut c1_15:  libc::c_int =  0; let mut c0_16:  libc::c_int =  0; let mut c1_16:  libc::c_int =  0;
+                                
                     let fresh17 = buffer;
                     buffer = buffer.offset(1);
-                    c0_11 = *fresh17 as libc::c_int;
-                    c1_11 = *buffer as libc::c_int;
+                    
+                     let mut c0_11:   libc::c_int =  *fresh17 as libc::c_int; let mut c1_11:   libc::c_int =  *buffer as libc::c_int;
                     get_buffer = get_buffer << 8i32 | c0_11 as libc::c_ulong;
                     bits_left += 8i32;
                     if c0_11 == 0xffi32 {
@@ -1509,8 +1504,8 @@ unsafe extern "C" fn decode_mcu_fast(
                     
                     let fresh18 = buffer;
                     buffer = buffer.offset(1);
-                    c0_12 = *fresh18 as libc::c_int;
-                    c1_12 = *buffer as libc::c_int;
+                    
+                     let mut c0_12:   libc::c_int =  *fresh18 as libc::c_int; let mut c1_12:   libc::c_int =  *buffer as libc::c_int;
                     get_buffer = get_buffer << 8i32 | c0_12 as libc::c_ulong;
                     bits_left += 8i32;
                     if c0_12 == 0xffi32 {
@@ -1525,8 +1520,8 @@ unsafe extern "C" fn decode_mcu_fast(
                     
                     let fresh19 = buffer;
                     buffer = buffer.offset(1);
-                    c0_13 = *fresh19 as libc::c_int;
-                    c1_13 = *buffer as libc::c_int;
+                    
+                     let mut c0_13:   libc::c_int =  *fresh19 as libc::c_int; let mut c1_13:   libc::c_int =  *buffer as libc::c_int;
                     get_buffer = get_buffer << 8i32 | c0_13 as libc::c_ulong;
                     bits_left += 8i32;
                     if c0_13 == 0xffi32 {
@@ -1541,8 +1536,8 @@ unsafe extern "C" fn decode_mcu_fast(
                     
                     let fresh20 = buffer;
                     buffer = buffer.offset(1);
-                    c0_14 = *fresh20 as libc::c_int;
-                    c1_14 = *buffer as libc::c_int;
+                    
+                     let mut c0_14:   libc::c_int =  *fresh20 as libc::c_int; let mut c1_14:   libc::c_int =  *buffer as libc::c_int;
                     get_buffer = get_buffer << 8i32 | c0_14 as libc::c_ulong;
                     bits_left += 8i32;
                     if c0_14 == 0xffi32 {
@@ -1557,8 +1552,8 @@ unsafe extern "C" fn decode_mcu_fast(
                     
                     let fresh21 = buffer;
                     buffer = buffer.offset(1);
-                    c0_15 = *fresh21 as libc::c_int;
-                    c1_15 = *buffer as libc::c_int;
+                    
+                     let mut c0_15:   libc::c_int =  *fresh21 as libc::c_int; let mut c1_15:   libc::c_int =  *buffer as libc::c_int;
                     get_buffer = get_buffer << 8i32 | c0_15 as libc::c_ulong;
                     bits_left += 8i32;
                     if c0_15 == 0xffi32 {
@@ -1573,8 +1568,8 @@ unsafe extern "C" fn decode_mcu_fast(
                     
                     let fresh22 = buffer;
                     buffer = buffer.offset(1);
-                    c0_16 = *fresh22 as libc::c_int;
-                    c1_16 = *buffer as libc::c_int;
+                    
+                     let mut c0_16:   libc::c_int =  *fresh22 as libc::c_int; let mut c1_16:   libc::c_int =  *buffer as libc::c_int;
                     get_buffer = get_buffer << 8i32 | c0_16 as libc::c_ulong;
                     bits_left += 8i32;
                     if c0_16 == 0xffi32 {
@@ -1611,11 +1606,11 @@ unsafe extern "C" fn decode_mcu_fast(
                     k += r;
                     if bits_left <= 16i32 {
                         
-                         let mut c0_17:  libc::c_int =  0; let mut c1_17:  libc::c_int =  0; let mut c0_18:  libc::c_int =  0; let mut c1_18:  libc::c_int =  0; let mut c0_19:  libc::c_int =  0; let mut c1_19:  libc::c_int =  0; let mut c0_20:  libc::c_int =  0; let mut c1_20:  libc::c_int =  0; let mut c0_21:  libc::c_int =  0; let mut c1_21:  libc::c_int =  0; let mut c0_22:  libc::c_int =  0; let mut c1_22:  libc::c_int =  0;
+                                    
                         let fresh23 = buffer;
                         buffer = buffer.offset(1);
-                        c0_17 = *fresh23 as libc::c_int;
-                        c1_17 = *buffer as libc::c_int;
+                        
+                         let mut c0_17:   libc::c_int =  *fresh23 as libc::c_int; let mut c1_17:   libc::c_int =  *buffer as libc::c_int;
                         get_buffer = get_buffer << 8i32 | c0_17 as libc::c_ulong;
                         bits_left += 8i32;
                         if c0_17 == 0xffi32 {
@@ -1630,8 +1625,8 @@ unsafe extern "C" fn decode_mcu_fast(
                         
                         let fresh24 = buffer;
                         buffer = buffer.offset(1);
-                        c0_18 = *fresh24 as libc::c_int;
-                        c1_18 = *buffer as libc::c_int;
+                        
+                         let mut c0_18:   libc::c_int =  *fresh24 as libc::c_int; let mut c1_18:   libc::c_int =  *buffer as libc::c_int;
                         get_buffer = get_buffer << 8i32 | c0_18 as libc::c_ulong;
                         bits_left += 8i32;
                         if c0_18 == 0xffi32 {
@@ -1646,8 +1641,8 @@ unsafe extern "C" fn decode_mcu_fast(
                         
                         let fresh25 = buffer;
                         buffer = buffer.offset(1);
-                        c0_19 = *fresh25 as libc::c_int;
-                        c1_19 = *buffer as libc::c_int;
+                        
+                         let mut c0_19:   libc::c_int =  *fresh25 as libc::c_int; let mut c1_19:   libc::c_int =  *buffer as libc::c_int;
                         get_buffer = get_buffer << 8i32 | c0_19 as libc::c_ulong;
                         bits_left += 8i32;
                         if c0_19 == 0xffi32 {
@@ -1662,8 +1657,8 @@ unsafe extern "C" fn decode_mcu_fast(
                         
                         let fresh26 = buffer;
                         buffer = buffer.offset(1);
-                        c0_20 = *fresh26 as libc::c_int;
-                        c1_20 = *buffer as libc::c_int;
+                        
+                         let mut c0_20:   libc::c_int =  *fresh26 as libc::c_int; let mut c1_20:   libc::c_int =  *buffer as libc::c_int;
                         get_buffer = get_buffer << 8i32 | c0_20 as libc::c_ulong;
                         bits_left += 8i32;
                         if c0_20 == 0xffi32 {
@@ -1678,8 +1673,8 @@ unsafe extern "C" fn decode_mcu_fast(
                         
                         let fresh27 = buffer;
                         buffer = buffer.offset(1);
-                        c0_21 = *fresh27 as libc::c_int;
-                        c1_21 = *buffer as libc::c_int;
+                        
+                         let mut c0_21:   libc::c_int =  *fresh27 as libc::c_int; let mut c1_21:   libc::c_int =  *buffer as libc::c_int;
                         get_buffer = get_buffer << 8i32 | c0_21 as libc::c_ulong;
                         bits_left += 8i32;
                         if c0_21 == 0xffi32 {
@@ -1694,8 +1689,8 @@ unsafe extern "C" fn decode_mcu_fast(
                         
                         let fresh28 = buffer;
                         buffer = buffer.offset(1);
-                        c0_22 = *fresh28 as libc::c_int;
-                        c1_22 = *buffer as libc::c_int;
+                        
+                         let mut c0_22:   libc::c_int =  *fresh28 as libc::c_int; let mut c1_22:   libc::c_int =  *buffer as libc::c_int;
                         get_buffer = get_buffer << 8i32 | c0_22 as libc::c_ulong;
                         bits_left += 8i32;
                         if c0_22 == 0xffi32 {
@@ -1729,11 +1724,11 @@ unsafe extern "C" fn decode_mcu_fast(
             while k < crate::jpeglib_h::DCTSIZE2 {
                 if bits_left <= 16i32 {
                     
-                     let mut c0_23:  libc::c_int =  0; let mut c1_23:  libc::c_int =  0; let mut c0_24:  libc::c_int =  0; let mut c1_24:  libc::c_int =  0; let mut c0_25:  libc::c_int =  0; let mut c1_25:  libc::c_int =  0; let mut c0_26:  libc::c_int =  0; let mut c1_26:  libc::c_int =  0; let mut c0_27:  libc::c_int =  0; let mut c1_27:  libc::c_int =  0; let mut c0_28:  libc::c_int =  0; let mut c1_28:  libc::c_int =  0;
+                                
                     let fresh29 = buffer;
                     buffer = buffer.offset(1);
-                    c0_23 = *fresh29 as libc::c_int;
-                    c1_23 = *buffer as libc::c_int;
+                    
+                     let mut c0_23:   libc::c_int =  *fresh29 as libc::c_int; let mut c1_23:   libc::c_int =  *buffer as libc::c_int;
                     get_buffer = get_buffer << 8i32 | c0_23 as libc::c_ulong;
                     bits_left += 8i32;
                     if c0_23 == 0xffi32 {
@@ -1748,8 +1743,8 @@ unsafe extern "C" fn decode_mcu_fast(
                     
                     let fresh30 = buffer;
                     buffer = buffer.offset(1);
-                    c0_24 = *fresh30 as libc::c_int;
-                    c1_24 = *buffer as libc::c_int;
+                    
+                     let mut c0_24:   libc::c_int =  *fresh30 as libc::c_int; let mut c1_24:   libc::c_int =  *buffer as libc::c_int;
                     get_buffer = get_buffer << 8i32 | c0_24 as libc::c_ulong;
                     bits_left += 8i32;
                     if c0_24 == 0xffi32 {
@@ -1764,8 +1759,8 @@ unsafe extern "C" fn decode_mcu_fast(
                     
                     let fresh31 = buffer;
                     buffer = buffer.offset(1);
-                    c0_25 = *fresh31 as libc::c_int;
-                    c1_25 = *buffer as libc::c_int;
+                    
+                     let mut c0_25:   libc::c_int =  *fresh31 as libc::c_int; let mut c1_25:   libc::c_int =  *buffer as libc::c_int;
                     get_buffer = get_buffer << 8i32 | c0_25 as libc::c_ulong;
                     bits_left += 8i32;
                     if c0_25 == 0xffi32 {
@@ -1780,8 +1775,8 @@ unsafe extern "C" fn decode_mcu_fast(
                     
                     let fresh32 = buffer;
                     buffer = buffer.offset(1);
-                    c0_26 = *fresh32 as libc::c_int;
-                    c1_26 = *buffer as libc::c_int;
+                    
+                     let mut c0_26:   libc::c_int =  *fresh32 as libc::c_int; let mut c1_26:   libc::c_int =  *buffer as libc::c_int;
                     get_buffer = get_buffer << 8i32 | c0_26 as libc::c_ulong;
                     bits_left += 8i32;
                     if c0_26 == 0xffi32 {
@@ -1796,8 +1791,8 @@ unsafe extern "C" fn decode_mcu_fast(
                     
                     let fresh33 = buffer;
                     buffer = buffer.offset(1);
-                    c0_27 = *fresh33 as libc::c_int;
-                    c1_27 = *buffer as libc::c_int;
+                    
+                     let mut c0_27:   libc::c_int =  *fresh33 as libc::c_int; let mut c1_27:   libc::c_int =  *buffer as libc::c_int;
                     get_buffer = get_buffer << 8i32 | c0_27 as libc::c_ulong;
                     bits_left += 8i32;
                     if c0_27 == 0xffi32 {
@@ -1812,8 +1807,8 @@ unsafe extern "C" fn decode_mcu_fast(
                     
                     let fresh34 = buffer;
                     buffer = buffer.offset(1);
-                    c0_28 = *fresh34 as libc::c_int;
-                    c1_28 = *buffer as libc::c_int;
+                    
+                     let mut c0_28:   libc::c_int =  *fresh34 as libc::c_int; let mut c1_28:   libc::c_int =  *buffer as libc::c_int;
                     get_buffer = get_buffer << 8i32 | c0_28 as libc::c_ulong;
                     bits_left += 8i32;
                     if c0_28 == 0xffi32 {
@@ -1850,11 +1845,11 @@ unsafe extern "C" fn decode_mcu_fast(
                     k += r;
                     if bits_left <= 16i32 {
                         
-                         let mut c0_29:  libc::c_int =  0; let mut c1_29:  libc::c_int =  0; let mut c0_30:  libc::c_int =  0; let mut c1_30:  libc::c_int =  0; let mut c0_31:  libc::c_int =  0; let mut c1_31:  libc::c_int =  0; let mut c0_32:  libc::c_int =  0; let mut c1_32:  libc::c_int =  0; let mut c0_33:  libc::c_int =  0; let mut c1_33:  libc::c_int =  0; let mut c0_34:  libc::c_int =  0; let mut c1_34:  libc::c_int =  0;
+                                    
                         let fresh35 = buffer;
                         buffer = buffer.offset(1);
-                        c0_29 = *fresh35 as libc::c_int;
-                        c1_29 = *buffer as libc::c_int;
+                        
+                         let mut c0_29:   libc::c_int =  *fresh35 as libc::c_int; let mut c1_29:   libc::c_int =  *buffer as libc::c_int;
                         get_buffer = get_buffer << 8i32 | c0_29 as libc::c_ulong;
                         bits_left += 8i32;
                         if c0_29 == 0xffi32 {
@@ -1869,8 +1864,8 @@ unsafe extern "C" fn decode_mcu_fast(
                         
                         let fresh36 = buffer;
                         buffer = buffer.offset(1);
-                        c0_30 = *fresh36 as libc::c_int;
-                        c1_30 = *buffer as libc::c_int;
+                        
+                         let mut c0_30:   libc::c_int =  *fresh36 as libc::c_int; let mut c1_30:   libc::c_int =  *buffer as libc::c_int;
                         get_buffer = get_buffer << 8i32 | c0_30 as libc::c_ulong;
                         bits_left += 8i32;
                         if c0_30 == 0xffi32 {
@@ -1885,8 +1880,8 @@ unsafe extern "C" fn decode_mcu_fast(
                         
                         let fresh37 = buffer;
                         buffer = buffer.offset(1);
-                        c0_31 = *fresh37 as libc::c_int;
-                        c1_31 = *buffer as libc::c_int;
+                        
+                         let mut c0_31:   libc::c_int =  *fresh37 as libc::c_int; let mut c1_31:   libc::c_int =  *buffer as libc::c_int;
                         get_buffer = get_buffer << 8i32 | c0_31 as libc::c_ulong;
                         bits_left += 8i32;
                         if c0_31 == 0xffi32 {
@@ -1901,8 +1896,8 @@ unsafe extern "C" fn decode_mcu_fast(
                         
                         let fresh38 = buffer;
                         buffer = buffer.offset(1);
-                        c0_32 = *fresh38 as libc::c_int;
-                        c1_32 = *buffer as libc::c_int;
+                        
+                         let mut c0_32:   libc::c_int =  *fresh38 as libc::c_int; let mut c1_32:   libc::c_int =  *buffer as libc::c_int;
                         get_buffer = get_buffer << 8i32 | c0_32 as libc::c_ulong;
                         bits_left += 8i32;
                         if c0_32 == 0xffi32 {
@@ -1917,8 +1912,8 @@ unsafe extern "C" fn decode_mcu_fast(
                         
                         let fresh39 = buffer;
                         buffer = buffer.offset(1);
-                        c0_33 = *fresh39 as libc::c_int;
-                        c1_33 = *buffer as libc::c_int;
+                        
+                         let mut c0_33:   libc::c_int =  *fresh39 as libc::c_int; let mut c1_33:   libc::c_int =  *buffer as libc::c_int;
                         get_buffer = get_buffer << 8i32 | c0_33 as libc::c_ulong;
                         bits_left += 8i32;
                         if c0_33 == 0xffi32 {
@@ -1933,8 +1928,8 @@ unsafe extern "C" fn decode_mcu_fast(
                         
                         let fresh40 = buffer;
                         buffer = buffer.offset(1);
-                        c0_34 = *fresh40 as libc::c_int;
-                        c1_34 = *buffer as libc::c_int;
+                        
+                         let mut c0_34:   libc::c_int =  *fresh40 as libc::c_int; let mut c1_34:   libc::c_int =  *buffer as libc::c_int;
                         get_buffer = get_buffer << 8i32 | c0_34 as libc::c_ulong;
                         bits_left += 8i32;
                         if c0_34 == 0xffi32 {
@@ -2047,14 +2042,14 @@ unsafe extern "C" fn decode_mcu(
 
 pub unsafe extern "C" fn jinit_huff_decoder(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
     
-     let mut entropy:  huff_entropy_ptr =
-     ::std::ptr::null_mut::< huff_entropy_decoder>(); let mut i:  libc::c_int =  0;
+      
     /* Motion JPEG frames typically do not include the Huffman tables if they
     are the default tables.  Thus, if the tables are not set by the time
     the Huffman decoder is initialized (usually within the body of
     jpeg_start_decompress()), we set them to default values. */
     crate::jstdhuff_c::std_huff_tables(cinfo as crate::jpeglib_h::j_common_ptr);
-    entropy = Some(
+     let mut entropy:   huff_entropy_ptr =
+     Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),
@@ -2077,7 +2072,7 @@ pub unsafe extern "C" fn jinit_huff_decoder(mut cinfo: crate::jpeglib_h::j_decom
             ) -> crate::jmorecfg_h::boolean,
     );
     /* Mark tables unallocated */
-    i = 0i32;
+     let mut i:   libc::c_int =  0i32;
     while i < crate::jpeglib_h::NUM_HUFF_TBLS {
         (*entropy).ac_derived_tbls[i as usize] =
             crate::stddef_h::NULL as *mut crate::src::jdhuff::d_derived_tbl;

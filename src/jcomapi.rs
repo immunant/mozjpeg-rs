@@ -110,7 +110,7 @@ pub use crate::stddef_h::NULL;
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_abort(mut cinfo: crate::jpeglib_h::j_common_ptr) {
-     let mut pool:  libc::c_int =  0;
+     
     /* Do nothing if called on a not-initialized or destroyed JPEG object. */
     if (*cinfo).mem.is_null() {
         return;
@@ -118,7 +118,7 @@ pub unsafe extern "C" fn jpeg_abort(mut cinfo: crate::jpeglib_h::j_common_ptr) {
     /* Releasing pools in reverse order might help avoid fragmentation
      * with some (brain-damaged) malloc libraries.
      */
-    pool = crate::jpeglib_h::JPOOL_NUMPOOLS - 1i32;
+     let mut pool:   libc::c_int =  crate::jpeglib_h::JPOOL_NUMPOOLS - 1i32;
     while pool > crate::jpeglib_h::JPOOL_PERMANENT {
         Some(
             (*(*cinfo).mem)
@@ -214,9 +214,9 @@ pub unsafe extern "C" fn jpeg_destroy(mut cinfo: crate::jpeglib_h::j_common_ptr)
 pub unsafe extern "C" fn jpeg_alloc_quant_table(
     mut cinfo: crate::jpeglib_h::j_common_ptr,
 ) -> *mut crate::jpeglib_h::JQUANT_TBL {
-     let mut tbl:  *mut crate::jpeglib_h::JQUANT_TBL =
-     ::std::ptr::null_mut::< crate::jpeglib_h::JQUANT_TBL>(); /* make sure this is false in any new table */
-    tbl = Some(
+      /* make sure this is false in any new table */
+     let mut tbl:   *mut crate::jpeglib_h::JQUANT_TBL =
+     Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),
@@ -234,9 +234,9 @@ pub unsafe extern "C" fn jpeg_alloc_quant_table(
 pub unsafe extern "C" fn jpeg_alloc_huff_table(
     mut cinfo: crate::jpeglib_h::j_common_ptr,
 ) -> *mut crate::jpeglib_h::JHUFF_TBL {
-     let mut tbl:  *mut crate::jpeglib_h::JHUFF_TBL =
-     ::std::ptr::null_mut::< crate::jpeglib_h::JHUFF_TBL>();
-    tbl = Some(
+     
+     let mut tbl:   *mut crate::jpeglib_h::JHUFF_TBL =
+     Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),

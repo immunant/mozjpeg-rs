@@ -319,7 +319,7 @@ pub unsafe extern "C" fn jpeg_write_scanlines(
     mut num_lines: crate::jmorecfg_h::JDIMENSION,
 ) -> crate::jmorecfg_h::JDIMENSION {
     
-     let mut row_ctr:  crate::jmorecfg_h::JDIMENSION =  0; let mut rows_left:  crate::jmorecfg_h::JDIMENSION =  0;
+      
     if (*cinfo).global_state != crate::jpegint_h::CSTATE_SCANNING {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
         (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
@@ -363,12 +363,12 @@ pub unsafe extern "C" fn jpeg_write_scanlines(
         )
         .expect("non-null function pointer")(cinfo);
     }
-    /* Ignore any extra scanlines at bottom of image. */
-    rows_left =  (*cinfo).image_height - (*cinfo).next_scanline;
+     let mut rows_left:   crate::jmorecfg_h::JDIMENSION =
+      (*cinfo).image_height - (*cinfo).next_scanline;
     if num_lines > rows_left {
         num_lines = rows_left
     }
-    row_ctr = 0u32;
+     let mut row_ctr:   crate::jmorecfg_h::JDIMENSION =  0u32;
     Some(
         (*(*cinfo).main)
             .process_data
@@ -390,7 +390,7 @@ pub unsafe extern "C" fn jpeg_write_raw_data(
     mut data: crate::jpeglib_h::JSAMPIMAGE,
     mut num_lines: crate::jmorecfg_h::JDIMENSION,
 ) -> crate::jmorecfg_h::JDIMENSION {
-     let mut lines_per_iMCU_row:  crate::jmorecfg_h::JDIMENSION =  0;
+     
     if (*cinfo).global_state != crate::jpegint_h::CSTATE_RAW_OK {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
         (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
@@ -435,8 +435,8 @@ pub unsafe extern "C" fn jpeg_write_raw_data(
         )
         .expect("non-null function pointer")(cinfo);
     }
-    /* Verify that at least one iMCU row has been passed. */
-    lines_per_iMCU_row =
+     let mut lines_per_iMCU_row:   crate::jmorecfg_h::JDIMENSION =
+    
         ((*cinfo).max_v_samp_factor * crate::jpeglib_h::DCTSIZE) as crate::jmorecfg_h::JDIMENSION;
     if num_lines < lines_per_iMCU_row {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BUFFER_SIZE as libc::c_int;

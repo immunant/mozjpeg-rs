@@ -491,7 +491,7 @@ pub const RGB_PIXELSIZE: libc::c_int = crate::jmorecfg_h::EXT_XRGB_PIXELSIZE;
  */
 
 unsafe extern "C" fn build_ycc_rgb_table(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
-     let mut i:  libc::c_int =  0; let mut x:  crate::jpegint_h::JLONG =  0;let mut cconvert: my_cconvert_ptr = (*cinfo).cconvert as my_cconvert_ptr;
+      let mut cconvert: my_cconvert_ptr = (*cinfo).cconvert as my_cconvert_ptr;
     
     
     (*cconvert).Cr_r_tab = Some(
@@ -538,8 +538,9 @@ unsafe extern "C" fn build_ycc_rgb_table(mut cinfo: crate::jpeglib_h::j_decompre
         (crate::jmorecfg_h::MAXJSAMPLE + 1i32) as libc::c_ulong *
     ::std::mem::size_of::<crate::jpegint_h::JLONG>() as libc::c_ulong,
     ) as *mut crate::jpegint_h::JLONG;
-    i = 0i32;
-    x = -crate::jmorecfg_h::CENTERJSAMPLE as crate::jpegint_h::JLONG;
+    
+     let mut i:   libc::c_int =  0i32; let mut x:   crate::jpegint_h::JLONG =
+     -crate::jmorecfg_h::CENTERJSAMPLE as crate::jpegint_h::JLONG;
     while i <= crate::jmorecfg_h::MAXJSAMPLE {
         /* i is the actual input pixel value, in the range 0..MAXJSAMPLE */
         /* The Cb or Cr value we are thinking of is x = i - CENTERJSAMPLE */
@@ -626,12 +627,11 @@ unsafe extern "C" fn ycc_rgb_convert(
  */
 
 unsafe extern "C" fn build_rgb_y_table(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
-     let mut rgb_y_tab:  *mut crate::jpegint_h::JLONG =
-     ::std::ptr::null_mut::< crate::jpegint_h::JLONG>(); let mut i:  crate::jpegint_h::JLONG =  0;let mut cconvert: my_cconvert_ptr = (*cinfo).cconvert as my_cconvert_ptr;
+      let mut cconvert: my_cconvert_ptr = (*cinfo).cconvert as my_cconvert_ptr;
     
     
-    /* Allocate and fill in the conversion tables. */
-    rgb_y_tab = Some(
+     let mut rgb_y_tab:   *mut crate::jpegint_h::JLONG =
+     Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),
@@ -643,7 +643,7 @@ unsafe extern "C" fn build_rgb_y_table(mut cinfo: crate::jpeglib_h::j_decompress
     ::std::mem::size_of::<crate::jpegint_h::JLONG>() as libc::c_ulong,
     ) as *mut crate::jpegint_h::JLONG;
     (*cconvert).rgb_y_tab = rgb_y_tab;
-    i = 0i64;
+     let mut i:   crate::jpegint_h::JLONG =  0i64;
     while i <= crate::jmorecfg_h::MAXJSAMPLE as libc::c_long {
         *rgb_y_tab.offset((i + R_Y_OFF as libc::c_long) as isize) =
             (0.29900f64 * (1i64 << SCALEBITS) as libc::c_double + 0.5f64)
@@ -684,26 +684,25 @@ unsafe extern "C" fn rgb_gray_convert(
     
     let mut num_cols: crate::jmorecfg_h::JDIMENSION = (*cinfo).output_width;
     loop {
-         let mut outptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut inptr0:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut inptr1:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut inptr2:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut col:  crate::jmorecfg_h::JDIMENSION =  0;num_rows -= 1;
+             num_rows -= 1;
         if !(num_rows >= 0i32) {
             break;
         }
-        inptr0 = *(*input_buf.offset(0)).offset(input_row as isize);
-        inptr1 = *(*input_buf.offset(1)).offset(input_row as isize);
-        inptr2 = *(*input_buf.offset(2)).offset(input_row as isize);
+        
+        
+         let mut inptr0:   crate::jpeglib_h::JSAMPROW =
+     *(*input_buf.offset(0)).offset(input_row as isize); let mut inptr1:   crate::jpeglib_h::JSAMPROW =
+     *(*input_buf.offset(1)).offset(input_row as isize); let mut inptr2:   crate::jpeglib_h::JSAMPROW =
+     *(*input_buf.offset(2)).offset(input_row as isize);
         input_row =  input_row + 1;
         let fresh42 = output_buf;
         output_buf = output_buf.offset(1);
-        outptr = *fresh42;
-        col = 0u32;
+        
+         let mut outptr:   crate::jpeglib_h::JSAMPROW =  *fresh42; let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols {
-             let mut r:  libc::c_int =  0; let mut g:  libc::c_int =  0; let mut b:  libc::c_int =  0;r = *inptr0.offset(col as isize) as libc::c_int;
-            g = *inptr1.offset(col as isize) as libc::c_int;
-            b = *inptr2.offset(col as isize) as libc::c_int;
+               
+            
+             let mut r:   libc::c_int =  *inptr0.offset(col as isize) as libc::c_int; let mut g:   libc::c_int =  *inptr1.offset(col as isize) as libc::c_int; let mut b:   libc::c_int =  *inptr2.offset(col as isize) as libc::c_int;
             /* Y */
             *outptr.offset(col as isize) = (*ctab.offset((r + R_Y_OFF) as isize)
                 + *ctab.offset((g + G_Y_OFF) as isize)
@@ -769,15 +768,15 @@ unsafe extern "C" fn null_convert(
         }
     } else if num_components == 4i32 {
         loop {
-             let mut inptr3:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();num_rows -= 1;
+             num_rows -= 1;
             if !(num_rows >= 0i32) {
                 break;
             }
             inptr0 = *(*input_buf.offset(0)).offset(input_row as isize);
             inptr1 = *(*input_buf.offset(1)).offset(input_row as isize);
             inptr2 = *(*input_buf.offset(2)).offset(input_row as isize);
-            inptr3 = *(*input_buf.offset(3)).offset(input_row as isize);
+             let mut inptr3:   crate::jpeglib_h::JSAMPROW =
+     *(*input_buf.offset(3)).offset(input_row as isize);
             input_row =  input_row + 1;
             let fresh47 = output_buf;
             output_buf = output_buf.offset(1);
@@ -801,14 +800,14 @@ unsafe extern "C" fn null_convert(
         }
     } else {
         loop {
-             let mut ci:  libc::c_int =  0;num_rows -= 1;
+             num_rows -= 1;
             if !(num_rows >= 0i32) {
                 break;
             }
-            ci = 0i32;
+             let mut ci:   libc::c_int =  0i32;
             while ci < num_components {
-                 let mut inptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();inptr = *(*input_buf.offset(ci as isize)).offset(input_row as isize);
+                  let mut inptr:   crate::jpeglib_h::JSAMPROW =
+     *(*input_buf.offset(ci as isize)).offset(input_row as isize);
                 outptr = *output_buf;
                 col = 0u32;
                 while col < num_cols {
@@ -975,28 +974,27 @@ unsafe extern "C" fn ycck_cmyk_convert(
     let mut Crgtab: *mut crate::jpegint_h::JLONG = (*cconvert).Cr_g_tab;
     let mut Cbgtab: *mut crate::jpegint_h::JLONG = (*cconvert).Cb_g_tab;
     loop {
-         let mut outptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut inptr0:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut inptr1:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut inptr2:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut inptr3:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut col:  crate::jmorecfg_h::JDIMENSION =  0;num_rows -= 1;
+              num_rows -= 1;
         if !(num_rows >= 0i32) {
             break;
         }
-        inptr0 = *(*input_buf.offset(0)).offset(input_row as isize);
-        inptr1 = *(*input_buf.offset(1)).offset(input_row as isize);
-        inptr2 = *(*input_buf.offset(2)).offset(input_row as isize);
-        inptr3 = *(*input_buf.offset(3)).offset(input_row as isize);
+        
+        
+        
+         let mut inptr0:   crate::jpeglib_h::JSAMPROW =
+     *(*input_buf.offset(0)).offset(input_row as isize); let mut inptr1:   crate::jpeglib_h::JSAMPROW =
+     *(*input_buf.offset(1)).offset(input_row as isize); let mut inptr2:   crate::jpeglib_h::JSAMPROW =
+     *(*input_buf.offset(2)).offset(input_row as isize); let mut inptr3:   crate::jpeglib_h::JSAMPROW =
+     *(*input_buf.offset(3)).offset(input_row as isize);
         input_row =  input_row + 1;
         let fresh52 = output_buf;
         output_buf = output_buf.offset(1);
-        outptr = *fresh52;
-        col = 0u32;
+        
+         let mut outptr:   crate::jpeglib_h::JSAMPROW =  *fresh52; let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols {
-             let mut y:  libc::c_int =  0; let mut cb:  libc::c_int =  0; let mut cr:  libc::c_int =  0;y = *inptr0.offset(col as isize) as libc::c_int;
-            cb = *inptr1.offset(col as isize) as libc::c_int;
-            cr = *inptr2.offset(col as isize) as libc::c_int;
+               
+            
+             let mut y:   libc::c_int =  *inptr0.offset(col as isize) as libc::c_int; let mut cb:   libc::c_int =  *inptr1.offset(col as isize) as libc::c_int; let mut cr:   libc::c_int =  *inptr2.offset(col as isize) as libc::c_int;
             /* Range-limiting is essential due to noise introduced by DCT losses. */
             *outptr.offset(0) = *range_limit.offset(
                 (crate::jmorecfg_h::MAXJSAMPLE - (y + *Crrtab.offset(cr as isize))) as isize,
@@ -1287,9 +1285,9 @@ unsafe extern "C" fn start_pass_dcolor(mut cinfo: crate::jpeglib_h::j_decompress
 
 pub unsafe extern "C" fn jinit_color_deconverter(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
     
-     let mut cconvert:  my_cconvert_ptr =
-     ::std::ptr::null_mut::< my_color_deconverter>();
-    cconvert = Some(
+     
+     let mut cconvert:   my_cconvert_ptr =
+     Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),
@@ -1371,7 +1369,7 @@ pub unsafe extern "C" fn jinit_color_deconverter(mut cinfo: crate::jpeglib_h::j_
                 ||  (*cinfo).jpeg_color_space
                     ==  crate::jpeglib_h::JCS_YCbCr
             {
-                 let mut ci:  libc::c_int =  0;(*cconvert).pub_0.color_convert = Some(
+                 (*cconvert).pub_0.color_convert = Some(
                     grayscale_convert
                         as unsafe extern "C" fn(
                             _: crate::jpeglib_h::j_decompress_ptr,
@@ -1381,8 +1379,7 @@ pub unsafe extern "C" fn jinit_color_deconverter(mut cinfo: crate::jpeglib_h::j_
                             _: libc::c_int,
                         ) -> (),
                 );
-                /* For color->grayscale conversion, only the Y (0) component is needed */
-                ci = 1i32;
+                 let mut ci:   libc::c_int =  1i32;
                 while ci < (*cinfo).num_components {
                     (*(*cinfo).comp_info.offset(ci as isize)).component_needed =
                         crate::jmorecfg_h::FALSE;

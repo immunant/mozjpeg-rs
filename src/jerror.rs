@@ -695,7 +695,7 @@ unsafe extern "C" fn output_message(mut cinfo: crate::jpeglib_h::j_common_ptr) {
             .expect("non-null function pointer"),
     )
     .expect("non-null function pointer")(cinfo, buffer.as_mut_ptr());
-        eprintln!("{:}",
+         eprintln!("{:}",
           unsafe {
     std::ffi::CStr::from_ptr(buffer.as_mut_ptr() as
                                  *const libc::c_char).to_str().unwrap()
@@ -745,7 +745,7 @@ unsafe extern "C" fn format_message(
     mut cinfo: crate::jpeglib_h::j_common_ptr,
     mut buffer: *mut libc::c_char,
 ) {
-     let mut msgptr:  *const libc::c_char =  ::std::ptr::null::< libc::c_char>(); let mut isstring:  crate::jmorecfg_h::boolean =  0;let mut err: *mut crate::jpeglib_h::jpeg_error_mgr = (*cinfo).err;
+      let mut err: *mut crate::jpeglib_h::jpeg_error_mgr = (*cinfo).err;
     let mut msg_code: libc::c_int = (*err).msg_code;
     let mut msgtext: *const libc::c_char = crate::stddef_h::NULL as *const libc::c_char;
     
@@ -767,13 +767,12 @@ unsafe extern "C" fn format_message(
         (*err).msg_parm.i[0] = msg_code;
         msgtext = *(*err).jpeg_message_table.offset(0)
     }
-    /* Check for string parameter, as indicated by %s in the message text */
-    isstring = crate::jmorecfg_h::FALSE;
-    msgptr = msgtext;
+    
+     let mut isstring:   crate::jmorecfg_h::boolean =  crate::jmorecfg_h::FALSE; let mut msgptr:   *const libc::c_char =  msgtext;
     loop {
-         let mut ch:  libc::c_char =  0;let fresh0 = msgptr;
+         let fresh0 = msgptr;
         msgptr = msgptr.offset(1);
-        ch = *fresh0;
+         let mut ch:   libc::c_char =  *fresh0;
         if !(ch as libc::c_int != '\u{0}' as i32) {
             break;
         }

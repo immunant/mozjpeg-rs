@@ -353,9 +353,9 @@ static mut c5to8bits: [crate::jmorecfg_h::UINT8; 32] = [
 
 unsafe extern "C" fn read_byte(mut sinfo: tga_source_ptr) -> libc::c_int
 /* Read next byte from Targa file */ {
-     let mut c:  libc::c_int =  0;let mut infile: *mut crate::stdlib::FILE = (*sinfo).pub_0.input_file;
+     let mut infile: *mut crate::stdlib::FILE = (*sinfo).pub_0.input_file;
     
-    c = crate::stdlib::getc(infile);
+     let mut c:   libc::c_int =  crate::stdlib::getc(infile);
     if c == crate::stdlib::EOF {
         (*(*(*sinfo).cinfo).err).msg_code = crate::src::jerror::JERR_INPUT_EOF as libc::c_int;
         Some(
@@ -377,7 +377,7 @@ unsafe extern "C" fn read_colormap(
 )
 /* Read the colormap from a Targa file */
 {
-     let mut i:  libc::c_int =  0;
+     
     /* Presently only handles 24-bit BGR format */
     if mapentrysize != 24i32 {
         (*(*(*sinfo).cinfo).err).msg_code = crate::cderror_h::JERR_TGA_BADCMAP as libc::c_int;
@@ -390,7 +390,7 @@ unsafe extern "C" fn read_colormap(
             (*sinfo).cinfo as crate::jpeglib_h::j_common_ptr
         );
     }
-    i = 0i32;
+     let mut i:   libc::c_int =  0i32;
     while i < cmaplen {
         *(*(*sinfo).colormap.offset(2)).offset(i as isize) =
             read_byte(sinfo) as crate::jmorecfg_h::JSAMPLE;
@@ -408,8 +408,8 @@ unsafe extern "C" fn read_colormap(
 unsafe extern "C" fn read_non_rle_pixel(mut sinfo: tga_source_ptr)
 /* Read one Targa pixel from the input file; no RLE expansion */
 {
-     let mut i:  libc::c_int =  0;
-    i = 0i32;
+     
+     let mut i:   libc::c_int =  0i32;
     while i < (*sinfo).pixel_size {
         (*sinfo).tga_pixel[i as usize] = read_byte(sinfo) as U_CHAR;
         i += 1
@@ -458,12 +458,11 @@ unsafe extern "C" fn get_8bit_gray_row(
     mut sinfo: crate::src::cdjpeg::cjpeg_source_ptr,
 ) -> crate::jmorecfg_h::JDIMENSION
 /* This version is for reading 8-bit grayscale pixels */ {
-     let mut ptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut col:  crate::jmorecfg_h::JDIMENSION =  0;let mut source: tga_source_ptr = sinfo as tga_source_ptr; /* Load next pixel into tga_pixel */
+      let mut source: tga_source_ptr = sinfo as tga_source_ptr; /* Load next pixel into tga_pixel */
     
     
-    ptr = *(*source).pub_0.buffer.offset(0);
-    col = (*cinfo).image_width;
+    
+     let mut ptr:   crate::jpeglib_h::JSAMPROW =  *(*source).pub_0.buffer.offset(0); let mut col:   crate::jmorecfg_h::JDIMENSION =  (*cinfo).image_width;
     while col > 0u32 {
         Some((*source).read_pixel.expect("non-null function pointer"))
             .expect("non-null function pointer")(source);
@@ -480,18 +479,17 @@ unsafe extern "C" fn get_8bit_row(
     mut sinfo: crate::src::cdjpeg::cjpeg_source_ptr,
 ) -> crate::jmorecfg_h::JDIMENSION
 /* This version is for reading 8-bit colormap indexes */ {
-     let mut ptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut col:  crate::jmorecfg_h::JDIMENSION =  0;let mut source: tga_source_ptr = sinfo as tga_source_ptr; /* Load next pixel into tga_pixel */
+      let mut source: tga_source_ptr = sinfo as tga_source_ptr; /* Load next pixel into tga_pixel */
     
     
     
     let mut colormap: crate::jpeglib_h::JSAMPARRAY = (*source).colormap;
-    ptr = *(*source).pub_0.buffer.offset(0);
-    col = (*cinfo).image_width;
+    
+     let mut ptr:   crate::jpeglib_h::JSAMPROW =  *(*source).pub_0.buffer.offset(0); let mut col:   crate::jmorecfg_h::JDIMENSION =  (*cinfo).image_width;
     while col > 0u32 {
-         let mut t:  libc::c_int =  0;Some((*source).read_pixel.expect("non-null function pointer"))
+         Some((*source).read_pixel.expect("non-null function pointer"))
             .expect("non-null function pointer")(source);
-        t = (*source).tga_pixel[0] as libc::c_int;
+         let mut t:   libc::c_int =  (*source).tga_pixel[0] as libc::c_int;
         let fresh1 = ptr;
         ptr = ptr.offset(1);
         *fresh1 = *(*colormap.offset(0)).offset(t as isize);
@@ -511,17 +509,16 @@ unsafe extern "C" fn get_16bit_row(
     mut sinfo: crate::src::cdjpeg::cjpeg_source_ptr,
 ) -> crate::jmorecfg_h::JDIMENSION
 /* This version is for reading 16-bit pixels */ {
-     let mut ptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut col:  crate::jmorecfg_h::JDIMENSION =  0;let mut source: tga_source_ptr = sinfo as tga_source_ptr; /* Load next pixel into tga_pixel */
+      let mut source: tga_source_ptr = sinfo as tga_source_ptr; /* Load next pixel into tga_pixel */
     
     
     
-    ptr = *(*source).pub_0.buffer.offset(0);
-    col = (*cinfo).image_width;
+    
+     let mut ptr:   crate::jpeglib_h::JSAMPROW =  *(*source).pub_0.buffer.offset(0); let mut col:   crate::jmorecfg_h::JDIMENSION =  (*cinfo).image_width;
     while col > 0u32 {
-         let mut t:  libc::c_int =  0;Some((*source).read_pixel.expect("non-null function pointer"))
+         Some((*source).read_pixel.expect("non-null function pointer"))
             .expect("non-null function pointer")(source);
-        t = (*source).tga_pixel[0] as libc::c_int;
+         let mut t:   libc::c_int =  (*source).tga_pixel[0] as libc::c_int;
         t += ((*source).tga_pixel[1] as libc::c_int) << 8i32;
         /* We expand 5 bit data to 8 bit sample width.
          * The format of the 16-bit (LSB first) input word is
@@ -543,12 +540,9 @@ unsafe extern "C" fn get_24bit_row(
     mut sinfo: crate::src::cdjpeg::cjpeg_source_ptr,
 ) -> crate::jmorecfg_h::JDIMENSION
 /* This version is for reading 24-bit pixels */ {
-     let mut ptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut col:  crate::jmorecfg_h::JDIMENSION =  0;let mut source: tga_source_ptr = sinfo as tga_source_ptr; /* Load next pixel into tga_pixel */
-     /* change BGR to RGB order */
-    
-    ptr = *(*source).pub_0.buffer.offset(0);
-    col = (*cinfo).image_width;
+      let mut source: tga_source_ptr = sinfo as tga_source_ptr; /* Load next pixel into tga_pixel */
+     
+     let mut ptr:   crate::jpeglib_h::JSAMPROW =  *(*source).pub_0.buffer.offset(0); let mut col:   crate::jmorecfg_h::JDIMENSION =  (*cinfo).image_width;
     while col > 0u32 {
         Some((*source).read_pixel.expect("non-null function pointer"))
             .expect("non-null function pointer")(source);
@@ -586,12 +580,10 @@ unsafe extern "C" fn get_memory_row(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
     mut sinfo: crate::src::cdjpeg::cjpeg_source_ptr,
 ) -> crate::jmorecfg_h::JDIMENSION {
-     let mut source_row:  crate::jmorecfg_h::JDIMENSION =  0;let mut source: tga_source_ptr = sinfo as tga_source_ptr;
+     let mut source: tga_source_ptr = sinfo as tga_source_ptr;
     
-    /* Compute row of source that maps to current_row of normal order */
-    /* For now, assume image is bottom-up and not interlaced. */
-    /* NEEDS WORK to support interlaced images! */
-    source_row =  (*cinfo)
+     let mut source_row:   crate::jmorecfg_h::JDIMENSION =
+      (*cinfo)
         .image_height - (*source).current_row - 1u32;
     /* Fetch that row from virtual array */
     (*source).pub_0.buffer = Some(
@@ -619,12 +611,11 @@ unsafe extern "C" fn preload_image(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
     mut sinfo: crate::src::cdjpeg::cjpeg_source_ptr,
 ) -> crate::jmorecfg_h::JDIMENSION {
-     let mut row:  crate::jmorecfg_h::JDIMENSION =  0;let mut source: tga_source_ptr = sinfo as tga_source_ptr;
+     let mut source: tga_source_ptr = sinfo as tga_source_ptr;
     
     let mut progress: crate::src::cdjpeg::cd_progress_ptr =
         (*cinfo).progress as crate::src::cdjpeg::cd_progress_ptr;
-    /* Read the data into a virtual array in input-file row order. */
-    row = 0u32;
+     let mut row:   crate::jmorecfg_h::JDIMENSION =  0u32;
     while row < (*cinfo).image_height {
         if !progress.is_null() {
             (*progress).pub_0.pass_counter = row as libc::c_long;
@@ -678,7 +669,7 @@ unsafe extern "C" fn start_input_tga(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
     mut sinfo: crate::src::cdjpeg::cjpeg_source_ptr,
 ) {
-     let mut targaheader:  [U_CHAR; 18] =  [0; 18]; let mut idlen:  libc::c_int =  0; let mut cmaptype:  libc::c_int =  0; let mut subtype:  libc::c_int =  0; let mut flags:  libc::c_int =  0; let mut interlace_type:  libc::c_int =  0; let mut components:  libc::c_int =  0; let mut width:  libc::c_uint =  0; let mut height:  libc::c_uint =  0; let mut maplen:  libc::c_uint =  0; let mut is_bottom_up:  crate::jmorecfg_h::boolean =  0;let mut source: tga_source_ptr = sinfo as tga_source_ptr;
+     let mut targaheader:  [U_CHAR; 18] =  [0; 18];          let mut source: tga_source_ptr = sinfo as tga_source_ptr;
     
     
     
@@ -709,21 +700,25 @@ unsafe extern "C" fn start_input_tga(
     if targaheader[16] as libc::c_int == 15i32 {
         targaheader[16] = 16u8
     } /* Image Descriptor byte */
-    idlen = targaheader[0] as libc::c_int; /* bit 5 set => top-down */
-    cmaptype = targaheader[1] as libc::c_int; /* bits 6/7 are interlace code */
-    subtype = targaheader[2] as libc::c_int;
-    maplen =  targaheader[5] as libc::c_uint +
-    ((((targaheader[(5i32 + 1i32) as usize] as libc::c_uint) << 8i32)));
-    width =  targaheader[12] as libc::c_uint +
+     /* bit 5 set => top-down */
+     /* bits 6/7 are interlace code */
+    
+    
+    
+     let mut idlen:   libc::c_int =  targaheader[0] as libc::c_int; let mut cmaptype:   libc::c_int =  targaheader[1] as libc::c_int; let mut subtype:   libc::c_int =  targaheader[2] as libc::c_int; let mut maplen:   libc::c_uint =
+      targaheader[5] as libc::c_uint +
+    ((((targaheader[(5i32 + 1i32) as usize] as libc::c_uint) << 8i32))); let mut width:   libc::c_uint =
+      targaheader[12] as libc::c_uint +
     (((
-        (targaheader[(12i32 + 1i32) as usize] as libc::c_uint) << 8i32)));
-    height =  targaheader[14] as libc::c_uint +
+        (targaheader[(12i32 + 1i32) as usize] as libc::c_uint) << 8i32))); let mut height:   libc::c_uint =
+      targaheader[14] as libc::c_uint +
     (((
         (targaheader[(14i32 + 1i32) as usize] as libc::c_uint) << 8i32)));
     (*source).pixel_size = targaheader[16] as libc::c_int >> 3i32;
-    flags = targaheader[17] as libc::c_int;
-    is_bottom_up = (flags & 0x20i32 == 0i32) as libc::c_int;
-    interlace_type = flags >> 6i32;
+    
+    
+     let mut flags:   libc::c_int =  targaheader[17] as libc::c_int; let mut is_bottom_up:   crate::jmorecfg_h::boolean =
+     (flags & 0x20i32 == 0i32) as libc::c_int; let mut interlace_type:   libc::c_int =  flags >> 6i32;
     if cmaptype > 1i32
         || (*source).pixel_size < 1i32
         || (*source).pixel_size > 4i32
@@ -753,8 +748,7 @@ unsafe extern "C" fn start_input_tga(
         (*source).read_pixel =
             Some(read_non_rle_pixel as unsafe extern "C" fn(_: tga_source_ptr) -> ())
     }
-    /* Now should have subtype 1, 2, or 3 */
-    components = 3i32; /* until proven different */
+     let mut components:   libc::c_int =  3i32; /* until proven different */
     (*cinfo).in_color_space = crate::jpeglib_h::JCS_RGB;
     match subtype {
         1 => {
@@ -1062,9 +1056,9 @@ to write the image in bottom-up order.) */
 pub unsafe extern "C" fn jinit_read_targa(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
 ) -> crate::src::cdjpeg::cjpeg_source_ptr {
-     let mut source:  tga_source_ptr =  ::std::ptr::null_mut::< _tga_source_struct>();
-    /* Create module interface object */
-    source = Some(
+     
+     let mut source:   tga_source_ptr =
+     Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),

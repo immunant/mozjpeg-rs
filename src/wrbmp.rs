@@ -387,18 +387,16 @@ unsafe extern "C" fn put_pixel_rows(
 )
 /* This version is for writing 24-bit pixels */
 {
-     let mut inptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut outptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut col:  crate::jmorecfg_h::JDIMENSION =  0; let mut pad:  libc::c_int =  0;let mut dest: bmp_dest_ptr = dinfo as bmp_dest_ptr;
+      let mut outptr:  crate::jpeglib_h::JSAMPROW =
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut col:  crate::jmorecfg_h::JDIMENSION =  0; let mut dest: bmp_dest_ptr = dinfo as bmp_dest_ptr;
     
     
     
     
     
     if (*dest).use_inversion_array != 0 {
-        /* Access next row in virtual array */
-         let mut image_ptr:  crate::jpeglib_h::JSAMPARRAY =
-     ::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>();image_ptr = Some(
+         let mut image_ptr:   crate::jpeglib_h::JSAMPARRAY =
+     Some(
             (*(*cinfo).mem)
                 .access_virt_sarray
                 .expect("non-null function pointer"),
@@ -418,7 +416,7 @@ unsafe extern "C" fn put_pixel_rows(
     /* Transfer data.  Note destination values must be in BGR order
      * (even though Microsoft's own documents say the opposite).
      */
-    inptr = *(*dest).pub_0.buffer.offset(0);
+     let mut inptr:   crate::jpeglib_h::JSAMPROW =  *(*dest).pub_0.buffer.offset(0);
     if  (*cinfo).out_color_space
         ==  crate::jpeglib_h::JCS_EXT_BGR
     {
@@ -494,8 +492,7 @@ unsafe extern "C" fn put_pixel_rows(
             col =  col - 1
         }
     }
-    /* Zero out the pad bytes. */
-    pad = (*dest).pad_bytes;
+     let mut pad:   libc::c_int =  (*dest).pad_bytes;
     loop {
         pad -= 1;
         if !(pad >= 0i32) {
@@ -522,17 +519,15 @@ unsafe extern "C" fn put_gray_rows(
 )
 /* This version is for grayscale OR quantized color output */
 {
-     let mut inptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut outptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut pad:  libc::c_int =  0;let mut dest: bmp_dest_ptr = dinfo as bmp_dest_ptr;
+      let mut outptr:  crate::jpeglib_h::JSAMPROW =
+     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut dest: bmp_dest_ptr = dinfo as bmp_dest_ptr;
     
     
     
     
     if (*dest).use_inversion_array != 0 {
-        /* Access next row in virtual array */
-         let mut image_ptr:  crate::jpeglib_h::JSAMPARRAY =
-     ::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>();image_ptr = Some(
+         let mut image_ptr:   crate::jpeglib_h::JSAMPARRAY =
+     Some(
             (*(*cinfo).mem)
                 .access_virt_sarray
                 .expect("non-null function pointer"),
@@ -549,16 +544,14 @@ unsafe extern "C" fn put_gray_rows(
     } else {
         outptr = (*dest).iobuffer
     }
-    /* Transfer data. */
-    inptr = *(*dest).pub_0.buffer.offset(0);
+     let mut inptr:   crate::jpeglib_h::JSAMPROW =  *(*dest).pub_0.buffer.offset(0);
     crate::stdlib::memcpy(
         outptr as *mut libc::c_void,
         inptr as *const libc::c_void,
         (*cinfo).output_width as crate::stddef_h::size_t,
     );
     outptr = outptr.offset((*cinfo).output_width as isize);
-    /* Zero out the pad bytes. */
-    pad = (*dest).pad_bytes;
+     let mut pad:   libc::c_int =  (*dest).pad_bytes;
     loop {
         pad -= 1;
         if !(pad >= 0i32) {
@@ -596,7 +589,7 @@ unsafe extern "C" fn write_bmp_header(
     
     
     
-     let mut bmpfileheader:  [libc::c_char; 14] =  [0; 14]; let mut bmpinfoheader:  [libc::c_char; 40] =  [0; 40]; let mut headersize:  libc::c_long =  0; let mut bfSize:  libc::c_long =  0; let mut bits_per_pixel:  libc::c_int =  0; let mut cmap_entries:  libc::c_int =  0;
+     let mut bmpfileheader:  [libc::c_char; 14] =  [0; 14]; let mut bmpinfoheader:  [libc::c_char; 40] =  [0; 40];   let mut bits_per_pixel:  libc::c_int =  0; let mut cmap_entries:  libc::c_int =  0;
     /* Compute colormap size and total file size */
     if  (*cinfo).out_color_space
         ==  crate::jpeglib_h::JCS_RGB
@@ -626,9 +619,10 @@ unsafe extern "C" fn write_bmp_header(
         bits_per_pixel = 8i32;
         cmap_entries = 256i32
     }
-    /* File size */
-    headersize = (14i32 + 40i32 + cmap_entries * 4i32) as libc::c_long; /* Header and colormap */
-    bfSize =
+     /* Header and colormap */
+     let mut headersize:   libc::c_long =
+     (14i32 + 40i32 + cmap_entries * 4i32) as libc::c_long; let mut bfSize:   libc::c_long =
+    
         headersize + (*dest).row_width as libc::c_long * (*cinfo).output_height as libc::c_long;
     /* Set unused fields of header to 0 */
     crate::stdlib::memset(
@@ -757,7 +751,7 @@ unsafe extern "C" fn write_os2_header(
     
     
     
-     let mut bmpfileheader:  [libc::c_char; 14] =  [0; 14]; let mut bmpcoreheader:  [libc::c_char; 12] =  [0; 12]; let mut headersize:  libc::c_long =  0; let mut bfSize:  libc::c_long =  0; let mut bits_per_pixel:  libc::c_int =  0; let mut cmap_entries:  libc::c_int =  0;
+     let mut bmpfileheader:  [libc::c_char; 14] =  [0; 14]; let mut bmpcoreheader:  [libc::c_char; 12] =  [0; 12];   let mut bits_per_pixel:  libc::c_int =  0; let mut cmap_entries:  libc::c_int =  0;
     /* Compute colormap size and total file size */
     if  (*cinfo).out_color_space
         ==  crate::jpeglib_h::JCS_RGB
@@ -788,8 +782,10 @@ unsafe extern "C" fn write_os2_header(
         cmap_entries = 256i32
     }
     /* File size */
-    headersize = (14i32 + 12i32 + cmap_entries * 3i32) as libc::c_long; /* Header and colormap */
-    bfSize =
+     /* Header and colormap */
+     let mut headersize:   libc::c_long =
+     (14i32 + 12i32 + cmap_entries * 3i32) as libc::c_long; let mut bfSize:   libc::c_long =
+    
         headersize + (*dest).row_width as libc::c_long * (*cinfo).output_height as libc::c_long;
     /* Set unused fields of header to 0 */
     crate::stdlib::memset(
@@ -994,17 +990,15 @@ unsafe extern "C" fn finish_output_bmp(
         (*cinfo).progress as crate::src::cdjpeg::cd_progress_ptr;
     if (*dest).use_inversion_array != 0 {
         /* Write the header and colormap */
-         let mut row:  crate::jmorecfg_h::JDIMENSION =  0;if (*dest).is_os2 != 0 {
+         if (*dest).is_os2 != 0 {
             write_os2_header(cinfo, dest);
         } else {
             write_bmp_header(cinfo, dest);
         }
         /* Write the file body from our virtual array */
-        row = (*cinfo).output_height;
+         let mut row:   crate::jmorecfg_h::JDIMENSION =  (*cinfo).output_height;
         while row > 0u32 {
-             let mut image_ptr:  crate::jpeglib_h::JSAMPARRAY =
-     ::std::ptr::null_mut::< crate::jpeglib_h::JSAMPROW>(); let mut data_ptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut col:  crate::jmorecfg_h::JDIMENSION =  0;if !progress.is_null() {
+               if !progress.is_null() {
                 (*progress).pub_0.pass_counter =
                     (
                     (*cinfo).output_height - row) as libc::c_long;
@@ -1019,7 +1013,10 @@ unsafe extern "C" fn finish_output_bmp(
                     cinfo as crate::jpeglib_h::j_common_ptr
                 );
             }
-            image_ptr = Some(
+            
+            
+             let mut image_ptr:   crate::jpeglib_h::JSAMPARRAY =
+     Some(
                 (*(*cinfo).mem)
                     .access_virt_sarray
                     .expect("non-null function pointer"),
@@ -1031,9 +1028,7 @@ unsafe extern "C" fn finish_output_bmp(
                 row - 1u32,
                 1u32,
                 crate::jmorecfg_h::FALSE,
-            );
-            data_ptr = *image_ptr.offset(0);
-            col = (*dest).row_width;
+            ); let mut data_ptr:   crate::jpeglib_h::JSAMPROW =  *image_ptr.offset(0); let mut col:   crate::jmorecfg_h::JDIMENSION =  (*dest).row_width;
             while col > 0u32 {
                 crate::stdlib::putc(*data_ptr as libc::c_int, outfile);
                 data_ptr = data_ptr.offset(1);
@@ -1068,9 +1063,10 @@ pub unsafe extern "C" fn jinit_write_bmp(
     mut use_inversion_array: crate::jmorecfg_h::boolean,
 ) -> crate::src::cdjpeg::djpeg_dest_ptr {
     
-     let mut dest:  bmp_dest_ptr =  ::std::ptr::null_mut::< bmp_dest_struct>(); let mut row_width:  crate::jmorecfg_h::JDIMENSION =  0;
+      let mut row_width:  crate::jmorecfg_h::JDIMENSION =  0;
     /* Create module interface object, fill in method pointers */
-    dest = Some(
+     let mut dest:   bmp_dest_ptr =
+     Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),

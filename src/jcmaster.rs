@@ -291,9 +291,7 @@ unsafe extern "C" fn initial_setup(
     
     
     
-     let mut ci:  libc::c_int =  0; let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
-    
-        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>(); let mut samplesperrow:  libc::c_long =  0; let mut jd_samplesperrow:  crate::jmorecfg_h::JDIMENSION =  0;
+        
     /* Sanity check on image dimensions */
     if (*cinfo).image_height <= 0u32
         || (*cinfo).image_width <= 0u32
@@ -321,10 +319,11 @@ unsafe extern "C" fn initial_setup(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    /* Width of an input scanline must be representable as JDIMENSION. */
-    samplesperrow =
-        (*cinfo).image_width as libc::c_long * (*cinfo).input_components as libc::c_long;
-    jd_samplesperrow = samplesperrow as crate::jmorecfg_h::JDIMENSION;
+    
+     let mut samplesperrow:   libc::c_long =
+    
+        (*cinfo).image_width as libc::c_long * (*cinfo).input_components as libc::c_long; let mut jd_samplesperrow:   crate::jmorecfg_h::JDIMENSION =
+     samplesperrow as crate::jmorecfg_h::JDIMENSION;
     if jd_samplesperrow as libc::c_long != samplesperrow {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_WIDTH_OVERFLOW as libc::c_int;
         Some(
@@ -360,8 +359,9 @@ unsafe extern "C" fn initial_setup(
     /* Compute maximum sampling factors; check factor validity */
     (*cinfo).max_h_samp_factor = 1i32;
     (*cinfo).max_v_samp_factor = 1i32;
-    ci = 0i32;
-    compptr = (*cinfo).comp_info;
+    
+     let mut ci:   libc::c_int =  0i32; let mut compptr:   *mut crate::jpeglib_h::jpeg_component_info =
+     (*cinfo).comp_info;
     while ci < (*cinfo).num_components {
         if (*compptr).h_samp_factor <= 0i32
             || (*compptr).h_samp_factor > crate::jpeglib_h::MAX_SAMP_FACTOR
@@ -448,9 +448,7 @@ unsafe extern "C" fn validate_script(mut cinfo: crate::jpeglib_h::j_compress_ptr
     
     
     
-     let mut scanptr:  *const crate::jpeglib_h::jpeg_scan_info =
-    
-        ::std::ptr::null::< crate::jpeglib_h::jpeg_scan_info>(); let mut scanno:  libc::c_int =  0; let mut ci:  libc::c_int =  0; let mut coefi:  libc::c_int =  0; let mut component_sent:  [crate::jmorecfg_h::boolean; 10] =  [0; 10]; let mut last_bitpos_ptr:  *mut libc::c_int =
+       let mut ci:  libc::c_int =  0; let mut coefi:  libc::c_int =  0; let mut component_sent:  [crate::jmorecfg_h::boolean; 10] =  [0; 10]; let mut last_bitpos_ptr:  *mut libc::c_int =
      ::std::ptr::null_mut::< libc::c_int>(); let mut last_bitpos:  [[libc::c_int; 64]; 10] =  [[0; 64]; 10];
     /* -1 until that coefficient has been seen; then last Al for it */
     if (*(*cinfo).master).optimize_scans != 0 {
@@ -473,7 +471,7 @@ unsafe extern "C" fn validate_script(mut cinfo: crate::jpeglib_h::j_compress_ptr
     /* For sequential JPEG, all scans must have Ss=0, Se=DCTSIZE2-1;
      * for progressive JPEG, no scan can have this.
      */
-    scanptr = (*cinfo).scan_info;
+     let mut scanptr:   *const crate::jpeglib_h::jpeg_scan_info =  (*cinfo).scan_info;
     if (*scanptr).Ss != 0i32 || (*scanptr).Se != crate::jpeglib_h::DCTSIZE2 - 1i32 {
         (*cinfo).progressive_mode = crate::jmorecfg_h::TRUE;
         last_bitpos_ptr =
@@ -497,10 +495,9 @@ unsafe extern "C" fn validate_script(mut cinfo: crate::jpeglib_h::j_compress_ptr
             ci += 1
         }
     }
-    scanno = 1i32;
+     let mut scanno:   libc::c_int =  1i32;
     while scanno <= (*cinfo).num_scans {
-        /* Validate component indexes */
-         let mut ncomps:  libc::c_int =  0; let mut thisi:  libc::c_int =  0; let mut Ss:  libc::c_int =  0; let mut Se:  libc::c_int =  0; let mut Ah:  libc::c_int =  0; let mut Al:  libc::c_int =  0;ncomps = (*scanptr).comps_in_scan;
+         let mut thisi:  libc::c_int =  0;     let mut ncomps:   libc::c_int =  (*scanptr).comps_in_scan;
         if ncomps <= 0i32 || ncomps > crate::jpeglib_h::MAX_COMPS_IN_SCAN {
             (*(*cinfo).err).msg_code = crate::src::jerror::JERR_COMPONENT_COUNT as libc::c_int;
             (*(*cinfo).err).msg_parm.i[0] = ncomps;
@@ -544,11 +541,10 @@ unsafe extern "C" fn validate_script(mut cinfo: crate::jpeglib_h::j_compress_ptr
             }
             ci += 1
         }
-        /* Validate progression parameters */
-        Ss = (*scanptr).Ss;
-        Se = (*scanptr).Se;
-        Ah = (*scanptr).Ah;
-        Al = (*scanptr).Al;
+        
+        
+        
+         let mut Ss:   libc::c_int =  (*scanptr).Ss; let mut Se:   libc::c_int =  (*scanptr).Se; let mut Ah:   libc::c_int =  (*scanptr).Ah; let mut Al:   libc::c_int =  (*scanptr).Al;
         if (*cinfo).progressive_mode != 0 {
             /* Rec. ITU-T T.81 | ISO/IEC 10918-1 simply gives the ranges 0..13 for Ah
              * and Al, but that seems wrong: the upper bound ought to depend on data
@@ -876,8 +872,7 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: crate::jpeglib_h::j_compress_ptr)
         (*cinfo).blocks_in_MCU = 1i32;
         (*cinfo).MCU_membership[0] = 0i32
     } else {
-        /* Interleaved (multi-component) scan */
-         let mut ci:  libc::c_int =  0;if (*cinfo).comps_in_scan <= 0i32
+        if (*cinfo).comps_in_scan <= 0i32
             || (*cinfo).comps_in_scan > crate::jpeglib_h::MAX_COMPS_IN_SCAN
         {
             (*(*cinfo).err).msg_code = crate::src::jerror::JERR_COMPONENT_COUNT as libc::c_int;
@@ -902,9 +897,9 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: crate::jpeglib_h::j_compress_ptr)
             ((*cinfo).max_v_samp_factor * crate::jpeglib_h::DCTSIZE) as libc::c_long,
         ) as crate::jmorecfg_h::JDIMENSION;
         (*cinfo).blocks_in_MCU = 0i32;
-        ci = 0i32;
+         let mut ci:   libc::c_int =  0i32;
         while ci < (*cinfo).comps_in_scan {
-             let mut mcublks:  libc::c_int =  0;compptr = (*cinfo).cur_comp_info[ci as usize];
+             compptr = (*cinfo).cur_comp_info[ci as usize];
             /* Sampling factors give # of blocks of component in each MCU */
             (*compptr).MCU_width = (*compptr).h_samp_factor;
             (*compptr).MCU_height = (*compptr).v_samp_factor;
@@ -925,8 +920,7 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: crate::jpeglib_h::j_compress_ptr)
                 tmp = (*compptr).MCU_height
             }
             (*compptr).last_row_height = tmp;
-            /* Prepare array describing MCU composition */
-            mcublks = (*compptr).MCU_blocks;
+             let mut mcublks:   libc::c_int =  (*compptr).MCU_blocks;
             if (*cinfo).blocks_in_MCU + mcublks > crate::jpeglib_h::C_MAX_BLOCKS_IN_MCU {
                 (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_MCU_SIZE as libc::c_int;
                 Some(
@@ -1097,10 +1091,10 @@ unsafe extern "C" fn prepare_for_pass(mut cinfo: crate::jpeglib_h::j_compress_pt
                 && (*(*cinfo).master).trellis_q_opt != 0
             {
                 
-                 let mut i:  libc::c_int =  0;
-                i = 0i32;
+                 
+                 let mut i:   libc::c_int =  0i32;
                 while i < crate::jpeglib_h::NUM_QUANT_TBLS {
-                     let mut j:  libc::c_int =  0;j = 1i32;
+                      let mut j:   libc::c_int =  1i32;
                     while j < crate::jpeglib_h::DCTSIZE2 {
                         (*(*cinfo).master).norm_src[i as usize][j as usize] = 0.0f64;
                         (*(*cinfo).master).norm_coef[i as usize][j as usize] = 0.0f64;
@@ -1250,10 +1244,10 @@ unsafe extern "C" fn copy_buffer(
     let mut src: *mut libc::c_uchar = (*master).scan_buffer[scan_idx as usize];
     
     if (*(*cinfo).err).trace_level > 0i32 {
-          let mut i:  libc::c_int =  0;eprint!("SCAN ");
-        i = 0i32;
+          eprint!("SCAN ");
+         let mut i:   libc::c_int =  0i32;
         while i < (*(*cinfo).scan_info.offset(scan_idx as isize)).comps_in_scan {
-                eprint!("{:}{:}",
+                 eprint!("{:}{:}",
         unsafe {
     std::ffi::CStr::from_ptr(if i == 0i32 {
                                  b"\x00".as_ptr() as *const libc::c_char
@@ -1266,8 +1260,8 @@ unsafe extern "C" fn copy_buffer(
         }
         
         
-            eprint!(": {:} {:}", (*(*cinfo).scan_info.offset(scan_idx as isize)).Ss,
-        (*(*cinfo).scan_info.offset(scan_idx as isize)).Se);    eprint!(" {:} {:}", (*(*cinfo).scan_info.offset(scan_idx as isize)).Ah,
+             eprint!(": {:} {:}", (*(*cinfo).scan_info.offset(scan_idx as isize)).Ss,
+        (*(*cinfo).scan_info.offset(scan_idx as isize)).Se);     eprint!(" {:} {:}", (*(*cinfo).scan_info.offset(scan_idx as isize)).Ah,
         (*master).actual_Al[scan_idx as usize]); eprintln!("");
     }
     while size >= (*(*cinfo).dest).free_in_buffer {
@@ -1329,12 +1323,12 @@ unsafe extern "C" fn select_scans(
     };
     if next_scan_number > 1i32 && next_scan_number <= luma_freq_split_scan_start {
         if (next_scan_number - 1i32) % 3i32 == 2i32 {
-             let mut i:  libc::c_int =  0; let mut cost:  libc::c_ulong =  0u64;let mut Al: libc::c_int = (next_scan_number - 1i32) / 3i32;
+              let mut cost:  libc::c_ulong =  0u64;let mut Al: libc::c_int = (next_scan_number - 1i32) / 3i32;
             
             
             cost =  cost + (*master).scan_size[(next_scan_number - 2i32) as usize];
             cost =  cost + (*master).scan_size[(next_scan_number - 1i32) as usize];
-            i = 0i32;
+             let mut i:   libc::c_int =  0i32;
             while i < Al {
                 cost =  cost + (*master).scan_size[(3i32 + 3i32 * i) as usize];
                 i += 1
@@ -1391,7 +1385,7 @@ unsafe extern "C" fn select_scans(
             base_scan_idx =
                 (*(*cinfo).master).num_scans_luma + (*(*cinfo).master).num_scans_chroma_dc;
             if (next_scan_number - base_scan_idx) % 6i32 == 4i32 {
-                 let mut i_0:  libc::c_int =  0; let mut cost_1:  libc::c_ulong =  0u64;let mut Al_0: libc::c_int = (next_scan_number - base_scan_idx) / 6i32;
+                  let mut cost_1:  libc::c_ulong =  0u64;let mut Al_0: libc::c_int = (next_scan_number - base_scan_idx) / 6i32;
                 
                 
                 cost_1 =
@@ -1406,7 +1400,7 @@ unsafe extern "C" fn select_scans(
                 cost_1 =
                     
                     cost_1 + (*master).scan_size[(next_scan_number - 1i32) as usize];
-                i_0 = 0i32;
+                 let mut i_0:   libc::c_int =  0i32;
                 while i_0 < Al_0 {
                     cost_1 =  cost_1 + 
                         (*master).scan_size[(base_scan_idx + 4i32 + 6i32 * i_0) as usize];
@@ -1467,7 +1461,7 @@ unsafe extern "C" fn select_scans(
     }
     if (*master).scan_number == (*cinfo).num_scans - 1i32 {
         
-         let mut i_1:  libc::c_int =  0; let mut Al_1:  libc::c_int =  0;
+          
         let mut min_Al: libc::c_int = if (*master).best_Al_luma < (*master).best_Al_chroma {
             (*master).best_Al_luma
         } else {
@@ -1501,8 +1495,7 @@ unsafe extern "C" fn select_scans(
                     + 2i32,
             );
         }
-        /* copy the LSB refinements as well */
-        Al_1 = (*master).best_Al_luma - 1i32;
+         let mut Al_1:   libc::c_int =  (*master).best_Al_luma - 1i32;
         while Al_1 >= min_Al {
             copy_buffer(cinfo, 3i32 + 3i32 * Al_1);
             Al_1 -= 1
@@ -1555,8 +1548,7 @@ unsafe extern "C" fn select_scans(
             }
             Al_1 -= 1
         }
-        /* free the memory allocated for buffers */
-        i_1 = 0i32;
+         let mut i_1:   libc::c_int =  0i32;
         while i_1 < (*cinfo).num_scans {
             if !(*master).scan_buffer[i_1 as usize].is_null() {
                 crate::stdlib::free((*master).scan_buffer[i_1 as usize] as *mut libc::c_void);
@@ -1644,10 +1636,10 @@ unsafe extern "C" fn finish_pass_master(mut cinfo: crate::jpeglib_h::j_compress_
                 && (*(*cinfo).master).trellis_q_opt != 0
             {
                 
-                 let mut i:  libc::c_int =  0;
-                i = 0i32;
+                 
+                 let mut i:   libc::c_int =  0i32;
                 while i < crate::jpeglib_h::NUM_QUANT_TBLS {
-                     let mut j:  libc::c_int =  0;j = 1i32;
+                      let mut j:   libc::c_int =  1i32;
                     while j < crate::jpeglib_h::DCTSIZE2 {
                         if (*(*cinfo).master).norm_coef[i as usize][j as usize] != 0.0f64 {
                             let mut q: libc::c_int =
@@ -1747,9 +1739,9 @@ pub unsafe extern "C" fn jinit_c_master_control(
         (*master).total_passes += (*master).pass_number_scan_opt_base
     }
     if (*(*cinfo).master).optimize_scans != 0 {
-         let mut i:  libc::c_int =  0;
+         
         (*master).best_Al_chroma = 0i32;
-        i = 0i32;
+         let mut i:   libc::c_int =  0i32;
         while i < (*cinfo).num_scans {
             (*master).scan_buffer[i as usize] = crate::stddef_h::NULL as *mut libc::c_uchar;
             i += 1

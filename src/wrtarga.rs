@@ -343,14 +343,13 @@ unsafe extern "C" fn put_pixel_rows(
 )
 /* used for unquantized full-color output */
 {
-     let mut inptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut outptr:  *mut libc::c_char =  ::std::ptr::null_mut::< libc::c_char>(); let mut col:  crate::jmorecfg_h::JDIMENSION =  0;let mut dest: tga_dest_ptr = dinfo as tga_dest_ptr; /* RGB to BGR order */
+       let mut dest: tga_dest_ptr = dinfo as tga_dest_ptr; /* RGB to BGR order */
     
     
     
-    inptr = *(*dest).pub_0.buffer.offset(0);
-    outptr = (*dest).iobuffer;
-    col = (*cinfo).output_width;
+    
+    
+     let mut inptr:   crate::jpeglib_h::JSAMPROW =  *(*dest).pub_0.buffer.offset(0); let mut outptr:   *mut libc::c_char =  (*dest).iobuffer; let mut col:   crate::jmorecfg_h::JDIMENSION =  (*cinfo).output_width;
     while col > 0u32 {
         *outptr.offset(0) =  *inptr.offset(2) as libc::c_char;
         *outptr.offset(1) =  *inptr.offset(1) as libc::c_char;
@@ -374,14 +373,13 @@ unsafe extern "C" fn put_gray_rows(
 )
 /* used for grayscale OR quantized color output */
 {
-     let mut inptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut outptr:  *mut libc::c_char =  ::std::ptr::null_mut::< libc::c_char>(); let mut col:  crate::jmorecfg_h::JDIMENSION =  0;let mut dest: tga_dest_ptr = dinfo as tga_dest_ptr;
+       let mut dest: tga_dest_ptr = dinfo as tga_dest_ptr;
     
     
     
-    inptr = *(*dest).pub_0.buffer.offset(0);
-    outptr = (*dest).iobuffer;
-    col = (*cinfo).output_width;
+    
+    
+     let mut inptr:   crate::jpeglib_h::JSAMPROW =  *(*dest).pub_0.buffer.offset(0); let mut outptr:   *mut libc::c_char =  (*dest).iobuffer; let mut col:   crate::jmorecfg_h::JDIMENSION =  (*cinfo).output_width;
     while col > 0u32 {
         let fresh0 = inptr;
         inptr = inptr.offset(1);
@@ -407,15 +405,14 @@ unsafe extern "C" fn put_demapped_gray(
     mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
     mut rows_supplied: crate::jmorecfg_h::JDIMENSION,
 ) {
-     let mut inptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut outptr:  *mut libc::c_char =  ::std::ptr::null_mut::< libc::c_char>(); let mut col:  crate::jmorecfg_h::JDIMENSION =  0;let mut dest: tga_dest_ptr = dinfo as tga_dest_ptr;
+       let mut dest: tga_dest_ptr = dinfo as tga_dest_ptr;
     
     
     let mut color_map0: crate::jpeglib_h::JSAMPROW = *(*cinfo).colormap.offset(0);
     
-    inptr = *(*dest).pub_0.buffer.offset(0);
-    outptr = (*dest).iobuffer;
-    col = (*cinfo).output_width;
+    
+    
+     let mut inptr:   crate::jpeglib_h::JSAMPROW =  *(*dest).pub_0.buffer.offset(0); let mut outptr:   *mut libc::c_char =  (*dest).iobuffer; let mut col:   crate::jmorecfg_h::JDIMENSION =  (*cinfo).output_width;
     while col > 0u32 {
         let fresh2 = inptr;
         inptr = inptr.offset(1);
@@ -475,8 +472,7 @@ unsafe extern "C" fn start_output_tga(
     {
         if (*cinfo).quantize_colors != 0 {
             /* We only support 8-bit colormap indexes, so only 256 colors */
-             let mut num_colors:  libc::c_int =  0; let mut i:  libc::c_int =  0; let mut outfile:  *mut crate::stdlib::FILE =
-     ::std::ptr::null_mut::< crate::stdlib::FILE>();num_colors = (*cinfo).actual_number_of_colors;
+                let mut num_colors:   libc::c_int =  (*cinfo).actual_number_of_colors;
             if num_colors > 256i32 {
                 (*(*cinfo).err).msg_code = crate::cderror_h::JERR_TOO_MANY_COLORS as libc::c_int;
                 (*(*cinfo).err).msg_parm.i[0] = num_colors;
@@ -491,8 +487,8 @@ unsafe extern "C" fn start_output_tga(
             }
             write_header(cinfo, dinfo, num_colors);
             /* Write the colormap.  Note Targa uses BGR byte order */
-            outfile = (*dest).pub_0.output_file;
-            i = 0i32;
+            
+             let mut outfile:   *mut crate::stdlib::FILE =  (*dest).pub_0.output_file; let mut i:   libc::c_int =  0i32;
             while i < num_colors {
                 crate::stdlib::putc(
                     *(*(*cinfo).colormap.offset(2)).offset(i as isize) as libc::c_int,
@@ -577,9 +573,10 @@ unsafe extern "C" fn calc_buffer_dimensions_tga(
 pub unsafe extern "C" fn jinit_write_targa(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
 ) -> crate::src::cdjpeg::djpeg_dest_ptr {
-     let mut dest:  tga_dest_ptr =  ::std::ptr::null_mut::< tga_dest_struct>();
+     
     /* Create module interface object, fill in method pointers */
-    dest = Some(
+     let mut dest:   tga_dest_ptr =
+     Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),

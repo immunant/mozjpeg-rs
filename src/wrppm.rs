@@ -594,12 +594,11 @@ unsafe extern "C" fn copy_pixel_rows(
     mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
     mut rows_supplied: crate::jmorecfg_h::JDIMENSION,
 ) {
-     let mut bufferptr:  *mut libc::c_char =  ::std::ptr::null_mut::< libc::c_char>(); let mut ptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
+      let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
     
     
-    ptr = *(*dest).pub_0.buffer.offset(0);
-    bufferptr = (*dest).iobuffer;
+    
+     let mut ptr:   crate::jpeglib_h::JSAMPROW =  *(*dest).pub_0.buffer.offset(0); let mut bufferptr:   *mut libc::c_char =  (*dest).iobuffer;
     crate::stdlib::memcpy(
         bufferptr as *mut libc::c_void,
         ptr as *const libc::c_void,
@@ -621,8 +620,7 @@ unsafe extern "C" fn put_rgb(
     mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
     mut rows_supplied: crate::jmorecfg_h::JDIMENSION,
 ) {
-     let mut bufferptr:  *mut libc::c_char =  ::std::ptr::null_mut::< libc::c_char>(); let mut ptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut col:  crate::jmorecfg_h::JDIMENSION =  0;let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
+       let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
     
     
     
@@ -630,9 +628,9 @@ unsafe extern "C" fn put_rgb(
     let mut gindex: libc::c_int = crate::jmorecfg_h::rgb_green[(*cinfo).out_color_space as usize];
     let mut bindex: libc::c_int = crate::jmorecfg_h::rgb_blue[(*cinfo).out_color_space as usize];
     let mut ps: libc::c_int = rgb_pixelsize[(*cinfo).out_color_space as usize];
-    ptr = *(*dest).pub_0.buffer.offset(0);
-    bufferptr = (*dest).iobuffer;
-    col = (*cinfo).output_width;
+    
+    
+     let mut ptr:   crate::jpeglib_h::JSAMPROW =  *(*dest).pub_0.buffer.offset(0); let mut bufferptr:   *mut libc::c_char =  (*dest).iobuffer; let mut col:   crate::jmorecfg_h::JDIMENSION =  (*cinfo).output_width;
     while col > 0u32 {
         let fresh0 = bufferptr;
         bufferptr = bufferptr.offset(1);
@@ -662,14 +660,13 @@ unsafe extern "C" fn put_cmyk(
     mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
     mut rows_supplied: crate::jmorecfg_h::JDIMENSION,
 ) {
-     let mut bufferptr:  *mut libc::c_char =  ::std::ptr::null_mut::< libc::c_char>(); let mut ptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut col:  crate::jmorecfg_h::JDIMENSION =  0;let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
+       let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
     
     
     
-    ptr = *(*dest).pub_0.buffer.offset(0);
-    bufferptr = (*dest).iobuffer;
-    col = (*cinfo).output_width;
+    
+    
+     let mut ptr:   crate::jpeglib_h::JSAMPROW =  *(*dest).pub_0.buffer.offset(0); let mut bufferptr:   *mut libc::c_char =  (*dest).iobuffer; let mut col:   crate::jmorecfg_h::JDIMENSION =  (*cinfo).output_width;
     while col > 0u32 {
         
         
@@ -715,8 +712,7 @@ unsafe extern "C" fn put_demapped_rgb(
     mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
     mut rows_supplied: crate::jmorecfg_h::JDIMENSION,
 ) {
-     let mut bufferptr:  *mut libc::c_char =  ::std::ptr::null_mut::< libc::c_char>(); let mut ptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut col:  crate::jmorecfg_h::JDIMENSION =  0;let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
+       let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
     
     
     
@@ -724,13 +720,13 @@ unsafe extern "C" fn put_demapped_rgb(
     let mut color_map1: crate::jpeglib_h::JSAMPROW = *(*cinfo).colormap.offset(1);
     let mut color_map2: crate::jpeglib_h::JSAMPROW = *(*cinfo).colormap.offset(2);
     
-    ptr = *(*dest).pub_0.buffer.offset(0);
-    bufferptr = (*dest).iobuffer;
-    col = (*cinfo).output_width;
+    
+    
+     let mut ptr:   crate::jpeglib_h::JSAMPROW =  *(*dest).pub_0.buffer.offset(0); let mut bufferptr:   *mut libc::c_char =  (*dest).iobuffer; let mut col:   crate::jmorecfg_h::JDIMENSION =  (*cinfo).output_width;
     while col > 0u32 {
-         let mut pixval:  libc::c_int =  0;let fresh10 = ptr;
+         let fresh10 = ptr;
         ptr = ptr.offset(1);
-        pixval = *fresh10 as libc::c_int;
+         let mut pixval:   libc::c_int =  *fresh10 as libc::c_int;
         let fresh11 = bufferptr;
         bufferptr = bufferptr.offset(1);
         *fresh11 =  *color_map0.offset(pixval as isize) as libc::c_char;
@@ -755,15 +751,14 @@ unsafe extern "C" fn put_demapped_gray(
     mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
     mut rows_supplied: crate::jmorecfg_h::JDIMENSION,
 ) {
-     let mut bufferptr:  *mut libc::c_char =  ::std::ptr::null_mut::< libc::c_char>(); let mut ptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>(); let mut col:  crate::jmorecfg_h::JDIMENSION =  0;let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
+       let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
     
     
     let mut color_map: crate::jpeglib_h::JSAMPROW = *(*cinfo).colormap.offset(0);
     
-    ptr = *(*dest).pub_0.buffer.offset(0);
-    bufferptr = (*dest).iobuffer;
-    col = (*cinfo).output_width;
+    
+    
+     let mut ptr:   crate::jpeglib_h::JSAMPROW =  *(*dest).pub_0.buffer.offset(0); let mut bufferptr:   *mut libc::c_char =  (*dest).iobuffer; let mut col:   crate::jmorecfg_h::JDIMENSION =  (*cinfo).output_width;
     while col > 0u32 {
         let fresh14 = ptr;
         ptr = ptr.offset(1);
@@ -876,9 +871,10 @@ unsafe extern "C" fn calc_buffer_dimensions_ppm(
 pub unsafe extern "C" fn jinit_write_ppm(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
 ) -> crate::src::cdjpeg::djpeg_dest_ptr {
-     let mut dest:  ppm_dest_ptr =  ::std::ptr::null_mut::< ppm_dest_struct>();
+     
     /* Create module interface object, fill in method pointers */
-    dest = Some(
+     let mut dest:   ppm_dest_ptr =
+     Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),

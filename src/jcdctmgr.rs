@@ -329,8 +329,8 @@ pub type forward_DCT_method_ptr =
  */
 
 unsafe extern "C" fn flss(mut val: crate::jmorecfg_h::UINT16) -> libc::c_int {
-     let mut bit:  libc::c_int =  0;
-    bit = 16i32;
+     
+     let mut bit:   libc::c_int =  16i32;
     if val == 0 {
         return 0i32;
     }
@@ -419,7 +419,7 @@ unsafe extern "C" fn compute_reciprocal(
     
     
     
-     let mut fq:  crate::jdct_h::UDCTELEM2 =  0; let mut fr:  crate::jdct_h::UDCTELEM2 =  0; let mut c:  crate::jdct_h::UDCTELEM =  0; let mut b:  libc::c_int =  0; let mut r:  libc::c_int =  0;
+         
     if divisor as libc::c_int == 1i32 {
         /* divisor == 1 means unquantized, so these reciprocal/correction/shift
          * values will cause the C quantization algorithm to act like the
@@ -435,12 +435,14 @@ unsafe extern "C" fn compute_reciprocal(
                 as libc::c_int) as crate::jdct_h::DCTELEM; /* shift */
         return 0i32;
     } /* for rounding */
-    b = flss(divisor) - 1i32; /* fractional part is < 0.5 */
-    r = (::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong *
-    8u64 + b as libc::c_ulong) as libc::c_int;
-    fq = ((((1u32) << r))) / divisor as libc::c_uint;
-    fr = ((((1u32) << r))) % divisor as libc::c_uint;
-    c = (divisor as libc::c_int / 2i32) as crate::jdct_h::UDCTELEM;
+     /* fractional part is < 0.5 */
+    
+    
+    
+     let mut b:   libc::c_int =  flss(divisor) - 1i32; let mut r:   libc::c_int =
+     (::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong *
+    8u64 + b as libc::c_ulong) as libc::c_int; let mut fq:   crate::jdct_h::UDCTELEM2 =  ((((1u32) << r))) / divisor as libc::c_uint; let mut fr:   crate::jdct_h::UDCTELEM2 =  ((((1u32) << r))) % divisor as libc::c_uint; let mut c:   crate::jdct_h::UDCTELEM =
+     (divisor as libc::c_int / 2i32) as crate::jdct_h::UDCTELEM;
     if fr == 0u32 {
         /* divisor is power of two */
         /* fq will be one bit too large to fit in DCTELEM, so adjust */
@@ -477,21 +479,19 @@ unsafe extern "C" fn compute_reciprocal(
  */
 
 unsafe extern "C" fn start_pass_fdctmgr(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
-     let mut ci:  libc::c_int =  0; let mut compptr:  *mut crate::jpeglib_h::jpeg_component_info =
-    
-        ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();let mut fdct: my_fdct_ptr = (*cinfo).fdct as my_fdct_ptr;
+      let mut fdct: my_fdct_ptr = (*cinfo).fdct as my_fdct_ptr;
     
     
     
     
     
     
-    ci = 0i32;
-    compptr = (*cinfo).comp_info;
+    
+     let mut ci:   libc::c_int =  0i32; let mut compptr:   *mut crate::jpeglib_h::jpeg_component_info =
+     (*cinfo).comp_info;
     while ci < (*cinfo).num_components {
-         let mut qtblno:  libc::c_int =  0; let mut i:  libc::c_int =  0; let mut qtbl:  *mut crate::jpeglib_h::JQUANT_TBL =
-     ::std::ptr::null_mut::< crate::jpeglib_h::JQUANT_TBL>(); let mut dtbl:  *mut crate::jdct_h::DCTELEM =
-     ::std::ptr::null_mut::< crate::jdct_h::DCTELEM>();qtblno = (*compptr).quant_tbl_no;
+          let mut i:  libc::c_int =  0;  let mut dtbl:  *mut crate::jdct_h::DCTELEM =
+     ::std::ptr::null_mut::< crate::jdct_h::DCTELEM>(); let mut qtblno:   libc::c_int =  (*compptr).quant_tbl_no;
         /* Make sure specified quantization table is present */
         if qtblno < 0i32
             || qtblno >= crate::jpeglib_h::NUM_QUANT_TBLS
@@ -508,7 +508,8 @@ unsafe extern "C" fn start_pass_fdctmgr(mut cinfo: crate::jpeglib_h::j_compress_
                 cinfo as crate::jpeglib_h::j_common_ptr
             );
         }
-        qtbl = (*cinfo).quant_tbl_ptrs[qtblno as usize];
+         let mut qtbl:   *mut crate::jpeglib_h::JQUANT_TBL =
+     (*cinfo).quant_tbl_ptrs[qtblno as usize];
         /* Compute divisors for this quant table */
         /* We may do this more than once for same table, but it's not a big deal */
         match  (*cinfo).dct_method {
@@ -694,7 +695,7 @@ unsafe extern "C" fn start_pass_fdctmgr(mut cinfo: crate::jpeglib_h::j_compress_
                  */
                 
                 
-                 let mut fdtbl:  *mut libc::c_float =  ::std::ptr::null_mut::< libc::c_float>(); let mut row:  libc::c_int =  0;
+                  
                 static mut aanscalefactor: [libc::c_double; 8] = [
                     1.0f64,
                     1.387039845f64,
@@ -719,11 +720,11 @@ unsafe extern "C" fn start_pass_fdctmgr(mut cinfo: crate::jpeglib_h::j_compress_
                     )
                         as *mut libc::c_float
                 }
-                fdtbl = (*fdct).float_divisors[qtblno as usize];
+                 let mut fdtbl:   *mut libc::c_float =  (*fdct).float_divisors[qtblno as usize];
                 i = 0i32;
-                row = 0i32;
+                 let mut row:   libc::c_int =  0i32;
                 while row < crate::jpeglib_h::DCTSIZE {
-                     let mut col:  libc::c_int =  0;col = 0i32;
+                      let mut col:   libc::c_int =  0i32;
                     while col < crate::jpeglib_h::DCTSIZE {
                         *fdtbl.offset(i as isize) = (1.0f64
                             / ((*qtbl).quantval[i as usize] as libc::c_double
@@ -791,7 +792,7 @@ unsafe extern "C" fn preprocess_deringing(
     mut data: *mut crate::jdct_h::DCTELEM,
     mut quantization_table: *const crate::jpeglib_h::JQUANT_TBL,
 ) {
-     let mut sum:  libc::c_int =  0i32; let mut maxsample_count:  libc::c_int =  0i32; let mut i:  libc::c_int =  0; let mut maxovershoot:  crate::jdct_h::DCTELEM =  0; let mut n:  libc::c_int =  0;let maxsample: crate::jdct_h::DCTELEM =
+     let mut sum:  libc::c_int =  0i32; let mut maxsample_count:  libc::c_int =  0i32;   let maxsample: crate::jdct_h::DCTELEM =
         (255i32 - crate::jmorecfg_h::CENTERJSAMPLE) as crate::jdct_h::DCTELEM;
     let size: libc::c_int = crate::jpeglib_h::DCTSIZE * crate::jpeglib_h::DCTSIZE;
     /* Decoders don't handle overflow of DC very well, so calculate
@@ -801,7 +802,7 @@ unsafe extern "C" fn preprocess_deringing(
     
     
     
-    i = 0i32;
+     let mut i:   libc::c_int =  0i32;
     while i < size {
         sum += *data.offset(i as isize) as libc::c_int;
         if *data.offset(i as isize) as libc::c_int >= maxsample as libc::c_int {
@@ -814,8 +815,9 @@ unsafe extern "C" fn preprocess_deringing(
     if maxsample_count == 0 || maxsample_count == size {
         return;
     }
-    /* Too much overshoot is not good: increased amplitude will cost bits, and the cost is proportional to quantization (here using DC quant as a rough guide). */
-    maxovershoot = (maxsample as libc::c_int
+    
+     let mut maxovershoot:   crate::jdct_h::DCTELEM =
+     (maxsample as libc::c_int
         + (if (if 31i32 < 2i32 * (*quantization_table).quantval[0] as libc::c_int {
             31i32
         } else {
@@ -829,8 +831,7 @@ unsafe extern "C" fn preprocess_deringing(
             })
         } else {
             (maxsample as libc::c_int * size - sum) / maxsample_count
-        })) as crate::jdct_h::DCTELEM;
-    n = 0i32;
+        })) as crate::jdct_h::DCTELEM; let mut n:   libc::c_int =  0i32;
     loop {
         
         
@@ -853,8 +854,7 @@ unsafe extern "C" fn preprocess_deringing(
         {
             n += 1
         } else {
-            /* Find a run of maxsample pixels. Start is the first pixel inside the range, end the first pixel outside. */
-             let mut start:  libc::c_int =  0; let mut end:  libc::c_int =  0; let mut length:  libc::c_int =  0; let mut f1:  crate::jdct_h::DCTELEM =  0; let mut f2:  crate::jdct_h::DCTELEM =  0; let mut l1:  crate::jdct_h::DCTELEM =  0; let mut l2:  crate::jdct_h::DCTELEM =  0; let mut fslope:  crate::jdct_h::DCTELEM =  0; let mut lslope:  crate::jdct_h::DCTELEM =  0; let mut step:  libc::c_float =  0.; let mut position:  libc::c_float =  0.;start = n;
+                       let mut start:   libc::c_int =  n;
             loop {
                 n += 1;
                 if !(n < size
@@ -868,48 +868,54 @@ unsafe extern "C" fn preprocess_deringing(
                     break;
                 }
             }
-            end = n;
+            
             /* the run will be replaced with a catmull-rom interpolation of values from the edges */
             /* Find suitable upward slope from pixels around edges of the run.
             Just feeding nearby pixels as catmull rom points isn't good enough,
             as slope with one sample before the edge may have been flattened by clipping,
             and slope of two samples before the edge could be downward. */
-            f1 = *data.offset(
+            
+            
+            
+            
+            
+             let mut end:   libc::c_int =  n; let mut f1:   crate::jdct_h::DCTELEM =
+     *data.offset(
                 *crate::jpegint_h::jpeg_natural_order
                     .as_ptr()
                     .offset(if start >= 1i32 { (start) - 1i32 } else { 0i32 } as isize)
                     as isize,
-            );
-            f2 = *data.offset(
+            ); let mut f2:   crate::jdct_h::DCTELEM =
+     *data.offset(
                 *crate::jpegint_h::jpeg_natural_order
                     .as_ptr()
                     .offset(if start >= 2i32 { (start) - 2i32 } else { 0i32 } as isize)
                     as isize,
-            );
-            l1 = *data.offset(*crate::jpegint_h::jpeg_natural_order.as_ptr().offset(if end
+            ); let mut l1:   crate::jdct_h::DCTELEM =
+     *data.offset(*crate::jpegint_h::jpeg_natural_order.as_ptr().offset(if end
                 < size - 1i32
             {
                 end
             } else {
                 (size) - 1i32
             }
-                as isize) as isize);
-            l2 = *data.offset(*crate::jpegint_h::jpeg_natural_order.as_ptr().offset(if end
+                as isize) as isize); let mut l2:   crate::jdct_h::DCTELEM =
+     *data.offset(*crate::jpegint_h::jpeg_natural_order.as_ptr().offset(if end
                 < size - 2i32
             {
                 (end) + 1i32
             } else {
                 (size) - 1i32
             }
-                as isize) as isize);
-            fslope = if f1 as libc::c_int - f2 as libc::c_int
+                as isize) as isize); let mut fslope:   crate::jdct_h::DCTELEM =
+     if f1 as libc::c_int - f2 as libc::c_int
                 > maxsample as libc::c_int - f1 as libc::c_int
             {
                 (f1 as libc::c_int) - f2 as libc::c_int
             } else {
                 (maxsample as libc::c_int) - f1 as libc::c_int
-            } as crate::jdct_h::DCTELEM;
-            lslope = if l1 as libc::c_int - l2 as libc::c_int
+            } as crate::jdct_h::DCTELEM; let mut lslope:   crate::jdct_h::DCTELEM =
+     if l1 as libc::c_int - l2 as libc::c_int
                 > maxsample as libc::c_int - l1 as libc::c_int
             {
                 (l1 as libc::c_int) - l2 as libc::c_int
@@ -923,10 +929,9 @@ unsafe extern "C" fn preprocess_deringing(
             if end == size {
                 lslope = fslope
             }
-            /* The curve fits better if first and last pixel is omitted */
-            length = end - start;
-            step = 1.0f32 / (length + 1i32) as libc::c_float;
-            position = step;
+            
+            
+             let mut length:   libc::c_int =  end - start; let mut step:   libc::c_float =  1.0f32 / (length + 1i32) as libc::c_float; let mut position:   libc::c_float =  step;
             i = start;
             while i < end {
                 let mut tmp: crate::jdct_h::DCTELEM = crate::stdlib::ceilf(catmull_rom(
@@ -964,14 +969,14 @@ unsafe extern "C" fn float_preprocess_deringing(
     mut data: *mut libc::c_float,
     mut quantization_table: *const crate::jpeglib_h::JQUANT_TBL,
 ) {
-     let mut sum:  libc::c_float =  0f32; let mut maxsample_count:  libc::c_int =  0i32; let mut i:  libc::c_int =  0; let mut n:  libc::c_int =  0; let mut maxovershoot:  libc::c_float =  0.;let maxsample: libc::c_float = (255i32 - crate::jmorecfg_h::CENTERJSAMPLE) as libc::c_float;
+     let mut sum:  libc::c_float =  0f32; let mut maxsample_count:  libc::c_int =  0i32;   let maxsample: libc::c_float = (255i32 - crate::jmorecfg_h::CENTERJSAMPLE) as libc::c_float;
     let size: libc::c_int = crate::jpeglib_h::DCTSIZE * crate::jpeglib_h::DCTSIZE;
     
     
     
     
     
-    i = 0i32;
+     let mut i:   libc::c_int =  0i32;
     while i < size {
         sum += *data.offset(i as isize);
         if *data.offset(i as isize) >= maxsample {
@@ -982,7 +987,9 @@ unsafe extern "C" fn float_preprocess_deringing(
     if maxsample_count == 0 || maxsample_count == size {
         return;
     }
-    maxovershoot = maxsample
+    
+     let mut maxovershoot:   libc::c_float =
+     maxsample
         + (if ((if 31i32 < 2i32 * (*quantization_table).quantval[0] as libc::c_int {
             31i32
         } else {
@@ -997,8 +1004,7 @@ unsafe extern "C" fn float_preprocess_deringing(
             }) as libc::c_float
         } else {
             (maxsample * size as libc::c_float - sum) / maxsample_count as libc::c_float
-        });
-    n = 0i32;
+        }); let mut n:   libc::c_int =  0i32;
     loop {
         
         
@@ -1019,7 +1025,7 @@ unsafe extern "C" fn float_preprocess_deringing(
         {
             n += 1
         } else {
-             let mut start:  libc::c_int =  0; let mut end:  libc::c_int =  0; let mut length:  libc::c_int =  0; let mut f1:  libc::c_float =  0.; let mut f2:  libc::c_float =  0.; let mut l1:  libc::c_float =  0.; let mut l2:  libc::c_float =  0.; let mut fslope:  libc::c_float =  0.; let mut lslope:  libc::c_float =  0.; let mut step:  libc::c_float =  0.; let mut position:  libc::c_float =  0.;start = n;
+                        let mut start:   libc::c_int =  n;
             loop {
                 n += 1;
                 if !(n < size
@@ -1032,41 +1038,47 @@ unsafe extern "C" fn float_preprocess_deringing(
                     break;
                 }
             }
-            end = n;
-            f1 = *data.offset(
+            
+            
+            
+            
+            
+            
+             let mut end:   libc::c_int =  n; let mut f1:   libc::c_float =
+     *data.offset(
                 *crate::jpegint_h::jpeg_natural_order
                     .as_ptr()
                     .offset(if start >= 1i32 { (start) - 1i32 } else { 0i32 } as isize)
                     as isize,
-            );
-            f2 = *data.offset(
+            ); let mut f2:   libc::c_float =
+     *data.offset(
                 *crate::jpegint_h::jpeg_natural_order
                     .as_ptr()
                     .offset(if start >= 2i32 { (start) - 2i32 } else { 0i32 } as isize)
                     as isize,
-            );
-            l1 = *data.offset(*crate::jpegint_h::jpeg_natural_order.as_ptr().offset(if end
+            ); let mut l1:   libc::c_float =
+     *data.offset(*crate::jpegint_h::jpeg_natural_order.as_ptr().offset(if end
                 < size - 1i32
             {
                 end
             } else {
                 (size) - 1i32
             }
-                as isize) as isize);
-            l2 = *data.offset(*crate::jpegint_h::jpeg_natural_order.as_ptr().offset(if end
+                as isize) as isize); let mut l2:   libc::c_float =
+     *data.offset(*crate::jpegint_h::jpeg_natural_order.as_ptr().offset(if end
                 < size - 2i32
             {
                 (end) + 1i32
             } else {
                 (size) - 1i32
             }
-                as isize) as isize);
-            fslope = if f1 - f2 > maxsample - f1 {
+                as isize) as isize); let mut fslope:   libc::c_float =
+     if f1 - f2 > maxsample - f1 {
                 (f1) - f2
             } else {
                 (maxsample) - f1
-            };
-            lslope = if l1 - l2 > maxsample - l1 {
+            }; let mut lslope:   libc::c_float =
+     if l1 - l2 > maxsample - l1 {
                 (l1) - l2
             } else {
                 (maxsample) - l1
@@ -1077,9 +1089,9 @@ unsafe extern "C" fn float_preprocess_deringing(
             if end == size {
                 lslope = fslope
             }
-            length = end - start;
-            step = 1.0f32 / (length + 1i32) as libc::c_float;
-            position = step;
+            
+            
+             let mut length:   libc::c_int =  end - start; let mut step:   libc::c_float =  1.0f32 / (length + 1i32) as libc::c_float; let mut position:   libc::c_float =  step;
             i = start;
             while i < end {
                 let mut tmp: libc::c_float = catmull_rom(
@@ -1120,13 +1132,12 @@ unsafe extern "C" fn convsamp(
 ) {
     
     
-     let mut workspaceptr:  *mut crate::jdct_h::DCTELEM =
-     ::std::ptr::null_mut::< crate::jdct_h::DCTELEM>(); let mut elemr:  libc::c_int =  0;
-    workspaceptr = workspace;
-    elemr = 0i32;
+      
+    
+     let mut workspaceptr:   *mut crate::jdct_h::DCTELEM =  workspace; let mut elemr:   libc::c_int =  0i32;
     while elemr < crate::jpeglib_h::DCTSIZE {
-         let mut elemptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();elemptr = (*sample_data.offset(elemr as isize)).offset(start_col as isize);
+          let mut elemptr:   crate::jpeglib_h::JSAMPROW =
+     (*sample_data.offset(elemr as isize)).offset(start_col as isize);
         /* unroll the inner loop */
         let fresh0 = elemptr;
         elemptr = elemptr.offset(1);
@@ -1189,20 +1200,23 @@ unsafe extern "C" fn quantize(
     mut workspace: *mut crate::jdct_h::DCTELEM,
 ) {
     
-     let mut i:  libc::c_int =  0;
+     
     let mut output_ptr: crate::jpeglib_h::JCOEFPTR = coef_block;
     
     
     
     
-    i = 0i32;
+     let mut i:   libc::c_int =  0i32;
     while i < crate::jpeglib_h::DCTSIZE2 {
-         let mut temp:  crate::jdct_h::DCTELEM =  0; let mut recip:  crate::jdct_h::UDCTELEM =  0; let mut corr:  crate::jdct_h::UDCTELEM =  0; let mut shift:  libc::c_int =  0; let mut product:  crate::jdct_h::UDCTELEM2 =  0;temp = *workspace.offset(i as isize);
-        recip = *divisors.offset((i + crate::jpeglib_h::DCTSIZE2 * 0i32) as isize)
-            as crate::jdct_h::UDCTELEM;
-        corr = *divisors.offset((i + crate::jpeglib_h::DCTSIZE2 * 1i32) as isize)
-            as crate::jdct_h::UDCTELEM;
-        shift = *divisors.offset((i + crate::jpeglib_h::DCTSIZE2 * 3i32) as isize) as libc::c_int;
+             let mut product:  crate::jdct_h::UDCTELEM2 =  0;
+        
+        
+         let mut temp:   crate::jdct_h::DCTELEM =  *workspace.offset(i as isize); let mut recip:   crate::jdct_h::UDCTELEM =
+     *divisors.offset((i + crate::jpeglib_h::DCTSIZE2 * 0i32) as isize)
+            as crate::jdct_h::UDCTELEM; let mut corr:   crate::jdct_h::UDCTELEM =
+     *divisors.offset((i + crate::jpeglib_h::DCTSIZE2 * 1i32) as isize)
+            as crate::jdct_h::UDCTELEM; let mut shift:   libc::c_int =
+     *divisors.offset((i + crate::jpeglib_h::DCTSIZE2 * 3i32) as isize) as libc::c_int;
         if (temp as libc::c_int) < 0i32 {
             temp = -(temp as libc::c_int) as crate::jdct_h::DCTELEM;
             product = (temp as libc::c_int + corr as libc::c_int) as crate::jdct_h::UDCTELEM2 *
@@ -1244,9 +1258,7 @@ unsafe extern "C" fn forward_DCT(
 )
 /* This version is used for integer DCT implementations. */
 {
-    /* This routine is heavily used, so it's worth coding it tightly. */
-     let mut workspace:  *mut crate::jdct_h::DCTELEM =
-     ::std::ptr::null_mut::< crate::jdct_h::DCTELEM>(); let mut bi:  crate::jmorecfg_h::JDIMENSION =  0;let mut fdct: my_fdct_ptr = (*cinfo).fdct as my_fdct_ptr;
+     let mut fdct: my_fdct_ptr = (*cinfo).fdct as my_fdct_ptr;
     let mut divisors: *mut crate::jdct_h::DCTELEM =
         (*fdct).divisors[(*compptr).quant_tbl_no as usize];
     let mut qtbl: *mut crate::jpeglib_h::JQUANT_TBL =
@@ -1258,9 +1270,9 @@ unsafe extern "C" fn forward_DCT(
     let mut do_convsamp: convsamp_method_ptr = (*fdct).convsamp;
     let mut do_preprocess: preprocess_method_ptr = (*fdct).preprocess;
     let mut do_quantize: quantize_method_ptr = (*fdct).quantize;
-    workspace = (*fdct).workspace;
+     let mut workspace:   *mut crate::jdct_h::DCTELEM =  (*fdct).workspace;
     sample_data = sample_data.offset(start_row as isize);
-    bi = 0u32;
+     let mut bi:   crate::jmorecfg_h::JDIMENSION =  0u32;
     while bi < num_blocks {
         /* Load data into workspace, applying unsigned->signed conversion */
         Some(do_convsamp.expect("non-null function pointer")).expect("non-null function pointer")(
@@ -1375,9 +1387,9 @@ unsafe extern "C" fn forward_DCT(
             workspace,
         );
         if do_preprocess.is_some() {
-             let mut i_0:  libc::c_int =  0;
+             
             let mut maxval: libc::c_int = (1i32 << crate::src::jchuff::MAX_COEF_BITS) - 1i32;
-            i_0 = 0i32;
+             let mut i_0:   libc::c_int =  0i32;
             while i_0 < 64i32 {
                 if ((*coef_blocks.offset(bi as isize))[i_0 as usize] as libc::c_int) < -maxval {
                     (*coef_blocks.offset(bi as isize))[i_0 as usize] =
@@ -1402,13 +1414,12 @@ unsafe extern "C" fn convsamp_float(
 ) {
     
     
-     let mut workspaceptr:  *mut libc::c_float =
-     ::std::ptr::null_mut::< libc::c_float>(); let mut elemr:  libc::c_int =  0;
-    workspaceptr = workspace;
-    elemr = 0i32;
+      
+    
+     let mut workspaceptr:   *mut libc::c_float =  workspace; let mut elemr:   libc::c_int =  0i32;
     while elemr < crate::jpeglib_h::DCTSIZE {
-         let mut elemptr:  crate::jpeglib_h::JSAMPROW =
-     ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();elemptr = (*sample_data.offset(elemr as isize)).offset(start_col as isize);
+          let mut elemptr:   crate::jpeglib_h::JSAMPROW =
+     (*sample_data.offset(elemr as isize)).offset(start_col as isize);
         /* unroll the inner loop */
         let fresh16 = elemptr;
         elemptr = elemptr.offset(1);
@@ -1460,12 +1471,12 @@ unsafe extern "C" fn quantize_float(
     mut workspace: *mut libc::c_float,
 ) {
     
-     let mut i:  libc::c_int =  0;
+     
     let mut output_ptr: crate::jpeglib_h::JCOEFPTR = coef_block;
-    i = 0i32;
+     let mut i:   libc::c_int =  0i32;
     while i < crate::jpeglib_h::DCTSIZE2 {
-        /* Apply the quantization and scaling factor */
-         let mut temp:  libc::c_float =  0.;temp = *workspace.offset(i as isize) * *divisors.offset(i as isize);
+         let mut temp:   libc::c_float =
+     *workspace.offset(i as isize) * *divisors.offset(i as isize);
         /* Round to nearest integer.
          * Since C does not specify the direction of rounding for negative
          * quotients, we have to force the dividend positive for portability.
@@ -1490,9 +1501,7 @@ unsafe extern "C" fn forward_DCT_float(
 )
 /* This version is used for floating-point DCT implementations. */
 {
-    /* This routine is heavily used, so it's worth coding it tightly. */
-     let mut workspace:  *mut libc::c_float =
-     ::std::ptr::null_mut::< libc::c_float>(); let mut bi:  crate::jmorecfg_h::JDIMENSION =  0;let mut fdct: my_fdct_ptr = (*cinfo).fdct as my_fdct_ptr;
+     let mut fdct: my_fdct_ptr = (*cinfo).fdct as my_fdct_ptr;
     let mut divisors: *mut libc::c_float = (*fdct).float_divisors[(*compptr).quant_tbl_no as usize];
     let mut qtbl: *mut crate::jpeglib_h::JQUANT_TBL =
         (*cinfo).quant_tbl_ptrs[(*compptr).quant_tbl_no as usize];
@@ -1505,9 +1514,9 @@ unsafe extern "C" fn forward_DCT_float(
     let mut do_convsamp: float_convsamp_method_ptr = (*fdct).float_convsamp;
     let mut do_preprocess: float_preprocess_method_ptr = (*fdct).float_preprocess;
     let mut do_quantize: float_quantize_method_ptr = (*fdct).float_quantize;
-    workspace = (*fdct).float_workspace;
+     let mut workspace:   *mut libc::c_float =  (*fdct).float_workspace;
     sample_data = sample_data.offset(start_row as isize);
-    bi = 0u32;
+     let mut bi:   crate::jmorecfg_h::JDIMENSION =  0u32;
     while bi < num_blocks {
         /* Load data into workspace, applying unsigned->signed conversion */
         Some(do_convsamp.expect("non-null function pointer")).expect("non-null function pointer")(
@@ -1527,7 +1536,7 @@ unsafe extern "C" fn forward_DCT_float(
         /* Currently save as integer values. Could save float values but would require */
         /* modifications to memory allocation and trellis quantization */
         if !dst.is_null() {
-             let mut i:  libc::c_int =  0;
+             
             static mut aanscalefactor: [libc::c_double; 8] = [
                 1.0f64,
                 1.387039845f64,
@@ -1538,12 +1547,13 @@ unsafe extern "C" fn forward_DCT_float(
                 0.541196100f64,
                 0.275899379f64,
             ];
-            i = 0i32;
+             let mut i:   libc::c_int =  0i32;
             while i < crate::jpeglib_h::DCTSIZE2 {
-                 let mut v:  libc::c_float =  0.; let mut x:  libc::c_int =  0;v = *workspace.offset(i as isize);
+                   let mut v:   libc::c_float =  *workspace.offset(i as isize);
                 v = (v as libc::c_double / aanscalefactor[(i % 8i32) as usize]) as libc::c_float;
                 v = (v as libc::c_double / aanscalefactor[(i / 8i32) as usize]) as libc::c_float;
-                x = if v as libc::c_double >= 0.0f64 {
+                 let mut x:   libc::c_int =
+     if v as libc::c_double >= 0.0f64 {
                     (v as libc::c_double + 0.5f64) as libc::c_int
                 } else {
                     (v as libc::c_double - 0.5f64) as libc::c_int
@@ -1559,9 +1569,9 @@ unsafe extern "C" fn forward_DCT_float(
             workspace,
         );
         if do_preprocess.is_some() {
-             let mut i_0:  libc::c_int =  0;
+             
             let mut maxval: libc::c_int = (1i32 << crate::src::jchuff::MAX_COEF_BITS) - 1i32;
-            i_0 = 0i32;
+             let mut i_0:   libc::c_int =  0i32;
             while i_0 < 64i32 {
                 if ((*coef_blocks.offset(bi as isize))[i_0 as usize] as libc::c_int) < -maxval {
                     (*coef_blocks.offset(bi as isize))[i_0 as usize] =
@@ -1637,7 +1647,7 @@ pub unsafe extern "C" fn quantize_trellis(
     
     
     
-     let mut i:  libc::c_int =  0; let mut j:  libc::c_int =  0; let mut bi:  libc::c_int =  0; let mut best_cost:  libc::c_float =  0.; let mut norm:  libc::c_float =  0f32; let mut lambda_base:  libc::c_float =  0.; let mut Ss:  libc::c_int =  0; let mut Se:  libc::c_int =  0; let mut accumulated_dc_cost:  [*mut libc::c_float; 9] =
+     let mut i:  libc::c_int =  0; let mut j:  libc::c_int =  0;  let mut best_cost:  libc::c_float =  0.;  let mut lambda_base:  libc::c_float =  0.;   let mut accumulated_dc_cost:  [*mut libc::c_float; 9] =
      [::std::ptr::null_mut::< libc::c_float>(); 9]; let mut dc_cost_backtrack:  [*mut libc::c_int; 9] =
      [::std::ptr::null_mut::< libc::c_int>(); 9]; let mut dc_candidate:  [*mut crate::jmorecfg_h::JCOEF; 9] =
     
@@ -1669,8 +1679,8 @@ pub unsafe extern "C" fn quantize_trellis(
     
     let dc_trellis_candidates: libc::c_int =
         get_num_dc_trellis_candidates((*qtbl).quantval[0] as libc::c_int);
-    Ss = (*cinfo).Ss;
-    Se = (*cinfo).Se;
+    
+     let mut Ss:   libc::c_int =  (*cinfo).Ss; let mut Se:   libc::c_int =  (*cinfo).Se;
     if Ss == 0i32 {
         Ss = 1i32
     }
@@ -1745,7 +1755,7 @@ pub unsafe extern "C" fn quantize_trellis(
             i += 1
         }
     }
-    norm = 0f32;
+     let mut norm:   libc::c_float =  0f32;
     i = 1i32;
     while i < crate::jpeglib_h::DCTSIZE2 {
         norm += ((*qtbl).quantval[i as usize] as libc::c_int
@@ -1767,9 +1777,9 @@ pub unsafe extern "C" fn quantize_trellis(
     } else {
         lambda_base = (1.0f64 / norm as libc::c_double) as libc::c_float
     }
-    bi = 0i32;
+     let mut bi:   libc::c_int =  0i32;
     while (bi as libc::c_uint) < num_blocks {
-         let mut k:  libc::c_int =  0; let mut accumulated_zero_dist:  [libc::c_float; 64] =  [0.; 64]; let mut accumulated_cost:  [libc::c_float; 64] =  [0.; 64]; let mut run_start:  [libc::c_int; 64] =  [0; 64]; let mut last_coeff_idx:  libc::c_int =  0; let mut lambda:  libc::c_float =  0.; let mut lambda_dc:  libc::c_float =  0.; let mut has_eob:  libc::c_int =  0; let mut cost_all_zeros:  libc::c_float =  0.; let mut best_cost_skip:  libc::c_float =  0.; let mut cost:  libc::c_float =  0.;norm = 0f32;
+         let mut k:  libc::c_int =  0; let mut accumulated_zero_dist:  [libc::c_float; 64] =  [0.; 64]; let mut accumulated_cost:  [libc::c_float; 64] =  [0.; 64]; let mut run_start:  [libc::c_int; 64] =  [0; 64];  let mut lambda:  libc::c_float =  0.;     let mut cost:  libc::c_float =  0.;norm = 0f32;
         i = 1i32;
         while i < crate::jpeglib_h::DCTSIZE2 {
             norm += ((*src.offset(bi as isize))[i as usize] as libc::c_int
@@ -1793,23 +1803,23 @@ pub unsafe extern "C" fn quantize_trellis(
                 (*(*cinfo).master).lambda_log_scale1 as libc::c_double - 12.0f64,
             ) * lambda_base as libc::c_double) as libc::c_float
         }
-        lambda_dc = lambda * *lambda_tbl.offset(0);
+         let mut lambda_dc:   libc::c_float =  lambda * *lambda_tbl.offset(0);
         accumulated_zero_dist[(Ss - 1i32) as usize] = 0f32;
         accumulated_cost[(Ss - 1i32) as usize] = 0f32;
         /* Do DC coefficient */
         if (*(*cinfo).master).trellis_quant_dc != 0 {
-             let mut qval:  libc::c_int =  0;let mut sign: libc::c_int = (*src.offset(bi as isize))[0] as libc::c_int >> 31i32; /* quantized value (round nearest) */
+             let mut sign: libc::c_int = (*src.offset(bi as isize))[0] as libc::c_int >> 31i32; /* quantized value (round nearest) */
             let mut x: libc::c_int =
                 crate::stdlib::abs((*src.offset(bi as isize))[0] as libc::c_int);
             let mut q: libc::c_int = 8i32 * (*qtbl).quantval[0] as libc::c_int;
             
             
-            qval = (x + q / 2i32) / q;
+             let mut qval:   libc::c_int =  (x + q / 2i32) / q;
             k = 0i32;
             while k < dc_trellis_candidates {
                 
                 
-                 let mut dc_candidate_dist:  libc::c_float =  0.; let mut delta:  libc::c_int =  0; let mut dc_delta:  libc::c_int =  0; let mut bits:  libc::c_int =  0;
+                   let mut dc_delta:  libc::c_int =  0; let mut bits:  libc::c_int =  0;
                 *dc_candidate[k as usize].offset(bi as isize) =
                     (qval - dc_trellis_candidates / 2i32 + k) as crate::jmorecfg_h::JCOEF;
                 if *dc_candidate[k as usize].offset(bi as isize) as libc::c_int
@@ -1826,8 +1836,10 @@ pub unsafe extern "C" fn quantize_trellis(
                         (-(1i32 << crate::src::jchuff::MAX_COEF_BITS) + 1i32)
                             as crate::jmorecfg_h::JCOEF
                 }
-                delta = *dc_candidate[k as usize].offset(bi as isize) as libc::c_int * q - x;
-                dc_candidate_dist = (delta * delta) as libc::c_float * lambda_dc;
+                
+                 let mut delta:   libc::c_int =
+     *dc_candidate[k as usize].offset(bi as isize) as libc::c_int * q - x; let mut dc_candidate_dist:   libc::c_float =
+     (delta * delta) as libc::c_float * lambda_dc;
                 let ref mut fresh32 = *dc_candidate[k as usize].offset(bi as isize);
                 *fresh32 =
                     (*fresh32 as libc::c_int * (1i32 + 2i32 * sign)) as crate::jmorecfg_h::JCOEF;
@@ -1840,14 +1852,18 @@ pub unsafe extern "C" fn quantize_trellis(
                     
                     
                     
-                     let mut dc_above_orig:  libc::c_int =  0; let mut dc_above_recon:  libc::c_int =  0; let mut dc_orig:  libc::c_int =  0; let mut dc_recon:  libc::c_int =  0; let mut vertical_dist:  libc::c_float =  0.;
-                    dc_above_orig = (*src_above.offset(bi as isize))[0] as libc::c_int;
-                    dc_above_recon = (*coef_blocks_above.offset(bi as isize))[0] as libc::c_int * q;
-                    dc_orig = (*src.offset(bi as isize))[0] as libc::c_int;
-                    dc_recon = *dc_candidate[k as usize].offset(bi as isize) as libc::c_int * q;
+                         
+                    
+                    
+                    
+                     let mut dc_above_orig:   libc::c_int =
+     (*src_above.offset(bi as isize))[0] as libc::c_int; let mut dc_above_recon:   libc::c_int =
+     (*coef_blocks_above.offset(bi as isize))[0] as libc::c_int * q; let mut dc_orig:   libc::c_int =  (*src.offset(bi as isize))[0] as libc::c_int; let mut dc_recon:   libc::c_int =
+     *dc_candidate[k as usize].offset(bi as isize) as libc::c_int * q;
                     /* delta is difference of vertical gradients */
                     delta = dc_above_orig - dc_orig - (dc_above_recon - dc_recon);
-                    vertical_dist = (delta * delta) as libc::c_float * lambda_dc;
+                     let mut vertical_dist:   libc::c_float =
+     (delta * delta) as libc::c_float * lambda_dc;
                     dc_candidate_dist += (*(*cinfo).master).trellis_delta_dc_weight
                         * (vertical_dist - dc_candidate_dist)
                 }
@@ -1866,7 +1882,7 @@ pub unsafe extern "C" fn quantize_trellis(
                     *accumulated_dc_cost[k as usize].offset(0) = cost;
                     *dc_cost_backtrack[k as usize].offset(0) = -1i32
                 } else {
-                     let mut l:  libc::c_int =  0;l = 0i32;
+                      let mut l:   libc::c_int =  0i32;
                     while l < dc_trellis_candidates {
                         dc_delta = *dc_candidate[k as usize].offset(bi as isize) as libc::c_int
                             - *dc_candidate[l as usize].offset((bi - 1i32) as isize) as libc::c_int;
@@ -1895,7 +1911,7 @@ pub unsafe extern "C" fn quantize_trellis(
         /* Do AC coefficients */
         i = Ss; /* quantized value (round nearest) */
         while i <= Se {
-             let mut qval_0:  libc::c_int =  0;let mut z: libc::c_int = *crate::jpegint_h::jpeg_natural_order
+             let mut z: libc::c_int = *crate::jpegint_h::jpeg_natural_order
                 .as_ptr()
                 .offset(i as isize); /* Shouldn't be needed */
             let mut sign_0: libc::c_int =
@@ -1911,25 +1927,26 @@ pub unsafe extern "C" fn quantize_trellis(
             accumulated_zero_dist[i as usize] =
                 (x_0 * x_0) as libc::c_float * lambda * *lambda_tbl.offset(z as isize)
                     + accumulated_zero_dist[(i - 1i32) as usize];
-            qval_0 = (x_0 + q_0 / 2i32) / q_0;
+             let mut qval_0:   libc::c_int =  (x_0 + q_0 / 2i32) / q_0;
             if qval_0 == 0i32 {
                 (*coef_blocks.offset(bi as isize))[z as usize] = 0i16;
                 accumulated_cost[i as usize] = 100000000000000000000000000000000000000f32
             } else {
-                 let mut candidate:  [libc::c_int; 16] =  [0; 16]; let mut candidate_bits:  [libc::c_int; 16] =  [0; 16]; let mut candidate_dist:  [libc::c_float; 16] =  [0.; 16]; let mut num_candidates:  libc::c_int =  0;if qval_0 >= 1i32 << crate::src::jchuff::MAX_COEF_BITS {
+                 let mut candidate:  [libc::c_int; 16] =  [0; 16]; let mut candidate_bits:  [libc::c_int; 16] =  [0; 16]; let mut candidate_dist:  [libc::c_float; 16] =  [0.; 16]; if qval_0 >= 1i32 << crate::src::jchuff::MAX_COEF_BITS {
                     qval_0 = (1i32 << crate::src::jchuff::MAX_COEF_BITS) - 1i32
                 }
-                num_candidates =
+                 let mut num_candidates:   libc::c_int =
+    
                     crate::jpeg_nbits_table_h::jpeg_nbits_table[qval_0 as usize] as libc::c_int;
                 k = 0i32;
                 while k < num_candidates {
-                     let mut delta_0:  libc::c_int =  0;
+                     
                     candidate[k as usize] = if k < num_candidates - 1i32 {
                         (2i32 << k) - 1i32
                     } else {
                         qval_0
                     };
-                    delta_0 = candidate[k as usize] * q_0 - x_0;
+                     let mut delta_0:   libc::c_int =  candidate[k as usize] * q_0 - x_0;
                     candidate_bits[k as usize] = k + 1i32;
                     candidate_dist[k as usize] = (delta_0 * delta_0) as libc::c_float
                         * lambda
@@ -1945,11 +1962,12 @@ pub unsafe extern "C" fn quantize_trellis(
                     if !(j != Ss - 1i32
                         && (*coef_blocks.offset(bi as isize))[zz as usize] as libc::c_int == 0i32)
                     {
-                         let mut zero_run:  libc::c_int =  0;zero_run = i - 1i32 - j;
+                          let mut zero_run:   libc::c_int =  i - 1i32 - j;
                         if !(zero_run >> 4i32 != 0
                             && (*actbl).ehufsi[0xf0usize] as libc::c_int == 0i32)
                         {
-                             let mut run_bits:  libc::c_int =  0;run_bits = (zero_run >> 4i32)
+                              let mut run_bits:   libc::c_int =
+     (zero_run >> 4i32)
                                 * (*actbl).ehufsi[0xf0usize] as libc::c_int;
                             zero_run &= 15i32;
                             k = 0i32;
@@ -1958,7 +1976,7 @@ pub unsafe extern "C" fn quantize_trellis(
                                     [(16i32 * zero_run + candidate_bits[k as usize]) as usize]
                                     as libc::c_int;
                                 if !(coef_bits == 0i32) {
-                                     let mut rate:  libc::c_int =  0;rate = coef_bits + candidate_bits[k as usize] + run_bits;
+                                      let mut rate:   libc::c_int =  coef_bits + candidate_bits[k as usize] + run_bits;
                                     cost = rate as libc::c_float + candidate_dist[k as usize];
                                     cost += accumulated_zero_dist[(i - 1i32) as usize]
                                         - accumulated_zero_dist[j as usize]
@@ -1980,11 +1998,11 @@ pub unsafe extern "C" fn quantize_trellis(
             }
             i += 1
         }
-        last_coeff_idx = Ss - 1i32;
+         let mut last_coeff_idx:   libc::c_int =  Ss - 1i32;
         best_cost =
             accumulated_zero_dist[Se as usize] + (*actbl).ehufsi[0] as libc::c_int as libc::c_float;
-        cost_all_zeros = accumulated_zero_dist[Se as usize];
-        best_cost_skip = cost_all_zeros;
+        
+         let mut cost_all_zeros:   libc::c_float =  accumulated_zero_dist[Se as usize]; let mut best_cost_skip:   libc::c_float =  cost_all_zeros;
         i = Ss;
         while i <= Se {
             let mut z_0: libc::c_int = *crate::jpegint_h::jpeg_natural_order
@@ -2006,7 +2024,8 @@ pub unsafe extern "C" fn quantize_trellis(
             }
             i += 1
         }
-        has_eob =
+         let mut has_eob:   libc::c_int =
+    
             (last_coeff_idx < Se) as libc::c_int + (last_coeff_idx == Ss - 1i32) as libc::c_int;
         /* Zero out coefficients that are part of runs */
         i = Se; /* cost of coding a nonzero block */
@@ -2034,12 +2053,14 @@ pub unsafe extern "C" fn quantize_trellis(
                     
                     
                     if !(*requires_eob.offset(i as isize) == 2i32) {
-                         let mut zero_block_run:  libc::c_int =  0; let mut nbits:  libc::c_int =  0; let mut cost_1:  libc::c_float =  0.;cost_1 = best_cost_skip;
+                            let mut cost_1:   libc::c_float =  best_cost_skip;
                         cost_1 += *accumulated_zero_block_cost.offset(bi as isize);
                         cost_1 -= *accumulated_zero_block_cost.offset(i as isize);
                         cost_1 += *accumulated_block_cost.offset(i as isize);
-                        zero_block_run = bi - i + *requires_eob.offset(i as isize);
-                        nbits = crate::jpeg_nbits_table_h::jpeg_nbits_table[zero_block_run as usize]
+                        
+                         let mut zero_block_run:   libc::c_int =
+     bi - i + *requires_eob.offset(i as isize); let mut nbits:   libc::c_int =
+     crate::jpeg_nbits_table_h::jpeg_nbits_table[zero_block_run as usize]
                             as libc::c_int;
                         cost_1 += ((*actbl).ehufsi[(16i32 * nbits) as usize] as libc::c_int + nbits)
                             as libc::c_float;
@@ -2064,12 +2085,14 @@ pub unsafe extern "C" fn quantize_trellis(
             
             
             if !(*requires_eob.offset(i as isize) == 2i32) {
-                 let mut zero_block_run_0:  libc::c_int =  0; let mut nbits_0:  libc::c_int =  0; let mut cost_2:  libc::c_float =  0f32;cost_2 += *accumulated_zero_block_cost.offset(num_blocks as isize);
+                   let mut cost_2:  libc::c_float =  0f32;cost_2 += *accumulated_zero_block_cost.offset(num_blocks as isize);
                 cost_2 -= *accumulated_zero_block_cost.offset(i as isize);
-                zero_block_run_0 = ( num_blocks - i as libc::c_uint +
+                
+                 let mut zero_block_run_0:   libc::c_int =
+     ( num_blocks - i as libc::c_uint +
     *requires_eob.offset(i as isize) as libc::c_uint)
-                    as libc::c_int;
-                nbits_0 = crate::jpeg_nbits_table_h::jpeg_nbits_table[zero_block_run_0 as usize]
+                    as libc::c_int; let mut nbits_0:   libc::c_int =
+     crate::jpeg_nbits_table_h::jpeg_nbits_table[zero_block_run_0 as usize]
                     as libc::c_int;
                 cost_2 += ((*actbl).ehufsi[(16i32 * nbits_0) as usize] as libc::c_int + nbits_0)
                     as libc::c_float;
@@ -2159,8 +2182,9 @@ pub unsafe extern "C" fn quantize_trellis(
 
 pub unsafe extern "C" fn jinit_forward_dct(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
     
-     let mut fdct:  my_fdct_ptr =  ::std::ptr::null_mut::< my_fdct_controller>(); let mut i:  libc::c_int =  0;
-    fdct = Some(
+      
+     let mut fdct:   my_fdct_ptr =
+     Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),
@@ -2414,8 +2438,7 @@ pub unsafe extern "C" fn jinit_forward_dct(mut cinfo: crate::jpeglib_h::j_compre
     crate::jpeglib_h::DCTSIZE2 as libc::c_ulong,
         ) as *mut crate::jdct_h::DCTELEM
     }
-    /* Mark divisor tables unallocated */
-    i = 0i32;
+     let mut i:   libc::c_int =  0i32;
     while i < crate::jpeglib_h::NUM_QUANT_TBLS {
         (*fdct).divisors[i as usize] = crate::stddef_h::NULL as *mut crate::jdct_h::DCTELEM;
         (*fdct).float_divisors[i as usize] = crate::stddef_h::NULL as *mut libc::c_float;

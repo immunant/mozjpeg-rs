@@ -89,9 +89,8 @@ pub unsafe extern "C" fn MD5Update(
     mut buf: *mut libc::c_uchar,
     mut len: libc::c_uint,
 ) {
-     let mut t:  crate::src::md5::md5::uint32 =  0;
-    /* Update bitcount */
-    t = (*ctx).bits[0]; /* Carry from low to high */
+     
+     let mut t:   crate::src::md5::md5::uint32 =  (*ctx).bits[0]; /* Carry from low to high */
     (*ctx).bits[0] =  t + (((len << 3i32))); /* Bytes already in shsInfo->data */
     if (*ctx).bits[0] < t {
         (*ctx).bits[1] =  (*ctx).bits[1] + 1
@@ -154,14 +153,14 @@ pub unsafe extern "C" fn MD5Final(
     mut ctx: *mut crate::src::md5::md5::MD5Context,
 ) {
     
-     let mut count:  libc::c_uint =  0; let mut p:  *mut libc::c_uchar =  ::std::ptr::null_mut::< libc::c_uchar>();
+      
     let mut in32: *mut crate::src::md5::md5::uint32 =
         (*ctx).in_0.as_mut_ptr() as *mut crate::src::md5::md5::uint32;
-    /* Compute number of bytes mod 64 */
-    count = (*ctx).bits[0] >> 3i32 & 0x3fu32;
+    
     /* Set the first char of padding to 0x80.  This is safe since there is
     always at least one byte free */
-    p = (*ctx).in_0.as_mut_ptr().offset(count as isize);
+     let mut count:   libc::c_uint =  (*ctx).bits[0] >> 3i32 & 0x3fu32; let mut p:   *mut libc::c_uchar =
+     (*ctx).in_0.as_mut_ptr().offset(count as isize);
     let fresh0 = p;
     p = p.offset(1);
     *fresh0 = 0x80u8;
@@ -256,11 +255,11 @@ pub unsafe extern "C" fn MD5Transform(
     
     
     
-     let mut a:  crate::src::md5::md5::uint32 =  0; let mut b:  crate::src::md5::md5::uint32 =  0; let mut c:  crate::src::md5::md5::uint32 =  0; let mut d:  crate::src::md5::md5::uint32 =  0;
-    a = *buf.offset(0);
-    b = *buf.offset(1);
-    c = *buf.offset(2);
-    d = *buf.offset(3);
+        
+    
+    
+    
+     let mut a:   crate::src::md5::md5::uint32 =  *buf.offset(0); let mut b:   crate::src::md5::md5::uint32 =  *buf.offset(1); let mut c:   crate::src::md5::md5::uint32 =  *buf.offset(2); let mut d:   crate::src::md5::md5::uint32 =  *buf.offset(3);
     a = a + ((((d ^ b & (c ^ d)))) + *in_0.offset(0) + 0xd76aa478u32);
     a = a << 7i32 | a >> 32i32 - 7i32;
     a = a + b;

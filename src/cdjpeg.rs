@@ -326,15 +326,15 @@ pub unsafe extern "C" fn keymatch(
     
      let mut nmatched:  libc::c_int =  0i32;
     loop {
-         let mut ca:  libc::c_int =  0; let mut ck:  libc::c_int =  0;let fresh0 = arg;
+          let fresh0 = arg;
         arg = arg.offset(1);
-        ca = *fresh0 as libc::c_int;
+         let mut ca:   libc::c_int =  *fresh0 as libc::c_int;
         if !(ca != '\u{0}' as i32) {
             break;
         }
         let fresh1 = keyword;
         keyword = keyword.offset(1);
-        ck = *fresh1 as libc::c_int;
+         let mut ck:   libc::c_int =  *fresh1 as libc::c_int;
         if ck == '\u{0}' as i32 {
             return crate::jmorecfg_h::FALSE;
         }

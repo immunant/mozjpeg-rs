@@ -93,10 +93,9 @@ pub unsafe extern "C" fn jpeg_fdct_float(mut data: *mut libc::c_float) {
     
     
     
-     let mut tmp0:  libc::c_float =  0.; let mut tmp1:  libc::c_float =  0.; let mut tmp2:  libc::c_float =  0.; let mut tmp3:  libc::c_float =  0.; let mut tmp4:  libc::c_float =  0.; let mut tmp5:  libc::c_float =  0.; let mut tmp6:  libc::c_float =  0.; let mut tmp7:  libc::c_float =  0.; let mut tmp10:  libc::c_float =  0.; let mut tmp11:  libc::c_float =  0.; let mut tmp12:  libc::c_float =  0.; let mut tmp13:  libc::c_float =  0.; let mut z1:  libc::c_float =  0.; let mut z2:  libc::c_float =  0.; let mut z3:  libc::c_float =  0.; let mut z4:  libc::c_float =  0.; let mut z5:  libc::c_float =  0.; let mut z11:  libc::c_float =  0.; let mut z13:  libc::c_float =  0.; let mut dataptr:  *mut libc::c_float =  ::std::ptr::null_mut::< libc::c_float>(); let mut ctr:  libc::c_int =  0;
-    /* Pass 1: process rows. */
-    dataptr = data;
-    ctr = crate::jpeglib_h::DCTSIZE - 1i32;
+     let mut tmp0:  libc::c_float =  0.; let mut tmp1:  libc::c_float =  0.; let mut tmp2:  libc::c_float =  0.; let mut tmp3:  libc::c_float =  0.; let mut tmp4:  libc::c_float =  0.; let mut tmp5:  libc::c_float =  0.; let mut tmp6:  libc::c_float =  0.; let mut tmp7:  libc::c_float =  0.; let mut tmp10:  libc::c_float =  0.; let mut tmp11:  libc::c_float =  0.; let mut tmp12:  libc::c_float =  0.; let mut tmp13:  libc::c_float =  0.; let mut z1:  libc::c_float =  0.; let mut z2:  libc::c_float =  0.; let mut z3:  libc::c_float =  0.; let mut z4:  libc::c_float =  0.; let mut z5:  libc::c_float =  0.; let mut z11:  libc::c_float =  0.; let mut z13:  libc::c_float =  0.;  
+    
+     let mut dataptr:   *mut libc::c_float =  data; let mut ctr:   libc::c_int =  crate::jpeglib_h::DCTSIZE - 1i32;
     while ctr >= 0i32 {
         tmp0 = *dataptr.offset(0) + *dataptr.offset(7);
         tmp7 = *dataptr.offset(0) - *dataptr.offset(7);
