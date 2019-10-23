@@ -187,8 +187,8 @@ pub unsafe extern "C" fn customFilter(
     mut transformIndex: libc::c_int,
     mut transform: *mut crate::src::turbojpeg::tjtransform,
 ) -> libc::c_int {
-     let mut i:  libc::c_int =  0;
-    i = 0i32;
+     
+     let mut i:   libc::c_int =  0i32;
     while i < arrayRegion.w * arrayRegion.h {
         *coeffs.offset(i as isize) = -(*coeffs.offset(i as isize) as libc::c_int) as libc::c_short;
         i += 1
@@ -198,7 +198,7 @@ pub unsafe extern "C" fn customFilter(
 #[no_mangle]
 
 pub unsafe extern "C" fn usage(mut programName: *mut libc::c_char) {
-     let mut i:  libc::c_int =  0;
+     
     crate::stdlib::printf(
         
         b"\nUSAGE: %s <Input image> <Output image> [options]\n\n\x00".as_ptr()
@@ -274,7 +274,7 @@ pub unsafe extern "C" fn usage(mut programName: *mut libc::c_char) {
         b"-scale M/N = Scale the input image by a factor of M/N when decompressing it.\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(b"(M/N = \x00".as_ptr() as *const libc::c_char);
-    i = 0i32;
+     let mut i:   libc::c_int =  0i32;
     while i < numScalingFactors {
         crate::stdlib::printf(
             
@@ -416,7 +416,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         );
         retval = -1i32
     } else {
-         let mut current_block:  u64; let mut flags:  libc::c_int =  0i32; let mut width:  libc::c_int =  0; let mut height:  libc::c_int =  0; let mut inFormat:  *mut libc::c_char =  ::std::ptr::null_mut::< libc::c_char>(); let mut outFormat:  *mut libc::c_char =  ::std::ptr::null_mut::< libc::c_char>(); let mut i:  libc::c_int =  0;crate::stdlib::memset(
+         let mut current_block:  u64; let mut flags:  libc::c_int =  0i32; let mut width:  libc::c_int =  0; let mut height:  libc::c_int =  0;   crate::stdlib::memset(
             &mut xform as *mut crate::src::turbojpeg::tjtransform as *mut libc::c_void,
             0i32,
             ::std::mem::size_of::<crate::src::turbojpeg::tjtransform>() as libc::c_ulong,
@@ -424,8 +424,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         if argc < 3i32 {
             usage(*argv.offset(0));
         }
-        /* Parse arguments. */
-        i = 3i32;
+         let mut i:   libc::c_int =  3i32;
         while i < argc {
             if crate::stdlib::strncasecmp(
                 *argv.offset(i as isize),
@@ -438,7 +437,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                 
                 
                 
-                 let mut match_0:  libc::c_int =  0i32; let mut temp1:  libc::c_int =  0i32; let mut temp2:  libc::c_int =  0i32; let mut j:  libc::c_int =  0;
+                 let mut match_0:  libc::c_int =  0i32; let mut temp1:  libc::c_int =  0i32; let mut temp2:  libc::c_int =  0i32; 
                 i += 1;
                 if crate::stdlib::sscanf(
                     *argv.offset(i as isize),
@@ -450,7 +449,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                 {
                     usage(*argv.offset(0));
                 }
-                j = 0i32;
+                 let mut j:   libc::c_int =  0i32;
                 while j < numScalingFactors {
                     if temp1 as libc::c_double / temp2 as libc::c_double
                         == (*scalingFactors.offset(j as isize)).num as libc::c_double
@@ -659,9 +658,10 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             }
             i += 1
         }
-        /* Determine input and output image formats based on file extensions. */
-        inFormat = crate::stdlib::strrchr(*argv.offset(1), '.' as i32);
-        outFormat = crate::stdlib::strrchr(*argv.offset(2), '.' as i32);
+        
+         let mut inFormat:   *mut libc::c_char =
+     crate::stdlib::strrchr(*argv.offset(1), '.' as i32); let mut outFormat:   *mut libc::c_char =
+     crate::stdlib::strrchr(*argv.offset(2), '.' as i32);
         if inFormat.is_null()
             || outFormat.is_null()
             || crate::stdlib::strlen(inFormat) < 2u64
@@ -730,7 +730,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                 retval = -1i32;
                 current_block = 16288987300638808654;
             } else {
-                 let mut jpegSize:  libc::c_ulong =  0;jpegSize = size as libc::c_ulong;
+                  let mut jpegSize:   libc::c_ulong =  size as libc::c_ulong;
                 jpegBuf = crate::src::turbojpeg::tjAlloc(jpegSize as libc::c_int);
                 if jpegBuf.is_null() {
                     crate::stdlib::printf(
