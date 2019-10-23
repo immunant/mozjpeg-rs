@@ -139,7 +139,7 @@ unsafe extern "C" fn read_2_bytes() -> libc::c_uint {
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
-    return ((c1 as libc::c_uint) << 8i32).wrapping_add(c2 as libc::c_uint);
+    return (((c1 as libc::c_uint) << 8i32)) + c2 as libc::c_uint;
 }
 
 pub const M_SOI: libc::c_int = 0xd8i32;
@@ -233,11 +233,11 @@ unsafe extern "C" fn skip_variable()
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
-    length = length.wrapping_sub(2i32 as libc::c_uint);
+    length =  length - 2i32 as libc::c_uint;
     /* Skip over the remaining bytes */
     while length > 0i32 as libc::c_uint {
         read_1_byte();
-        length = length.wrapping_sub(1)
+        length =  length - 1
     }
 }
 /*
@@ -269,7 +269,7 @@ unsafe extern "C" fn process_COM(mut raw: libc::c_int) {
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
-    length = length.wrapping_sub(2i32 as libc::c_uint);
+    length =  length - 2i32 as libc::c_uint;
     while length > 0i32 as libc::c_uint {
         ch = read_1_byte();
         if raw != 0 {
@@ -296,7 +296,7 @@ unsafe extern "C" fn process_COM(mut raw: libc::c_int) {
             crate::stdlib::printf(b"\\%03o\x00".as_ptr() as *const libc::c_char, ch);
         }
         lastch = ch;
-        length = length.wrapping_sub(1)
+        length =  length - 1
     }
     crate::stdlib::printf(b"\n\x00".as_ptr() as *const libc::c_char);
     /* Bill Allombert: revert to C locale */
