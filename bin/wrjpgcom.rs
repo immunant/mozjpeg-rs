@@ -96,12 +96,12 @@ pub const MAX_COM_LENGTH: libc::c_long = 65000i64;
  */
 
 static mut infile: *mut crate::stdlib::FILE =
-    0 as *const crate::stdlib::FILE as *mut crate::stdlib::FILE;
+    ::std::ptr::null::< crate::stdlib::FILE>() as *mut crate::stdlib::FILE;
 /* input JPEG file */
 /* Return next input byte, or EOF if no more */
 
 static mut outfile: *mut crate::stdlib::FILE =
-    0 as *const crate::stdlib::FILE as *mut crate::stdlib::FILE;
+    ::std::ptr::null::< crate::stdlib::FILE>() as *mut crate::stdlib::FILE;
 /* output JPEG file */
 /* Emit an output byte */
 /* Error exit handler */
@@ -488,7 +488,7 @@ unsafe extern "C" fn scan_JPEG_header(mut keep_COM: libc::c_int) -> libc::c_int 
 }
 /* Command line parsing code */
 
-static mut progname: *const libc::c_char = 0 as *const libc::c_char;
+static mut progname: *const libc::c_char = ::std::ptr::null::< libc::c_char>();
 /* program name for error messages */
 
 unsafe extern "C" fn usage()
@@ -636,7 +636,7 @@ unsafe extern "C" fn keymatch(
 
 unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> libc::c_int {
     let mut argn: libc::c_int = 0;
-    let mut arg: *mut libc::c_char = 0 as *mut libc::c_char;
+    let mut arg: *mut libc::c_char = ::std::ptr::null_mut::< libc::c_char>();
     let mut keep_COM: libc::c_int = 1i32;
     let mut comment_arg: *mut libc::c_char = crate::stddef_h::NULL as *mut libc::c_char;
     let mut comment_file: *mut crate::stdlib::FILE =
@@ -803,7 +803,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     /* TWO_FILE_COMMANDLINE */
     /* Collect comment text from comment_file or stdin, if necessary */
     if comment_arg.is_null() {
-        let mut src_file: *mut crate::stdlib::FILE = 0 as *mut crate::stdlib::FILE;
+        let mut src_file: *mut crate::stdlib::FILE = ::std::ptr::null_mut::< crate::stdlib::FILE>();
         let mut c: libc::c_int = 0;
         comment_arg =
             crate::stdlib::malloc(MAX_COM_LENGTH as crate::stddef_h::size_t) as *mut libc::c_char;
