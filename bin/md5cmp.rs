@@ -66,7 +66,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     if argc < 3i32 {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b"USAGE: %s <correct MD5 sum> <file>\n\x00" as *const u8 as *const libc::c_char,
+            
+            b"USAGE: %s <correct MD5 sum> <file>\n\x00".as_ptr() as *const libc::c_char,
             *argv.offset(0),
         );
         return -1i32;
@@ -74,25 +75,28 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     if crate::stdlib::strlen(*argv.offset(1)) != 32i32 as libc::c_ulong {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b"WARNING: MD5 hash size is wrong.\n\x00" as *const u8 as *const libc::c_char,
+            
+            b"WARNING: MD5 hash size is wrong.\n\x00".as_ptr() as *const libc::c_char,
         );
     }
     md5sum = crate::src::md5::md5::MD5File(*argv.offset(2), buf.as_mut_ptr());
     if md5sum.is_null() {
-        crate::stdlib::perror(b"Could not obtain MD5 sum\x00" as *const u8 as *const libc::c_char);
+        crate::stdlib::perror(b"Could not obtain MD5 sum\x00".as_ptr() as *const libc::c_char);
         return -1i32;
     }
     if crate::stdlib::strcasecmp(md5sum, *argv.offset(1)) == 0 {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b"%s: OK\n\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s: OK\n\x00".as_ptr() as *const libc::c_char,
             *argv.offset(2),
         );
         return 0i32;
     } else {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b"%s: FAILED.  Checksum is %s\n\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s: FAILED.  Checksum is %s\n\x00".as_ptr() as *const libc::c_char,
             *argv.offset(2),
             md5sum,
         );
