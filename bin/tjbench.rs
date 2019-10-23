@@ -237,51 +237,81 @@ pub static mut doWrite: libc::c_int = 1i32;
 #[no_mangle]
 
 pub static mut ext: *mut libc::c_char =
-    b"ppm\x00" as *const u8 as *const libc::c_char as *mut libc::c_char;
+    
+    b"ppm\x00".as_ptr() as *const libc::c_char as *mut libc::c_char;
 #[no_mangle]
 
 pub static mut pixFormatStr: [*const libc::c_char; 12] = [
-    b"RGB\x00" as *const u8 as *const libc::c_char,
-    b"BGR\x00" as *const u8 as *const libc::c_char,
-    b"RGBX\x00" as *const u8 as *const libc::c_char,
-    b"BGRX\x00" as *const u8 as *const libc::c_char,
-    b"XBGR\x00" as *const u8 as *const libc::c_char,
-    b"XRGB\x00" as *const u8 as *const libc::c_char,
-    b"GRAY\x00" as *const u8 as *const libc::c_char,
-    b"\x00" as *const u8 as *const libc::c_char,
-    b"\x00" as *const u8 as *const libc::c_char,
-    b"\x00" as *const u8 as *const libc::c_char,
-    b"\x00" as *const u8 as *const libc::c_char,
-    b"CMYK\x00" as *const u8 as *const libc::c_char,
+    
+    b"RGB\x00".as_ptr() as *const libc::c_char,
+    
+    b"BGR\x00".as_ptr() as *const libc::c_char,
+    
+    b"RGBX\x00".as_ptr() as *const libc::c_char,
+    
+    b"BGRX\x00".as_ptr() as *const libc::c_char,
+    
+    b"XBGR\x00".as_ptr() as *const libc::c_char,
+    
+    b"XRGB\x00".as_ptr() as *const libc::c_char,
+    
+    b"GRAY\x00".as_ptr() as *const libc::c_char,
+    
+    b"\x00".as_ptr() as *const libc::c_char,
+    
+    b"\x00".as_ptr() as *const libc::c_char,
+    
+    b"\x00".as_ptr() as *const libc::c_char,
+    
+    b"\x00".as_ptr() as *const libc::c_char,
+    
+    b"CMYK\x00".as_ptr() as *const libc::c_char,
 ];
 #[no_mangle]
 
 pub static mut subNameLong: [*const libc::c_char; 6] = [
-    b"4:4:4\x00" as *const u8 as *const libc::c_char,
-    b"4:2:2\x00" as *const u8 as *const libc::c_char,
-    b"4:2:0\x00" as *const u8 as *const libc::c_char,
-    b"GRAY\x00" as *const u8 as *const libc::c_char,
-    b"4:4:0\x00" as *const u8 as *const libc::c_char,
-    b"4:1:1\x00" as *const u8 as *const libc::c_char,
+    
+    b"4:4:4\x00".as_ptr() as *const libc::c_char,
+    
+    b"4:2:2\x00".as_ptr() as *const libc::c_char,
+    
+    b"4:2:0\x00".as_ptr() as *const libc::c_char,
+    
+    b"GRAY\x00".as_ptr() as *const libc::c_char,
+    
+    b"4:4:0\x00".as_ptr() as *const libc::c_char,
+    
+    b"4:1:1\x00".as_ptr() as *const libc::c_char,
 ];
 #[no_mangle]
 
 pub static mut csName: [*const libc::c_char; 5] = [
-    b"RGB\x00" as *const u8 as *const libc::c_char,
-    b"YCbCr\x00" as *const u8 as *const libc::c_char,
-    b"GRAY\x00" as *const u8 as *const libc::c_char,
-    b"CMYK\x00" as *const u8 as *const libc::c_char,
-    b"YCCK\x00" as *const u8 as *const libc::c_char,
+    
+    b"RGB\x00".as_ptr() as *const libc::c_char,
+    
+    b"YCbCr\x00".as_ptr() as *const libc::c_char,
+    
+    b"GRAY\x00".as_ptr() as *const libc::c_char,
+    
+    b"CMYK\x00".as_ptr() as *const libc::c_char,
+    
+    b"YCCK\x00".as_ptr() as *const libc::c_char,
 ];
 #[no_mangle]
 
 pub static mut subName: [*const libc::c_char; 6] = [
-    b"444\x00" as *const u8 as *const libc::c_char,
-    b"422\x00" as *const u8 as *const libc::c_char,
-    b"420\x00" as *const u8 as *const libc::c_char,
-    b"GRAY\x00" as *const u8 as *const libc::c_char,
-    b"440\x00" as *const u8 as *const libc::c_char,
-    b"411\x00" as *const u8 as *const libc::c_char,
+    
+    b"444\x00".as_ptr() as *const libc::c_char,
+    
+    b"422\x00".as_ptr() as *const libc::c_char,
+    
+    b"420\x00".as_ptr() as *const libc::c_char,
+    
+    b"GRAY\x00".as_ptr() as *const libc::c_char,
+    
+    b"440\x00".as_ptr() as *const libc::c_char,
+    
+    b"411\x00".as_ptr() as *const libc::c_char,
 ];
 #[no_mangle]
 
@@ -338,7 +368,8 @@ pub unsafe extern "C" fn formatName(
         crate::stdlib::snprintf(
             buf,
             80i32 as libc::c_ulong,
-            b"%s %s\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s %s\x00".as_ptr() as *const libc::c_char,
             csName[cs as usize],
             subNameLong[subsamp as usize],
         );
@@ -362,13 +393,15 @@ pub unsafe extern "C" fn sigfig(
         crate::stdlib::snprintf(
             format.as_mut_ptr(),
             80i32 as libc::c_ulong,
-            b"%%.0f\x00" as *const u8 as *const libc::c_char,
+            
+            b"%%.0f\x00".as_ptr() as *const libc::c_char,
         );
     } else {
         crate::stdlib::snprintf(
             format.as_mut_ptr(),
             80i32 as libc::c_ulong,
-            b"%%.%df\x00" as *const u8 as *const libc::c_char,
+            
+            b"%%.%df\x00".as_ptr() as *const libc::c_char,
             digitsAfterDecimal,
         );
     }
@@ -441,7 +474,8 @@ pub unsafe extern "C" fn decomp(
         crate::stdlib::snprintf(
             qualStr.as_mut_ptr(),
             6i32 as libc::c_ulong,
-            b"_Q%d\x00" as *const u8 as *const libc::c_char,
+            
+            b"_Q%d\x00".as_ptr() as *const libc::c_char,
             jpegQual,
         );
         qualStr[5] = 0i32 as libc::c_char
@@ -460,7 +494,8 @@ pub unsafe extern "C" fn decomp(
             ) != 0
                 || crate::stdlib::strncmp(
                     tjErrorMsg.as_mut_ptr(),
-                    b"executing tjInitDecompress()\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"executing tjInitDecompress()\x00".as_ptr() as *const libc::c_char,
                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
                 ) != 0
                 || tjErrorCode != _tjErrorCode
@@ -473,29 +508,36 @@ pub unsafe extern "C" fn decomp(
                 );
                 crate::stdlib::strncpy(
                     tjErrorMsg.as_mut_ptr(),
-                    b"executing tjInitDecompress()\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"executing tjInitDecompress()\x00".as_ptr() as *const libc::c_char,
                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
                 );
                 tjErrorCode = _tjErrorCode;
                 tjErrorLine = 160i32;
                 crate::stdlib::printf(
-                    b"WARNING in line %d while %s:\n%s\n\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"WARNING in line %d while %s:\n%s\n\x00".as_ptr() as *const libc::c_char,
                     160i32,
-                    b"executing tjInitDecompress()\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"executing tjInitDecompress()\x00".as_ptr() as *const libc::c_char,
                     _tjErrorStr,
                 );
             }
             current_block = 11194104282611034094;
         } else {
             crate::stdlib::printf(
-                b"%s in line %d while %s:\n%s\n\x00" as *const u8 as *const libc::c_char,
+                
+                b"%s in line %d while %s:\n%s\n\x00".as_ptr() as *const libc::c_char,
                 if _tjErrorCode == crate::src::turbojpeg::TJERR_WARNING as libc::c_int {
-                    b"WARNING\x00" as *const u8 as *const libc::c_char
+                    
+                    b"WARNING\x00".as_ptr() as *const libc::c_char
                 } else {
-                    b"ERROR\x00" as *const u8 as *const libc::c_char
+                    
+                    b"ERROR\x00".as_ptr() as *const libc::c_char
                 },
                 160i32,
-                b"executing tjInitDecompress()\x00" as *const u8 as *const libc::c_char,
+                
+                b"executing tjInitDecompress()\x00".as_ptr() as *const libc::c_char,
                 _tjErrorStr,
             );
             retval = -1i32;
@@ -511,9 +553,11 @@ pub unsafe extern "C" fn decomp(
                     crate::stdlib::malloc((pitch * scaledh) as libc::c_ulong) as *mut libc::c_uchar;
                 if dstBuf.is_null() {
                     crate::stdlib::printf(
-                        b"ERROR in line %d while %s:\n%s\n\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"ERROR in line %d while %s:\n%s\n\x00".as_ptr() as *const libc::c_char,
                         164i32,
-                        b"allocating destination buffer\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"allocating destination buffer\x00".as_ptr() as *const libc::c_char,
                         crate::stdlib::strerror(*crate::stdlib::__errno_location()),
                     );
                     retval = -1i32;
@@ -545,10 +589,12 @@ pub unsafe extern "C" fn decomp(
                             crate::stdlib::malloc(yuvSize as libc::c_ulong) as *mut libc::c_uchar;
                         if yuvBuf.is_null() {
                             crate::stdlib::printf(
-                                b"ERROR in line %d while %s:\n%s\n\x00" as *const u8
+                                
+                                b"ERROR in line %d while %s:\n%s\n\x00".as_ptr()
                                     as *const libc::c_char,
                                 177i32,
-                                b"allocating YUV buffer\x00" as *const u8 as *const libc::c_char,
+                                
+                                b"allocating YUV buffer\x00".as_ptr() as *const libc::c_char,
                                 crate::stdlib::strerror(*crate::stdlib::__errno_location()),
                             );
                             retval = -1i32;
@@ -630,8 +676,8 @@ pub unsafe extern "C" fn decomp(
                                                     ) != 0
                                                         || crate::stdlib::strncmp(
                                                             tjErrorMsg.as_mut_ptr(),
-                                                            b"executing tjDecompressToYUV2()\x00"
-                                                                as *const u8
+                                                            
+                                                            b"executing tjDecompressToYUV2()\x00".as_ptr()
                                                                 as *const libc::c_char,
                                                             crate::jpeglib_h::JMSG_LENGTH_MAX
                                                                 as libc::c_ulong,
@@ -647,45 +693,44 @@ pub unsafe extern "C" fn decomp(
                                                         );
                                                         crate::stdlib::strncpy(
                                                             tjErrorMsg.as_mut_ptr(),
-                                                            b"executing tjDecompressToYUV2()\x00"
-                                                                as *const u8
+                                                            
+                                                            b"executing tjDecompressToYUV2()\x00".as_ptr()
                                                                 as *const libc::c_char,
                                                             crate::jpeglib_h::JMSG_LENGTH_MAX
                                                                 as libc::c_ulong,
                                                         );
                                                         tjErrorCode = _tjErrorCode_0;
                                                         tjErrorLine = 200i32;
-                                                        crate::stdlib::printf(b"WARNING in line %d while %s:\n%s\n\x00"
-                                                                       as
-                                                                       *const u8
+                                                        crate::stdlib::printf(b"WARNING in line %d while %s:\n%s\n\x00".as_ptr()
                                                                        as
                                                                        *const libc::c_char,
                                                                    200i32,
-                                                                   b"executing tjDecompressToYUV2()\x00"
-                                                                       as
-                                                                       *const u8
+                                                                   
+                                                                   b"executing tjDecompressToYUV2()\x00".as_ptr()
                                                                        as
                                                                        *const libc::c_char,
                                                                    _tjErrorStr_0);
                                                     }
                                                 } else {
                                                     crate::stdlib::printf(
-                                                        b"%s in line %d while %s:\n%s\n\x00"
-                                                            as *const u8
+                                                        
+                                                        b"%s in line %d while %s:\n%s\n\x00".as_ptr()
                                                             as *const libc::c_char,
                                                         if _tjErrorCode_0
                                                             == crate::src::turbojpeg::TJERR_WARNING
                                                                 as libc::c_int
                                                         {
-                                                            b"WARNING\x00" as *const u8
+                                                            
+                                                            b"WARNING\x00".as_ptr()
                                                                 as *const libc::c_char
                                                         } else {
-                                                            b"ERROR\x00" as *const u8
+                                                            
+                                                            b"ERROR\x00".as_ptr()
                                                                 as *const libc::c_char
                                                         },
                                                         200i32,
-                                                        b"executing tjDecompressToYUV2()\x00"
-                                                            as *const u8
+                                                        
+                                                        b"executing tjDecompressToYUV2()\x00".as_ptr()
                                                             as *const libc::c_char,
                                                         _tjErrorStr_0,
                                                     );
@@ -719,8 +764,8 @@ pub unsafe extern "C" fn decomp(
                                                     ) != 0
                                                         || crate::stdlib::strncmp(
                                                             tjErrorMsg.as_mut_ptr(),
-                                                            b"executing tjDecodeYUV()\x00"
-                                                                as *const u8
+                                                            
+                                                            b"executing tjDecodeYUV()\x00".as_ptr()
                                                                 as *const libc::c_char,
                                                             crate::jpeglib_h::JMSG_LENGTH_MAX
                                                                 as libc::c_ulong,
@@ -736,44 +781,44 @@ pub unsafe extern "C" fn decomp(
                                                         );
                                                         crate::stdlib::strncpy(
                                                             tjErrorMsg.as_mut_ptr(),
-                                                            b"executing tjDecodeYUV()\x00"
-                                                                as *const u8
+                                                            
+                                                            b"executing tjDecodeYUV()\x00".as_ptr()
                                                                 as *const libc::c_char,
                                                             crate::jpeglib_h::JMSG_LENGTH_MAX
                                                                 as libc::c_ulong,
                                                         );
                                                         tjErrorCode = _tjErrorCode_1;
                                                         tjErrorLine = 204i32;
-                                                        crate::stdlib::printf(b"WARNING in line %d while %s:\n%s\n\x00"
-                                                                       as
-                                                                       *const u8
+                                                        crate::stdlib::printf(b"WARNING in line %d while %s:\n%s\n\x00".as_ptr()
                                                                        as
                                                                        *const libc::c_char,
                                                                    204i32,
-                                                                   b"executing tjDecodeYUV()\x00"
-                                                                       as
-                                                                       *const u8
+                                                                   
+                                                                   b"executing tjDecodeYUV()\x00".as_ptr()
                                                                        as
                                                                        *const libc::c_char,
                                                                    _tjErrorStr_1);
                                                     }
                                                 } else {
                                                     crate::stdlib::printf(
-                                                        b"%s in line %d while %s:\n%s\n\x00"
-                                                            as *const u8
+                                                        
+                                                        b"%s in line %d while %s:\n%s\n\x00".as_ptr()
                                                             as *const libc::c_char,
                                                         if _tjErrorCode_1
                                                             == crate::src::turbojpeg::TJERR_WARNING
                                                                 as libc::c_int
                                                         {
-                                                            b"WARNING\x00" as *const u8
+                                                            
+                                                            b"WARNING\x00".as_ptr()
                                                                 as *const libc::c_char
                                                         } else {
-                                                            b"ERROR\x00" as *const u8
+                                                            
+                                                            b"ERROR\x00".as_ptr()
                                                                 as *const libc::c_char
                                                         },
                                                         204i32,
-                                                        b"executing tjDecodeYUV()\x00" as *const u8
+                                                        
+                                                        b"executing tjDecodeYUV()\x00".as_ptr()
                                                             as *const libc::c_char,
                                                         _tjErrorStr_1,
                                                     );
@@ -816,8 +861,8 @@ pub unsafe extern "C" fn decomp(
                                                 ) != 0
                                                     || crate::stdlib::strncmp(
                                                         tjErrorMsg.as_mut_ptr(),
-                                                        b"executing tjDecompress2()\x00"
-                                                            as *const u8
+                                                        
+                                                        b"executing tjDecompress2()\x00".as_ptr()
                                                             as *const libc::c_char,
                                                         crate::jpeglib_h::JMSG_LENGTH_MAX
                                                             as libc::c_ulong,
@@ -833,8 +878,8 @@ pub unsafe extern "C" fn decomp(
                                                     );
                                                     crate::stdlib::strncpy(
                                                         tjErrorMsg.as_mut_ptr(),
-                                                        b"executing tjDecompress2()\x00"
-                                                            as *const u8
+                                                        
+                                                        b"executing tjDecompress2()\x00".as_ptr()
                                                             as *const libc::c_char,
                                                         crate::jpeglib_h::JMSG_LENGTH_MAX
                                                             as libc::c_ulong,
@@ -842,33 +887,36 @@ pub unsafe extern "C" fn decomp(
                                                     tjErrorCode = _tjErrorCode_2;
                                                     tjErrorLine = 209i32;
                                                     crate::stdlib::printf(
-                                                        b"WARNING in line %d while %s:\n%s\n\x00"
-                                                            as *const u8
+                                                        
+                                                        b"WARNING in line %d while %s:\n%s\n\x00".as_ptr()
                                                             as *const libc::c_char,
                                                         209i32,
-                                                        b"executing tjDecompress2()\x00"
-                                                            as *const u8
+                                                        
+                                                        b"executing tjDecompress2()\x00".as_ptr()
                                                             as *const libc::c_char,
                                                         _tjErrorStr_2,
                                                     );
                                                 }
                                             } else {
                                                 crate::stdlib::printf(
-                                                    b"%s in line %d while %s:\n%s\n\x00"
-                                                        as *const u8
+                                                    
+                                                    b"%s in line %d while %s:\n%s\n\x00".as_ptr()
                                                         as *const libc::c_char,
                                                     if _tjErrorCode_2
                                                         == crate::src::turbojpeg::TJERR_WARNING
                                                             as libc::c_int
                                                     {
-                                                        b"WARNING\x00" as *const u8
+                                                        
+                                                        b"WARNING\x00".as_ptr()
                                                             as *const libc::c_char
                                                     } else {
-                                                        b"ERROR\x00" as *const u8
+                                                        
+                                                        b"ERROR\x00".as_ptr()
                                                             as *const libc::c_char
                                                     },
                                                     209i32,
-                                                    b"executing tjDecompress2()\x00" as *const u8
+                                                    
+                                                    b"executing tjDecompress2()\x00".as_ptr()
                                                         as *const libc::c_char,
                                                     _tjErrorStr_2,
                                                 );
@@ -920,7 +968,8 @@ pub unsafe extern "C" fn decomp(
                                             ) != 0
                                                 || crate::stdlib::strncmp(
                                                     tjErrorMsg.as_mut_ptr(),
-                                                    b"executing tjDestroy()\x00" as *const u8
+                                                    
+                                                    b"executing tjDestroy()\x00".as_ptr()
                                                         as *const libc::c_char,
                                                     crate::jpeglib_h::JMSG_LENGTH_MAX
                                                         as libc::c_ulong,
@@ -936,7 +985,8 @@ pub unsafe extern "C" fn decomp(
                                                 );
                                                 crate::stdlib::strncpy(
                                                     tjErrorMsg.as_mut_ptr(),
-                                                    b"executing tjDestroy()\x00" as *const u8
+                                                    
+                                                    b"executing tjDestroy()\x00".as_ptr()
                                                         as *const libc::c_char,
                                                     crate::jpeglib_h::JMSG_LENGTH_MAX
                                                         as libc::c_ulong,
@@ -944,11 +994,12 @@ pub unsafe extern "C" fn decomp(
                                                 tjErrorCode = _tjErrorCode_3;
                                                 tjErrorLine = 223i32;
                                                 crate::stdlib::printf(
-                                                    b"WARNING in line %d while %s:\n%s\n\x00"
-                                                        as *const u8
+                                                    
+                                                    b"WARNING in line %d while %s:\n%s\n\x00".as_ptr()
                                                         as *const libc::c_char,
                                                     223i32,
-                                                    b"executing tjDestroy()\x00" as *const u8
+                                                    
+                                                    b"executing tjDestroy()\x00".as_ptr()
                                                         as *const libc::c_char,
                                                     _tjErrorStr_3,
                                                 );
@@ -956,19 +1007,23 @@ pub unsafe extern "C" fn decomp(
                                             current_block = 17917672080766325409;
                                         } else {
                                             crate::stdlib::printf(
-                                                b"%s in line %d while %s:\n%s\n\x00" as *const u8
+                                                
+                                                b"%s in line %d while %s:\n%s\n\x00".as_ptr()
                                                     as *const libc::c_char,
                                                 if _tjErrorCode_3
                                                     == crate::src::turbojpeg::TJERR_WARNING
                                                         as libc::c_int
                                                 {
-                                                    b"WARNING\x00" as *const u8
+                                                    
+                                                    b"WARNING\x00".as_ptr()
                                                         as *const libc::c_char
                                                 } else {
-                                                    b"ERROR\x00" as *const u8 as *const libc::c_char
+                                                    
+                                                    b"ERROR\x00".as_ptr() as *const libc::c_char
                                                 },
                                                 223i32,
-                                                b"executing tjDestroy()\x00" as *const u8
+                                                
+                                                b"executing tjDestroy()\x00".as_ptr()
                                                     as *const libc::c_char,
                                                 _tjErrorStr_3,
                                             );
@@ -984,7 +1039,8 @@ pub unsafe extern "C" fn decomp(
                                             handle = crate::stddef_h::NULL_0 as *mut libc::c_void;
                                             if quiet != 0 {
                                                 crate::stdlib::printf(
-                                                    b"%-6s%s\x00" as *const u8
+                                                    
+                                                    b"%-6s%s\x00".as_ptr()
                                                         as *const libc::c_char,
                                                     sigfig(
                                                         (w * h) as libc::c_double / 1000000.0f64
@@ -995,16 +1051,19 @@ pub unsafe extern "C" fn decomp(
                                                         1024i32,
                                                     ),
                                                     if quiet == 2i32 {
-                                                        b"\n\x00" as *const u8
+                                                        
+                                                        b"\n\x00".as_ptr()
                                                             as *const libc::c_char
                                                     } else {
-                                                        b"  \x00" as *const u8
+                                                        
+                                                        b"  \x00".as_ptr()
                                                             as *const libc::c_char
                                                     },
                                                 );
                                                 if doYUV != 0 {
                                                     crate::stdlib::printf(
-                                                        b"%s\n\x00" as *const u8
+                                                        
+                                                        b"%s\n\x00".as_ptr()
                                                             as *const libc::c_char,
                                                         sigfig(
                                                             (w * h) as libc::c_double
@@ -1018,26 +1077,28 @@ pub unsafe extern "C" fn decomp(
                                                     );
                                                 } else if quiet != 2i32 {
                                                     crate::stdlib::printf(
-                                                        b"\n\x00" as *const u8
+                                                        
+                                                        b"\n\x00".as_ptr()
                                                             as *const libc::c_char,
                                                     );
                                                 }
                                             } else {
                                                 crate::stdlib::printf(
-                                                    b"%s --> Frame rate:         %f fps\n\x00"
-                                                        as *const u8
+                                                    
+                                                    b"%s --> Frame rate:         %f fps\n\x00".as_ptr()
                                                         as *const libc::c_char,
                                                     if doYUV != 0 {
-                                                        b"Decomp to YUV\x00" as *const u8
+                                                        
+                                                        b"Decomp to YUV\x00".as_ptr()
                                                             as *const libc::c_char
                                                     } else {
-                                                        b"Decompress   \x00" as *const u8
+                                                        
+                                                        b"Decompress   \x00".as_ptr()
                                                             as *const libc::c_char
                                                     },
                                                     iter as libc::c_double / elapsed,
                                                 );
-                                                crate::stdlib::printf(b"                  Throughput:         %f Megapixels/sec\n\x00"
-                                                           as *const u8 as
+                                                crate::stdlib::printf(b"                  Throughput:         %f Megapixels/sec\n\x00".as_ptr() as
                                                            *const libc::c_char,
                                                        (w * h) as
                                                            libc::c_double /
@@ -1046,15 +1107,13 @@ pub unsafe extern "C" fn decomp(
                                                                libc::c_double
                                                            / elapsed);
                                                 if doYUV != 0 {
-                                                    crate::stdlib::printf(b"YUV Decode    --> Frame rate:         %f fps\n\x00"
-                                                               as *const u8 as
+                                                    crate::stdlib::printf(b"YUV Decode    --> Frame rate:         %f fps\n\x00".as_ptr() as
                                                                *const libc::c_char,
                                                            iter as
                                                                libc::c_double
                                                                /
                                                                elapsedDecode);
-                                                    crate::stdlib::printf(b"                  Throughput:         %f Megapixels/sec\n\x00"
-                                                               as *const u8 as
+                                                    crate::stdlib::printf(b"                  Throughput:         %f Megapixels/sec\n\x00".as_ptr() as
                                                                *const libc::c_char,
                                                            (w * h) as
                                                                libc::c_double
@@ -1071,7 +1130,8 @@ pub unsafe extern "C" fn decomp(
                                                     crate::stdlib::snprintf(
                                                         sizeStr.as_mut_ptr(),
                                                         20i32 as libc::c_ulong,
-                                                        b"%d_%d\x00" as *const u8
+                                                        
+                                                        b"%d_%d\x00".as_ptr()
                                                             as *const libc::c_char,
                                                         sf.num,
                                                         sf.denom,
@@ -1080,7 +1140,8 @@ pub unsafe extern "C" fn decomp(
                                                     crate::stdlib::snprintf(
                                                         sizeStr.as_mut_ptr(),
                                                         20i32 as libc::c_ulong,
-                                                        b"%dx%d\x00" as *const u8
+                                                        
+                                                        b"%dx%d\x00".as_ptr()
                                                             as *const libc::c_char,
                                                         tilew,
                                                         tileh,
@@ -1089,7 +1150,8 @@ pub unsafe extern "C" fn decomp(
                                                     crate::stdlib::snprintf(
                                                         sizeStr.as_mut_ptr(),
                                                         20i32 as libc::c_ulong,
-                                                        b"full\x00" as *const u8
+                                                        
+                                                        b"full\x00".as_ptr()
                                                             as *const libc::c_char,
                                                     );
                                                 }
@@ -1097,7 +1159,8 @@ pub unsafe extern "C" fn decomp(
                                                     crate::stdlib::snprintf(
                                                         tempStr.as_mut_ptr(),
                                                         1024i32 as libc::c_ulong,
-                                                        b"%s_%s.%s\x00" as *const u8
+                                                        
+                                                        b"%s_%s.%s\x00".as_ptr()
                                                             as *const libc::c_char,
                                                         fileName,
                                                         sizeStr.as_mut_ptr(),
@@ -1107,7 +1170,8 @@ pub unsafe extern "C" fn decomp(
                                                     crate::stdlib::snprintf(
                                                         tempStr.as_mut_ptr(),
                                                         1024i32 as libc::c_ulong,
-                                                        b"%s_%s%s_%s.%s\x00" as *const u8
+                                                        
+                                                        b"%s_%s%s_%s.%s\x00".as_ptr()
                                                             as *const libc::c_char,
                                                         fileName,
                                                         subName[subsamp as usize],
@@ -1127,11 +1191,12 @@ pub unsafe extern "C" fn decomp(
                                                 ) == -1i32
                                                 {
                                                     crate::stdlib::printf(
-                                                        b"ERROR in line %d while %s:\n%s\n\x00"
-                                                            as *const u8
+                                                        
+                                                        b"ERROR in line %d while %s:\n%s\n\x00".as_ptr()
                                                             as *const libc::c_char,
                                                         263i32,
-                                                        b"saving bitmap\x00" as *const u8
+                                                        
+                                                        b"saving bitmap\x00".as_ptr()
                                                             as *const libc::c_char,
                                                         crate::src::turbojpeg::tjGetErrorStr2(
                                                             crate::stddef_h::NULL_0
@@ -1152,7 +1217,8 @@ pub unsafe extern "C" fn decomp(
                                                             )
                                                                 as libc::c_long)
                                                             as libc::c_ulong,
-                                                        b"-err.%s\x00" as *const u8
+                                                        
+                                                        b"-err.%s\x00".as_ptr()
                                                             as *const libc::c_char,
                                                         ext,
                                                     );
@@ -1161,9 +1227,7 @@ pub unsafe extern "C" fn decomp(
                                                         && sf.denom == 1i32
                                                     {
                                                         if quiet == 0 {
-                                                            crate::stdlib::printf(b"Compression error written to %s.\n\x00"
-                                                                       as
-                                                                       *const u8
+                                                            crate::stdlib::printf(b"Compression error written to %s.\n\x00".as_ptr()
                                                                        as
                                                                        *const libc::c_char,
                                                                    tempStr.as_mut_ptr());
@@ -1295,15 +1359,12 @@ pub unsafe extern "C" fn decomp(
                                                             flags,
                                                         ) == -1i32
                                                         {
-                                                            crate::stdlib::printf(b"ERROR in line %d while %s:\n%s\n\x00"
-                                                                       as
-                                                                       *const u8
+                                                            crate::stdlib::printf(b"ERROR in line %d while %s:\n%s\n\x00".as_ptr()
                                                                        as
                                                                        *const libc::c_char,
                                                                    294i32,
-                                                                   b"saving bitmap\x00"
-                                                                       as
-                                                                       *const u8
+                                                                   
+                                                                   b"saving bitmap\x00".as_ptr()
                                                                        as
                                                                        *const libc::c_char,
                                                                    crate::src::turbojpeg::tjGetErrorStr2(crate::stddef_h::NULL_0
@@ -1379,21 +1440,26 @@ pub unsafe extern "C" fn fullTest(
     tmpBuf = crate::stdlib::malloc((pitch * h) as libc::c_ulong) as *mut libc::c_uchar;
     if tmpBuf.is_null() {
         crate::stdlib::printf(
-            b"ERROR in line %d while %s:\n%s\n\x00" as *const u8 as *const libc::c_char,
+            
+            b"ERROR in line %d while %s:\n%s\n\x00".as_ptr() as *const libc::c_char,
             323i32,
-            b"allocating temporary image buffer\x00" as *const u8 as *const libc::c_char,
+            
+            b"allocating temporary image buffer\x00".as_ptr() as *const libc::c_char,
             crate::stdlib::strerror(*crate::stdlib::__errno_location()),
         );
         retval = -1i32
     } else {
         if quiet == 0 {
             crate::stdlib::printf(
-                b">>>>>  %s (%s) <--> JPEG %s Q%d  <<<<<\n\x00" as *const u8 as *const libc::c_char,
+                
+                b">>>>>  %s (%s) <--> JPEG %s Q%d  <<<<<\n\x00".as_ptr() as *const libc::c_char,
                 pfStr,
                 if flags & crate::src::turbojpeg::TJFLAG_BOTTOMUP != 0 {
-                    b"Bottom-up\x00" as *const u8 as *const libc::c_char
+                    
+                    b"Bottom-up\x00".as_ptr() as *const libc::c_char
                 } else {
-                    b"Top-down\x00" as *const u8 as *const libc::c_char
+                    
+                    b"Top-down\x00".as_ptr() as *const libc::c_char
                 },
                 subNameLong[subsamp as usize],
                 jpegQual,
@@ -1417,9 +1483,11 @@ pub unsafe extern "C" fn fullTest(
             ) as *mut *mut libc::c_uchar;
             if jpegBuf.is_null() {
                 crate::stdlib::printf(
-                    b"ERROR in line %d while %s:\n%s\n\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"ERROR in line %d while %s:\n%s\n\x00".as_ptr() as *const libc::c_char,
                     339i32,
-                    b"allocating JPEG tile array\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"allocating JPEG tile array\x00".as_ptr() as *const libc::c_char,
                     crate::stdlib::strerror(*crate::stdlib::__errno_location()),
                 );
                 retval = -1i32;
@@ -1439,9 +1507,11 @@ pub unsafe extern "C" fn fullTest(
                 ) as *mut libc::c_ulong;
                 if jpegSize.is_null() {
                     crate::stdlib::printf(
-                        b"ERROR in line %d while %s:\n%s\n\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"ERROR in line %d while %s:\n%s\n\x00".as_ptr() as *const libc::c_char,
                         343i32,
-                        b"allocating JPEG size array\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"allocating JPEG size array\x00".as_ptr() as *const libc::c_char,
                         crate::stdlib::strerror(*crate::stdlib::__errno_location()),
                     );
                     retval = -1i32;
@@ -1464,10 +1534,12 @@ pub unsafe extern "C" fn fullTest(
                             );
                             if (*fresh0).is_null() {
                                 crate::stdlib::printf(
-                                    b"ERROR in line %d while %s:\n%s\n\x00" as *const u8
+                                    
+                                    b"ERROR in line %d while %s:\n%s\n\x00".as_ptr()
                                         as *const libc::c_char,
                                     350i32,
-                                    b"allocating JPEG tiles\x00" as *const u8
+                                    
+                                    b"allocating JPEG tiles\x00".as_ptr()
                                         as *const libc::c_char,
                                     crate::stdlib::strerror(*crate::stdlib::__errno_location()),
                                 );
@@ -1481,12 +1553,15 @@ pub unsafe extern "C" fn fullTest(
                     /* Compression test */
                     if quiet == 1i32 {
                         crate::stdlib::printf(
-                            b"%-4s (%s)  %-5s    %-3d   \x00" as *const u8 as *const libc::c_char,
+                            
+                            b"%-4s (%s)  %-5s    %-3d   \x00".as_ptr() as *const libc::c_char,
                             pfStr,
                             if flags & crate::src::turbojpeg::TJFLAG_BOTTOMUP != 0 {
-                                b"BU\x00" as *const u8 as *const libc::c_char
+                                
+                                b"BU\x00".as_ptr() as *const libc::c_char
                             } else {
-                                b"TD\x00" as *const u8 as *const libc::c_char
+                                
+                                b"TD\x00".as_ptr() as *const libc::c_char
                             },
                             subNameLong[subsamp as usize],
                             jpegQual,
@@ -1519,7 +1594,8 @@ pub unsafe extern "C" fn fullTest(
                             ) != 0
                                 || crate::stdlib::strncmp(
                                     tjErrorMsg.as_mut_ptr(),
-                                    b"executing tjInitCompress()\x00" as *const u8
+                                    
+                                    b"executing tjInitCompress()\x00".as_ptr()
                                         as *const libc::c_char,
                                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
                                 ) != 0
@@ -1533,34 +1609,41 @@ pub unsafe extern "C" fn fullTest(
                                 );
                                 crate::stdlib::strncpy(
                                     tjErrorMsg.as_mut_ptr(),
-                                    b"executing tjInitCompress()\x00" as *const u8
+                                    
+                                    b"executing tjInitCompress()\x00".as_ptr()
                                         as *const libc::c_char,
                                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
                                 );
                                 tjErrorCode = _tjErrorCode;
                                 tjErrorLine = 361i32;
                                 crate::stdlib::printf(
-                                    b"WARNING in line %d while %s:\n%s\n\x00" as *const u8
+                                    
+                                    b"WARNING in line %d while %s:\n%s\n\x00".as_ptr()
                                         as *const libc::c_char,
                                     361i32,
-                                    b"executing tjInitCompress()\x00" as *const u8
+                                    
+                                    b"executing tjInitCompress()\x00".as_ptr()
                                         as *const libc::c_char,
                                     _tjErrorStr,
                                 );
                             }
                         } else {
                             crate::stdlib::printf(
-                                b"%s in line %d while %s:\n%s\n\x00" as *const u8
+                                
+                                b"%s in line %d while %s:\n%s\n\x00".as_ptr()
                                     as *const libc::c_char,
                                 if _tjErrorCode
                                     == crate::src::turbojpeg::TJERR_WARNING as libc::c_int
                                 {
-                                    b"WARNING\x00" as *const u8 as *const libc::c_char
+                                    
+                                    b"WARNING\x00".as_ptr() as *const libc::c_char
                                 } else {
-                                    b"ERROR\x00" as *const u8 as *const libc::c_char
+                                    
+                                    b"ERROR\x00".as_ptr() as *const libc::c_char
                                 },
                                 361i32,
-                                b"executing tjInitCompress()\x00" as *const u8
+                                
+                                b"executing tjInitCompress()\x00".as_ptr()
                                     as *const libc::c_char,
                                 _tjErrorStr,
                             );
@@ -1576,10 +1659,12 @@ pub unsafe extern "C" fn fullTest(
                             crate::stdlib::malloc(yuvSize as libc::c_ulong) as *mut libc::c_uchar;
                         if yuvBuf.is_null() {
                             crate::stdlib::printf(
-                                b"ERROR in line %d while %s:\n%s\n\x00" as *const u8
+                                
+                                b"ERROR in line %d while %s:\n%s\n\x00".as_ptr()
                                     as *const libc::c_char,
                                 366i32,
-                                b"allocating YUV buffer\x00" as *const u8 as *const libc::c_char,
+                                
+                                b"allocating YUV buffer\x00".as_ptr() as *const libc::c_char,
                                 crate::stdlib::strerror(*crate::stdlib::__errno_location()),
                             );
                             retval = -1i32;
@@ -1640,7 +1725,8 @@ pub unsafe extern "C" fn fullTest(
                                             ) != 0
                                                 || crate::stdlib::strncmp(
                                                     tjErrorMsg.as_mut_ptr(),
-                                                    b"executing tjEncodeYUV3()\x00" as *const u8
+                                                    
+                                                    b"executing tjEncodeYUV3()\x00".as_ptr()
                                                         as *const libc::c_char,
                                                     crate::jpeglib_h::JMSG_LENGTH_MAX
                                                         as libc::c_ulong,
@@ -1656,7 +1742,8 @@ pub unsafe extern "C" fn fullTest(
                                                 );
                                                 crate::stdlib::strncpy(
                                                     tjErrorMsg.as_mut_ptr(),
-                                                    b"executing tjEncodeYUV3()\x00" as *const u8
+                                                    
+                                                    b"executing tjEncodeYUV3()\x00".as_ptr()
                                                         as *const libc::c_char,
                                                     crate::jpeglib_h::JMSG_LENGTH_MAX
                                                         as libc::c_ulong,
@@ -1664,30 +1751,35 @@ pub unsafe extern "C" fn fullTest(
                                                 tjErrorCode = _tjErrorCode_0;
                                                 tjErrorLine = 390i32;
                                                 crate::stdlib::printf(
-                                                    b"WARNING in line %d while %s:\n%s\n\x00"
-                                                        as *const u8
+                                                    
+                                                    b"WARNING in line %d while %s:\n%s\n\x00".as_ptr()
                                                         as *const libc::c_char,
                                                     390i32,
-                                                    b"executing tjEncodeYUV3()\x00" as *const u8
+                                                    
+                                                    b"executing tjEncodeYUV3()\x00".as_ptr()
                                                         as *const libc::c_char,
                                                     _tjErrorStr_0,
                                                 );
                                             }
                                         } else {
                                             crate::stdlib::printf(
-                                                b"%s in line %d while %s:\n%s\n\x00" as *const u8
+                                                
+                                                b"%s in line %d while %s:\n%s\n\x00".as_ptr()
                                                     as *const libc::c_char,
                                                 if _tjErrorCode_0
                                                     == crate::src::turbojpeg::TJERR_WARNING
                                                         as libc::c_int
                                                 {
-                                                    b"WARNING\x00" as *const u8
+                                                    
+                                                    b"WARNING\x00".as_ptr()
                                                         as *const libc::c_char
                                                 } else {
-                                                    b"ERROR\x00" as *const u8 as *const libc::c_char
+                                                    
+                                                    b"ERROR\x00".as_ptr() as *const libc::c_char
                                                 },
                                                 390i32,
-                                                b"executing tjEncodeYUV3()\x00" as *const u8
+                                                
+                                                b"executing tjEncodeYUV3()\x00".as_ptr()
                                                     as *const libc::c_char,
                                                 _tjErrorStr_0,
                                             );
@@ -1727,8 +1819,8 @@ pub unsafe extern "C" fn fullTest(
                                             ) != 0
                                                 || crate::stdlib::strncmp(
                                                     tjErrorMsg.as_mut_ptr(),
-                                                    b"executing tjCompressFromYUV()\x00"
-                                                        as *const u8
+                                                    
+                                                    b"executing tjCompressFromYUV()\x00".as_ptr()
                                                         as *const libc::c_char,
                                                     crate::jpeglib_h::JMSG_LENGTH_MAX
                                                         as libc::c_ulong,
@@ -1744,8 +1836,8 @@ pub unsafe extern "C" fn fullTest(
                                                 );
                                                 crate::stdlib::strncpy(
                                                     tjErrorMsg.as_mut_ptr(),
-                                                    b"executing tjCompressFromYUV()\x00"
-                                                        as *const u8
+                                                    
+                                                    b"executing tjCompressFromYUV()\x00".as_ptr()
                                                         as *const libc::c_char,
                                                     crate::jpeglib_h::JMSG_LENGTH_MAX
                                                         as libc::c_ulong,
@@ -1753,31 +1845,35 @@ pub unsafe extern "C" fn fullTest(
                                                 tjErrorCode = _tjErrorCode_1;
                                                 tjErrorLine = 395i32;
                                                 crate::stdlib::printf(
-                                                    b"WARNING in line %d while %s:\n%s\n\x00"
-                                                        as *const u8
+                                                    
+                                                    b"WARNING in line %d while %s:\n%s\n\x00".as_ptr()
                                                         as *const libc::c_char,
                                                     395i32,
-                                                    b"executing tjCompressFromYUV()\x00"
-                                                        as *const u8
+                                                    
+                                                    b"executing tjCompressFromYUV()\x00".as_ptr()
                                                         as *const libc::c_char,
                                                     _tjErrorStr_1,
                                                 );
                                             }
                                         } else {
                                             crate::stdlib::printf(
-                                                b"%s in line %d while %s:\n%s\n\x00" as *const u8
+                                                
+                                                b"%s in line %d while %s:\n%s\n\x00".as_ptr()
                                                     as *const libc::c_char,
                                                 if _tjErrorCode_1
                                                     == crate::src::turbojpeg::TJERR_WARNING
                                                         as libc::c_int
                                                 {
-                                                    b"WARNING\x00" as *const u8
+                                                    
+                                                    b"WARNING\x00".as_ptr()
                                                         as *const libc::c_char
                                                 } else {
-                                                    b"ERROR\x00" as *const u8 as *const libc::c_char
+                                                    
+                                                    b"ERROR\x00".as_ptr() as *const libc::c_char
                                                 },
                                                 395i32,
-                                                b"executing tjCompressFromYUV()\x00" as *const u8
+                                                
+                                                b"executing tjCompressFromYUV()\x00".as_ptr()
                                                     as *const libc::c_char,
                                                 _tjErrorStr_1,
                                             );
@@ -1814,7 +1910,8 @@ pub unsafe extern "C" fn fullTest(
                                         ) != 0
                                             || crate::stdlib::strncmp(
                                                 tjErrorMsg.as_mut_ptr(),
-                                                b"executing tjCompress2()\x00" as *const u8
+                                                
+                                                b"executing tjCompress2()\x00".as_ptr()
                                                     as *const libc::c_char,
                                                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
                                             ) != 0
@@ -1828,36 +1925,42 @@ pub unsafe extern "C" fn fullTest(
                                             );
                                             crate::stdlib::strncpy(
                                                 tjErrorMsg.as_mut_ptr(),
-                                                b"executing tjCompress2()\x00" as *const u8
+                                                
+                                                b"executing tjCompress2()\x00".as_ptr()
                                                     as *const libc::c_char,
                                                 crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
                                             );
                                             tjErrorCode = _tjErrorCode_2;
                                             tjErrorLine = 400i32;
                                             crate::stdlib::printf(
-                                                b"WARNING in line %d while %s:\n%s\n\x00"
-                                                    as *const u8
+                                                
+                                                b"WARNING in line %d while %s:\n%s\n\x00".as_ptr()
                                                     as *const libc::c_char,
                                                 400i32,
-                                                b"executing tjCompress2()\x00" as *const u8
+                                                
+                                                b"executing tjCompress2()\x00".as_ptr()
                                                     as *const libc::c_char,
                                                 _tjErrorStr_2,
                                             );
                                         }
                                     } else {
                                         crate::stdlib::printf(
-                                            b"%s in line %d while %s:\n%s\n\x00" as *const u8
+                                            
+                                            b"%s in line %d while %s:\n%s\n\x00".as_ptr()
                                                 as *const libc::c_char,
                                             if _tjErrorCode_2
                                                 == crate::src::turbojpeg::TJERR_WARNING
                                                     as libc::c_int
                                             {
-                                                b"WARNING\x00" as *const u8 as *const libc::c_char
+                                                
+                                                b"WARNING\x00".as_ptr() as *const libc::c_char
                                             } else {
-                                                b"ERROR\x00" as *const u8 as *const libc::c_char
+                                                
+                                                b"ERROR\x00".as_ptr() as *const libc::c_char
                                             },
                                             400i32,
-                                            b"executing tjCompress2()\x00" as *const u8
+                                            
+                                            b"executing tjCompress2()\x00".as_ptr()
                                                 as *const libc::c_char,
                                             _tjErrorStr_2,
                                         );
@@ -1906,7 +2009,8 @@ pub unsafe extern "C" fn fullTest(
                             ) != 0
                                 || crate::stdlib::strncmp(
                                     tjErrorMsg.as_mut_ptr(),
-                                    b"executing tjDestroy()\x00" as *const u8
+                                    
+                                    b"executing tjDestroy()\x00".as_ptr()
                                         as *const libc::c_char,
                                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
                                 ) != 0
@@ -1920,34 +2024,41 @@ pub unsafe extern "C" fn fullTest(
                                 );
                                 crate::stdlib::strncpy(
                                     tjErrorMsg.as_mut_ptr(),
-                                    b"executing tjDestroy()\x00" as *const u8
+                                    
+                                    b"executing tjDestroy()\x00".as_ptr()
                                         as *const libc::c_char,
                                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
                                 );
                                 tjErrorCode = _tjErrorCode_3;
                                 tjErrorLine = 416i32;
                                 crate::stdlib::printf(
-                                    b"WARNING in line %d while %s:\n%s\n\x00" as *const u8
+                                    
+                                    b"WARNING in line %d while %s:\n%s\n\x00".as_ptr()
                                         as *const libc::c_char,
                                     416i32,
-                                    b"executing tjDestroy()\x00" as *const u8
+                                    
+                                    b"executing tjDestroy()\x00".as_ptr()
                                         as *const libc::c_char,
                                     _tjErrorStr_3,
                                 );
                             }
                         } else {
                             crate::stdlib::printf(
-                                b"%s in line %d while %s:\n%s\n\x00" as *const u8
+                                
+                                b"%s in line %d while %s:\n%s\n\x00".as_ptr()
                                     as *const libc::c_char,
                                 if _tjErrorCode_3
                                     == crate::src::turbojpeg::TJERR_WARNING as libc::c_int
                                 {
-                                    b"WARNING\x00" as *const u8 as *const libc::c_char
+                                    
+                                    b"WARNING\x00".as_ptr() as *const libc::c_char
                                 } else {
-                                    b"ERROR\x00" as *const u8 as *const libc::c_char
+                                    
+                                    b"ERROR\x00".as_ptr() as *const libc::c_char
                                 },
                                 416i32,
-                                b"executing tjDestroy()\x00" as *const u8 as *const libc::c_char,
+                                
+                                b"executing tjDestroy()\x00".as_ptr() as *const libc::c_char,
                                 _tjErrorStr_3,
                             );
                             retval = -1i32;
@@ -1957,7 +2068,8 @@ pub unsafe extern "C" fn fullTest(
                     handle = crate::stddef_h::NULL_0 as *mut libc::c_void;
                     if quiet == 1i32 {
                         crate::stdlib::printf(
-                            b"%-5d  %-5d   \x00" as *const u8 as *const libc::c_char,
+                            
+                            b"%-5d  %-5d   \x00".as_ptr() as *const libc::c_char,
                             tilew,
                             tileh,
                         );
@@ -1965,7 +2077,8 @@ pub unsafe extern "C" fn fullTest(
                     if quiet != 0 {
                         if doYUV != 0 {
                             crate::stdlib::printf(
-                                b"%-6s%s\x00" as *const u8 as *const libc::c_char,
+                                
+                                b"%-6s%s\x00".as_ptr() as *const libc::c_char,
                                 sigfig(
                                     (w * h) as libc::c_double / 1000000.0f64
                                         * iter as libc::c_double
@@ -1975,14 +2088,17 @@ pub unsafe extern "C" fn fullTest(
                                     1024i32,
                                 ),
                                 if quiet == 2i32 {
-                                    b"\n\x00" as *const u8 as *const libc::c_char
+                                    
+                                    b"\n\x00".as_ptr() as *const libc::c_char
                                 } else {
-                                    b"  \x00" as *const u8 as *const libc::c_char
+                                    
+                                    b"  \x00".as_ptr() as *const libc::c_char
                                 },
                             );
                         }
                         crate::stdlib::printf(
-                            b"%-6s%s\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"%-6s%s\x00".as_ptr() as *const libc::c_char,
                             sigfig(
                                 (w * h) as libc::c_double / 1000000.0f64 * iter as libc::c_double
                                     / elapsed,
@@ -1991,13 +2107,16 @@ pub unsafe extern "C" fn fullTest(
                                 1024i32,
                             ),
                             if quiet == 2i32 {
-                                b"\n\x00" as *const u8 as *const libc::c_char
+                                
+                                b"\n\x00".as_ptr() as *const libc::c_char
                             } else {
-                                b"  \x00" as *const u8 as *const libc::c_char
+                                
+                                b"  \x00".as_ptr() as *const libc::c_char
                             },
                         );
                         crate::stdlib::printf(
-                            b"%-6s%s\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"%-6s%s\x00".as_ptr() as *const libc::c_char,
                             sigfig(
                                 (w * h * ps) as libc::c_double / totalJpegSize as libc::c_double,
                                 4i32,
@@ -2005,48 +2124,56 @@ pub unsafe extern "C" fn fullTest(
                                 80i32,
                             ),
                             if quiet == 2i32 {
-                                b"\n\x00" as *const u8 as *const libc::c_char
+                                
+                                b"\n\x00".as_ptr() as *const libc::c_char
                             } else {
-                                b"  \x00" as *const u8 as *const libc::c_char
+                                
+                                b"  \x00".as_ptr() as *const libc::c_char
                             },
                         );
                     } else {
                         crate::stdlib::printf(
-                            b"\n%s size: %d x %d\n\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"\n%s size: %d x %d\n\x00".as_ptr() as *const libc::c_char,
                             if doTile != 0 {
-                                b"Tile\x00" as *const u8 as *const libc::c_char
+                                
+                                b"Tile\x00".as_ptr() as *const libc::c_char
                             } else {
-                                b"Image\x00" as *const u8 as *const libc::c_char
+                                
+                                b"Image\x00".as_ptr() as *const libc::c_char
                             },
                             tilew,
                             tileh,
                         );
                         if doYUV != 0 {
                             crate::stdlib::printf(
-                                b"Encode YUV    --> Frame rate:         %f fps\n\x00" as *const u8
+                                
+                                b"Encode YUV    --> Frame rate:         %f fps\n\x00".as_ptr()
                                     as *const libc::c_char,
                                 iter as libc::c_double / elapsedEncode,
                             );
                             crate::stdlib::printf(
-                                b"                  Output image size:  %d bytes\n\x00" as *const u8
+                                
+                                b"                  Output image size:  %d bytes\n\x00".as_ptr()
                                     as *const libc::c_char,
                                 yuvSize,
                             );
                             crate::stdlib::printf(
-                                b"                  Compression ratio:  %f:1\n\x00" as *const u8
+                                
+                                b"                  Compression ratio:  %f:1\n\x00".as_ptr()
                                     as *const libc::c_char,
                                 (w * h * ps) as libc::c_double / yuvSize as libc::c_double,
                             );
                             crate::stdlib::printf(
-                                b"                  Throughput:         %f Megapixels/sec\n\x00"
-                                    as *const u8
+                                
+                                b"                  Throughput:         %f Megapixels/sec\n\x00".as_ptr()
                                     as *const libc::c_char,
                                 (w * h) as libc::c_double / 1000000.0f64 * iter as libc::c_double
                                     / elapsedEncode,
                             );
                             crate::stdlib::printf(
-                                b"                  Output bit stream:  %f Megabits/sec\n\x00"
-                                    as *const u8
+                                
+                                b"                  Output bit stream:  %f Megabits/sec\n\x00".as_ptr()
                                     as *const libc::c_char,
                                 yuvSize as libc::c_double * 8.0f64 / 1000000.0f64
                                     * iter as libc::c_double
@@ -2054,34 +2181,39 @@ pub unsafe extern "C" fn fullTest(
                             );
                         }
                         crate::stdlib::printf(
-                            b"%s --> Frame rate:         %f fps\n\x00" as *const u8
+                            
+                            b"%s --> Frame rate:         %f fps\n\x00".as_ptr()
                                 as *const libc::c_char,
                             if doYUV != 0 {
-                                b"Comp from YUV\x00" as *const u8 as *const libc::c_char
+                                
+                                b"Comp from YUV\x00".as_ptr() as *const libc::c_char
                             } else {
-                                b"Compress     \x00" as *const u8 as *const libc::c_char
+                                
+                                b"Compress     \x00".as_ptr() as *const libc::c_char
                             },
                             iter as libc::c_double / elapsed,
                         );
                         crate::stdlib::printf(
-                            b"                  Output image size:  %d bytes\n\x00" as *const u8
+                            
+                            b"                  Output image size:  %d bytes\n\x00".as_ptr()
                                 as *const libc::c_char,
                             totalJpegSize,
                         );
                         crate::stdlib::printf(
-                            b"                  Compression ratio:  %f:1\n\x00" as *const u8
+                            
+                            b"                  Compression ratio:  %f:1\n\x00".as_ptr()
                                 as *const libc::c_char,
                             (w * h * ps) as libc::c_double / totalJpegSize as libc::c_double,
                         );
                         crate::stdlib::printf(
-                            b"                  Throughput:         %f Megapixels/sec\n\x00"
-                                as *const u8 as *const libc::c_char,
+                            
+                            b"                  Throughput:         %f Megapixels/sec\n\x00".as_ptr() as *const libc::c_char,
                             (w * h) as libc::c_double / 1000000.0f64 * iter as libc::c_double
                                 / elapsed,
                         );
                         crate::stdlib::printf(
-                            b"                  Output bit stream:  %f Megabits/sec\n\x00"
-                                as *const u8 as *const libc::c_char,
+                            
+                            b"                  Output bit stream:  %f Megabits/sec\n\x00".as_ptr() as *const libc::c_char,
                             totalJpegSize as libc::c_double * 8.0f64 / 1000000.0f64
                                 * iter as libc::c_double
                                 / elapsed,
@@ -2091,21 +2223,25 @@ pub unsafe extern "C" fn fullTest(
                         crate::stdlib::snprintf(
                             tempStr.as_mut_ptr(),
                             1024i32 as libc::c_ulong,
-                            b"%s_%s_Q%d.jpg\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"%s_%s_Q%d.jpg\x00".as_ptr() as *const libc::c_char,
                             fileName,
                             subName[subsamp as usize],
                             jpegQual,
                         );
                         file = crate::stdlib::fopen(
                             tempStr.as_mut_ptr(),
-                            b"wb\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"wb\x00".as_ptr() as *const libc::c_char,
                         );
                         if file.is_null() {
                             crate::stdlib::printf(
-                                b"ERROR in line %d while %s:\n%s\n\x00" as *const u8
+                                
+                                b"ERROR in line %d while %s:\n%s\n\x00".as_ptr()
                                     as *const libc::c_char,
                                 463i32,
-                                b"opening reference image\x00" as *const u8 as *const libc::c_char,
+                                
+                                b"opening reference image\x00".as_ptr() as *const libc::c_char,
                                 crate::stdlib::strerror(*crate::stdlib::__errno_location()),
                             );
                             retval = -1i32;
@@ -2118,10 +2254,12 @@ pub unsafe extern "C" fn fullTest(
                         ) != 1i32 as libc::c_ulong
                         {
                             crate::stdlib::printf(
-                                b"ERROR in line %d while %s:\n%s\n\x00" as *const u8
+                                
+                                b"ERROR in line %d while %s:\n%s\n\x00".as_ptr()
                                     as *const libc::c_char,
                                 465i32,
-                                b"writing reference image\x00" as *const u8 as *const libc::c_char,
+                                
+                                b"writing reference image\x00".as_ptr() as *const libc::c_char,
                                 crate::stdlib::strerror(*crate::stdlib::__errno_location()),
                             );
                             retval = -1i32;
@@ -2131,7 +2269,8 @@ pub unsafe extern "C" fn fullTest(
                             file = crate::stddef_h::NULL_0 as *mut crate::stdlib::FILE;
                             if quiet == 0 {
                                 crate::stdlib::printf(
-                                    b"Reference image written to %s\n\x00" as *const u8
+                                    
+                                    b"Reference image written to %s\n\x00".as_ptr()
                                         as *const libc::c_char,
                                     tempStr.as_mut_ptr(),
                                 );
@@ -2252,12 +2391,14 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
     let mut tntilesw: libc::c_int = 0;
     let mut tntilesh: libc::c_int = 0;
     let mut tsubsamp: libc::c_int = 0;
-    file = crate::stdlib::fopen(fileName, b"rb\x00" as *const u8 as *const libc::c_char);
+    file = crate::stdlib::fopen(fileName,  b"rb\x00".as_ptr() as *const libc::c_char);
     if file.is_null() {
         crate::stdlib::printf(
-            b"ERROR in line %d while %s:\n%s\n\x00" as *const u8 as *const libc::c_char,
+            
+            b"ERROR in line %d while %s:\n%s\n\x00".as_ptr() as *const libc::c_char,
             524i32,
-            b"opening file\x00" as *const u8 as *const libc::c_char,
+            
+            b"opening file\x00".as_ptr() as *const libc::c_char,
             crate::stdlib::strerror(*crate::stdlib::__errno_location()),
         );
         retval = -1i32
@@ -2266,9 +2407,11 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
         (srcSize) == -1i32 as libc::c_ulong
     } {
         crate::stdlib::printf(
-            b"ERROR in line %d while %s:\n%s\n\x00" as *const u8 as *const libc::c_char,
+            
+            b"ERROR in line %d while %s:\n%s\n\x00".as_ptr() as *const libc::c_char,
             527i32,
-            b"determining file size\x00" as *const u8 as *const libc::c_char,
+            
+            b"determining file size\x00".as_ptr() as *const libc::c_char,
             crate::stdlib::strerror(*crate::stdlib::__errno_location()),
         );
         retval = -1i32
@@ -2276,17 +2419,21 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
         srcBuf = crate::stdlib::malloc(srcSize) as *mut libc::c_uchar;
         if srcBuf.is_null() {
             crate::stdlib::printf(
-                b"ERROR in line %d while %s:\n%s\n\x00" as *const u8 as *const libc::c_char,
+                
+                b"ERROR in line %d while %s:\n%s\n\x00".as_ptr() as *const libc::c_char,
                 529i32,
-                b"allocating memory\x00" as *const u8 as *const libc::c_char,
+                
+                b"allocating memory\x00".as_ptr() as *const libc::c_char,
                 crate::stdlib::strerror(*crate::stdlib::__errno_location()),
             );
             retval = -1i32
         } else if crate::stdlib::fseek(file, 0i32 as libc::c_long, crate::stdlib::SEEK_SET) < 0i32 {
             crate::stdlib::printf(
-                b"ERROR in line %d while %s:\n%s\n\x00" as *const u8 as *const libc::c_char,
+                
+                b"ERROR in line %d while %s:\n%s\n\x00".as_ptr() as *const libc::c_char,
                 531i32,
-                b"setting file position\x00" as *const u8 as *const libc::c_char,
+                
+                b"setting file position\x00".as_ptr() as *const libc::c_char,
                 crate::stdlib::strerror(*crate::stdlib::__errno_location()),
             );
             retval = -1i32
@@ -2298,9 +2445,11 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
         ) < 1i32 as libc::c_ulong
         {
             crate::stdlib::printf(
-                b"ERROR in line %d while %s:\n%s\n\x00" as *const u8 as *const libc::c_char,
+                
+                b"ERROR in line %d while %s:\n%s\n\x00".as_ptr() as *const libc::c_char,
                 533i32,
-                b"reading JPEG data\x00" as *const u8 as *const libc::c_char,
+                
+                b"reading JPEG data\x00".as_ptr() as *const libc::c_char,
                 crate::stdlib::strerror(*crate::stdlib::__errno_location()),
             );
             retval = -1i32
@@ -2326,7 +2475,8 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                     ) != 0
                         || crate::stdlib::strncmp(
                             tjErrorMsg.as_mut_ptr(),
-                            b"executing tjInitTransform()\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"executing tjInitTransform()\x00".as_ptr() as *const libc::c_char,
                             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
                         ) != 0
                         || tjErrorCode != _tjErrorCode
@@ -2339,30 +2489,37 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                         );
                         crate::stdlib::strncpy(
                             tjErrorMsg.as_mut_ptr(),
-                            b"executing tjInitTransform()\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"executing tjInitTransform()\x00".as_ptr() as *const libc::c_char,
                             crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
                         );
                         tjErrorCode = _tjErrorCode;
                         tjErrorLine = 540i32;
                         crate::stdlib::printf(
-                            b"WARNING in line %d while %s:\n%s\n\x00" as *const u8
+                            
+                            b"WARNING in line %d while %s:\n%s\n\x00".as_ptr()
                                 as *const libc::c_char,
                             540i32,
-                            b"executing tjInitTransform()\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"executing tjInitTransform()\x00".as_ptr() as *const libc::c_char,
                             _tjErrorStr,
                         );
                     }
                     current_block = 9441801433784995173;
                 } else {
                     crate::stdlib::printf(
-                        b"%s in line %d while %s:\n%s\n\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"%s in line %d while %s:\n%s\n\x00".as_ptr() as *const libc::c_char,
                         if _tjErrorCode == crate::src::turbojpeg::TJERR_WARNING as libc::c_int {
-                            b"WARNING\x00" as *const u8 as *const libc::c_char
+                            
+                            b"WARNING\x00".as_ptr() as *const libc::c_char
                         } else {
-                            b"ERROR\x00" as *const u8 as *const libc::c_char
+                            
+                            b"ERROR\x00".as_ptr() as *const libc::c_char
                         },
                         540i32,
-                        b"executing tjInitTransform()\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"executing tjInitTransform()\x00".as_ptr() as *const libc::c_char,
                         _tjErrorStr,
                     );
                     retval = -1i32;
@@ -2398,7 +2555,8 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                             ) != 0
                                 || crate::stdlib::strncmp(
                                     tjErrorMsg.as_mut_ptr(),
-                                    b"executing tjDecompressHeader3()\x00" as *const u8
+                                    
+                                    b"executing tjDecompressHeader3()\x00".as_ptr()
                                         as *const libc::c_char,
                                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
                                 ) != 0
@@ -2412,17 +2570,20 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                 );
                                 crate::stdlib::strncpy(
                                     tjErrorMsg.as_mut_ptr(),
-                                    b"executing tjDecompressHeader3()\x00" as *const u8
+                                    
+                                    b"executing tjDecompressHeader3()\x00".as_ptr()
                                         as *const libc::c_char,
                                     crate::jpeglib_h::JMSG_LENGTH_MAX as libc::c_ulong,
                                 );
                                 tjErrorCode = _tjErrorCode_0;
                                 tjErrorLine = 543i32;
                                 crate::stdlib::printf(
-                                    b"WARNING in line %d while %s:\n%s\n\x00" as *const u8
+                                    
+                                    b"WARNING in line %d while %s:\n%s\n\x00".as_ptr()
                                         as *const libc::c_char,
                                     543i32,
-                                    b"executing tjDecompressHeader3()\x00" as *const u8
+                                    
+                                    b"executing tjDecompressHeader3()\x00".as_ptr()
                                         as *const libc::c_char,
                                     _tjErrorStr_0,
                                 );
@@ -2430,17 +2591,21 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                             current_block = 168769493162332264;
                         } else {
                             crate::stdlib::printf(
-                                b"%s in line %d while %s:\n%s\n\x00" as *const u8
+                                
+                                b"%s in line %d while %s:\n%s\n\x00".as_ptr()
                                     as *const libc::c_char,
                                 if _tjErrorCode_0
                                     == crate::src::turbojpeg::TJERR_WARNING as libc::c_int
                                 {
-                                    b"WARNING\x00" as *const u8 as *const libc::c_char
+                                    
+                                    b"WARNING\x00".as_ptr() as *const libc::c_char
                                 } else {
-                                    b"ERROR\x00" as *const u8 as *const libc::c_char
+                                    
+                                    b"ERROR\x00".as_ptr() as *const libc::c_char
                                 },
                                 543i32,
-                                b"executing tjDecompressHeader3()\x00" as *const u8
+                                
+                                b"executing tjDecompressHeader3()\x00".as_ptr()
                                     as *const libc::c_char,
                                 _tjErrorStr_0,
                             );
@@ -2461,55 +2626,65 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                             }
                             if quiet == 1i32 {
                                 crate::stdlib::printf(
-                                    b"All performance values in Mpixels/sec\n\n\x00" as *const u8
+                                    
+                                    b"All performance values in Mpixels/sec\n\n\x00".as_ptr()
                                         as *const libc::c_char,
                                 );
-                                crate::stdlib::printf(b"Bitmap     JPEG   JPEG     %s  %s   Xform   Comp    Decomp  \x00"
-                                           as *const u8 as
+                                crate::stdlib::printf(b"Bitmap     JPEG   JPEG     %s  %s   Xform   Comp    Decomp  \x00".as_ptr() as
                                            *const libc::c_char,
                                        if doTile != 0 {
-                                           b"Tile \x00" as *const u8 as
+                                           
+                                           b"Tile \x00".as_ptr() as
                                                *const libc::c_char
                                        } else {
-                                           b"Image\x00" as *const u8 as
+                                           
+                                           b"Image\x00".as_ptr() as
                                                *const libc::c_char
                                        },
                                        if doTile != 0 {
-                                           b"Tile \x00" as *const u8 as
+                                           
+                                           b"Tile \x00".as_ptr() as
                                                *const libc::c_char
                                        } else {
-                                           b"Image\x00" as *const u8 as
+                                           
+                                           b"Image\x00".as_ptr() as
                                                *const libc::c_char
                                        });
                                 if doYUV != 0 {
                                     crate::stdlib::printf(
-                                        b"Decode\x00" as *const u8 as *const libc::c_char,
+                                        
+                                        b"Decode\x00".as_ptr() as *const libc::c_char,
                                     );
                                 }
                                 crate::stdlib::printf(
-                                    b"\n\x00" as *const u8 as *const libc::c_char,
+                                    
+                                    b"\n\x00".as_ptr() as *const libc::c_char,
                                 );
-                                crate::stdlib::printf(b"Format     CS     Subsamp  Width  Height  Perf    Ratio   Perf    \x00"
-                                           as *const u8 as
+                                crate::stdlib::printf(b"Format     CS     Subsamp  Width  Height  Perf    Ratio   Perf    \x00".as_ptr() as
                                            *const libc::c_char);
                                 if doYUV != 0 {
                                     crate::stdlib::printf(
-                                        b"Perf\x00" as *const u8 as *const libc::c_char,
+                                        
+                                        b"Perf\x00".as_ptr() as *const libc::c_char,
                                     );
                                 }
                                 crate::stdlib::printf(
-                                    b"\n\n\x00" as *const u8 as *const libc::c_char,
+                                    
+                                    b"\n\n\x00".as_ptr() as *const libc::c_char,
                                 );
                             } else if quiet == 0 {
                                 crate::stdlib::printf(
-                                    b">>>>>  JPEG %s --> %s (%s)  <<<<<\n\x00" as *const u8
+                                    
+                                    b">>>>>  JPEG %s --> %s (%s)  <<<<<\n\x00".as_ptr()
                                         as *const libc::c_char,
                                     formatName(subsamp, cs, tempStr.as_mut_ptr()),
                                     pixFormatStr[pf as usize],
                                     if flags & crate::src::turbojpeg::TJFLAG_BOTTOMUP != 0 {
-                                        b"Bottom-up\x00" as *const u8 as *const libc::c_char
+                                        
+                                        b"Bottom-up\x00".as_ptr() as *const libc::c_char
                                     } else {
-                                        b"Top-down\x00" as *const u8 as *const libc::c_char
+                                        
+                                        b"Top-down\x00".as_ptr() as *const libc::c_char
                                     },
                                 );
                             }
@@ -2532,10 +2707,12 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                     as *mut *mut libc::c_uchar;
                                 if jpegBuf.is_null() {
                                     crate::stdlib::printf(
-                                        b"ERROR in line %d while %s:\n%s\n\x00" as *const u8
+                                        
+                                        b"ERROR in line %d while %s:\n%s\n\x00".as_ptr()
                                             as *const libc::c_char,
                                         571i32,
-                                        b"allocating JPEG tile array\x00" as *const u8
+                                        
+                                        b"allocating JPEG tile array\x00".as_ptr()
                                             as *const libc::c_char,
                                         crate::stdlib::strerror(*crate::stdlib::__errno_location()),
                                     );
@@ -2558,10 +2735,12 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                         as *mut libc::c_ulong;
                                     if jpegSize.is_null() {
                                         crate::stdlib::printf(
-                                            b"ERROR in line %d while %s:\n%s\n\x00" as *const u8
+                                            
+                                            b"ERROR in line %d while %s:\n%s\n\x00".as_ptr()
                                                 as *const libc::c_char,
                                             575i32,
-                                            b"allocating JPEG size array\x00" as *const u8
+                                            
+                                            b"allocating JPEG size array\x00".as_ptr()
                                                 as *const libc::c_char,
                                             crate::stdlib::strerror(
                                                 *crate::stdlib::__errno_location(),
@@ -2592,11 +2771,12 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                                 );
                                                 if (*fresh3).is_null() {
                                                     crate::stdlib::printf(
-                                                        b"ERROR in line %d while %s:\n%s\n\x00"
-                                                            as *const u8
+                                                        
+                                                        b"ERROR in line %d while %s:\n%s\n\x00".as_ptr()
                                                             as *const libc::c_char,
                                                         582i32,
-                                                        b"allocating JPEG tiles\x00" as *const u8
+                                                        
+                                                        b"allocating JPEG tiles\x00".as_ptr()
                                                             as *const libc::c_char,
                                                         crate::stdlib::strerror(
                                                             *crate::stdlib::__errno_location(),
@@ -2615,44 +2795,53 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                         ttileh = tileh;
                                         if quiet == 0 {
                                             crate::stdlib::printf(
-                                                b"\n%s size: %d x %d\x00" as *const u8
+                                                
+                                                b"\n%s size: %d x %d\x00".as_ptr()
                                                     as *const libc::c_char,
                                                 if doTile != 0 {
-                                                    b"Tile\x00" as *const u8 as *const libc::c_char
+                                                    
+                                                    b"Tile\x00".as_ptr() as *const libc::c_char
                                                 } else {
-                                                    b"Image\x00" as *const u8 as *const libc::c_char
+                                                    
+                                                    b"Image\x00".as_ptr() as *const libc::c_char
                                                 },
                                                 ttilew,
                                                 ttileh,
                                             );
                                             if sf.num != 1i32 || sf.denom != 1i32 {
                                                 crate::stdlib::printf(
-                                                    b" --> %d x %d\x00" as *const u8
+                                                    
+                                                    b" --> %d x %d\x00".as_ptr()
                                                         as *const libc::c_char,
                                                     (tw * sf.num + sf.denom - 1i32) / sf.denom,
                                                     (th * sf.num + sf.denom - 1i32) / sf.denom,
                                                 );
                                             }
                                             crate::stdlib::printf(
-                                                b"\n\x00" as *const u8 as *const libc::c_char,
+                                                
+                                                b"\n\x00".as_ptr() as *const libc::c_char,
                                             );
                                         } else if quiet == 1i32 {
                                             crate::stdlib::printf(
-                                                b"%-4s (%s)  %-5s  %-5s    \x00" as *const u8
+                                                
+                                                b"%-4s (%s)  %-5s  %-5s    \x00".as_ptr()
                                                     as *const libc::c_char,
                                                 pixFormatStr[pf as usize],
                                                 if flags & crate::src::turbojpeg::TJFLAG_BOTTOMUP
                                                     != 0
                                                 {
-                                                    b"BU\x00" as *const u8 as *const libc::c_char
+                                                    
+                                                    b"BU\x00".as_ptr() as *const libc::c_char
                                                 } else {
-                                                    b"TD\x00" as *const u8 as *const libc::c_char
+                                                    
+                                                    b"TD\x00".as_ptr() as *const libc::c_char
                                                 },
                                                 csName[cs as usize],
                                                 subNameLong[subsamp as usize],
                                             );
                                             crate::stdlib::printf(
-                                                b"%-5d  %-5d   \x00" as *const u8
+                                                
+                                                b"%-5d  %-5d   \x00".as_ptr()
                                                     as *const libc::c_char,
                                                 tilew,
                                                 tileh,
@@ -2676,12 +2865,12 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                                 as *mut crate::src::turbojpeg::tjtransform;
                                             if t.is_null() {
                                                 crate::stdlib::printf(
-                                                    b"ERROR in line %d while %s:\n%s\n\x00"
-                                                        as *const u8
+                                                    
+                                                    b"ERROR in line %d while %s:\n%s\n\x00".as_ptr()
                                                         as *const libc::c_char,
                                                     602i32,
-                                                    b"allocating image transform array\x00"
-                                                        as *const u8
+                                                    
+                                                    b"allocating image transform array\x00".as_ptr()
                                                         as *const libc::c_char,
                                                     crate::stdlib::strerror(
                                                         *crate::stdlib::__errno_location(),
@@ -2874,9 +3063,8 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                                                                libc::c_ulong)
                                                                        != 0 ||
                                                                        crate::stdlib::strncmp(tjErrorMsg.as_mut_ptr(),
-                                                                               b"executing tjTransform()\x00"
-                                                                                   as
-                                                                                   *const u8
+                                                                               
+                                                                               b"executing tjTransform()\x00".as_ptr()
                                                                                    as
                                                                                    *const libc::c_char,
                                                                                crate::jpeglib_h::JMSG_LENGTH_MAX
@@ -2899,9 +3087,8 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                                                                 as
                                                                                 libc::c_ulong);
                                                                     crate::stdlib::strncpy(tjErrorMsg.as_mut_ptr(),
-                                                                            b"executing tjTransform()\x00"
-                                                                                as
-                                                                                *const u8
+                                                                            
+                                                                            b"executing tjTransform()\x00".as_ptr()
                                                                                 as
                                                                                 *const libc::c_char,
                                                                             crate::jpeglib_h::JMSG_LENGTH_MAX
@@ -2913,23 +3100,18 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                                                     tjErrorLine
                                                                         =
                                                                         648i32;
-                                                                    crate::stdlib::printf(b"WARNING in line %d while %s:\n%s\n\x00"
-                                                                               as
-                                                                               *const u8
+                                                                    crate::stdlib::printf(b"WARNING in line %d while %s:\n%s\n\x00".as_ptr()
                                                                                as
                                                                                *const libc::c_char,
                                                                            648i32,
-                                                                           b"executing tjTransform()\x00"
-                                                                               as
-                                                                               *const u8
+                                                                           
+                                                                           b"executing tjTransform()\x00".as_ptr()
                                                                                as
                                                                                *const libc::c_char,
                                                                            _tjErrorStr_1);
                                                                 }
                                                             } else {
-                                                                crate::stdlib::printf(b"%s in line %d while %s:\n%s\n\x00"
-                                                                           as
-                                                                           *const u8
+                                                                crate::stdlib::printf(b"%s in line %d while %s:\n%s\n\x00".as_ptr()
                                                                            as
                                                                            *const libc::c_char,
                                                                        if _tjErrorCode_1
@@ -2938,22 +3120,19 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                                                                   as
                                                                                   libc::c_int
                                                                           {
-                                                                           b"WARNING\x00"
-                                                                               as
-                                                                               *const u8
+                                                                           
+                                                                           b"WARNING\x00".as_ptr()
                                                                                as
                                                                                *const libc::c_char
                                                                        } else {
-                                                                           b"ERROR\x00"
-                                                                               as
-                                                                               *const u8
+                                                                           
+                                                                           b"ERROR\x00".as_ptr()
                                                                                as
                                                                                *const libc::c_char
                                                                        },
                                                                        648i32,
-                                                                       b"executing tjTransform()\x00"
-                                                                           as
-                                                                           *const u8
+                                                                       
+                                                                       b"executing tjTransform()\x00".as_ptr()
                                                                            as
                                                                            *const libc::c_char,
                                                                        _tjErrorStr_1);
@@ -2987,7 +3166,8 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                                 }
                                                 if quiet != 0 {
                                                     crate::stdlib::printf(
-                                                        b"%-6s%s%-6s%s\x00" as *const u8
+                                                        
+                                                        b"%-6s%s%-6s%s\x00".as_ptr()
                                                             as *const libc::c_char,
                                                         sigfig(
                                                             (w * h) as libc::c_double
@@ -2998,10 +3178,12 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                                             80i32,
                                                         ),
                                                         if quiet == 2i32 {
-                                                            b"\n\x00" as *const u8
+                                                            
+                                                            b"\n\x00".as_ptr()
                                                                 as *const libc::c_char
                                                         } else {
-                                                            b"  \x00" as *const u8
+                                                            
+                                                            b"  \x00".as_ptr()
                                                                 as *const libc::c_char
                                                         },
                                                         sigfig(
@@ -3012,30 +3194,26 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                                             80i32,
                                                         ),
                                                         if quiet == 2i32 {
-                                                            b"\n\x00" as *const u8
+                                                            
+                                                            b"\n\x00".as_ptr()
                                                                 as *const libc::c_char
                                                         } else {
-                                                            b"  \x00" as *const u8
+                                                            
+                                                            b"  \x00".as_ptr()
                                                                 as *const libc::c_char
                                                         },
                                                     );
                                                 } else if quiet == 0 {
-                                                    crate::stdlib::printf(b"Transform     --> Frame rate:         %f fps\n\x00"
-                                                                   as
-                                                                   *const u8
+                                                    crate::stdlib::printf(b"Transform     --> Frame rate:         %f fps\n\x00".as_ptr()
                                                                    as
                                                                    *const libc::c_char,
                                                                1.0f64 /
                                                                    elapsed);
-                                                    crate::stdlib::printf(b"                  Output image size:  %lu bytes\n\x00"
-                                                                   as
-                                                                   *const u8
+                                                    crate::stdlib::printf(b"                  Output image size:  %lu bytes\n\x00".as_ptr()
                                                                    as
                                                                    *const libc::c_char,
                                                                totalJpegSize);
-                                                    crate::stdlib::printf(b"                  Compression ratio:  %f:1\n\x00"
-                                                                   as
-                                                                   *const u8
+                                                    crate::stdlib::printf(b"                  Compression ratio:  %f:1\n\x00".as_ptr()
                                                                    as
                                                                    *const libc::c_char,
                                                                (w * h * ps) as
@@ -3044,9 +3222,7 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                                                    totalJpegSize
                                                                        as
                                                                        libc::c_double);
-                                                    crate::stdlib::printf(b"                  Throughput:         %f Megapixels/sec\n\x00"
-                                                                   as
-                                                                   *const u8
+                                                    crate::stdlib::printf(b"                  Throughput:         %f Megapixels/sec\n\x00".as_ptr()
                                                                    as
                                                                    *const libc::c_char,
                                                                (w * h) as
@@ -3054,9 +3230,7 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                                                    /
                                                                    1000000.0f64
                                                                    / elapsed);
-                                                    crate::stdlib::printf(b"                  Output bit stream:  %f Megabits/sec\n\x00"
-                                                                   as
-                                                                   *const u8
+                                                    crate::stdlib::printf(b"                  Output bit stream:  %f Megabits/sec\n\x00".as_ptr()
                                                                    as
                                                                    *const libc::c_char,
                                                                totalJpegSize
@@ -3070,7 +3244,8 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                         } else {
                                             if quiet == 1i32 {
                                                 crate::stdlib::printf(
-                                                    b"N/A     N/A     \x00" as *const u8
+                                                    
+                                                    b"N/A     N/A     \x00".as_ptr()
                                                         as *const libc::c_char,
                                                 );
                                             }
@@ -3112,7 +3287,8 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                             }
                                         } else if quiet == 1i32 {
                                             crate::stdlib::printf(
-                                                b"N/A\n\x00" as *const u8 as *const libc::c_char,
+                                                
+                                                b"N/A\n\x00".as_ptr() as *const libc::c_char,
                                             );
                                         }
                                         i = 0i32;
@@ -3185,208 +3361,233 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
 pub unsafe extern "C" fn usage(mut progName: *mut libc::c_char) {
     let mut i: libc::c_int = 0;
     crate::stdlib::printf(
-        b"USAGE: %s\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"USAGE: %s\n\x00".as_ptr() as *const libc::c_char,
         progName,
     );
     crate::stdlib::printf(
-        b"       <Inputfile (BMP|PPM)> <Quality> [options]\n\n\x00" as *const u8
+        
+        b"       <Inputfile (BMP|PPM)> <Quality> [options]\n\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"       %s\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"       %s\n\x00".as_ptr() as *const libc::c_char,
         progName,
     );
     crate::stdlib::printf(
-        b"       <Inputfile (JPG)> [options]\n\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"       <Inputfile (JPG)> [options]\n\n\x00".as_ptr() as *const libc::c_char,
     );
-    crate::stdlib::printf(b"Options:\n\n\x00" as *const u8 as *const libc::c_char);
+    crate::stdlib::printf(b"Options:\n\n\x00".as_ptr() as *const libc::c_char);
     crate::stdlib::printf(
-        b"-alloc = Dynamically allocate JPEG image buffers\n\x00" as *const u8
+        
+        b"-alloc = Dynamically allocate JPEG image buffers\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"-bmp = Generate output images in Windows Bitmap format (default = PPM)\n\x00" as *const u8
+        
+        b"-bmp = Generate output images in Windows Bitmap format (default = PPM)\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"-bottomup = Test bottom-up compression/decompression\n\x00" as *const u8
+        
+        b"-bottomup = Test bottom-up compression/decompression\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"-tile = Test performance of the codec when the image is encoded as separate\n\x00"
-            as *const u8 as *const libc::c_char,
+        
+        b"-tile = Test performance of the codec when the image is encoded as separate\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"     tiles of varying sizes.\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"     tiles of varying sizes.\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"-rgb, -bgr, -rgbx, -bgrx, -xbgr, -xrgb =\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"-rgb, -bgr, -rgbx, -bgrx, -xbgr, -xrgb =\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"     Test the specified color conversion path in the codec (default = BGR)\n\x00"
-            as *const u8 as *const libc::c_char,
+        
+        b"     Test the specified color conversion path in the codec (default = BGR)\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"-cmyk = Indirectly test YCCK JPEG compression/decompression (the source\n\x00"
-            as *const u8 as *const libc::c_char,
+        
+        b"-cmyk = Indirectly test YCCK JPEG compression/decompression (the source\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"     and destination bitmaps are still RGB.  The conversion is done\n\x00" as *const u8
+        
+        b"     and destination bitmaps are still RGB.  The conversion is done\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"     internally prior to compression or after decompression.)\n\x00" as *const u8
+        
+        b"     internally prior to compression or after decompression.)\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"-fastupsample = Use the fastest chrominance upsampling algorithm available in\n\x00"
-            as *const u8 as *const libc::c_char,
+        
+        b"-fastupsample = Use the fastest chrominance upsampling algorithm available in\n\x00".as_ptr() as *const libc::c_char,
     );
-    crate::stdlib::printf(b"     the underlying codec\n\x00" as *const u8 as *const libc::c_char);
+    crate::stdlib::printf(b"     the underlying codec\n\x00".as_ptr() as *const libc::c_char);
     crate::stdlib::printf(
-        b"-fastdct = Use the fastest DCT/IDCT algorithms available in the underlying\n\x00"
-            as *const u8 as *const libc::c_char,
+        
+        b"-fastdct = Use the fastest DCT/IDCT algorithms available in the underlying\n\x00".as_ptr() as *const libc::c_char,
     );
-    crate::stdlib::printf(b"     codec\n\x00" as *const u8 as *const libc::c_char);
+    crate::stdlib::printf(b"     codec\n\x00".as_ptr() as *const libc::c_char);
     crate::stdlib::printf(
-        b"-accuratedct = Use the most accurate DCT/IDCT algorithms available in the\n\x00"
-            as *const u8 as *const libc::c_char,
+        
+        b"-accuratedct = Use the most accurate DCT/IDCT algorithms available in the\n\x00".as_ptr() as *const libc::c_char,
     );
-    crate::stdlib::printf(b"     underlying codec\n\x00" as *const u8 as *const libc::c_char);
+    crate::stdlib::printf(b"     underlying codec\n\x00".as_ptr() as *const libc::c_char);
     crate::stdlib::printf(
-        b"-progressive = Use progressive entropy coding in JPEG images generated by\n\x00"
-            as *const u8 as *const libc::c_char,
-    );
-    crate::stdlib::printf(
-        b"     compression and transform operations.\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"-progressive = Use progressive entropy coding in JPEG images generated by\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"-subsamp <s> = When testing JPEG compression, this option specifies the level\n\x00"
-            as *const u8 as *const libc::c_char,
+        
+        b"     compression and transform operations.\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"     of chrominance subsampling to use (<s> = 444, 422, 440, 420, 411, or\n\x00"
-            as *const u8 as *const libc::c_char,
+        
+        b"-subsamp <s> = When testing JPEG compression, this option specifies the level\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"     GRAY).  The default is to test Grayscale, 4:2:0, 4:2:2, and 4:4:4 in\n\x00"
-            as *const u8 as *const libc::c_char,
+        
+        b"     of chrominance subsampling to use (<s> = 444, 422, 440, 420, 411, or\n\x00".as_ptr() as *const libc::c_char,
     );
-    crate::stdlib::printf(b"     sequence.\n\x00" as *const u8 as *const libc::c_char);
     crate::stdlib::printf(
-        b"-quiet = Output results in tabular rather than verbose format\n\x00" as *const u8
+        
+        b"     GRAY).  The default is to test Grayscale, 4:2:0, 4:2:2, and 4:4:4 in\n\x00".as_ptr() as *const libc::c_char,
+    );
+    crate::stdlib::printf(b"     sequence.\n\x00".as_ptr() as *const libc::c_char);
+    crate::stdlib::printf(
+        
+        b"-quiet = Output results in tabular rather than verbose format\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"-yuv = Test YUV encoding/decoding functions\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"-yuv = Test YUV encoding/decoding functions\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"-yuvpad <p> = If testing YUV encoding/decoding, this specifies the number of\n\x00"
-            as *const u8 as *const libc::c_char,
+        
+        b"-yuvpad <p> = If testing YUV encoding/decoding, this specifies the number of\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"     bytes to which each row of each plane in the intermediate YUV image is\n\x00"
-            as *const u8 as *const libc::c_char,
+        
+        b"     bytes to which each row of each plane in the intermediate YUV image is\n\x00".as_ptr() as *const libc::c_char,
     );
-    crate::stdlib::printf(b"     padded (default = 1)\n\x00" as *const u8 as *const libc::c_char);
+    crate::stdlib::printf(b"     padded (default = 1)\n\x00".as_ptr() as *const libc::c_char);
     crate::stdlib::printf(
-        b"-scale M/N = Scale down the width/height of the decompressed JPEG image by a\n\x00"
-            as *const u8 as *const libc::c_char,
+        
+        b"-scale M/N = Scale down the width/height of the decompressed JPEG image by a\n\x00".as_ptr() as *const libc::c_char,
     );
-    crate::stdlib::printf(b"     factor of M/N (M/N = \x00" as *const u8 as *const libc::c_char);
+    crate::stdlib::printf(b"     factor of M/N (M/N = \x00".as_ptr() as *const libc::c_char);
     i = 0i32;
     while i < nsf {
         crate::stdlib::printf(
-            b"%d/%d\x00" as *const u8 as *const libc::c_char,
+            
+            b"%d/%d\x00".as_ptr() as *const libc::c_char,
             (*scalingFactors.offset(i as isize)).num,
             (*scalingFactors.offset(i as isize)).denom,
         );
         if nsf == 2i32 && i != nsf - 1i32 {
-            crate::stdlib::printf(b" or \x00" as *const u8 as *const libc::c_char);
+            crate::stdlib::printf(b" or \x00".as_ptr() as *const libc::c_char);
         } else if nsf > 2i32 {
             if i != nsf - 1i32 {
-                crate::stdlib::printf(b", \x00" as *const u8 as *const libc::c_char);
+                crate::stdlib::printf(b", \x00".as_ptr() as *const libc::c_char);
             }
             if i == nsf - 2i32 {
-                crate::stdlib::printf(b"or \x00" as *const u8 as *const libc::c_char);
+                crate::stdlib::printf(b"or \x00".as_ptr() as *const libc::c_char);
             }
         }
         if i % 8i32 == 0i32 && i != 0i32 {
-            crate::stdlib::printf(b"\n     \x00" as *const u8 as *const libc::c_char);
+            crate::stdlib::printf(b"\n     \x00".as_ptr() as *const libc::c_char);
         }
         i += 1
     }
-    crate::stdlib::printf(b")\n\x00" as *const u8 as *const libc::c_char);
+    crate::stdlib::printf(b")\n\x00".as_ptr() as *const libc::c_char);
     crate::stdlib::printf(
-        b"-hflip, -vflip, -transpose, -transverse, -rot90, -rot180, -rot270 =\n\x00" as *const u8
+        
+        b"-hflip, -vflip, -transpose, -transverse, -rot90, -rot180, -rot270 =\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"     Perform the corresponding lossless transform prior to\n\x00" as *const u8
+        
+        b"     Perform the corresponding lossless transform prior to\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"     decompression (these options are mutually exclusive)\n\x00" as *const u8
+        
+        b"     decompression (these options are mutually exclusive)\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"-grayscale = Perform lossless grayscale conversion prior to decompression\n\x00"
-            as *const u8 as *const libc::c_char,
+        
+        b"-grayscale = Perform lossless grayscale conversion prior to decompression\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"     test (can be combined with the other transforms above)\n\x00" as *const u8
+        
+        b"     test (can be combined with the other transforms above)\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"-copynone = Do not copy any extra markers (including EXIF and ICC profile data)\n\x00"
-            as *const u8 as *const libc::c_char,
+        
+        b"-copynone = Do not copy any extra markers (including EXIF and ICC profile data)\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"     when transforming the image.\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"     when transforming the image.\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"-benchtime <t> = Run each benchmark for at least <t> seconds (default = 5.0)\n\x00"
-            as *const u8 as *const libc::c_char,
+        
+        b"-benchtime <t> = Run each benchmark for at least <t> seconds (default = 5.0)\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"-warmup <t> = Run each benchmark for <t> seconds (default = 1.0) prior to\n\x00"
-            as *const u8 as *const libc::c_char,
+        
+        b"-warmup <t> = Run each benchmark for <t> seconds (default = 1.0) prior to\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"     starting the timer, in order to prime the caches and thus improve the\n\x00"
-            as *const u8 as *const libc::c_char,
+        
+        b"     starting the timer, in order to prime the caches and thus improve the\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"     consistency of the results.\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"     consistency of the results.\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"-componly = Stop after running compression tests.  Do not test decompression.\n\x00"
-            as *const u8 as *const libc::c_char,
+        
+        b"-componly = Stop after running compression tests.  Do not test decompression.\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"-nowrite = Do not write reference or output images (improves consistency of\n\x00"
-            as *const u8 as *const libc::c_char,
+        
+        b"-nowrite = Do not write reference or output images (improves consistency of\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"     performance measurements.)\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"     performance measurements.)\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"-stoponwarning = Immediately discontinue the current\n\x00" as *const u8
+        
+        b"-stoponwarning = Immediately discontinue the current\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"     compression/decompression/transform operation if the underlying codec\n\x00"
-            as *const u8 as *const libc::c_char,
+        
+        b"     compression/decompression/transform operation if the underlying codec\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"     throws a warning (non-fatal error)\n\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"     throws a warning (non-fatal error)\n\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"NOTE:  If the quality is specified as a range (e.g. 90-100), a separate\n\x00"
-            as *const u8 as *const libc::c_char,
+        
+        b"NOTE:  If the quality is specified as a range (e.g. 90-100), a separate\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"test will be performed for all quality values in the range.\n\n\x00" as *const u8
+        
+        b"test will be performed for all quality values in the range.\n\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::exit(1i32);
@@ -3408,9 +3609,11 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     scalingFactors = crate::src::turbojpeg::tjGetScalingFactors(&mut nsf);
     if scalingFactors.is_null() || nsf == 0i32 {
         crate::stdlib::printf(
-            b"ERROR in line %d while %s:\n%s\n\x00" as *const u8 as *const libc::c_char,
+            
+            b"ERROR in line %d while %s:\n%s\n\x00".as_ptr() as *const libc::c_char,
             804i32,
-            b"executing tjGetScalingFactors()\x00" as *const u8 as *const libc::c_char,
+            
+            b"executing tjGetScalingFactors()\x00".as_ptr() as *const libc::c_char,
             crate::src::turbojpeg::tjGetErrorStr(),
         );
         retval = -1i32
@@ -3420,18 +3623,18 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         }
         temp = crate::stdlib::strrchr(*argv.offset(1), '.' as i32);
         if !temp.is_null() {
-            if crate::stdlib::strcasecmp(temp, b".bmp\x00" as *const u8 as *const libc::c_char) == 0
+            if crate::stdlib::strcasecmp(temp,  b".bmp\x00".as_ptr() as *const libc::c_char) == 0
             {
-                ext = b"bmp\x00" as *const u8 as *const libc::c_char as *mut libc::c_char
+                ext =  b"bmp\x00".as_ptr() as *const libc::c_char as *mut libc::c_char
             }
-            if crate::stdlib::strcasecmp(temp, b".jpg\x00" as *const u8 as *const libc::c_char) == 0
-                || crate::stdlib::strcasecmp(temp, b".jpeg\x00" as *const u8 as *const libc::c_char)
+            if crate::stdlib::strcasecmp(temp,  b".jpg\x00".as_ptr() as *const libc::c_char) == 0
+                || crate::stdlib::strcasecmp(temp,  b".jpeg\x00".as_ptr() as *const libc::c_char)
                     == 0
             {
                 decompOnly = 1i32
             }
         }
-        crate::stdlib::printf(b"\n\x00" as *const u8 as *const libc::c_char);
+        crate::stdlib::printf(b"\n\x00".as_ptr() as *const libc::c_char);
         if decompOnly == 0 {
             minArg = 3i32;
             if argc < minArg {
@@ -3440,7 +3643,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             minQual = crate::stdlib::atoi(*argv.offset(2));
             if minQual < 1i32 || minQual > 100i32 {
                 crate::stdlib::puts(
-                    b"ERROR: Quality must be between 1 and 100.\x00" as *const u8
+                    
+                    b"ERROR: Quality must be between 1 and 100.\x00".as_ptr()
                         as *const libc::c_char,
                 );
                 crate::stdlib::exit(1i32);
@@ -3450,7 +3654,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                 && crate::stdlib::strlen(temp) > 1i32 as libc::c_ulong
                 && crate::stdlib::sscanf(
                     &mut *temp.offset(1) as *mut libc::c_char,
-                    b"%d\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"%d\x00".as_ptr() as *const libc::c_char,
                     &mut maxQual as *mut libc::c_int,
                 ) == 1i32
                 && maxQual > minQual
@@ -3465,113 +3670,133 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             while i < argc {
                 if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-tile\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-tile\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     doTile = 1i32;
                     xformOpt |= crate::src::turbojpeg::TJXOPT_CROP
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-fastupsample\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-fastupsample\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     crate::stdlib::printf(
-                        b"Using fast upsampling code\n\n\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"Using fast upsampling code\n\n\x00".as_ptr() as *const libc::c_char,
                     );
                     flags |= crate::src::turbojpeg::TJFLAG_FASTUPSAMPLE
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-fastdct\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-fastdct\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     crate::stdlib::printf(
-                        b"Using fastest DCT/IDCT algorithm\n\n\x00" as *const u8
+                        
+                        b"Using fastest DCT/IDCT algorithm\n\n\x00".as_ptr()
                             as *const libc::c_char,
                     );
                     flags |= crate::src::turbojpeg::TJFLAG_FASTDCT
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-accuratedct\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-accuratedct\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     crate::stdlib::printf(
-                        b"Using most accurate DCT/IDCT algorithm\n\n\x00" as *const u8
+                        
+                        b"Using most accurate DCT/IDCT algorithm\n\n\x00".as_ptr()
                             as *const libc::c_char,
                     );
                     flags |= crate::src::turbojpeg::TJFLAG_ACCURATEDCT
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-progressive\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-progressive\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     crate::stdlib::printf(
-                        b"Using progressive entropy coding\n\n\x00" as *const u8
+                        
+                        b"Using progressive entropy coding\n\n\x00".as_ptr()
                             as *const libc::c_char,
                     );
                     flags |= crate::src::turbojpeg::TJFLAG_PROGRESSIVE
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-rgb\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-rgb\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     pf = crate::src::turbojpeg::TJPF_RGB as libc::c_int
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-rgbx\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-rgbx\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     pf = crate::src::turbojpeg::TJPF_RGBX as libc::c_int
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-bgr\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-bgr\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     pf = crate::src::turbojpeg::TJPF_BGR as libc::c_int
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-bgrx\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-bgrx\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     pf = crate::src::turbojpeg::TJPF_BGRX as libc::c_int
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-xbgr\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-xbgr\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     pf = crate::src::turbojpeg::TJPF_XBGR as libc::c_int
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-xrgb\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-xrgb\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     pf = crate::src::turbojpeg::TJPF_XRGB as libc::c_int
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-cmyk\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-cmyk\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     pf = crate::src::turbojpeg::TJPF_CMYK as libc::c_int
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-bottomup\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-bottomup\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     flags |= crate::src::turbojpeg::TJFLAG_BOTTOMUP
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-quiet\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-quiet\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     quiet = 1i32
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-qq\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-qq\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     quiet = 2i32
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-scale\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-scale\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                     && i < argc - 1i32
                 {
@@ -3581,7 +3806,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                     i += 1;
                     if crate::stdlib::sscanf(
                         *argv.offset(i as isize),
-                        b"%d/%d\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"%d/%d\x00".as_ptr() as *const libc::c_char,
                         &mut temp1 as *mut libc::c_int,
                         &mut temp2 as *mut libc::c_int,
                     ) == 2i32
@@ -3607,55 +3833,64 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                     }
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-hflip\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-hflip\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     xformOp = crate::src::turbojpeg::TJXOP_HFLIP as libc::c_int
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-vflip\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-vflip\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     xformOp = crate::src::turbojpeg::TJXOP_VFLIP as libc::c_int
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-transpose\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-transpose\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     xformOp = crate::src::turbojpeg::TJXOP_TRANSPOSE as libc::c_int
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-transverse\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-transverse\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     xformOp = crate::src::turbojpeg::TJXOP_TRANSVERSE as libc::c_int
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-rot90\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-rot90\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     xformOp = crate::src::turbojpeg::TJXOP_ROT90 as libc::c_int
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-rot180\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-rot180\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     xformOp = crate::src::turbojpeg::TJXOP_ROT180 as libc::c_int
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-rot270\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-rot270\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     xformOp = crate::src::turbojpeg::TJXOP_ROT270 as libc::c_int
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-grayscale\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-grayscale\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     xformOpt |= crate::src::turbojpeg::TJXOPT_GRAY
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-custom\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-custom\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     customFilter = Some(
@@ -3671,19 +3906,22 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                     )
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-nooutput\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-nooutput\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     xformOpt |= crate::src::turbojpeg::TJXOPT_NOOUTPUT
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-copynone\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-copynone\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     xformOpt |= crate::src::turbojpeg::TJXOPT_COPYNONE
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-benchtime\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-benchtime\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                     && i < argc - 1i32
                 {
@@ -3696,7 +3934,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                     }
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-warmup\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-warmup\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                     && i < argc - 1i32
                 {
@@ -3708,34 +3947,40 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                         usage(*argv.offset(0));
                     }
                     crate::stdlib::printf(
-                        b"Warmup time = %.1f seconds\n\n\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"Warmup time = %.1f seconds\n\n\x00".as_ptr() as *const libc::c_char,
                         warmup,
                     );
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-alloc\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-alloc\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     flags &= !crate::src::turbojpeg::TJFLAG_NOREALLOC
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-bmp\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-bmp\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
-                    ext = b"bmp\x00" as *const u8 as *const libc::c_char as *mut libc::c_char
+                    ext =  b"bmp\x00".as_ptr() as *const libc::c_char as *mut libc::c_char
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-yuv\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-yuv\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     crate::stdlib::printf(
-                        b"Testing YUV planar encoding/decoding\n\n\x00" as *const u8
+                        
+                        b"Testing YUV planar encoding/decoding\n\n\x00".as_ptr()
                             as *const libc::c_char,
                     );
                     doYUV = 1i32
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-yuvpad\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-yuvpad\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                     && i < argc - 1i32
                 {
@@ -3746,7 +3991,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                     }
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-subsamp\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-subsamp\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                     && i < argc - 1i32
                 {
@@ -3792,19 +4038,22 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                     }
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-componly\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-componly\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     compOnly = 1i32
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-nowrite\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-nowrite\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     doWrite = 0i32
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
-                    b"-stoponwarning\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"-stoponwarning\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
                     flags |= crate::src::turbojpeg::TJFLAG_STOPONWARNING
@@ -3816,22 +4065,24 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         }
         if (sf.num != 1i32 || sf.denom != 1i32) && doTile != 0 {
             crate::stdlib::printf(
-                b"Disabling tiled compression/decompression tests, because those tests do not\n\x00"
-                    as *const u8 as *const libc::c_char,
+                
+                b"Disabling tiled compression/decompression tests, because those tests do not\n\x00".as_ptr() as *const libc::c_char,
             );
             crate::stdlib::printf(
-                b"work when scaled decompression is enabled.\n\x00" as *const u8
+                
+                b"work when scaled decompression is enabled.\n\x00".as_ptr()
                     as *const libc::c_char,
             );
             doTile = 0i32
         }
         if flags & crate::src::turbojpeg::TJFLAG_NOREALLOC == 0i32 && doTile != 0 {
             crate::stdlib::printf(
-                b"Disabling tiled compression/decompression tests, because those tests do not\n\x00"
-                    as *const u8 as *const libc::c_char,
+                
+                b"Disabling tiled compression/decompression tests, because those tests do not\n\x00".as_ptr() as *const libc::c_char,
             );
             crate::stdlib::printf(
-                b"work when dynamic JPEG buffer allocation is enabled.\n\n\x00" as *const u8
+                
+                b"work when dynamic JPEG buffer allocation is enabled.\n\n\x00".as_ptr()
                     as *const libc::c_char,
             );
             doTile = 0i32
@@ -3847,9 +4098,11 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             );
             if srcBuf.is_null() {
                 crate::stdlib::printf(
-                    b"ERROR in line %d while %s:\n%s\n\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"ERROR in line %d while %s:\n%s\n\x00".as_ptr() as *const libc::c_char,
                     962i32,
-                    b"loading bitmap\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"loading bitmap\x00".as_ptr() as *const libc::c_char,
                     crate::src::turbojpeg::tjGetErrorStr2(
                         crate::stddef_h::NULL_0 as *mut libc::c_void,
                     ),
@@ -3871,58 +4124,67 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             _ => {
                 if quiet == 1i32 && decompOnly == 0 {
                     crate::stdlib::printf(
-                        b"All performance values in Mpixels/sec\n\n\x00" as *const u8
+                        
+                        b"All performance values in Mpixels/sec\n\n\x00".as_ptr()
                             as *const libc::c_char,
                     );
                     crate::stdlib::printf(
-                        b"Bitmap     JPEG     JPEG  %s  %s   \x00" as *const u8
+                        
+                        b"Bitmap     JPEG     JPEG  %s  %s   \x00".as_ptr()
                             as *const libc::c_char,
                         if doTile != 0 {
-                            b"Tile \x00" as *const u8 as *const libc::c_char
+                            
+                            b"Tile \x00".as_ptr() as *const libc::c_char
                         } else {
-                            b"Image\x00" as *const u8 as *const libc::c_char
+                            
+                            b"Image\x00".as_ptr() as *const libc::c_char
                         },
                         if doTile != 0 {
-                            b"Tile \x00" as *const u8 as *const libc::c_char
+                            
+                            b"Tile \x00".as_ptr() as *const libc::c_char
                         } else {
-                            b"Image\x00" as *const u8 as *const libc::c_char
+                            
+                            b"Image\x00".as_ptr() as *const libc::c_char
                         },
                     );
                     if doYUV != 0 {
-                        crate::stdlib::printf(b"Encode  \x00" as *const u8 as *const libc::c_char);
+                        crate::stdlib::printf(b"Encode  \x00".as_ptr() as *const libc::c_char);
                     }
                     crate::stdlib::printf(
-                        b"Comp    Comp    Decomp  \x00" as *const u8 as *const libc::c_char,
+                        
+                        b"Comp    Comp    Decomp  \x00".as_ptr() as *const libc::c_char,
                     );
                     if doYUV != 0 {
-                        crate::stdlib::printf(b"Decode\x00" as *const u8 as *const libc::c_char);
+                        crate::stdlib::printf(b"Decode\x00".as_ptr() as *const libc::c_char);
                     }
-                    crate::stdlib::printf(b"\n\x00" as *const u8 as *const libc::c_char);
+                    crate::stdlib::printf(b"\n\x00".as_ptr() as *const libc::c_char);
                     crate::stdlib::printf(
-                        b"Format     Subsamp  Qual  Width  Height  \x00" as *const u8
+                        
+                        b"Format     Subsamp  Qual  Width  Height  \x00".as_ptr()
                             as *const libc::c_char,
                     );
                     if doYUV != 0 {
-                        crate::stdlib::printf(b"Perf    \x00" as *const u8 as *const libc::c_char);
+                        crate::stdlib::printf(b"Perf    \x00".as_ptr() as *const libc::c_char);
                     }
                     crate::stdlib::printf(
-                        b"Perf    Ratio   Perf    \x00" as *const u8 as *const libc::c_char,
+                        
+                        b"Perf    Ratio   Perf    \x00".as_ptr() as *const libc::c_char,
                     );
                     if doYUV != 0 {
-                        crate::stdlib::printf(b"Perf\x00" as *const u8 as *const libc::c_char);
+                        crate::stdlib::printf(b"Perf\x00".as_ptr() as *const libc::c_char);
                     }
-                    crate::stdlib::printf(b"\n\n\x00" as *const u8 as *const libc::c_char);
+                    crate::stdlib::printf(b"\n\n\x00".as_ptr() as *const libc::c_char);
                 }
                 if decompOnly != 0 {
                     decompTest(*argv.offset(1));
-                    crate::stdlib::printf(b"\n\x00" as *const u8 as *const libc::c_char);
+                    crate::stdlib::printf(b"\n\x00".as_ptr() as *const libc::c_char);
                 } else if subsamp >= 0i32 && subsamp < crate::src::turbojpeg::TJ_NUMSAMP {
                     i = maxQual;
                     while i >= minQual {
                         fullTest(srcBuf, w, h, subsamp, i, *argv.offset(1));
                         i -= 1
                     }
-                    crate::stdlib::printf(b"\n\x00" as *const u8 as *const libc::c_char);
+                    crate::stdlib::printf(b"\n\x00".as_ptr() as *const libc::c_char);
                 } else {
                     if pf != crate::src::turbojpeg::TJPF_CMYK as libc::c_int {
                         i = maxQual;
@@ -3937,7 +4199,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                             );
                             i -= 1
                         }
-                        crate::stdlib::printf(b"\n\x00" as *const u8 as *const libc::c_char);
+                        crate::stdlib::printf(b"\n\x00".as_ptr() as *const libc::c_char);
                     }
                     i = maxQual;
                     while i >= minQual {
@@ -3951,7 +4213,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                         );
                         i -= 1
                     }
-                    crate::stdlib::printf(b"\n\x00" as *const u8 as *const libc::c_char);
+                    crate::stdlib::printf(b"\n\x00".as_ptr() as *const libc::c_char);
                     i = maxQual;
                     while i >= minQual {
                         fullTest(
@@ -3964,7 +4226,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                         );
                         i -= 1
                     }
-                    crate::stdlib::printf(b"\n\x00" as *const u8 as *const libc::c_char);
+                    crate::stdlib::printf(b"\n\x00".as_ptr() as *const libc::c_char);
                     i = maxQual;
                     while i >= minQual {
                         fullTest(
@@ -3977,7 +4239,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                         );
                         i -= 1
                     }
-                    crate::stdlib::printf(b"\n\x00" as *const u8 as *const libc::c_char);
+                    crate::stdlib::printf(b"\n\x00".as_ptr() as *const libc::c_char);
                 }
             }
         }
