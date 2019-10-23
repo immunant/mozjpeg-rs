@@ -379,8 +379,7 @@ unsafe extern "C" fn skip_input_data(
         (*src).next_input_byte = (*src)
             .next_input_byte
             .offset(num_bytes as crate::stddef_h::size_t as isize);
-        (*src).bytes_in_buffer = ((*src).bytes_in_buffer as libc::c_ulong)
-            .wrapping_sub(num_bytes as crate::stddef_h::size_t)
+        (*src).bytes_in_buffer = ((*src).bytes_in_buffer as libc::c_ulong - num_bytes as crate::stddef_h::size_t)
             as crate::stddef_h::size_t as crate::stddef_h::size_t
     };
 }
@@ -441,8 +440,8 @@ pub unsafe extern "C" fn jpeg_stdio_src(
         .expect("non-null function pointer")(
             cinfo as crate::jpeglib_h::j_common_ptr,
             crate::jpeglib_h::JPOOL_PERMANENT,
-            (INPUT_BUF_SIZE as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<crate::jmorecfg_h::JOCTET>() as libc::c_ulong),
+            INPUT_BUF_SIZE as libc::c_ulong *
+    ::std::mem::size_of::<crate::jmorecfg_h::JOCTET>() as libc::c_ulong,
         ) as *mut crate::jmorecfg_h::JOCTET
     } else if (*(*cinfo).src).init_source
         != Some(init_source as unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ())

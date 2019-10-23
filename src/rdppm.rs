@@ -495,8 +495,8 @@ unsafe extern "C" fn read_pbm_integer(
         if !(ch >= '0' as i32 && ch <= '9' as i32) {
             break;
         }
-        val = val.wrapping_mul(10i32 as libc::c_uint);
-        val = val.wrapping_add((ch - '0' as i32) as libc::c_uint)
+        val =  val * 10i32 as libc::c_uint;
+        val =  val + (ch - '0' as i32) as libc::c_uint
     }
     if val > maxval {
         (*(*cinfo).err).msg_code = crate::cderror_h::JERR_PPM_OUTOFRANGE as libc::c_int;
@@ -536,7 +536,7 @@ unsafe extern "C" fn get_text_gray_row(
         let fresh0 = ptr;
         ptr = ptr.offset(1);
         *fresh0 = *rescale.offset(read_pbm_integer(cinfo, infile, maxval) as isize);
-        col = col.wrapping_sub(1)
+        col =  col - 1
     }
     return 1i32 as crate::jmorecfg_h::JDIMENSION;
 }
@@ -570,7 +570,7 @@ unsafe extern "C" fn get_text_gray_rgb_row(
                 *ptr.offset(rindex as isize) = *fresh2;
                 *ptr.offset(aindex as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
                 ptr = ptr.offset(ps as isize);
-                col = col.wrapping_sub(1)
+                col =  col - 1
             }
         } else {
             col = (*cinfo).image_width;
@@ -581,7 +581,7 @@ unsafe extern "C" fn get_text_gray_rgb_row(
                 *fresh4 = *fresh3;
                 *ptr.offset(rindex as isize) = *fresh4;
                 ptr = ptr.offset(ps as isize);
-                col = col.wrapping_sub(1)
+                col =  col - 1
             }
         }
     } else if aindex >= 0i32 {
@@ -594,7 +594,7 @@ unsafe extern "C" fn get_text_gray_rgb_row(
             *ptr.offset(rindex as isize) = *fresh6;
             *ptr.offset(aindex as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
             ptr = ptr.offset(ps as isize);
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
     } else {
         col = (*cinfo).image_width;
@@ -605,7 +605,7 @@ unsafe extern "C" fn get_text_gray_rgb_row(
             *fresh8 = *fresh7;
             *ptr.offset(rindex as isize) = *fresh8;
             ptr = ptr.offset(ps as isize);
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
     }
     return 1i32 as crate::jmorecfg_h::JDIMENSION;
@@ -639,7 +639,7 @@ unsafe extern "C" fn get_text_gray_cmyk_row(
                 ptr.offset(3),
             );
             ptr = ptr.offset(4);
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
     } else {
         col = (*cinfo).image_width;
@@ -656,7 +656,7 @@ unsafe extern "C" fn get_text_gray_cmyk_row(
                 ptr.offset(3),
             );
             ptr = ptr.offset(4);
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
     }
     return 1i32 as crate::jmorecfg_h::JDIMENSION;
@@ -691,7 +691,7 @@ unsafe extern "C" fn get_text_rgb_row(
                     read_pbm_integer(cinfo, infile, maxval) as crate::jmorecfg_h::JSAMPLE;
                 *ptr.offset(aindex as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
                 ptr = ptr.offset(ps as isize);
-                col = col.wrapping_sub(1)
+                col =  col - 1
             }
         } else {
             col = (*cinfo).image_width;
@@ -703,7 +703,7 @@ unsafe extern "C" fn get_text_rgb_row(
                 *ptr.offset(bindex as isize) =
                     read_pbm_integer(cinfo, infile, maxval) as crate::jmorecfg_h::JSAMPLE;
                 ptr = ptr.offset(ps as isize);
-                col = col.wrapping_sub(1)
+                col =  col - 1
             }
         }
     } else if aindex >= 0i32 {
@@ -717,7 +717,7 @@ unsafe extern "C" fn get_text_rgb_row(
                 *rescale.offset(read_pbm_integer(cinfo, infile, maxval) as isize);
             *ptr.offset(aindex as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
             ptr = ptr.offset(ps as isize);
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
     } else {
         col = (*cinfo).image_width;
@@ -729,7 +729,7 @@ unsafe extern "C" fn get_text_rgb_row(
             *ptr.offset(bindex as isize) =
                 *rescale.offset(read_pbm_integer(cinfo, infile, maxval) as isize);
             ptr = ptr.offset(ps as isize);
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
     }
     return 1i32 as crate::jmorecfg_h::JDIMENSION;
@@ -759,7 +759,7 @@ unsafe extern "C" fn get_text_rgb_cmyk_row(
                 read_pbm_integer(cinfo, infile, maxval) as crate::jmorecfg_h::JSAMPLE;
             crate::cmyk_h::rgb_to_cmyk(r, g, b, ptr, ptr.offset(1), ptr.offset(2), ptr.offset(3));
             ptr = ptr.offset(4);
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
     } else {
         col = (*cinfo).image_width;
@@ -780,7 +780,7 @@ unsafe extern "C" fn get_text_rgb_cmyk_row(
                 ptr.offset(3),
             );
             ptr = ptr.offset(4);
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
     }
     return 1i32 as crate::jmorecfg_h::JDIMENSION;
@@ -820,7 +820,7 @@ unsafe extern "C" fn get_scaled_gray_row(
         let fresh10 = ptr;
         ptr = ptr.offset(1);
         *fresh10 = *rescale.offset(*fresh9 as libc::c_int as isize);
-        col = col.wrapping_sub(1)
+        col =  col - 1
     }
     return 1i32 as crate::jmorecfg_h::JDIMENSION;
 }
@@ -872,7 +872,7 @@ unsafe extern "C" fn get_gray_rgb_row(
                 *ptr.offset(rindex as isize) = *fresh13;
                 *ptr.offset(aindex as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
                 ptr = ptr.offset(ps as isize);
-                col = col.wrapping_sub(1)
+                col =  col - 1
             }
         } else {
             col = (*cinfo).image_width;
@@ -885,7 +885,7 @@ unsafe extern "C" fn get_gray_rgb_row(
                 *fresh16 = *fresh15;
                 *ptr.offset(rindex as isize) = *fresh16;
                 ptr = ptr.offset(ps as isize);
-                col = col.wrapping_sub(1)
+                col =  col - 1
             }
         }
     } else if aindex >= 0i32 {
@@ -900,7 +900,7 @@ unsafe extern "C" fn get_gray_rgb_row(
             *ptr.offset(rindex as isize) = *fresh19;
             *ptr.offset(aindex as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
             ptr = ptr.offset(ps as isize);
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
     } else {
         col = (*cinfo).image_width;
@@ -913,7 +913,7 @@ unsafe extern "C" fn get_gray_rgb_row(
             *fresh22 = *fresh21;
             *ptr.offset(rindex as isize) = *fresh22;
             ptr = ptr.offset(ps as isize);
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
     }
     return 1i32 as crate::jmorecfg_h::JDIMENSION;
@@ -964,7 +964,7 @@ unsafe extern "C" fn get_gray_cmyk_row(
                 ptr.offset(3),
             );
             ptr = ptr.offset(4);
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
     } else {
         col = (*cinfo).image_width;
@@ -983,7 +983,7 @@ unsafe extern "C" fn get_gray_cmyk_row(
                 ptr.offset(3),
             );
             ptr = ptr.offset(4);
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
     }
     return 1i32 as crate::jmorecfg_h::JDIMENSION;
@@ -1037,7 +1037,7 @@ unsafe extern "C" fn get_rgb_row(
                 *ptr.offset(bindex as isize) = *fresh27;
                 *ptr.offset(aindex as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
                 ptr = ptr.offset(ps as isize);
-                col = col.wrapping_sub(1)
+                col =  col - 1
             }
         } else {
             col = (*cinfo).image_width;
@@ -1052,7 +1052,7 @@ unsafe extern "C" fn get_rgb_row(
                 bufferptr = bufferptr.offset(1);
                 *ptr.offset(bindex as isize) = *fresh30;
                 ptr = ptr.offset(ps as isize);
-                col = col.wrapping_sub(1)
+                col =  col - 1
             }
         }
     } else if aindex >= 0i32 {
@@ -1069,7 +1069,7 @@ unsafe extern "C" fn get_rgb_row(
             *ptr.offset(bindex as isize) = *rescale.offset(*fresh33 as libc::c_int as isize);
             *ptr.offset(aindex as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
             ptr = ptr.offset(ps as isize);
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
     } else {
         col = (*cinfo).image_width;
@@ -1084,7 +1084,7 @@ unsafe extern "C" fn get_rgb_row(
             bufferptr = bufferptr.offset(1);
             *ptr.offset(bindex as isize) = *rescale.offset(*fresh36 as libc::c_int as isize);
             ptr = ptr.offset(ps as isize);
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
     }
     return 1i32 as crate::jmorecfg_h::JDIMENSION;
@@ -1133,7 +1133,7 @@ unsafe extern "C" fn get_rgb_cmyk_row(
             let mut b: crate::jmorecfg_h::JSAMPLE = *fresh39;
             crate::cmyk_h::rgb_to_cmyk(r, g, b, ptr, ptr.offset(1), ptr.offset(2), ptr.offset(3));
             ptr = ptr.offset(4);
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
     } else {
         col = (*cinfo).image_width;
@@ -1160,7 +1160,7 @@ unsafe extern "C" fn get_rgb_cmyk_row(
                 ptr.offset(3),
             );
             ptr = ptr.offset(4);
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
     }
     return 1i32 as crate::jmorecfg_h::JDIMENSION;
@@ -1244,7 +1244,7 @@ unsafe extern "C" fn get_word_gray_row(
         let fresh45 = ptr;
         ptr = ptr.offset(1);
         *fresh45 = *rescale.offset(temp as isize);
-        col = col.wrapping_sub(1)
+        col =  col - 1
     }
     return 1i32 as crate::jmorecfg_h::JDIMENSION;
 }
@@ -1340,7 +1340,7 @@ unsafe extern "C" fn get_word_rgb_row(
         let fresh54 = ptr;
         ptr = ptr.offset(1);
         *fresh54 = *rescale.offset(temp as isize);
-        col = col.wrapping_sub(1)
+        col =  col - 1
     }
     return 1i32 as crate::jmorecfg_h::JDIMENSION;
 }
@@ -1762,25 +1762,19 @@ unsafe extern "C" fn start_input_ppm(
     /* Allocate space for I/O buffer: 1 or 3 bytes or words/pixel. */
     if need_iobuffer != 0 {
         if c == '6' as i32 {
-            (*source).buffer_width = (w as crate::stddef_h::size_t)
-                .wrapping_mul(3i32 as libc::c_ulong)
-                .wrapping_mul(
-                    (if maxval <= 255i32 as libc::c_uint {
+            (*source).buffer_width = w as crate::stddef_h::size_t * 3i32 as libc::c_ulong *
+    if maxval <= 255i32 as libc::c_uint {
                         ::std::mem::size_of::<U_CHAR>() as libc::c_ulong
                     } else {
-                        (2i32 as libc::c_ulong)
-                            .wrapping_mul(::std::mem::size_of::<U_CHAR>() as libc::c_ulong)
-                    }),
-                )
+                        2i32 as libc::c_ulong * ::std::mem::size_of::<U_CHAR>() as libc::c_ulong
+                    }
         } else {
-            (*source).buffer_width = (w as crate::stddef_h::size_t).wrapping_mul(
-                (if maxval <= 255i32 as libc::c_uint {
+            (*source).buffer_width = w as crate::stddef_h::size_t *
+    if maxval <= 255i32 as libc::c_uint {
                     ::std::mem::size_of::<U_CHAR>() as libc::c_ulong
                 } else {
-                    (2i32 as libc::c_ulong)
-                        .wrapping_mul(::std::mem::size_of::<U_CHAR>() as libc::c_ulong)
-                }),
-            )
+                    2i32 as libc::c_ulong * ::std::mem::size_of::<U_CHAR>() as libc::c_ulong
+                }
         }
         (*source).iobuffer = Some(
             (*(*cinfo).mem)
@@ -1810,7 +1804,8 @@ unsafe extern "C" fn start_input_ppm(
         .expect("non-null function pointer")(
             cinfo as crate::jpeglib_h::j_common_ptr,
             crate::jpeglib_h::JPOOL_IMAGE,
-            w.wrapping_mul((*cinfo).input_components as libc::c_uint),
+            
+            w * (*cinfo).input_components as libc::c_uint,
             1i32 as crate::jmorecfg_h::JDIMENSION,
         );
         (*source).pub_0.buffer_height = 1i32 as crate::jmorecfg_h::JDIMENSION
@@ -1828,10 +1823,10 @@ unsafe extern "C" fn start_input_ppm(
         .expect("non-null function pointer")(
             cinfo as crate::jpeglib_h::j_common_ptr,
             crate::jpeglib_h::JPOOL_IMAGE,
-            ((maxval as libc::c_long + 1i64) as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong),
+            (maxval as libc::c_long + 1i64) as libc::c_ulong *
+    ::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong,
         ) as *mut crate::jmorecfg_h::JSAMPLE;
-        half_maxval = maxval.wrapping_div(2i32 as libc::c_uint) as libc::c_long;
+        half_maxval = ( maxval / 2i32 as libc::c_uint) as libc::c_long;
         val = 0i32 as libc::c_long;
         while val <= maxval as libc::c_long {
             /* The multiplication here must be done in 32 bits to avoid overflow */

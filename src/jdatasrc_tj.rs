@@ -323,8 +323,7 @@ unsafe extern "C" fn skip_input_data(
         (*src).next_input_byte = (*src)
             .next_input_byte
             .offset(num_bytes as crate::stddef_h::size_t as isize);
-        (*src).bytes_in_buffer = ((*src).bytes_in_buffer as libc::c_ulong)
-            .wrapping_sub(num_bytes as crate::stddef_h::size_t)
+        (*src).bytes_in_buffer = ((*src).bytes_in_buffer as libc::c_ulong - num_bytes as crate::stddef_h::size_t)
             as crate::stddef_h::size_t as crate::stddef_h::size_t
     };
 }

@@ -324,7 +324,7 @@ unsafe extern "C" fn process_data_simple_main(
              * think we were done.
              */
             if (*main_ptr).suspended == 0 {
-                *in_row_ctr = (*in_row_ctr).wrapping_sub(1);
+                *in_row_ctr = *in_row_ctr - 1;
                 (*main_ptr).suspended = crate::jmorecfg_h::TRUE
             }
             return;
@@ -333,11 +333,11 @@ unsafe extern "C" fn process_data_simple_main(
          * call suspended; then mark the main buffer empty.
          */
         if (*main_ptr).suspended != 0 {
-            *in_row_ctr = (*in_row_ctr).wrapping_add(1);
+            *in_row_ctr = *in_row_ctr + 1;
             (*main_ptr).suspended = crate::jmorecfg_h::FALSE
         }
         (*main_ptr).rowgroup_ctr = 0i32 as crate::jmorecfg_h::JDIMENSION;
-        (*main_ptr).cur_iMCU_row = (*main_ptr).cur_iMCU_row.wrapping_add(1)
+        (*main_ptr).cur_iMCU_row =  (*main_ptr).cur_iMCU_row + 1
     }
 }
 /*
@@ -399,9 +399,9 @@ pub unsafe extern "C" fn jinit_c_main_controller(
             .expect("non-null function pointer")(
                 cinfo as crate::jpeglib_h::j_common_ptr,
                 crate::jpeglib_h::JPOOL_IMAGE,
+                
                 (*compptr)
-                    .width_in_blocks
-                    .wrapping_mul(crate::jpeglib_h::DCTSIZE as libc::c_uint),
+                    .width_in_blocks * crate::jpeglib_h::DCTSIZE as libc::c_uint,
                 ((*compptr).v_samp_factor * crate::jpeglib_h::DCTSIZE)
                     as crate::jmorecfg_h::JDIMENSION,
             );

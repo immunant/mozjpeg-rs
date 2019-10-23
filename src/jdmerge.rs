@@ -244,8 +244,8 @@ unsafe extern "C" fn build_ycc_rgb_table(mut cinfo: crate::jpeglib_h::j_decompre
     .expect("non-null function pointer")(
         cinfo as crate::jpeglib_h::j_common_ptr,
         crate::jpeglib_h::JPOOL_IMAGE,
-        ((crate::jmorecfg_h::MAXJSAMPLE + 1i32) as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong),
+        (crate::jmorecfg_h::MAXJSAMPLE + 1i32) as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
     ) as *mut libc::c_int;
     (*upsample).Cb_b_tab = Some(
         (*(*cinfo).mem)
@@ -255,8 +255,8 @@ unsafe extern "C" fn build_ycc_rgb_table(mut cinfo: crate::jpeglib_h::j_decompre
     .expect("non-null function pointer")(
         cinfo as crate::jpeglib_h::j_common_ptr,
         crate::jpeglib_h::JPOOL_IMAGE,
-        ((crate::jmorecfg_h::MAXJSAMPLE + 1i32) as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong),
+        (crate::jmorecfg_h::MAXJSAMPLE + 1i32) as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
     ) as *mut libc::c_int;
     (*upsample).Cr_g_tab = Some(
         (*(*cinfo).mem)
@@ -266,8 +266,8 @@ unsafe extern "C" fn build_ycc_rgb_table(mut cinfo: crate::jpeglib_h::j_decompre
     .expect("non-null function pointer")(
         cinfo as crate::jpeglib_h::j_common_ptr,
         crate::jpeglib_h::JPOOL_IMAGE,
-        ((crate::jmorecfg_h::MAXJSAMPLE + 1i32) as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<crate::jpegint_h::JLONG>() as libc::c_ulong),
+        (crate::jmorecfg_h::MAXJSAMPLE + 1i32) as libc::c_ulong *
+    ::std::mem::size_of::<crate::jpegint_h::JLONG>() as libc::c_ulong,
     ) as *mut crate::jpegint_h::JLONG;
     (*upsample).Cb_g_tab = Some(
         (*(*cinfo).mem)
@@ -277,8 +277,8 @@ unsafe extern "C" fn build_ycc_rgb_table(mut cinfo: crate::jpeglib_h::j_decompre
     .expect("non-null function pointer")(
         cinfo as crate::jpeglib_h::j_common_ptr,
         crate::jpeglib_h::JPOOL_IMAGE,
-        ((crate::jmorecfg_h::MAXJSAMPLE + 1i32) as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<crate::jpegint_h::JLONG>() as libc::c_ulong),
+        (crate::jmorecfg_h::MAXJSAMPLE + 1i32) as libc::c_ulong *
+    ::std::mem::size_of::<crate::jpegint_h::JLONG>() as libc::c_ulong,
     ) as *mut crate::jpegint_h::JLONG;
     i = 0i32;
     x = -crate::jmorecfg_h::CENTERJSAMPLE as crate::jpegint_h::JLONG;
@@ -350,7 +350,7 @@ unsafe extern "C" fn merged_2v_upsample(
         if (*cinfo).out_color_space as libc::c_uint
             == crate::jpeglib_h::JCS_RGB565 as libc::c_int as libc::c_uint
         {
-            size = (*cinfo).output_width.wrapping_mul(2i32 as libc::c_uint)
+            size =  (*cinfo).output_width * 2i32 as libc::c_uint
         }
         crate::jpegint_h::jcopy_sample_rows(
             &mut (*upsample).spare_row,
@@ -370,7 +370,7 @@ unsafe extern "C" fn merged_2v_upsample(
             num_rows = (*upsample).rows_to_go
         }
         /* And not more than what the client can accept: */
-        out_rows_avail = (out_rows_avail as libc::c_uint).wrapping_sub(*out_row_ctr)
+        out_rows_avail = (out_rows_avail as libc::c_uint - *out_row_ctr)
             as crate::jmorecfg_h::JDIMENSION
             as crate::jmorecfg_h::JDIMENSION;
         if num_rows > out_rows_avail {
@@ -380,7 +380,7 @@ unsafe extern "C" fn merged_2v_upsample(
         work_ptrs[0] = *output_buf.offset(*out_row_ctr as isize);
         if num_rows > 1i32 as libc::c_uint {
             work_ptrs[1] =
-                *output_buf.offset((*out_row_ctr).wrapping_add(1i32 as libc::c_uint) as isize)
+                *output_buf.offset((*out_row_ctr + 1i32 as libc::c_uint) as isize)
         } else {
             work_ptrs[1] = (*upsample).spare_row;
             (*upsample).spare_full = crate::jmorecfg_h::TRUE
@@ -395,14 +395,14 @@ unsafe extern "C" fn merged_2v_upsample(
         );
     }
     /* Adjust counts */
-    *out_row_ctr = (*out_row_ctr as libc::c_uint).wrapping_add(num_rows)
+    *out_row_ctr = (*out_row_ctr as libc::c_uint + num_rows)
         as crate::jmorecfg_h::JDIMENSION as crate::jmorecfg_h::JDIMENSION;
-    (*upsample).rows_to_go = ((*upsample).rows_to_go as libc::c_uint).wrapping_sub(num_rows)
+    (*upsample).rows_to_go = ((*upsample).rows_to_go as libc::c_uint - num_rows)
         as crate::jmorecfg_h::JDIMENSION
         as crate::jmorecfg_h::JDIMENSION;
     /* When the buffer is emptied, declare this input row group consumed */
     if (*upsample).spare_full == 0 {
-        *in_row_group_ctr = (*in_row_group_ctr).wrapping_add(1)
+        *in_row_group_ctr = *in_row_group_ctr + 1
     };
 }
 
@@ -427,8 +427,8 @@ unsafe extern "C" fn merged_1v_upsample(
         output_buf.offset(*out_row_ctr as isize),
     );
     /* Adjust counts */
-    *out_row_ctr = (*out_row_ctr).wrapping_add(1);
-    *in_row_group_ctr = (*in_row_group_ctr).wrapping_add(1);
+    *out_row_ctr = *out_row_ctr + 1;
+    *in_row_group_ctr = *in_row_group_ctr + 1;
 }
 /*
  * These are the routines invoked by the control routines to do
@@ -722,9 +722,8 @@ pub unsafe extern "C" fn jinit_merged_upsampler(mut cinfo: crate::jpeglib_h::j_d
             as unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> (),
     );
     (*upsample).pub_0.need_context_rows = crate::jmorecfg_h::FALSE;
-    (*upsample).out_row_width = (*cinfo)
-        .output_width
-        .wrapping_mul((*cinfo).out_color_components as libc::c_uint);
+    (*upsample).out_row_width =  (*cinfo)
+        .output_width * (*cinfo).out_color_components as libc::c_uint;
     if (*cinfo).max_v_samp_factor == 2i32 {
         (*upsample).pub_0.upsample = Some(
             merged_2v_upsample
@@ -795,8 +794,8 @@ pub unsafe extern "C" fn jinit_merged_upsampler(mut cinfo: crate::jpeglib_h::j_d
         .expect("non-null function pointer")(
             cinfo as crate::jpeglib_h::j_common_ptr,
             crate::jpeglib_h::JPOOL_IMAGE,
-            ((*upsample).out_row_width as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong),
+            (*upsample).out_row_width as libc::c_ulong *
+    ::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong,
         ) as crate::jpeglib_h::JSAMPROW
     } else {
         (*upsample).pub_0.upsample = Some(

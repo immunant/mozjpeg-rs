@@ -259,8 +259,8 @@ unsafe extern "C" fn init_destination(mut cinfo: crate::jpeglib_h::j_compress_pt
     .expect("non-null function pointer")(
         cinfo as crate::jpeglib_h::j_common_ptr,
         crate::jpeglib_h::JPOOL_IMAGE,
-        (OUTPUT_BUF_SIZE as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<crate::jmorecfg_h::JOCTET>() as libc::c_ulong),
+        OUTPUT_BUF_SIZE as libc::c_ulong *
+    ::std::mem::size_of::<crate::jmorecfg_h::JOCTET>() as libc::c_ulong,
     ) as *mut crate::jmorecfg_h::JOCTET;
     (*dest).pub_0.next_output_byte = (*dest).buffer;
     (*dest).pub_0.free_in_buffer = OUTPUT_BUF_SIZE as crate::stddef_h::size_t;
@@ -323,7 +323,7 @@ unsafe extern "C" fn empty_mem_output_buffer(
     let mut nextbuffer: *mut crate::jmorecfg_h::JOCTET = ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>();
     let mut dest: my_mem_dest_ptr = (*cinfo).dest as my_mem_dest_ptr;
     /* Try to allocate new buffer with double size */
-    nextsize = (*dest).bufsize.wrapping_mul(2i32 as libc::c_ulong);
+    nextsize =  (*dest).bufsize * 2i32 as libc::c_ulong;
     nextbuffer = crate::stdlib::malloc(nextsize) as *mut crate::jmorecfg_h::JOCTET;
     if nextbuffer.is_null() {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_OUT_OF_MEMORY as libc::c_int;
@@ -362,7 +362,7 @@ unsafe extern "C" fn empty_mem_output_buffer(
 unsafe extern "C" fn term_destination(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
     let mut dest: my_dest_ptr = (*cinfo).dest as my_dest_ptr;
     let mut datacount: crate::stddef_h::size_t =
-        (OUTPUT_BUF_SIZE as libc::c_ulong).wrapping_sub((*dest).pub_0.free_in_buffer);
+        OUTPUT_BUF_SIZE as libc::c_ulong - (*dest).pub_0.free_in_buffer;
     /* Write any data remaining in the buffer */
     if datacount > 0i32 as libc::c_ulong {
         if crate::stdlib::fwrite(
@@ -399,7 +399,7 @@ unsafe extern "C" fn term_destination(mut cinfo: crate::jpeglib_h::j_compress_pt
 unsafe extern "C" fn term_mem_destination(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
     let mut dest: my_mem_dest_ptr = (*cinfo).dest as my_mem_dest_ptr;
     *(*dest).outbuffer = (*dest).buffer;
-    *(*dest).outsize = (*dest).bufsize.wrapping_sub((*dest).pub_0.free_in_buffer);
+    *(*dest).outsize =  (*dest).bufsize - (*dest).pub_0.free_in_buffer;
 }
 /* Standard data source and destination managers: stdio streams. */
 /* Caller is responsible for opening the file before and closing after. */

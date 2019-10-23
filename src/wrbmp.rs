@@ -407,7 +407,7 @@ unsafe extern "C" fn put_pixel_rows(
             1i32 as crate::jmorecfg_h::JDIMENSION,
             crate::jmorecfg_h::TRUE,
         );
-        (*dest).cur_output_row = (*dest).cur_output_row.wrapping_add(1);
+        (*dest).cur_output_row =  (*dest).cur_output_row + 1;
         outptr = *image_ptr.offset(0)
     } else {
         outptr = (*dest).iobuffer
@@ -424,7 +424,7 @@ unsafe extern "C" fn put_pixel_rows(
             inptr as *const libc::c_void,
             (*dest).row_width as crate::stddef_h::size_t,
         );
-        outptr = outptr.offset((*cinfo).output_width.wrapping_mul(3i32 as libc::c_uint) as isize)
+        outptr = outptr.offset(((*cinfo).output_width * 3i32 as libc::c_uint) as isize)
     } else if (*cinfo).out_color_space as libc::c_uint
         == crate::jpeglib_h::JCS_RGB565 as libc::c_int as libc::c_uint
     {
@@ -449,7 +449,7 @@ unsafe extern "C" fn put_pixel_rows(
             }
             outptr = outptr.offset(3);
             inptr2 = inptr2.offset(1);
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
     } else if (*cinfo).out_color_space as libc::c_uint
         == crate::jpeglib_h::JCS_CMYK as libc::c_int as libc::c_uint
@@ -471,7 +471,7 @@ unsafe extern "C" fn put_pixel_rows(
             let mut k: crate::jmorecfg_h::JSAMPLE = *fresh3;
             crate::cmyk_h::cmyk_to_rgb(c, m, y, k, outptr.offset(2), outptr.offset(1), outptr);
             outptr = outptr.offset(3);
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
     } else {
         let mut rindex: libc::c_int = crate::jmorecfg_h::rgb_red[(*cinfo).out_color_space as usize];
@@ -488,7 +488,7 @@ unsafe extern "C" fn put_pixel_rows(
             *outptr.offset(2) = *inptr.offset(rindex as isize);
             outptr = outptr.offset(3);
             inptr = inptr.offset(ps as isize);
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
     }
     /* Zero out the pad bytes. */
@@ -538,7 +538,7 @@ unsafe extern "C" fn put_gray_rows(
             1i32 as crate::jmorecfg_h::JDIMENSION,
             crate::jmorecfg_h::TRUE,
         );
-        (*dest).cur_output_row = (*dest).cur_output_row.wrapping_add(1);
+        (*dest).cur_output_row =  (*dest).cur_output_row + 1;
         outptr = *image_ptr.offset(0)
     } else {
         outptr = (*dest).iobuffer
@@ -998,7 +998,8 @@ unsafe extern "C" fn finish_output_bmp(
         while row > 0i32 as libc::c_uint {
             if !progress.is_null() {
                 (*progress).pub_0.pass_counter =
-                    (*cinfo).output_height.wrapping_sub(row) as libc::c_long;
+                    (
+                    (*cinfo).output_height - row) as libc::c_long;
                 (*progress).pub_0.pass_limit = (*cinfo).output_height as libc::c_long;
                 Some(
                     (*progress)
@@ -1018,7 +1019,8 @@ unsafe extern "C" fn finish_output_bmp(
             .expect("non-null function pointer")(
                 cinfo as crate::jpeglib_h::j_common_ptr,
                 (*dest).whole_image,
-                row.wrapping_sub(1i32 as libc::c_uint),
+                
+                row - 1i32 as libc::c_uint,
                 1i32 as crate::jmorecfg_h::JDIMENSION,
                 crate::jmorecfg_h::FALSE,
             );
@@ -1027,9 +1029,9 @@ unsafe extern "C" fn finish_output_bmp(
             while col > 0i32 as libc::c_uint {
                 crate::stdlib::putc(*data_ptr as libc::c_int, outfile);
                 data_ptr = data_ptr.offset(1);
-                col = col.wrapping_sub(1)
+                col =  col - 1
             }
-            row = row.wrapping_sub(1)
+            row =  row - 1
         }
         if !progress.is_null() {
             (*progress).completed_extra_passes += 1
@@ -1159,11 +1161,11 @@ pub unsafe extern "C" fn jinit_write_bmp(
     if (*cinfo).out_color_space as libc::c_uint
         == crate::jpeglib_h::JCS_RGB565 as libc::c_int as libc::c_uint
     {
-        row_width = (*cinfo).output_width.wrapping_mul(2i32 as libc::c_uint);
-        (*dest).data_width = (*cinfo).output_width.wrapping_mul(3i32 as libc::c_uint);
+        row_width =  (*cinfo).output_width * 2i32 as libc::c_uint;
+        (*dest).data_width =  (*cinfo).output_width * 3i32 as libc::c_uint;
         (*dest).row_width = (*dest).data_width;
         while row_width & 3i32 as libc::c_uint != 0i32 as libc::c_uint {
-            row_width = row_width.wrapping_add(1)
+            row_width =  row_width + 1
         }
     } else if (*cinfo).quantize_colors == 0
         && ((*cinfo).out_color_space as libc::c_uint
@@ -1175,22 +1177,20 @@ pub unsafe extern "C" fn jinit_write_bmp(
             || (*cinfo).out_color_space as libc::c_uint
                 == crate::jpeglib_h::JCS_CMYK as libc::c_int as libc::c_uint)
     {
-        row_width = (*cinfo)
-            .output_width
-            .wrapping_mul((*cinfo).output_components as libc::c_uint);
-        (*dest).data_width = (*cinfo).output_width.wrapping_mul(3i32 as libc::c_uint);
+        row_width =  (*cinfo)
+            .output_width * (*cinfo).output_components as libc::c_uint;
+        (*dest).data_width =  (*cinfo).output_width * 3i32 as libc::c_uint;
         (*dest).row_width = (*dest).data_width
     } else {
-        row_width = (*cinfo)
-            .output_width
-            .wrapping_mul((*cinfo).output_components as libc::c_uint);
+        row_width =  (*cinfo)
+            .output_width * (*cinfo).output_components as libc::c_uint;
         (*dest).data_width = row_width;
         (*dest).row_width = (*dest).data_width
     }
     while (*dest).row_width & 3i32 as libc::c_uint != 0i32 as libc::c_uint {
-        (*dest).row_width = (*dest).row_width.wrapping_add(1)
+        (*dest).row_width =  (*dest).row_width + 1
     }
-    (*dest).pad_bytes = (*dest).row_width.wrapping_sub((*dest).data_width) as libc::c_int;
+    (*dest).pad_bytes = ( (*dest).row_width - (*dest).data_width) as libc::c_int;
     if use_inversion_array != 0 {
         /* Allocate space for inversion array, prepare for write pass */
         (*dest).whole_image = Some(

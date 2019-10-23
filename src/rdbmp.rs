@@ -526,7 +526,7 @@ unsafe extern "C" fn get_8bit_row(
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     if (*source).use_inversion_array != 0 {
         /* Fetch next row from virtual array */
-        (*source).source_row = (*source).source_row.wrapping_sub(1);
+        (*source).source_row =  (*source).source_row - 1;
         image_ptr = Some(
             (*(*cinfo).mem)
                 .access_virt_sarray
@@ -584,7 +584,7 @@ unsafe extern "C" fn get_8bit_row(
             let fresh1 = outptr;
             outptr = outptr.offset(1);
             *fresh1 = *(*colormap.offset(0)).offset(t as isize);
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
     } else if (*cinfo).in_color_space as libc::c_uint
         == crate::jpeglib_h::JCS_CMYK as libc::c_int as libc::c_uint
@@ -615,7 +615,7 @@ unsafe extern "C" fn get_8bit_row(
                 outptr.offset(3),
             );
             outptr = outptr.offset(4);
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
     } else {
         let mut rindex: libc::c_int = crate::jmorecfg_h::rgb_red[(*cinfo).in_color_space as usize];
@@ -646,7 +646,7 @@ unsafe extern "C" fn get_8bit_row(
                 *outptr.offset(bindex as isize) = *(*colormap.offset(2)).offset(t as isize);
                 *outptr.offset(aindex as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
                 outptr = outptr.offset(ps as isize);
-                col = col.wrapping_sub(1)
+                col =  col - 1
             }
         } else {
             col = (*cinfo).image_width;
@@ -669,7 +669,7 @@ unsafe extern "C" fn get_8bit_row(
                 *outptr.offset(gindex as isize) = *(*colormap.offset(1)).offset(t as isize);
                 *outptr.offset(bindex as isize) = *(*colormap.offset(2)).offset(t as isize);
                 outptr = outptr.offset(ps as isize);
-                col = col.wrapping_sub(1)
+                col =  col - 1
             }
         }
     }
@@ -688,7 +688,7 @@ unsafe extern "C" fn get_24bit_row(
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     if (*source).use_inversion_array != 0 {
         /* Fetch next row from virtual array */
-        (*source).source_row = (*source).source_row.wrapping_sub(1);
+        (*source).source_row =  (*source).source_row - 1;
         image_ptr = Some(
             (*(*cinfo).mem)
                 .access_virt_sarray
@@ -759,7 +759,7 @@ unsafe extern "C" fn get_24bit_row(
                 outptr.offset(3),
             );
             outptr = outptr.offset(4);
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
     } else {
         let mut rindex: libc::c_int = crate::jmorecfg_h::rgb_red[(*cinfo).in_color_space as usize];
@@ -782,7 +782,7 @@ unsafe extern "C" fn get_24bit_row(
                 *outptr.offset(rindex as isize) = *fresh10;
                 *outptr.offset(aindex as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
                 outptr = outptr.offset(ps as isize);
-                col = col.wrapping_sub(1)
+                col =  col - 1
             }
         } else {
             col = (*cinfo).image_width;
@@ -797,7 +797,7 @@ unsafe extern "C" fn get_24bit_row(
                 inptr = inptr.offset(1);
                 *outptr.offset(rindex as isize) = *fresh13;
                 outptr = outptr.offset(ps as isize);
-                col = col.wrapping_sub(1)
+                col =  col - 1
             }
         }
     }
@@ -816,7 +816,7 @@ unsafe extern "C" fn get_32bit_row(
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     if (*source).use_inversion_array != 0 {
         /* Fetch next row from virtual array */
-        (*source).source_row = (*source).source_row.wrapping_sub(1);
+        (*source).source_row =  (*source).source_row - 1;
         image_ptr = Some(
             (*(*cinfo).mem)
                 .access_virt_sarray
@@ -890,7 +890,7 @@ unsafe extern "C" fn get_32bit_row(
             );
             inptr = inptr.offset(1);
             outptr = outptr.offset(4);
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
     } else {
         let mut rindex: libc::c_int = crate::jmorecfg_h::rgb_red[(*cinfo).in_color_space as usize];
@@ -915,7 +915,7 @@ unsafe extern "C" fn get_32bit_row(
                 inptr = inptr.offset(1);
                 *outptr.offset(aindex as isize) = *fresh20;
                 outptr = outptr.offset(ps as isize);
-                col = col.wrapping_sub(1)
+                col =  col - 1
             }
         } else {
             col = (*cinfo).image_width;
@@ -931,7 +931,7 @@ unsafe extern "C" fn get_32bit_row(
                 *outptr.offset(rindex as isize) = *fresh23;
                 inptr = inptr.offset(1);
                 outptr = outptr.offset(ps as isize);
-                col = col.wrapping_sub(1)
+                col =  col - 1
             }
         }
     }
@@ -1012,7 +1012,7 @@ unsafe extern "C" fn preload_image(
                 );
             }
         }
-        row = row.wrapping_add(1)
+        row =  row + 1
     }
     if !progress.is_null() {
         (*progress).completed_extra_passes += 1
@@ -1121,16 +1121,13 @@ unsafe extern "C" fn start_input_bmp(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    bfOffBits = (bmpfileheader[10] as libc::c_int as libc::c_uint)
-        .wrapping_add(
-            (bmpfileheader[(10i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32,
-        )
-        .wrapping_add(
-            (bmpfileheader[(10i32 + 2i32) as usize] as libc::c_int as libc::c_uint) << 16i32,
-        )
-        .wrapping_add(
-            (bmpfileheader[(10i32 + 3i32) as usize] as libc::c_int as libc::c_uint) << 24i32,
-        );
+    bfOffBits = bmpfileheader[10] as libc::c_int as libc::c_uint +
+    ((
+            (bmpfileheader[(10i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32)) +
+    ((
+            (bmpfileheader[(10i32 + 2i32) as usize] as libc::c_int as libc::c_uint) << 16i32)) +
+    ((
+            (bmpfileheader[(10i32 + 3i32) as usize] as libc::c_int as libc::c_uint) << 24i32));
     /* We ignore the remaining fileheader fields */
     /* The infoheader might be 12 bytes (OS/2 1.x), 40 bytes (Windows),
      * or 64 bytes (OS/2 2.x).  Check the first 4 bytes to find out which.
@@ -1150,16 +1147,13 @@ unsafe extern "C" fn start_input_bmp(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    headerSize = (bmpinfoheader[0] as libc::c_int as libc::c_uint)
-        .wrapping_add(
-            (bmpinfoheader[(0i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32,
-        )
-        .wrapping_add(
-            (bmpinfoheader[(0i32 + 2i32) as usize] as libc::c_int as libc::c_uint) << 16i32,
-        )
-        .wrapping_add(
-            (bmpinfoheader[(0i32 + 3i32) as usize] as libc::c_int as libc::c_uint) << 24i32,
-        );
+    headerSize = bmpinfoheader[0] as libc::c_int as libc::c_uint +
+    ((
+            (bmpinfoheader[(0i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32)) +
+    ((
+            (bmpinfoheader[(0i32 + 2i32) as usize] as libc::c_int as libc::c_uint) << 16i32)) +
+    ((
+            (bmpinfoheader[(0i32 + 3i32) as usize] as libc::c_int as libc::c_uint) << 24i32));
     if headerSize < 12i32 as libc::c_uint || headerSize > 64i32 as libc::c_uint {
         (*(*cinfo).err).msg_code = crate::cderror_h::JERR_BMP_BADHEADER as libc::c_int;
         Some(
@@ -1172,9 +1166,10 @@ unsafe extern "C" fn start_input_bmp(
     if !(crate::stdlib::fread(
         bmpinfoheader.as_mut_ptr().offset(4) as *mut libc::c_void,
         1i32 as crate::stddef_h::size_t,
-        headerSize.wrapping_sub(4i32 as libc::c_uint) as crate::stddef_h::size_t,
+        (
+        headerSize - 4i32 as libc::c_uint) as crate::stddef_h::size_t,
         (*source).pub_0.input_file,
-    ) == headerSize.wrapping_sub(4i32 as libc::c_uint) as crate::stddef_h::size_t)
+    ) == ( headerSize - 4i32 as libc::c_uint) as crate::stddef_h::size_t)
     {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_INPUT_EOF as libc::c_int;
         Some(
@@ -1252,26 +1247,20 @@ unsafe extern "C" fn start_input_bmp(
         40 | 64 => {
             /* Decode Windows 3.x header (Microsoft calls this a BITMAPINFOHEADER) */
             /* or OS/2 2.x header, which has additional fields that we ignore */
-            biWidth = (bmpinfoheader[4] as libc::c_int as libc::c_uint)
-                .wrapping_add(
-                    (bmpinfoheader[(4i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32,
-                )
-                .wrapping_add(
-                    (bmpinfoheader[(4i32 + 2i32) as usize] as libc::c_int as libc::c_uint) << 16i32,
-                )
-                .wrapping_add(
-                    (bmpinfoheader[(4i32 + 3i32) as usize] as libc::c_int as libc::c_uint) << 24i32,
-                ) as libc::c_int;
-            biHeight = (bmpinfoheader[8] as libc::c_int as libc::c_uint)
-                .wrapping_add(
-                    (bmpinfoheader[(8i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32,
-                )
-                .wrapping_add(
-                    (bmpinfoheader[(8i32 + 2i32) as usize] as libc::c_int as libc::c_uint) << 16i32,
-                )
-                .wrapping_add(
-                    (bmpinfoheader[(8i32 + 3i32) as usize] as libc::c_int as libc::c_uint) << 24i32,
-                ) as libc::c_int;
+            biWidth = (bmpinfoheader[4] as libc::c_int as libc::c_uint +
+    ((
+                    (bmpinfoheader[(4i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32)) +
+    ((
+                    (bmpinfoheader[(4i32 + 2i32) as usize] as libc::c_int as libc::c_uint) << 16i32)) +
+    ((
+                    (bmpinfoheader[(4i32 + 3i32) as usize] as libc::c_int as libc::c_uint) << 24i32))) as libc::c_int;
+            biHeight = (bmpinfoheader[8] as libc::c_int as libc::c_uint +
+    ((
+                    (bmpinfoheader[(8i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32)) +
+    ((
+                    (bmpinfoheader[(8i32 + 2i32) as usize] as libc::c_int as libc::c_uint) << 16i32)) +
+    ((
+                    (bmpinfoheader[(8i32 + 3i32) as usize] as libc::c_int as libc::c_uint) << 24i32))) as libc::c_int;
             biPlanes = (bmpinfoheader[12] as libc::c_int as libc::c_ushort as libc::c_int
                 + ((bmpinfoheader[(12i32 + 1i32) as usize] as libc::c_int as libc::c_ushort
                     as libc::c_int)
@@ -1281,54 +1270,42 @@ unsafe extern "C" fn start_input_bmp(
                 + ((bmpinfoheader[(14i32 + 1i32) as usize] as libc::c_int as libc::c_ushort
                     as libc::c_int)
                     << 8i32);
-            biCompression = (bmpinfoheader[16] as libc::c_int as libc::c_uint)
-                .wrapping_add(
-                    (bmpinfoheader[(16i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32,
-                )
-                .wrapping_add(
+            biCompression = bmpinfoheader[16] as libc::c_int as libc::c_uint +
+    ((
+                    (bmpinfoheader[(16i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32)) +
+    ((
                     (bmpinfoheader[(16i32 + 2i32) as usize] as libc::c_int as libc::c_uint)
-                        << 16i32,
-                )
-                .wrapping_add(
+                        << 16i32)) +
+    ((
                     (bmpinfoheader[(16i32 + 3i32) as usize] as libc::c_int as libc::c_uint)
-                        << 24i32,
-                );
-            biXPelsPerMeter = (bmpinfoheader[24] as libc::c_int as libc::c_uint)
-                .wrapping_add(
-                    (bmpinfoheader[(24i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32,
-                )
-                .wrapping_add(
+                        << 24i32));
+            biXPelsPerMeter = (bmpinfoheader[24] as libc::c_int as libc::c_uint +
+    ((
+                    (bmpinfoheader[(24i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32)) +
+    ((
                     (bmpinfoheader[(24i32 + 2i32) as usize] as libc::c_int as libc::c_uint)
-                        << 16i32,
-                )
-                .wrapping_add(
+                        << 16i32)) +
+    ((
                     (bmpinfoheader[(24i32 + 3i32) as usize] as libc::c_int as libc::c_uint)
-                        << 24i32,
-                ) as libc::c_int;
-            biYPelsPerMeter = (bmpinfoheader[28] as libc::c_int as libc::c_uint)
-                .wrapping_add(
-                    (bmpinfoheader[(28i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32,
-                )
-                .wrapping_add(
+                        << 24i32))) as libc::c_int;
+            biYPelsPerMeter = (bmpinfoheader[28] as libc::c_int as libc::c_uint +
+    ((
+                    (bmpinfoheader[(28i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32)) +
+    ((
                     (bmpinfoheader[(28i32 + 2i32) as usize] as libc::c_int as libc::c_uint)
-                        << 16i32,
-                )
-                .wrapping_add(
+                        << 16i32)) +
+    ((
                     (bmpinfoheader[(28i32 + 3i32) as usize] as libc::c_int as libc::c_uint)
-                        << 24i32,
-                ) as libc::c_int;
-            biClrUsed = (bmpinfoheader[32] as libc::c_int as libc::c_uint)
-                .wrapping_add(
-                    (bmpinfoheader[(32i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32,
-                )
-                .wrapping_add(
+                        << 24i32))) as libc::c_int;
+            biClrUsed = bmpinfoheader[32] as libc::c_int as libc::c_uint +
+    ((
+                    (bmpinfoheader[(32i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32)) +
+    ((
                     (bmpinfoheader[(32i32 + 2i32) as usize] as libc::c_int as libc::c_uint)
-                        << 16i32,
-                )
-                .wrapping_add(
+                        << 16i32)) +
+    ((
                     (bmpinfoheader[(32i32 + 3i32) as usize] as libc::c_int as libc::c_uint)
-                        << 24i32,
-                );
+                        << 24i32));
             /* biSizeImage, biClrImportant fields are ignored */
             match (*source).bits_per_pixel {
                 8 => {
@@ -1444,7 +1421,7 @@ unsafe extern "C" fn start_input_bmp(
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
     /* Compute distance to bitmap data --- will adjust for colormap below */
-    bPad = bfOffBits.wrapping_sub(headerSize.wrapping_add(14i32 as libc::c_uint)) as libc::c_int;
+    bPad = ( bfOffBits - (headerSize + 14i32 as libc::c_uint)) as libc::c_int;
     /* Read the colormap, if any */
     if mapentrysize > 0i32 {
         if biClrUsed <= 0i32 as libc::c_uint {
@@ -1476,8 +1453,7 @@ unsafe extern "C" fn start_input_bmp(
         /* and read it from the file */
         read_colormap(source, biClrUsed as libc::c_int, mapentrysize);
         /* account for size of colormap */
-        bPad = (bPad as libc::c_uint)
-            .wrapping_sub(biClrUsed.wrapping_mul(mapentrysize as libc::c_uint))
+        bPad = (bPad as libc::c_uint - biClrUsed * mapentrysize as libc::c_uint)
             as libc::c_int as libc::c_int
     }
     /* Skip any remaining pad bytes */
@@ -1613,7 +1589,7 @@ unsafe extern "C" fn start_input_bmp(
         }
     }
     while row_width & 3i32 as libc::c_uint != 0i32 as libc::c_uint {
-        row_width = row_width.wrapping_add(1)
+        row_width =  row_width + 1
     }
     (*source).row_width = row_width;
     if (*source).use_inversion_array != 0 {
@@ -1702,7 +1678,7 @@ unsafe extern "C" fn start_input_bmp(
     /* Ensure that biWidth * cinfo->input_components doesn't exceed the maximum
     value of the JDIMENSION type.  This is only a danger with BMP files, since
     their width and height fields are 32-bit integers. */
-    if (biWidth as libc::c_ulonglong).wrapping_mul((*cinfo).input_components as libc::c_ulonglong)
+    if biWidth as libc::c_ulonglong * (*cinfo).input_components as libc::c_ulonglong
         > 0xffffffffu64
     {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_WIDTH_OVERFLOW as libc::c_int;

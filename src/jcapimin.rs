@@ -519,7 +519,7 @@ pub unsafe extern "C" fn jpeg_finish_compress(mut cinfo: crate::jpeglib_h::j_com
                     cinfo as crate::jpeglib_h::j_common_ptr
                 );
             }
-            iMCU_row = iMCU_row.wrapping_add(1)
+            iMCU_row =  iMCU_row + 1
         }
         Some(
             (*(*cinfo).master)
@@ -584,7 +584,7 @@ pub unsafe extern "C" fn jpeg_write_marker(
     write_marker_byte = (*(*cinfo).marker).write_marker_byte;
     loop {
         let fresh0 = datalen;
-        datalen = datalen.wrapping_sub(1);
+        datalen =  datalen - 1;
         if !(fresh0 != 0) {
             break;
         }

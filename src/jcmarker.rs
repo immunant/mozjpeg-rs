@@ -346,7 +346,7 @@ unsafe extern "C" fn emit_byte(mut cinfo: crate::jpeglib_h::j_compress_ptr, mut 
     let fresh0 = (*dest).next_output_byte;
     (*dest).next_output_byte = (*dest).next_output_byte.offset(1);
     *fresh0 = val as crate::jmorecfg_h::JOCTET;
-    (*dest).free_in_buffer = (*dest).free_in_buffer.wrapping_sub(1);
+    (*dest).free_in_buffer =  (*dest).free_in_buffer - 1;
     if (*dest).free_in_buffer == 0i32 as libc::c_ulong {
         if Some(
             (*dest)
@@ -928,7 +928,8 @@ unsafe extern "C" fn write_marker_header(
     emit_marker(cinfo, marker as JPEG_MARKER);
     emit_2bytes(
         cinfo,
-        datalen.wrapping_add(2i32 as libc::c_uint) as libc::c_int,
+        (
+        datalen + 2i32 as libc::c_uint) as libc::c_int,
     );
     /* total length */
 }

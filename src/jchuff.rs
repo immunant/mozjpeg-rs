@@ -379,15 +379,15 @@ unsafe extern "C" fn start_pass_huff(
                 .expect("non-null function pointer")(
                     cinfo as crate::jpeglib_h::j_common_ptr,
                     crate::jpeglib_h::JPOOL_IMAGE,
-                    (257i32 as libc::c_ulong)
-                        .wrapping_mul(::std::mem::size_of::<libc::c_long>() as libc::c_ulong),
+                    257i32 as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_long>() as libc::c_ulong,
                 ) as *mut libc::c_long
             }
             crate::stdlib::memset(
                 (*entropy).dc_count_ptrs[dctbl as usize] as *mut libc::c_void,
                 0i32,
-                (257i32 as libc::c_ulong)
-                    .wrapping_mul(::std::mem::size_of::<libc::c_long>() as libc::c_ulong),
+                257i32 as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_long>() as libc::c_ulong,
             );
             if (*entropy).ac_count_ptrs[actbl as usize].is_null() {
                 (*entropy).ac_count_ptrs[actbl as usize] = Some(
@@ -398,15 +398,15 @@ unsafe extern "C" fn start_pass_huff(
                 .expect("non-null function pointer")(
                     cinfo as crate::jpeglib_h::j_common_ptr,
                     crate::jpeglib_h::JPOOL_IMAGE,
-                    (257i32 as libc::c_ulong)
-                        .wrapping_mul(::std::mem::size_of::<libc::c_long>() as libc::c_ulong),
+                    257i32 as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_long>() as libc::c_ulong,
                 ) as *mut libc::c_long
             }
             crate::stdlib::memset(
                 (*entropy).ac_count_ptrs[actbl as usize] as *mut libc::c_void,
                 0i32,
-                (257i32 as libc::c_ulong)
-                    .wrapping_mul(::std::mem::size_of::<libc::c_long>() as libc::c_ulong),
+                257i32 as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_long>() as libc::c_ulong,
             );
         } else {
             /* Compute derived values for Huffman tables */
@@ -551,7 +551,7 @@ pub unsafe extern "C" fn jpeg_make_c_derived_tbl(
             let fresh2 = p;
             p = p + 1;
             huffcode[fresh2 as usize] = code;
-            code = code.wrapping_add(1)
+            code =  code + 1
         }
         /* code is now 1 more than the last code used for codelength si; but
          * it must still fit in si bits, since no code is allowed to be all ones.
@@ -700,20 +700,20 @@ unsafe extern "C" fn flush_bits(mut state: *mut working_state) -> crate::jmorecf
             (*state).next_output_byte = (*state).next_output_byte.offset(bytestocopy as isize);
             buffer = buffer.offset(bytestocopy as isize);
             (*state).free_in_buffer =
-                ((*state).free_in_buffer as libc::c_ulong).wrapping_sub(bytestocopy)
+                ((*state).free_in_buffer as libc::c_ulong - bytestocopy)
                     as crate::stddef_h::size_t as crate::stddef_h::size_t;
             if (*state).free_in_buffer == 0i32 as libc::c_ulong {
                 if dump_buffer(state) == 0 {
                     return crate::jmorecfg_h::FALSE;
                 }
             }
-            bytes = (bytes as libc::c_ulong).wrapping_sub(bytestocopy) as crate::stddef_h::size_t
+            bytes = (bytes as libc::c_ulong - bytestocopy) as crate::stddef_h::size_t
                 as crate::stddef_h::size_t
         }
     } else {
-        (*state).free_in_buffer = ((*state).free_in_buffer as libc::c_ulong).wrapping_sub(
-            buffer.wrapping_offset_from((*state).next_output_byte) as libc::c_long as libc::c_ulong,
-        ) as crate::stddef_h::size_t as crate::stddef_h::size_t;
+        (*state).free_in_buffer = ((*state).free_in_buffer as libc::c_ulong -
+    
+            buffer.wrapping_offset_from((*state).next_output_byte) as libc::c_long as libc::c_ulong) as crate::stddef_h::size_t as crate::stddef_h::size_t;
         (*state).next_output_byte = buffer
     }
     return crate::jmorecfg_h::TRUE;
@@ -764,20 +764,20 @@ unsafe extern "C" fn encode_one_block_simd(
             (*state).next_output_byte = (*state).next_output_byte.offset(bytestocopy as isize);
             buffer = buffer.offset(bytestocopy as isize);
             (*state).free_in_buffer =
-                ((*state).free_in_buffer as libc::c_ulong).wrapping_sub(bytestocopy)
+                ((*state).free_in_buffer as libc::c_ulong - bytestocopy)
                     as crate::stddef_h::size_t as crate::stddef_h::size_t;
             if (*state).free_in_buffer == 0i32 as libc::c_ulong {
                 if dump_buffer(state) == 0 {
                     return crate::jmorecfg_h::FALSE;
                 }
             }
-            bytes = (bytes as libc::c_ulong).wrapping_sub(bytestocopy) as crate::stddef_h::size_t
+            bytes = (bytes as libc::c_ulong - bytestocopy) as crate::stddef_h::size_t
                 as crate::stddef_h::size_t
         }
     } else {
-        (*state).free_in_buffer = ((*state).free_in_buffer as libc::c_ulong).wrapping_sub(
-            buffer.wrapping_offset_from((*state).next_output_byte) as libc::c_long as libc::c_ulong,
-        ) as crate::stddef_h::size_t as crate::stddef_h::size_t;
+        (*state).free_in_buffer = ((*state).free_in_buffer as libc::c_ulong -
+    
+            buffer.wrapping_offset_from((*state).next_output_byte) as libc::c_long as libc::c_ulong) as crate::stddef_h::size_t as crate::stddef_h::size_t;
         (*state).next_output_byte = buffer
     }
     return crate::jmorecfg_h::TRUE;
@@ -823,9 +823,9 @@ unsafe extern "C" fn encode_one_block(
      * Agner Fog.
      */
     temp3 = temp
-        >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-            .wrapping_sub(1i32 as libc::c_ulong);
+        >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
     temp ^= temp3;
     temp -= temp3;
     /* For a negative input, want temp2 = bitwise complement of abs(input) */
@@ -998,9 +998,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -1142,9 +1142,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -1286,9 +1286,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -1430,9 +1430,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -1574,9 +1574,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -1718,9 +1718,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -1862,9 +1862,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -2006,9 +2006,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -2150,9 +2150,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -2294,9 +2294,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -2438,9 +2438,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -2582,9 +2582,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -2726,9 +2726,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -2870,9 +2870,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -3014,9 +3014,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -3158,9 +3158,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -3302,9 +3302,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -3446,9 +3446,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -3590,9 +3590,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -3734,9 +3734,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -3878,9 +3878,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -4022,9 +4022,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -4166,9 +4166,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -4310,9 +4310,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -4454,9 +4454,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -4598,9 +4598,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -4742,9 +4742,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -4886,9 +4886,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -5030,9 +5030,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -5174,9 +5174,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -5318,9 +5318,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -5462,9 +5462,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -5606,9 +5606,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -5750,9 +5750,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -5894,9 +5894,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -6038,9 +6038,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -6182,9 +6182,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -6326,9 +6326,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -6470,9 +6470,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -6614,9 +6614,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -6758,9 +6758,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -6902,9 +6902,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -7046,9 +7046,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -7190,9 +7190,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -7334,9 +7334,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -7478,9 +7478,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -7622,9 +7622,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -7766,9 +7766,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -7910,9 +7910,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -8054,9 +8054,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -8198,9 +8198,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -8342,9 +8342,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -8486,9 +8486,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -8630,9 +8630,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -8774,9 +8774,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -8918,9 +8918,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -9062,9 +9062,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -9206,9 +9206,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -9350,9 +9350,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -9494,9 +9494,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -9638,9 +9638,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -9782,9 +9782,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -9926,9 +9926,9 @@ unsafe extern "C" fn encode_one_block(
     } else {
         temp2 = temp;
         temp3 = temp
-            >> (crate::limits_h::CHAR_BIT as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong)
-                .wrapping_sub(1i32 as libc::c_ulong);
+            >> crate::limits_h::CHAR_BIT as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong -
+    1i32 as libc::c_ulong;
         temp ^= temp3;
         temp -= temp3;
         temp2 += temp3;
@@ -10159,20 +10159,20 @@ unsafe extern "C" fn encode_one_block(
             (*state).next_output_byte = (*state).next_output_byte.offset(bytestocopy as isize);
             buffer = buffer.offset(bytestocopy as isize);
             (*state).free_in_buffer =
-                ((*state).free_in_buffer as libc::c_ulong).wrapping_sub(bytestocopy)
+                ((*state).free_in_buffer as libc::c_ulong - bytestocopy)
                     as crate::stddef_h::size_t as crate::stddef_h::size_t;
             if (*state).free_in_buffer == 0i32 as libc::c_ulong {
                 if dump_buffer(state) == 0 {
                     return crate::jmorecfg_h::FALSE;
                 }
             }
-            bytes = (bytes as libc::c_ulong).wrapping_sub(bytestocopy) as crate::stddef_h::size_t
+            bytes = (bytes as libc::c_ulong - bytestocopy) as crate::stddef_h::size_t
                 as crate::stddef_h::size_t
         }
     } else {
-        (*state).free_in_buffer = ((*state).free_in_buffer as libc::c_ulong).wrapping_sub(
-            buffer.wrapping_offset_from((*state).next_output_byte) as libc::c_long as libc::c_ulong,
-        ) as crate::stddef_h::size_t as crate::stddef_h::size_t;
+        (*state).free_in_buffer = ((*state).free_in_buffer as libc::c_ulong -
+    
+            buffer.wrapping_offset_from((*state).next_output_byte) as libc::c_long as libc::c_ulong) as crate::stddef_h::size_t as crate::stddef_h::size_t;
         (*state).next_output_byte = buffer
     }
     return crate::jmorecfg_h::TRUE;
@@ -10192,7 +10192,7 @@ unsafe extern "C" fn emit_restart(
     let fresh1301 = (*state).next_output_byte;
     (*state).next_output_byte = (*state).next_output_byte.offset(1);
     *fresh1301 = 0xffi32 as crate::jmorecfg_h::JOCTET;
-    (*state).free_in_buffer = (*state).free_in_buffer.wrapping_sub(1);
+    (*state).free_in_buffer =  (*state).free_in_buffer - 1;
     if (*state).free_in_buffer == 0i32 as libc::c_ulong {
         if dump_buffer(state) == 0 {
             return 0i32;
@@ -10201,7 +10201,7 @@ unsafe extern "C" fn emit_restart(
     let fresh1302 = (*state).next_output_byte;
     (*state).next_output_byte = (*state).next_output_byte.offset(1);
     *fresh1302 = (0xd0i32 + restart_num) as crate::jmorecfg_h::JOCTET;
-    (*state).free_in_buffer = (*state).free_in_buffer.wrapping_sub(1);
+    (*state).free_in_buffer =  (*state).free_in_buffer - 1;
     if (*state).free_in_buffer == 0i32 as libc::c_ulong {
         if dump_buffer(state) == 0 {
             return 0i32;
@@ -10306,7 +10306,7 @@ unsafe extern "C" fn encode_mcu_huff(
             (*entropy).next_restart_num += 1;
             (*entropy).next_restart_num &= 7i32
         }
-        (*entropy).restarts_to_go = (*entropy).restarts_to_go.wrapping_sub(1)
+        (*entropy).restarts_to_go =  (*entropy).restarts_to_go - 1
     }
     return crate::jmorecfg_h::TRUE;
 }
@@ -10477,7 +10477,7 @@ unsafe extern "C" fn encode_mcu_gather(
             /* Update restart state */
             (*entropy).restarts_to_go = (*cinfo).restart_interval
         }
-        (*entropy).restarts_to_go = (*entropy).restarts_to_go.wrapping_sub(1)
+        (*entropy).restarts_to_go =  (*entropy).restarts_to_go - 1
     }
     blkn = 0i32;
     while blkn < (*cinfo).blocks_in_MCU {
@@ -10655,7 +10655,8 @@ pub unsafe extern "C" fn jpeg_gen_optimal_table(
                 );
             }
             bits[codesize[i as usize] as usize] =
-                bits[codesize[i as usize] as usize].wrapping_add(1)
+                
+                bits[codesize[i as usize] as usize] + 1
         }
         i += 1
     }
@@ -10678,10 +10679,10 @@ pub unsafe extern "C" fn jpeg_gen_optimal_table(
             }
             /* symbol of this length is now a prefix */
             bits[i as usize] = (bits[i as usize] as libc::c_int - 2i32) as crate::jmorecfg_h::UINT8; /* remove two symbols */
-            bits[(i - 1i32) as usize] = bits[(i - 1i32) as usize].wrapping_add(1); /* one goes in this length */
+            bits[(i - 1i32) as usize] =  bits[(i - 1i32) as usize] + 1; /* one goes in this length */
             bits[(j + 1i32) as usize] =
                 (bits[(j + 1i32) as usize] as libc::c_int + 2i32) as crate::jmorecfg_h::UINT8; /* two new symbols in this length */
-            bits[j as usize] = bits[j as usize].wrapping_sub(1)
+            bits[j as usize] =  bits[j as usize] - 1
         }
         i -= 1
     }
@@ -10690,7 +10691,7 @@ pub unsafe extern "C" fn jpeg_gen_optimal_table(
         /* find largest codelength still in use */
         i -= 1
     }
-    bits[i as usize] = bits[i as usize].wrapping_sub(1);
+    bits[i as usize] =  bits[i as usize] - 1;
     /* Return final symbol counts (only for lengths 0..16) */
     crate::stdlib::memcpy(
         (*htbl).bits.as_mut_ptr() as *mut libc::c_void,

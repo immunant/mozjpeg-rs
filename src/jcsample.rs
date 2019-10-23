@@ -302,7 +302,7 @@ unsafe extern "C" fn expand_right_edge(
     let mut pixval: crate::jmorecfg_h::JSAMPLE = 0;
     let mut count: libc::c_int = 0;
     let mut row: libc::c_int = 0;
-    let mut numcols: libc::c_int = output_cols.wrapping_sub(input_cols) as libc::c_int;
+    let mut numcols: libc::c_int = ( output_cols - input_cols) as libc::c_int;
     if numcols > 0i32 {
         row = 0i32;
         while row < num_rows {
@@ -343,7 +343,8 @@ unsafe extern "C" fn sep_downsample(
     while ci < (*cinfo).num_components {
         in_ptr = (*input_buf.offset(ci as isize)).offset(in_row_index as isize);
         out_ptr = (*output_buf.offset(ci as isize)).offset(
-            out_row_group_index.wrapping_mul((*compptr).v_samp_factor as libc::c_uint) as isize,
+            (
+            out_row_group_index * (*compptr).v_samp_factor as libc::c_uint) as isize,
         );
         Some(
             (*(*downsample).methods.as_mut_ptr().offset(ci as isize))
@@ -377,9 +378,8 @@ unsafe extern "C" fn int_downsample(
     let mut v: libc::c_int = 0;
     let mut outcol: crate::jmorecfg_h::JDIMENSION = 0;
     let mut outcol_h: crate::jmorecfg_h::JDIMENSION = 0;
-    let mut output_cols: crate::jmorecfg_h::JDIMENSION = (*compptr)
-        .width_in_blocks
-        .wrapping_mul(crate::jpeglib_h::DCTSIZE as libc::c_uint);
+    let mut output_cols: crate::jmorecfg_h::JDIMENSION =  (*compptr)
+        .width_in_blocks * crate::jpeglib_h::DCTSIZE as libc::c_uint;
     let mut inptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut outptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut outvalue: crate::jpegint_h::JLONG = 0;
@@ -395,7 +395,8 @@ unsafe extern "C" fn int_downsample(
         input_data,
         (*cinfo).max_v_samp_factor,
         (*cinfo).image_width,
-        output_cols.wrapping_mul(h_expand as libc::c_uint),
+        
+        output_cols * h_expand as libc::c_uint,
     );
     inrow = 0i32;
     outrow = 0i32;
@@ -421,8 +422,8 @@ unsafe extern "C" fn int_downsample(
             outptr = outptr.offset(1);
             *fresh2 = ((outvalue + numpix2 as libc::c_long) / numpix as libc::c_long)
                 as crate::jmorecfg_h::JSAMPLE;
-            outcol = outcol.wrapping_add(1);
-            outcol_h = (outcol_h as libc::c_uint).wrapping_add(h_expand as libc::c_uint)
+            outcol =  outcol + 1;
+            outcol_h = (outcol_h as libc::c_uint + h_expand as libc::c_uint)
                 as crate::jmorecfg_h::JDIMENSION
                 as crate::jmorecfg_h::JDIMENSION
         }
@@ -456,9 +457,9 @@ unsafe extern "C" fn fullsize_downsample(
         output_data,
         (*cinfo).max_v_samp_factor,
         (*cinfo).image_width,
+        
         (*compptr)
-            .width_in_blocks
-            .wrapping_mul(crate::jpeglib_h::DCTSIZE as libc::c_uint),
+            .width_in_blocks * crate::jpeglib_h::DCTSIZE as libc::c_uint,
     );
 }
 /*
@@ -481,9 +482,8 @@ unsafe extern "C" fn h2v1_downsample(
 ) {
     let mut outrow: libc::c_int = 0;
     let mut outcol: crate::jmorecfg_h::JDIMENSION = 0;
-    let mut output_cols: crate::jmorecfg_h::JDIMENSION = (*compptr)
-        .width_in_blocks
-        .wrapping_mul(crate::jpeglib_h::DCTSIZE as libc::c_uint);
+    let mut output_cols: crate::jmorecfg_h::JDIMENSION =  (*compptr)
+        .width_in_blocks * crate::jpeglib_h::DCTSIZE as libc::c_uint;
     let mut inptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut outptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut bias: libc::c_int = 0;
@@ -495,7 +495,8 @@ unsafe extern "C" fn h2v1_downsample(
         input_data,
         (*cinfo).max_v_samp_factor,
         (*cinfo).image_width,
-        output_cols.wrapping_mul(2i32 as libc::c_uint),
+        
+        output_cols * 2i32 as libc::c_uint,
     ); /* bias = 0,1,0,1,... for successive samples */
     outrow = 0i32; /* 0=>1, 1=>0 */
     while outrow < (*compptr).v_samp_factor {
@@ -510,7 +511,7 @@ unsafe extern "C" fn h2v1_downsample(
                 as crate::jmorecfg_h::JSAMPLE;
             bias ^= 1i32;
             inptr = inptr.offset(2);
-            outcol = outcol.wrapping_add(1)
+            outcol =  outcol + 1
         }
         outrow += 1
     }
@@ -530,9 +531,8 @@ unsafe extern "C" fn h2v2_downsample(
     let mut inrow: libc::c_int = 0;
     let mut outrow: libc::c_int = 0;
     let mut outcol: crate::jmorecfg_h::JDIMENSION = 0;
-    let mut output_cols: crate::jmorecfg_h::JDIMENSION = (*compptr)
-        .width_in_blocks
-        .wrapping_mul(crate::jpeglib_h::DCTSIZE as libc::c_uint);
+    let mut output_cols: crate::jmorecfg_h::JDIMENSION =  (*compptr)
+        .width_in_blocks * crate::jpeglib_h::DCTSIZE as libc::c_uint;
     let mut inptr0: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut inptr1: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut outptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
@@ -545,7 +545,8 @@ unsafe extern "C" fn h2v2_downsample(
         input_data,
         (*cinfo).max_v_samp_factor,
         (*cinfo).image_width,
-        output_cols.wrapping_mul(2i32 as libc::c_uint),
+        
+        output_cols * 2i32 as libc::c_uint,
     ); /* bias = 1,2,1,2,... for successive samples */
     inrow = 0i32; /* 1=>2, 2=>1 */
     outrow = 0i32;
@@ -567,7 +568,7 @@ unsafe extern "C" fn h2v2_downsample(
             bias ^= 3i32;
             inptr0 = inptr0.offset(2);
             inptr1 = inptr1.offset(2);
-            outcol = outcol.wrapping_add(1)
+            outcol =  outcol + 1
         }
         inrow += 2i32;
         outrow += 1
@@ -588,9 +589,8 @@ unsafe extern "C" fn h2v2_smooth_downsample(
     let mut inrow: libc::c_int = 0;
     let mut outrow: libc::c_int = 0;
     let mut colctr: crate::jmorecfg_h::JDIMENSION = 0;
-    let mut output_cols: crate::jmorecfg_h::JDIMENSION = (*compptr)
-        .width_in_blocks
-        .wrapping_mul(crate::jpeglib_h::DCTSIZE as libc::c_uint);
+    let mut output_cols: crate::jmorecfg_h::JDIMENSION =  (*compptr)
+        .width_in_blocks * crate::jpeglib_h::DCTSIZE as libc::c_uint;
     let mut inptr0: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut inptr1: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut above_ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
@@ -608,7 +608,8 @@ unsafe extern "C" fn h2v2_smooth_downsample(
         input_data.offset(-1),
         (*cinfo).max_v_samp_factor + 2i32,
         (*cinfo).image_width,
-        output_cols.wrapping_mul(2i32 as libc::c_uint),
+        
+        output_cols * 2i32 as libc::c_uint,
     );
     /* We don't bother to form the individual "smoothed" input pixel values;
      * we can directly compute the output which is the average of the four
@@ -658,7 +659,7 @@ unsafe extern "C" fn h2v2_smooth_downsample(
         inptr1 = inptr1.offset(2);
         above_ptr = above_ptr.offset(2);
         below_ptr = below_ptr.offset(2);
-        colctr = output_cols.wrapping_sub(2i32 as libc::c_uint);
+        colctr =  output_cols - 2i32 as libc::c_uint;
         while colctr > 0i32 as libc::c_uint {
             /* sum of pixels directly mapped to this output element */
             membersum = (*inptr0 as libc::c_int
@@ -693,7 +694,7 @@ unsafe extern "C" fn h2v2_smooth_downsample(
             inptr1 = inptr1.offset(2);
             above_ptr = above_ptr.offset(2);
             below_ptr = below_ptr.offset(2);
-            colctr = colctr.wrapping_sub(1)
+            colctr =  colctr - 1
         }
         /* Special case for last column */
         membersum = (*inptr0 as libc::c_int
@@ -733,9 +734,8 @@ unsafe extern "C" fn fullsize_smooth_downsample(
 ) {
     let mut outrow: libc::c_int = 0;
     let mut colctr: crate::jmorecfg_h::JDIMENSION = 0;
-    let mut output_cols: crate::jmorecfg_h::JDIMENSION = (*compptr)
-        .width_in_blocks
-        .wrapping_mul(crate::jpeglib_h::DCTSIZE as libc::c_uint);
+    let mut output_cols: crate::jmorecfg_h::JDIMENSION =  (*compptr)
+        .width_in_blocks * crate::jpeglib_h::DCTSIZE as libc::c_uint;
     let mut inptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut above_ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut below_ptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
@@ -789,7 +789,7 @@ unsafe extern "C" fn fullsize_smooth_downsample(
         *fresh10 = (membersum + 32768i32 as libc::c_long >> 16i32) as crate::jmorecfg_h::JSAMPLE;
         lastcolsum = colsum;
         colsum = nextcolsum;
-        colctr = output_cols.wrapping_sub(2i32 as libc::c_uint);
+        colctr =  output_cols - 2i32 as libc::c_uint;
         while colctr > 0i32 as libc::c_uint {
             let fresh11 = inptr;
             inptr = inptr.offset(1);
@@ -808,7 +808,7 @@ unsafe extern "C" fn fullsize_smooth_downsample(
                 (membersum + 32768i32 as libc::c_long >> 16i32) as crate::jmorecfg_h::JSAMPLE;
             lastcolsum = colsum;
             colsum = nextcolsum;
-            colctr = colctr.wrapping_sub(1)
+            colctr =  colctr - 1
         }
         /* Special case for last column */
         membersum = *inptr as libc::c_int as crate::jpegint_h::JLONG;

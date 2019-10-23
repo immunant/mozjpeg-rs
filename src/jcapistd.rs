@@ -364,7 +364,7 @@ pub unsafe extern "C" fn jpeg_write_scanlines(
         .expect("non-null function pointer")(cinfo);
     }
     /* Ignore any extra scanlines at bottom of image. */
-    rows_left = (*cinfo).image_height.wrapping_sub((*cinfo).next_scanline);
+    rows_left =  (*cinfo).image_height - (*cinfo).next_scanline;
     if num_lines > rows_left {
         num_lines = rows_left
     }
@@ -375,7 +375,7 @@ pub unsafe extern "C" fn jpeg_write_scanlines(
             .expect("non-null function pointer"),
     )
     .expect("non-null function pointer")(cinfo, scanlines, &mut row_ctr, num_lines);
-    (*cinfo).next_scanline = ((*cinfo).next_scanline as libc::c_uint).wrapping_add(row_ctr)
+    (*cinfo).next_scanline = ((*cinfo).next_scanline as libc::c_uint + row_ctr)
         as crate::jmorecfg_h::JDIMENSION
         as crate::jmorecfg_h::JDIMENSION;
     return row_ctr;
@@ -463,7 +463,7 @@ pub unsafe extern "C" fn jpeg_write_raw_data(
     }
     /* OK, we processed one iMCU row. */
     (*cinfo).next_scanline =
-        ((*cinfo).next_scanline as libc::c_uint).wrapping_add(lines_per_iMCU_row)
+        ((*cinfo).next_scanline as libc::c_uint + lines_per_iMCU_row)
             as crate::jmorecfg_h::JDIMENSION as crate::jmorecfg_h::JDIMENSION;
     return lines_per_iMCU_row;
 }

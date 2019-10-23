@@ -430,41 +430,37 @@ unsafe extern "C" fn compute_reciprocal(
         *dtbl.offset((crate::jpeglib_h::DCTSIZE2 * 1i32) as isize) = 0i32 as crate::jdct_h::DCTELEM; /* correction */
         *dtbl.offset((crate::jpeglib_h::DCTSIZE2 * 2i32) as isize) = 1i32 as crate::jdct_h::DCTELEM; /* scale */
         *dtbl.offset((crate::jpeglib_h::DCTSIZE2 * 3i32) as isize) =
-            -((::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong)
-                .wrapping_mul(8i32 as libc::c_ulong) as crate::jdct_h::DCTELEM
+            -((::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong *
+    8i32 as libc::c_ulong) as crate::jdct_h::DCTELEM
                 as libc::c_int) as crate::jdct_h::DCTELEM; /* shift */
         return 0i32;
     } /* for rounding */
     b = flss(divisor) - 1i32; /* fractional part is < 0.5 */
-    r = (::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong)
-        .wrapping_mul(8i32 as libc::c_ulong)
-        .wrapping_add(b as libc::c_ulong) as libc::c_int;
-    fq = ((1i32 as crate::jdct_h::UDCTELEM2) << r).wrapping_div(divisor as libc::c_uint);
-    fr = ((1i32 as crate::jdct_h::UDCTELEM2) << r).wrapping_rem(divisor as libc::c_uint);
+    r = (::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong *
+    8i32 as libc::c_ulong + b as libc::c_ulong) as libc::c_int;
+    fq = (((1i32 as crate::jdct_h::UDCTELEM2) << r)) / divisor as libc::c_uint;
+    fr = (((1i32 as crate::jdct_h::UDCTELEM2) << r)) % divisor as libc::c_uint;
     c = (divisor as libc::c_int / 2i32) as crate::jdct_h::UDCTELEM;
     if fr == 0i32 as libc::c_uint {
         /* divisor is power of two */
         /* fq will be one bit too large to fit in DCTELEM, so adjust */
         fq >>= 1i32; /* fractional part is > 0.5 */
         r -= 1
-    } else if fr <= (divisor as libc::c_uint).wrapping_div(2u32) {
-        c = c.wrapping_add(1)
+    } else if fr <= divisor as libc::c_uint / 2u32 {
+        c =  c + 1
     } else {
-        fq = fq.wrapping_add(1)
+        fq =  fq + 1
     } /* reciprocal */
     *dtbl.offset((crate::jpeglib_h::DCTSIZE2 * 0i32) as isize) = fq as crate::jdct_h::DCTELEM; /* correction + roundfactor */
     *dtbl.offset((crate::jpeglib_h::DCTSIZE2 * 1i32) as isize) = c as crate::jdct_h::DCTELEM; /* scale */
     *dtbl.offset((crate::jpeglib_h::DCTSIZE2 * 2i32) as isize) = (1i32
-        << (::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong)
-            .wrapping_mul(8i32 as libc::c_ulong)
-            .wrapping_mul(2i32 as libc::c_ulong)
-            .wrapping_sub(r as libc::c_ulong))
+        << ::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong *
+    8i32 as libc::c_ulong * 2i32 as libc::c_ulong - r as libc::c_ulong)
         as crate::jdct_h::DCTELEM; /* shift */
     *dtbl.offset((crate::jpeglib_h::DCTSIZE2 * 3i32) as isize) =
-        (r as crate::jdct_h::DCTELEM as libc::c_ulong).wrapping_sub(
-            (::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong)
-                .wrapping_mul(8i32 as libc::c_ulong),
-        ) as crate::jdct_h::DCTELEM;
+        (r as crate::jdct_h::DCTELEM as libc::c_ulong -
+    ::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong *
+        8i32 as libc::c_ulong) as crate::jdct_h::DCTELEM;
     if r <= 16i32 {
         return 0i32;
     } else {
@@ -526,9 +522,9 @@ unsafe extern "C" fn start_pass_fdctmgr(mut cinfo: crate::jpeglib_h::j_compress_
                     .expect("non-null function pointer")(
                         cinfo as crate::jpeglib_h::j_common_ptr,
                         crate::jpeglib_h::JPOOL_IMAGE,
-                        ((crate::jpeglib_h::DCTSIZE2 * 4i32) as libc::c_ulong).wrapping_mul(
+                        (crate::jpeglib_h::DCTSIZE2 * 4i32) as libc::c_ulong *
+    
                             ::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong,
-                        ),
                     )
                         as *mut crate::jdct_h::DCTELEM
                 }
@@ -645,9 +641,9 @@ unsafe extern "C" fn start_pass_fdctmgr(mut cinfo: crate::jpeglib_h::j_compress_
                     .expect("non-null function pointer")(
                         cinfo as crate::jpeglib_h::j_common_ptr,
                         crate::jpeglib_h::JPOOL_IMAGE,
-                        ((crate::jpeglib_h::DCTSIZE2 * 4i32) as libc::c_ulong).wrapping_mul(
+                        (crate::jpeglib_h::DCTSIZE2 * 4i32) as libc::c_ulong *
+    
                             ::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong,
-                        ),
                     )
                         as *mut crate::jdct_h::DCTELEM
                 }
@@ -715,8 +711,8 @@ unsafe extern "C" fn start_pass_fdctmgr(mut cinfo: crate::jpeglib_h::j_compress_
                     .expect("non-null function pointer")(
                         cinfo as crate::jpeglib_h::j_common_ptr,
                         crate::jpeglib_h::JPOOL_IMAGE,
-                        (crate::jpeglib_h::DCTSIZE2 as libc::c_ulong)
-                            .wrapping_mul(::std::mem::size_of::<libc::c_float>() as libc::c_ulong),
+                        crate::jpeglib_h::DCTSIZE2 as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_float>() as libc::c_ulong,
                     )
                         as *mut libc::c_float
                 }
@@ -1204,21 +1200,19 @@ unsafe extern "C" fn quantize(
         shift = *divisors.offset((i + crate::jpeglib_h::DCTSIZE2 * 3i32) as isize) as libc::c_int;
         if (temp as libc::c_int) < 0i32 {
             temp = -(temp as libc::c_int) as crate::jdct_h::DCTELEM;
-            product = ((temp as libc::c_int + corr as libc::c_int) as crate::jdct_h::UDCTELEM2)
-                .wrapping_mul(recip as libc::c_uint);
-            product >>= (shift as libc::c_ulong).wrapping_add(
-                (::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong)
-                    .wrapping_mul(8i32 as libc::c_ulong),
-            );
+            product = (temp as libc::c_int + corr as libc::c_int) as crate::jdct_h::UDCTELEM2 *
+    recip as libc::c_uint;
+            product >>= shift as libc::c_ulong +
+    ::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong *
+        8i32 as libc::c_ulong;
             temp = product as crate::jdct_h::DCTELEM;
             temp = -(temp as libc::c_int) as crate::jdct_h::DCTELEM
         } else {
-            product = ((temp as libc::c_int + corr as libc::c_int) as crate::jdct_h::UDCTELEM2)
-                .wrapping_mul(recip as libc::c_uint);
-            product >>= (shift as libc::c_ulong).wrapping_add(
-                (::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong)
-                    .wrapping_mul(8i32 as libc::c_ulong),
-            );
+            product = (temp as libc::c_int + corr as libc::c_int) as crate::jdct_h::UDCTELEM2 *
+    recip as libc::c_uint;
+            product >>= shift as libc::c_ulong +
+    ::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong *
+        8i32 as libc::c_ulong;
             temp = product as crate::jdct_h::DCTELEM
         }
         *output_ptr.offset(i as isize) = temp;
@@ -1390,9 +1384,8 @@ unsafe extern "C" fn forward_DCT(
                 i_0 += 1
             }
         }
-        bi = bi.wrapping_add(1);
-        start_col = (start_col as libc::c_uint)
-            .wrapping_add(crate::jpeglib_h::DCTSIZE as libc::c_uint)
+        bi =  bi + 1;
+        start_col = (start_col as libc::c_uint + crate::jpeglib_h::DCTSIZE as libc::c_uint)
             as crate::jmorecfg_h::JDIMENSION as crate::jmorecfg_h::JDIMENSION
     }
 }
@@ -1573,9 +1566,8 @@ unsafe extern "C" fn forward_DCT_float(
                 i_0 += 1
             }
         }
-        bi = bi.wrapping_add(1);
-        start_col = (start_col as libc::c_uint)
-            .wrapping_add(crate::jpeglib_h::DCTSIZE as libc::c_uint)
+        bi =  bi + 1;
+        start_col = (start_col as libc::c_uint + crate::jpeglib_h::DCTSIZE as libc::c_uint)
             as crate::jmorecfg_h::JDIMENSION as crate::jmorecfg_h::JDIMENSION
     }
 }
@@ -1677,20 +1669,20 @@ pub unsafe extern "C" fn quantize_trellis(
     }
     if (*(*cinfo).master).trellis_eob_opt != 0 {
         accumulated_zero_block_cost = crate::stdlib::malloc(
-            (num_blocks.wrapping_add(1i32 as libc::c_uint) as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_float>() as libc::c_ulong),
+            (num_blocks + 1i32 as libc::c_uint) as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_float>() as libc::c_ulong,
         ) as *mut libc::c_float;
         accumulated_block_cost = crate::stdlib::malloc(
-            (num_blocks.wrapping_add(1i32 as libc::c_uint) as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_float>() as libc::c_ulong),
+            (num_blocks + 1i32 as libc::c_uint) as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_float>() as libc::c_ulong,
         ) as *mut libc::c_float;
         block_run_start = crate::stdlib::malloc(
-            (num_blocks as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong),
+            num_blocks as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
         ) as *mut libc::c_int;
         requires_eob = crate::stdlib::malloc(
-            (num_blocks.wrapping_add(1i32 as libc::c_uint) as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong),
+            (num_blocks + 1i32 as libc::c_uint) as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
         ) as *mut libc::c_int;
         if accumulated_zero_block_cost.is_null()
             || accumulated_block_cost.is_null()
@@ -1715,17 +1707,17 @@ pub unsafe extern "C" fn quantize_trellis(
         i = 0i32;
         while i < dc_trellis_candidates {
             accumulated_dc_cost[i as usize] = crate::stdlib::malloc(
-                (num_blocks as libc::c_ulong)
-                    .wrapping_mul(::std::mem::size_of::<libc::c_float>() as libc::c_ulong),
+                num_blocks as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_float>() as libc::c_ulong,
             ) as *mut libc::c_float;
             dc_cost_backtrack[i as usize] = crate::stdlib::malloc(
-                (num_blocks as libc::c_ulong)
-                    .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong),
+                num_blocks as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
             ) as *mut libc::c_int;
             dc_candidate[i as usize] =
-                crate::stdlib::malloc((num_blocks as libc::c_ulong).wrapping_mul(
-                    ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong,
-                )) as *mut crate::jmorecfg_h::JCOEF;
+                crate::stdlib::malloc(num_blocks as libc::c_ulong *
+    
+                    ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong) as *mut crate::jmorecfg_h::JCOEF;
             if accumulated_dc_cost[i as usize].is_null()
                 || dc_cost_backtrack[i as usize].is_null()
                 || dc_candidate[i as usize].is_null()
@@ -2064,9 +2056,8 @@ pub unsafe extern "C" fn quantize_trellis(
             if !(*requires_eob.offset(i as isize) == 2i32) {
                 cost_2 += *accumulated_zero_block_cost.offset(num_blocks as isize);
                 cost_2 -= *accumulated_zero_block_cost.offset(i as isize);
-                zero_block_run_0 = num_blocks
-                    .wrapping_sub(i as libc::c_uint)
-                    .wrapping_add(*requires_eob.offset(i as isize) as libc::c_uint)
+                zero_block_run_0 = ( num_blocks - i as libc::c_uint +
+    *requires_eob.offset(i as isize) as libc::c_uint)
                     as libc::c_int;
                 nbits_0 = crate::jpeg_nbits_table_h::jpeg_nbits_table[zero_block_run_0 as usize]
                     as libc::c_int;
@@ -2080,7 +2071,7 @@ pub unsafe extern "C" fn quantize_trellis(
             i += 1
         }
         last_block -= 1;
-        bi = num_blocks.wrapping_sub(1i32 as libc::c_uint) as libc::c_int;
+        bi = ( num_blocks - 1i32 as libc::c_uint) as libc::c_int;
         while bi >= 0i32 {
             while bi > last_block {
                 j = Ss;
@@ -2125,15 +2116,15 @@ pub unsafe extern "C" fn quantize_trellis(
         i = 1i32;
         while i < dc_trellis_candidates {
             if *accumulated_dc_cost[i as usize]
-                .offset(num_blocks.wrapping_sub(1i32 as libc::c_uint) as isize)
+                .offset((num_blocks - 1i32 as libc::c_uint) as isize)
                 < *accumulated_dc_cost[j as usize]
-                    .offset(num_blocks.wrapping_sub(1i32 as libc::c_uint) as isize)
+                    .offset((num_blocks - 1i32 as libc::c_uint) as isize)
             {
                 j = i
             }
             i += 1
         }
-        bi = num_blocks.wrapping_sub(1i32 as libc::c_uint) as libc::c_int;
+        bi = ( num_blocks - 1i32 as libc::c_uint) as libc::c_int;
         while bi >= 0i32 {
             (*coef_blocks.offset(bi as isize))[0] = *dc_candidate[j as usize].offset(bi as isize);
             j = *dc_cost_backtrack[j as usize].offset(bi as isize);
@@ -2141,7 +2132,7 @@ pub unsafe extern "C" fn quantize_trellis(
         }
         /* Save DC predictor */
         *last_dc_val =
-            (*coef_blocks.offset(num_blocks.wrapping_sub(1i32 as libc::c_uint) as isize))[0];
+            (*coef_blocks.offset((num_blocks - 1i32 as libc::c_uint) as isize))[0];
         i = 0i32;
         while i < dc_trellis_candidates {
             crate::stdlib::free(accumulated_dc_cost[i as usize] as *mut libc::c_void);
@@ -2397,8 +2388,8 @@ pub unsafe extern "C" fn jinit_forward_dct(mut cinfo: crate::jpeglib_h::j_compre
         .expect("non-null function pointer")(
             cinfo as crate::jpeglib_h::j_common_ptr,
             crate::jpeglib_h::JPOOL_IMAGE,
-            (::std::mem::size_of::<libc::c_float>() as libc::c_ulong)
-                .wrapping_mul(crate::jpeglib_h::DCTSIZE2 as libc::c_ulong),
+            ::std::mem::size_of::<libc::c_float>() as libc::c_ulong *
+    crate::jpeglib_h::DCTSIZE2 as libc::c_ulong,
         ) as *mut libc::c_float
     } else {
         (*fdct).workspace = Some(
@@ -2409,8 +2400,8 @@ pub unsafe extern "C" fn jinit_forward_dct(mut cinfo: crate::jpeglib_h::j_compre
         .expect("non-null function pointer")(
             cinfo as crate::jpeglib_h::j_common_ptr,
             crate::jpeglib_h::JPOOL_IMAGE,
-            (::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong)
-                .wrapping_mul(crate::jpeglib_h::DCTSIZE2 as libc::c_ulong),
+            ::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong *
+    crate::jpeglib_h::DCTSIZE2 as libc::c_ulong,
         ) as *mut crate::jdct_h::DCTELEM
     }
     /* Mark divisor tables unallocated */

@@ -862,9 +862,8 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: crate::jpeglib_h::j_compress_ptr)
         /* For noninterleaved scans, it is convenient to define last_row_height
          * as the number of block rows present in the last iMCU row.
          */
-        tmp = (*compptr)
-            .height_in_blocks
-            .wrapping_rem((*compptr).v_samp_factor as libc::c_uint) as libc::c_int;
+        tmp = ( (*compptr)
+            .height_in_blocks % (*compptr).v_samp_factor as libc::c_uint) as libc::c_int;
         if tmp == 0i32 {
             tmp = (*compptr).v_samp_factor
         }
@@ -908,17 +907,15 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: crate::jpeglib_h::j_compress_ptr)
             (*compptr).MCU_blocks = (*compptr).MCU_width * (*compptr).MCU_height;
             (*compptr).MCU_sample_width = (*compptr).MCU_width * crate::jpeglib_h::DCTSIZE;
             /* Figure number of non-dummy blocks in last MCU column & row */
-            tmp = (*compptr)
-                .width_in_blocks
-                .wrapping_rem((*compptr).MCU_width as libc::c_uint)
+            tmp = ( (*compptr)
+                .width_in_blocks % (*compptr).MCU_width as libc::c_uint)
                 as libc::c_int;
             if tmp == 0i32 {
                 tmp = (*compptr).MCU_width
             }
             (*compptr).last_col_width = tmp;
-            tmp = (*compptr)
-                .height_in_blocks
-                .wrapping_rem((*compptr).MCU_height as libc::c_uint)
+            tmp = ( (*compptr)
+                .height_in_blocks % (*compptr).MCU_height as libc::c_uint)
                 as libc::c_int;
             if tmp == 0i32 {
                 tmp = (*compptr).MCU_height
@@ -1252,7 +1249,7 @@ unsafe extern "C" fn copy_buffer(
          eprint!("SCAN ");
         i = 0i32;
         while i < (*(*cinfo).scan_info.offset(scan_idx as isize)).comps_in_scan {
-             eprint!("{:}{:}",
+              eprint!("{:}{:}",
         unsafe {
     std::ffi::CStr::from_ptr(if i == 0i32 {
                                  b"\x00".as_ptr() as *const libc::c_char
@@ -1266,9 +1263,9 @@ unsafe extern "C" fn copy_buffer(
         }
         
         
-         eprint!(": {:} {:}",
+          eprint!(": {:} {:}",
         (*(*cinfo).scan_info.offset(scan_idx as isize)).Ss as libc::c_int,
-        (*(*cinfo).scan_info.offset(scan_idx as isize)).Se as libc::c_int); eprint!(" {:} {:}",
+        (*(*cinfo).scan_info.offset(scan_idx as isize)).Se as libc::c_int);  eprint!(" {:} {:}",
         (*(*cinfo).scan_info.offset(scan_idx as isize)).Ah as libc::c_int,
         (*master).actual_Al[scan_idx as usize] as libc::c_int); eprintln!("");
     }
@@ -1279,7 +1276,7 @@ unsafe extern "C" fn copy_buffer(
             (*(*cinfo).dest).free_in_buffer,
         );
         src = src.offset((*(*cinfo).dest).free_in_buffer as isize);
-        size = size.wrapping_sub((*(*cinfo).dest).free_in_buffer);
+        size =  size - (*(*cinfo).dest).free_in_buffer;
         (*(*cinfo).dest).next_output_byte = (*(*cinfo).dest)
             .next_output_byte
             .offset((*(*cinfo).dest).free_in_buffer as isize);
@@ -1309,8 +1306,7 @@ unsafe extern "C" fn copy_buffer(
         size,
     );
     (*(*cinfo).dest).next_output_byte = (*(*cinfo).dest).next_output_byte.offset(size as isize);
-    (*(*cinfo).dest).free_in_buffer = ((*(*cinfo).dest).free_in_buffer as libc::c_ulong)
-        .wrapping_sub(size) as crate::stddef_h::size_t
+    (*(*cinfo).dest).free_in_buffer = ((*(*cinfo).dest).free_in_buffer as libc::c_ulong - size) as crate::stddef_h::size_t
         as crate::stddef_h::size_t;
 }
 
@@ -1336,11 +1332,11 @@ unsafe extern "C" fn select_scans(
             let mut Al: libc::c_int = (next_scan_number - 1i32) / 3i32;
             let mut i: libc::c_int = 0;
             let mut cost: libc::c_ulong = 0i32 as libc::c_ulong;
-            cost = cost.wrapping_add((*master).scan_size[(next_scan_number - 2i32) as usize]);
-            cost = cost.wrapping_add((*master).scan_size[(next_scan_number - 1i32) as usize]);
+            cost =  cost + (*master).scan_size[(next_scan_number - 2i32) as usize];
+            cost =  cost + (*master).scan_size[(next_scan_number - 1i32) as usize];
             i = 0i32;
             while i < Al {
-                cost = cost.wrapping_add((*master).scan_size[(3i32 + 3i32 * i) as usize]);
+                cost =  cost + (*master).scan_size[(3i32 + 3i32 * i) as usize];
                 i += 1
             }
             if Al == 0i32 || cost < (*master).best_cost {
@@ -1361,8 +1357,8 @@ unsafe extern "C" fn select_scans(
         } else if (next_scan_number - luma_freq_split_scan_start) % 2i32 == 1i32 {
             let mut idx: libc::c_int = next_scan_number - luma_freq_split_scan_start >> 1i32;
             let mut cost_0: libc::c_ulong = 0i32 as libc::c_ulong;
-            cost_0 = cost_0.wrapping_add((*master).scan_size[(next_scan_number - 2i32) as usize]);
-            cost_0 = cost_0.wrapping_add((*master).scan_size[(next_scan_number - 1i32) as usize]);
+            cost_0 =  cost_0 + (*master).scan_size[(next_scan_number - 2i32) as usize];
+            cost_0 =  cost_0 + (*master).scan_size[(next_scan_number - 1i32) as usize];
             if cost_0 < (*master).best_cost {
                 (*master).best_cost = cost_0;
                 (*master).best_freq_split_idx_luma = idx
@@ -1385,8 +1381,8 @@ unsafe extern "C" fn select_scans(
         {
             base_scan_idx = (*(*cinfo).master).num_scans_luma;
             (*master).interleave_chroma_dc = ((*master).scan_size[base_scan_idx as usize]
-                <= (*master).scan_size[(base_scan_idx + 1i32) as usize]
-                    .wrapping_add((*master).scan_size[(base_scan_idx + 2i32) as usize]))
+                <=  (*master).scan_size[(base_scan_idx + 1i32) as usize] +
+    (*master).scan_size[(base_scan_idx + 2i32) as usize])
                 as libc::c_int
         } else if next_scan_number
             > (*(*cinfo).master).num_scans_luma + (*(*cinfo).master).num_scans_chroma_dc
@@ -1399,21 +1395,23 @@ unsafe extern "C" fn select_scans(
                 let mut i_0: libc::c_int = 0;
                 let mut cost_1: libc::c_ulong = 0i32 as libc::c_ulong;
                 cost_1 =
-                    cost_1.wrapping_add((*master).scan_size[(next_scan_number - 4i32) as usize]);
+                    
+                    cost_1 + (*master).scan_size[(next_scan_number - 4i32) as usize];
                 cost_1 =
-                    cost_1.wrapping_add((*master).scan_size[(next_scan_number - 3i32) as usize]);
+                    
+                    cost_1 + (*master).scan_size[(next_scan_number - 3i32) as usize];
                 cost_1 =
-                    cost_1.wrapping_add((*master).scan_size[(next_scan_number - 2i32) as usize]);
+                    
+                    cost_1 + (*master).scan_size[(next_scan_number - 2i32) as usize];
                 cost_1 =
-                    cost_1.wrapping_add((*master).scan_size[(next_scan_number - 1i32) as usize]);
+                    
+                    cost_1 + (*master).scan_size[(next_scan_number - 1i32) as usize];
                 i_0 = 0i32;
                 while i_0 < Al_0 {
-                    cost_1 = cost_1.wrapping_add(
-                        (*master).scan_size[(base_scan_idx + 4i32 + 6i32 * i_0) as usize],
-                    );
-                    cost_1 = cost_1.wrapping_add(
-                        (*master).scan_size[(base_scan_idx + 5i32 + 6i32 * i_0) as usize],
-                    );
+                    cost_1 =  cost_1 + 
+                        (*master).scan_size[(base_scan_idx + 4i32 + 6i32 * i_0) as usize];
+                    cost_1 =  cost_1 + 
+                        (*master).scan_size[(base_scan_idx + 5i32 + 6i32 * i_0) as usize];
                     i_0 += 1
                 }
                 if Al_0 == 0i32 || cost_1 < (*master).best_cost {
@@ -1431,21 +1429,24 @@ unsafe extern "C" fn select_scans(
             if next_scan_number == chroma_freq_split_scan_start + 2i32 {
                 (*master).best_freq_split_idx_chroma = 0i32;
                 (*master).best_cost = (*master).scan_size[(next_scan_number - 2i32) as usize];
-                (*master).best_cost = (*master)
-                    .best_cost
-                    .wrapping_add((*master).scan_size[(next_scan_number - 1i32) as usize])
+                (*master).best_cost =  (*master)
+                    .best_cost + (*master).scan_size[(next_scan_number - 1i32) as usize]
             } else if (next_scan_number - chroma_freq_split_scan_start) % 4i32 == 2i32 {
                 let mut idx_0: libc::c_int =
                     next_scan_number - chroma_freq_split_scan_start >> 2i32;
                 let mut cost_2: libc::c_ulong = 0i32 as libc::c_ulong;
                 cost_2 =
-                    cost_2.wrapping_add((*master).scan_size[(next_scan_number - 4i32) as usize]);
+                    
+                    cost_2 + (*master).scan_size[(next_scan_number - 4i32) as usize];
                 cost_2 =
-                    cost_2.wrapping_add((*master).scan_size[(next_scan_number - 3i32) as usize]);
+                    
+                    cost_2 + (*master).scan_size[(next_scan_number - 3i32) as usize];
                 cost_2 =
-                    cost_2.wrapping_add((*master).scan_size[(next_scan_number - 2i32) as usize]);
+                    
+                    cost_2 + (*master).scan_size[(next_scan_number - 2i32) as usize];
                 cost_2 =
-                    cost_2.wrapping_add((*master).scan_size[(next_scan_number - 1i32) as usize]);
+                    
+                    cost_2 + (*master).scan_size[(next_scan_number - 1i32) as usize];
                 if cost_2 < (*master).best_cost {
                     (*master).best_cost = cost_2;
                     (*master).best_freq_split_idx_chroma = idx_0

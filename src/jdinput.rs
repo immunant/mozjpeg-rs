@@ -336,9 +336,8 @@ unsafe extern "C" fn initial_setup(mut cinfo: crate::jpeglib_h::j_decompress_ptr
          * By default, decompress all of the MCU columns.
          */
         (*(*cinfo).master).first_MCU_col[ci as usize] = 0i32 as crate::jmorecfg_h::JDIMENSION;
-        (*(*cinfo).master).last_MCU_col[ci as usize] = (*compptr)
-            .width_in_blocks
-            .wrapping_sub(1i32 as libc::c_uint);
+        (*(*cinfo).master).last_MCU_col[ci as usize] =  (*compptr)
+            .width_in_blocks - 1i32 as libc::c_uint;
         /* downsampled_width and downsampled_height will also be overridden by
          * jdmaster.c if we are doing full decompression.  The transcoder library
          * doesn't use these values, but the calling application might.
@@ -396,9 +395,8 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: crate::jpeglib_h::j_decompress_pt
         /* For noninterleaved scans, it is convenient to define last_row_height
          * as the number of block rows present in the last iMCU row.
          */
-        tmp = (*compptr)
-            .height_in_blocks
-            .wrapping_rem((*compptr).v_samp_factor as libc::c_uint) as libc::c_int;
+        tmp = ( (*compptr)
+            .height_in_blocks % (*compptr).v_samp_factor as libc::c_uint) as libc::c_int;
         if tmp == 0i32 {
             tmp = (*compptr).v_samp_factor
         }
@@ -442,17 +440,15 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: crate::jpeglib_h::j_decompress_pt
             (*compptr).MCU_blocks = (*compptr).MCU_width * (*compptr).MCU_height;
             (*compptr).MCU_sample_width = (*compptr).MCU_width * (*compptr).DCT_scaled_size;
             /* Figure number of non-dummy blocks in last MCU column & row */
-            tmp = (*compptr)
-                .width_in_blocks
-                .wrapping_rem((*compptr).MCU_width as libc::c_uint)
+            tmp = ( (*compptr)
+                .width_in_blocks % (*compptr).MCU_width as libc::c_uint)
                 as libc::c_int;
             if tmp == 0i32 {
                 tmp = (*compptr).MCU_width
             }
             (*compptr).last_col_width = tmp;
-            tmp = (*compptr)
-                .height_in_blocks
-                .wrapping_rem((*compptr).MCU_height as libc::c_uint)
+            tmp = ( (*compptr)
+                .height_in_blocks % (*compptr).MCU_height as libc::c_uint)
                 as libc::c_int;
             if tmp == 0i32 {
                 tmp = (*compptr).MCU_height

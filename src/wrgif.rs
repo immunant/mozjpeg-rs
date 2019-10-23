@@ -586,7 +586,7 @@ unsafe extern "C" fn put_pixel_rows(
         let fresh1 = ptr;
         ptr = ptr.offset(1);
         compress_pixel(dest, *fresh1 as libc::c_int);
-        col = col.wrapping_sub(1)
+        col =  col - 1
     }
 }
 /*

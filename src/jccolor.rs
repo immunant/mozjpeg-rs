@@ -365,8 +365,8 @@ unsafe extern "C" fn rgb_ycc_start(mut cinfo: crate::jpeglib_h::j_compress_ptr) 
     .expect("non-null function pointer")(
         cinfo as crate::jpeglib_h::j_common_ptr,
         crate::jpeglib_h::JPOOL_IMAGE,
-        (TABLE_SIZE as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<crate::jpegint_h::JLONG>() as libc::c_ulong),
+        TABLE_SIZE as libc::c_ulong *
+    ::std::mem::size_of::<crate::jpegint_h::JLONG>() as libc::c_ulong,
     ) as *mut crate::jpegint_h::JLONG;
     (*cconvert).rgb_ycc_tab = rgb_ycc_tab;
     i = 0i32 as crate::jpegint_h::JLONG;
@@ -604,7 +604,7 @@ unsafe extern "C" fn cmyk_ycck_convert(
         outptr1 = *(*output_buf.offset(1)).offset(output_row as isize);
         outptr2 = *(*output_buf.offset(2)).offset(output_row as isize);
         outptr3 = *(*output_buf.offset(3)).offset(output_row as isize);
-        output_row = output_row.wrapping_add(1);
+        output_row =  output_row + 1;
         col = 0i32 as crate::jmorecfg_h::JDIMENSION;
         while col < num_cols {
             r = crate::jmorecfg_h::MAXJSAMPLE - *inptr.offset(0) as libc::c_int;
@@ -636,7 +636,7 @@ unsafe extern "C" fn cmyk_ycck_convert(
                 + *ctab.offset((b + B_CR_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -667,12 +667,12 @@ unsafe extern "C" fn grayscale_convert(
         input_buf = input_buf.offset(1);
         inptr = *fresh22;
         outptr = *(*output_buf.offset(0)).offset(output_row as isize);
-        output_row = output_row.wrapping_add(1);
+        output_row =  output_row + 1;
         col = 0i32 as crate::jmorecfg_h::JDIMENSION;
         while col < num_cols {
             *outptr.offset(col as isize) = *inptr.offset(0);
             inptr = inptr.offset(instride as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -711,7 +711,7 @@ unsafe extern "C" fn null_convert(
             outptr0 = *(*output_buf.offset(0)).offset(output_row as isize);
             outptr1 = *(*output_buf.offset(1)).offset(output_row as isize);
             outptr2 = *(*output_buf.offset(2)).offset(output_row as isize);
-            output_row = output_row.wrapping_add(1);
+            output_row =  output_row + 1;
             col = 0i32 as crate::jmorecfg_h::JDIMENSION;
             while col < num_cols {
                 let fresh24 = inptr;
@@ -723,7 +723,7 @@ unsafe extern "C" fn null_convert(
                 let fresh26 = inptr;
                 inptr = inptr.offset(1);
                 *outptr2.offset(col as isize) = *fresh26;
-                col = col.wrapping_add(1)
+                col =  col + 1
             }
         }
     } else if nc == 4i32 {
@@ -739,7 +739,7 @@ unsafe extern "C" fn null_convert(
             outptr1 = *(*output_buf.offset(1)).offset(output_row as isize);
             outptr2 = *(*output_buf.offset(2)).offset(output_row as isize);
             outptr3 = *(*output_buf.offset(3)).offset(output_row as isize);
-            output_row = output_row.wrapping_add(1);
+            output_row =  output_row + 1;
             col = 0i32 as crate::jmorecfg_h::JDIMENSION;
             while col < num_cols {
                 let fresh28 = inptr;
@@ -754,7 +754,7 @@ unsafe extern "C" fn null_convert(
                 let fresh31 = inptr;
                 inptr = inptr.offset(1);
                 *outptr3.offset(col as isize) = *fresh31;
-                col = col.wrapping_add(1)
+                col =  col + 1
             }
         }
     } else {
@@ -772,12 +772,12 @@ unsafe extern "C" fn null_convert(
                 while col < num_cols {
                     *outptr.offset(col as isize) = *inptr.offset(ci as isize);
                     inptr = inptr.offset(nc as isize);
-                    col = col.wrapping_add(1)
+                    col =  col + 1
                 }
                 ci += 1
             }
             input_buf = input_buf.offset(1);
-            output_row = output_row.wrapping_add(1)
+            output_row =  output_row + 1
         }
     };
 }

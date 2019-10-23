@@ -1099,7 +1099,7 @@ unsafe extern "C" fn color_quantize(
             let fresh3 = ptrout;
             ptrout = ptrout.offset(1);
             *fresh3 = pixcode as crate::jmorecfg_h::JSAMPLE;
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
         row += 1
     }
@@ -1141,7 +1141,7 @@ unsafe extern "C" fn color_quantize3(
             let fresh7 = ptrout;
             ptrout = ptrout.offset(1);
             *fresh7 = pixcode as crate::jmorecfg_h::JSAMPLE;
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
         row += 1
     }
@@ -1172,8 +1172,8 @@ unsafe extern "C" fn quantize_ord_dither(
         /* Initialize output values to 0 so can process components separately */
         crate::jpegint_h::jzero_far(
             *output_buf.offset(row as isize) as *mut libc::c_void,
-            (width as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong),
+            width as libc::c_ulong *
+    ::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong,
         );
         row_index = (*cquantize).row_index;
         ci = 0i32;
@@ -1199,7 +1199,7 @@ unsafe extern "C" fn quantize_ord_dither(
                 input_ptr = input_ptr.offset(nc as isize);
                 output_ptr = output_ptr.offset(1);
                 col_index = col_index + 1i32 & ODITHER_MASK;
-                col = col.wrapping_sub(1)
+                col =  col - 1
             }
             ci += 1
         }
@@ -1263,7 +1263,7 @@ unsafe extern "C" fn quantize3_ord_dither(
             output_ptr = output_ptr.offset(1);
             *fresh11 = pixcode as crate::jmorecfg_h::JSAMPLE;
             col_index = col_index + 1i32 & ODITHER_MASK;
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
         row_index = row_index + 1i32 & ODITHER_MASK;
         (*cquantize).row_index = row_index;
@@ -1304,8 +1304,8 @@ unsafe extern "C" fn quantize_fs_dither(
         /* Initialize output values to 0 so can process components separately */
         crate::jpegint_h::jzero_far(
             *output_buf.offset(row as isize) as *mut libc::c_void,
-            (width as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong),
+            width as libc::c_ulong *
+    ::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong,
         );
         ci = 0i32;
         while ci < nc {
@@ -1315,15 +1315,14 @@ unsafe extern "C" fn quantize_fs_dither(
                 /* unload prev err into array */
                 /* work right to left in this row */
                 input_ptr = input_ptr.offset(
-                    width
-                        .wrapping_sub(1i32 as libc::c_uint)
-                        .wrapping_mul(nc as libc::c_uint) as isize,
+                    ((
+                    width - 1i32 as libc::c_uint) * nc as libc::c_uint) as isize,
                 );
-                output_ptr = output_ptr.offset(width.wrapping_sub(1i32 as libc::c_uint) as isize);
+                output_ptr = output_ptr.offset((width - 1i32 as libc::c_uint) as isize);
                 dir = -1i32;
                 dirnc = -nc;
                 errorptr = (*cquantize).fserrors[ci as usize]
-                    .offset(width.wrapping_add(1i32 as libc::c_uint) as isize) /* so point to rightmost pixel */
+                    .offset((width + 1i32 as libc::c_uint) as isize) /* so point to rightmost pixel */
             /* => entry after last column */
             } else {
                 /* work left to right in this row */
@@ -1369,7 +1368,7 @@ unsafe extern "C" fn quantize_fs_dither(
                 input_ptr = input_ptr.offset(dirnc as isize);
                 output_ptr = output_ptr.offset(dir as isize);
                 errorptr = errorptr.offset(dir as isize);
-                col = col.wrapping_sub(1)
+                col =  col - 1
             }
             *errorptr.offset(0) = bpreverr as FSERROR;
             ci += 1
@@ -1415,8 +1414,8 @@ unsafe extern "C" fn alloc_fs_workspace(mut cinfo: crate::jpeglib_h::j_decompres
     let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr;
     let mut arraysize: crate::stddef_h::size_t = 0;
     let mut i: libc::c_int = 0;
-    arraysize = ((*cinfo).output_width.wrapping_add(2i32 as libc::c_uint) as libc::c_ulong)
-        .wrapping_mul(::std::mem::size_of::<FSERROR>() as libc::c_ulong);
+    arraysize = ((*cinfo).output_width + 2i32 as libc::c_uint) as libc::c_ulong *
+    ::std::mem::size_of::<FSERROR>() as libc::c_ulong;
     i = 0i32;
     while i < (*cinfo).out_color_components {
         (*cquantize).fserrors[i as usize] = Some(
@@ -1522,8 +1521,8 @@ unsafe extern "C" fn start_pass_1_quant(
                 alloc_fs_workspace(cinfo);
             }
             /* Initialize the propagated errors to zero. */
-            arraysize = ((*cinfo).output_width.wrapping_add(2i32 as libc::c_uint) as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<FSERROR>() as libc::c_ulong);
+            arraysize = ((*cinfo).output_width + 2i32 as libc::c_uint) as libc::c_ulong *
+    ::std::mem::size_of::<FSERROR>() as libc::c_ulong;
             i = 0i32;
             while i < (*cinfo).out_color_components {
                 crate::jpegint_h::jzero_far(

@@ -227,7 +227,7 @@ pub unsafe extern "C" fn ycc_extxbgr_convert_internal(
         inptr0 = *(*input_buf.offset(0)).offset(input_row as isize);
         inptr1 = *(*input_buf.offset(1)).offset(input_row as isize);
         inptr2 = *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row = input_row.wrapping_add(1);
+        input_row =  input_row + 1;
         let fresh0 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh0;
@@ -267,7 +267,7 @@ pub unsafe extern "C" fn ycc_extxbgr_convert_internal(
             /* alpha channel value */
             *outptr.offset(RGB_ALPHA_0 as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
             outptr = outptr.offset(RGB_PIXELSIZE_0 as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -302,7 +302,7 @@ pub unsafe extern "C" fn ycc_extrgbx_convert_internal(
         inptr0 = *(*input_buf.offset(0)).offset(input_row as isize);
         inptr1 = *(*input_buf.offset(1)).offset(input_row as isize);
         inptr2 = *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row = input_row.wrapping_add(1);
+        input_row =  input_row + 1;
         let fresh1 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh1;
@@ -321,7 +321,7 @@ pub unsafe extern "C" fn ycc_extrgbx_convert_internal(
                 *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize);
             *outptr.offset(RGB_ALPHA_2 as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
             outptr = outptr.offset(RGB_PIXELSIZE_2 as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -356,7 +356,7 @@ pub unsafe extern "C" fn ycc_rgb_convert_internal(
         inptr0 = *(*input_buf.offset(0)).offset(input_row as isize);
         inptr1 = *(*input_buf.offset(1)).offset(input_row as isize);
         inptr2 = *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row = input_row.wrapping_add(1);
+        input_row =  input_row + 1;
         let fresh2 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh2;
@@ -374,7 +374,7 @@ pub unsafe extern "C" fn ycc_rgb_convert_internal(
             *outptr.offset(crate::jmorecfg_h::RGB_BLUE_5 as isize) =
                 *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize);
             outptr = outptr.offset(crate::jmorecfg_h::RGB_PIXELSIZE_5 as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -409,7 +409,7 @@ pub unsafe extern "C" fn ycc_extxrgb_convert_internal(
         inptr0 = *(*input_buf.offset(0)).offset(input_row as isize);
         inptr1 = *(*input_buf.offset(1)).offset(input_row as isize);
         inptr2 = *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row = input_row.wrapping_add(1);
+        input_row =  input_row + 1;
         let fresh3 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh3;
@@ -428,7 +428,7 @@ pub unsafe extern "C" fn ycc_extxrgb_convert_internal(
                 *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize);
             *outptr.offset(RGB_ALPHA as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
             outptr = outptr.offset(RGB_PIXELSIZE as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -463,7 +463,7 @@ pub unsafe extern "C" fn ycc_extbgr_convert_internal(
         inptr0 = *(*input_buf.offset(0)).offset(input_row as isize);
         inptr1 = *(*input_buf.offset(1)).offset(input_row as isize);
         inptr2 = *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row = input_row.wrapping_add(1);
+        input_row =  input_row + 1;
         let fresh4 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh4;
@@ -481,7 +481,7 @@ pub unsafe extern "C" fn ycc_extbgr_convert_internal(
             *outptr.offset(RGB_BLUE_3 as isize) =
                 *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize);
             outptr = outptr.offset(RGB_PIXELSIZE_3 as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -516,7 +516,7 @@ pub unsafe extern "C" fn ycc_extbgrx_convert_internal(
         inptr0 = *(*input_buf.offset(0)).offset(input_row as isize);
         inptr1 = *(*input_buf.offset(1)).offset(input_row as isize);
         inptr2 = *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row = input_row.wrapping_add(1);
+        input_row =  input_row + 1;
         let fresh5 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh5;
@@ -535,7 +535,7 @@ pub unsafe extern "C" fn ycc_extbgrx_convert_internal(
                 *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize);
             *outptr.offset(RGB_ALPHA_1 as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
             outptr = outptr.offset(RGB_PIXELSIZE_1 as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -570,7 +570,7 @@ pub unsafe extern "C" fn ycc_extrgb_convert_internal(
         inptr0 = *(*input_buf.offset(0)).offset(input_row as isize);
         inptr1 = *(*input_buf.offset(1)).offset(input_row as isize);
         inptr2 = *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row = input_row.wrapping_add(1);
+        input_row =  input_row + 1;
         let fresh6 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh6;
@@ -588,7 +588,7 @@ pub unsafe extern "C" fn ycc_extrgb_convert_internal(
             *outptr.offset(RGB_BLUE_4 as isize) =
                 *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize);
             outptr = outptr.offset(RGB_PIXELSIZE_4 as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -651,7 +651,7 @@ pub unsafe extern "C" fn gray_extrgb_convert_internal(
             break;
         }
         let fresh7 = input_row;
-        input_row = input_row.wrapping_add(1);
+        input_row =  input_row + 1;
         inptr = *(*input_buf.offset(0)).offset(fresh7 as isize);
         let fresh8 = output_buf;
         output_buf = output_buf.offset(1);
@@ -685,7 +685,7 @@ pub unsafe extern "C" fn gray_extrgb_convert_internal(
             /* Set unused byte to 0xFF so it can be interpreted as an opaque */
             /* alpha channel value */
             outptr = outptr.offset(RGB_PIXELSIZE_4 as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -707,7 +707,7 @@ pub unsafe extern "C" fn gray_extrgbx_convert_internal(
             break;
         }
         let fresh11 = input_row;
-        input_row = input_row.wrapping_add(1);
+        input_row =  input_row + 1;
         inptr = *(*input_buf.offset(0)).offset(fresh11 as isize);
         let fresh12 = output_buf;
         output_buf = output_buf.offset(1);
@@ -721,7 +721,7 @@ pub unsafe extern "C" fn gray_extrgbx_convert_internal(
             *outptr.offset(RGB_RED_2 as isize) = *fresh14;
             *outptr.offset(RGB_ALPHA_2 as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
             outptr = outptr.offset(RGB_PIXELSIZE_2 as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -743,7 +743,7 @@ pub unsafe extern "C" fn gray_extbgr_convert_internal(
             break;
         }
         let fresh15 = input_row;
-        input_row = input_row.wrapping_add(1);
+        input_row =  input_row + 1;
         inptr = *(*input_buf.offset(0)).offset(fresh15 as isize);
         let fresh16 = output_buf;
         output_buf = output_buf.offset(1);
@@ -756,7 +756,7 @@ pub unsafe extern "C" fn gray_extbgr_convert_internal(
             *fresh18 = *fresh17;
             *outptr.offset(RGB_RED_3 as isize) = *fresh18;
             outptr = outptr.offset(RGB_PIXELSIZE_3 as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -778,7 +778,7 @@ pub unsafe extern "C" fn gray_extbgrx_convert_internal(
             break;
         }
         let fresh19 = input_row;
-        input_row = input_row.wrapping_add(1);
+        input_row =  input_row + 1;
         inptr = *(*input_buf.offset(0)).offset(fresh19 as isize);
         let fresh20 = output_buf;
         output_buf = output_buf.offset(1);
@@ -792,7 +792,7 @@ pub unsafe extern "C" fn gray_extbgrx_convert_internal(
             *outptr.offset(RGB_RED_1 as isize) = *fresh22;
             *outptr.offset(RGB_ALPHA_1 as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
             outptr = outptr.offset(RGB_PIXELSIZE_1 as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -814,7 +814,7 @@ pub unsafe extern "C" fn gray_extxbgr_convert_internal(
             break;
         }
         let fresh23 = input_row;
-        input_row = input_row.wrapping_add(1);
+        input_row =  input_row + 1;
         inptr = *(*input_buf.offset(0)).offset(fresh23 as isize);
         let fresh24 = output_buf;
         output_buf = output_buf.offset(1);
@@ -828,7 +828,7 @@ pub unsafe extern "C" fn gray_extxbgr_convert_internal(
             *outptr.offset(RGB_RED_0 as isize) = *fresh26;
             *outptr.offset(RGB_ALPHA_0 as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
             outptr = outptr.offset(RGB_PIXELSIZE_0 as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -850,7 +850,7 @@ pub unsafe extern "C" fn gray_extxrgb_convert_internal(
             break;
         }
         let fresh27 = input_row;
-        input_row = input_row.wrapping_add(1);
+        input_row =  input_row + 1;
         inptr = *(*input_buf.offset(0)).offset(fresh27 as isize);
         let fresh28 = output_buf;
         output_buf = output_buf.offset(1);
@@ -864,7 +864,7 @@ pub unsafe extern "C" fn gray_extxrgb_convert_internal(
             *outptr.offset(RGB_RED as isize) = *fresh30;
             *outptr.offset(RGB_ALPHA as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
             outptr = outptr.offset(RGB_PIXELSIZE as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -886,7 +886,7 @@ pub unsafe extern "C" fn gray_rgb_convert_internal(
             break;
         }
         let fresh31 = input_row;
-        input_row = input_row.wrapping_add(1);
+        input_row =  input_row + 1;
         inptr = *(*input_buf.offset(0)).offset(fresh31 as isize);
         let fresh32 = output_buf;
         output_buf = output_buf.offset(1);
@@ -899,7 +899,7 @@ pub unsafe extern "C" fn gray_rgb_convert_internal(
             *fresh34 = *fresh33;
             *outptr.offset(crate::jmorecfg_h::RGB_RED_5 as isize) = *fresh34;
             outptr = outptr.offset(crate::jmorecfg_h::RGB_PIXELSIZE_5 as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -952,7 +952,7 @@ pub unsafe extern "C" fn rgb_extbgr_convert_internal(
         inptr0 = *(*input_buf.offset(0)).offset(input_row as isize);
         inptr1 = *(*input_buf.offset(1)).offset(input_row as isize);
         inptr2 = *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row = input_row.wrapping_add(1);
+        input_row =  input_row + 1;
         let fresh35 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh35;
@@ -983,7 +983,7 @@ pub unsafe extern "C" fn rgb_extbgr_convert_internal(
             /* Set unused byte to 0xFF so it can be interpreted as an opaque */
             /* alpha channel value */
             outptr = outptr.offset(RGB_PIXELSIZE_3 as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -1009,7 +1009,7 @@ pub unsafe extern "C" fn rgb_extrgb_convert_internal(
         inptr0 = *(*input_buf.offset(0)).offset(input_row as isize);
         inptr1 = *(*input_buf.offset(1)).offset(input_row as isize);
         inptr2 = *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row = input_row.wrapping_add(1);
+        input_row =  input_row + 1;
         let fresh36 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh36;
@@ -1019,7 +1019,7 @@ pub unsafe extern "C" fn rgb_extrgb_convert_internal(
             *outptr.offset(RGB_GREEN_4 as isize) = *inptr1.offset(col as isize);
             *outptr.offset(RGB_BLUE_4 as isize) = *inptr2.offset(col as isize);
             outptr = outptr.offset(RGB_PIXELSIZE_4 as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -1045,7 +1045,7 @@ pub unsafe extern "C" fn rgb_extrgbx_convert_internal(
         inptr0 = *(*input_buf.offset(0)).offset(input_row as isize);
         inptr1 = *(*input_buf.offset(1)).offset(input_row as isize);
         inptr2 = *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row = input_row.wrapping_add(1);
+        input_row =  input_row + 1;
         let fresh37 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh37;
@@ -1056,7 +1056,7 @@ pub unsafe extern "C" fn rgb_extrgbx_convert_internal(
             *outptr.offset(RGB_BLUE_2 as isize) = *inptr2.offset(col as isize);
             *outptr.offset(RGB_ALPHA_2 as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
             outptr = outptr.offset(RGB_PIXELSIZE_2 as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -1082,7 +1082,7 @@ pub unsafe extern "C" fn rgb_extbgrx_convert_internal(
         inptr0 = *(*input_buf.offset(0)).offset(input_row as isize);
         inptr1 = *(*input_buf.offset(1)).offset(input_row as isize);
         inptr2 = *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row = input_row.wrapping_add(1);
+        input_row =  input_row + 1;
         let fresh38 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh38;
@@ -1093,7 +1093,7 @@ pub unsafe extern "C" fn rgb_extbgrx_convert_internal(
             *outptr.offset(RGB_BLUE_1 as isize) = *inptr2.offset(col as isize);
             *outptr.offset(RGB_ALPHA_1 as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
             outptr = outptr.offset(RGB_PIXELSIZE_1 as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -1119,7 +1119,7 @@ pub unsafe extern "C" fn rgb_extxbgr_convert_internal(
         inptr0 = *(*input_buf.offset(0)).offset(input_row as isize);
         inptr1 = *(*input_buf.offset(1)).offset(input_row as isize);
         inptr2 = *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row = input_row.wrapping_add(1);
+        input_row =  input_row + 1;
         let fresh39 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh39;
@@ -1130,7 +1130,7 @@ pub unsafe extern "C" fn rgb_extxbgr_convert_internal(
             *outptr.offset(RGB_BLUE_0 as isize) = *inptr2.offset(col as isize);
             *outptr.offset(RGB_ALPHA_0 as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
             outptr = outptr.offset(RGB_PIXELSIZE_0 as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -1156,7 +1156,7 @@ pub unsafe extern "C" fn rgb_extxrgb_convert_internal(
         inptr0 = *(*input_buf.offset(0)).offset(input_row as isize);
         inptr1 = *(*input_buf.offset(1)).offset(input_row as isize);
         inptr2 = *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row = input_row.wrapping_add(1);
+        input_row =  input_row + 1;
         let fresh40 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh40;
@@ -1167,7 +1167,7 @@ pub unsafe extern "C" fn rgb_extxrgb_convert_internal(
             *outptr.offset(RGB_BLUE as isize) = *inptr2.offset(col as isize);
             *outptr.offset(RGB_ALPHA as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
             outptr = outptr.offset(RGB_PIXELSIZE as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -1193,7 +1193,7 @@ pub unsafe extern "C" fn rgb_rgb_convert_internal(
         inptr0 = *(*input_buf.offset(0)).offset(input_row as isize);
         inptr1 = *(*input_buf.offset(1)).offset(input_row as isize);
         inptr2 = *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row = input_row.wrapping_add(1);
+        input_row =  input_row + 1;
         let fresh41 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh41;
@@ -1203,7 +1203,7 @@ pub unsafe extern "C" fn rgb_rgb_convert_internal(
             *outptr.offset(crate::jmorecfg_h::RGB_GREEN_5 as isize) = *inptr1.offset(col as isize);
             *outptr.offset(crate::jmorecfg_h::RGB_BLUE_5 as isize) = *inptr2.offset(col as isize);
             outptr = outptr.offset(crate::jmorecfg_h::RGB_PIXELSIZE_5 as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }

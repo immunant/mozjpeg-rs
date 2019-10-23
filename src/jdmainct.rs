@@ -332,8 +332,8 @@ unsafe extern "C" fn alloc_funny_pointers(mut cinfo: crate::jpeglib_h::j_decompr
     .expect("non-null function pointer")(
         cinfo as crate::jpeglib_h::j_common_ptr,
         crate::jpeglib_h::JPOOL_IMAGE,
-        (((*cinfo).num_components * 2i32) as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<crate::jpeglib_h::JSAMPARRAY>() as libc::c_ulong),
+        ((*cinfo).num_components * 2i32) as libc::c_ulong *
+    ::std::mem::size_of::<crate::jpeglib_h::JSAMPARRAY>() as libc::c_ulong,
     ) as crate::jpeglib_h::JSAMPIMAGE; /* height of a row group of component */
     (*main_ptr).xbuffer[1] = (*main_ptr).xbuffer[0].offset((*cinfo).num_components as isize);
     ci = 0i32;
@@ -352,8 +352,8 @@ unsafe extern "C" fn alloc_funny_pointers(mut cinfo: crate::jpeglib_h::j_decompr
         .expect("non-null function pointer")(
             cinfo as crate::jpeglib_h::j_common_ptr,
             crate::jpeglib_h::JPOOL_IMAGE,
-            ((2i32 * (rgroup * (M + 4i32))) as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<crate::jpeglib_h::JSAMPROW>() as libc::c_ulong),
+            (2i32 * (rgroup * (M + 4i32))) as libc::c_ulong *
+    ::std::mem::size_of::<crate::jpeglib_h::JSAMPROW>() as libc::c_ulong,
         ) as crate::jpeglib_h::JSAMPARRAY; /* want one row group at negative offsets */
         xbuf = xbuf.offset(rgroup as isize);
         let ref mut fresh4 = *(*main_ptr).xbuffer[0].offset(ci as isize);
@@ -450,9 +450,8 @@ unsafe extern "C" fn set_bottom_pointers(mut cinfo: crate::jpeglib_h::j_decompre
         iMCUheight = (*compptr).v_samp_factor * (*compptr).DCT_scaled_size;
         rgroup = iMCUheight / (*cinfo).min_DCT_scaled_size;
         /* Count nondummy sample rows remaining for this component */
-        rows_left = (*compptr)
-            .downsampled_height
-            .wrapping_rem(iMCUheight as crate::jmorecfg_h::JDIMENSION)
+        rows_left = ( (*compptr)
+            .downsampled_height % iMCUheight as crate::jmorecfg_h::JDIMENSION)
             as libc::c_int;
         if rows_left == 0i32 {
             rows_left = iMCUheight
@@ -736,7 +735,7 @@ unsafe extern "C" fn process_data_context_main(
         } /* suspension forced, can do nothing more */
         /* count rows received */
         (*main_ptr).buffer_full = crate::jmorecfg_h::TRUE; /* OK, we have an iMCU row to work with */
-        (*main_ptr).iMCU_row_ctr = (*main_ptr).iMCU_row_ctr.wrapping_add(1)
+        (*main_ptr).iMCU_row_ctr =  (*main_ptr).iMCU_row_ctr + 1
     }
     let mut current_block_26: u64;
     /* Postprocessor typically will not swallow all the input data it is handed
@@ -945,9 +944,9 @@ pub unsafe extern "C" fn jinit_d_main_controller(
         .expect("non-null function pointer")(
             cinfo as crate::jpeglib_h::j_common_ptr,
             crate::jpeglib_h::JPOOL_IMAGE,
+            
             (*compptr)
-                .width_in_blocks
-                .wrapping_mul((*compptr).DCT_scaled_size as libc::c_uint),
+                .width_in_blocks * (*compptr).DCT_scaled_size as libc::c_uint,
             (rgroup * ngroups) as crate::jmorecfg_h::JDIMENSION,
         );
         ci += 1;

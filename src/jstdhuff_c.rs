@@ -39,15 +39,15 @@ pub unsafe extern "C" fn add_huff_table(
     crate::stdlib::memcpy(
         (**htblptr).huffval.as_mut_ptr() as *mut libc::c_void,
         val as *const libc::c_void,
-        (nsymbols as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<crate::jmorecfg_h::UINT8>() as libc::c_ulong),
+        nsymbols as libc::c_ulong *
+    ::std::mem::size_of::<crate::jmorecfg_h::UINT8>() as libc::c_ulong,
     );
     crate::stdlib::memset(
         &mut *(**htblptr).huffval.as_mut_ptr().offset(nsymbols as isize)
             as *mut crate::jmorecfg_h::UINT8 as *mut libc::c_void,
         0i32,
-        ((256i32 - nsymbols) as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<crate::jmorecfg_h::UINT8>() as libc::c_ulong),
+        (256i32 - nsymbols) as libc::c_ulong *
+    ::std::mem::size_of::<crate::jmorecfg_h::UINT8>() as libc::c_ulong,
     );
     /* Initialize sent_table FALSE so table will be written to JPEG file. */
     (**htblptr).sent_table = crate::jmorecfg_h::FALSE;

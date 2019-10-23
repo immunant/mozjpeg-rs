@@ -332,8 +332,7 @@ unsafe extern "C" fn sep_upsample(
                 cinfo,
                 compptr,
                 (*input_buf.offset(ci as isize)).offset(
-                    (*in_row_group_ctr)
-                        .wrapping_mul((*upsample).rowgroup_height[ci as usize] as libc::c_uint)
+                    (*in_row_group_ctr * (*upsample).rowgroup_height[ci as usize] as libc::c_uint)
                         as isize,
                 ),
                 (*upsample).color_buf.as_mut_ptr().offset(ci as isize),
@@ -354,7 +353,7 @@ unsafe extern "C" fn sep_upsample(
         num_rows = (*upsample).rows_to_go
     }
     /* And not more than what the client can accept: */
-    out_rows_avail = (out_rows_avail as libc::c_uint).wrapping_sub(*out_row_ctr)
+    out_rows_avail = (out_rows_avail as libc::c_uint - *out_row_ctr)
         as crate::jmorecfg_h::JDIMENSION as crate::jmorecfg_h::JDIMENSION;
     if num_rows > out_rows_avail {
         num_rows = out_rows_avail
@@ -372,16 +371,16 @@ unsafe extern "C" fn sep_upsample(
         num_rows as libc::c_int,
     );
     /* Adjust counts */
-    *out_row_ctr = (*out_row_ctr as libc::c_uint).wrapping_add(num_rows)
+    *out_row_ctr = (*out_row_ctr as libc::c_uint + num_rows)
         as crate::jmorecfg_h::JDIMENSION as crate::jmorecfg_h::JDIMENSION;
-    (*upsample).rows_to_go = ((*upsample).rows_to_go as libc::c_uint).wrapping_sub(num_rows)
+    (*upsample).rows_to_go = ((*upsample).rows_to_go as libc::c_uint - num_rows)
         as crate::jmorecfg_h::JDIMENSION
         as crate::jmorecfg_h::JDIMENSION;
-    (*upsample).next_row_out = ((*upsample).next_row_out as libc::c_uint).wrapping_add(num_rows)
+    (*upsample).next_row_out = ((*upsample).next_row_out as libc::c_uint + num_rows)
         as libc::c_int as libc::c_int;
     /* When the buffer is emptied, declare this input row group consumed */
     if (*upsample).next_row_out >= (*cinfo).max_v_samp_factor {
-        *in_row_group_ctr = (*in_row_group_ctr).wrapping_add(1)
+        *in_row_group_ctr = *in_row_group_ctr + 1
     };
 }
 /*
@@ -607,9 +606,8 @@ unsafe extern "C" fn h2v1_fancy_upsample(
         outptr = outptr.offset(1);
         *fresh10 =
             (invalue * 3i32 + *inptr as libc::c_int + 2i32 >> 2i32) as crate::jmorecfg_h::JSAMPLE;
-        colctr = (*compptr)
-            .downsampled_width
-            .wrapping_sub(2i32 as libc::c_uint);
+        colctr =  (*compptr)
+            .downsampled_width - 2i32 as libc::c_uint;
         while colctr > 0i32 as libc::c_uint {
             /* General case: 3/4 * nearer pixel + 1/4 * further pixel */
             let fresh11 = inptr;
@@ -623,7 +621,7 @@ unsafe extern "C" fn h2v1_fancy_upsample(
             outptr = outptr.offset(1);
             *fresh13 =
                 (invalue + *inptr as libc::c_int + 2i32 >> 2i32) as crate::jmorecfg_h::JSAMPLE;
-            colctr = colctr.wrapping_sub(1)
+            colctr =  colctr - 1
         }
         /* Special case for last column */
         invalue = *inptr as libc::c_int;
@@ -686,7 +684,7 @@ unsafe extern "C" fn h1v2_fancy_upsample(
                 let fresh19 = outptr;
                 outptr = outptr.offset(1);
                 *fresh19 = (thiscolsum + 1i32 >> 2i32) as crate::jmorecfg_h::JSAMPLE;
-                colctr = colctr.wrapping_add(1)
+                colctr =  colctr + 1
             }
             v += 1
         }
@@ -755,9 +753,8 @@ unsafe extern "C" fn h2v2_fancy_upsample(
                 (thiscolsum * 3i32 + nextcolsum + 7i32 >> 4i32) as crate::jmorecfg_h::JSAMPLE;
             lastcolsum = thiscolsum;
             thiscolsum = nextcolsum;
-            colctr = (*compptr)
-                .downsampled_width
-                .wrapping_sub(2i32 as libc::c_uint);
+            colctr =  (*compptr)
+                .downsampled_width - 2i32 as libc::c_uint;
             while colctr > 0i32 as libc::c_uint {
                 /* General case: 3/4 * nearer pixel + 1/4 * further pixel in each */
                 /* dimension, thus 9/16, 3/16, 3/16, 1/16 overall */
@@ -776,7 +773,7 @@ unsafe extern "C" fn h2v2_fancy_upsample(
                     (thiscolsum * 3i32 + nextcolsum + 7i32 >> 4i32) as crate::jmorecfg_h::JSAMPLE;
                 lastcolsum = thiscolsum;
                 thiscolsum = nextcolsum;
-                colctr = colctr.wrapping_sub(1)
+                colctr =  colctr - 1
             }
             /* Special case for last column */
             let fresh31 = outptr;

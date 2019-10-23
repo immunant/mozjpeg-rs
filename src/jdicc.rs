@@ -368,9 +368,8 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
                 return crate::jmorecfg_h::FALSE;
             }
             marker_present[seq_no as usize] = 1i32 as libc::c_char;
-            data_length[seq_no as usize] = (*marker)
-                .data_length
-                .wrapping_sub(ICC_OVERHEAD_LEN as libc::c_uint)
+            data_length[seq_no as usize] =  (*marker)
+                .data_length - ICC_OVERHEAD_LEN as libc::c_uint
         }
         marker = (*marker).next
     }
@@ -396,7 +395,7 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
             return crate::jmorecfg_h::FALSE;
         }
         data_offset[seq_no as usize] = total_length;
-        total_length = total_length.wrapping_add(data_length[seq_no as usize]);
+        total_length =  total_length + data_length[seq_no as usize];
         seq_no += 1
     }
     if total_length == 0i32 as libc::c_uint {
@@ -411,8 +410,8 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
     }
     /* Allocate space for assembled data */
     icc_data = crate::stdlib::malloc(
-        (total_length as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<crate::jmorecfg_h::JOCTET>() as libc::c_ulong),
+        total_length as libc::c_ulong *
+    ::std::mem::size_of::<crate::jmorecfg_h::JOCTET>() as libc::c_ulong,
     ) as *mut crate::jmorecfg_h::JOCTET; /* oops, out of memory */
     if icc_data.is_null() {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_OUT_OF_MEMORY as libc::c_int;
@@ -437,7 +436,7 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
             length = data_length[seq_no as usize];
             loop {
                 let fresh0 = length;
-                length = length.wrapping_sub(1);
+                length =  length - 1;
                 if !(fresh0 != 0) {
                     break;
                 }

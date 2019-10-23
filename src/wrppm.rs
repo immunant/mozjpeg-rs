@@ -642,7 +642,7 @@ unsafe extern "C" fn put_rgb(
         bufferptr = bufferptr.offset(1);
         *fresh2 = *ptr.offset(bindex as isize) as libc::c_char;
         ptr = ptr.offset(ps as isize);
-        col = col.wrapping_sub(1)
+        col =  col - 1
     }
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
@@ -693,7 +693,7 @@ unsafe extern "C" fn put_cmyk(
         let fresh9 = bufferptr;
         bufferptr = bufferptr.offset(1);
         *fresh9 = b as libc::c_char;
-        col = col.wrapping_sub(1)
+        col =  col - 1
     }
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
@@ -736,7 +736,7 @@ unsafe extern "C" fn put_demapped_rgb(
         let fresh13 = bufferptr;
         bufferptr = bufferptr.offset(1);
         *fresh13 = *color_map2.offset(pixval as isize) as libc::c_int as libc::c_char;
-        col = col.wrapping_sub(1)
+        col =  col - 1
     }
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
@@ -766,7 +766,7 @@ unsafe extern "C" fn put_demapped_gray(
         bufferptr = bufferptr.offset(1);
         *fresh15 =
             *color_map.offset(*fresh14 as libc::c_int as isize) as libc::c_int as libc::c_char;
-        col = col.wrapping_sub(1)
+        col =  col - 1
     }
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
@@ -853,16 +853,14 @@ unsafe extern "C" fn calc_buffer_dimensions_ppm(
     if (*cinfo).out_color_space as libc::c_uint
         == crate::jpeglib_h::JCS_GRAYSCALE as libc::c_int as libc::c_uint
     {
-        (*dest).samples_per_row = (*cinfo)
-            .output_width
-            .wrapping_mul((*cinfo).out_color_components as libc::c_uint)
+        (*dest).samples_per_row =  (*cinfo)
+            .output_width * (*cinfo).out_color_components as libc::c_uint
     } else {
-        (*dest).samples_per_row = (*cinfo).output_width.wrapping_mul(3i32 as libc::c_uint)
+        (*dest).samples_per_row =  (*cinfo).output_width * 3i32 as libc::c_uint
     }
-    (*dest).buffer_width = ((*dest).samples_per_row as libc::c_ulong).wrapping_mul(
-        (BYTESPERSAMPLE as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<libc::c_char>() as libc::c_ulong),
-    );
+    (*dest).buffer_width = (*dest).samples_per_row as libc::c_ulong *
+    (BYTESPERSAMPLE as libc::c_ulong *
+         ::std::mem::size_of::<libc::c_char>() as libc::c_ulong);
 }
 /*
  * The module selection routine for PPM format output.
@@ -943,9 +941,9 @@ pub unsafe extern "C" fn jinit_write_ppm(
         .expect("non-null function pointer")(
             cinfo as crate::jpeglib_h::j_common_ptr,
             crate::jpeglib_h::JPOOL_IMAGE,
+            
             (*cinfo)
-                .output_width
-                .wrapping_mul((*cinfo).output_components as libc::c_uint),
+                .output_width * (*cinfo).output_components as libc::c_uint,
             1i32 as crate::jmorecfg_h::JDIMENSION,
         );
         (*dest).pub_0.buffer_height = 1i32 as crate::jmorecfg_h::JDIMENSION;

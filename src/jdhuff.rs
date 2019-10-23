@@ -516,7 +516,7 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
             let fresh2 = p;
             p = p + 1;
             huffcode[fresh2 as usize] = code;
-            code = code.wrapping_add(1)
+            code =  code + 1
         }
         /* code is now 1 more than the last code used for codelength si; but
          * it must still fit in si bits, since no code is allowed to be all ones.
@@ -689,7 +689,7 @@ pub unsafe extern "C" fn jpeg_fill_bit_buffer(
                 next_input_byte = (*(*cinfo).src).next_input_byte;
                 bytes_in_buffer = (*(*cinfo).src).bytes_in_buffer
             }
-            bytes_in_buffer = bytes_in_buffer.wrapping_sub(1);
+            bytes_in_buffer =  bytes_in_buffer - 1;
             let fresh3 = next_input_byte;
             next_input_byte = next_input_byte.offset(1);
             c = *fresh3 as libc::c_int;
@@ -716,7 +716,7 @@ pub unsafe extern "C" fn jpeg_fill_bit_buffer(
                         next_input_byte = (*(*cinfo).src).next_input_byte;
                         bytes_in_buffer = (*(*cinfo).src).bytes_in_buffer
                     }
-                    bytes_in_buffer = bytes_in_buffer.wrapping_sub(1);
+                    bytes_in_buffer =  bytes_in_buffer - 1;
                     let fresh4 = next_input_byte;
                     next_input_byte = next_input_byte.offset(1);
                     c = *fresh4 as libc::c_int;
@@ -893,9 +893,9 @@ unsafe extern "C" fn process_restart(
     let mut ci: libc::c_int = 0;
     /* Throw away any unused bits remaining in bit buffer; */
     /* include any full bytes in next_marker's count of discarded bytes */
-    (*(*cinfo).marker).discarded_bytes = (*(*cinfo).marker)
-        .discarded_bytes
-        .wrapping_add(((*entropy).bitstate.bits_left / 8i32) as libc::c_uint);
+    (*(*cinfo).marker).discarded_bytes =  (*(*cinfo).marker)
+        .discarded_bytes +
+    ((*entropy).bitstate.bits_left / 8i32) as libc::c_uint;
     (*entropy).bitstate.bits_left = 0i32;
     /* Advance past the RSTn marker */
     if Some(
@@ -1024,10 +1024,10 @@ unsafe extern "C" fn decode_mcu_slow(
             }
             bits_left -= s;
             r = (get_buffer >> bits_left) as libc::c_int & (1i32 << s) - 1i32;
-            s = (r as libc::c_uint).wrapping_add(
+            s = (r as libc::c_uint +
+    ((
                 (r - (1i32 << s - 1i32) >> 31i32) as libc::c_uint
-                    & ((-1i32 as libc::c_uint) << s).wrapping_add(1i32 as libc::c_uint),
-            ) as libc::c_int
+                    & (((-1i32 as libc::c_uint) << s)) + 1i32 as libc::c_uint))) as libc::c_int
         }
         if (*entropy).dc_needed[blkn as usize] != 0 {
             /* Convert DC difference to actual value, update last_dc_val */
@@ -1103,10 +1103,10 @@ unsafe extern "C" fn decode_mcu_slow(
                     }
                     bits_left -= s;
                     r = (get_buffer >> bits_left) as libc::c_int & (1i32 << s) - 1i32;
-                    s = (r as libc::c_uint).wrapping_add(
+                    s = (r as libc::c_uint +
+    ((
                         (r - (1i32 << s - 1i32) >> 31i32) as libc::c_uint
-                            & ((-1i32 as libc::c_uint) << s).wrapping_add(1i32 as libc::c_uint),
-                    ) as libc::c_int;
+                            & (((-1i32 as libc::c_uint) << s)) + 1i32 as libc::c_uint))) as libc::c_int;
                     /* Output coefficient in natural (dezigzagged) order.
                      * Note: the extra entries in jpeg_natural_order[] will save us
                      * if k >= DCTSIZE2, which could happen if the data is corrupted.
@@ -1465,10 +1465,10 @@ unsafe extern "C" fn decode_mcu_fast(
             }
             bits_left -= s;
             r = (get_buffer >> bits_left) as libc::c_int & (1i32 << s) - 1i32;
-            s = (r as libc::c_uint).wrapping_add(
+            s = (r as libc::c_uint +
+    ((
                 (r - (1i32 << s - 1i32) >> 31i32) as libc::c_uint
-                    & ((-1i32 as libc::c_uint) << s).wrapping_add(1i32 as libc::c_uint),
-            ) as libc::c_int
+                    & (((-1i32 as libc::c_uint) << s)) + 1i32 as libc::c_uint))) as libc::c_int
         }
         if (*entropy).dc_needed[blkn as usize] != 0 {
             let mut ci: libc::c_int = (*cinfo).MCU_membership[blkn as usize];
@@ -1702,10 +1702,10 @@ unsafe extern "C" fn decode_mcu_fast(
                     }
                     bits_left -= s;
                     r = (get_buffer >> bits_left) as libc::c_int & (1i32 << s) - 1i32;
-                    s = (r as libc::c_uint).wrapping_add(
+                    s = (r as libc::c_uint +
+    ((
                         (r - (1i32 << s - 1i32) >> 31i32) as libc::c_uint
-                            & ((-1i32 as libc::c_uint) << s).wrapping_add(1i32 as libc::c_uint),
-                    ) as libc::c_int;
+                            & (((-1i32 as libc::c_uint) << s)) + 1i32 as libc::c_uint))) as libc::c_int;
                     (*block)[*crate::jpegint_h::jpeg_natural_order
                         .as_ptr()
                         .offset(k as isize) as usize] = s as crate::jmorecfg_h::JCOEF
@@ -1955,9 +1955,9 @@ unsafe extern "C" fn decode_mcu_fast(
         (*cinfo).unread_marker = 0i32;
         return crate::jmorecfg_h::FALSE;
     }
-    br_state.bytes_in_buffer = (br_state.bytes_in_buffer as libc::c_ulong).wrapping_sub(
-        buffer.wrapping_offset_from(br_state.next_input_byte) as libc::c_long as libc::c_ulong,
-    ) as crate::stddef_h::size_t as crate::stddef_h::size_t;
+    br_state.bytes_in_buffer = (br_state.bytes_in_buffer as libc::c_ulong -
+    
+        buffer.wrapping_offset_from(br_state.next_input_byte) as libc::c_long as libc::c_ulong) as crate::stddef_h::size_t as crate::stddef_h::size_t;
     br_state.next_input_byte = buffer;
     (*(*cinfo).src).next_input_byte = br_state.next_input_byte;
     (*(*cinfo).src).bytes_in_buffer = br_state.bytes_in_buffer;
@@ -1999,7 +1999,7 @@ unsafe extern "C" fn decode_mcu(
         usefast = 0i32
     }
     if (*(*cinfo).src).bytes_in_buffer
-        < (BUFSIZE as libc::c_ulong).wrapping_mul((*cinfo).blocks_in_MCU as crate::stddef_h::size_t)
+        < BUFSIZE as libc::c_ulong * (*cinfo).blocks_in_MCU as crate::stddef_h::size_t
         || (*cinfo).unread_marker != 0i32
     {
         usefast = 0i32
@@ -2028,7 +2028,7 @@ unsafe extern "C" fn decode_mcu(
         }
     }
     /* Account for restart interval (no-op if not using restarts) */
-    (*entropy).restarts_to_go = (*entropy).restarts_to_go.wrapping_sub(1);
+    (*entropy).restarts_to_go =  (*entropy).restarts_to_go - 1;
     return crate::jmorecfg_h::TRUE;
 }
 /*

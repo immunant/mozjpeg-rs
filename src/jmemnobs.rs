@@ -306,8 +306,7 @@ pub unsafe extern "C" fn jpeg_mem_available(
 ) -> crate::stddef_h::size_t {
     if (*(*cinfo).mem).max_memory_to_use != 0 {
         if (*(*cinfo).mem).max_memory_to_use as crate::stddef_h::size_t > already_allocated {
-            return ((*(*cinfo).mem).max_memory_to_use as libc::c_ulong)
-                .wrapping_sub(already_allocated);
+            return (*(*cinfo).mem).max_memory_to_use as libc::c_ulong - already_allocated;
         } else {
             return 0i32 as crate::stddef_h::size_t;
         }

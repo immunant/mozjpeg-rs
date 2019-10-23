@@ -356,7 +356,7 @@ unsafe extern "C" fn put_pixel_rows(
         *outptr.offset(2) = *inptr.offset(0) as libc::c_int as libc::c_char;
         inptr = inptr.offset(3);
         outptr = outptr.offset(3);
-        col = col.wrapping_sub(1)
+        col =  col - 1
     }
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
@@ -386,7 +386,7 @@ unsafe extern "C" fn put_gray_rows(
         let fresh1 = outptr;
         outptr = outptr.offset(1);
         *fresh1 = *fresh0 as libc::c_int as libc::c_char;
-        col = col.wrapping_sub(1)
+        col =  col - 1
     }
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
@@ -420,7 +420,7 @@ unsafe extern "C" fn put_demapped_gray(
         outptr = outptr.offset(1);
         *fresh3 =
             *color_map0.offset(*fresh2 as libc::c_int as isize) as libc::c_int as libc::c_char;
-        col = col.wrapping_sub(1)
+        col =  col - 1
     }
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
@@ -561,9 +561,8 @@ unsafe extern "C" fn calc_buffer_dimensions_tga(
     mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
 ) {
     let mut dest: tga_dest_ptr = dinfo as tga_dest_ptr;
-    (*dest).buffer_width = (*cinfo)
-        .output_width
-        .wrapping_mul((*cinfo).output_components as libc::c_uint);
+    (*dest).buffer_width =  (*cinfo)
+        .output_width * (*cinfo).output_components as libc::c_uint;
 }
 /*
  * The module selection routine for Targa format output.
@@ -621,8 +620,8 @@ pub unsafe extern "C" fn jinit_write_targa(
     .expect("non-null function pointer")(
         cinfo as crate::jpeglib_h::j_common_ptr,
         crate::jpeglib_h::JPOOL_IMAGE,
-        ((*dest).buffer_width as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<libc::c_char>() as libc::c_ulong),
+        (*dest).buffer_width as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_char>() as libc::c_ulong,
     ) as *mut libc::c_char;
     /* Create decompressor output buffer. */
     (*dest).pub_0.buffer = Some(

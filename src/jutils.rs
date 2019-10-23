@@ -90,8 +90,8 @@ pub unsafe extern "C" fn jcopy_sample_rows(
 {
     let mut inptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
     let mut outptr: crate::jpeglib_h::JSAMPROW = ::std::ptr::null_mut::< crate::jmorecfg_h::JSAMPLE>();
-    let mut count: crate::stddef_h::size_t = (num_cols as libc::c_ulong)
-        .wrapping_mul(::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong);
+    let mut count: crate::stddef_h::size_t = num_cols as libc::c_ulong *
+    ::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong;
     let mut row: libc::c_int = 0;
     input_array = input_array.offset(source_row as isize);
     output_array = output_array.offset(dest_row as isize);
@@ -123,10 +123,9 @@ pub unsafe extern "C" fn jcopy_block_row(
     crate::stdlib::memcpy(
         output_row as *mut libc::c_void,
         input_row as *const libc::c_void,
-        (num_blocks as libc::c_ulong).wrapping_mul(
-            (64i32 as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong),
-        ),
+        num_blocks as libc::c_ulong *
+    (64i32 as libc::c_ulong *
+         ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong),
     );
 }
 /* It is useful to allow each component to have a separate IDCT method. */

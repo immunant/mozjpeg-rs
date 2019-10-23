@@ -226,7 +226,7 @@ pub unsafe extern "C" fn extbgr_ycc_convert_internal(
         outptr0 = *(*output_buf.offset(0)).offset(output_row as isize);
         outptr1 = *(*output_buf.offset(1)).offset(output_row as isize);
         outptr2 = *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row = output_row.wrapping_add(1);
+        output_row =  output_row + 1;
         col = 0i32 as crate::jmorecfg_h::JDIMENSION;
         while col < num_cols {
             r = *inptr.offset(2) as libc::c_int;
@@ -304,7 +304,7 @@ pub unsafe extern "C" fn extbgr_ycc_convert_internal(
                 + *ctab.offset((b + B_CR_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -338,7 +338,7 @@ pub unsafe extern "C" fn rgb_ycc_convert_internal(
         outptr0 = *(*output_buf.offset(0)).offset(output_row as isize);
         outptr1 = *(*output_buf.offset(1)).offset(output_row as isize);
         outptr2 = *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row = output_row.wrapping_add(1);
+        output_row =  output_row + 1;
         col = 0i32 as crate::jmorecfg_h::JDIMENSION;
         while col < num_cols {
             r = *inptr.offset(0) as libc::c_int;
@@ -360,7 +360,7 @@ pub unsafe extern "C" fn rgb_ycc_convert_internal(
                 + *ctab.offset((b + B_CR_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -394,7 +394,7 @@ pub unsafe extern "C" fn extrgb_ycc_convert_internal(
         outptr0 = *(*output_buf.offset(0)).offset(output_row as isize);
         outptr1 = *(*output_buf.offset(1)).offset(output_row as isize);
         outptr2 = *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row = output_row.wrapping_add(1);
+        output_row =  output_row + 1;
         col = 0i32 as crate::jmorecfg_h::JDIMENSION;
         while col < num_cols {
             r = *inptr.offset(0) as libc::c_int;
@@ -416,7 +416,7 @@ pub unsafe extern "C" fn extrgb_ycc_convert_internal(
                 + *ctab.offset((b + B_CR_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -450,7 +450,7 @@ pub unsafe extern "C" fn extxbgr_ycc_convert_internal(
         outptr0 = *(*output_buf.offset(0)).offset(output_row as isize);
         outptr1 = *(*output_buf.offset(1)).offset(output_row as isize);
         outptr2 = *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row = output_row.wrapping_add(1);
+        output_row =  output_row + 1;
         col = 0i32 as crate::jmorecfg_h::JDIMENSION;
         while col < num_cols {
             r = *inptr.offset(3) as libc::c_int;
@@ -472,7 +472,7 @@ pub unsafe extern "C" fn extxbgr_ycc_convert_internal(
                 + *ctab.offset((b + B_CR_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -506,7 +506,7 @@ pub unsafe extern "C" fn extbgrx_ycc_convert_internal(
         outptr0 = *(*output_buf.offset(0)).offset(output_row as isize);
         outptr1 = *(*output_buf.offset(1)).offset(output_row as isize);
         outptr2 = *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row = output_row.wrapping_add(1);
+        output_row =  output_row + 1;
         col = 0i32 as crate::jmorecfg_h::JDIMENSION;
         while col < num_cols {
             r = *inptr.offset(2) as libc::c_int;
@@ -528,7 +528,7 @@ pub unsafe extern "C" fn extbgrx_ycc_convert_internal(
                 + *ctab.offset((b + B_CR_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -562,7 +562,7 @@ pub unsafe extern "C" fn extrgbx_ycc_convert_internal(
         outptr0 = *(*output_buf.offset(0)).offset(output_row as isize);
         outptr1 = *(*output_buf.offset(1)).offset(output_row as isize);
         outptr2 = *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row = output_row.wrapping_add(1);
+        output_row =  output_row + 1;
         col = 0i32 as crate::jmorecfg_h::JDIMENSION;
         while col < num_cols {
             r = *inptr.offset(0) as libc::c_int;
@@ -584,7 +584,7 @@ pub unsafe extern "C" fn extrgbx_ycc_convert_internal(
                 + *ctab.offset((b + B_CR_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -618,7 +618,7 @@ pub unsafe extern "C" fn extxrgb_ycc_convert_internal(
         outptr0 = *(*output_buf.offset(0)).offset(output_row as isize);
         outptr1 = *(*output_buf.offset(1)).offset(output_row as isize);
         outptr2 = *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row = output_row.wrapping_add(1);
+        output_row =  output_row + 1;
         col = 0i32 as crate::jmorecfg_h::JDIMENSION;
         while col < num_cols {
             r = *inptr.offset(1) as libc::c_int;
@@ -640,7 +640,7 @@ pub unsafe extern "C" fn extxrgb_ycc_convert_internal(
                 + *ctab.offset((b + B_CR_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -732,7 +732,7 @@ pub unsafe extern "C" fn rgb_gray_convert_internal(
         input_buf = input_buf.offset(1);
         inptr = *fresh7;
         outptr = *(*output_buf.offset(0)).offset(output_row as isize);
-        output_row = output_row.wrapping_add(1);
+        output_row =  output_row + 1;
         col = 0i32 as crate::jmorecfg_h::JDIMENSION;
         while col < num_cols {
             r = *inptr.offset(0) as libc::c_int;
@@ -751,7 +751,7 @@ pub unsafe extern "C" fn rgb_gray_convert_internal(
                 + *ctab.offset((b + B_Y_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -781,7 +781,7 @@ pub unsafe extern "C" fn extxrgb_gray_convert_internal(
         input_buf = input_buf.offset(1);
         inptr = *fresh8;
         outptr = *(*output_buf.offset(0)).offset(output_row as isize);
-        output_row = output_row.wrapping_add(1);
+        output_row =  output_row + 1;
         col = 0i32 as crate::jmorecfg_h::JDIMENSION;
         while col < num_cols {
             r = *inptr.offset(1) as libc::c_int;
@@ -793,7 +793,7 @@ pub unsafe extern "C" fn extxrgb_gray_convert_internal(
                 + *ctab.offset((b + B_Y_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -823,7 +823,7 @@ pub unsafe extern "C" fn extxbgr_gray_convert_internal(
         input_buf = input_buf.offset(1);
         inptr = *fresh9;
         outptr = *(*output_buf.offset(0)).offset(output_row as isize);
-        output_row = output_row.wrapping_add(1);
+        output_row =  output_row + 1;
         col = 0i32 as crate::jmorecfg_h::JDIMENSION;
         while col < num_cols {
             r = *inptr.offset(3) as libc::c_int;
@@ -835,7 +835,7 @@ pub unsafe extern "C" fn extxbgr_gray_convert_internal(
                 + *ctab.offset((b + B_Y_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -865,7 +865,7 @@ pub unsafe extern "C" fn extbgrx_gray_convert_internal(
         input_buf = input_buf.offset(1);
         inptr = *fresh10;
         outptr = *(*output_buf.offset(0)).offset(output_row as isize);
-        output_row = output_row.wrapping_add(1);
+        output_row =  output_row + 1;
         col = 0i32 as crate::jmorecfg_h::JDIMENSION;
         while col < num_cols {
             r = *inptr.offset(2) as libc::c_int;
@@ -877,7 +877,7 @@ pub unsafe extern "C" fn extbgrx_gray_convert_internal(
                 + *ctab.offset((b + B_Y_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -907,7 +907,7 @@ pub unsafe extern "C" fn extbgr_gray_convert_internal(
         input_buf = input_buf.offset(1);
         inptr = *fresh11;
         outptr = *(*output_buf.offset(0)).offset(output_row as isize);
-        output_row = output_row.wrapping_add(1);
+        output_row =  output_row + 1;
         col = 0i32 as crate::jmorecfg_h::JDIMENSION;
         while col < num_cols {
             r = *inptr.offset(2) as libc::c_int;
@@ -919,7 +919,7 @@ pub unsafe extern "C" fn extbgr_gray_convert_internal(
                 + *ctab.offset((b + B_Y_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -949,7 +949,7 @@ pub unsafe extern "C" fn extrgbx_gray_convert_internal(
         input_buf = input_buf.offset(1);
         inptr = *fresh12;
         outptr = *(*output_buf.offset(0)).offset(output_row as isize);
-        output_row = output_row.wrapping_add(1);
+        output_row =  output_row + 1;
         col = 0i32 as crate::jmorecfg_h::JDIMENSION;
         while col < num_cols {
             r = *inptr.offset(0) as libc::c_int;
@@ -961,7 +961,7 @@ pub unsafe extern "C" fn extrgbx_gray_convert_internal(
                 + *ctab.offset((b + B_Y_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -991,7 +991,7 @@ pub unsafe extern "C" fn extrgb_gray_convert_internal(
         input_buf = input_buf.offset(1);
         inptr = *fresh13;
         outptr = *(*output_buf.offset(0)).offset(output_row as isize);
-        output_row = output_row.wrapping_add(1);
+        output_row =  output_row + 1;
         col = 0i32 as crate::jmorecfg_h::JDIMENSION;
         while col < num_cols {
             r = *inptr.offset(0) as libc::c_int;
@@ -1003,7 +1003,7 @@ pub unsafe extern "C" fn extrgb_gray_convert_internal(
                 + *ctab.offset((b + B_Y_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -1066,7 +1066,7 @@ pub unsafe extern "C" fn extxrgb_rgb_convert_internal(
         outptr0 = *(*output_buf.offset(0)).offset(output_row as isize);
         outptr1 = *(*output_buf.offset(1)).offset(output_row as isize);
         outptr2 = *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row = output_row.wrapping_add(1);
+        output_row =  output_row + 1;
         col = 0i32 as crate::jmorecfg_h::JDIMENSION;
         while col < num_cols {
             *outptr0.offset(col as isize) =
@@ -1076,7 +1076,7 @@ pub unsafe extern "C" fn extxrgb_rgb_convert_internal(
             *outptr2.offset(col as isize) =
                 *inptr.offset(3) as libc::c_int as crate::jmorecfg_h::JSAMPLE;
             inptr = inptr.offset(RGB_PIXELSIZE as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -1105,7 +1105,7 @@ pub unsafe extern "C" fn extxbgr_rgb_convert_internal(
         outptr0 = *(*output_buf.offset(0)).offset(output_row as isize);
         outptr1 = *(*output_buf.offset(1)).offset(output_row as isize);
         outptr2 = *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row = output_row.wrapping_add(1);
+        output_row =  output_row + 1;
         col = 0i32 as crate::jmorecfg_h::JDIMENSION;
         while col < num_cols {
             *outptr0.offset(col as isize) =
@@ -1115,7 +1115,7 @@ pub unsafe extern "C" fn extxbgr_rgb_convert_internal(
             *outptr2.offset(col as isize) =
                 *inptr.offset(1) as libc::c_int as crate::jmorecfg_h::JSAMPLE;
             inptr = inptr.offset(RGB_PIXELSIZE_0 as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -1144,7 +1144,7 @@ pub unsafe extern "C" fn extbgrx_rgb_convert_internal(
         outptr0 = *(*output_buf.offset(0)).offset(output_row as isize);
         outptr1 = *(*output_buf.offset(1)).offset(output_row as isize);
         outptr2 = *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row = output_row.wrapping_add(1);
+        output_row =  output_row + 1;
         col = 0i32 as crate::jmorecfg_h::JDIMENSION;
         while col < num_cols {
             *outptr0.offset(col as isize) =
@@ -1154,7 +1154,7 @@ pub unsafe extern "C" fn extbgrx_rgb_convert_internal(
             *outptr2.offset(col as isize) =
                 *inptr.offset(0) as libc::c_int as crate::jmorecfg_h::JSAMPLE;
             inptr = inptr.offset(RGB_PIXELSIZE_1 as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -1183,7 +1183,7 @@ pub unsafe extern "C" fn extrgbx_rgb_convert_internal(
         outptr0 = *(*output_buf.offset(0)).offset(output_row as isize);
         outptr1 = *(*output_buf.offset(1)).offset(output_row as isize);
         outptr2 = *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row = output_row.wrapping_add(1);
+        output_row =  output_row + 1;
         col = 0i32 as crate::jmorecfg_h::JDIMENSION;
         while col < num_cols {
             *outptr0.offset(col as isize) =
@@ -1193,7 +1193,7 @@ pub unsafe extern "C" fn extrgbx_rgb_convert_internal(
             *outptr2.offset(col as isize) =
                 *inptr.offset(2) as libc::c_int as crate::jmorecfg_h::JSAMPLE;
             inptr = inptr.offset(RGB_PIXELSIZE_2 as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -1222,7 +1222,7 @@ pub unsafe extern "C" fn extrgb_rgb_convert_internal(
         outptr0 = *(*output_buf.offset(0)).offset(output_row as isize);
         outptr1 = *(*output_buf.offset(1)).offset(output_row as isize);
         outptr2 = *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row = output_row.wrapping_add(1);
+        output_row =  output_row + 1;
         col = 0i32 as crate::jmorecfg_h::JDIMENSION;
         while col < num_cols {
             *outptr0.offset(col as isize) =
@@ -1232,7 +1232,7 @@ pub unsafe extern "C" fn extrgb_rgb_convert_internal(
             *outptr2.offset(col as isize) =
                 *inptr.offset(2) as libc::c_int as crate::jmorecfg_h::JSAMPLE;
             inptr = inptr.offset(RGB_PIXELSIZE_4 as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -1261,7 +1261,7 @@ pub unsafe extern "C" fn extbgr_rgb_convert_internal(
         outptr0 = *(*output_buf.offset(0)).offset(output_row as isize);
         outptr1 = *(*output_buf.offset(1)).offset(output_row as isize);
         outptr2 = *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row = output_row.wrapping_add(1);
+        output_row =  output_row + 1;
         col = 0i32 as crate::jmorecfg_h::JDIMENSION;
         while col < num_cols {
             *outptr0.offset(col as isize) =
@@ -1271,7 +1271,7 @@ pub unsafe extern "C" fn extbgr_rgb_convert_internal(
             *outptr2.offset(col as isize) =
                 *inptr.offset(0) as libc::c_int as crate::jmorecfg_h::JSAMPLE;
             inptr = inptr.offset(RGB_PIXELSIZE_3 as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }
@@ -1300,7 +1300,7 @@ pub unsafe extern "C" fn rgb_rgb_convert_internal(
         outptr0 = *(*output_buf.offset(0)).offset(output_row as isize);
         outptr1 = *(*output_buf.offset(1)).offset(output_row as isize);
         outptr2 = *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row = output_row.wrapping_add(1);
+        output_row =  output_row + 1;
         col = 0i32 as crate::jmorecfg_h::JDIMENSION;
         while col < num_cols {
             *outptr0.offset(col as isize) =
@@ -1310,7 +1310,7 @@ pub unsafe extern "C" fn rgb_rgb_convert_internal(
             *outptr2.offset(col as isize) =
                 *inptr.offset(2) as libc::c_int as crate::jmorecfg_h::JSAMPLE;
             inptr = inptr.offset(crate::jmorecfg_h::RGB_PIXELSIZE_5 as isize);
-            col = col.wrapping_add(1)
+            col =  col + 1
         }
     }
 }

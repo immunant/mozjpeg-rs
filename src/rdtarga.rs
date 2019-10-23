@@ -469,7 +469,7 @@ unsafe extern "C" fn get_8bit_gray_row(
         let fresh0 = ptr;
         ptr = ptr.offset(1);
         *fresh0 = (*source).tga_pixel[0] as libc::c_int as crate::jmorecfg_h::JSAMPLE;
-        col = col.wrapping_sub(1)
+        col =  col - 1
     }
     return 1i32 as crate::jmorecfg_h::JDIMENSION;
 }
@@ -499,7 +499,7 @@ unsafe extern "C" fn get_8bit_row(
         let fresh3 = ptr;
         ptr = ptr.offset(1);
         *fresh3 = *(*colormap.offset(2)).offset(t as isize);
-        col = col.wrapping_sub(1)
+        col =  col - 1
     }
     return 1i32 as crate::jmorecfg_h::JDIMENSION;
 }
@@ -530,7 +530,7 @@ unsafe extern "C" fn get_16bit_row(
         t >>= 5i32;
         *ptr.offset(0) = c5to8bits[(t & 0x1fi32) as usize];
         ptr = ptr.offset(3);
-        col = col.wrapping_sub(1)
+        col =  col - 1
     }
     return 1i32 as crate::jmorecfg_h::JDIMENSION;
 }
@@ -557,7 +557,7 @@ unsafe extern "C" fn get_24bit_row(
         let fresh6 = ptr;
         ptr = ptr.offset(1);
         *fresh6 = (*source).tga_pixel[0] as libc::c_int as crate::jmorecfg_h::JSAMPLE;
-        col = col.wrapping_sub(1)
+        col =  col - 1
     }
     return 1i32 as crate::jmorecfg_h::JDIMENSION;
 }
@@ -587,10 +587,8 @@ unsafe extern "C" fn get_memory_row(
     /* Compute row of source that maps to current_row of normal order */
     /* For now, assume image is bottom-up and not interlaced. */
     /* NEEDS WORK to support interlaced images! */
-    source_row = (*cinfo)
-        .image_height
-        .wrapping_sub((*source).current_row)
-        .wrapping_sub(1i32 as libc::c_uint);
+    source_row =  (*cinfo)
+        .image_height - (*source).current_row - 1i32 as libc::c_uint;
     /* Fetch that row from virtual array */
     (*source).pub_0.buffer = Some(
         (*(*cinfo).mem)
@@ -604,7 +602,7 @@ unsafe extern "C" fn get_memory_row(
         1i32 as crate::jmorecfg_h::JDIMENSION,
         crate::jmorecfg_h::FALSE,
     );
-    (*source).current_row = (*source).current_row.wrapping_add(1);
+    (*source).current_row =  (*source).current_row + 1;
     return 1i32 as crate::jmorecfg_h::JDIMENSION;
 }
 /*
@@ -651,7 +649,7 @@ unsafe extern "C" fn preload_image(
         );
         Some((*source).get_pixel_rows.expect("non-null function pointer"))
             .expect("non-null function pointer")(cinfo, sinfo);
-        row = row.wrapping_add(1)
+        row =  row + 1
     }
     if !progress.is_null() {
         (*progress).completed_extra_passes += 1
@@ -710,14 +708,14 @@ unsafe extern "C" fn start_input_tga(
     idlen = targaheader[0] as libc::c_int; /* bit 5 set => top-down */
     cmaptype = targaheader[1] as libc::c_int; /* bits 6/7 are interlace code */
     subtype = targaheader[2] as libc::c_int;
-    maplen = (targaheader[5] as libc::c_int as libc::c_uint)
-        .wrapping_add((targaheader[(5i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32);
-    width = (targaheader[12] as libc::c_int as libc::c_uint).wrapping_add(
-        (targaheader[(12i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32,
-    );
-    height = (targaheader[14] as libc::c_int as libc::c_uint).wrapping_add(
-        (targaheader[(14i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32,
-    );
+    maplen = targaheader[5] as libc::c_int as libc::c_uint +
+    (((targaheader[(5i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32));
+    width = targaheader[12] as libc::c_int as libc::c_uint +
+    ((
+        (targaheader[(12i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32));
+    height = targaheader[14] as libc::c_int as libc::c_uint +
+    ((
+        (targaheader[(14i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32));
     (*source).pixel_size = targaheader[16] as libc::c_int >> 3i32;
     flags = targaheader[17] as libc::c_int;
     is_bottom_up = (flags & 0x20i32 == 0i32) as libc::c_int;
@@ -896,7 +894,8 @@ unsafe extern "C" fn start_input_tga(
             cinfo as crate::jpeglib_h::j_common_ptr,
             crate::jpeglib_h::JPOOL_IMAGE,
             crate::jmorecfg_h::FALSE,
-            width.wrapping_mul(components as libc::c_uint),
+            
+            width * components as libc::c_uint,
             height,
             1i32 as crate::jmorecfg_h::JDIMENSION,
         );
@@ -926,7 +925,8 @@ unsafe extern "C" fn start_input_tga(
         .expect("non-null function pointer")(
             cinfo as crate::jpeglib_h::j_common_ptr,
             crate::jpeglib_h::JPOOL_IMAGE,
-            width.wrapping_mul(components as libc::c_uint),
+            
+            width * components as libc::c_uint,
             1i32 as crate::jmorecfg_h::JDIMENSION,
         );
         (*source).pub_0.buffer_height = 1i32 as crate::jmorecfg_h::JDIMENSION;
@@ -943,9 +943,9 @@ unsafe extern "C" fn start_input_tga(
     }
     if maplen > 0i32 as libc::c_uint {
         if maplen > 256i32 as libc::c_uint
-            || (targaheader[3] as libc::c_int as libc::c_uint).wrapping_add(
-                (targaheader[(3i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32,
-            ) != 0i32 as libc::c_uint
+            || targaheader[3] as libc::c_int as libc::c_uint +
+    ((
+                (targaheader[(3i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32)) != 0i32 as libc::c_uint
         {
             (*(*cinfo).err).msg_code = crate::cderror_h::JERR_TGA_BADCMAP as libc::c_int;
             Some(

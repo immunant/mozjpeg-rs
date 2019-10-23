@@ -256,9 +256,9 @@ unsafe extern "C" fn start_input_jpeg(
     .expect("non-null function pointer")(
         cinfo as crate::jpeglib_h::j_common_ptr,
         crate::jpeglib_h::JPOOL_IMAGE,
+        
         (*cinfo)
-            .image_width
-            .wrapping_mul((*cinfo).input_components as libc::c_uint),
+            .image_width * (*cinfo).input_components as libc::c_uint,
         1i32 as crate::jmorecfg_h::JDIMENSION,
     );
     (*source).pub_0.buffer_height = 1i32 as crate::jmorecfg_h::JDIMENSION;

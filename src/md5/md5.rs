@@ -92,17 +92,17 @@ pub unsafe extern "C" fn MD5Update(
     let mut t: crate::src::md5::md5::uint32 = 0;
     /* Update bitcount */
     t = (*ctx).bits[0]; /* Carry from low to high */
-    (*ctx).bits[0] = t.wrapping_add(len << 3i32); /* Bytes already in shsInfo->data */
+    (*ctx).bits[0] =  t + ((len << 3i32)); /* Bytes already in shsInfo->data */
     if (*ctx).bits[0] < t {
-        (*ctx).bits[1] = (*ctx).bits[1].wrapping_add(1)
+        (*ctx).bits[1] =  (*ctx).bits[1] + 1
     }
-    (*ctx).bits[1] = ((*ctx).bits[1] as libc::c_uint).wrapping_add(len >> 29i32)
+    (*ctx).bits[1] = ((*ctx).bits[1] as libc::c_uint + ((len >> 29i32)))
         as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     t = t >> 3i32 & 0x3fi32 as libc::c_uint;
     /* Handle any leading odd-sized chunks */
     if t != 0 {
         let mut p: *mut libc::c_uchar = (*ctx).in_0.as_mut_ptr().offset(t as isize);
-        t = (64i32 as libc::c_uint).wrapping_sub(t);
+        t = 64i32 as libc::c_uint - t;
         if len < t {
             crate::stdlib::memcpy(
                 p as *mut libc::c_void,
@@ -121,7 +121,7 @@ pub unsafe extern "C" fn MD5Update(
             (*ctx).in_0.as_mut_ptr() as *mut crate::src::md5::md5::uint32,
         );
         buf = buf.offset(t as isize);
-        len = len.wrapping_sub(t)
+        len =  len - t
     }
     /* Process data in 64-byte chunks */
     while len >= 64i32 as libc::c_uint {
@@ -135,7 +135,7 @@ pub unsafe extern "C" fn MD5Update(
             (*ctx).in_0.as_mut_ptr() as *mut crate::src::md5::md5::uint32,
         );
         buf = buf.offset(64);
-        len = len.wrapping_sub(64i32 as libc::c_uint)
+        len =  len - 64i32 as libc::c_uint
     }
     /* Handle any remaining bytes of data. */
     crate::stdlib::memcpy(
@@ -167,7 +167,7 @@ pub unsafe extern "C" fn MD5Final(
     p = p.offset(1);
     *fresh0 = 0x80i32 as libc::c_uchar;
     /* Bytes of padding needed to make 64 bytes */
-    count = ((64i32 - 1i32) as libc::c_uint).wrapping_sub(count);
+    count = (64i32 - 1i32) as libc::c_uint - count;
     /* Pad out to 56 mod 64 */
     if count < 8i32 as libc::c_uint {
         /* Two lots of padding:  Pad the first block to 64 bytes */
@@ -187,7 +187,8 @@ pub unsafe extern "C" fn MD5Final(
         crate::stdlib::memset(
             p as *mut libc::c_void,
             0i32,
-            count.wrapping_sub(8i32 as libc::c_uint) as libc::c_ulong,
+            (
+            count - 8i32 as libc::c_uint) as libc::c_ulong,
         );
     }
     /* Append length in bits and transform */
@@ -261,528 +262,292 @@ pub unsafe extern "C" fn MD5Transform(
     b = *buf.offset(1);
     c = *buf.offset(2);
     d = *buf.offset(3);
-    a = (a as libc::c_uint).wrapping_add(
-        (d ^ b & (c ^ d))
-            .wrapping_add(*in_0.offset(0))
-            .wrapping_add(0xd76aa478u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    a = (a as libc::c_uint + (((d ^ b & (c ^ d))) + *in_0.offset(0) + 0xd76aa478u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     a = a << 7i32 | a >> 32i32 - 7i32;
-    a = (a as libc::c_uint).wrapping_add(b) as crate::src::md5::md5::uint32
+    a = (a as libc::c_uint + b) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    d = (d as libc::c_uint).wrapping_add(
-        (c ^ a & (b ^ c))
-            .wrapping_add(*in_0.offset(1))
-            .wrapping_add(0xe8c7b756u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    d = (d as libc::c_uint + (((c ^ a & (b ^ c))) + *in_0.offset(1) + 0xe8c7b756u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     d = d << 12i32 | d >> 32i32 - 12i32;
-    d = (d as libc::c_uint).wrapping_add(a) as crate::src::md5::md5::uint32
+    d = (d as libc::c_uint + a) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    c = (c as libc::c_uint).wrapping_add(
-        (b ^ d & (a ^ b))
-            .wrapping_add(*in_0.offset(2))
-            .wrapping_add(0x242070dbi32 as libc::c_uint),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    c = (c as libc::c_uint +
+    (((b ^ d & (a ^ b))) + *in_0.offset(2) + 0x242070dbi32 as libc::c_uint)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     c = c << 17i32 | c >> 32i32 - 17i32;
-    c = (c as libc::c_uint).wrapping_add(d) as crate::src::md5::md5::uint32
+    c = (c as libc::c_uint + d) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    b = (b as libc::c_uint).wrapping_add(
-        (a ^ c & (d ^ a))
-            .wrapping_add(*in_0.offset(3))
-            .wrapping_add(0xc1bdceeeu32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    b = (b as libc::c_uint + (((a ^ c & (d ^ a))) + *in_0.offset(3) + 0xc1bdceeeu32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     b = b << 22i32 | b >> 32i32 - 22i32;
-    b = (b as libc::c_uint).wrapping_add(c) as crate::src::md5::md5::uint32
+    b = (b as libc::c_uint + c) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    a = (a as libc::c_uint).wrapping_add(
-        (d ^ b & (c ^ d))
-            .wrapping_add(*in_0.offset(4))
-            .wrapping_add(0xf57c0fafu32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    a = (a as libc::c_uint + (((d ^ b & (c ^ d))) + *in_0.offset(4) + 0xf57c0fafu32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     a = a << 7i32 | a >> 32i32 - 7i32;
-    a = (a as libc::c_uint).wrapping_add(b) as crate::src::md5::md5::uint32
+    a = (a as libc::c_uint + b) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    d = (d as libc::c_uint).wrapping_add(
-        (c ^ a & (b ^ c))
-            .wrapping_add(*in_0.offset(5))
-            .wrapping_add(0x4787c62ai32 as libc::c_uint),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    d = (d as libc::c_uint +
+    (((c ^ a & (b ^ c))) + *in_0.offset(5) + 0x4787c62ai32 as libc::c_uint)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     d = d << 12i32 | d >> 32i32 - 12i32;
-    d = (d as libc::c_uint).wrapping_add(a) as crate::src::md5::md5::uint32
+    d = (d as libc::c_uint + a) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    c = (c as libc::c_uint).wrapping_add(
-        (b ^ d & (a ^ b))
-            .wrapping_add(*in_0.offset(6))
-            .wrapping_add(0xa8304613u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    c = (c as libc::c_uint + (((b ^ d & (a ^ b))) + *in_0.offset(6) + 0xa8304613u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     c = c << 17i32 | c >> 32i32 - 17i32;
-    c = (c as libc::c_uint).wrapping_add(d) as crate::src::md5::md5::uint32
+    c = (c as libc::c_uint + d) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    b = (b as libc::c_uint).wrapping_add(
-        (a ^ c & (d ^ a))
-            .wrapping_add(*in_0.offset(7))
-            .wrapping_add(0xfd469501u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    b = (b as libc::c_uint + (((a ^ c & (d ^ a))) + *in_0.offset(7) + 0xfd469501u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     b = b << 22i32 | b >> 32i32 - 22i32;
-    b = (b as libc::c_uint).wrapping_add(c) as crate::src::md5::md5::uint32
+    b = (b as libc::c_uint + c) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    a = (a as libc::c_uint).wrapping_add(
-        (d ^ b & (c ^ d))
-            .wrapping_add(*in_0.offset(8))
-            .wrapping_add(0x698098d8i32 as libc::c_uint),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    a = (a as libc::c_uint +
+    (((d ^ b & (c ^ d))) + *in_0.offset(8) + 0x698098d8i32 as libc::c_uint)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     a = a << 7i32 | a >> 32i32 - 7i32;
-    a = (a as libc::c_uint).wrapping_add(b) as crate::src::md5::md5::uint32
+    a = (a as libc::c_uint + b) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    d = (d as libc::c_uint).wrapping_add(
-        (c ^ a & (b ^ c))
-            .wrapping_add(*in_0.offset(9))
-            .wrapping_add(0x8b44f7afu32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    d = (d as libc::c_uint + (((c ^ a & (b ^ c))) + *in_0.offset(9) + 0x8b44f7afu32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     d = d << 12i32 | d >> 32i32 - 12i32;
-    d = (d as libc::c_uint).wrapping_add(a) as crate::src::md5::md5::uint32
+    d = (d as libc::c_uint + a) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    c = (c as libc::c_uint).wrapping_add(
-        (b ^ d & (a ^ b))
-            .wrapping_add(*in_0.offset(10))
-            .wrapping_add(0xffff5bb1u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    c = (c as libc::c_uint + (((b ^ d & (a ^ b))) + *in_0.offset(10) + 0xffff5bb1u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     c = c << 17i32 | c >> 32i32 - 17i32;
-    c = (c as libc::c_uint).wrapping_add(d) as crate::src::md5::md5::uint32
+    c = (c as libc::c_uint + d) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    b = (b as libc::c_uint).wrapping_add(
-        (a ^ c & (d ^ a))
-            .wrapping_add(*in_0.offset(11))
-            .wrapping_add(0x895cd7beu32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    b = (b as libc::c_uint + (((a ^ c & (d ^ a))) + *in_0.offset(11) + 0x895cd7beu32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     b = b << 22i32 | b >> 32i32 - 22i32;
-    b = (b as libc::c_uint).wrapping_add(c) as crate::src::md5::md5::uint32
+    b = (b as libc::c_uint + c) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    a = (a as libc::c_uint).wrapping_add(
-        (d ^ b & (c ^ d))
-            .wrapping_add(*in_0.offset(12))
-            .wrapping_add(0x6b901122i32 as libc::c_uint),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    a = (a as libc::c_uint +
+    (((d ^ b & (c ^ d))) + *in_0.offset(12) + 0x6b901122i32 as libc::c_uint)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     a = a << 7i32 | a >> 32i32 - 7i32;
-    a = (a as libc::c_uint).wrapping_add(b) as crate::src::md5::md5::uint32
+    a = (a as libc::c_uint + b) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    d = (d as libc::c_uint).wrapping_add(
-        (c ^ a & (b ^ c))
-            .wrapping_add(*in_0.offset(13))
-            .wrapping_add(0xfd987193u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    d = (d as libc::c_uint + (((c ^ a & (b ^ c))) + *in_0.offset(13) + 0xfd987193u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     d = d << 12i32 | d >> 32i32 - 12i32;
-    d = (d as libc::c_uint).wrapping_add(a) as crate::src::md5::md5::uint32
+    d = (d as libc::c_uint + a) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    c = (c as libc::c_uint).wrapping_add(
-        (b ^ d & (a ^ b))
-            .wrapping_add(*in_0.offset(14))
-            .wrapping_add(0xa679438eu32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    c = (c as libc::c_uint + (((b ^ d & (a ^ b))) + *in_0.offset(14) + 0xa679438eu32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     c = c << 17i32 | c >> 32i32 - 17i32;
-    c = (c as libc::c_uint).wrapping_add(d) as crate::src::md5::md5::uint32
+    c = (c as libc::c_uint + d) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    b = (b as libc::c_uint).wrapping_add(
-        (a ^ c & (d ^ a))
-            .wrapping_add(*in_0.offset(15))
-            .wrapping_add(0x49b40821i32 as libc::c_uint),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    b = (b as libc::c_uint +
+    (((a ^ c & (d ^ a))) + *in_0.offset(15) + 0x49b40821i32 as libc::c_uint)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     b = b << 22i32 | b >> 32i32 - 22i32;
-    b = (b as libc::c_uint).wrapping_add(c) as crate::src::md5::md5::uint32
+    b = (b as libc::c_uint + c) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    a = (a as libc::c_uint).wrapping_add(
-        (c ^ d & (b ^ c))
-            .wrapping_add(*in_0.offset(1))
-            .wrapping_add(0xf61e2562u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    a = (a as libc::c_uint + (((c ^ d & (b ^ c))) + *in_0.offset(1) + 0xf61e2562u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     a = a << 5i32 | a >> 32i32 - 5i32;
-    a = (a as libc::c_uint).wrapping_add(b) as crate::src::md5::md5::uint32
+    a = (a as libc::c_uint + b) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    d = (d as libc::c_uint).wrapping_add(
-        (b ^ c & (a ^ b))
-            .wrapping_add(*in_0.offset(6))
-            .wrapping_add(0xc040b340u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    d = (d as libc::c_uint + (((b ^ c & (a ^ b))) + *in_0.offset(6) + 0xc040b340u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     d = d << 9i32 | d >> 32i32 - 9i32;
-    d = (d as libc::c_uint).wrapping_add(a) as crate::src::md5::md5::uint32
+    d = (d as libc::c_uint + a) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    c = (c as libc::c_uint).wrapping_add(
-        (a ^ b & (d ^ a))
-            .wrapping_add(*in_0.offset(11))
-            .wrapping_add(0x265e5a51i32 as libc::c_uint),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    c = (c as libc::c_uint +
+    (((a ^ b & (d ^ a))) + *in_0.offset(11) + 0x265e5a51i32 as libc::c_uint)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     c = c << 14i32 | c >> 32i32 - 14i32;
-    c = (c as libc::c_uint).wrapping_add(d) as crate::src::md5::md5::uint32
+    c = (c as libc::c_uint + d) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    b = (b as libc::c_uint).wrapping_add(
-        (d ^ a & (c ^ d))
-            .wrapping_add(*in_0.offset(0))
-            .wrapping_add(0xe9b6c7aau32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    b = (b as libc::c_uint + (((d ^ a & (c ^ d))) + *in_0.offset(0) + 0xe9b6c7aau32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     b = b << 20i32 | b >> 32i32 - 20i32;
-    b = (b as libc::c_uint).wrapping_add(c) as crate::src::md5::md5::uint32
+    b = (b as libc::c_uint + c) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    a = (a as libc::c_uint).wrapping_add(
-        (c ^ d & (b ^ c))
-            .wrapping_add(*in_0.offset(5))
-            .wrapping_add(0xd62f105du32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    a = (a as libc::c_uint + (((c ^ d & (b ^ c))) + *in_0.offset(5) + 0xd62f105du32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     a = a << 5i32 | a >> 32i32 - 5i32;
-    a = (a as libc::c_uint).wrapping_add(b) as crate::src::md5::md5::uint32
+    a = (a as libc::c_uint + b) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    d = (d as libc::c_uint).wrapping_add(
-        (b ^ c & (a ^ b))
-            .wrapping_add(*in_0.offset(10))
-            .wrapping_add(0x2441453i32 as libc::c_uint),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    d = (d as libc::c_uint +
+    (((b ^ c & (a ^ b))) + *in_0.offset(10) + 0x2441453i32 as libc::c_uint)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     d = d << 9i32 | d >> 32i32 - 9i32;
-    d = (d as libc::c_uint).wrapping_add(a) as crate::src::md5::md5::uint32
+    d = (d as libc::c_uint + a) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    c = (c as libc::c_uint).wrapping_add(
-        (a ^ b & (d ^ a))
-            .wrapping_add(*in_0.offset(15))
-            .wrapping_add(0xd8a1e681u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    c = (c as libc::c_uint + (((a ^ b & (d ^ a))) + *in_0.offset(15) + 0xd8a1e681u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     c = c << 14i32 | c >> 32i32 - 14i32;
-    c = (c as libc::c_uint).wrapping_add(d) as crate::src::md5::md5::uint32
+    c = (c as libc::c_uint + d) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    b = (b as libc::c_uint).wrapping_add(
-        (d ^ a & (c ^ d))
-            .wrapping_add(*in_0.offset(4))
-            .wrapping_add(0xe7d3fbc8u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    b = (b as libc::c_uint + (((d ^ a & (c ^ d))) + *in_0.offset(4) + 0xe7d3fbc8u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     b = b << 20i32 | b >> 32i32 - 20i32;
-    b = (b as libc::c_uint).wrapping_add(c) as crate::src::md5::md5::uint32
+    b = (b as libc::c_uint + c) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    a = (a as libc::c_uint).wrapping_add(
-        (c ^ d & (b ^ c))
-            .wrapping_add(*in_0.offset(9))
-            .wrapping_add(0x21e1cde6i32 as libc::c_uint),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    a = (a as libc::c_uint +
+    (((c ^ d & (b ^ c))) + *in_0.offset(9) + 0x21e1cde6i32 as libc::c_uint)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     a = a << 5i32 | a >> 32i32 - 5i32;
-    a = (a as libc::c_uint).wrapping_add(b) as crate::src::md5::md5::uint32
+    a = (a as libc::c_uint + b) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    d = (d as libc::c_uint).wrapping_add(
-        (b ^ c & (a ^ b))
-            .wrapping_add(*in_0.offset(14))
-            .wrapping_add(0xc33707d6u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    d = (d as libc::c_uint + (((b ^ c & (a ^ b))) + *in_0.offset(14) + 0xc33707d6u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     d = d << 9i32 | d >> 32i32 - 9i32;
-    d = (d as libc::c_uint).wrapping_add(a) as crate::src::md5::md5::uint32
+    d = (d as libc::c_uint + a) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    c = (c as libc::c_uint).wrapping_add(
-        (a ^ b & (d ^ a))
-            .wrapping_add(*in_0.offset(3))
-            .wrapping_add(0xf4d50d87u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    c = (c as libc::c_uint + (((a ^ b & (d ^ a))) + *in_0.offset(3) + 0xf4d50d87u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     c = c << 14i32 | c >> 32i32 - 14i32;
-    c = (c as libc::c_uint).wrapping_add(d) as crate::src::md5::md5::uint32
+    c = (c as libc::c_uint + d) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    b = (b as libc::c_uint).wrapping_add(
-        (d ^ a & (c ^ d))
-            .wrapping_add(*in_0.offset(8))
-            .wrapping_add(0x455a14edi32 as libc::c_uint),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    b = (b as libc::c_uint +
+    (((d ^ a & (c ^ d))) + *in_0.offset(8) + 0x455a14edi32 as libc::c_uint)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     b = b << 20i32 | b >> 32i32 - 20i32;
-    b = (b as libc::c_uint).wrapping_add(c) as crate::src::md5::md5::uint32
+    b = (b as libc::c_uint + c) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    a = (a as libc::c_uint).wrapping_add(
-        (c ^ d & (b ^ c))
-            .wrapping_add(*in_0.offset(13))
-            .wrapping_add(0xa9e3e905u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    a = (a as libc::c_uint + (((c ^ d & (b ^ c))) + *in_0.offset(13) + 0xa9e3e905u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     a = a << 5i32 | a >> 32i32 - 5i32;
-    a = (a as libc::c_uint).wrapping_add(b) as crate::src::md5::md5::uint32
+    a = (a as libc::c_uint + b) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    d = (d as libc::c_uint).wrapping_add(
-        (b ^ c & (a ^ b))
-            .wrapping_add(*in_0.offset(2))
-            .wrapping_add(0xfcefa3f8u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    d = (d as libc::c_uint + (((b ^ c & (a ^ b))) + *in_0.offset(2) + 0xfcefa3f8u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     d = d << 9i32 | d >> 32i32 - 9i32;
-    d = (d as libc::c_uint).wrapping_add(a) as crate::src::md5::md5::uint32
+    d = (d as libc::c_uint + a) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    c = (c as libc::c_uint).wrapping_add(
-        (a ^ b & (d ^ a))
-            .wrapping_add(*in_0.offset(7))
-            .wrapping_add(0x676f02d9i32 as libc::c_uint),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    c = (c as libc::c_uint +
+    (((a ^ b & (d ^ a))) + *in_0.offset(7) + 0x676f02d9i32 as libc::c_uint)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     c = c << 14i32 | c >> 32i32 - 14i32;
-    c = (c as libc::c_uint).wrapping_add(d) as crate::src::md5::md5::uint32
+    c = (c as libc::c_uint + d) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    b = (b as libc::c_uint).wrapping_add(
-        (d ^ a & (c ^ d))
-            .wrapping_add(*in_0.offset(12))
-            .wrapping_add(0x8d2a4c8au32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    b = (b as libc::c_uint + (((d ^ a & (c ^ d))) + *in_0.offset(12) + 0x8d2a4c8au32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     b = b << 20i32 | b >> 32i32 - 20i32;
-    b = (b as libc::c_uint).wrapping_add(c) as crate::src::md5::md5::uint32
+    b = (b as libc::c_uint + c) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    a = (a as libc::c_uint).wrapping_add(
-        (b ^ c ^ d)
-            .wrapping_add(*in_0.offset(5))
-            .wrapping_add(0xfffa3942u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    a = (a as libc::c_uint + (((b ^ c ^ d)) + *in_0.offset(5) + 0xfffa3942u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     a = a << 4i32 | a >> 32i32 - 4i32;
-    a = (a as libc::c_uint).wrapping_add(b) as crate::src::md5::md5::uint32
+    a = (a as libc::c_uint + b) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    d = (d as libc::c_uint).wrapping_add(
-        (a ^ b ^ c)
-            .wrapping_add(*in_0.offset(8))
-            .wrapping_add(0x8771f681u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    d = (d as libc::c_uint + (((a ^ b ^ c)) + *in_0.offset(8) + 0x8771f681u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     d = d << 11i32 | d >> 32i32 - 11i32;
-    d = (d as libc::c_uint).wrapping_add(a) as crate::src::md5::md5::uint32
+    d = (d as libc::c_uint + a) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    c = (c as libc::c_uint).wrapping_add(
-        (d ^ a ^ b)
-            .wrapping_add(*in_0.offset(11))
-            .wrapping_add(0x6d9d6122i32 as libc::c_uint),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    c = (c as libc::c_uint +
+    (((d ^ a ^ b)) + *in_0.offset(11) + 0x6d9d6122i32 as libc::c_uint)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     c = c << 16i32 | c >> 32i32 - 16i32;
-    c = (c as libc::c_uint).wrapping_add(d) as crate::src::md5::md5::uint32
+    c = (c as libc::c_uint + d) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    b = (b as libc::c_uint).wrapping_add(
-        (c ^ d ^ a)
-            .wrapping_add(*in_0.offset(14))
-            .wrapping_add(0xfde5380cu32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    b = (b as libc::c_uint + (((c ^ d ^ a)) + *in_0.offset(14) + 0xfde5380cu32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     b = b << 23i32 | b >> 32i32 - 23i32;
-    b = (b as libc::c_uint).wrapping_add(c) as crate::src::md5::md5::uint32
+    b = (b as libc::c_uint + c) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    a = (a as libc::c_uint).wrapping_add(
-        (b ^ c ^ d)
-            .wrapping_add(*in_0.offset(1))
-            .wrapping_add(0xa4beea44u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    a = (a as libc::c_uint + (((b ^ c ^ d)) + *in_0.offset(1) + 0xa4beea44u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     a = a << 4i32 | a >> 32i32 - 4i32;
-    a = (a as libc::c_uint).wrapping_add(b) as crate::src::md5::md5::uint32
+    a = (a as libc::c_uint + b) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    d = (d as libc::c_uint).wrapping_add(
-        (a ^ b ^ c)
-            .wrapping_add(*in_0.offset(4))
-            .wrapping_add(0x4bdecfa9i32 as libc::c_uint),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    d = (d as libc::c_uint +
+    (((a ^ b ^ c)) + *in_0.offset(4) + 0x4bdecfa9i32 as libc::c_uint)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     d = d << 11i32 | d >> 32i32 - 11i32;
-    d = (d as libc::c_uint).wrapping_add(a) as crate::src::md5::md5::uint32
+    d = (d as libc::c_uint + a) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    c = (c as libc::c_uint).wrapping_add(
-        (d ^ a ^ b)
-            .wrapping_add(*in_0.offset(7))
-            .wrapping_add(0xf6bb4b60u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    c = (c as libc::c_uint + (((d ^ a ^ b)) + *in_0.offset(7) + 0xf6bb4b60u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     c = c << 16i32 | c >> 32i32 - 16i32;
-    c = (c as libc::c_uint).wrapping_add(d) as crate::src::md5::md5::uint32
+    c = (c as libc::c_uint + d) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    b = (b as libc::c_uint).wrapping_add(
-        (c ^ d ^ a)
-            .wrapping_add(*in_0.offset(10))
-            .wrapping_add(0xbebfbc70u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    b = (b as libc::c_uint + (((c ^ d ^ a)) + *in_0.offset(10) + 0xbebfbc70u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     b = b << 23i32 | b >> 32i32 - 23i32;
-    b = (b as libc::c_uint).wrapping_add(c) as crate::src::md5::md5::uint32
+    b = (b as libc::c_uint + c) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    a = (a as libc::c_uint).wrapping_add(
-        (b ^ c ^ d)
-            .wrapping_add(*in_0.offset(13))
-            .wrapping_add(0x289b7ec6i32 as libc::c_uint),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    a = (a as libc::c_uint +
+    (((b ^ c ^ d)) + *in_0.offset(13) + 0x289b7ec6i32 as libc::c_uint)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     a = a << 4i32 | a >> 32i32 - 4i32;
-    a = (a as libc::c_uint).wrapping_add(b) as crate::src::md5::md5::uint32
+    a = (a as libc::c_uint + b) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    d = (d as libc::c_uint).wrapping_add(
-        (a ^ b ^ c)
-            .wrapping_add(*in_0.offset(0))
-            .wrapping_add(0xeaa127fau32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    d = (d as libc::c_uint + (((a ^ b ^ c)) + *in_0.offset(0) + 0xeaa127fau32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     d = d << 11i32 | d >> 32i32 - 11i32;
-    d = (d as libc::c_uint).wrapping_add(a) as crate::src::md5::md5::uint32
+    d = (d as libc::c_uint + a) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    c = (c as libc::c_uint).wrapping_add(
-        (d ^ a ^ b)
-            .wrapping_add(*in_0.offset(3))
-            .wrapping_add(0xd4ef3085u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    c = (c as libc::c_uint + (((d ^ a ^ b)) + *in_0.offset(3) + 0xd4ef3085u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     c = c << 16i32 | c >> 32i32 - 16i32;
-    c = (c as libc::c_uint).wrapping_add(d) as crate::src::md5::md5::uint32
+    c = (c as libc::c_uint + d) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    b = (b as libc::c_uint).wrapping_add(
-        (c ^ d ^ a)
-            .wrapping_add(*in_0.offset(6))
-            .wrapping_add(0x4881d05i32 as libc::c_uint),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    b = (b as libc::c_uint +
+    (((c ^ d ^ a)) + *in_0.offset(6) + 0x4881d05i32 as libc::c_uint)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     b = b << 23i32 | b >> 32i32 - 23i32;
-    b = (b as libc::c_uint).wrapping_add(c) as crate::src::md5::md5::uint32
+    b = (b as libc::c_uint + c) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    a = (a as libc::c_uint).wrapping_add(
-        (b ^ c ^ d)
-            .wrapping_add(*in_0.offset(9))
-            .wrapping_add(0xd9d4d039u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    a = (a as libc::c_uint + (((b ^ c ^ d)) + *in_0.offset(9) + 0xd9d4d039u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     a = a << 4i32 | a >> 32i32 - 4i32;
-    a = (a as libc::c_uint).wrapping_add(b) as crate::src::md5::md5::uint32
+    a = (a as libc::c_uint + b) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    d = (d as libc::c_uint).wrapping_add(
-        (a ^ b ^ c)
-            .wrapping_add(*in_0.offset(12))
-            .wrapping_add(0xe6db99e5u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    d = (d as libc::c_uint + (((a ^ b ^ c)) + *in_0.offset(12) + 0xe6db99e5u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     d = d << 11i32 | d >> 32i32 - 11i32;
-    d = (d as libc::c_uint).wrapping_add(a) as crate::src::md5::md5::uint32
+    d = (d as libc::c_uint + a) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    c = (c as libc::c_uint).wrapping_add(
-        (d ^ a ^ b)
-            .wrapping_add(*in_0.offset(15))
-            .wrapping_add(0x1fa27cf8i32 as libc::c_uint),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    c = (c as libc::c_uint +
+    (((d ^ a ^ b)) + *in_0.offset(15) + 0x1fa27cf8i32 as libc::c_uint)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     c = c << 16i32 | c >> 32i32 - 16i32;
-    c = (c as libc::c_uint).wrapping_add(d) as crate::src::md5::md5::uint32
+    c = (c as libc::c_uint + d) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    b = (b as libc::c_uint).wrapping_add(
-        (c ^ d ^ a)
-            .wrapping_add(*in_0.offset(2))
-            .wrapping_add(0xc4ac5665u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    b = (b as libc::c_uint + (((c ^ d ^ a)) + *in_0.offset(2) + 0xc4ac5665u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     b = b << 23i32 | b >> 32i32 - 23i32;
-    b = (b as libc::c_uint).wrapping_add(c) as crate::src::md5::md5::uint32
+    b = (b as libc::c_uint + c) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    a = (a as libc::c_uint).wrapping_add(
-        (c ^ (b | !d))
-            .wrapping_add(*in_0.offset(0))
-            .wrapping_add(0xf4292244u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    a = (a as libc::c_uint + (((c ^ (b | !d))) + *in_0.offset(0) + 0xf4292244u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     a = a << 6i32 | a >> 32i32 - 6i32;
-    a = (a as libc::c_uint).wrapping_add(b) as crate::src::md5::md5::uint32
+    a = (a as libc::c_uint + b) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    d = (d as libc::c_uint).wrapping_add(
-        (b ^ (a | !c))
-            .wrapping_add(*in_0.offset(7))
-            .wrapping_add(0x432aff97i32 as libc::c_uint),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    d = (d as libc::c_uint +
+    (((b ^ (a | !c))) + *in_0.offset(7) + 0x432aff97i32 as libc::c_uint)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     d = d << 10i32 | d >> 32i32 - 10i32;
-    d = (d as libc::c_uint).wrapping_add(a) as crate::src::md5::md5::uint32
+    d = (d as libc::c_uint + a) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    c = (c as libc::c_uint).wrapping_add(
-        (a ^ (d | !b))
-            .wrapping_add(*in_0.offset(14))
-            .wrapping_add(0xab9423a7u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    c = (c as libc::c_uint + (((a ^ (d | !b))) + *in_0.offset(14) + 0xab9423a7u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     c = c << 15i32 | c >> 32i32 - 15i32;
-    c = (c as libc::c_uint).wrapping_add(d) as crate::src::md5::md5::uint32
+    c = (c as libc::c_uint + d) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    b = (b as libc::c_uint).wrapping_add(
-        (d ^ (c | !a))
-            .wrapping_add(*in_0.offset(5))
-            .wrapping_add(0xfc93a039u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    b = (b as libc::c_uint + (((d ^ (c | !a))) + *in_0.offset(5) + 0xfc93a039u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     b = b << 21i32 | b >> 32i32 - 21i32;
-    b = (b as libc::c_uint).wrapping_add(c) as crate::src::md5::md5::uint32
+    b = (b as libc::c_uint + c) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    a = (a as libc::c_uint).wrapping_add(
-        (c ^ (b | !d))
-            .wrapping_add(*in_0.offset(12))
-            .wrapping_add(0x655b59c3i32 as libc::c_uint),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    a = (a as libc::c_uint +
+    (((c ^ (b | !d))) + *in_0.offset(12) + 0x655b59c3i32 as libc::c_uint)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     a = a << 6i32 | a >> 32i32 - 6i32;
-    a = (a as libc::c_uint).wrapping_add(b) as crate::src::md5::md5::uint32
+    a = (a as libc::c_uint + b) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    d = (d as libc::c_uint).wrapping_add(
-        (b ^ (a | !c))
-            .wrapping_add(*in_0.offset(3))
-            .wrapping_add(0x8f0ccc92u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    d = (d as libc::c_uint + (((b ^ (a | !c))) + *in_0.offset(3) + 0x8f0ccc92u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     d = d << 10i32 | d >> 32i32 - 10i32;
-    d = (d as libc::c_uint).wrapping_add(a) as crate::src::md5::md5::uint32
+    d = (d as libc::c_uint + a) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    c = (c as libc::c_uint).wrapping_add(
-        (a ^ (d | !b))
-            .wrapping_add(*in_0.offset(10))
-            .wrapping_add(0xffeff47du32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    c = (c as libc::c_uint + (((a ^ (d | !b))) + *in_0.offset(10) + 0xffeff47du32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     c = c << 15i32 | c >> 32i32 - 15i32;
-    c = (c as libc::c_uint).wrapping_add(d) as crate::src::md5::md5::uint32
+    c = (c as libc::c_uint + d) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    b = (b as libc::c_uint).wrapping_add(
-        (d ^ (c | !a))
-            .wrapping_add(*in_0.offset(1))
-            .wrapping_add(0x85845dd1u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    b = (b as libc::c_uint + (((d ^ (c | !a))) + *in_0.offset(1) + 0x85845dd1u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     b = b << 21i32 | b >> 32i32 - 21i32;
-    b = (b as libc::c_uint).wrapping_add(c) as crate::src::md5::md5::uint32
+    b = (b as libc::c_uint + c) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    a = (a as libc::c_uint).wrapping_add(
-        (c ^ (b | !d))
-            .wrapping_add(*in_0.offset(8))
-            .wrapping_add(0x6fa87e4fi32 as libc::c_uint),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    a = (a as libc::c_uint +
+    (((c ^ (b | !d))) + *in_0.offset(8) + 0x6fa87e4fi32 as libc::c_uint)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     a = a << 6i32 | a >> 32i32 - 6i32;
-    a = (a as libc::c_uint).wrapping_add(b) as crate::src::md5::md5::uint32
+    a = (a as libc::c_uint + b) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    d = (d as libc::c_uint).wrapping_add(
-        (b ^ (a | !c))
-            .wrapping_add(*in_0.offset(15))
-            .wrapping_add(0xfe2ce6e0u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    d = (d as libc::c_uint + (((b ^ (a | !c))) + *in_0.offset(15) + 0xfe2ce6e0u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     d = d << 10i32 | d >> 32i32 - 10i32;
-    d = (d as libc::c_uint).wrapping_add(a) as crate::src::md5::md5::uint32
+    d = (d as libc::c_uint + a) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    c = (c as libc::c_uint).wrapping_add(
-        (a ^ (d | !b))
-            .wrapping_add(*in_0.offset(6))
-            .wrapping_add(0xa3014314u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    c = (c as libc::c_uint + (((a ^ (d | !b))) + *in_0.offset(6) + 0xa3014314u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     c = c << 15i32 | c >> 32i32 - 15i32;
-    c = (c as libc::c_uint).wrapping_add(d) as crate::src::md5::md5::uint32
+    c = (c as libc::c_uint + d) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    b = (b as libc::c_uint).wrapping_add(
-        (d ^ (c | !a))
-            .wrapping_add(*in_0.offset(13))
-            .wrapping_add(0x4e0811a1i32 as libc::c_uint),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    b = (b as libc::c_uint +
+    (((d ^ (c | !a))) + *in_0.offset(13) + 0x4e0811a1i32 as libc::c_uint)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     b = b << 21i32 | b >> 32i32 - 21i32;
-    b = (b as libc::c_uint).wrapping_add(c) as crate::src::md5::md5::uint32
+    b = (b as libc::c_uint + c) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    a = (a as libc::c_uint).wrapping_add(
-        (c ^ (b | !d))
-            .wrapping_add(*in_0.offset(4))
-            .wrapping_add(0xf7537e82u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    a = (a as libc::c_uint + (((c ^ (b | !d))) + *in_0.offset(4) + 0xf7537e82u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     a = a << 6i32 | a >> 32i32 - 6i32;
-    a = (a as libc::c_uint).wrapping_add(b) as crate::src::md5::md5::uint32
+    a = (a as libc::c_uint + b) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    d = (d as libc::c_uint).wrapping_add(
-        (b ^ (a | !c))
-            .wrapping_add(*in_0.offset(11))
-            .wrapping_add(0xbd3af235u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    d = (d as libc::c_uint + (((b ^ (a | !c))) + *in_0.offset(11) + 0xbd3af235u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     d = d << 10i32 | d >> 32i32 - 10i32;
-    d = (d as libc::c_uint).wrapping_add(a) as crate::src::md5::md5::uint32
+    d = (d as libc::c_uint + a) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    c = (c as libc::c_uint).wrapping_add(
-        (a ^ (d | !b))
-            .wrapping_add(*in_0.offset(2))
-            .wrapping_add(0x2ad7d2bbi32 as libc::c_uint),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    c = (c as libc::c_uint +
+    (((a ^ (d | !b))) + *in_0.offset(2) + 0x2ad7d2bbi32 as libc::c_uint)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     c = c << 15i32 | c >> 32i32 - 15i32;
-    c = (c as libc::c_uint).wrapping_add(d) as crate::src::md5::md5::uint32
+    c = (c as libc::c_uint + d) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
-    b = (b as libc::c_uint).wrapping_add(
-        (d ^ (c | !a))
-            .wrapping_add(*in_0.offset(9))
-            .wrapping_add(0xeb86d391u32),
-    ) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
+    b = (b as libc::c_uint + (((d ^ (c | !a))) + *in_0.offset(9) + 0xeb86d391u32)) as crate::src::md5::md5::uint32 as crate::src::md5::md5::uint32;
     b = b << 21i32 | b >> 32i32 - 21i32;
-    b = (b as libc::c_uint).wrapping_add(c) as crate::src::md5::md5::uint32
+    b = (b as libc::c_uint + c) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
     let ref mut fresh1 = *buf.offset(0);
-    *fresh1 = (*fresh1 as libc::c_uint).wrapping_add(a) as crate::src::md5::md5::uint32
+    *fresh1 = (*fresh1 as libc::c_uint + a) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
     let ref mut fresh2 = *buf.offset(1);
-    *fresh2 = (*fresh2 as libc::c_uint).wrapping_add(b) as crate::src::md5::md5::uint32
+    *fresh2 = (*fresh2 as libc::c_uint + b) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
     let ref mut fresh3 = *buf.offset(2);
-    *fresh3 = (*fresh3 as libc::c_uint).wrapping_add(c) as crate::src::md5::md5::uint32
+    *fresh3 = (*fresh3 as libc::c_uint + c) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
     let ref mut fresh4 = *buf.offset(3);
-    *fresh4 = (*fresh4 as libc::c_uint).wrapping_add(d) as crate::src::md5::md5::uint32
+    *fresh4 = (*fresh4 as libc::c_uint + d) as crate::src::md5::md5::uint32
         as crate::src::md5::md5::uint32;
 }

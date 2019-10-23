@@ -417,9 +417,8 @@ unsafe extern "C" fn jpeg_core_output_dimensions(mut cinfo: crate::jpeglib_h::j_
     let mut compptr: *mut crate::jpeglib_h::jpeg_component_info =
         ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     /* Compute actual output image dimensions and DCT scaling choices. */
-    if (*cinfo)
-        .scale_num
-        .wrapping_mul(crate::jpeglib_h::DCTSIZE as libc::c_uint)
+    if  (*cinfo)
+        .scale_num * crate::jpeglib_h::DCTSIZE as libc::c_uint
         <= (*cinfo).scale_denom
     {
         /* Provide 1/block_size scaling */
@@ -433,10 +432,9 @@ unsafe extern "C" fn jpeg_core_output_dimensions(mut cinfo: crate::jpeglib_h::j_
         ) as crate::jmorecfg_h::JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 1i32;
         (*cinfo).min_DCT_scaled_size = 1i32
-    } else if (*cinfo)
-        .scale_num
-        .wrapping_mul(crate::jpeglib_h::DCTSIZE as libc::c_uint)
-        <= (*cinfo).scale_denom.wrapping_mul(2i32 as libc::c_uint)
+    } else if  (*cinfo)
+        .scale_num * crate::jpeglib_h::DCTSIZE as libc::c_uint
+        <=  (*cinfo).scale_denom * 2i32 as libc::c_uint
     {
         /* Provide 2/block_size scaling */
         (*cinfo).output_width = crate::jpegint_h::jdiv_round_up(
@@ -449,10 +447,9 @@ unsafe extern "C" fn jpeg_core_output_dimensions(mut cinfo: crate::jpeglib_h::j_
         ) as crate::jmorecfg_h::JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 2i32;
         (*cinfo).min_DCT_scaled_size = 2i32
-    } else if (*cinfo)
-        .scale_num
-        .wrapping_mul(crate::jpeglib_h::DCTSIZE as libc::c_uint)
-        <= (*cinfo).scale_denom.wrapping_mul(3i32 as libc::c_uint)
+    } else if  (*cinfo)
+        .scale_num * crate::jpeglib_h::DCTSIZE as libc::c_uint
+        <=  (*cinfo).scale_denom * 3i32 as libc::c_uint
     {
         /* Provide 3/block_size scaling */
         (*cinfo).output_width = crate::jpegint_h::jdiv_round_up(
@@ -465,10 +462,9 @@ unsafe extern "C" fn jpeg_core_output_dimensions(mut cinfo: crate::jpeglib_h::j_
         ) as crate::jmorecfg_h::JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 3i32;
         (*cinfo).min_DCT_scaled_size = 3i32
-    } else if (*cinfo)
-        .scale_num
-        .wrapping_mul(crate::jpeglib_h::DCTSIZE as libc::c_uint)
-        <= (*cinfo).scale_denom.wrapping_mul(4i32 as libc::c_uint)
+    } else if  (*cinfo)
+        .scale_num * crate::jpeglib_h::DCTSIZE as libc::c_uint
+        <=  (*cinfo).scale_denom * 4i32 as libc::c_uint
     {
         /* Provide 4/block_size scaling */
         (*cinfo).output_width = crate::jpegint_h::jdiv_round_up(
@@ -481,10 +477,9 @@ unsafe extern "C" fn jpeg_core_output_dimensions(mut cinfo: crate::jpeglib_h::j_
         ) as crate::jmorecfg_h::JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 4i32;
         (*cinfo).min_DCT_scaled_size = 4i32
-    } else if (*cinfo)
-        .scale_num
-        .wrapping_mul(crate::jpeglib_h::DCTSIZE as libc::c_uint)
-        <= (*cinfo).scale_denom.wrapping_mul(5i32 as libc::c_uint)
+    } else if  (*cinfo)
+        .scale_num * crate::jpeglib_h::DCTSIZE as libc::c_uint
+        <=  (*cinfo).scale_denom * 5i32 as libc::c_uint
     {
         /* Provide 5/block_size scaling */
         (*cinfo).output_width = crate::jpegint_h::jdiv_round_up(
@@ -497,10 +492,9 @@ unsafe extern "C" fn jpeg_core_output_dimensions(mut cinfo: crate::jpeglib_h::j_
         ) as crate::jmorecfg_h::JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 5i32;
         (*cinfo).min_DCT_scaled_size = 5i32
-    } else if (*cinfo)
-        .scale_num
-        .wrapping_mul(crate::jpeglib_h::DCTSIZE as libc::c_uint)
-        <= (*cinfo).scale_denom.wrapping_mul(6i32 as libc::c_uint)
+    } else if  (*cinfo)
+        .scale_num * crate::jpeglib_h::DCTSIZE as libc::c_uint
+        <=  (*cinfo).scale_denom * 6i32 as libc::c_uint
     {
         /* Provide 6/block_size scaling */
         (*cinfo).output_width = crate::jpegint_h::jdiv_round_up(
@@ -513,10 +507,9 @@ unsafe extern "C" fn jpeg_core_output_dimensions(mut cinfo: crate::jpeglib_h::j_
         ) as crate::jmorecfg_h::JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 6i32;
         (*cinfo).min_DCT_scaled_size = 6i32
-    } else if (*cinfo)
-        .scale_num
-        .wrapping_mul(crate::jpeglib_h::DCTSIZE as libc::c_uint)
-        <= (*cinfo).scale_denom.wrapping_mul(7i32 as libc::c_uint)
+    } else if  (*cinfo)
+        .scale_num * crate::jpeglib_h::DCTSIZE as libc::c_uint
+        <=  (*cinfo).scale_denom * 7i32 as libc::c_uint
     {
         /* Provide 7/block_size scaling */
         (*cinfo).output_width = crate::jpegint_h::jdiv_round_up(
@@ -529,10 +522,9 @@ unsafe extern "C" fn jpeg_core_output_dimensions(mut cinfo: crate::jpeglib_h::j_
         ) as crate::jmorecfg_h::JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 7i32;
         (*cinfo).min_DCT_scaled_size = 7i32
-    } else if (*cinfo)
-        .scale_num
-        .wrapping_mul(crate::jpeglib_h::DCTSIZE as libc::c_uint)
-        <= (*cinfo).scale_denom.wrapping_mul(8i32 as libc::c_uint)
+    } else if  (*cinfo)
+        .scale_num * crate::jpeglib_h::DCTSIZE as libc::c_uint
+        <=  (*cinfo).scale_denom * 8i32 as libc::c_uint
     {
         /* Provide 8/block_size scaling */
         (*cinfo).output_width = crate::jpegint_h::jdiv_round_up(
@@ -545,10 +537,9 @@ unsafe extern "C" fn jpeg_core_output_dimensions(mut cinfo: crate::jpeglib_h::j_
         ) as crate::jmorecfg_h::JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 8i32;
         (*cinfo).min_DCT_scaled_size = 8i32
-    } else if (*cinfo)
-        .scale_num
-        .wrapping_mul(crate::jpeglib_h::DCTSIZE as libc::c_uint)
-        <= (*cinfo).scale_denom.wrapping_mul(9i32 as libc::c_uint)
+    } else if  (*cinfo)
+        .scale_num * crate::jpeglib_h::DCTSIZE as libc::c_uint
+        <=  (*cinfo).scale_denom * 9i32 as libc::c_uint
     {
         /* Provide 9/block_size scaling */
         (*cinfo).output_width = crate::jpegint_h::jdiv_round_up(
@@ -561,10 +552,9 @@ unsafe extern "C" fn jpeg_core_output_dimensions(mut cinfo: crate::jpeglib_h::j_
         ) as crate::jmorecfg_h::JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 9i32;
         (*cinfo).min_DCT_scaled_size = 9i32
-    } else if (*cinfo)
-        .scale_num
-        .wrapping_mul(crate::jpeglib_h::DCTSIZE as libc::c_uint)
-        <= (*cinfo).scale_denom.wrapping_mul(10i32 as libc::c_uint)
+    } else if  (*cinfo)
+        .scale_num * crate::jpeglib_h::DCTSIZE as libc::c_uint
+        <=  (*cinfo).scale_denom * 10i32 as libc::c_uint
     {
         /* Provide 10/block_size scaling */
         (*cinfo).output_width = crate::jpegint_h::jdiv_round_up(
@@ -577,10 +567,9 @@ unsafe extern "C" fn jpeg_core_output_dimensions(mut cinfo: crate::jpeglib_h::j_
         ) as crate::jmorecfg_h::JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 10i32;
         (*cinfo).min_DCT_scaled_size = 10i32
-    } else if (*cinfo)
-        .scale_num
-        .wrapping_mul(crate::jpeglib_h::DCTSIZE as libc::c_uint)
-        <= (*cinfo).scale_denom.wrapping_mul(11i32 as libc::c_uint)
+    } else if  (*cinfo)
+        .scale_num * crate::jpeglib_h::DCTSIZE as libc::c_uint
+        <=  (*cinfo).scale_denom * 11i32 as libc::c_uint
     {
         /* Provide 11/block_size scaling */
         (*cinfo).output_width = crate::jpegint_h::jdiv_round_up(
@@ -593,10 +582,9 @@ unsafe extern "C" fn jpeg_core_output_dimensions(mut cinfo: crate::jpeglib_h::j_
         ) as crate::jmorecfg_h::JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 11i32;
         (*cinfo).min_DCT_scaled_size = 11i32
-    } else if (*cinfo)
-        .scale_num
-        .wrapping_mul(crate::jpeglib_h::DCTSIZE as libc::c_uint)
-        <= (*cinfo).scale_denom.wrapping_mul(12i32 as libc::c_uint)
+    } else if  (*cinfo)
+        .scale_num * crate::jpeglib_h::DCTSIZE as libc::c_uint
+        <=  (*cinfo).scale_denom * 12i32 as libc::c_uint
     {
         /* Provide 12/block_size scaling */
         (*cinfo).output_width = crate::jpegint_h::jdiv_round_up(
@@ -609,10 +597,9 @@ unsafe extern "C" fn jpeg_core_output_dimensions(mut cinfo: crate::jpeglib_h::j_
         ) as crate::jmorecfg_h::JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 12i32;
         (*cinfo).min_DCT_scaled_size = 12i32
-    } else if (*cinfo)
-        .scale_num
-        .wrapping_mul(crate::jpeglib_h::DCTSIZE as libc::c_uint)
-        <= (*cinfo).scale_denom.wrapping_mul(13i32 as libc::c_uint)
+    } else if  (*cinfo)
+        .scale_num * crate::jpeglib_h::DCTSIZE as libc::c_uint
+        <=  (*cinfo).scale_denom * 13i32 as libc::c_uint
     {
         /* Provide 13/block_size scaling */
         (*cinfo).output_width = crate::jpegint_h::jdiv_round_up(
@@ -625,10 +612,9 @@ unsafe extern "C" fn jpeg_core_output_dimensions(mut cinfo: crate::jpeglib_h::j_
         ) as crate::jmorecfg_h::JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 13i32;
         (*cinfo).min_DCT_scaled_size = 13i32
-    } else if (*cinfo)
-        .scale_num
-        .wrapping_mul(crate::jpeglib_h::DCTSIZE as libc::c_uint)
-        <= (*cinfo).scale_denom.wrapping_mul(14i32 as libc::c_uint)
+    } else if  (*cinfo)
+        .scale_num * crate::jpeglib_h::DCTSIZE as libc::c_uint
+        <=  (*cinfo).scale_denom * 14i32 as libc::c_uint
     {
         /* Provide 14/block_size scaling */
         (*cinfo).output_width = crate::jpegint_h::jdiv_round_up(
@@ -641,10 +627,9 @@ unsafe extern "C" fn jpeg_core_output_dimensions(mut cinfo: crate::jpeglib_h::j_
         ) as crate::jmorecfg_h::JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 14i32;
         (*cinfo).min_DCT_scaled_size = 14i32
-    } else if (*cinfo)
-        .scale_num
-        .wrapping_mul(crate::jpeglib_h::DCTSIZE as libc::c_uint)
-        <= (*cinfo).scale_denom.wrapping_mul(15i32 as libc::c_uint)
+    } else if  (*cinfo)
+        .scale_num * crate::jpeglib_h::DCTSIZE as libc::c_uint
+        <=  (*cinfo).scale_denom * 15i32 as libc::c_uint
     {
         /* Provide 15/block_size scaling */
         (*cinfo).output_width = crate::jpegint_h::jdiv_round_up(
@@ -842,9 +827,9 @@ unsafe extern "C" fn prepare_range_limit_table(mut cinfo: crate::jpeglib_h::j_de
     .expect("non-null function pointer")(
         cinfo as crate::jpeglib_h::j_common_ptr,
         crate::jpeglib_h::JPOOL_IMAGE,
-        ((5i32 * (crate::jmorecfg_h::MAXJSAMPLE + 1i32) + crate::jmorecfg_h::CENTERJSAMPLE)
-            as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong),
+        (5i32 * (crate::jmorecfg_h::MAXJSAMPLE + 1i32) + crate::jmorecfg_h::CENTERJSAMPLE)
+            as libc::c_ulong *
+    ::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong,
     ) as *mut crate::jmorecfg_h::JSAMPLE;
     table = table.offset((crate::jmorecfg_h::MAXJSAMPLE + 1i32) as isize);
     (*cinfo).sample_range_limit = table;
@@ -852,8 +837,8 @@ unsafe extern "C" fn prepare_range_limit_table(mut cinfo: crate::jpeglib_h::j_de
     crate::stdlib::memset(
         table.offset(-((255i32 + 1i32) as isize)) as *mut libc::c_void,
         0i32,
-        ((255i32 + 1i32) as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong),
+        (255i32 + 1i32) as libc::c_ulong *
+    ::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong,
     );
     /* Main part of "simple" table: limit[x] = x */
     i = 0i32; /* Point to where post-IDCT table starts */
@@ -872,14 +857,14 @@ unsafe extern "C" fn prepare_range_limit_table(mut cinfo: crate::jpeglib_h::j_de
     crate::stdlib::memset(
         table.offset((2i32 * (255i32 + 1i32)) as isize) as *mut libc::c_void,
         0i32,
-        ((2i32 * (255i32 + 1i32) - 128i32) as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong),
+        (2i32 * (255i32 + 1i32) - 128i32) as libc::c_ulong *
+    ::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong,
     );
     crate::stdlib::memcpy(
         table.offset((4i32 * (255i32 + 1i32) - 128i32) as isize) as *mut libc::c_void,
         (*cinfo).sample_range_limit as *const libc::c_void,
-        (128i32 as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong),
+        128i32 as libc::c_ulong *
+    ::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong,
     );
 }
 /*
@@ -1019,7 +1004,7 @@ unsafe extern "C" fn master_selection(mut cinfo: crate::jpeglib_h::j_decompress_
      * By default, decompress all of the iMCU columns.
      */
     (*(*cinfo).master).first_iMCU_col = 0i32 as crate::jmorecfg_h::JDIMENSION;
-    (*(*cinfo).master).last_iMCU_col = (*cinfo).MCUs_per_row.wrapping_sub(1i32 as libc::c_uint);
+    (*(*cinfo).master).last_iMCU_col =  (*cinfo).MCUs_per_row - 1i32 as libc::c_uint;
     /* If jpeg_start_decompress will read the whole file, initialize
      * progress monitoring appropriately.  The input step is counted
      * as one pass.

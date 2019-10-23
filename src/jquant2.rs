@@ -479,12 +479,12 @@ unsafe extern "C" fn prescan_quantize(
             .offset((*ptr.offset(2) as libc::c_int >> C2_SHIFT) as isize)
                 as *mut histcell;
             /* increment, check for overflow and undo increment if so. */
-            *histp = (*histp).wrapping_add(1);
+            *histp = *histp + 1;
             if *histp as libc::c_int <= 0i32 {
-                *histp = (*histp).wrapping_sub(1)
+                *histp = *histp - 1
             }
             ptr = ptr.offset(3);
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
         row += 1
     }
@@ -935,8 +935,8 @@ unsafe extern "C" fn select_colors(
     .expect("non-null function pointer")(
         cinfo as crate::jpeglib_h::j_common_ptr,
         crate::jpeglib_h::JPOOL_IMAGE,
-        (desired_colors as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<box_0>() as libc::c_ulong),
+        desired_colors as libc::c_ulong *
+    ::std::mem::size_of::<box_0>() as libc::c_ulong,
     ) as boxptr;
     /* Initialize one box containing whole space */
     numboxes = 1i32;
@@ -1512,7 +1512,7 @@ unsafe extern "C" fn pass2_no_dither(
             let fresh12 = outptr;
             outptr = outptr.offset(1);
             *fresh12 = (*cachep as libc::c_int - 1i32) as crate::jmorecfg_h::JSAMPLE;
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
         row += 1
     }
@@ -1558,18 +1558,16 @@ unsafe extern "C" fn pass2_fs_dither(
         if (*cquantize).on_odd_row != 0 {
             /* work right to left in this row */
             inptr = inptr.offset(
-                width
-                    .wrapping_sub(1i32 as libc::c_uint)
-                    .wrapping_mul(3i32 as libc::c_uint) as isize,
+                ((
+                width - 1i32 as libc::c_uint) * 3i32 as libc::c_uint) as isize,
             );
-            outptr = outptr.offset(width.wrapping_sub(1i32 as libc::c_uint) as isize);
+            outptr = outptr.offset((width - 1i32 as libc::c_uint) as isize);
             dir = -1i32;
             dir3 = -3i32; /* so point to rightmost pixel */
             /* flip for next time */
             errorptr = (*cquantize).fserrors.offset(
-                width
-                    .wrapping_add(1i32 as libc::c_uint)
-                    .wrapping_mul(3i32 as libc::c_uint) as isize,
+                ((
+                width + 1i32 as libc::c_uint) * 3i32 as libc::c_uint) as isize,
             ); /* => entry after last column */
             (*cquantize).on_odd_row = crate::jmorecfg_h::FALSE
         } else {
@@ -1645,7 +1643,7 @@ unsafe extern "C" fn pass2_fs_dither(
             inptr = inptr.offset(dir3 as isize);
             outptr = outptr.offset(dir as isize);
             errorptr = errorptr.offset(dir3 as isize);
-            col = col.wrapping_sub(1)
+            col =  col - 1
         }
         /* Limit the error using transfer function set by init_error_limit.
          * See comments with init_error_limit for rationale.
@@ -1713,8 +1711,8 @@ unsafe extern "C" fn init_error_limit(mut cinfo: crate::jpeglib_h::j_decompress_
     .expect("non-null function pointer")(
         cinfo as crate::jpeglib_h::j_common_ptr,
         crate::jpeglib_h::JPOOL_IMAGE,
-        ((crate::jmorecfg_h::MAXJSAMPLE * 2i32 + 1i32) as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<libc::c_int>() as libc::c_ulong),
+        (crate::jmorecfg_h::MAXJSAMPLE * 2i32 + 1i32) as libc::c_ulong *
+    ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
     ) as *mut libc::c_int;
     table = table.offset(crate::jmorecfg_h::MAXJSAMPLE as isize);
     (*cquantize).error_limiter = table;
@@ -1849,11 +1847,9 @@ unsafe extern "C" fn start_pass_2_quant(
             == crate::jpeglib_h::JDITHER_FS as libc::c_int as libc::c_uint
         {
             let mut arraysize: crate::stddef_h::size_t =
-                ((*cinfo).output_width.wrapping_add(2i32 as libc::c_uint) as libc::c_ulong)
-                    .wrapping_mul(
-                        (3i32 as libc::c_ulong)
-                            .wrapping_mul(::std::mem::size_of::<FSERROR>() as libc::c_ulong),
-                    );
+                ((*cinfo).output_width + 2i32 as libc::c_uint) as libc::c_ulong *
+    (3i32 as libc::c_ulong *
+         ::std::mem::size_of::<FSERROR>() as libc::c_ulong);
             /* Allocate Floyd-Steinberg workspace if we didn't already. */
             if (*cquantize).fserrors.is_null() {
                 (*cquantize).fserrors = Some(
@@ -1882,8 +1878,8 @@ unsafe extern "C" fn start_pass_2_quant(
         while i < HIST_C0_ELEMS {
             crate::jpegint_h::jzero_far(
                 *histogram.offset(i as isize) as *mut libc::c_void,
-                ((HIST_C1_ELEMS * HIST_C2_ELEMS) as libc::c_ulong)
-                    .wrapping_mul(::std::mem::size_of::<histcell>() as libc::c_ulong),
+                (HIST_C1_ELEMS * HIST_C2_ELEMS) as libc::c_ulong *
+    ::std::mem::size_of::<histcell>() as libc::c_ulong,
             );
             i += 1
         }
@@ -1949,8 +1945,8 @@ pub unsafe extern "C" fn jinit_2pass_quantizer(mut cinfo: crate::jpeglib_h::j_de
     .expect("non-null function pointer")(
         cinfo as crate::jpeglib_h::j_common_ptr,
         crate::jpeglib_h::JPOOL_IMAGE,
-        (HIST_C0_ELEMS as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<hist2d>() as libc::c_ulong),
+        HIST_C0_ELEMS as libc::c_ulong *
+    ::std::mem::size_of::<hist2d>() as libc::c_ulong,
     ) as hist3d; /* histogram is garbage now */
     i = 0i32;
     while i < HIST_C0_ELEMS {
@@ -1963,8 +1959,8 @@ pub unsafe extern "C" fn jinit_2pass_quantizer(mut cinfo: crate::jpeglib_h::j_de
         .expect("non-null function pointer")(
             cinfo as crate::jpeglib_h::j_common_ptr,
             crate::jpeglib_h::JPOOL_IMAGE,
-            ((HIST_C1_ELEMS * HIST_C2_ELEMS) as libc::c_ulong)
-                .wrapping_mul(::std::mem::size_of::<histcell>() as libc::c_ulong),
+            (HIST_C1_ELEMS * HIST_C2_ELEMS) as libc::c_ulong *
+    ::std::mem::size_of::<histcell>() as libc::c_ulong,
         ) as hist2d;
         i += 1
     }
@@ -2041,11 +2037,9 @@ pub unsafe extern "C" fn jinit_2pass_quantizer(mut cinfo: crate::jpeglib_h::j_de
         .expect("non-null function pointer")(
             cinfo as crate::jpeglib_h::j_common_ptr,
             crate::jpeglib_h::JPOOL_IMAGE,
-            ((*cinfo).output_width.wrapping_add(2i32 as libc::c_uint) as libc::c_ulong)
-                .wrapping_mul(
-                    (3i32 as libc::c_ulong)
-                        .wrapping_mul(::std::mem::size_of::<FSERROR>() as libc::c_ulong),
-                ),
+            ((*cinfo).output_width + 2i32 as libc::c_uint) as libc::c_ulong *
+    (3i32 as libc::c_ulong *
+         ::std::mem::size_of::<FSERROR>() as libc::c_ulong),
         ) as FSERRPTR;
         /* Might as well create the error-limiting table too. */
         init_error_limit(cinfo);

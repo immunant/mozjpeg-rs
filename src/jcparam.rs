@@ -1647,9 +1647,9 @@ pub unsafe extern "C" fn jpeg_set_defaults(mut cinfo: crate::jpeglib_h::j_compre
         .expect("non-null function pointer")(
             cinfo as crate::jpeglib_h::j_common_ptr,
             crate::jpeglib_h::JPOOL_PERMANENT,
-            (crate::jmorecfg_h::MAX_COMPONENTS as libc::c_ulong).wrapping_mul(
+            crate::jmorecfg_h::MAX_COMPONENTS as libc::c_ulong *
+    
                 ::std::mem::size_of::<crate::jpeglib_h::jpeg_component_info>() as libc::c_ulong,
-            ),
         ) as *mut crate::jpeglib_h::jpeg_component_info
     }
     /* Initialize everything not dependent on the color space */
@@ -2145,10 +2145,9 @@ unsafe extern "C" fn jpeg_search_progression(
         .expect("non-null function pointer")(
             cinfo as crate::jpeglib_h::j_common_ptr,
             crate::jpeglib_h::JPOOL_PERMANENT,
-            ((*cinfo).script_space_size as libc::c_ulong)
-                .wrapping_mul(
-                    ::std::mem::size_of::<crate::jpeglib_h::jpeg_scan_info>() as libc::c_ulong
-                ),
+            (*cinfo).script_space_size as libc::c_ulong *
+    
+                    ::std::mem::size_of::<crate::jpeglib_h::jpeg_scan_info>() as libc::c_ulong,
         ) as *mut crate::jpeglib_h::jpeg_scan_info
     }
     scanptr = (*cinfo).script_space;
@@ -2333,10 +2332,9 @@ pub unsafe extern "C" fn jpeg_simple_progression(mut cinfo: crate::jpeglib_h::j_
         .expect("non-null function pointer")(
             cinfo as crate::jpeglib_h::j_common_ptr,
             crate::jpeglib_h::JPOOL_PERMANENT,
-            ((*cinfo).script_space_size as libc::c_ulong)
-                .wrapping_mul(
-                    ::std::mem::size_of::<crate::jpeglib_h::jpeg_scan_info>() as libc::c_ulong
-                ),
+            (*cinfo).script_space_size as libc::c_ulong *
+    
+                    ::std::mem::size_of::<crate::jpeglib_h::jpeg_scan_info>() as libc::c_ulong,
         ) as *mut crate::jpeglib_h::jpeg_scan_info
     }
     scanptr = (*cinfo).script_space;
