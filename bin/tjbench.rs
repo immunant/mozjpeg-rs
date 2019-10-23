@@ -422,8 +422,8 @@ pub unsafe extern "C" fn dummyDCTFilter(
     mut transformIndex: libc::c_int,
     mut transform: *mut crate::src::turbojpeg::tjtransform,
 ) -> libc::c_int {
-     let mut i:  libc::c_int =  0;
-    i = 0i32;
+     
+     let mut i:   libc::c_int =  0i32;
     while i < arrayRegion.w * arrayRegion.h {
         *coeffs.offset(i as isize) = -(*coeffs.offset(i as isize) as libc::c_int) as libc::c_short;
         i += 1
@@ -617,17 +617,17 @@ pub unsafe extern "C" fn decomp(
                         126259514807107346 => {}
                         _ => {
                             /* Benchmark */
-                             let mut row:  libc::c_int =  0; let mut col:  libc::c_int =  0; let mut iter:  libc::c_int =  0i32; let mut elapsed:  libc::c_double =  0.; let mut elapsedDecode:  libc::c_double =  0.;iter = -1i32;
-                            elapsedDecode = 0.0f64;
-                            elapsed = elapsedDecode;
+                             let mut row:  libc::c_int =  0; let mut col:  libc::c_int =  0;   
+                            
+                             let mut iter:   libc::c_int =  -1i32; let mut elapsedDecode:   libc::c_double =  0.0f64; let mut elapsed:   libc::c_double =  elapsedDecode;
                             's_213: loop {
-                                 let mut dstPtr:  *mut libc::c_uchar =  ::std::ptr::null_mut::< libc::c_uchar>();
+                                 
                                 let mut start: libc::c_double = crate::src::tjutil::getTime();
                                 row = 0i32;
-                                dstPtr = dstBuf;
+                                 let mut dstPtr:   *mut libc::c_uchar =  dstBuf;
                                 while row < ntilesh {
-                                     let mut dstPtr2:  *mut libc::c_uchar =  ::std::ptr::null_mut::< libc::c_uchar>();col = 0i32;
-                                    dstPtr2 = dstPtr;
+                                     col = 0i32;
+                                     let mut dstPtr2:   *mut libc::c_uchar =  dstPtr;
                                     while col < ntilesw {
                                          let mut tile:  libc::c_int =  0i32;let mut width_0: libc::c_int = if doTile != 0 {
                                             if tilew < w - col * tilew {
@@ -648,7 +648,7 @@ pub unsafe extern "C" fn decomp(
                                             scaledh
                                         };
                                         if doYUV != 0 {
-                                             let mut startDecode:  libc::c_double =  0.;
+                                             
                                             if crate::src::turbojpeg::tjDecompressToYUV2(
                                                 handle,
                                                 *jpegBuf.offset(tile as isize),
@@ -742,7 +742,7 @@ pub unsafe extern "C" fn decomp(
                                                     break 's_213;
                                                 }
                                             }
-                                            startDecode = crate::src::tjutil::getTime();
+                                             let mut startDecode:   libc::c_double =  crate::src::tjutil::getTime();
                                             if crate::src::turbojpeg::tjDecodeYUV(
                                                 handle, yuvBuf, yuvPad, subsamp, dstPtr2, width_0,
                                                 pitch, height_0, pf, flags,
@@ -1208,7 +1208,8 @@ pub unsafe extern "C" fn decomp(
                                                     );
                                                     retval = -1i32
                                                 } else {
-                                                     let mut ptr:  *mut libc::c_char =  ::std::ptr::null_mut::< libc::c_char>();ptr = crate::stdlib::strrchr(
+                                                      let mut ptr:   *mut libc::c_char =
+     crate::stdlib::strrchr(
                                                         tempStr.as_mut_ptr(),
                                                         '.' as i32,
                                                     );
@@ -1239,12 +1240,12 @@ pub unsafe extern "C" fn decomp(
                                                             == crate::src::turbojpeg::TJ_GRAYSCALE
                                                         {
                                                             
-                                                             let mut index:  libc::c_int =  0;
+                                                             
                                                             row = 0i32;
-                                                            index = 0i32;
+                                                             let mut index:   libc::c_int =  0i32;
                                                             while row < h {
-                                                                 let mut index2:  libc::c_int =  0;col = 0i32;
-                                                                index2 = index;
+                                                                 col = 0i32;
+                                                                 let mut index2:   libc::c_int =  index;
                                                                 while col < w {
                                                                     let mut rindex:
                                                                             libc::c_int =
@@ -1517,7 +1518,7 @@ pub unsafe extern "C" fn fullTest(
                     retval = -1i32;
                     break;
                 } else {
-                     let mut tempStr:  [libc::c_char; 1024] =  [0; 1024]; let mut elapsed:  libc::c_double =  0.; let mut elapsedEncode:  libc::c_double =  0.; let mut totalJpegSize:  libc::c_int =  0i32; let mut iter:  libc::c_int =  0; let mut yuvSize:  libc::c_int =  0i32;crate::stdlib::memset(
+                     let mut tempStr:  [libc::c_char; 1024] =  [0; 1024];   let mut totalJpegSize:  libc::c_int =  0i32;  let mut yuvSize:  libc::c_int =  0i32;crate::stdlib::memset(
                         jpegSize as *mut libc::c_void,
                         0i32,
                         ::std::mem::size_of::<libc::c_ulong>() as libc::c_ulong *
@@ -1676,19 +1677,18 @@ pub unsafe extern "C" fn fullTest(
                             );
                         }
                     }
-                    /* Benchmark */
-                    iter = -1i32;
-                    elapsedEncode = 0.0f64;
-                    elapsed = elapsedEncode;
+                    
+                    
+                     let mut iter:   libc::c_int =  -1i32; let mut elapsedEncode:   libc::c_double =  0.0f64; let mut elapsed:   libc::c_double =  elapsedEncode;
                     loop {
-                         let mut srcPtr:  *mut libc::c_uchar =  ::std::ptr::null_mut::< libc::c_uchar>(); let mut start:  libc::c_double =  0.; let mut row:  libc::c_int =  0;
+                           
                         totalJpegSize = 0i32;
-                        start = crate::src::tjutil::getTime();
-                        row = 0i32;
-                        srcPtr = srcBuf;
+                        
+                        
+                         let mut start:   libc::c_double =  crate::src::tjutil::getTime(); let mut row:   libc::c_int =  0i32; let mut srcPtr:   *mut libc::c_uchar =  srcBuf;
                         while row < ntilesh {
-                             let mut srcPtr2:  *mut libc::c_uchar =  ::std::ptr::null_mut::< libc::c_uchar>(); let mut col:  libc::c_int =  0;col = 0i32;
-                            srcPtr2 = srcPtr;
+                              
+                             let mut col:   libc::c_int =  0i32; let mut srcPtr2:   *mut libc::c_uchar =  srcPtr;
                             while col < ntilesw {
                                  let mut tile:  libc::c_int =  0i32;let mut width: libc::c_int = if tilew < w - col * tilew {
                                     tilew
@@ -2613,7 +2613,7 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                     match current_block {
                         18327231901424809080 => {}
                         _ => {
-                             let mut tempStr:  [libc::c_char; 80] =  [0; 80]; let mut tilew:  libc::c_int =  0; let mut tileh:  libc::c_int =  0;if cs == crate::src::turbojpeg::TJCS_YCCK as libc::c_int
+                             let mut tempStr:  [libc::c_char; 80] =  [0; 80];  if cs == crate::src::turbojpeg::TJCS_YCCK as libc::c_int
                                 || cs == crate::src::turbojpeg::TJCS_CMYK as libc::c_int
                             {
                                 pf =  crate::src::turbojpeg::TJPF_CMYK;
@@ -2683,8 +2683,8 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                     },
                                 );
                             }
-                            tilew = (if doTile != 0 { 16i32 } else { w });
-                            tileh = (if doTile != 0 { 16i32 } else { h });
+                            
+                             let mut tilew:   libc::c_int = if doTile != 0 { 16i32 } else { w }; let mut tileh:   libc::c_int = if doTile != 0 { 16i32 } else { h };
                             's_381: loop {
                                 if tilew > w {
                                     tilew = w
@@ -2741,7 +2741,7 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                         retval = -1i32;
                                         break;
                                     } else {
-                                         let mut decompsrc:  libc::c_int =  0i32; let mut tw:  libc::c_int =  0; let mut th:  libc::c_int =  0; let mut ttilew:  libc::c_int =  0; let mut ttileh:  libc::c_int =  0; let mut tsubsamp:  libc::c_int =  0;crate::stdlib::memset(
+                                         let mut decompsrc:  libc::c_int =  0i32;     crate::stdlib::memset(
                                             jpegSize as *mut libc::c_void,
                                             0i32,
                                             ::std::mem::size_of::<libc::c_ulong>()
@@ -2780,10 +2780,10 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                                 }
                                             }
                                         }
-                                        tw = w;
-                                        th = h;
-                                        ttilew = tilew;
-                                        ttileh = tileh;
+                                        
+                                        
+                                        
+                                         let mut tw:   libc::c_int =  w; let mut th:   libc::c_int =  h; let mut ttilew:   libc::c_int =  tilew; let mut ttileh:   libc::c_int =  tileh;
                                         if quiet == 0 {
                                             crate::stdlib::printf(
                                                 
@@ -2838,7 +2838,7 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                                 tileh,
                                             );
                                         }
-                                        tsubsamp = subsamp;
+                                         let mut tsubsamp:   libc::c_int =  subsamp;
                                         if doTile != 0
                                             || xformOp
                                                 != crate::src::turbojpeg::TJXOP_NONE as libc::c_int
@@ -2869,7 +2869,7 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                                 retval = -1i32;
                                                 break;
                                             } else {
-                                                 let mut totalJpegSize:  libc::c_ulong =  0; let mut elapsed:  libc::c_double =  0.; let mut tile:  libc::c_int =  0; let mut row:  libc::c_int =  0; let mut iter:  libc::c_int =  0; let mut tntilesw:  libc::c_int =  0; let mut tntilesh:  libc::c_int =  0;if xformOp
+                                                       if xformOp
                                                     == crate::src::turbojpeg::TJXOP_TRANSPOSE
                                                         as libc::c_int
                                                     || xformOp
@@ -2936,8 +2936,8 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                                         - th % crate::src::turbojpeg::tjMCUWidth
                                                             [tsubsamp as usize]
                                                 }
-                                                tntilesw = (tw + ttilew - 1i32) / ttilew;
-                                                tntilesh = (th + ttileh - 1i32) / ttileh;
+                                                
+                                                 let mut tntilesw:   libc::c_int =  (tw + ttilew - 1i32) / ttilew; let mut tntilesh:   libc::c_int =  (th + ttileh - 1i32) / ttileh;
                                                 if xformOp
                                                     == crate::src::turbojpeg::TJXOP_TRANSPOSE
                                                         as libc::c_int
@@ -2965,10 +2965,10 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                                             as libc::c_int
                                                     }
                                                 }
-                                                row = 0i32;
-                                                tile = 0i32;
+                                                
+                                                 let mut row:   libc::c_int =  0i32; let mut tile:   libc::c_int =  0i32;
                                                 while row < tntilesh {
-                                                     let mut col:  libc::c_int =  0;col = 0i32;
+                                                      let mut col:   libc::c_int =  0i32;
                                                     while col < tntilesw {
                                                         (*t.offset(tile as isize)).r.w =
                                                             if ttilew < tw - col * ttilew {
@@ -3014,10 +3014,10 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                                     }
                                                     row += 1
                                                 }
-                                                iter = -1i32;
-                                                elapsed = 0.0f64;
+                                                
+                                                 let mut iter:   libc::c_int =  -1i32; let mut elapsed:   libc::c_double =  0.0f64;
                                                 loop {
-                                                     let mut start:  libc::c_double =  0.;start = crate::src::tjutil::getTime();
+                                                      let mut start:   libc::c_double =  crate::src::tjutil::getTime();
                                                     if crate::src::turbojpeg::tjTransform(
                                                         handle,
                                                         srcBuf,
@@ -3147,7 +3147,7 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                                 t = crate::stddef_h::NULL_0
                                                     as *mut crate::src::turbojpeg::tjtransform;
                                                 tile = 0i32;
-                                                totalJpegSize = 0u64;
+                                                 let mut totalJpegSize:   libc::c_ulong =  0u64;
                                                 while tile < tntilesw * tntilesh {
                                                     totalJpegSize =  totalJpegSize + 
                                                         *jpegSize.offset(tile as isize);
@@ -3348,7 +3348,7 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
 #[no_mangle]
 
 pub unsafe extern "C" fn usage(mut progName: *mut libc::c_char) {
-     let mut i:  libc::c_int =  0;
+     
     crate::stdlib::printf(
         
         b"USAGE: %s\n\x00".as_ptr() as *const libc::c_char,
@@ -3473,7 +3473,7 @@ pub unsafe extern "C" fn usage(mut progName: *mut libc::c_char) {
         b"-scale M/N = Scale down the width/height of the decompressed JPEG image by a\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(b"     factor of M/N (M/N = \x00".as_ptr() as *const libc::c_char);
-    i = 0i32;
+     let mut i:   libc::c_int =  0i32;
     while i < nsf {
         crate::stdlib::printf(
             
@@ -3607,10 +3607,11 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         );
         retval = -1i32
     } else {
-         let mut current_block:  u64; let mut w:  libc::c_int =  0i32; let mut h:  libc::c_int =  0i32; let mut i:  libc::c_int =  0; let mut temp:  *mut libc::c_char =  ::std::ptr::null_mut::< libc::c_char>(); let mut minArg:  libc::c_int =  2i32;if argc < minArg {
+         let mut current_block:  u64; let mut w:  libc::c_int =  0i32; let mut h:  libc::c_int =  0i32; let mut i:  libc::c_int =  0;  let mut minArg:  libc::c_int =  2i32;if argc < minArg {
             usage(*argv.offset(0));
         }
-        temp = crate::stdlib::strrchr(*argv.offset(1), '.' as i32);
+         let mut temp:   *mut libc::c_char =
+     crate::stdlib::strrchr(*argv.offset(1), '.' as i32);
         if !temp.is_null() {
             if crate::stdlib::strcasecmp(temp,  b".bmp\x00".as_ptr() as *const libc::c_char) == 0
             {
@@ -3801,7 +3802,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                         &mut temp2 as *mut libc::c_int,
                     ) == 2i32
                     {
-                         let mut j:  libc::c_int =  0; let mut match_0:  libc::c_int =  0i32;j = 0i32;
+                          let mut match_0:  libc::c_int =  0i32; let mut j:   libc::c_int =  0i32;
                         while j < nsf {
                             if temp1 as libc::c_double / temp2 as libc::c_double
                                 == (*scalingFactors.offset(j as isize)).num as libc::c_double
