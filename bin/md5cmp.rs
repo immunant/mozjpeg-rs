@@ -61,8 +61,8 @@ pub use crate::stdlib::_IO_FILE;
  */
 
 unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> libc::c_int {
-    let mut md5sum: *mut libc::c_char = crate::stddef_h::NULL as *mut libc::c_char;
-    let mut buf: [libc::c_char; 65] = [0; 65];
+     let mut buf:  [libc::c_char; 65] =  [0; 65];let mut md5sum: *mut libc::c_char = crate::stddef_h::NULL as *mut libc::c_char;
+    
     if argc < 3i32 {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
@@ -105,7 +105,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
 }
 #[main]
 pub fn main() {
-    let mut args: Vec<*mut libc::c_char> = Vec::new();
+     let mut args:  Vec<*mut libc::c_char> =  Vec::new();
     for arg in ::std::env::args() {
         args.push(
             ::std::ffi::CString::new(arg)
