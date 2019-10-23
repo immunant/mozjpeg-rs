@@ -480,12 +480,10 @@ unsafe extern "C" fn parse_switches(
  * for_real is FALSE on the first (dummy) pass; we may skip any expensive
  * processing.
  */ {
-     /* saves -scans parm if any */
-    
-     let mut argn:  libc::c_int =  0; let mut simple_progressive:  crate::jmorecfg_h::boolean =  0;
+      
     let mut scansarg: *mut libc::c_char = crate::stddef_h::NULL as *mut libc::c_char;
-    /* Set up default JPEG parameters. */
-    simple_progressive = if (*cinfo).num_scans == 0i32 {
+     let mut simple_progressive:   crate::jmorecfg_h::boolean =
+     if (*cinfo).num_scans == 0i32 {
         crate::jmorecfg_h::FALSE
     } else {
         crate::jmorecfg_h::TRUE
@@ -501,10 +499,9 @@ unsafe extern "C" fn parse_switches(
     transformoption.slow_hflip = crate::jmorecfg_h::FALSE;
     (*(*cinfo).err).trace_level = 0i32;
     prefer_smallest = crate::jmorecfg_h::TRUE;
-    /* Scan command line options, adjust parameters */
-    argn = 1i32;
+     let mut argn:   libc::c_int =  1i32;
     while argn < argc {
-         let mut arg:  *mut libc::c_char =  ::std::ptr::null_mut::< libc::c_char>();arg = *argv.offset(argn as isize);
+          let mut arg:   *mut libc::c_char =  *argv.offset(argn as isize);
         if *arg as libc::c_int != '-' as i32 {
             /* Not a switch, must be a file name argument */
             if !(argn <= last_file_arg_seen) {
@@ -979,11 +976,7 @@ unsafe extern "C" fn parse_switches(
  */
 
 unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> libc::c_int {
-     let mut src_coef_arrays:  *mut crate::jpeglib_h::jvirt_barray_ptr =
-    
-        ::std::ptr::null_mut::< crate::jpeglib_h::jvirt_barray_ptr>(); let mut dst_coef_arrays:  *mut crate::jpeglib_h::jvirt_barray_ptr =
-    
-        ::std::ptr::null_mut::< crate::jpeglib_h::jvirt_barray_ptr>(); let mut file_index:  libc::c_int =  0; let mut fp:  *mut crate::stdlib::FILE =
+        let mut fp:  *mut crate::stdlib::FILE =
      ::std::ptr::null_mut::< crate::stdlib::FILE>(); let mut insize:  libc::c_ulong =  0u64; let mut outsize:  libc::c_ulong =  0u64; let mut icc_len:  libc::c_long =  0i64;let mut srcinfo: crate::jpeglib_h::jpeg_decompress_struct =
         crate::jpeglib_h::jpeg_decompress_struct {
             err: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_error_mgr>(),
@@ -1216,7 +1209,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
      * destination JPEG object, so we parse into that and then copy over what
      * needs to affects the source too.
      */
-    file_index = parse_switches(&mut dstinfo, argc, argv, 0i32, crate::jmorecfg_h::FALSE);
+     let mut file_index:   libc::c_int =
+     parse_switches(&mut dstinfo, argc, argv, 0i32, crate::jmorecfg_h::FALSE);
     jsrcerr.trace_level = jdsterr.trace_level;
     (*srcinfo.mem).max_memory_to_use = (*dstinfo.mem).max_memory_to_use;
     /* Unix style: expect zero or one file name */
@@ -1251,8 +1245,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         fp = crate::src::cdjpeg::read_stdin()
     }
     if !icc_filename.is_null() {
-         let mut icc_file:  *mut crate::stdlib::FILE =
-     ::std::ptr::null_mut::< crate::stdlib::FILE>();icc_file = crate::stdlib::fopen(icc_filename, crate::src::cdjpeg::READ_BINARY.as_ptr());
+          let mut icc_file:   *mut crate::stdlib::FILE =
+     crate::stdlib::fopen(icc_filename, crate::src::cdjpeg::READ_BINARY.as_ptr());
         if icc_file.is_null() {
             crate::stdlib::fprintf(
                 crate::stdlib::stderr,
@@ -1332,7 +1326,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     if memsrc != 0 {
         
         loop {
-             let mut nbytes:  crate::stddef_h::size_t =  0;inbuffer = crate::stdlib::realloc(
+             inbuffer = crate::stdlib::realloc(
                 inbuffer as *mut libc::c_void,
                 
                 insize + INPUT_BUF_SIZE as libc::c_ulong,
@@ -1346,7 +1340,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                 );
                 crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
             }
-            nbytes = crate::stdlib::fread(
+             let mut nbytes:   crate::stddef_h::size_t =
+     crate::stdlib::fread(
                 &mut *inbuffer.offset(insize as isize) as *mut libc::c_uchar as *mut libc::c_void,
                 1u64,
                 4096u64,
@@ -1397,14 +1392,15 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
-    /* Read source file as DCT coefficients */
-    src_coef_arrays = crate::jpeglib_h::jpeg_read_coefficients(&mut srcinfo);
+     let mut src_coef_arrays:   *mut crate::jpeglib_h::jvirt_barray_ptr =
+     crate::jpeglib_h::jpeg_read_coefficients(&mut srcinfo);
     /* Initialize destination compression parameters from source values */
     crate::jpeglib_h::jpeg_copy_critical_parameters(&mut srcinfo, &mut dstinfo);
     /* Adjust destination parameters if required by transform options;
      * also find out which set of coefficient arrays will hold the output.
      */
-    dst_coef_arrays = crate::src::transupp::jtransform_adjust_parameters(
+     let mut dst_coef_arrays:   *mut crate::jpeglib_h::jvirt_barray_ptr =
+     crate::src::transupp::jtransform_adjust_parameters(
         &mut srcinfo,
         &mut dstinfo,
         src_coef_arrays,
@@ -1482,14 +1478,15 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             crate::jpeglib_h::JINT_COMPRESS_PROFILE,
         ) == crate::jpeglib_h::JCP_MAX_COMPRESSION as libc::c_int
     {
-         let mut nbytes_0:  crate::stddef_h::size_t =  0;
+         
         let mut buffer: *mut libc::c_uchar = outbuffer;
         let mut size: libc::c_ulong = outsize;
         if prefer_smallest != 0 && insize < size {
             size = insize;
             buffer = inbuffer
         }
-        nbytes_0 = crate::stdlib::fwrite(
+         let mut nbytes_0:   crate::stddef_h::size_t =
+     crate::stdlib::fwrite(
             buffer as *const libc::c_void,
             1u64,
             size,
