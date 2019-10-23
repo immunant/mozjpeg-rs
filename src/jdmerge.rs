@@ -372,7 +372,7 @@ unsafe extern "C" fn merged_2v_upsample(
             num_rows = (*upsample).rows_to_go
         }
         /* And not more than what the client can accept: */
-        out_rows_avail = out_rows_avail - *out_row_ctr;
+        out_rows_avail -=  *out_row_ctr;
         if num_rows > out_rows_avail {
             num_rows = out_rows_avail
         }

@@ -469,7 +469,7 @@ unsafe extern "C" fn get_8bit_gray_row(
         let fresh0 = ptr;
         ptr = ptr.offset(1);
         *fresh0 =  (*source).tga_pixel[0];
-        col =  col - 1
+        col -=  1
     }
     return 1u32;
 }
@@ -499,7 +499,7 @@ unsafe extern "C" fn get_8bit_row(
         let fresh3 = ptr;
         ptr = ptr.offset(1);
         *fresh3 = *(*colormap.offset(2)).offset(t as isize);
-        col =  col - 1
+        col -=  1
     }
     return 1u32;
 }
@@ -530,7 +530,7 @@ unsafe extern "C" fn get_16bit_row(
         t >>= 5i32;
         *ptr.offset(0) = c5to8bits[(t & 0x1fi32) as usize];
         ptr = ptr.offset(3);
-        col =  col - 1
+        col -=  1
     }
     return 1u32;
 }
@@ -555,7 +555,7 @@ unsafe extern "C" fn get_24bit_row(
         let fresh6 = ptr;
         ptr = ptr.offset(1);
         *fresh6 =  (*source).tga_pixel[0];
-        col =  col - 1
+        col -=  1
     }
     return 1u32;
 }
@@ -644,7 +644,7 @@ unsafe extern "C" fn preload_image(
         );
         Some((*source).get_pixel_rows.expect("non-null function pointer"))
             .expect("non-null function pointer")(cinfo, sinfo);
-        row =  row + 1
+        row +=  1
     }
     if !progress.is_null() {
         (*progress).completed_extra_passes += 1
@@ -932,7 +932,7 @@ unsafe extern "C" fn start_input_tga(
     }
     loop {
         let fresh7 = idlen;
-        idlen = idlen - 1;
+        idlen -=  1;
         if !(fresh7 != 0) {
             break;
         }

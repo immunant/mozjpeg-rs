@@ -114,7 +114,7 @@ pub unsafe extern "C" fn h2v1_merged_upsample_565_be(
         *(outptr as *mut crate::jmorecfg_h::INT16).offset(0) =
             (rgb >> 16i32) as crate::jmorecfg_h::INT16;
         outptr = outptr.offset(4);
-        col =  col - 1
+        col -=  1
     }
     /* If image width is odd, do the last output column separately */
     /* If image width is odd, do the last output column separately */
@@ -207,7 +207,7 @@ pub unsafe extern "C" fn h2v1_merged_upsample_565_le(
         *(outptr as *mut crate::jmorecfg_h::INT16).offset(1) =
             (rgb >> 16i32) as crate::jmorecfg_h::INT16;
         outptr = outptr.offset(4);
-        col =  col - 1
+        col -=  1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as libc::c_int;
@@ -319,7 +319,7 @@ pub unsafe extern "C" fn h2v1_merged_upsample_565D_le(
         *(outptr as *mut crate::jmorecfg_h::INT16).offset(1) =
             (rgb >> 16i32) as crate::jmorecfg_h::INT16;
         outptr = outptr.offset(4);
-        col =  col - 1
+        col -=  1
     }
     /* If image width is odd, do the last output column separately */
     /* If image width is odd, do the last output column separately */
@@ -434,7 +434,7 @@ pub unsafe extern "C" fn h2v1_merged_upsample_565D_be(
         *(outptr as *mut crate::jmorecfg_h::INT16).offset(0) =
             (rgb >> 16i32) as crate::jmorecfg_h::INT16;
         outptr = outptr.offset(4);
-        col =  col - 1
+        col -=  1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as libc::c_int;
@@ -570,7 +570,7 @@ pub unsafe extern "C" fn h2v2_merged_upsample_565_le(
         *(outptr1 as *mut crate::jmorecfg_h::INT16).offset(1) =
             (rgb >> 16i32) as crate::jmorecfg_h::INT16;
         outptr1 = outptr1.offset(4);
-        col =  col - 1
+        col -=  1
     }
     /* If image width is odd, do the last output column separately */
     /* If image width is odd, do the last output column separately */
@@ -705,7 +705,7 @@ pub unsafe extern "C" fn h2v2_merged_upsample_565_be(
         *(outptr1 as *mut crate::jmorecfg_h::INT16).offset(0) =
             (rgb >> 16i32) as crate::jmorecfg_h::INT16;
         outptr1 = outptr1.offset(4);
-        col =  col - 1
+        col -=  1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as libc::c_int;
@@ -877,7 +877,7 @@ pub unsafe extern "C" fn h2v2_merged_upsample_565D_le(
         *(outptr1 as *mut crate::jmorecfg_h::INT16).offset(1) =
             (rgb >> 16i32) as crate::jmorecfg_h::INT16;
         outptr1 = outptr1.offset(4);
-        col =  col - 1
+        col -=  1
     }
     /* If image width is odd, do the last output column separately */
     /* If image width is odd, do the last output column separately */
@@ -1057,7 +1057,7 @@ pub unsafe extern "C" fn h2v2_merged_upsample_565D_be(
         *(outptr1 as *mut crate::jmorecfg_h::INT16).offset(0) =
             (rgb >> 16i32) as crate::jmorecfg_h::INT16;
         outptr1 = outptr1.offset(4);
-        col =  col - 1
+        col -=  1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as libc::c_int;

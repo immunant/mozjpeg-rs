@@ -420,8 +420,8 @@ unsafe extern "C" fn int_downsample(
             outptr = outptr.offset(1);
             *fresh2 = ((outvalue + numpix2 as libc::c_long) / numpix as libc::c_long)
                 as crate::jmorecfg_h::JSAMPLE;
-            outcol =  outcol + 1;
-            outcol_h = outcol_h + h_expand as libc::c_uint
+            outcol +=  1;
+            outcol_h +=  h_expand as libc::c_uint
         }
         inrow += v_expand;
         outrow += 1
@@ -509,7 +509,7 @@ unsafe extern "C" fn h2v1_downsample(
                 as crate::jmorecfg_h::JSAMPLE;
             bias ^= 1i32;
             inptr = inptr.offset(2);
-            outcol =  outcol + 1
+            outcol +=  1
         }
         outrow += 1
     }
@@ -569,7 +569,7 @@ unsafe extern "C" fn h2v2_downsample(
             bias ^= 3i32;
             inptr0 = inptr0.offset(2);
             inptr1 = inptr1.offset(2);
-            outcol =  outcol + 1
+            outcol +=  1
         }
         inrow += 2i32;
         outrow += 1
@@ -703,7 +703,7 @@ unsafe extern "C" fn h2v2_smooth_downsample(
             inptr1 = inptr1.offset(2);
             above_ptr = above_ptr.offset(2);
             below_ptr = below_ptr.offset(2);
-            colctr =  colctr - 1
+            colctr -=  1
         }
         /* Special case for last column */
         membersum = (*inptr0 as libc::c_int
@@ -827,7 +827,7 @@ unsafe extern "C" fn fullsize_smooth_downsample(
                 (membersum + 32768i64 >> 16i32) as crate::jmorecfg_h::JSAMPLE;
             lastcolsum = colsum;
             colsum = nextcolsum;
-            colctr =  colctr - 1
+            colctr -=  1
         }
         /* Special case for last column */
         membersum = *inptr as libc::c_int as crate::jpegint_h::JLONG;

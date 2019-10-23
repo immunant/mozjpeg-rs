@@ -695,7 +695,7 @@ unsafe extern "C" fn output_message(mut cinfo: crate::jpeglib_h::j_common_ptr) {
             .expect("non-null function pointer"),
     )
     .expect("non-null function pointer")(cinfo, buffer.as_mut_ptr());
-          eprintln!("{:}",
+           eprintln!("{:}",
           {
     std::ffi::CStr::from_ptr(buffer.as_mut_ptr() as
                                  *const libc::c_char).to_str().unwrap()

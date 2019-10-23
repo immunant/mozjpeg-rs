@@ -608,7 +608,7 @@ unsafe extern "C" fn cmyk_ycck_convert(
      *(*output_buf.offset(1)).offset(output_row as isize); let mut outptr2:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(2)).offset(output_row as isize); let mut outptr3:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(3)).offset(output_row as isize);
-        output_row =  output_row + 1;
+        output_row +=  1;
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols {
                
@@ -643,7 +643,7 @@ unsafe extern "C" fn cmyk_ycck_convert(
                 + *ctab.offset((b + B_CR_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col =  col + 1
+            col +=  1
         }
     }
 }
@@ -675,12 +675,12 @@ unsafe extern "C" fn grayscale_convert(
         
          let mut inptr:   crate::jpeglib_h::JSAMPROW =  *fresh22; let mut outptr:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(0)).offset(output_row as isize);
-        output_row =  output_row + 1;
+        output_row +=  1;
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols {
             *outptr.offset(col as isize) = *inptr.offset(0);
             inptr = inptr.offset(instride as isize);
-            col =  col + 1
+            col +=  1
         }
     }
 }
@@ -723,7 +723,7 @@ unsafe extern "C" fn null_convert(
             outptr0 = *(*output_buf.offset(0)).offset(output_row as isize);
             outptr1 = *(*output_buf.offset(1)).offset(output_row as isize);
             outptr2 = *(*output_buf.offset(2)).offset(output_row as isize);
-            output_row =  output_row + 1;
+            output_row +=  1;
             col = 0u32;
             while col < num_cols {
                 let fresh24 = inptr;
@@ -735,7 +735,7 @@ unsafe extern "C" fn null_convert(
                 let fresh26 = inptr;
                 inptr = inptr.offset(1);
                 *outptr2.offset(col as isize) = *fresh26;
-                col =  col + 1
+                col +=  1
             }
         }
     } else if nc == 4i32 {
@@ -752,7 +752,7 @@ unsafe extern "C" fn null_convert(
             outptr2 = *(*output_buf.offset(2)).offset(output_row as isize);
              let mut outptr3:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(3)).offset(output_row as isize);
-            output_row =  output_row + 1;
+            output_row +=  1;
             col = 0u32;
             while col < num_cols {
                 let fresh28 = inptr;
@@ -767,7 +767,7 @@ unsafe extern "C" fn null_convert(
                 let fresh31 = inptr;
                 inptr = inptr.offset(1);
                 *outptr3.offset(col as isize) = *fresh31;
-                col =  col + 1
+                col +=  1
             }
         }
     } else {
@@ -785,12 +785,12 @@ unsafe extern "C" fn null_convert(
                 while col < num_cols {
                     *outptr.offset(col as isize) = *inptr.offset(ci as isize);
                     inptr = inptr.offset(nc as isize);
-                    col =  col + 1
+                    col +=  1
                 }
                 ci += 1
             }
             input_buf = input_buf.offset(1);
-            output_row =  output_row + 1
+            output_row +=  1
         }
     };
 }

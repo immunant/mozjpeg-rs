@@ -392,7 +392,7 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
             return crate::jmorecfg_h::FALSE;
         }
         data_offset[seq_no as usize] = total_length;
-        total_length =  total_length + data_length[seq_no as usize];
+        total_length +=  data_length[seq_no as usize];
         seq_no += 1
     }
     if total_length == 0u32 {
@@ -435,7 +435,7 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
      (*marker).data.offset(ICC_OVERHEAD_LEN as isize); let mut length:   libc::c_uint =  data_length[seq_no as usize];
             loop {
                 let fresh0 = length;
-                length =  length - 1;
+                length -=  1;
                 if !(fresh0 != 0) {
                     break;
                 }

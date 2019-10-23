@@ -81,7 +81,7 @@ pub unsafe extern "C" fn ycc_rgb565_convert_le(
      *(*input_buf.offset(0)).offset(input_row as isize); let mut inptr1:   crate::jpeglib_h::JSAMPROW =
      *(*input_buf.offset(1)).offset(input_row as isize); let mut inptr2:   crate::jpeglib_h::JSAMPROW =
      *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row =  input_row + 1;
+        input_row +=  1;
         let fresh53 = output_buf;
         output_buf = output_buf.offset(1);
          let mut outptr:   crate::jpeglib_h::JSAMPROW =  *fresh53;
@@ -106,7 +106,7 @@ pub unsafe extern "C" fn ycc_rgb565_convert_le(
                 | b >> 3i32) as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16;
             outptr = outptr.offset(2);
-            num_cols =  num_cols - 1
+            num_cols -=  1
         }
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols >> 1i32 {
@@ -150,7 +150,7 @@ pub unsafe extern "C" fn ycc_rgb565_convert_le(
                 | rgb;
             *(outptr as *mut libc::c_int) = rgb as libc::c_int;
             outptr = outptr.offset(4);
-            col =  col + 1
+            col +=  1
         }
         if num_cols & 1u32 != 0 {
             y = *inptr0 as libc::c_int;
@@ -207,7 +207,7 @@ pub unsafe extern "C" fn ycc_rgb565_convert_be(
      *(*input_buf.offset(0)).offset(input_row as isize); let mut inptr1:   crate::jpeglib_h::JSAMPROW =
      *(*input_buf.offset(1)).offset(input_row as isize); let mut inptr2:   crate::jpeglib_h::JSAMPROW =
      *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row =  input_row + 1;
+        input_row +=  1;
         let fresh63 = output_buf;
         output_buf = output_buf.offset(1);
          let mut outptr:   crate::jpeglib_h::JSAMPROW =  *fresh63;
@@ -234,7 +234,7 @@ pub unsafe extern "C" fn ycc_rgb565_convert_be(
                 as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16;
             outptr = outptr.offset(2);
-            num_cols =  num_cols - 1
+            num_cols -=  1
         }
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols >> 1i32 {
@@ -280,7 +280,7 @@ pub unsafe extern "C" fn ycc_rgb565_convert_be(
                     | b << 5i32 & 0x1f00u32) as libc::c_long;
             *(outptr as *mut libc::c_int) = rgb as libc::c_int;
             outptr = outptr.offset(4);
-            col =  col + 1
+            col +=  1
         }
         if num_cols & 1u32 != 0 {
             y = *inptr0 as libc::c_int;
@@ -343,7 +343,7 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_le(
      *(*input_buf.offset(0)).offset(input_row as isize); let mut inptr1:   crate::jpeglib_h::JSAMPROW =
      *(*input_buf.offset(1)).offset(input_row as isize); let mut inptr2:   crate::jpeglib_h::JSAMPROW =
      *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row =  input_row + 1;
+        input_row +=  1;
         let fresh73 = output_buf;
         output_buf = output_buf.offset(1);
          let mut outptr:   crate::jpeglib_h::JSAMPROW =  *fresh73;
@@ -375,7 +375,7 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_le(
                 | b >> 3i32) as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16;
             outptr = outptr.offset(2);
-            num_cols =  num_cols - 1
+            num_cols -=  1
         }
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols >> 1i32 {
@@ -435,7 +435,7 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_le(
                 | rgb;
             *(outptr as *mut libc::c_int) = rgb as libc::c_int;
             outptr = outptr.offset(4);
-            col =  col + 1
+            col +=  1
         }
         if num_cols & 1u32 != 0 {
             y = *inptr0 as libc::c_int;
@@ -501,7 +501,7 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_be(
      *(*input_buf.offset(0)).offset(input_row as isize); let mut inptr1:   crate::jpeglib_h::JSAMPROW =
      *(*input_buf.offset(1)).offset(input_row as isize); let mut inptr2:   crate::jpeglib_h::JSAMPROW =
      *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row =  input_row + 1;
+        input_row +=  1;
         let fresh83 = output_buf;
         output_buf = output_buf.offset(1);
          let mut outptr:   crate::jpeglib_h::JSAMPROW =  *fresh83;
@@ -535,7 +535,7 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_be(
                 as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16;
             outptr = outptr.offset(2);
-            num_cols =  num_cols - 1
+            num_cols -=  1
         }
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols >> 1i32 {
@@ -597,7 +597,7 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_be(
                     | b << 5i32 & 0x1f00u32) as libc::c_long;
             *(outptr as *mut libc::c_int) = rgb as libc::c_int;
             outptr = outptr.offset(4);
-            col =  col + 1
+            col +=  1
         }
         if num_cols & 1u32 != 0 {
             y = *inptr0 as libc::c_int;
@@ -654,7 +654,7 @@ pub unsafe extern "C" fn rgb_rgb565_convert_le(
      *(*input_buf.offset(0)).offset(input_row as isize); let mut inptr1:   crate::jpeglib_h::JSAMPROW =
      *(*input_buf.offset(1)).offset(input_row as isize); let mut inptr2:   crate::jpeglib_h::JSAMPROW =
      *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row =  input_row + 1;
+        input_row +=  1;
         let fresh93 = output_buf;
         output_buf = output_buf.offset(1);
          let mut outptr:   crate::jpeglib_h::JSAMPROW =  *fresh93;
@@ -673,7 +673,7 @@ pub unsafe extern "C" fn rgb_rgb565_convert_le(
                 | b >> 3i32) as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16;
             outptr = outptr.offset(2);
-            num_cols =  num_cols - 1
+            num_cols -=  1
         }
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols >> 1i32 {
@@ -705,7 +705,7 @@ pub unsafe extern "C" fn rgb_rgb565_convert_le(
                 | rgb;
             *(outptr as *mut libc::c_int) = rgb as libc::c_int;
             outptr = outptr.offset(4);
-            col =  col + 1
+            col +=  1
         }
         if num_cols & 1u32 != 0 {
             r =  *inptr0 as libc::c_uint;
@@ -747,7 +747,7 @@ pub unsafe extern "C" fn rgb_rgb565_convert_be(
      *(*input_buf.offset(0)).offset(input_row as isize); let mut inptr1:   crate::jpeglib_h::JSAMPROW =
      *(*input_buf.offset(1)).offset(input_row as isize); let mut inptr2:   crate::jpeglib_h::JSAMPROW =
      *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row =  input_row + 1;
+        input_row +=  1;
         let fresh103 = output_buf;
         output_buf = output_buf.offset(1);
          let mut outptr:   crate::jpeglib_h::JSAMPROW =  *fresh103;
@@ -768,7 +768,7 @@ pub unsafe extern "C" fn rgb_rgb565_convert_be(
                 as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16;
             outptr = outptr.offset(2);
-            num_cols =  num_cols - 1
+            num_cols -=  1
         }
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols >> 1i32 {
@@ -802,7 +802,7 @@ pub unsafe extern "C" fn rgb_rgb565_convert_be(
                     | b << 5i32 & 0x1f00u32) as libc::c_long;
             *(outptr as *mut libc::c_int) = rgb as libc::c_int;
             outptr = outptr.offset(4);
-            col =  col + 1
+            col +=  1
         }
         if num_cols & 1u32 != 0 {
             r =  *inptr0 as libc::c_uint;
@@ -849,7 +849,7 @@ pub unsafe extern "C" fn rgb_rgb565D_convert_be(
      *(*input_buf.offset(0)).offset(input_row as isize); let mut inptr1:   crate::jpeglib_h::JSAMPROW =
      *(*input_buf.offset(1)).offset(input_row as isize); let mut inptr2:   crate::jpeglib_h::JSAMPROW =
      *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row =  input_row + 1;
+        input_row +=  1;
         let fresh113 = output_buf;
         output_buf = output_buf.offset(1);
          let mut outptr:   crate::jpeglib_h::JSAMPROW =  *fresh113;
@@ -879,7 +879,7 @@ pub unsafe extern "C" fn rgb_rgb565D_convert_be(
                 as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16;
             outptr = outptr.offset(2);
-            num_cols =  num_cols - 1
+            num_cols -=  1
         }
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols >> 1i32 {
@@ -933,7 +933,7 @@ pub unsafe extern "C" fn rgb_rgb565D_convert_be(
                     | b << 5i32 & 0x1f00u32) as libc::c_long;
             *(outptr as *mut libc::c_int) = rgb as libc::c_int;
             outptr = outptr.offset(4);
-            col =  col + 1
+            col +=  1
         }
         if num_cols & 1u32 != 0 {
             r = *range_limit.offset(
@@ -987,7 +987,7 @@ pub unsafe extern "C" fn rgb_rgb565D_convert_le(
      *(*input_buf.offset(0)).offset(input_row as isize); let mut inptr1:   crate::jpeglib_h::JSAMPROW =
      *(*input_buf.offset(1)).offset(input_row as isize); let mut inptr2:   crate::jpeglib_h::JSAMPROW =
      *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row =  input_row + 1;
+        input_row +=  1;
         let fresh123 = output_buf;
         output_buf = output_buf.offset(1);
          let mut outptr:   crate::jpeglib_h::JSAMPROW =  *fresh123;
@@ -1015,7 +1015,7 @@ pub unsafe extern "C" fn rgb_rgb565D_convert_le(
                 | b >> 3i32) as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16;
             outptr = outptr.offset(2);
-            num_cols =  num_cols - 1
+            num_cols -=  1
         }
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols >> 1i32 {
@@ -1067,7 +1067,7 @@ pub unsafe extern "C" fn rgb_rgb565D_convert_le(
                 | rgb;
             *(outptr as *mut libc::c_int) = rgb as libc::c_int;
             outptr = outptr.offset(4);
-            col =  col + 1
+            col +=  1
         }
         if num_cols & 1u32 != 0 {
             r = *range_limit.offset(
@@ -1107,7 +1107,7 @@ pub unsafe extern "C" fn gray_rgb565_convert_be(
         
         
         let fresh133 = input_row;
-        input_row =  input_row + 1;
+        input_row +=  1;
          let mut inptr:   crate::jpeglib_h::JSAMPROW =
      *(*input_buf.offset(0)).offset(fresh133 as isize);
         let fresh134 = output_buf;
@@ -1124,7 +1124,7 @@ pub unsafe extern "C" fn gray_rgb565_convert_be(
                 as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16;
             outptr = outptr.offset(2);
-            num_cols =  num_cols - 1
+            num_cols -=  1
         }
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols >> 1i32 {
@@ -1146,7 +1146,7 @@ pub unsafe extern "C" fn gray_rgb565_convert_be(
                     | g << 5i32 & 0x1f00u32) as libc::c_long;
             *(outptr as *mut libc::c_int) = rgb as libc::c_int;
             outptr = outptr.offset(4);
-            col =  col + 1
+            col +=  1
         }
         if num_cols & 1u32 != 0 {
             g = *inptr as libc::c_uint;
@@ -1179,7 +1179,7 @@ pub unsafe extern "C" fn gray_rgb565_convert_le(
         
         
         let fresh138 = input_row;
-        input_row =  input_row + 1;
+        input_row +=  1;
          let mut inptr:   crate::jpeglib_h::JSAMPROW =
      *(*input_buf.offset(0)).offset(fresh138 as isize);
         let fresh139 = output_buf;
@@ -1194,7 +1194,7 @@ pub unsafe extern "C" fn gray_rgb565_convert_le(
                 | g >> 3i32) as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16;
             outptr = outptr.offset(2);
-            num_cols =  num_cols - 1
+            num_cols -=  1
         }
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols >> 1i32 {
@@ -1214,7 +1214,7 @@ pub unsafe extern "C" fn gray_rgb565_convert_le(
                 | rgb;
             *(outptr as *mut libc::c_int) = rgb as libc::c_int;
             outptr = outptr.offset(4);
-            col =  col + 1
+            col +=  1
         }
         if num_cols & 1u32 != 0 {
             g = *inptr as libc::c_uint;
@@ -1248,7 +1248,7 @@ pub unsafe extern "C" fn gray_rgb565D_convert_le(
         
         
         let fresh143 = input_row;
-        input_row =  input_row + 1;
+        input_row +=  1;
          let mut inptr:   crate::jpeglib_h::JSAMPROW =
      *(*input_buf.offset(0)).offset(fresh143 as isize);
         let fresh144 = output_buf;
@@ -1265,7 +1265,7 @@ pub unsafe extern "C" fn gray_rgb565D_convert_le(
                 | g >> 3i32) as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16;
             outptr = outptr.offset(2);
-            num_cols =  num_cols - 1
+            num_cols -=  1
         }
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols >> 1i32 {
@@ -1291,7 +1291,7 @@ pub unsafe extern "C" fn gray_rgb565D_convert_le(
             d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
             *(outptr as *mut libc::c_int) = rgb as libc::c_int;
             outptr = outptr.offset(4);
-            col =  col + 1
+            col +=  1
         }
         if num_cols & 1u32 != 0 {
             g = *inptr as libc::c_uint;
@@ -1327,7 +1327,7 @@ pub unsafe extern "C" fn gray_rgb565D_convert_be(
         
         
         let fresh148 = input_row;
-        input_row =  input_row + 1;
+        input_row +=  1;
          let mut inptr:   crate::jpeglib_h::JSAMPROW =
      *(*input_buf.offset(0)).offset(fresh148 as isize);
         let fresh149 = output_buf;
@@ -1346,7 +1346,7 @@ pub unsafe extern "C" fn gray_rgb565D_convert_be(
                 as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16;
             outptr = outptr.offset(2);
-            num_cols =  num_cols - 1
+            num_cols -=  1
         }
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols >> 1i32 {
@@ -1374,7 +1374,7 @@ pub unsafe extern "C" fn gray_rgb565D_convert_be(
             d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
             *(outptr as *mut libc::c_int) = rgb as libc::c_int;
             outptr = outptr.offset(4);
-            col =  col + 1
+            col +=  1
         }
         if num_cols & 1u32 != 0 {
             g = *inptr as libc::c_uint;

@@ -694,7 +694,7 @@ unsafe extern "C" fn rgb_gray_convert(
      *(*input_buf.offset(0)).offset(input_row as isize); let mut inptr1:   crate::jpeglib_h::JSAMPROW =
      *(*input_buf.offset(1)).offset(input_row as isize); let mut inptr2:   crate::jpeglib_h::JSAMPROW =
      *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row =  input_row + 1;
+        input_row +=  1;
         let fresh42 = output_buf;
         output_buf = output_buf.offset(1);
         
@@ -709,7 +709,7 @@ unsafe extern "C" fn rgb_gray_convert(
                 + *ctab.offset((b + B_Y_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col =  col + 1
+            col +=  1
         }
     }
 }
@@ -748,7 +748,7 @@ unsafe extern "C" fn null_convert(
             inptr0 = *(*input_buf.offset(0)).offset(input_row as isize);
             inptr1 = *(*input_buf.offset(1)).offset(input_row as isize);
             inptr2 = *(*input_buf.offset(2)).offset(input_row as isize);
-            input_row =  input_row + 1;
+            input_row +=  1;
             let fresh43 = output_buf;
             output_buf = output_buf.offset(1);
             outptr = *fresh43;
@@ -763,7 +763,7 @@ unsafe extern "C" fn null_convert(
                 let fresh46 = outptr;
                 outptr = outptr.offset(1);
                 *fresh46 = *inptr2.offset(col as isize);
-                col =  col + 1
+                col +=  1
             }
         }
     } else if num_components == 4i32 {
@@ -777,7 +777,7 @@ unsafe extern "C" fn null_convert(
             inptr2 = *(*input_buf.offset(2)).offset(input_row as isize);
              let mut inptr3:   crate::jpeglib_h::JSAMPROW =
      *(*input_buf.offset(3)).offset(input_row as isize);
-            input_row =  input_row + 1;
+            input_row +=  1;
             let fresh47 = output_buf;
             output_buf = output_buf.offset(1);
             outptr = *fresh47;
@@ -795,7 +795,7 @@ unsafe extern "C" fn null_convert(
                 let fresh51 = outptr;
                 outptr = outptr.offset(1);
                 *fresh51 = *inptr3.offset(col as isize);
-                col =  col + 1
+                col +=  1
             }
         }
     } else {
@@ -813,12 +813,12 @@ unsafe extern "C" fn null_convert(
                 while col < num_cols {
                     *outptr.offset(ci as isize) = *inptr.offset(col as isize);
                     outptr = outptr.offset(num_components as isize);
-                    col =  col + 1
+                    col +=  1
                 }
                 ci += 1
             }
             output_buf = output_buf.offset(1);
-            input_row =  input_row + 1
+            input_row +=  1
         }
     };
 }
@@ -986,7 +986,7 @@ unsafe extern "C" fn ycck_cmyk_convert(
      *(*input_buf.offset(1)).offset(input_row as isize); let mut inptr2:   crate::jpeglib_h::JSAMPROW =
      *(*input_buf.offset(2)).offset(input_row as isize); let mut inptr3:   crate::jpeglib_h::JSAMPROW =
      *(*input_buf.offset(3)).offset(input_row as isize);
-        input_row =  input_row + 1;
+        input_row +=  1;
         let fresh52 = output_buf;
         output_buf = output_buf.offset(1);
         
@@ -1010,7 +1010,7 @@ unsafe extern "C" fn ycck_cmyk_convert(
             /* K passes through unchanged */
             *outptr.offset(3) = *inptr3.offset(col as isize); /* don't need GETJSAMPLE here */
             outptr = outptr.offset(4);
-            col =  col + 1
+            col +=  1
         }
     }
 }

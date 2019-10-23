@@ -1074,7 +1074,7 @@ unsafe extern "C" fn color_quantize(
             let fresh3 = ptrout;
             ptrout = ptrout.offset(1);
             *fresh3 = pixcode as crate::jmorecfg_h::JSAMPLE;
-            col =  col - 1
+            col -=  1
         }
         row += 1
     }
@@ -1117,7 +1117,7 @@ unsafe extern "C" fn color_quantize3(
             let fresh7 = ptrout;
             ptrout = ptrout.offset(1);
             *fresh7 = pixcode as crate::jmorecfg_h::JSAMPLE;
-            col =  col - 1
+            col -=  1
         }
         row += 1
     }
@@ -1178,7 +1178,7 @@ unsafe extern "C" fn quantize_ord_dither(
                 input_ptr = input_ptr.offset(nc as isize);
                 output_ptr = output_ptr.offset(1);
                 col_index = col_index + 1i32 & ODITHER_MASK;
-                col =  col - 1
+                col -=  1
             }
             ci += 1
         }
@@ -1248,7 +1248,7 @@ unsafe extern "C" fn quantize3_ord_dither(
             output_ptr = output_ptr.offset(1);
             *fresh11 = pixcode as crate::jmorecfg_h::JSAMPLE;
             col_index = col_index + 1i32 & ODITHER_MASK;
-            col =  col - 1
+            col -=  1
         }
         row_index = row_index + 1i32 & ODITHER_MASK;
         (*cquantize).row_index = row_index;
@@ -1357,7 +1357,7 @@ unsafe extern "C" fn quantize_fs_dither(
                 input_ptr = input_ptr.offset(dirnc as isize);
                 output_ptr = output_ptr.offset(dir as isize);
                 errorptr = errorptr.offset(dir as isize);
-                col =  col - 1
+                col -=  1
             }
             *errorptr.offset(0) = bpreverr as FSERROR;
             ci += 1

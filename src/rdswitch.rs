@@ -234,7 +234,7 @@ pub unsafe extern "C" fn read_quant_tables(
      let mut fp:   *mut crate::stdlib::FILE =
      crate::stdlib::fopen(filename,  b"r\x00".as_ptr() as *const libc::c_char);
     if fp.is_null() {
-              eprintln!("Can\'t open table file {:}",
+               eprintln!("Can\'t open table file {:}",
           {
     std::ffi::CStr::from_ptr(filename as
                                  *const libc::c_char).to_str().unwrap()
@@ -244,7 +244,7 @@ pub unsafe extern "C" fn read_quant_tables(
      let mut tblno:   libc::c_int =  0i32;
     while read_text_integer(fp, &mut val, &mut termchar) != 0 {
          let mut table:  [libc::c_uint; 64] =  [0; 64];if tblno >= crate::jpeglib_h::NUM_QUANT_TBLS {
-                  eprintln!("Too many tables in file {:}",
+                   eprintln!("Too many tables in file {:}",
           {
     std::ffi::CStr::from_ptr(filename as
                                  *const libc::c_char).to_str().unwrap()
@@ -256,7 +256,7 @@ pub unsafe extern "C" fn read_quant_tables(
          let mut i:   libc::c_int =  1i32;
         while i < crate::jpeglib_h::DCTSIZE2 {
             if read_text_integer(fp, &mut val, &mut termchar) == 0 {
-                      eprintln!("Invalid table data in file {:}",
+                       eprintln!("Invalid table data in file {:}",
           {
     std::ffi::CStr::from_ptr(filename as
                                  *const libc::c_char).to_str().unwrap()
@@ -277,7 +277,7 @@ pub unsafe extern "C" fn read_quant_tables(
         tblno += 1
     }
     if termchar != crate::stdlib::EOF {
-              eprintln!("Non-numeric data in file {:}",
+               eprintln!("Non-numeric data in file {:}",
           {
     std::ffi::CStr::from_ptr(filename as
                                  *const libc::c_char).to_str().unwrap()
@@ -367,7 +367,7 @@ pub unsafe extern "C" fn read_scan_script(
      let mut fp:   *mut crate::stdlib::FILE =
      crate::stdlib::fopen(filename,  b"r\x00".as_ptr() as *const libc::c_char);
     if fp.is_null() {
-              eprintln!("Can\'t open scan definition file {:}",
+               eprintln!("Can\'t open scan definition file {:}",
           {
     std::ffi::CStr::from_ptr(filename as
                                  *const libc::c_char).to_str().unwrap()
@@ -378,7 +378,7 @@ pub unsafe extern "C" fn read_scan_script(
      let mut scanptr:   *mut crate::jpeglib_h::jpeg_scan_info =  scans.as_mut_ptr(); let mut scanno:   libc::c_int =  0i32;
     while read_scan_integer(fp, &mut val, &mut termchar) != 0 {
          let mut current_block:  u64; if scanno >= MAX_SCANS {
-                  eprintln!("Too many scans defined in file {:}",
+                   eprintln!("Too many scans defined in file {:}",
           {
     std::ffi::CStr::from_ptr(filename as
                                  *const libc::c_char).to_str().unwrap()
@@ -394,7 +394,7 @@ pub unsafe extern "C" fn read_scan_script(
                 break;
             }
             if ncomps >= crate::jpeglib_h::MAX_COMPS_IN_SCAN {
-                      eprintln!("Too many components in one scan in file {:}",
+                       eprintln!("Too many components in one scan in file {:}",
           {
     std::ffi::CStr::from_ptr(filename as
                                  *const libc::c_char).to_str().unwrap()
@@ -460,7 +460,7 @@ pub unsafe extern "C" fn read_scan_script(
             }
             _ => {}
         }
-              eprintln!("Invalid scan entry format in file {:}",
+               eprintln!("Invalid scan entry format in file {:}",
           {
     std::ffi::CStr::from_ptr(filename as
                                  *const libc::c_char).to_str().unwrap()
@@ -469,7 +469,7 @@ pub unsafe extern "C" fn read_scan_script(
         return crate::jmorecfg_h::FALSE;
     }
     if termchar != crate::stdlib::EOF {
-              eprintln!("Non-numeric data in file {:}",
+               eprintln!("Non-numeric data in file {:}",
           {
     std::ffi::CStr::from_ptr(filename as
                                  *const libc::c_char).to_str().unwrap()
@@ -1848,7 +1848,7 @@ pub unsafe extern "C" fn set_quant_slots(
                 return crate::jmorecfg_h::FALSE;
             }
             if val < 0i32 || val >= crate::jpeglib_h::NUM_QUANT_TBLS {
-                      eprintln!("JPEG quantization tables are numbered 0..{:}",
+                       eprintln!("JPEG quantization tables are numbered 0..{:}",
           crate::jpeglib_h::NUM_QUANT_TBLS - 1i32);
                 return crate::jmorecfg_h::FALSE;
             }

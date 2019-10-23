@@ -229,7 +229,7 @@ pub unsafe extern "C" fn extbgr_ycc_convert_internal(
      *(*output_buf.offset(0)).offset(output_row as isize); let mut outptr1:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(1)).offset(output_row as isize); let mut outptr2:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row =  output_row + 1;
+        output_row +=  1;
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols {
                
@@ -307,7 +307,7 @@ pub unsafe extern "C" fn extbgr_ycc_convert_internal(
                 + *ctab.offset((b + B_CR_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col =  col + 1
+            col +=  1
         }
     }
 }
@@ -344,7 +344,7 @@ pub unsafe extern "C" fn rgb_ycc_convert_internal(
      *(*output_buf.offset(0)).offset(output_row as isize); let mut outptr1:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(1)).offset(output_row as isize); let mut outptr2:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row =  output_row + 1;
+        output_row +=  1;
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols {
                
@@ -366,7 +366,7 @@ pub unsafe extern "C" fn rgb_ycc_convert_internal(
                 + *ctab.offset((b + B_CR_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col =  col + 1
+            col +=  1
         }
     }
 }
@@ -403,7 +403,7 @@ pub unsafe extern "C" fn extrgb_ycc_convert_internal(
      *(*output_buf.offset(0)).offset(output_row as isize); let mut outptr1:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(1)).offset(output_row as isize); let mut outptr2:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row =  output_row + 1;
+        output_row +=  1;
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols {
                
@@ -425,7 +425,7 @@ pub unsafe extern "C" fn extrgb_ycc_convert_internal(
                 + *ctab.offset((b + B_CR_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col =  col + 1
+            col +=  1
         }
     }
 }
@@ -462,7 +462,7 @@ pub unsafe extern "C" fn extxbgr_ycc_convert_internal(
      *(*output_buf.offset(0)).offset(output_row as isize); let mut outptr1:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(1)).offset(output_row as isize); let mut outptr2:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row =  output_row + 1;
+        output_row +=  1;
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols {
                
@@ -484,7 +484,7 @@ pub unsafe extern "C" fn extxbgr_ycc_convert_internal(
                 + *ctab.offset((b + B_CR_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col =  col + 1
+            col +=  1
         }
     }
 }
@@ -521,7 +521,7 @@ pub unsafe extern "C" fn extbgrx_ycc_convert_internal(
      *(*output_buf.offset(0)).offset(output_row as isize); let mut outptr1:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(1)).offset(output_row as isize); let mut outptr2:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row =  output_row + 1;
+        output_row +=  1;
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols {
                
@@ -543,7 +543,7 @@ pub unsafe extern "C" fn extbgrx_ycc_convert_internal(
                 + *ctab.offset((b + B_CR_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col =  col + 1
+            col +=  1
         }
     }
 }
@@ -580,7 +580,7 @@ pub unsafe extern "C" fn extrgbx_ycc_convert_internal(
      *(*output_buf.offset(0)).offset(output_row as isize); let mut outptr1:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(1)).offset(output_row as isize); let mut outptr2:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row =  output_row + 1;
+        output_row +=  1;
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols {
                
@@ -602,7 +602,7 @@ pub unsafe extern "C" fn extrgbx_ycc_convert_internal(
                 + *ctab.offset((b + B_CR_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col =  col + 1
+            col +=  1
         }
     }
 }
@@ -639,7 +639,7 @@ pub unsafe extern "C" fn extxrgb_ycc_convert_internal(
      *(*output_buf.offset(0)).offset(output_row as isize); let mut outptr1:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(1)).offset(output_row as isize); let mut outptr2:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row =  output_row + 1;
+        output_row +=  1;
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols {
                
@@ -661,7 +661,7 @@ pub unsafe extern "C" fn extxrgb_ycc_convert_internal(
                 + *ctab.offset((b + B_CR_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col =  col + 1
+            col +=  1
         }
     }
 }
@@ -754,7 +754,7 @@ pub unsafe extern "C" fn rgb_gray_convert_internal(
         
          let mut inptr:   crate::jpeglib_h::JSAMPROW =  *fresh7; let mut outptr:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(0)).offset(output_row as isize);
-        output_row =  output_row + 1;
+        output_row +=  1;
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols {
                
@@ -773,7 +773,7 @@ pub unsafe extern "C" fn rgb_gray_convert_internal(
                 + *ctab.offset((b + B_Y_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col =  col + 1
+            col +=  1
         }
     }
 }
@@ -804,7 +804,7 @@ pub unsafe extern "C" fn extxrgb_gray_convert_internal(
         
          let mut inptr:   crate::jpeglib_h::JSAMPROW =  *fresh8; let mut outptr:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(0)).offset(output_row as isize);
-        output_row =  output_row + 1;
+        output_row +=  1;
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols {
                
@@ -816,7 +816,7 @@ pub unsafe extern "C" fn extxrgb_gray_convert_internal(
                 + *ctab.offset((b + B_Y_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col =  col + 1
+            col +=  1
         }
     }
 }
@@ -847,7 +847,7 @@ pub unsafe extern "C" fn extxbgr_gray_convert_internal(
         
          let mut inptr:   crate::jpeglib_h::JSAMPROW =  *fresh9; let mut outptr:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(0)).offset(output_row as isize);
-        output_row =  output_row + 1;
+        output_row +=  1;
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols {
                
@@ -859,7 +859,7 @@ pub unsafe extern "C" fn extxbgr_gray_convert_internal(
                 + *ctab.offset((b + B_Y_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col =  col + 1
+            col +=  1
         }
     }
 }
@@ -890,7 +890,7 @@ pub unsafe extern "C" fn extbgrx_gray_convert_internal(
         
          let mut inptr:   crate::jpeglib_h::JSAMPROW =  *fresh10; let mut outptr:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(0)).offset(output_row as isize);
-        output_row =  output_row + 1;
+        output_row +=  1;
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols {
                
@@ -902,7 +902,7 @@ pub unsafe extern "C" fn extbgrx_gray_convert_internal(
                 + *ctab.offset((b + B_Y_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col =  col + 1
+            col +=  1
         }
     }
 }
@@ -933,7 +933,7 @@ pub unsafe extern "C" fn extbgr_gray_convert_internal(
         
          let mut inptr:   crate::jpeglib_h::JSAMPROW =  *fresh11; let mut outptr:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(0)).offset(output_row as isize);
-        output_row =  output_row + 1;
+        output_row +=  1;
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols {
                
@@ -945,7 +945,7 @@ pub unsafe extern "C" fn extbgr_gray_convert_internal(
                 + *ctab.offset((b + B_Y_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col =  col + 1
+            col +=  1
         }
     }
 }
@@ -976,7 +976,7 @@ pub unsafe extern "C" fn extrgbx_gray_convert_internal(
         
          let mut inptr:   crate::jpeglib_h::JSAMPROW =  *fresh12; let mut outptr:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(0)).offset(output_row as isize);
-        output_row =  output_row + 1;
+        output_row +=  1;
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols {
                
@@ -988,7 +988,7 @@ pub unsafe extern "C" fn extrgbx_gray_convert_internal(
                 + *ctab.offset((b + B_Y_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col =  col + 1
+            col +=  1
         }
     }
 }
@@ -1019,7 +1019,7 @@ pub unsafe extern "C" fn extrgb_gray_convert_internal(
         
          let mut inptr:   crate::jpeglib_h::JSAMPROW =  *fresh13; let mut outptr:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(0)).offset(output_row as isize);
-        output_row =  output_row + 1;
+        output_row +=  1;
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols {
                
@@ -1031,7 +1031,7 @@ pub unsafe extern "C" fn extrgb_gray_convert_internal(
                 + *ctab.offset((b + B_Y_OFF) as isize)
                 >> SCALEBITS)
                 as crate::jmorecfg_h::JSAMPLE;
-            col =  col + 1
+            col +=  1
         }
     }
 }
@@ -1097,7 +1097,7 @@ pub unsafe extern "C" fn extxrgb_rgb_convert_internal(
      *(*output_buf.offset(0)).offset(output_row as isize); let mut outptr1:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(1)).offset(output_row as isize); let mut outptr2:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row =  output_row + 1;
+        output_row +=  1;
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols {
             *outptr0.offset(col as isize) =
@@ -1110,7 +1110,7 @@ pub unsafe extern "C" fn extxrgb_rgb_convert_internal(
                 
                 *inptr.offset(3);
             inptr = inptr.offset(RGB_PIXELSIZE as isize);
-            col =  col + 1
+            col +=  1
         }
     }
 }
@@ -1142,7 +1142,7 @@ pub unsafe extern "C" fn extxbgr_rgb_convert_internal(
      *(*output_buf.offset(0)).offset(output_row as isize); let mut outptr1:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(1)).offset(output_row as isize); let mut outptr2:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row =  output_row + 1;
+        output_row +=  1;
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols {
             *outptr0.offset(col as isize) =
@@ -1155,7 +1155,7 @@ pub unsafe extern "C" fn extxbgr_rgb_convert_internal(
                 
                 *inptr.offset(1);
             inptr = inptr.offset(RGB_PIXELSIZE_0 as isize);
-            col =  col + 1
+            col +=  1
         }
     }
 }
@@ -1187,7 +1187,7 @@ pub unsafe extern "C" fn extbgrx_rgb_convert_internal(
      *(*output_buf.offset(0)).offset(output_row as isize); let mut outptr1:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(1)).offset(output_row as isize); let mut outptr2:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row =  output_row + 1;
+        output_row +=  1;
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols {
             *outptr0.offset(col as isize) =
@@ -1200,7 +1200,7 @@ pub unsafe extern "C" fn extbgrx_rgb_convert_internal(
                 
                 *inptr.offset(0);
             inptr = inptr.offset(RGB_PIXELSIZE_1 as isize);
-            col =  col + 1
+            col +=  1
         }
     }
 }
@@ -1232,7 +1232,7 @@ pub unsafe extern "C" fn extrgbx_rgb_convert_internal(
      *(*output_buf.offset(0)).offset(output_row as isize); let mut outptr1:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(1)).offset(output_row as isize); let mut outptr2:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row =  output_row + 1;
+        output_row +=  1;
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols {
             *outptr0.offset(col as isize) =
@@ -1245,7 +1245,7 @@ pub unsafe extern "C" fn extrgbx_rgb_convert_internal(
                 
                 *inptr.offset(2);
             inptr = inptr.offset(RGB_PIXELSIZE_2 as isize);
-            col =  col + 1
+            col +=  1
         }
     }
 }
@@ -1277,7 +1277,7 @@ pub unsafe extern "C" fn extrgb_rgb_convert_internal(
      *(*output_buf.offset(0)).offset(output_row as isize); let mut outptr1:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(1)).offset(output_row as isize); let mut outptr2:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row =  output_row + 1;
+        output_row +=  1;
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols {
             *outptr0.offset(col as isize) =
@@ -1290,7 +1290,7 @@ pub unsafe extern "C" fn extrgb_rgb_convert_internal(
                 
                 *inptr.offset(2);
             inptr = inptr.offset(RGB_PIXELSIZE_4 as isize);
-            col =  col + 1
+            col +=  1
         }
     }
 }
@@ -1322,7 +1322,7 @@ pub unsafe extern "C" fn extbgr_rgb_convert_internal(
      *(*output_buf.offset(0)).offset(output_row as isize); let mut outptr1:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(1)).offset(output_row as isize); let mut outptr2:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row =  output_row + 1;
+        output_row +=  1;
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols {
             *outptr0.offset(col as isize) =
@@ -1335,7 +1335,7 @@ pub unsafe extern "C" fn extbgr_rgb_convert_internal(
                 
                 *inptr.offset(0);
             inptr = inptr.offset(RGB_PIXELSIZE_3 as isize);
-            col =  col + 1
+            col +=  1
         }
     }
 }
@@ -1367,7 +1367,7 @@ pub unsafe extern "C" fn rgb_rgb_convert_internal(
      *(*output_buf.offset(0)).offset(output_row as isize); let mut outptr1:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(1)).offset(output_row as isize); let mut outptr2:   crate::jpeglib_h::JSAMPROW =
      *(*output_buf.offset(2)).offset(output_row as isize);
-        output_row =  output_row + 1;
+        output_row +=  1;
          let mut col:   crate::jmorecfg_h::JDIMENSION =  0u32;
         while col < num_cols {
             *outptr0.offset(col as isize) =
@@ -1380,7 +1380,7 @@ pub unsafe extern "C" fn rgb_rgb_convert_internal(
                 
                 *inptr.offset(2);
             inptr = inptr.offset(crate::jmorecfg_h::RGB_PIXELSIZE_5 as isize);
-            col =  col + 1
+            col +=  1
         }
     }
 }

@@ -528,12 +528,12 @@ pub unsafe extern "C" fn jpeg_make_c_derived_tbl(
         }
         loop {
             let fresh0 = i;
-            i = i - 1;
+            i -=  1;
             if !(fresh0 != 0) {
                 break;
             }
             let fresh1 = p;
-            p = p + 1;
+            p +=  1;
             huffsize[fresh1 as usize] = l as libc::c_char
         }
         l += 1
@@ -546,9 +546,9 @@ pub unsafe extern "C" fn jpeg_make_c_derived_tbl(
     while huffsize[p as usize] != 0 {
         while huffsize[p as usize] as libc::c_int == si {
             let fresh2 = p;
-            p = p + 1;
+            p +=  1;
             huffcode[fresh2 as usize] = code;
-            code =  code + 1
+            code +=  1
         }
         /* code is now 1 more than the last code used for codelength si; but
          * it must still fit in si bits, since no code is allowed to be all ones.
@@ -707,7 +707,7 @@ unsafe extern "C" fn flush_bits(mut state: *mut working_state) -> crate::jmorecf
                     return crate::jmorecfg_h::FALSE;
                 }
             }
-            bytes = bytes - bytestocopy
+            bytes -=  bytestocopy
         }
     } else {
         (*state).free_in_buffer = (*state).free_in_buffer -
@@ -774,7 +774,7 @@ unsafe extern "C" fn encode_one_block_simd(
                     return crate::jmorecfg_h::FALSE;
                 }
             }
-            bytes = bytes - bytestocopy
+            bytes -=  bytestocopy
         }
     } else {
         (*state).free_in_buffer = (*state).free_in_buffer -
@@ -10818,7 +10818,7 @@ unsafe extern "C" fn encode_one_block(
                     return crate::jmorecfg_h::FALSE;
                 }
             }
-            bytes = bytes - bytestocopy
+            bytes -=  bytestocopy
         }
     } else {
         (*state).free_in_buffer = (*state).free_in_buffer -

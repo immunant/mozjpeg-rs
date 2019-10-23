@@ -210,12 +210,12 @@ pub type my_prep_ptr = *mut my_prep_controller;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct my_prep_controller {
-    pub pub_0: crate::jpeglib_h::jpeg_c_prep_controller,
-    pub color_buf: [crate::jpeglib_h::JSAMPARRAY; 10],
-    pub rows_to_go: crate::jmorecfg_h::JDIMENSION,
-    pub next_buf_row: libc::c_int,
-    pub this_row_group: libc::c_int,
-    pub next_buf_stop: libc::c_int,
+    pub pub_0:  crate::jpeglib_h::jpeg_c_prep_controller,
+    pub color_buf:  [crate::jpeglib_h::JSAMPARRAY; 10],
+    pub rows_to_go:  crate::jmorecfg_h::JDIMENSION,
+    pub next_buf_row:  libc::c_int,
+    pub this_row_group:  libc::c_int,
+    pub next_buf_stop:  libc::c_int,
 }
 /*
  * Initialize for a processing pass.

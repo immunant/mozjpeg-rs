@@ -560,11 +560,11 @@ unsafe extern "C" fn alloc_sarray(
         ) as crate::jpeglib_h::JSAMPROW; let mut i:   crate::jmorecfg_h::JDIMENSION =  rowsperchunk;
         while i > 0u32 {
             let fresh0 = currow;
-            currow =  currow + 1;
+            currow +=  1;
             let ref mut fresh1 = *result.offset(fresh0 as isize);
             *fresh1 = workspace;
             workspace = workspace.offset(samplesperrow as isize);
-            i =  i - 1
+            i -=  1
         }
     }
     return result;
@@ -641,11 +641,11 @@ unsafe extern "C" fn alloc_barray(
         ) as crate::jpeglib_h::JBLOCKROW; let mut i:   crate::jmorecfg_h::JDIMENSION =  rowsperchunk;
         while i > 0u32 {
             let fresh2 = currow;
-            currow =  currow + 1;
+            currow +=  1;
             let ref mut fresh3 = *result.offset(fresh2 as isize);
             *fresh3 = workspace;
             workspace = workspace.offset(blocksperrow as isize);
-            i =  i - 1
+            i -=  1
         }
     }
     return result;
@@ -789,7 +789,8 @@ unsafe extern "C" fn realize_virt_arrays(mut cinfo: crate::jpeglib_h::j_common_p
                 * (*sptr).samplesperrow as libc::c_long)
                 as libc::c_ulong *
     ::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong;
-            space_per_minheight = space_per_minheight +
+            space_per_minheight +=
+    
     ((*sptr).maxaccess as libc::c_long * (*sptr).samplesperrow as libc::c_long)
                     as libc::c_ulong *
         
@@ -797,7 +798,7 @@ unsafe extern "C" fn realize_virt_arrays(mut cinfo: crate::jpeglib_h::j_common_p
             if  crate::stdlib::SIZE_MAX - maximum_space < new_space {
                 out_of_memory(cinfo, 10i32);
             }
-            maximum_space = maximum_space + new_space
+            maximum_space +=  new_space
         }
         sptr = (*sptr).next
     }
@@ -809,7 +810,8 @@ unsafe extern "C" fn realize_virt_arrays(mut cinfo: crate::jpeglib_h::j_common_p
                 * (*bptr).blocksperrow as libc::c_long)
                 as libc::c_ulong *
     ::std::mem::size_of::<crate::jpeglib_h::JBLOCK>() as libc::c_ulong; /* no unrealized arrays, no work */
-            space_per_minheight = space_per_minheight +
+            space_per_minheight +=
+    
     ((*bptr).maxaccess as libc::c_long * (*bptr).blocksperrow as libc::c_long)
                     as libc::c_ulong *
         
@@ -817,7 +819,7 @@ unsafe extern "C" fn realize_virt_arrays(mut cinfo: crate::jpeglib_h::j_common_p
             if  crate::stdlib::SIZE_MAX - maximum_space < new_space_0 {
                 out_of_memory(cinfo, 11i32);
             }
-            maximum_space = maximum_space + new_space_0
+            maximum_space +=  new_space_0
         }
         bptr = (*bptr).next
     }
@@ -1171,14 +1173,14 @@ unsafe extern "C" fn access_virt_sarray(
             let mut bytesperrow: crate::stddef_h::size_t = (*ptr).samplesperrow
                 as crate::stddef_h::size_t *
     ::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong;
-            undef_row = undef_row - (*ptr).cur_start_row;
-            end_row = end_row - (*ptr).cur_start_row;
+            undef_row -=  (*ptr).cur_start_row;
+            end_row -=  (*ptr).cur_start_row;
             while undef_row < end_row {
                 crate::jpegint_h::jzero_far(
                     *(*ptr).mem_buffer.offset(undef_row as isize) as *mut libc::c_void,
                     bytesperrow,
                 );
-                undef_row =  undef_row + 1
+                undef_row +=  1
             }
         } else if writable == 0 {
             /* reader looking at undefined data */
@@ -1295,14 +1297,14 @@ unsafe extern "C" fn access_virt_barray(
             let mut bytesperrow: crate::stddef_h::size_t = (*ptr).blocksperrow
                 as crate::stddef_h::size_t *
     ::std::mem::size_of::<crate::jpeglib_h::JBLOCK>() as libc::c_ulong;
-            undef_row = undef_row - (*ptr).cur_start_row;
-            end_row = end_row - (*ptr).cur_start_row;
+            undef_row -=  (*ptr).cur_start_row;
+            end_row -=  (*ptr).cur_start_row;
             while undef_row < end_row {
                 crate::jpegint_h::jzero_far(
                     *(*ptr).mem_buffer.offset(undef_row as isize) as *mut libc::c_void,
                     bytesperrow,
                 );
-                undef_row =  undef_row + 1
+                undef_row +=  1
             }
         } else if writable == 0 {
             /* reader looking at undefined data */

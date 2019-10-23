@@ -461,7 +461,7 @@ unsafe extern "C" fn compress_data(
                         }
                     }
                     blkn += (*compptr).MCU_width;
-                    ypos = ypos + crate::jpeglib_h::DCTSIZE as libc::c_uint;
+                    ypos +=  crate::jpeglib_h::DCTSIZE as libc::c_uint;
                     yindex += 1
                 }
                 ci += 1
@@ -483,7 +483,7 @@ unsafe extern "C" fn compress_data(
                 (*coef).mcu_ctr = MCU_col_num;
                 return crate::jmorecfg_h::FALSE;
             }
-            MCU_col_num =  MCU_col_num + 1
+            MCU_col_num +=  1
         }
         /* Completed an MCU row, but perhaps not an iMCU row */
         (*coef).mcu_ctr = 0u32;
@@ -638,7 +638,7 @@ unsafe extern "C" fn compress_first_pass(
          * This squeezes a few more bytes out of the resulting file...
          */
         if (*coef).iMCU_row_num == last_iMCU_row {
-             blocks_across = blocks_across + ndummy as libc::c_uint; /* include lower right corner */
+             blocks_across +=  ndummy as libc::c_uint; /* include lower right corner */
              let mut MCUs_across:   crate::jmorecfg_h::JDIMENSION =
       blocks_across / h_samp_factor as libc::c_uint; /* advance to next MCU in row */
             block_row = block_rows;
@@ -662,7 +662,7 @@ unsafe extern "C" fn compress_first_pass(
                     }
                     thisblockrow = thisblockrow.offset(h_samp_factor as isize);
                     lastblockrow = lastblockrow.offset(h_samp_factor as isize);
-                    MCUindex =  MCUindex + 1
+                    MCUindex +=  1
                 }
                 block_row += 1
             }
@@ -830,7 +830,7 @@ unsafe extern "C" fn compress_trellis_pass(
          * This squeezes a few more bytes out of the resulting file...
          */
         if (*coef).iMCU_row_num == last_iMCU_row {
-             blocks_across = blocks_across + ndummy as libc::c_uint; /* include lower right corner */
+             blocks_across +=  ndummy as libc::c_uint; /* include lower right corner */
              let mut MCUs_across:   crate::jmorecfg_h::JDIMENSION =
       blocks_across / h_samp_factor as libc::c_uint; /* advance to next MCU in row */
             block_row = block_rows;
@@ -853,7 +853,7 @@ unsafe extern "C" fn compress_trellis_pass(
                     }
                     thisblockrow = thisblockrow.offset(h_samp_factor as isize);
                     lastblockrow = lastblockrow.offset(h_samp_factor as isize);
-                    MCUindex =  MCUindex + 1
+                    MCUindex +=  1
                 }
                 block_row += 1
             }
@@ -937,7 +937,7 @@ unsafe extern "C" fn compress_output(
                         let fresh0 = buffer_ptr;
                         buffer_ptr = buffer_ptr.offset(1);
                         let fresh1 = blkn;
-                        blkn = blkn + 1;
+                        blkn +=  1;
                         (*coef).MCU_buffer[fresh1 as usize] = fresh0;
                         xindex += 1
                     }
@@ -960,7 +960,7 @@ unsafe extern "C" fn compress_output(
                 (*coef).mcu_ctr = MCU_col_num;
                 return crate::jmorecfg_h::FALSE;
             }
-            MCU_col_num =  MCU_col_num + 1
+            MCU_col_num +=  1
         }
         /* Completed an MCU row, but perhaps not an iMCU row */
         (*coef).mcu_ctr = 0u32;

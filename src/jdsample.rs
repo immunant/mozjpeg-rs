@@ -352,7 +352,7 @@ unsafe extern "C" fn sep_upsample(
         num_rows = (*upsample).rows_to_go
     }
     /* And not more than what the client can accept: */
-    out_rows_avail = out_rows_avail - *out_row_ctr;
+    out_rows_avail -=  *out_row_ctr;
     if num_rows > out_rows_avail {
         num_rows = out_rows_avail
     }
@@ -628,7 +628,7 @@ unsafe extern "C" fn h2v1_fancy_upsample(
             outptr = outptr.offset(1);
             *fresh13 =
                 (invalue + *inptr as libc::c_int + 2i32 >> 2i32) as crate::jmorecfg_h::JSAMPLE;
-            colctr =  colctr - 1
+            colctr -=  1
         }
         /* Special case for last column */
         invalue = *inptr as libc::c_int;
@@ -680,7 +680,7 @@ unsafe extern "C" fn h1v2_fancy_upsample(
                 inptr1 = *input_data.offset((inrow + 1i32) as isize)
             }
             let fresh16 = outrow;
-            outrow = outrow + 1;
+            outrow +=  1;
             
              let mut outptr:   crate::jpeglib_h::JSAMPROW =
      *output_data.offset(fresh16 as isize); let mut colctr:   crate::jmorecfg_h::JDIMENSION =  0u32;
@@ -694,7 +694,7 @@ unsafe extern "C" fn h1v2_fancy_upsample(
                 let fresh19 = outptr;
                 outptr = outptr.offset(1);
                 *fresh19 = (thiscolsum + 1i32 >> 2i32) as crate::jmorecfg_h::JSAMPLE;
-                colctr =  colctr + 1
+                colctr +=  1
             }
             v += 1
         }
@@ -742,7 +742,7 @@ unsafe extern "C" fn h2v2_fancy_upsample(
                 inptr1 = *input_data.offset((inrow + 1i32) as isize)
             }
             let fresh20 = outrow;
-            outrow = outrow + 1;
+            outrow +=  1;
              let mut outptr:   crate::jpeglib_h::JSAMPROW =
      *output_data.offset(fresh20 as isize);
             /* Special case for first column */
@@ -788,7 +788,7 @@ unsafe extern "C" fn h2v2_fancy_upsample(
                     (thiscolsum * 3i32 + nextcolsum + 7i32 >> 4i32) as crate::jmorecfg_h::JSAMPLE;
                 lastcolsum = thiscolsum;
                 thiscolsum = nextcolsum;
-                colctr =  colctr - 1
+                colctr -=  1
             }
             /* Special case for last column */
             let fresh31 = outptr;

@@ -6776,7 +6776,7 @@ pub unsafe extern "C" fn tjTransform(
                                                     y += 1
                                                 }
                                             }
-                                            by = by + 
+                                            by +=  
                                                 (*compptr).v_samp_factor as libc::c_uint
                                         }
                                         ci += 1

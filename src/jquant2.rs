@@ -484,7 +484,7 @@ unsafe extern "C" fn prescan_quantize(
                 *histp = *histp - 1
             }
             ptr = ptr.offset(3);
-            col =  col - 1
+            col -=  1
         }
         row += 1
     }
@@ -1224,7 +1224,7 @@ unsafe extern "C" fn find_nearby_colors(
     while i < numcolors {
         if mindist[i as usize] <= minmaxdist {
             let fresh5 = ncolors;
-            ncolors = ncolors + 1;
+            ncolors +=  1;
             *colorlist.offset(fresh5 as isize) = i as crate::jmorecfg_h::JSAMPLE
         }
         i += 1
@@ -1504,7 +1504,7 @@ unsafe extern "C" fn pass2_no_dither(
             let fresh12 = outptr;
             outptr = outptr.offset(1);
             *fresh12 = (*cachep as libc::c_int - 1i32) as crate::jmorecfg_h::JSAMPLE;
-            col =  col - 1
+            col -=  1
         }
         row += 1
     }
@@ -1634,7 +1634,7 @@ unsafe extern "C" fn pass2_fs_dither(
             inptr = inptr.offset(dir3 as isize);
             outptr = outptr.offset(dir as isize);
             errorptr = errorptr.offset(dir3 as isize);
-            col =  col - 1
+            col -=  1
         }
         /* Limit the error using transfer function set by init_error_limit.
          * See comments with init_error_limit for rationale.

@@ -220,7 +220,7 @@ pub unsafe extern "C" fn extxbgr_h2v1_merged_upsample_internal(
         *outptr.offset(RGB_BLUE_0 as isize) = *range_limit.offset((y + cblue) as isize);
         *outptr.offset(RGB_ALPHA_0 as isize) = 0xffu8;
         outptr = outptr.offset(RGB_PIXELSIZE_0 as isize);
-        col =  col - 1
+        col -=  1
     }
     /* If image width is odd, do the last output column separately */
     /* If image width is odd, do the last output column separately */
@@ -306,7 +306,7 @@ pub unsafe extern "C" fn h2v1_merged_upsample_internal(
         *outptr.offset(crate::jmorecfg_h::RGB_BLUE_5 as isize) =
             *range_limit.offset((y + cblue) as isize);
         outptr = outptr.offset(crate::jmorecfg_h::RGB_PIXELSIZE_5 as isize);
-        col =  col - 1
+        col -=  1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as libc::c_int;
@@ -381,7 +381,7 @@ pub unsafe extern "C" fn extrgb_h2v1_merged_upsample_internal(
         *outptr.offset(RGB_GREEN_4 as isize) = *range_limit.offset((y + cgreen) as isize);
         *outptr.offset(RGB_BLUE_4 as isize) = *range_limit.offset((y + cblue) as isize);
         outptr = outptr.offset(RGB_PIXELSIZE_4 as isize);
-        col =  col - 1
+        col -=  1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as libc::c_int;
@@ -455,7 +455,7 @@ pub unsafe extern "C" fn extrgbx_h2v1_merged_upsample_internal(
         *outptr.offset(RGB_BLUE_2 as isize) = *range_limit.offset((y + cblue) as isize);
         *outptr.offset(RGB_ALPHA_2 as isize) = 0xffu8;
         outptr = outptr.offset(RGB_PIXELSIZE_2 as isize);
-        col =  col - 1
+        col -=  1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as libc::c_int;
@@ -528,7 +528,7 @@ pub unsafe extern "C" fn extbgr_h2v1_merged_upsample_internal(
         *outptr.offset(RGB_GREEN_3 as isize) = *range_limit.offset((y + cgreen) as isize);
         *outptr.offset(RGB_BLUE_3 as isize) = *range_limit.offset((y + cblue) as isize);
         outptr = outptr.offset(RGB_PIXELSIZE_3 as isize);
-        col =  col - 1
+        col -=  1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as libc::c_int;
@@ -602,7 +602,7 @@ pub unsafe extern "C" fn extbgrx_h2v1_merged_upsample_internal(
         *outptr.offset(RGB_BLUE_1 as isize) = *range_limit.offset((y + cblue) as isize);
         *outptr.offset(RGB_ALPHA_1 as isize) = 0xffu8;
         outptr = outptr.offset(RGB_PIXELSIZE_1 as isize);
-        col =  col - 1
+        col -=  1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as libc::c_int;
@@ -677,7 +677,7 @@ pub unsafe extern "C" fn extxrgb_h2v1_merged_upsample_internal(
         *outptr.offset(RGB_BLUE as isize) = *range_limit.offset((y + cblue) as isize);
         *outptr.offset(RGB_ALPHA as isize) = 0xffu8;
         outptr = outptr.offset(RGB_PIXELSIZE as isize);
-        col =  col - 1
+        col -=  1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as libc::c_int;
@@ -821,7 +821,7 @@ pub unsafe extern "C" fn extbgr_h2v2_merged_upsample_internal(
         *outptr1.offset(RGB_GREEN_3 as isize) = *range_limit.offset((y + cgreen) as isize);
         *outptr1.offset(RGB_BLUE_3 as isize) = *range_limit.offset((y + cblue) as isize);
         outptr1 = outptr1.offset(RGB_PIXELSIZE_3 as isize);
-        col =  col - 1
+        col -=  1
     }
     /* If image width is odd, do the last output column separately */
     /* If image width is odd, do the last output column separately */
@@ -931,7 +931,7 @@ pub unsafe extern "C" fn extrgbx_h2v2_merged_upsample_internal(
         *outptr1.offset(RGB_BLUE_2 as isize) = *range_limit.offset((y + cblue) as isize);
         *outptr1.offset(RGB_ALPHA_2 as isize) = 0xffu8;
         outptr1 = outptr1.offset(RGB_PIXELSIZE_2 as isize);
-        col =  col - 1
+        col -=  1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as libc::c_int;
@@ -1032,7 +1032,7 @@ pub unsafe extern "C" fn extrgb_h2v2_merged_upsample_internal(
         *outptr1.offset(RGB_GREEN_4 as isize) = *range_limit.offset((y + cgreen) as isize);
         *outptr1.offset(RGB_BLUE_4 as isize) = *range_limit.offset((y + cblue) as isize);
         outptr1 = outptr1.offset(RGB_PIXELSIZE_4 as isize);
-        col =  col - 1
+        col -=  1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as libc::c_int;
@@ -1135,7 +1135,7 @@ pub unsafe extern "C" fn extbgrx_h2v2_merged_upsample_internal(
         *outptr1.offset(RGB_BLUE_1 as isize) = *range_limit.offset((y + cblue) as isize);
         *outptr1.offset(RGB_ALPHA_1 as isize) = 0xffu8;
         outptr1 = outptr1.offset(RGB_PIXELSIZE_1 as isize);
-        col =  col - 1
+        col -=  1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as libc::c_int;
@@ -1248,7 +1248,7 @@ pub unsafe extern "C" fn h2v2_merged_upsample_internal(
         *outptr1.offset(crate::jmorecfg_h::RGB_BLUE_5 as isize) =
             *range_limit.offset((y + cblue) as isize);
         outptr1 = outptr1.offset(crate::jmorecfg_h::RGB_PIXELSIZE_5 as isize);
-        col =  col - 1
+        col -=  1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as libc::c_int;
@@ -1357,7 +1357,7 @@ pub unsafe extern "C" fn extxrgb_h2v2_merged_upsample_internal(
         *outptr1.offset(RGB_BLUE as isize) = *range_limit.offset((y + cblue) as isize);
         *outptr1.offset(RGB_ALPHA as isize) = 0xffu8;
         outptr1 = outptr1.offset(RGB_PIXELSIZE as isize);
-        col =  col - 1
+        col -=  1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as libc::c_int;
@@ -1462,7 +1462,7 @@ pub unsafe extern "C" fn extxbgr_h2v2_merged_upsample_internal(
         *outptr1.offset(RGB_BLUE_0 as isize) = *range_limit.offset((y + cblue) as isize);
         *outptr1.offset(RGB_ALPHA_0 as isize) = 0xffu8;
         outptr1 = outptr1.offset(RGB_PIXELSIZE_0 as isize);
-        col =  col - 1
+        col -=  1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as libc::c_int;

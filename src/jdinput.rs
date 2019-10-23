@@ -468,7 +468,7 @@ unsafe extern "C" fn per_scan_setup(mut cinfo: crate::jpeglib_h::j_decompress_pt
             }
             loop {
                 let fresh0 = mcublks;
-                mcublks = mcublks - 1;
+                mcublks -=  1;
                 if !(fresh0 > 0i32) {
                     break;
                 }

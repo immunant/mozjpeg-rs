@@ -473,7 +473,7 @@ unsafe extern "C" fn get_sof(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh0 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
      let mut length:   crate::jpegint_h::JLONG =
@@ -492,7 +492,7 @@ unsafe extern "C" fn get_sof(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh1 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     length += *fresh1 as libc::c_long;
@@ -510,7 +510,7 @@ unsafe extern "C" fn get_sof(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh2 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     (*cinfo).data_precision = *fresh2 as libc::c_int;
@@ -528,7 +528,7 @@ unsafe extern "C" fn get_sof(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh3 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     (*cinfo).image_height = (*fresh3 as libc::c_uint) << 8i32;
@@ -546,7 +546,7 @@ unsafe extern "C" fn get_sof(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh4 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     (*cinfo).image_height =
@@ -565,7 +565,7 @@ unsafe extern "C" fn get_sof(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh5 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     (*cinfo).image_width = (*fresh5 as libc::c_uint) << 8i32;
@@ -583,7 +583,7 @@ unsafe extern "C" fn get_sof(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh6 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     (*cinfo).image_width =
@@ -602,7 +602,7 @@ unsafe extern "C" fn get_sof(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh7 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     (*cinfo).num_components = *fresh7 as libc::c_int;
@@ -686,7 +686,7 @@ unsafe extern "C" fn get_sof(
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
         }
-        bytes_in_buffer =  bytes_in_buffer - 1;
+        bytes_in_buffer -=  1;
         let fresh8 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
         (*compptr).component_id = *fresh8 as libc::c_int;
@@ -704,7 +704,7 @@ unsafe extern "C" fn get_sof(
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
         }
-        bytes_in_buffer =  bytes_in_buffer - 1;
+        bytes_in_buffer -=  1;
         let fresh9 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
          let mut c:   libc::c_int =  *fresh9 as libc::c_int;
@@ -724,7 +724,7 @@ unsafe extern "C" fn get_sof(
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
         }
-        bytes_in_buffer =  bytes_in_buffer - 1;
+        bytes_in_buffer -=  1;
         let fresh10 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
         (*compptr).quant_tbl_no = *fresh10 as libc::c_int;
@@ -780,7 +780,7 @@ unsafe extern "C" fn get_sos(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh11 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
      let mut length:   crate::jpegint_h::JLONG =
@@ -799,7 +799,7 @@ unsafe extern "C" fn get_sos(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh12 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     length += *fresh12 as libc::c_long;
@@ -817,7 +817,7 @@ unsafe extern "C" fn get_sos(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh13 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
      let mut n:   libc::c_int =  *fresh13 as libc::c_int;
@@ -865,7 +865,7 @@ unsafe extern "C" fn get_sos(
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
         }
-        bytes_in_buffer =  bytes_in_buffer - 1;
+        bytes_in_buffer -=  1;
         let fresh14 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
          let mut cc:   libc::c_int =  *fresh14 as libc::c_int;
@@ -883,7 +883,7 @@ unsafe extern "C" fn get_sos(
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
         }
-        bytes_in_buffer =  bytes_in_buffer - 1;
+        bytes_in_buffer -=  1;
         let fresh15 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
         c = *fresh15 as libc::c_int;
@@ -964,7 +964,7 @@ unsafe extern "C" fn get_sos(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh16 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     c = *fresh16 as libc::c_int;
@@ -983,7 +983,7 @@ unsafe extern "C" fn get_sos(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh17 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     c = *fresh17 as libc::c_int;
@@ -1002,7 +1002,7 @@ unsafe extern "C" fn get_sos(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh18 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     c = *fresh18 as libc::c_int;
@@ -1059,7 +1059,7 @@ unsafe extern "C" fn get_dht(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh19 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
      let mut length:   crate::jpegint_h::JLONG =
@@ -1078,7 +1078,7 @@ unsafe extern "C" fn get_dht(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh20 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     length += *fresh20 as libc::c_long;
@@ -1100,7 +1100,7 @@ unsafe extern "C" fn get_dht(
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
         }
-        bytes_in_buffer =  bytes_in_buffer - 1;
+        bytes_in_buffer -=  1;
         let fresh21 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
          let mut index:   libc::c_int =  *fresh21 as libc::c_int;
@@ -1130,7 +1130,7 @@ unsafe extern "C" fn get_dht(
                 next_input_byte = (*datasrc).next_input_byte;
                 bytes_in_buffer = (*datasrc).bytes_in_buffer
             }
-            bytes_in_buffer =  bytes_in_buffer - 1;
+            bytes_in_buffer -=  1;
             let fresh22 = next_input_byte;
             next_input_byte = next_input_byte.offset(1);
             bits[i as usize] = *fresh22;
@@ -1200,7 +1200,7 @@ unsafe extern "C" fn get_dht(
                 next_input_byte = (*datasrc).next_input_byte;
                 bytes_in_buffer = (*datasrc).bytes_in_buffer
             }
-            bytes_in_buffer =  bytes_in_buffer - 1;
+            bytes_in_buffer -=  1;
             let fresh23 = next_input_byte;
             next_input_byte = next_input_byte.offset(1);
             huffval[i as usize] = *fresh23;
@@ -1309,7 +1309,7 @@ unsafe extern "C" fn get_dqt(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh24 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
      let mut length:   crate::jpegint_h::JLONG =
@@ -1328,7 +1328,7 @@ unsafe extern "C" fn get_dqt(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh25 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     length += *fresh25 as libc::c_long;
@@ -1348,7 +1348,7 @@ unsafe extern "C" fn get_dqt(
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
         }
-        bytes_in_buffer =  bytes_in_buffer - 1;
+        bytes_in_buffer -=  1;
         let fresh26 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
         
@@ -1398,7 +1398,7 @@ unsafe extern "C" fn get_dqt(
                     next_input_byte = (*datasrc).next_input_byte;
                     bytes_in_buffer = (*datasrc).bytes_in_buffer
                 }
-                bytes_in_buffer =  bytes_in_buffer - 1;
+                bytes_in_buffer -=  1;
                 let fresh27 = next_input_byte;
                 next_input_byte = next_input_byte.offset(1);
                 tmp = (*fresh27 as libc::c_uint) << 8i32;
@@ -1416,10 +1416,10 @@ unsafe extern "C" fn get_dqt(
                     next_input_byte = (*datasrc).next_input_byte;
                     bytes_in_buffer = (*datasrc).bytes_in_buffer
                 }
-                bytes_in_buffer =  bytes_in_buffer - 1;
+                bytes_in_buffer -=  1;
                 let fresh28 = next_input_byte;
                 next_input_byte = next_input_byte.offset(1);
-                tmp =  tmp + *fresh28 as libc::c_uint
+                tmp +=  *fresh28 as libc::c_uint
             } else {
                 if bytes_in_buffer == 0u64 {
                     if Some(
@@ -1435,7 +1435,7 @@ unsafe extern "C" fn get_dqt(
                     next_input_byte = (*datasrc).next_input_byte;
                     bytes_in_buffer = (*datasrc).bytes_in_buffer
                 }
-                bytes_in_buffer =  bytes_in_buffer - 1;
+                bytes_in_buffer -=  1;
                 let fresh29 = next_input_byte;
                 next_input_byte = next_input_byte.offset(1);
                 tmp = *fresh29 as libc::c_uint
@@ -1512,7 +1512,7 @@ unsafe extern "C" fn get_dri(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh30 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
      let mut length:   crate::jpegint_h::JLONG =
@@ -1531,7 +1531,7 @@ unsafe extern "C" fn get_dri(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh31 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     length += *fresh31 as libc::c_long;
@@ -1558,7 +1558,7 @@ unsafe extern "C" fn get_dri(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh32 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
      let mut tmp:   libc::c_uint =  (*fresh32 as libc::c_uint) << 8i32;
@@ -1576,10 +1576,10 @@ unsafe extern "C" fn get_dri(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh33 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
-    tmp =  tmp + *fresh33 as libc::c_uint;
+    tmp +=  *fresh33 as libc::c_uint;
     (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_DRI as libc::c_int;
     (*(*cinfo).err).msg_parm.i[0] = tmp as libc::c_int;
     Some(
@@ -1863,7 +1863,7 @@ unsafe extern "C" fn get_interesting_appn(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh34 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
      let mut length:   crate::jpegint_h::JLONG =
@@ -1882,7 +1882,7 @@ unsafe extern "C" fn get_interesting_appn(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh35 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     length += *fresh35 as libc::c_long;
@@ -1911,11 +1911,11 @@ unsafe extern "C" fn get_interesting_appn(
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
         }
-        bytes_in_buffer =  bytes_in_buffer - 1;
+        bytes_in_buffer -=  1;
         let fresh36 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
         b[i as usize] = *fresh36;
-        i =  i + 1
+        i +=  1
     }
     length -= numtoread as libc::c_long;
     /* process it */
@@ -1984,7 +1984,7 @@ unsafe extern "C" fn save_marker(
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
         }
-        bytes_in_buffer =  bytes_in_buffer - 1;
+        bytes_in_buffer -=  1;
         let fresh37 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
         length = ((*fresh37 as libc::c_uint) << 8i32) as crate::jpegint_h::JLONG;
@@ -2002,7 +2002,7 @@ unsafe extern "C" fn save_marker(
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
         }
-        bytes_in_buffer =  bytes_in_buffer - 1;
+        bytes_in_buffer -=  1;
         let fresh38 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
         length += *fresh38 as libc::c_long;
@@ -2079,8 +2079,8 @@ unsafe extern "C" fn save_marker(
             let fresh40 = data;
             data = data.offset(1);
             *fresh40 = *fresh39;
-            bytes_in_buffer =  bytes_in_buffer - 1;
-            bytes_read =  bytes_read + 1
+            bytes_in_buffer -=  1;
+            bytes_read +=  1
         }
     }
     /* Done reading what we want to read */
@@ -2161,7 +2161,7 @@ unsafe extern "C" fn skip_variable(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh41 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
      let mut length:   crate::jpegint_h::JLONG =
@@ -2180,7 +2180,7 @@ unsafe extern "C" fn skip_variable(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh42 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     length += *fresh42 as libc::c_long;
@@ -2237,7 +2237,7 @@ unsafe extern "C" fn next_marker(
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
         }
-        bytes_in_buffer =  bytes_in_buffer - 1;
+        bytes_in_buffer -=  1;
         let fresh43 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
         c = *fresh43 as libc::c_int;
@@ -2264,7 +2264,7 @@ unsafe extern "C" fn next_marker(
                 next_input_byte = (*datasrc).next_input_byte;
                 bytes_in_buffer = (*datasrc).bytes_in_buffer
             }
-            bytes_in_buffer =  bytes_in_buffer - 1;
+            bytes_in_buffer -=  1;
             let fresh44 = next_input_byte;
             next_input_byte = next_input_byte.offset(1);
             c = *fresh44 as libc::c_int
@@ -2290,7 +2290,7 @@ unsafe extern "C" fn next_marker(
                 next_input_byte = (*datasrc).next_input_byte;
                 bytes_in_buffer = (*datasrc).bytes_in_buffer
             }
-            bytes_in_buffer =  bytes_in_buffer - 1;
+            bytes_in_buffer -=  1;
             let fresh45 = next_input_byte;
             next_input_byte = next_input_byte.offset(1);
             c = *fresh45 as libc::c_int;
@@ -2355,7 +2355,7 @@ unsafe extern "C" fn first_marker(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh46 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
      let mut c:   libc::c_int =  *fresh46 as libc::c_int;
@@ -2373,7 +2373,7 @@ unsafe extern "C" fn first_marker(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer =  bytes_in_buffer - 1;
+    bytes_in_buffer -=  1;
     let fresh47 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
      let mut c2:   libc::c_int =  *fresh47 as libc::c_int;

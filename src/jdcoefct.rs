@@ -325,7 +325,7 @@ unsafe extern "C" fn decompress_onepass(
                                         output_ptr,
                                         output_col,
                                     );
-                                    output_col = output_col + (*compptr).DCT_scaled_size as libc::c_uint;
+                                    output_col +=  (*compptr).DCT_scaled_size as libc::c_uint;
                                     xindex += 1
                                 }
                             }
@@ -337,7 +337,7 @@ unsafe extern "C" fn decompress_onepass(
                     ci += 1
                 }
             }
-            MCU_col_num =  MCU_col_num + 1
+            MCU_col_num +=  1
         }
         /* Completed an MCU row, but perhaps not an iMCU row */
         (*coef).MCU_ctr = 0u32;
@@ -435,7 +435,7 @@ unsafe extern "C" fn consume_data(mut cinfo: crate::jpeglib_h::j_decompress_ptr)
                         let fresh0 = buffer_ptr;
                         buffer_ptr = buffer_ptr.offset(1);
                         let fresh1 = blkn;
-                        blkn = blkn + 1;
+                        blkn +=  1;
                         (*coef).MCU_buffer[fresh1 as usize] = fresh0;
                         xindex += 1
                     }
@@ -458,7 +458,7 @@ unsafe extern "C" fn consume_data(mut cinfo: crate::jpeglib_h::j_decompress_ptr)
                 (*coef).MCU_ctr = MCU_col_num;
                 return crate::jpeglib_h::JPEG_SUSPENDED;
             }
-            MCU_col_num =  MCU_col_num + 1
+            MCU_col_num +=  1
         }
         /* Completed an MCU row, but perhaps not an iMCU row */
         (*coef).MCU_ctr = 0u32;
@@ -576,8 +576,8 @@ unsafe extern "C" fn decompress_data(
                         output_col,
                     );
                     buffer_ptr = buffer_ptr.offset(1);
-                    output_col = output_col + (*compptr).DCT_scaled_size as libc::c_uint;
-                    block_num =  block_num + 1
+                    output_col +=  (*compptr).DCT_scaled_size as libc::c_uint;
+                    block_num +=  1
                 }
                 output_ptr = output_ptr.offset((*compptr).DCT_scaled_size as isize);
                 block_row += 1
@@ -998,8 +998,8 @@ unsafe extern "C" fn decompress_smooth_data(
                     buffer_ptr = buffer_ptr.offset(1);
                     prev_block_row = prev_block_row.offset(1);
                     next_block_row = next_block_row.offset(1);
-                    output_col = output_col + (*compptr).DCT_scaled_size as libc::c_uint;
-                    block_num =  block_num + 1
+                    output_col +=  (*compptr).DCT_scaled_size as libc::c_uint;
+                    block_num +=  1
                 }
                 output_ptr = output_ptr.offset((*compptr).DCT_scaled_size as isize);
                 block_row += 1

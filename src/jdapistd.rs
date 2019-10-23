@@ -725,7 +725,7 @@ unsafe extern "C" fn read_and_discard_scanlines(
             crate::stddef_h::NULL as crate::jpeglib_h::JSAMPARRAY,
             1u32,
         );
-        n =  n + 1
+        n +=  1
     }
     if color_convert.is_some() {
         (*(*cinfo).cconvert).color_convert = color_convert
@@ -849,7 +849,7 @@ pub unsafe extern "C" fn jpeg_skip_scanlines(
         if lines_left_in_iMCU_row <= 1u32 && (*main_ptr).buffer_full != 0 {
             (*cinfo).output_scanline = (*cinfo).output_scanline +
     (lines_left_in_iMCU_row + lines_per_iMCU_row);
-            lines_after_iMCU_row = lines_after_iMCU_row - lines_per_iMCU_row
+            lines_after_iMCU_row -=  lines_per_iMCU_row
         } else {
             (*cinfo).output_scanline = (*cinfo).output_scanline + lines_left_in_iMCU_row
         }
@@ -933,7 +933,7 @@ pub unsafe extern "C" fn jpeg_skip_scanlines(
                     cinfo,
                     crate::stddef_h::NULL as *mut crate::jpeglib_h::JBLOCKROW,
                 );
-                x =  x + 1
+                x +=  1
             }
             y += 1
         }
@@ -949,7 +949,7 @@ pub unsafe extern "C" fn jpeg_skip_scanlines(
             )
             .expect("non-null function pointer")(cinfo);
         }
-        i = i + lines_per_iMCU_row
+        i +=  lines_per_iMCU_row
     }
     (*cinfo).output_scanline = (*cinfo).output_scanline + lines_to_skip;
     if (*(*cinfo).upsample).need_context_rows != 0 {

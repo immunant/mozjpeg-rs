@@ -517,7 +517,7 @@ unsafe extern "C" fn read_pbm_integer(
             break;
         }
         val =  val * 10u32;
-        val =  val + (ch - '0' as i32) as libc::c_uint
+        val +=  (ch - '0' as i32) as libc::c_uint
     }
     return val;
 }
@@ -573,9 +573,9 @@ unsafe extern "C" fn read_ppm_map(
                     G = read_pbm_integer(cinfo, infile) as libc::c_int;
                     B = read_pbm_integer(cinfo, infile) as libc::c_int;
                     add_map_entry(cinfo, R, G, B);
-                    col =  col + 1
+                    col +=  1
                 }
-                row =  row + 1
+                row +=  1
             }
         }
         54 => {
@@ -601,9 +601,9 @@ unsafe extern "C" fn read_ppm_map(
                         );
                     }
                     add_map_entry(cinfo, R, G, B);
-                    col =  col + 1
+                    col +=  1
                 }
-                row =  row + 1
+                row +=  1
             }
         }
         _ => {

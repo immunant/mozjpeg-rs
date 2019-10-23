@@ -278,7 +278,7 @@ pub unsafe extern "C" fn jpeg_write_icc_profile(
      let mut num_markers:   libc::c_uint =
       icc_data_len / MAX_DATA_BYTES_IN_MARKER as libc::c_uint;
     if  num_markers * MAX_DATA_BYTES_IN_MARKER as libc::c_uint != icc_data_len {
-        num_markers =  num_markers + 1
+        num_markers +=  1
     }
     while icc_data_len > 0u32 {
         /* length of profile to put in this marker */
@@ -286,7 +286,7 @@ pub unsafe extern "C" fn jpeg_write_icc_profile(
         if length > MAX_DATA_BYTES_IN_MARKER as libc::c_uint {
             length = MAX_DATA_BYTES_IN_MARKER as libc::c_uint
         }
-        icc_data_len =  icc_data_len - length;
+        icc_data_len -=  length;
         /* Write the JPEG marker header (APP2 code and marker length) */
         crate::jpeglib_h::jpeg_write_m_header(
             cinfo,
@@ -317,7 +317,7 @@ pub unsafe extern "C" fn jpeg_write_icc_profile(
         /* Add the profile data */
         {
             let fresh0 = length;
-            length =  length - 1;
+            length -=  1;
             if !(fresh0 != 0) {
                 break;
             }

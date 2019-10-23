@@ -449,9 +449,9 @@ unsafe extern "C" fn compute_reciprocal(
         fq >>= 1i32; /* fractional part is > 0.5 */
         r -= 1
     } else if fr <= divisor as libc::c_uint / 2u32 {
-        c =  c + 1
+        c +=  1
     } else {
-        fq =  fq + 1
+        fq +=  1
     } /* reciprocal */
     *dtbl.offset((crate::jpeglib_h::DCTSIZE2 * 0i32) as isize) = fq as crate::jdct_h::DCTELEM; /* correction + roundfactor */
     *dtbl.offset((crate::jpeglib_h::DCTSIZE2 * 1i32) as isize) = c as crate::jdct_h::DCTELEM; /* scale */
@@ -1402,8 +1402,8 @@ unsafe extern "C" fn forward_DCT(
                 i_0 += 1
             }
         }
-        bi =  bi + 1;
-        start_col = start_col + crate::jpeglib_h::DCTSIZE as libc::c_uint
+        bi +=  1;
+        start_col +=  crate::jpeglib_h::DCTSIZE as libc::c_uint
     }
 }
 
@@ -1584,8 +1584,8 @@ unsafe extern "C" fn forward_DCT_float(
                 i_0 += 1
             }
         }
-        bi =  bi + 1;
-        start_col = start_col + crate::jpeglib_h::DCTSIZE as libc::c_uint
+        bi +=  1;
+        start_col +=  crate::jpeglib_h::DCTSIZE as libc::c_uint
     }
 }
 /* DCT_FLOAT_SUPPORTED */

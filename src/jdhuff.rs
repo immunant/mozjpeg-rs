@@ -491,12 +491,12 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
         }
         loop {
             let fresh0 = i;
-            i = i - 1;
+            i -=  1;
             if !(fresh0 != 0) {
                 break;
             }
             let fresh1 = p;
-            p = p + 1;
+            p +=  1;
             huffsize[fresh1 as usize] = l as libc::c_char
         }
         l += 1
@@ -509,9 +509,9 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
     while huffsize[p as usize] != 0 {
         while huffsize[p as usize] as libc::c_int == si {
             let fresh2 = p;
-            p = p + 1;
+            p +=  1;
             huffcode[fresh2 as usize] = code;
-            code =  code + 1
+            code +=  1
         }
         /* code is now 1 more than the last code used for codelength si; but
          * it must still fit in si bits, since no code is allowed to be all ones.
@@ -685,7 +685,7 @@ pub unsafe extern "C" fn jpeg_fill_bit_buffer(
                 next_input_byte = (*(*cinfo).src).next_input_byte;
                 bytes_in_buffer = (*(*cinfo).src).bytes_in_buffer
             }
-            bytes_in_buffer =  bytes_in_buffer - 1;
+            bytes_in_buffer -=  1;
             let fresh3 = next_input_byte;
             next_input_byte = next_input_byte.offset(1);
              let mut c:   libc::c_int =  *fresh3 as libc::c_int;
@@ -712,7 +712,7 @@ pub unsafe extern "C" fn jpeg_fill_bit_buffer(
                         next_input_byte = (*(*cinfo).src).next_input_byte;
                         bytes_in_buffer = (*(*cinfo).src).bytes_in_buffer
                     }
-                    bytes_in_buffer =  bytes_in_buffer - 1;
+                    bytes_in_buffer -=  1;
                     let fresh4 = next_input_byte;
                     next_input_byte = next_input_byte.offset(1);
                     c = *fresh4 as libc::c_int;

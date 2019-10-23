@@ -646,7 +646,7 @@ unsafe extern "C" fn emit_buffered_bits(
     while nbits > 0u32 {
         emit_bits(entropy, *bufstart as libc::c_uint, 1i32);
         bufstart = bufstart.offset(1);
-        nbits =  nbits - 1
+        nbits -=  1
     }
 }
 /*
@@ -1167,7 +1167,7 @@ unsafe extern "C" fn encode_mcu_AC_refine(
          let mut temp:   libc::c_int =  *fresh5 as libc::c_int;
         if temp > 1i32 {
             let fresh6 = BR;
-            BR =  BR + 1;
+            BR +=  1;
             *BR_buffer.offset(fresh6 as isize) = (temp & 1i32) as libc::c_char;
             signbits >>= 1i32;
             zerobits >>= 1i32

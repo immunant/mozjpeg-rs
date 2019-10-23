@@ -450,7 +450,7 @@ unsafe extern "C" fn put_pixel_rows(
             }
             outptr = outptr.offset(3);
             inptr2 = inptr2.offset(1);
-            col =  col - 1
+            col -=  1
         }
     } else if  (*cinfo).out_color_space
         ==  crate::jpeglib_h::JCS_CMYK
@@ -472,7 +472,7 @@ unsafe extern "C" fn put_pixel_rows(
             let mut k: crate::jmorecfg_h::JSAMPLE = *fresh3;
             crate::cmyk_h::cmyk_to_rgb(c, m, y, k, outptr.offset(2), outptr.offset(1), outptr);
             outptr = outptr.offset(3);
-            col =  col - 1
+            col -=  1
         }
     } else {
         let mut rindex: libc::c_int = crate::jmorecfg_h::rgb_red[(*cinfo).out_color_space as usize];
@@ -489,7 +489,7 @@ unsafe extern "C" fn put_pixel_rows(
             *outptr.offset(2) = *inptr.offset(rindex as isize);
             outptr = outptr.offset(3);
             inptr = inptr.offset(ps as isize);
-            col =  col - 1
+            col -=  1
         }
     }
      let mut pad:   libc::c_int =  (*dest).pad_bytes;
@@ -1032,9 +1032,9 @@ unsafe extern "C" fn finish_output_bmp(
             while col > 0u32 {
                 crate::stdlib::putc(*data_ptr as libc::c_int, outfile);
                 data_ptr = data_ptr.offset(1);
-                col =  col - 1
+                col -=  1
             }
-            row =  row - 1
+            row -=  1
         }
         if !progress.is_null() {
             (*progress).completed_extra_passes += 1
@@ -1169,7 +1169,7 @@ pub unsafe extern "C" fn jinit_write_bmp(
         (*dest).data_width =  (*cinfo).output_width * 3u32;
         (*dest).row_width = (*dest).data_width;
         while row_width & 3u32 != 0u32 {
-            row_width =  row_width + 1
+            row_width +=  1
         }
     } else if (*cinfo).quantize_colors == 0
         && ((*cinfo).out_color_space

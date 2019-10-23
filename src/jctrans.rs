@@ -670,7 +670,7 @@ unsafe extern "C" fn compress_output(
                             let fresh0 = buffer_ptr;
                             buffer_ptr = buffer_ptr.offset(1);
                             let fresh1 = blkn;
-                            blkn = blkn + 1;
+                            blkn +=  1;
                             MCU_buffer[fresh1 as usize] = fresh0;
                             xindex += 1
                         }
@@ -709,7 +709,7 @@ unsafe extern "C" fn compress_output(
                 (*coef).mcu_ctr = MCU_col_num;
                 return crate::jmorecfg_h::FALSE;
             }
-            MCU_col_num =  MCU_col_num + 1
+            MCU_col_num +=  1
         }
         /* Completed an MCU row, but perhaps not an iMCU row */
         (*coef).mcu_ctr = 0u32;

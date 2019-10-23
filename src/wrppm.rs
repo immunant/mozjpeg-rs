@@ -642,7 +642,7 @@ unsafe extern "C" fn put_rgb(
         bufferptr = bufferptr.offset(1);
         *fresh2 = *ptr.offset(bindex as isize) as libc::c_char;
         ptr = ptr.offset(ps as isize);
-        col =  col - 1
+        col -=  1
     }
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
@@ -693,7 +693,7 @@ unsafe extern "C" fn put_cmyk(
         let fresh9 = bufferptr;
         bufferptr = bufferptr.offset(1);
         *fresh9 = b as libc::c_char;
-        col =  col - 1
+        col -=  1
     }
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
@@ -736,7 +736,7 @@ unsafe extern "C" fn put_demapped_rgb(
         let fresh13 = bufferptr;
         bufferptr = bufferptr.offset(1);
         *fresh13 =  *color_map2.offset(pixval as isize) as libc::c_char;
-        col =  col - 1
+        col -=  1
     }
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
@@ -767,7 +767,7 @@ unsafe extern "C" fn put_demapped_gray(
         *fresh15 =
             
             *color_map.offset(*fresh14 as libc::c_int as isize) as libc::c_char;
-        col =  col - 1
+        col -=  1
     }
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,

@@ -356,7 +356,7 @@ unsafe extern "C" fn put_pixel_rows(
         *outptr.offset(2) =  *inptr.offset(0) as libc::c_char;
         inptr = inptr.offset(3);
         outptr = outptr.offset(3);
-        col =  col - 1
+        col -=  1
     }
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
@@ -386,7 +386,7 @@ unsafe extern "C" fn put_gray_rows(
         let fresh1 = outptr;
         outptr = outptr.offset(1);
         *fresh1 =  *fresh0 as libc::c_char;
-        col =  col - 1
+        col -=  1
     }
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
@@ -421,7 +421,7 @@ unsafe extern "C" fn put_demapped_gray(
         *fresh3 =
             
             *color_map0.offset(*fresh2 as libc::c_int as isize) as libc::c_char;
-        col =  col - 1
+        col -=  1
     }
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,

@@ -718,7 +718,7 @@ unsafe extern "C" fn decode_mcu_AC_first(
         if EOBRUN > 0u32 {
             /* There is always only one block per MCU */
             /* if it's a band of zeroes... */
-            EOBRUN =  EOBRUN - 1
+            EOBRUN -=  1
         } else {
                  let mut br_state:  crate::src::jdhuff::bitread_working_state =
     
@@ -850,9 +850,9 @@ unsafe extern "C" fn decode_mcu_AC_first(
                         }
                         bits_left -= r;
                         r = (get_buffer >> bits_left) as libc::c_int & (1i32 << r) - 1i32;
-                        EOBRUN =  EOBRUN + r as libc::c_uint
+                        EOBRUN +=  r as libc::c_uint
                     }
-                    EOBRUN =  EOBRUN - 1;
+                    EOBRUN -=  1;
                     break;
                 }
                 k += 1
@@ -1146,7 +1146,7 @@ unsafe extern "C" fn decode_mcu_AC_refine(
                         }
                         bits_left -= r;
                         r = (get_buffer >> bits_left) as libc::c_int & (1i32 << r) - 1i32;
-                        EOBRUN =  EOBRUN + r as libc::c_uint;
+                        EOBRUN +=  r as libc::c_uint;
                         current_block = 17958840340921835115;
                         continue;
                         /* rest of block is handled by EOB logic */
@@ -1212,7 +1212,7 @@ unsafe extern "C" fn decode_mcu_AC_refine(
                         (*block)[pos as usize] = s as crate::jmorecfg_h::JCOEF;
                         /* Remember its position in case we have to suspend */
                         let fresh0 = num_newnz;
-                        num_newnz = num_newnz + 1;
+                        num_newnz +=  1;
                         newnz_pos[fresh0 as usize] = pos
                     }
                     k += 1;
@@ -1278,7 +1278,7 @@ unsafe extern "C" fn decode_mcu_AC_refine(
                         current_block = 12369290732426379360;
                     } else {
                         /* Count one block completed in EOB run */
-                        EOBRUN =  EOBRUN - 1;
+                        EOBRUN -=  1;
                         current_block = 10041771570435381152;
                     }
                 }

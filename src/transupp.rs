@@ -469,7 +469,7 @@ unsafe extern "C" fn do_crop(
                 );
                 offset_y += 1
             }
-            dst_blk_y = dst_blk_y + (*compptr).v_samp_factor as libc::c_uint
+            dst_blk_y +=  (*compptr).v_samp_factor as libc::c_uint
         }
         ci += 1
     }
@@ -564,7 +564,7 @@ unsafe extern "C" fn do_flip_h_no_crop(
                         *fresh3 = -(temp1 as libc::c_int) as crate::jmorecfg_h::JCOEF;
                         k += 2i32
                     }
-                    blk_x =  blk_x + 1
+                    blk_x +=  1
                 }
                 if x_crop_blocks > 0u32 {
                     /* Now left-justify the portion of the data to be kept.
@@ -581,12 +581,12 @@ unsafe extern "C" fn do_flip_h_no_crop(
                             (*buffer.offset(offset_y as isize)).offset(blk_x as isize),
                             1u32,
                         );
-                        blk_x =  blk_x + 1
+                        blk_x +=  1
                     }
                 }
                 offset_y += 1
             }
-            blk_y = blk_y + (*compptr).v_samp_factor as libc::c_uint
+            blk_y +=  (*compptr).v_samp_factor as libc::c_uint
         }
         ci += 1
     }
@@ -708,11 +708,11 @@ unsafe extern "C" fn do_flip_h(
                             1u32,
                         );
                     }
-                    dst_blk_x =  dst_blk_x + 1
+                    dst_blk_x +=  1
                 }
                 offset_y += 1
             }
-            dst_blk_y = dst_blk_y + (*compptr).v_samp_factor as libc::c_uint
+            dst_blk_y +=  (*compptr).v_samp_factor as libc::c_uint
         }
         ci += 1
     }
@@ -852,7 +852,7 @@ unsafe extern "C" fn do_flip_v(
                             }
                             i += 2i32
                         }
-                        dst_blk_x =  dst_blk_x + 1
+                        dst_blk_x +=  1
                     }
                 } else {
                     /* Just copy row verbatim. */
@@ -864,7 +864,7 @@ unsafe extern "C" fn do_flip_v(
                 }
                 offset_y += 1
             }
-            dst_blk_y = dst_blk_y + (*compptr).v_samp_factor as libc::c_uint
+            dst_blk_y +=  (*compptr).v_samp_factor as libc::c_uint
         }
         ci += 1
     }
@@ -964,11 +964,11 @@ unsafe extern "C" fn do_transpose(
                         }
                         offset_x += 1
                     }
-                    dst_blk_x = dst_blk_x + (*compptr).h_samp_factor as libc::c_uint
+                    dst_blk_x +=  (*compptr).h_samp_factor as libc::c_uint
                 }
                 offset_y += 1
             }
-            dst_blk_y = dst_blk_y + (*compptr).v_samp_factor as libc::c_uint
+            dst_blk_y +=  (*compptr).v_samp_factor as libc::c_uint
         }
         ci += 1
     }
@@ -1135,11 +1135,11 @@ unsafe extern "C" fn do_rot_90(
                         }
                         offset_x += 1
                     }
-                    dst_blk_x = dst_blk_x + (*compptr).h_samp_factor as libc::c_uint
+                    dst_blk_x +=  (*compptr).h_samp_factor as libc::c_uint
                 }
                 offset_y += 1
             }
-            dst_blk_y = dst_blk_y + (*compptr).v_samp_factor as libc::c_uint
+            dst_blk_y +=  (*compptr).v_samp_factor as libc::c_uint
         }
         ci += 1
     }
@@ -1281,11 +1281,11 @@ unsafe extern "C" fn do_rot_270(
                         }
                         offset_x += 1
                     }
-                    dst_blk_x = dst_blk_x + (*compptr).h_samp_factor as libc::c_uint
+                    dst_blk_x +=  (*compptr).h_samp_factor as libc::c_uint
                 }
                 offset_y += 1
             }
-            dst_blk_y = dst_blk_y + (*compptr).v_samp_factor as libc::c_uint
+            dst_blk_y +=  (*compptr).v_samp_factor as libc::c_uint
         }
         ci += 1
     }
@@ -1479,7 +1479,7 @@ unsafe extern "C" fn do_rot_180(
                                 i += 2i32
                             }
                         }
-                        dst_blk_x =  dst_blk_x + 1
+                        dst_blk_x +=  1
                     }
                 } else {
                     /* Remaining rows are just mirrored horizontally. */
@@ -1519,12 +1519,12 @@ unsafe extern "C" fn do_rot_180(
                                 1u32,
                             );
                         }
-                        dst_blk_x =  dst_blk_x + 1
+                        dst_blk_x +=  1
                     }
                 }
                 offset_y += 1
             }
-            dst_blk_y = dst_blk_y + (*compptr).v_samp_factor as libc::c_uint
+            dst_blk_y +=  (*compptr).v_samp_factor as libc::c_uint
         }
         ci += 1
     }
@@ -1781,11 +1781,11 @@ unsafe extern "C" fn do_transverse(
                         }
                         offset_x += 1
                     }
-                    dst_blk_x = dst_blk_x + (*compptr).h_samp_factor as libc::c_uint
+                    dst_blk_x +=  (*compptr).h_samp_factor as libc::c_uint
                 }
                 offset_y += 1
             }
-            dst_blk_y = dst_blk_y + (*compptr).v_samp_factor as libc::c_uint
+            dst_blk_y +=  (*compptr).v_samp_factor as libc::c_uint
         }
         ci += 1
     }
@@ -2377,7 +2377,7 @@ unsafe extern "C" fn adjust_exif_parameters(
         }
         firstoffset = *data.offset(6) as libc::c_uint;
         firstoffset <<= 8i32;
-        firstoffset =  firstoffset + *data.offset(7) as libc::c_uint
+        firstoffset +=  *data.offset(7) as libc::c_uint
     } else {
         if *data.offset(7) as libc::c_int != 0i32 {
             return;
@@ -2387,7 +2387,7 @@ unsafe extern "C" fn adjust_exif_parameters(
         }
         firstoffset = *data.offset(5) as libc::c_uint;
         firstoffset <<= 8i32;
-        firstoffset =  firstoffset + *data.offset(4) as libc::c_uint
+        firstoffset +=  *data.offset(4) as libc::c_uint
     }
     if firstoffset >  length - 2u32 {
         return;
@@ -2396,21 +2396,19 @@ unsafe extern "C" fn adjust_exif_parameters(
     if is_motorola != 0 {
         number_of_tags = *data.offset(firstoffset as isize) as libc::c_uint;
         number_of_tags <<= 8i32;
-        number_of_tags =  number_of_tags +
+        number_of_tags += 
     
             *data.offset((firstoffset + 1u32) as isize) as libc::c_uint
     } else {
         number_of_tags =
             *data.offset((firstoffset + 1u32) as isize) as libc::c_uint;
         number_of_tags <<= 8i32;
-        number_of_tags =
-            
-            number_of_tags + *data.offset(firstoffset as isize) as libc::c_uint
+        number_of_tags +=  *data.offset(firstoffset as isize) as libc::c_uint
     }
     if number_of_tags == 0u32 {
         return;
     }
-    firstoffset =  firstoffset + 2u32;
+    firstoffset +=  2u32;
     loop
     /* Search for ExifSubIFD offset Tag in IFD0 */
     {
@@ -2421,7 +2419,7 @@ unsafe extern "C" fn adjust_exif_parameters(
         if is_motorola != 0 {
             tagnum = *data.offset(firstoffset as isize) as libc::c_uint; /* found ExifSubIFD offset Tag */
             tagnum <<= 8i32;
-            tagnum =  tagnum +
+            tagnum += 
     
                 *data.offset((firstoffset + 1u32) as isize)
                     as libc::c_uint
@@ -2429,16 +2427,16 @@ unsafe extern "C" fn adjust_exif_parameters(
             tagnum = *data.offset((firstoffset + 1u32) as isize)
                 as libc::c_uint;
             tagnum <<= 8i32;
-            tagnum =  tagnum + *data.offset(firstoffset as isize) as libc::c_uint
+            tagnum +=  *data.offset(firstoffset as isize) as libc::c_uint
         }
         if tagnum == 0x8769u32 {
             break;
         }
-        number_of_tags =  number_of_tags - 1;
+        number_of_tags -=  1;
         if number_of_tags == 0u32 {
             return;
         }
-        firstoffset =  firstoffset + 12u32
+        firstoffset +=  12u32
     }
     /* Get the ExifSubIFD offset */
     if is_motorola != 0 {
@@ -2455,7 +2453,7 @@ unsafe extern "C" fn adjust_exif_parameters(
         offset =
             *data.offset((firstoffset + 10u32) as isize) as libc::c_uint;
         offset <<= 8i32;
-        offset =  offset +
+        offset += 
     
             *data.offset((firstoffset + 11u32) as isize) as libc::c_uint
     } else {
@@ -2472,7 +2470,7 @@ unsafe extern "C" fn adjust_exif_parameters(
         offset =
             *data.offset((firstoffset + 9u32) as isize) as libc::c_uint;
         offset <<= 8i32;
-        offset =  offset +
+        offset += 
     
             *data.offset((firstoffset + 8u32) as isize) as libc::c_uint
     }
@@ -2483,19 +2481,19 @@ unsafe extern "C" fn adjust_exif_parameters(
     if is_motorola != 0 {
         number_of_tags = *data.offset(offset as isize) as libc::c_uint;
         number_of_tags <<= 8i32;
-        number_of_tags =  number_of_tags +
+        number_of_tags += 
     
             *data.offset((offset + 1u32) as isize) as libc::c_uint
     } else {
         number_of_tags =
             *data.offset((offset + 1u32) as isize) as libc::c_uint;
         number_of_tags <<= 8i32;
-        number_of_tags =  number_of_tags + *data.offset(offset as isize) as libc::c_uint
+        number_of_tags +=  *data.offset(offset as isize) as libc::c_uint
     }
     if number_of_tags < 2u32 {
         return;
     }
-    offset =  offset + 2u32;
+    offset +=  2u32;
     loop
     /* Search for ExifImageWidth and ExifImageHeight Tags in this SubIFD */
     {
@@ -2506,14 +2504,14 @@ unsafe extern "C" fn adjust_exif_parameters(
         if is_motorola != 0 {
             tagnum = *data.offset(offset as isize) as libc::c_uint; /* ExifImageHeight Tag */
             tagnum <<= 8i32; /* ExifImageWidth Tag */
-            tagnum =  tagnum +
+            tagnum += 
     
                 *data.offset((offset + 1u32) as isize) as libc::c_uint
         } else {
             tagnum =
                 *data.offset((offset + 1u32) as isize) as libc::c_uint; /* Format = unsigned long (4 octets) */
             tagnum <<= 8i32; /* Number Of Components = 1 */
-            tagnum =  tagnum + *data.offset(offset as isize) as libc::c_uint
+            tagnum +=  *data.offset(offset as isize) as libc::c_uint
         } /* Format = unsigned long (4 octets) */
         if tagnum == 0xa002u32 || tagnum == 0xa003u32 {
              let mut new_value:  crate::jmorecfg_h::JDIMENSION =  0;if tagnum == 0xa002u32 {
@@ -2565,8 +2563,8 @@ unsafe extern "C" fn adjust_exif_parameters(
                     0u8
             }
         }
-        offset =  offset + 12u32;
-        number_of_tags =  number_of_tags - 1;
+        offset +=  12u32;
+        number_of_tags -=  1;
         if !(number_of_tags != 0) {
             break;
         }

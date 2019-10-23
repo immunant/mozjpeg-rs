@@ -585,7 +585,7 @@ unsafe extern "C" fn get_8bit_row(
             let fresh1 = outptr;
             outptr = outptr.offset(1);
             *fresh1 = *(*colormap.offset(0)).offset(t as isize);
-            col =  col - 1
+            col -=  1
         }
     } else if  (*cinfo).in_color_space
         ==  crate::jpeglib_h::JCS_CMYK
@@ -616,7 +616,7 @@ unsafe extern "C" fn get_8bit_row(
                 outptr.offset(3),
             );
             outptr = outptr.offset(4);
-            col =  col - 1
+            col -=  1
         }
     } else {
         let mut rindex: libc::c_int = crate::jmorecfg_h::rgb_red[(*cinfo).in_color_space as usize];
@@ -647,7 +647,7 @@ unsafe extern "C" fn get_8bit_row(
                 *outptr.offset(bindex as isize) = *(*colormap.offset(2)).offset(t as isize);
                 *outptr.offset(aindex as isize) = 0xffu8;
                 outptr = outptr.offset(ps as isize);
-                col =  col - 1
+                col -=  1
             }
         } else {
             col = (*cinfo).image_width;
@@ -670,7 +670,7 @@ unsafe extern "C" fn get_8bit_row(
                 *outptr.offset(gindex as isize) = *(*colormap.offset(1)).offset(t as isize);
                 *outptr.offset(bindex as isize) = *(*colormap.offset(2)).offset(t as isize);
                 outptr = outptr.offset(ps as isize);
-                col =  col - 1
+                col -=  1
             }
         }
     }
@@ -762,7 +762,7 @@ unsafe extern "C" fn get_24bit_row(
                 outptr.offset(3),
             );
             outptr = outptr.offset(4);
-            col =  col - 1
+            col -=  1
         }
     } else {
         let mut rindex: libc::c_int = crate::jmorecfg_h::rgb_red[(*cinfo).in_color_space as usize];
@@ -785,7 +785,7 @@ unsafe extern "C" fn get_24bit_row(
                 *outptr.offset(rindex as isize) = *fresh10;
                 *outptr.offset(aindex as isize) = 0xffu8;
                 outptr = outptr.offset(ps as isize);
-                col =  col - 1
+                col -=  1
             }
         } else {
             col = (*cinfo).image_width;
@@ -800,7 +800,7 @@ unsafe extern "C" fn get_24bit_row(
                 inptr = inptr.offset(1);
                 *outptr.offset(rindex as isize) = *fresh13;
                 outptr = outptr.offset(ps as isize);
-                col =  col - 1
+                col -=  1
             }
         }
     }
@@ -895,7 +895,7 @@ unsafe extern "C" fn get_32bit_row(
             );
             inptr = inptr.offset(1);
             outptr = outptr.offset(4);
-            col =  col - 1
+            col -=  1
         }
     } else {
         let mut rindex: libc::c_int = crate::jmorecfg_h::rgb_red[(*cinfo).in_color_space as usize];
@@ -920,7 +920,7 @@ unsafe extern "C" fn get_32bit_row(
                 inptr = inptr.offset(1);
                 *outptr.offset(aindex as isize) = *fresh20;
                 outptr = outptr.offset(ps as isize);
-                col =  col - 1
+                col -=  1
             }
         } else {
             col = (*cinfo).image_width;
@@ -936,7 +936,7 @@ unsafe extern "C" fn get_32bit_row(
                 *outptr.offset(rindex as isize) = *fresh23;
                 inptr = inptr.offset(1);
                 outptr = outptr.offset(ps as isize);
-                col =  col - 1
+                col -=  1
             }
         }
     }
@@ -1017,7 +1017,7 @@ unsafe extern "C" fn preload_image(
                 );
             }
         }
-        row =  row + 1
+        row +=  1
     }
     if !progress.is_null() {
         (*progress).completed_extra_passes += 1
@@ -1595,7 +1595,7 @@ unsafe extern "C" fn start_input_bmp(
         }
     }
     while row_width & 3u32 != 0u32 {
-        row_width =  row_width + 1
+        row_width +=  1
     }
     (*source).row_width = row_width;
     if (*source).use_inversion_array != 0 {
