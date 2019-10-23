@@ -150,7 +150,7 @@ unsafe extern "C" fn read_2_bytes() -> libc::c_uint {
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
-    return ((c1 as libc::c_uint) << 8i32).wrapping_add(c2 as libc::c_uint);
+    return (((c1 as libc::c_uint) << 8i32)) + c2 as libc::c_uint;
 }
 /* Routines to write data to output file */
 
@@ -274,11 +274,11 @@ unsafe extern "C" fn copy_variable()
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
-    length = length.wrapping_sub(2i32 as libc::c_uint);
+    length =  length - 2i32 as libc::c_uint;
     /* Copy the remaining bytes */
     while length > 0i32 as libc::c_uint {
         write_1_byte(read_1_byte());
-        length = length.wrapping_sub(1)
+        length =  length - 1
     }
 }
 
@@ -299,11 +299,11 @@ unsafe extern "C" fn skip_variable()
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
-    length = length.wrapping_sub(2i32 as libc::c_uint);
+    length =  length - 2i32 as libc::c_uint;
     /* Skip over the remaining bytes */
     while length > 0i32 as libc::c_uint {
         read_1_byte();
-        length = length.wrapping_sub(1)
+        length =  length - 1
     }
 }
 /*
@@ -732,9 +732,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                                 *const libc::c_char);
                     crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
                 }
-                if crate::stdlib::strlen(*argv.offset(argn as
-                                           isize)).wrapping_add(2i32 as
-                                                                    libc::c_ulong)
+                if  crate::stdlib::strlen(*argv.offset(argn as
+                                           isize)) + 2i32 as
+                                                                    libc::c_ulong
                        >= MAX_COM_LENGTH as crate::stddef_h::size_t {
                     crate::stdlib::fprintf(crate::stdlib::stderr,
                             
@@ -746,12 +746,12 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                 loop  {
                     comment_length = crate::stdlib::strlen(comment_arg) as libc::c_uint;
                     if comment_length > 0i32 as libc::c_uint &&
-                           *comment_arg.offset(comment_length.wrapping_sub(1i32
+                           *comment_arg.offset((comment_length - 1i32
                                                                                as
                                                                                libc::c_uint)
                                                    as isize) as libc::c_int ==
                                '\"' as i32 {
-                        *comment_arg.offset(comment_length.wrapping_sub(1i32
+                        *comment_arg.offset((comment_length - 1i32
                                                                             as
                                                                             libc::c_uint)
                                                 as isize) =
@@ -768,11 +768,12 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                                     b"Missing ending quote mark\x00".as_ptr() as *const libc::c_char);
                             crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
                         }
-                        if crate::stdlib::strlen(comment_arg).wrapping_add(crate::stdlib::strlen(*argv.offset(argn
+                        if  crate::stdlib::strlen(comment_arg) +
+    crate::stdlib::strlen(*argv.offset(argn
                                                                                     as
-                                                                                    isize))).wrapping_add(2i32
+                                                                                    isize)) + 2i32
                                                                                                               as
-                                                                                                              libc::c_ulong)
+                                                                                                              libc::c_ulong
                                >= MAX_COM_LENGTH as crate::stddef_h::size_t {
                             crate::stdlib::fprintf(crate::stdlib::stderr,
                                     
@@ -881,7 +882,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                 crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
             }
             let fresh2 = comment_length;
-            comment_length = comment_length.wrapping_add(1);
+            comment_length =  comment_length + 1;
             *comment_arg.offset(fresh2 as isize) = c as libc::c_char
         }
         if !comment_file.is_null() {
@@ -898,12 +899,12 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     /* Insert the new COM marker, but only if nonempty text has been supplied */
     if comment_length > 0i32 as libc::c_uint {
         write_marker(0xfei32);
-        write_2_bytes(comment_length.wrapping_add(2i32 as libc::c_uint));
+        write_2_bytes(comment_length + 2i32 as libc::c_uint);
         while comment_length > 0i32 as libc::c_uint {
             let fresh3 = comment_arg;
             comment_arg = comment_arg.offset(1);
             write_1_byte(*fresh3 as libc::c_int);
-            comment_length = comment_length.wrapping_sub(1)
+            comment_length =  comment_length - 1
         }
     }
     /* Duplicate the remainder of the source file.
