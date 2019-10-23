@@ -1089,7 +1089,7 @@ unsafe extern "C" fn parse_switches(
                     crate::jpeglib_h::jpeg_save_markers(
                         cinfo,
                         crate::jpeglib_h::JPEG_APP0 + 2i32,
-                        0xffffi32 as libc::c_uint,
+                        0xffffu32,
                     );
                 } else if crate::src::cdjpeg::keymatch(
                     arg,
@@ -1135,7 +1135,7 @@ unsafe extern "C" fn parse_switches(
                 {
                     /* Maximum memory in Kb (or Mb with 'm'). */
                     let mut lval: libc::c_long = 0;
-                    let mut ch: libc::c_char = 'x' as i32 as libc::c_char;
+                    let mut ch: libc::c_char =  'x' as libc::c_char;
                     argn += 1;
                     if argn >= argc {
                         /* advance to next argument */
@@ -1299,8 +1299,8 @@ unsafe extern "C" fn parse_switches(
                         &mut crop_y as *mut crate::jmorecfg_h::JDIMENSION,
                     ) != 5i32
                         || c as libc::c_int != 'X' as i32 && c as libc::c_int != 'x' as i32
-                        || crop_width < 1i32 as libc::c_uint
-                        || crop_height < 1i32 as libc::c_uint
+                        || crop_width < 1u32
+                        || crop_height < 1u32
                     {
                         usage();
                     }
@@ -1335,7 +1335,7 @@ unsafe extern "C" fn parse_switches(
 unsafe extern "C" fn jpeg_getc(mut cinfo: crate::jpeglib_h::j_decompress_ptr) -> libc::c_uint
 /* Read next byte */ {
     let mut datasrc: *mut crate::jpeglib_h::jpeg_source_mgr = (*cinfo).src; /* discount the length word itself */
-    if (*datasrc).bytes_in_buffer == 0i32 as libc::c_ulong {
+    if (*datasrc).bytes_in_buffer == 0u64 {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -1368,10 +1368,10 @@ unsafe extern "C" fn print_text_marker(
         ((*(*cinfo).err).trace_level >= 1i32) as libc::c_int;
     let mut length: libc::c_long = 0;
     let mut ch: libc::c_uint = 0;
-    let mut lastch: libc::c_uint = 0i32 as libc::c_uint;
+    let mut lastch: libc::c_uint = 0u32;
     length = (jpeg_getc(cinfo) << 8i32) as libc::c_long;
     length += jpeg_getc(cinfo) as libc::c_long;
-    length -= 2i32 as libc::c_long;
+    length -= 2i64;
     if traceit != 0 {
         if (*cinfo).unread_marker == crate::jpeglib_h::JPEG_COM {
             crate::stdlib::fprintf(
@@ -1393,7 +1393,7 @@ unsafe extern "C" fn print_text_marker(
     }
     loop {
         length -= 1;
-        if !(length >= 0i32 as libc::c_long) {
+        if !(length >= 0i64) {
             break;
         }
         ch = jpeg_getc(cinfo);
@@ -1403,21 +1403,21 @@ unsafe extern "C" fn print_text_marker(
              * while \ is converted to \\.
              * Newlines in CR, CR/LF, or LF form will be printed as one newline.
              */
-            if ch == '\r' as i32 as libc::c_uint {
+            if ch ==  '\r' as libc::c_uint {
                 crate::stdlib::fprintf(
                     crate::stdlib::stderr,
                     
                     b"\n\x00".as_ptr() as *const libc::c_char,
                 );
-            } else if ch == '\n' as i32 as libc::c_uint {
-                if lastch != '\r' as i32 as libc::c_uint {
+            } else if ch ==  '\n' as libc::c_uint {
+                if lastch !=  '\r' as libc::c_uint {
                     crate::stdlib::fprintf(
                         crate::stdlib::stderr,
                         
                         b"\n\x00".as_ptr() as *const libc::c_char,
                     );
                 }
-            } else if ch == '\\' as i32 as libc::c_uint {
+            } else if ch ==  '\\' as libc::c_uint {
                 crate::stdlib::fprintf(
                     crate::stdlib::stderr,
                     
@@ -1425,7 +1425,7 @@ unsafe extern "C" fn print_text_marker(
                 );
             } else if *(*crate::stdlib::__ctype_b_loc()).offset(ch as libc::c_int as isize)
                 as libc::c_int
-                & crate::stdlib::_ISprint as libc::c_int as libc::c_ushort as libc::c_int
+                &  crate::stdlib::_ISprint as libc::c_ushort as libc::c_int
                 != 0
             {
                 crate::stdlib::putc(ch as libc::c_int, crate::stdlib::stderr);
@@ -1567,7 +1567,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     let mut input_file: *mut crate::stdlib::FILE = ::std::ptr::null_mut::< crate::stdlib::FILE>();
     let mut output_file: *mut crate::stdlib::FILE = ::std::ptr::null_mut::< crate::stdlib::FILE>();
     let mut inbuffer: *mut libc::c_uchar = crate::stddef_h::NULL as *mut libc::c_uchar;
-    let mut insize: libc::c_ulong = 0i32 as libc::c_ulong;
+    let mut insize: libc::c_ulong = 0u64;
     let mut num_scanlines: crate::jmorecfg_h::JDIMENSION = 0;
     /* On Mac, fetch a command line. */
     progname = *argv.offset(0); /* in case C library doesn't provide it */
@@ -1687,8 +1687,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             }
             nbytes = crate::stdlib::fread(
                 &mut *inbuffer.offset(insize as isize) as *mut libc::c_uchar as *mut libc::c_void,
-                1i32 as crate::stddef_h::size_t,
-                4096i32 as crate::stddef_h::size_t,
+                1u64,
+                4096u64,
                 input_file,
             );
             if nbytes < INPUT_BUF_SIZE as libc::c_ulong && crate::stdlib::ferror(input_file) != 0 {
@@ -1731,7 +1731,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     /* Initialize the output module now to let it override any crucial
      * option settings (for instance, GIF wants to force color quantization).
      */
-    match requested_fmt as libc::c_uint {
+    match  requested_fmt {
         0 => {
             dest_mgr = crate::src::cdjpeg::jinit_write_bmp(
                 &mut cinfo,
@@ -1765,7 +1765,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     if skip != 0 {
         let mut tmp: crate::jmorecfg_h::JDIMENSION = 0;
         /* Decompress a subregion */
-        if skip_end >  cinfo.output_height - 1i32 as libc::c_uint {
+        if skip_end >  cinfo.output_height - 1u32 {
             crate::stdlib::fprintf(
                 crate::stdlib::stderr,
                 
@@ -1777,10 +1777,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
         }
         tmp = cinfo.output_height;
-        cinfo.output_height = (cinfo.output_height as libc::c_uint -
+        cinfo.output_height = cinfo.output_height -
     (
-            skip_end - skip_start + 1i32 as libc::c_uint)) as crate::jmorecfg_h::JDIMENSION
-            as crate::jmorecfg_h::JDIMENSION;
+            skip_end - skip_start + 1u32);
         Some((*dest_mgr).start_output.expect("non-null function pointer"))
             .expect("non-null function pointer")(&mut cinfo, dest_mgr);
         cinfo.output_height = tmp;
@@ -1809,7 +1808,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         crate::jpeglib_h::jpeg_skip_scanlines(
             &mut cinfo,
             
-            skip_end - skip_start + 1i32 as libc::c_uint,
+            skip_end - skip_start + 1u32,
         );
         while cinfo.output_scanline < cinfo.output_height {
             num_scanlines = crate::jpeglib_h::jpeg_read_scanlines(
@@ -1928,9 +1927,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             if crate::stdlib::fwrite(
                 icc_profile as *const libc::c_void,
                 icc_len as libc::c_ulong,
-                1i32 as libc::c_ulong,
+                1u64,
                 icc_file,
-            ) < 1i32 as libc::c_ulong
+            ) < 1u64
             {
                 crate::stdlib::fprintf(
                     crate::stdlib::stderr,
@@ -1999,7 +1998,8 @@ pub fn main() {
     unsafe {
         ::std::process::exit(main_0(
             (args.len() - 1) as libc::c_int,
-            args.as_mut_ptr() as *mut *mut libc::c_char,
-        ) as i32)
+            
+            args.as_mut_ptr(),
+        ))
     }
 }
