@@ -289,129 +289,155 @@ unsafe extern "C" fn usage()
 {
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"usage: %s [switches] \x00" as *const u8 as *const libc::c_char,
+        
+        b"usage: %s [switches] \x00".as_ptr() as *const libc::c_char,
         progname,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"[inputfile]\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"[inputfile]\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"Switches (names may be abbreviated):\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"Switches (names may be abbreviated):\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"  -copy none     Copy no extra markers from source file\n\x00" as *const u8
+        
+        b"  -copy none     Copy no extra markers from source file\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"  -copy comments Copy only comment markers (default)\n\x00" as *const u8
+        
+        b"  -copy comments Copy only comment markers (default)\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"  -copy all      Copy all extra markers\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"  -copy all      Copy all extra markers\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::fprintf(crate::stdlib::stderr,
-            b"  -optimize      Optimize Huffman table (smaller file, but slow compression, enabled by default)\n\x00"
-                as *const u8 as *const libc::c_char);
+            
+            b"  -optimize      Optimize Huffman table (smaller file, but slow compression, enabled by default)\n\x00".as_ptr() as *const libc::c_char);
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"  -progressive   Create progressive JPEG file (enabled by default)\n\x00" as *const u8
+        
+        b"  -progressive   Create progressive JPEG file (enabled by default)\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"  -revert        Revert to standard defaults (instead of mozjpeg defaults)\n\x00"
-            as *const u8 as *const libc::c_char,
+        
+        b"  -revert        Revert to standard defaults (instead of mozjpeg defaults)\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"  -fastcrush     Disable progressive scan optimization\n\x00" as *const u8
+        
+        b"  -fastcrush     Disable progressive scan optimization\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"Switches for modifying the image:\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"Switches for modifying the image:\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"  -crop WxH+X+Y  Crop to a rectangular subarea\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"  -crop WxH+X+Y  Crop to a rectangular subarea\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"  -grayscale     Reduce to grayscale (omit color data)\n\x00" as *const u8
+        
+        b"  -grayscale     Reduce to grayscale (omit color data)\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"  -flip [horizontal|vertical]  Mirror image (left-right or top-bottom)\n\x00" as *const u8
+        
+        b"  -flip [horizontal|vertical]  Mirror image (left-right or top-bottom)\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"  -perfect       Fail if there is non-transformable edge blocks\n\x00" as *const u8
+        
+        b"  -perfect       Fail if there is non-transformable edge blocks\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"  -rotate [90|180|270]         Rotate image (degrees clockwise)\n\x00" as *const u8
+        
+        b"  -rotate [90|180|270]         Rotate image (degrees clockwise)\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"  -transpose     Transpose image\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"  -transpose     Transpose image\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"  -transverse    Transverse transpose image\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"  -transverse    Transverse transpose image\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"  -trim          Drop non-transformable edge blocks\n\x00" as *const u8
+        
+        b"  -trim          Drop non-transformable edge blocks\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"Switches for advanced users:\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"Switches for advanced users:\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"  -icc FILE      Embed ICC profile contained in FILE\n\x00" as *const u8
+        
+        b"  -icc FILE      Embed ICC profile contained in FILE\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"  -restart N     Set restart interval in rows, or in blocks with B\n\x00" as *const u8
+        
+        b"  -restart N     Set restart interval in rows, or in blocks with B\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"  -maxmemory N   Maximum memory to use (in kbytes)\n\x00" as *const u8
+        
+        b"  -maxmemory N   Maximum memory to use (in kbytes)\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"  -outfile name  Specify name for output file\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"  -outfile name  Specify name for output file\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"  -verbose  or  -debug   Emit debug output\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"  -verbose  or  -debug   Emit debug output\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"  -version       Print version information and exit\n\x00" as *const u8
+        
+        b"  -version       Print version information and exit\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"Switches for wizards:\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"Switches for wizards:\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"  -scans FILE    Create multi-scan JPEG per script FILE\n\x00" as *const u8
+        
+        b"  -scans FILE    Create multi-scan JPEG per script FILE\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
@@ -430,7 +456,8 @@ unsafe extern "C" fn select_transform(mut transform: crate::src::transupp::JXFOR
     } else {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b"%s: can only do one image transformation at a time\n\x00" as *const u8
+            
+            b"%s: can only do one image transformation at a time\n\x00".as_ptr()
                 as *const libc::c_char,
             progname,
         );
@@ -490,14 +517,16 @@ unsafe extern "C" fn parse_switches(
             arg = arg.offset(1); /* advance past switch marker character */
             if crate::src::cdjpeg::keymatch(
                 arg,
-                b"arithmetic\x00" as *const u8 as *const libc::c_char,
+                
+                b"arithmetic\x00".as_ptr() as *const libc::c_char,
                 1i32,
             ) != 0
             {
                 /* Use arithmetic coding. */
                 crate::stdlib::fprintf(
                     crate::stdlib::stderr,
-                    b"%s: sorry, arithmetic coding not supported\n\x00" as *const u8
+                    
+                    b"%s: sorry, arithmetic coding not supported\n\x00".as_ptr()
                         as *const libc::c_char,
                     progname,
                 );
@@ -505,7 +534,8 @@ unsafe extern "C" fn parse_switches(
             } else {
                 if crate::src::cdjpeg::keymatch(
                     arg,
-                    b"copy\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"copy\x00".as_ptr() as *const libc::c_char,
                     2i32,
                 ) != 0
                 {
@@ -517,21 +547,24 @@ unsafe extern "C" fn parse_switches(
                     }
                     if crate::src::cdjpeg::keymatch(
                         *argv.offset(argn as isize),
-                        b"none\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"none\x00".as_ptr() as *const libc::c_char,
                         1i32,
                     ) != 0
                     {
                         copyoption = crate::src::transupp::JCOPYOPT_NONE
                     } else if crate::src::cdjpeg::keymatch(
                         *argv.offset(argn as isize),
-                        b"comments\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"comments\x00".as_ptr() as *const libc::c_char,
                         1i32,
                     ) != 0
                     {
                         copyoption = crate::src::transupp::JCOPYOPT_COMMENTS
                     } else if crate::src::cdjpeg::keymatch(
                         *argv.offset(argn as isize),
-                        b"all\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"all\x00".as_ptr() as *const libc::c_char,
                         1i32,
                     ) != 0
                     {
@@ -541,7 +574,8 @@ unsafe extern "C" fn parse_switches(
                     }
                 } else if crate::src::cdjpeg::keymatch(
                     arg,
-                    b"crop\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"crop\x00".as_ptr() as *const libc::c_char,
                     2i32,
                 ) != 0
                 {
@@ -558,7 +592,8 @@ unsafe extern "C" fn parse_switches(
                     {
                         crate::stdlib::fprintf(
                             crate::stdlib::stderr,
-                            b"%s: bogus -crop argument \'%s\'\n\x00" as *const u8
+                            
+                            b"%s: bogus -crop argument \'%s\'\n\x00".as_ptr()
                                 as *const libc::c_char,
                             progname,
                             *argv.offset(argn as isize),
@@ -568,12 +603,14 @@ unsafe extern "C" fn parse_switches(
                     prefer_smallest = crate::jmorecfg_h::FALSE
                 } else if crate::src::cdjpeg::keymatch(
                     arg,
-                    b"debug\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"debug\x00".as_ptr() as *const libc::c_char,
                     1i32,
                 ) != 0
                     || crate::src::cdjpeg::keymatch(
                         arg,
-                        b"verbose\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"verbose\x00".as_ptr() as *const libc::c_char,
                         1i32,
                     ) != 0
                 {
@@ -584,20 +621,22 @@ unsafe extern "C" fn parse_switches(
                     if printed_version == 0 {
                         crate::stdlib::fprintf(
                             crate::stdlib::stderr,
-                            b"%s version %s (build %s)\n\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"%s version %s (build %s)\n\x00".as_ptr() as *const libc::c_char,
                             crate::jconfigint_h::PACKAGE_NAME.as_ptr(),
                             crate::jconfigint_h::VERSION.as_ptr(),
                             crate::jconfigint_h::BUILD.as_ptr(),
                         );
                         crate::stdlib::fprintf(
                             crate::stdlib::stderr,
-                            b"%s\n\n\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"%s\n\n\x00".as_ptr() as *const libc::c_char,
                             crate::jversion_h::JCOPYRIGHT.as_ptr(),
                         );
                         crate::stdlib::fprintf(
                             crate::stdlib::stderr,
-                            b"Emulating The Independent JPEG Group\'s software, version %s\n\n\x00"
-                                as *const u8 as *const libc::c_char,
+                            
+                            b"Emulating The Independent JPEG Group\'s software, version %s\n\n\x00".as_ptr() as *const libc::c_char,
                             crate::jversion_h::JVERSION.as_ptr(),
                         );
                         printed_version = crate::jmorecfg_h::TRUE
@@ -605,13 +644,15 @@ unsafe extern "C" fn parse_switches(
                     (*(*cinfo).err).trace_level += 1
                 } else if crate::src::cdjpeg::keymatch(
                     arg,
-                    b"version\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"version\x00".as_ptr() as *const libc::c_char,
                     4i32,
                 ) != 0
                 {
                     crate::stdlib::fprintf(
                         crate::stdlib::stderr,
-                        b"%s version %s (build %s)\n\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"%s version %s (build %s)\n\x00".as_ptr() as *const libc::c_char,
                         crate::jconfigint_h::PACKAGE_NAME.as_ptr(),
                         crate::jconfigint_h::VERSION.as_ptr(),
                         crate::jconfigint_h::BUILD.as_ptr(),
@@ -620,7 +661,8 @@ unsafe extern "C" fn parse_switches(
                 } else {
                     if crate::src::cdjpeg::keymatch(
                         arg,
-                        b"flip\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"flip\x00".as_ptr() as *const libc::c_char,
                         1i32,
                     ) != 0
                     {
@@ -632,14 +674,16 @@ unsafe extern "C" fn parse_switches(
                         }
                         if crate::src::cdjpeg::keymatch(
                             *argv.offset(argn as isize),
-                            b"horizontal\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"horizontal\x00".as_ptr() as *const libc::c_char,
                             1i32,
                         ) != 0
                         {
                             select_transform(crate::src::transupp::JXFORM_FLIP_H);
                         } else if crate::src::cdjpeg::keymatch(
                             *argv.offset(argn as isize),
-                            b"vertical\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"vertical\x00".as_ptr() as *const libc::c_char,
                             1i32,
                         ) != 0
                         {
@@ -650,7 +694,8 @@ unsafe extern "C" fn parse_switches(
                         prefer_smallest = crate::jmorecfg_h::FALSE
                     } else if crate::src::cdjpeg::keymatch(
                         arg,
-                        b"fastcrush\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"fastcrush\x00".as_ptr() as *const libc::c_char,
                         4i32,
                     ) != 0
                     {
@@ -661,12 +706,14 @@ unsafe extern "C" fn parse_switches(
                         );
                     } else if crate::src::cdjpeg::keymatch(
                         arg,
-                        b"grayscale\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"grayscale\x00".as_ptr() as *const libc::c_char,
                         1i32,
                     ) != 0
                         || crate::src::cdjpeg::keymatch(
                             arg,
-                            b"greyscale\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"greyscale\x00".as_ptr() as *const libc::c_char,
                             1i32,
                         ) != 0
                     {
@@ -675,7 +722,8 @@ unsafe extern "C" fn parse_switches(
                         prefer_smallest = crate::jmorecfg_h::FALSE
                     } else if crate::src::cdjpeg::keymatch(
                         arg,
-                        b"icc\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"icc\x00".as_ptr() as *const libc::c_char,
                         1i32,
                     ) != 0
                     {
@@ -688,7 +736,8 @@ unsafe extern "C" fn parse_switches(
                         icc_filename = *argv.offset(argn as isize)
                     } else if crate::src::cdjpeg::keymatch(
                         arg,
-                        b"maxmemory\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"maxmemory\x00".as_ptr() as *const libc::c_char,
                         3i32,
                     ) != 0
                     {
@@ -702,7 +751,8 @@ unsafe extern "C" fn parse_switches(
                         }
                         if crate::stdlib::sscanf(
                             *argv.offset(argn as isize),
-                            b"%ld%c\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"%ld%c\x00".as_ptr() as *const libc::c_char,
                             &mut lval as *mut libc::c_long,
                             &mut ch as *mut libc::c_char,
                         ) < 1i32
@@ -715,12 +765,14 @@ unsafe extern "C" fn parse_switches(
                         (*(*cinfo).mem).max_memory_to_use = lval * 1000i64
                     } else if crate::src::cdjpeg::keymatch(
                         arg,
-                        b"optimize\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"optimize\x00".as_ptr() as *const libc::c_char,
                         1i32,
                     ) != 0
                         || crate::src::cdjpeg::keymatch(
                             arg,
-                            b"optimise\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"optimise\x00".as_ptr() as *const libc::c_char,
                             1i32,
                         ) != 0
                     {
@@ -728,7 +780,8 @@ unsafe extern "C" fn parse_switches(
                         (*cinfo).optimize_coding = crate::jmorecfg_h::TRUE
                     } else if crate::src::cdjpeg::keymatch(
                         arg,
-                        b"outfile\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"outfile\x00".as_ptr() as *const libc::c_char,
                         4i32,
                     ) != 0
                     {
@@ -742,7 +795,8 @@ unsafe extern "C" fn parse_switches(
                     /* save it away for later use */
                     } else if crate::src::cdjpeg::keymatch(
                         arg,
-                        b"perfect\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"perfect\x00".as_ptr() as *const libc::c_char,
                         2i32,
                     ) != 0
                     {
@@ -751,7 +805,8 @@ unsafe extern "C" fn parse_switches(
                         transformoption.perfect = crate::jmorecfg_h::TRUE
                     } else if crate::src::cdjpeg::keymatch(
                         arg,
-                        b"progressive\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"progressive\x00".as_ptr() as *const libc::c_char,
                         2i32,
                     ) != 0
                     {
@@ -761,7 +816,8 @@ unsafe extern "C" fn parse_switches(
                     /* We must postpone execution until num_components is known. */
                     } else if crate::src::cdjpeg::keymatch(
                         arg,
-                        b"restart\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"restart\x00".as_ptr() as *const libc::c_char,
                         1i32,
                     ) != 0
                     {
@@ -775,7 +831,8 @@ unsafe extern "C" fn parse_switches(
                         }
                         if crate::stdlib::sscanf(
                             *argv.offset(argn as isize),
-                            b"%ld%c\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"%ld%c\x00".as_ptr() as *const libc::c_char,
                             &mut lval_0 as *mut libc::c_long,
                             &mut ch_0 as *mut libc::c_char,
                         ) < 1i32
@@ -795,7 +852,8 @@ unsafe extern "C" fn parse_switches(
                         }
                     } else if crate::src::cdjpeg::keymatch(
                         arg,
-                        b"revert\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"revert\x00".as_ptr() as *const libc::c_char,
                         3i32,
                     ) != 0
                     {
@@ -808,7 +866,8 @@ unsafe extern "C" fn parse_switches(
                         prefer_smallest = crate::jmorecfg_h::FALSE
                     } else if crate::src::cdjpeg::keymatch(
                         arg,
-                        b"rotate\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"rotate\x00".as_ptr() as *const libc::c_char,
                         2i32,
                     ) != 0
                     {
@@ -820,21 +879,24 @@ unsafe extern "C" fn parse_switches(
                         }
                         if crate::src::cdjpeg::keymatch(
                             *argv.offset(argn as isize),
-                            b"90\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"90\x00".as_ptr() as *const libc::c_char,
                             2i32,
                         ) != 0
                         {
                             select_transform(crate::src::transupp::JXFORM_ROT_90);
                         } else if crate::src::cdjpeg::keymatch(
                             *argv.offset(argn as isize),
-                            b"180\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"180\x00".as_ptr() as *const libc::c_char,
                             3i32,
                         ) != 0
                         {
                             select_transform(crate::src::transupp::JXFORM_ROT_180);
                         } else if crate::src::cdjpeg::keymatch(
                             *argv.offset(argn as isize),
-                            b"270\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"270\x00".as_ptr() as *const libc::c_char,
                             3i32,
                         ) != 0
                         {
@@ -845,7 +907,8 @@ unsafe extern "C" fn parse_switches(
                         prefer_smallest = crate::jmorecfg_h::FALSE
                     } else if crate::src::cdjpeg::keymatch(
                         arg,
-                        b"scans\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"scans\x00".as_ptr() as *const libc::c_char,
                         1i32,
                     ) != 0
                     {
@@ -860,7 +923,8 @@ unsafe extern "C" fn parse_switches(
                     /* We must postpone reading the file in case -progressive appears. */
                     } else if crate::src::cdjpeg::keymatch(
                         arg,
-                        b"transpose\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"transpose\x00".as_ptr() as *const libc::c_char,
                         1i32,
                     ) != 0
                     {
@@ -869,7 +933,8 @@ unsafe extern "C" fn parse_switches(
                         prefer_smallest = crate::jmorecfg_h::FALSE
                     } else if crate::src::cdjpeg::keymatch(
                         arg,
-                        b"transverse\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"transverse\x00".as_ptr() as *const libc::c_char,
                         6i32,
                     ) != 0
                     {
@@ -878,7 +943,8 @@ unsafe extern "C" fn parse_switches(
                         prefer_smallest = crate::jmorecfg_h::FALSE
                     } else if crate::src::cdjpeg::keymatch(
                         arg,
-                        b"trim\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"trim\x00".as_ptr() as *const libc::c_char,
                         3i32,
                     ) != 0
                     {
@@ -1126,7 +1192,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     /* On Mac, fetch a command line. */
     progname = *argv.offset(0); /* in case C library doesn't provide it */
     if progname.is_null() || *progname.offset(0) as libc::c_int == 0i32 {
-        progname = b"jpegtran\x00" as *const u8 as *const libc::c_char
+        progname =  b"jpegtran\x00".as_ptr() as *const libc::c_char
     }
     /* Initialize the JPEG decompression object with default error handling. */
     srcinfo.err = crate::jpeglib_h::jpeg_std_error(&mut jsrcerr);
@@ -1156,7 +1222,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     if file_index < argc - 1i32 {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b"%s: only one input file\n\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s: only one input file\n\x00".as_ptr() as *const libc::c_char,
             progname,
         );
         usage();
@@ -1171,7 +1238,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         if fp.is_null() {
             crate::stdlib::fprintf(
                 crate::stdlib::stderr,
-                b"%s: can\'t open %s for reading\n\x00" as *const u8 as *const libc::c_char,
+                
+                b"%s: can\'t open %s for reading\n\x00".as_ptr() as *const libc::c_char,
                 progname,
                 *argv.offset(file_index as isize),
             );
@@ -1186,7 +1254,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         if icc_file.is_null() {
             crate::stdlib::fprintf(
                 crate::stdlib::stderr,
-                b"%s: can\'t open %s\n\x00" as *const u8 as *const libc::c_char,
+                
+                b"%s: can\'t open %s\n\x00".as_ptr() as *const libc::c_char,
                 progname,
                 icc_filename,
             );
@@ -1201,7 +1270,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         {
             crate::stdlib::fprintf(
                 crate::stdlib::stderr,
-                b"%s: can\'t determine size of %s\n\x00" as *const u8 as *const libc::c_char,
+                
+                b"%s: can\'t determine size of %s\n\x00".as_ptr() as *const libc::c_char,
                 progname,
                 icc_filename,
             );
@@ -1212,7 +1282,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         if icc_profile.is_null() {
             crate::stdlib::fprintf(
                 crate::stdlib::stderr,
-                b"%s: can\'t allocate memory for ICC profile\n\x00" as *const u8
+                
+                b"%s: can\'t allocate memory for ICC profile\n\x00".as_ptr()
                     as *const libc::c_char,
                 progname,
             );
@@ -1228,7 +1299,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         {
             crate::stdlib::fprintf(
                 crate::stdlib::stderr,
-                b"%s: can\'t read ICC profile from %s\n\x00" as *const u8 as *const libc::c_char,
+                
+                b"%s: can\'t read ICC profile from %s\n\x00".as_ptr() as *const libc::c_char,
                 progname,
                 icc_filename,
             );
@@ -1265,7 +1337,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             if inbuffer.is_null() {
                 crate::stdlib::fprintf(
                     crate::stdlib::stderr,
-                    b"%s: memory allocation failure\n\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"%s: memory allocation failure\n\x00".as_ptr() as *const libc::c_char,
                     progname,
                 );
                 crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
@@ -1280,14 +1353,16 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                 if file_index < argc {
                     crate::stdlib::fprintf(
                         crate::stdlib::stderr,
-                        b"%s: can\'t read from %s\n\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"%s: can\'t read from %s\n\x00".as_ptr() as *const libc::c_char,
                         progname,
                         *argv.offset(file_index as isize),
                     );
                 } else {
                     crate::stdlib::fprintf(
                         crate::stdlib::stderr,
-                        b"%s: can\'t read from stdin\n\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"%s: can\'t read from stdin\n\x00".as_ptr() as *const libc::c_char,
                         progname,
                     );
                 }
@@ -1313,7 +1388,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     if crate::src::transupp::jtransform_request_workspace(&mut srcinfo, &mut transformoption) == 0 {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b"%s: transformation is not perfect\n\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s: transformation is not perfect\n\x00".as_ptr() as *const libc::c_char,
             progname,
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
@@ -1347,7 +1423,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         if fp.is_null() {
             crate::stdlib::fprintf(
                 crate::stdlib::stderr,
-                b"%s: can\'t open %s for writing\n\x00" as *const u8 as *const libc::c_char,
+                
+                b"%s: can\'t open %s for writing\n\x00".as_ptr() as *const libc::c_char,
                 progname,
                 outfilename,
             );
@@ -1419,14 +1496,16 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             if file_index < argc {
                 crate::stdlib::fprintf(
                     crate::stdlib::stderr,
-                    b"%s: can\'t write to %s\n\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"%s: can\'t write to %s\n\x00".as_ptr() as *const libc::c_char,
                     progname,
                     *argv.offset(file_index as isize),
                 );
             } else {
                 crate::stdlib::fprintf(
                     crate::stdlib::stderr,
-                    b"%s: can\'t write to stdout\n\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"%s: can\'t write to stdout\n\x00".as_ptr() as *const libc::c_char,
                     progname,
                 );
             }
