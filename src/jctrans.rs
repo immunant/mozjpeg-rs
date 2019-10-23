@@ -305,7 +305,7 @@ pub unsafe extern "C" fn jpeg_write_coefficients(
     /* Perform master selection of active modules */
     transencode_master_selection(cinfo, coef_arrays);
     /* Wait for jpeg_finish_compress() call */
-    (*cinfo).next_scanline = 0i32 as crate::jmorecfg_h::JDIMENSION; /* so jpeg_write_marker works */
+    (*cinfo).next_scanline = 0u32; /* so jpeg_write_marker works */
     (*cinfo).global_state = crate::jpegint_h::CSTATE_WRCOEFS;
 }
 /*
@@ -552,12 +552,12 @@ unsafe extern "C" fn start_iMCU_row(mut cinfo: crate::jpeglib_h::j_compress_ptr)
      */
     if (*cinfo).comps_in_scan > 1i32 {
         (*coef).MCU_rows_per_iMCU_row = 1i32
-    } else if (*coef).iMCU_row_num <  (*cinfo).total_iMCU_rows - 1i32 as libc::c_uint {
+    } else if (*coef).iMCU_row_num <  (*cinfo).total_iMCU_rows - 1u32 {
         (*coef).MCU_rows_per_iMCU_row = (*(*cinfo).cur_comp_info[0]).v_samp_factor
     } else {
         (*coef).MCU_rows_per_iMCU_row = (*(*cinfo).cur_comp_info[0]).last_row_height
     }
-    (*coef).mcu_ctr = 0i32 as crate::jmorecfg_h::JDIMENSION;
+    (*coef).mcu_ctr = 0u32;
     (*coef).MCU_vert_offset = 0i32;
 }
 /*
@@ -569,7 +569,7 @@ unsafe extern "C" fn start_pass_coef(
     mut pass_mode: crate::jpegint_h::J_BUF_MODE,
 ) {
     let mut coef: my_coef_ptr = (*cinfo).coef as my_coef_ptr;
-    if pass_mode as libc::c_uint != crate::jpegint_h::JBUF_CRANK_DEST as libc::c_int as libc::c_uint
+    if  pass_mode !=  crate::jpegint_h::JBUF_CRANK_DEST
     {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_BUFFER_MODE as libc::c_int;
         Some(
@@ -579,7 +579,7 @@ unsafe extern "C" fn start_pass_coef(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    (*coef).iMCU_row_num = 0i32 as crate::jmorecfg_h::JDIMENSION;
+    (*coef).iMCU_row_num = 0u32;
     start_iMCU_row(cinfo);
 }
 /*
@@ -600,10 +600,10 @@ unsafe extern "C" fn compress_output(
     let mut MCU_col_num: crate::jmorecfg_h::JDIMENSION = 0;
     let mut last_MCU_col: crate::jmorecfg_h::JDIMENSION =
         
-        (*cinfo).MCUs_per_row - 1i32 as libc::c_uint;
+        (*cinfo).MCUs_per_row - 1u32;
     let mut last_iMCU_row: crate::jmorecfg_h::JDIMENSION =
         
-        (*cinfo).total_iMCU_rows - 1i32 as libc::c_uint;
+        (*cinfo).total_iMCU_rows - 1u32;
     let mut blkn: libc::c_int = 0;
     let mut ci: libc::c_int = 0;
     let mut xindex: libc::c_int = 0;
@@ -710,7 +710,7 @@ unsafe extern "C" fn compress_output(
             MCU_col_num =  MCU_col_num + 1
         }
         /* Completed an MCU row, but perhaps not an iMCU row */
-        (*coef).mcu_ctr = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        (*coef).mcu_ctr = 0u32;
         yoffset += 1
     }
     /* Completed the iMCU row, advance counters for next one */

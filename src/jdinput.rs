@@ -248,7 +248,7 @@ unsafe extern "C" fn initial_setup(mut cinfo: crate::jpeglib_h::j_decompress_ptr
         || (*cinfo).image_width as libc::c_long > crate::jmorecfg_h::JPEG_MAX_DIMENSION
     {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_IMAGE_TOO_BIG as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = 65500i64 as libc::c_uint as libc::c_int;
+        (*(*cinfo).err).msg_parm.i[0] = 65500i32;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -335,9 +335,9 @@ unsafe extern "C" fn initial_setup(mut cinfo: crate::jpeglib_h::j_decompress_ptr
         /* Set the first and last MCU columns to decompress from multi-scan images.
          * By default, decompress all of the MCU columns.
          */
-        (*(*cinfo).master).first_MCU_col[ci as usize] = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        (*(*cinfo).master).first_MCU_col[ci as usize] = 0u32;
         (*(*cinfo).master).last_MCU_col[ci as usize] =  (*compptr)
-            .width_in_blocks - 1i32 as libc::c_uint;
+            .width_in_blocks - 1u32;
         /* downsampled_width and downsampled_height will also be overridden by
          * jdmaster.c if we are doing full decompression.  The transcoder library
          * doesn't use these values, but the calling application might.

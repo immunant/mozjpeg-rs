@@ -227,14 +227,14 @@ unsafe extern "C" fn start_input_jpeg(
     crate::jpeglib_h::jpeg_save_markers(
         &mut (*source).dinfo,
         crate::jpeglib_h::JPEG_COM,
-        0xffffi32 as libc::c_uint,
+        0xffffu32,
     );
     m = 0i32;
     while m < 16i32 {
         crate::jpeglib_h::jpeg_save_markers(
             &mut (*source).dinfo,
             crate::jpeglib_h::JPEG_APP0 + m,
-            0xffffi32 as libc::c_uint,
+            0xffffu32,
         );
         m += 1
     }
@@ -259,9 +259,9 @@ unsafe extern "C" fn start_input_jpeg(
         
         (*cinfo)
             .image_width * (*cinfo).input_components as libc::c_uint,
-        1i32 as crate::jmorecfg_h::JDIMENSION,
+        1u32,
     );
-    (*source).pub_0.buffer_height = 1i32 as crate::jmorecfg_h::JDIMENSION;
+    (*source).pub_0.buffer_height = 1u32;
     (*source).pub_0.get_pixel_rows = Some(
         get_rows
             as unsafe extern "C" fn(

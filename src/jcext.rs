@@ -256,7 +256,7 @@ pub unsafe extern "C" fn jpeg_c_bool_param_supported(
     cinfo: crate::jpeglib_h::j_compress_ptr,
     mut param: crate::jpeglib_h::J_BOOLEAN_PARAM,
 ) -> crate::jmorecfg_h::boolean {
-    match param as libc::c_uint {
+    match  param {
         1745618462 | 3306299443 | 865946636 | 3623303040 | 865973855 | 4253291573 | 3777684073
         | 1061927929 => return crate::jmorecfg_h::TRUE,
         _ => {}
@@ -270,7 +270,7 @@ pub unsafe extern "C" fn jpeg_c_set_bool_param(
     mut param: crate::jpeglib_h::J_BOOLEAN_PARAM,
     mut value: crate::jmorecfg_h::boolean,
 ) {
-    match param as libc::c_uint {
+    match  param {
         1745618462 => (*(*cinfo).master).optimize_scans = value,
         3306299443 => (*(*cinfo).master).trellis_quant = value,
         865946636 => (*(*cinfo).master).trellis_quant_dc = value,
@@ -298,7 +298,7 @@ pub unsafe extern "C" fn jpeg_c_get_bool_param(
     cinfo: crate::jpeglib_h::j_compress_ptr,
     mut param: crate::jpeglib_h::J_BOOLEAN_PARAM,
 ) -> crate::jmorecfg_h::boolean {
-    match param as libc::c_uint {
+    match  param {
         1745618462 => return (*(*cinfo).master).optimize_scans,
         3306299443 => return (*(*cinfo).master).trellis_quant,
         865946636 => return (*(*cinfo).master).trellis_quant_dc,
@@ -327,7 +327,7 @@ pub unsafe extern "C" fn jpeg_c_float_param_supported(
     cinfo: crate::jpeglib_h::j_compress_ptr,
     mut param: crate::jpeglib_h::J_FLOAT_PARAM,
 ) -> crate::jmorecfg_h::boolean {
-    match param as libc::c_uint {
+    match  param {
         1533126041 | 3116084739 | 326587475 => return crate::jmorecfg_h::TRUE,
         _ => {}
     }
@@ -340,7 +340,7 @@ pub unsafe extern "C" fn jpeg_c_set_float_param(
     mut param: crate::jpeglib_h::J_FLOAT_PARAM,
     mut value: libc::c_float,
 ) {
-    match param as libc::c_uint {
+    match  param {
         1533126041 => (*(*cinfo).master).lambda_log_scale1 = value,
         3116084739 => (*(*cinfo).master).lambda_log_scale2 = value,
         326587475 => (*(*cinfo).master).trellis_delta_dc_weight = value,
@@ -363,7 +363,7 @@ pub unsafe extern "C" fn jpeg_c_get_float_param(
     cinfo: crate::jpeglib_h::j_compress_ptr,
     mut param: crate::jpeglib_h::J_FLOAT_PARAM,
 ) -> libc::c_float {
-    match param as libc::c_uint {
+    match  param {
         1533126041 => return (*(*cinfo).master).lambda_log_scale1,
         3116084739 => return (*(*cinfo).master).lambda_log_scale2,
         326587475 => return (*(*cinfo).master).trellis_delta_dc_weight,
@@ -379,7 +379,7 @@ pub unsafe extern "C" fn jpeg_c_get_float_param(
             );
         }
     }
-    return -1i32 as libc::c_float;
+    return -1f32;
 }
 #[no_mangle]
 
@@ -387,7 +387,7 @@ pub unsafe extern "C" fn jpeg_c_int_param_supported(
     cinfo: crate::jpeglib_h::j_compress_ptr,
     mut param: crate::jpeglib_h::J_INT_PARAM,
 ) -> crate::jmorecfg_h::boolean {
-    match param as libc::c_uint {
+    match  param {
         3918628389 | 1873801511 | 3057565497 | 1145645745 | 199732540 => {
             return crate::jmorecfg_h::TRUE
         }
@@ -402,7 +402,7 @@ pub unsafe extern "C" fn jpeg_c_set_int_param(
     mut param: crate::jpeglib_h::J_INT_PARAM,
     mut value: libc::c_int,
 ) {
-    match param as libc::c_uint {
+    match  param {
         3918628389 => match value {
             1560820397 | 720002228 => (*(*cinfo).master).compress_profile = value,
             _ => {
@@ -484,7 +484,7 @@ pub unsafe extern "C" fn jpeg_c_get_int_param(
     cinfo: crate::jpeglib_h::j_compress_ptr,
     mut param: crate::jpeglib_h::J_INT_PARAM,
 ) -> libc::c_int {
-    match param as libc::c_uint {
+    match  param {
         3918628389 => return (*(*cinfo).master).compress_profile,
         1873801511 => return (*(*cinfo).master).trellis_freq_split,
         3057565497 => return (*(*cinfo).master).trellis_num_loops,

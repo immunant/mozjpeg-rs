@@ -433,10 +433,10 @@ unsafe extern "C" fn start_pass_phuff_decoder(mut cinfo: crate::jpeglib_h::j_dec
     }
     /* Initialize bitread state variables */
     (*entropy).bitstate.bits_left = 0i32; /* unnecessary, but keeps Purify quiet */
-    (*entropy).bitstate.get_buffer = 0i32 as crate::src::jdhuff::bit_buf_type;
+    (*entropy).bitstate.get_buffer = 0u64;
     (*entropy).pub_0.insufficient_data = crate::jmorecfg_h::FALSE;
     /* Initialize private state variables */
-    (*entropy).saved.EOBRUN = 0i32 as libc::c_uint;
+    (*entropy).saved.EOBRUN = 0u32;
     /* Initialize restart counter */
     (*entropy).restarts_to_go = (*cinfo).restart_interval;
 }
@@ -475,7 +475,7 @@ unsafe extern "C" fn process_restart(
         ci += 1
     }
     /* Re-init EOB run count, too */
-    (*entropy).saved.EOBRUN = 0i32 as libc::c_uint;
+    (*entropy).saved.EOBRUN = 0u32;
     /* Reset restart counter */
     (*entropy).restarts_to_go = (*cinfo).restart_interval;
     /* Reset out-of-data flag, unless read_restart_marker left us smack up
@@ -541,7 +541,7 @@ unsafe extern "C" fn decode_mcu_DC_first(
         ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>();
     /* Process restart marker if needed; may have to suspend */
     if (*cinfo).restart_interval != 0 {
-        if (*entropy).restarts_to_go == 0i32 as libc::c_uint {
+        if (*entropy).restarts_to_go == 0u32 {
             if process_restart(cinfo) == 0 {
                 return crate::jmorecfg_h::FALSE;
             }
@@ -640,7 +640,7 @@ unsafe extern "C" fn decode_mcu_DC_first(
                 bits_left -= s;
                 r = (get_buffer >> bits_left) as libc::c_int & (1i32 << s) - 1i32;
                 s = if r < 1i32 << s - 1i32 {
-                    r as libc::c_uint + ((((-1i32 as libc::c_uint) << s)) + 1i32 as libc::c_uint)
+                    r as libc::c_uint + (((((-1i32 as libc::c_uint) << s))) + 1u32)
                 } else {
                     r as libc::c_uint
                 } as libc::c_int
@@ -665,7 +665,7 @@ unsafe extern "C" fn decode_mcu_DC_first(
             state.last_dc_val[ci as usize] = s;
             /* Scale and output the coefficient (assumes jpeg_natural_order[0]=0) */
             (*block)[0] =
-                ((s as libc::c_ulong) << Al) as crate::jpegint_h::JLONG as crate::jmorecfg_h::JCOEF;
+                (((s as libc::c_ulong) << Al)) as crate::jmorecfg_h::JCOEF;
             blkn += 1
         }
         /* Completed MCU, so update state */
@@ -710,7 +710,7 @@ unsafe extern "C" fn decode_mcu_AC_first(
         ::std::ptr::null_mut::< crate::src::jdhuff::d_derived_tbl>();
     /* Process restart marker if needed; may have to suspend */
     if (*cinfo).restart_interval != 0 {
-        if (*entropy).restarts_to_go == 0i32 as libc::c_uint {
+        if (*entropy).restarts_to_go == 0u32 {
             if process_restart(cinfo) == 0 {
                 return crate::jmorecfg_h::FALSE;
             }
@@ -725,7 +725,7 @@ unsafe extern "C" fn decode_mcu_AC_first(
          */
         EOBRUN = (*entropy).saved.EOBRUN; /* only part of saved state we need */
         /* only part of saved state we need */
-        if EOBRUN > 0i32 as libc::c_uint {
+        if EOBRUN > 0u32 {
             /* There is always only one block per MCU */
             /* if it's a band of zeroes... */
             EOBRUN =  EOBRUN - 1
@@ -816,15 +816,14 @@ unsafe extern "C" fn decode_mcu_AC_first(
                     bits_left -= s;
                     r = (get_buffer >> bits_left) as libc::c_int & (1i32 << s) - 1i32;
                     s = if r < 1i32 << s - 1i32 {
-                        r as libc::c_uint + ((((-1i32 as libc::c_uint) << s)) + 1i32 as libc::c_uint)
+                        r as libc::c_uint + (((((-1i32 as libc::c_uint) << s))) + 1u32)
                     } else {
                         r as libc::c_uint
                     } as libc::c_int;
                     /* Scale and output coefficient in natural (dezigzagged) order */
                     (*block)[*crate::jpegint_h::jpeg_natural_order
                         .as_ptr()
-                        .offset(k as isize) as usize] = ((s as libc::c_ulong) << Al)
-                        as crate::jpegint_h::JLONG
+                        .offset(k as isize) as usize] = (((s as libc::c_ulong) << Al))
                         as crate::jmorecfg_h::JCOEF
                 } else if r == 15i32 {
                     /* ZRL */
@@ -895,7 +894,7 @@ unsafe extern "C" fn decode_mcu_DC_refine(
         };
     /* Process restart marker if needed; may have to suspend */
     if (*cinfo).restart_interval != 0 {
-        if (*entropy).restarts_to_go == 0i32 as libc::c_uint {
+        if (*entropy).restarts_to_go == 0u32 {
             if process_restart(cinfo) == 0 {
                 return crate::jmorecfg_h::FALSE;
             }
@@ -975,7 +974,7 @@ unsafe extern "C" fn decode_mcu_AC_refine(
     let mut newnz_pos: [libc::c_int; 64] = [0; 64];
     /* Process restart marker if needed; may have to suspend */
     if (*cinfo).restart_interval != 0 {
-        if (*entropy).restarts_to_go == 0i32 as libc::c_uint {
+        if (*entropy).restarts_to_go == 0u32 {
             if process_restart(cinfo) == 0 {
                 return crate::jmorecfg_h::FALSE;
             }
@@ -1004,7 +1003,7 @@ unsafe extern "C" fn decode_mcu_AC_refine(
         num_newnz = 0i32;
         /* initialize coefficient loop counter to start of band */
         k = (*cinfo).Ss;
-        if EOBRUN == 0i32 as libc::c_uint {
+        if EOBRUN == 0u32 {
             current_block = 10652014663920648156;
         } else {
             current_block = 17958840340921835115;
@@ -1012,7 +1011,7 @@ unsafe extern "C" fn decode_mcu_AC_refine(
         's_120: loop {
             match current_block {
                 17958840340921835115 => {
-                    if EOBRUN > 0i32 as libc::c_uint {
+                    if EOBRUN > 0u32 {
                         current_block = 12369290732426379360;
                         break;
                     } else {
@@ -1225,7 +1224,7 @@ unsafe extern "C" fn decode_mcu_AC_refine(
                     while num_newnz > 0i32 {
                         num_newnz -= 1;
                         (*block)[newnz_pos[num_newnz as usize] as usize] =
-                            0i32 as crate::jmorecfg_h::JCOEF
+                            0i16
                     }
                     return crate::jmorecfg_h::FALSE;
                 }

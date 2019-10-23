@@ -398,7 +398,7 @@ unsafe extern "C" fn start_pass_huff_decoder(mut cinfo: crate::jpeglib_h::j_deco
     }
     /* Initialize bitread state variables */
     (*entropy).bitstate.bits_left = 0i32; /* unnecessary, but keeps Purify quiet */
-    (*entropy).bitstate.get_buffer = 0i32 as crate::src::jdhuff::bit_buf_type;
+    (*entropy).bitstate.get_buffer = 0u64;
     (*entropy).pub_0.insufficient_data = crate::jmorecfg_h::FALSE;
     /* Initialize restart counter */
     (*entropy).restarts_to_go = (*cinfo).restart_interval;
@@ -504,11 +504,11 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
         }
         l += 1
     }
-    huffsize[p as usize] = 0i32 as libc::c_char;
+    huffsize[p as usize] = 0i8;
     numsymbols = p;
     /* Figure C.2: generate the codes themselves */
     /* We also validate that the counts represent a legal Huffman code tree. */
-    code = 0i32 as libc::c_uint;
+    code = 0u32;
     si = huffsize[0] as libc::c_int;
     p = 0i32;
     while huffsize[p as usize] != 0 {
@@ -521,7 +521,7 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
         /* code is now 1 more than the last code used for codelength si; but
          * it must still fit in si bits, since no code is allowed to be all ones.
          */
-        if code as crate::jpegint_h::JLONG >= (1i32 as crate::jpegint_h::JLONG) << si {
+        if code as crate::jpegint_h::JLONG >= (1i64) << si {
             (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_HUFF_TABLE as libc::c_int;
             Some(
                 (*(*cinfo).err)
@@ -549,12 +549,12 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
             (*dtbl).maxcode[l as usize] = huffcode[(p - 1i32) as usize] as crate::jpegint_h::JLONG
         /* maximum code of length l */
         } else {
-            (*dtbl).maxcode[l as usize] = -1i32 as crate::jpegint_h::JLONG
+            (*dtbl).maxcode[l as usize] = -1i64
             /* -1 if no codes of this length */
         } /* ensures jpeg_huff_decode terminates */
         l += 1
     }
-    (*dtbl).valoffset[17] = 0i32 as crate::jpegint_h::JLONG;
+    (*dtbl).valoffset[17] = 0i64;
     (*dtbl).maxcode[17] = 0xfffffi64;
     /* Compute lookahead tables to speed up decoding.
      * First we set all the table entries to 0, indicating "too long";
@@ -675,7 +675,7 @@ pub unsafe extern "C" fn jpeg_fill_bit_buffer(
             }
             let mut c: libc::c_int = 0;
             /* Attempt to read a byte */
-            if bytes_in_buffer == 0i32 as libc::c_ulong {
+            if bytes_in_buffer == 0u64 {
                 if Some(
                     (*(*cinfo).src)
                         .fill_input_buffer
@@ -702,7 +702,7 @@ pub unsafe extern "C" fn jpeg_fill_bit_buffer(
                  * byte.  This data pattern is not valid according to the standard.
                  */
                 {
-                    if bytes_in_buffer == 0i32 as libc::c_ulong {
+                    if bytes_in_buffer == 0u64 {
                         if Some(
                             (*(*cinfo).src)
                                 .fill_input_buffer
@@ -1025,9 +1025,9 @@ unsafe extern "C" fn decode_mcu_slow(
             bits_left -= s;
             r = (get_buffer >> bits_left) as libc::c_int & (1i32 << s) - 1i32;
             s = (r as libc::c_uint +
-    ((
+    (((
                 (r - (1i32 << s - 1i32) >> 31i32) as libc::c_uint
-                    & (((-1i32 as libc::c_uint) << s)) + 1i32 as libc::c_uint))) as libc::c_int
+                    & (((-1i32 as libc::c_uint) << s)) + 1u32)))) as libc::c_int
         }
         if (*entropy).dc_needed[blkn as usize] != 0 {
             /* Convert DC difference to actual value, update last_dc_val */
@@ -1104,9 +1104,9 @@ unsafe extern "C" fn decode_mcu_slow(
                     bits_left -= s;
                     r = (get_buffer >> bits_left) as libc::c_int & (1i32 << s) - 1i32;
                     s = (r as libc::c_uint +
-    ((
+    (((
                         (r - (1i32 << s - 1i32) >> 31i32) as libc::c_uint
-                            & (((-1i32 as libc::c_uint) << s)) + 1i32 as libc::c_uint))) as libc::c_int;
+                            & (((-1i32 as libc::c_uint) << s)) + 1u32)))) as libc::c_int;
                     /* Output coefficient in natural (dezigzagged) order.
                      * Note: the extra entries in jpeg_natural_order[] will save us
                      * if k >= DCTSIZE2, which could happen if the data is corrupted.
@@ -1466,9 +1466,9 @@ unsafe extern "C" fn decode_mcu_fast(
             bits_left -= s;
             r = (get_buffer >> bits_left) as libc::c_int & (1i32 << s) - 1i32;
             s = (r as libc::c_uint +
-    ((
+    (((
                 (r - (1i32 << s - 1i32) >> 31i32) as libc::c_uint
-                    & (((-1i32 as libc::c_uint) << s)) + 1i32 as libc::c_uint))) as libc::c_int
+                    & (((-1i32 as libc::c_uint) << s)) + 1u32)))) as libc::c_int
         }
         if (*entropy).dc_needed[blkn as usize] != 0 {
             let mut ci: libc::c_int = (*cinfo).MCU_membership[blkn as usize];
@@ -1703,9 +1703,9 @@ unsafe extern "C" fn decode_mcu_fast(
                     bits_left -= s;
                     r = (get_buffer >> bits_left) as libc::c_int & (1i32 << s) - 1i32;
                     s = (r as libc::c_uint +
-    ((
+    (((
                         (r - (1i32 << s - 1i32) >> 31i32) as libc::c_uint
-                            & (((-1i32 as libc::c_uint) << s)) + 1i32 as libc::c_uint))) as libc::c_int;
+                            & (((-1i32 as libc::c_uint) << s)) + 1u32)))) as libc::c_int;
                     (*block)[*crate::jpegint_h::jpeg_natural_order
                         .as_ptr()
                         .offset(k as isize) as usize] = s as crate::jmorecfg_h::JCOEF
@@ -1955,9 +1955,11 @@ unsafe extern "C" fn decode_mcu_fast(
         (*cinfo).unread_marker = 0i32;
         return crate::jmorecfg_h::FALSE;
     }
-    br_state.bytes_in_buffer = (br_state.bytes_in_buffer as libc::c_ulong -
+    br_state.bytes_in_buffer = br_state.bytes_in_buffer -
     
-        buffer.wrapping_offset_from(br_state.next_input_byte) as libc::c_long as libc::c_ulong) as crate::stddef_h::size_t as crate::stddef_h::size_t;
+        
+    
+        buffer.wrapping_offset_from(br_state.next_input_byte) as libc::c_ulong;
     br_state.next_input_byte = buffer;
     (*(*cinfo).src).next_input_byte = br_state.next_input_byte;
     (*(*cinfo).src).bytes_in_buffer = br_state.bytes_in_buffer;
@@ -1991,7 +1993,7 @@ unsafe extern "C" fn decode_mcu(
     let mut usefast: libc::c_int = 1i32;
     /* Process restart marker if needed; may have to suspend */
     if (*cinfo).restart_interval != 0 {
-        if (*entropy).restarts_to_go == 0i32 as libc::c_uint {
+        if (*entropy).restarts_to_go == 0u32 {
             if process_restart(cinfo) == 0 {
                 return crate::jmorecfg_h::FALSE;
             }

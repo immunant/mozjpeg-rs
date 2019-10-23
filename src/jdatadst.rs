@@ -298,8 +298,8 @@ unsafe extern "C" fn empty_output_buffer(
     let mut dest: my_dest_ptr = (*cinfo).dest as my_dest_ptr;
     if crate::stdlib::fwrite(
         (*dest).buffer as *const libc::c_void,
-        1i32 as crate::stddef_h::size_t,
-        4096i32 as crate::stddef_h::size_t,
+        1u64,
+        4096u64,
         (*dest).outfile,
     ) != OUTPUT_BUF_SIZE as crate::stddef_h::size_t
     {
@@ -323,7 +323,7 @@ unsafe extern "C" fn empty_mem_output_buffer(
     let mut nextbuffer: *mut crate::jmorecfg_h::JOCTET = ::std::ptr::null_mut::< crate::jmorecfg_h::JOCTET>();
     let mut dest: my_mem_dest_ptr = (*cinfo).dest as my_mem_dest_ptr;
     /* Try to allocate new buffer with double size */
-    nextsize =  (*dest).bufsize * 2i32 as libc::c_ulong;
+    nextsize =  (*dest).bufsize * 2u64;
     nextbuffer = crate::stdlib::malloc(nextsize) as *mut crate::jmorecfg_h::JOCTET;
     if nextbuffer.is_null() {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_OUT_OF_MEMORY as libc::c_int;
@@ -364,10 +364,10 @@ unsafe extern "C" fn term_destination(mut cinfo: crate::jpeglib_h::j_compress_pt
     let mut datacount: crate::stddef_h::size_t =
         OUTPUT_BUF_SIZE as libc::c_ulong - (*dest).pub_0.free_in_buffer;
     /* Write any data remaining in the buffer */
-    if datacount > 0i32 as libc::c_ulong {
+    if datacount > 0u64 {
         if crate::stdlib::fwrite(
             (*dest).buffer as *const libc::c_void,
-            1i32 as crate::stddef_h::size_t,
+            1u64,
             datacount,
             (*dest).outfile,
         ) != datacount
@@ -539,7 +539,7 @@ pub unsafe extern "C" fn jpeg_mem_dest_internal(
     (*dest).outbuffer = outbuffer;
     (*dest).outsize = outsize;
     (*dest).newbuffer = crate::stddef_h::NULL as *mut libc::c_uchar;
-    if (*outbuffer).is_null() || *outsize == 0i32 as libc::c_ulong {
+    if (*outbuffer).is_null() || *outsize == 0u64 {
         /* Allocate initial buffer */
         *outbuffer = crate::stdlib::malloc(OUTPUT_BUF_SIZE as libc::c_ulong) as *mut libc::c_uchar;
         (*dest).newbuffer = *outbuffer;

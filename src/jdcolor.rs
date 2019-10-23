@@ -411,7 +411,7 @@ pub struct my_color_deconverter {
 pub const SCALEBITS: libc::c_int = 16i32;
 /* speediest right-shift on some machines */
 
-pub const ONE_HALF: crate::jpegint_h::JLONG = (1i32 as crate::jpegint_h::JLONG) << SCALEBITS - 1i32;
+pub const ONE_HALF: crate::jpegint_h::JLONG = (1i64) << SCALEBITS - 1i32;
 /* We allocate one big table for RGB->Y conversion and divide it up into
  * three parts, instead of doing three alloc_small requests.  This lets us
  * use a single table base address, which can be held in a register in the
@@ -547,13 +547,13 @@ unsafe extern "C" fn build_ycc_rgb_table(mut cinfo: crate::jpeglib_h::j_decompre
         *(*cconvert).Cr_r_tab.offset(i as isize) =
             ((1.40200f64 * (1i64 << 16i32) as libc::c_double + 0.5f64) as crate::jpegint_h::JLONG
                 * x
-                + ((1i32 as crate::jpegint_h::JLONG) << 16i32 - 1i32)
+                + ((1i64) << 16i32 - 1i32)
                 >> 16i32) as libc::c_int;
         /* Cb=>B value is nearest int to 1.77200 * x */
         *(*cconvert).Cb_b_tab.offset(i as isize) =
             ((1.77200f64 * (1i64 << 16i32) as libc::c_double + 0.5f64) as crate::jpegint_h::JLONG
                 * x
-                + ((1i32 as crate::jpegint_h::JLONG) << 16i32 - 1i32)
+                + ((1i64) << 16i32 - 1i32)
                 >> 16i32) as libc::c_int;
         /* Cr=>G value is scaled-up -0.71414 * x */
         *(*cconvert).Cr_g_tab.offset(i as isize) =
@@ -582,7 +582,7 @@ unsafe extern "C" fn ycc_rgb_convert(
     mut output_buf: crate::jpeglib_h::JSAMPARRAY,
     mut num_rows: libc::c_int,
 ) {
-    match (*cinfo).out_color_space as libc::c_uint {
+    match  (*cinfo).out_color_space {
         6 => {
             crate::jdcolext_c::ycc_extrgb_convert_internal(
                 cinfo, input_buf, input_row, output_buf, num_rows,
@@ -642,7 +642,7 @@ unsafe extern "C" fn build_rgb_y_table(mut cinfo: crate::jpeglib_h::j_decompress
     ::std::mem::size_of::<crate::jpegint_h::JLONG>() as libc::c_ulong,
     ) as *mut crate::jpegint_h::JLONG;
     (*cconvert).rgb_y_tab = rgb_y_tab;
-    i = 0i32 as crate::jpegint_h::JLONG;
+    i = 0i64;
     while i <= crate::jmorecfg_h::MAXJSAMPLE as libc::c_long {
         *rgb_y_tab.offset((i + R_Y_OFF as libc::c_long) as isize) =
             (0.29900f64 * (1i64 << SCALEBITS) as libc::c_double + 0.5f64)
@@ -694,7 +694,7 @@ unsafe extern "C" fn rgb_gray_convert(
         let fresh42 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh42;
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols {
             r = *inptr0.offset(col as isize) as libc::c_int;
             g = *inptr1.offset(col as isize) as libc::c_int;
@@ -744,7 +744,7 @@ unsafe extern "C" fn null_convert(
             let fresh43 = output_buf;
             output_buf = output_buf.offset(1);
             outptr = *fresh43;
-            col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+            col = 0u32;
             while col < num_cols {
                 let fresh44 = outptr;
                 outptr = outptr.offset(1);
@@ -772,7 +772,7 @@ unsafe extern "C" fn null_convert(
             let fresh47 = output_buf;
             output_buf = output_buf.offset(1);
             outptr = *fresh47;
-            col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+            col = 0u32;
             while col < num_cols {
                 let fresh48 = outptr;
                 outptr = outptr.offset(1);
@@ -799,7 +799,7 @@ unsafe extern "C" fn null_convert(
             while ci < num_components {
                 inptr = *(*input_buf.offset(ci as isize)).offset(input_row as isize);
                 outptr = *output_buf;
-                col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+                col = 0u32;
                 while col < num_cols {
                     *outptr.offset(ci as isize) = *inptr.offset(col as isize);
                     outptr = outptr.offset(num_components as isize);
@@ -845,7 +845,7 @@ unsafe extern "C" fn gray_rgb_convert(
     mut output_buf: crate::jpeglib_h::JSAMPARRAY,
     mut num_rows: libc::c_int,
 ) {
-    match (*cinfo).out_color_space as libc::c_uint {
+    match  (*cinfo).out_color_space {
         6 => {
             crate::jdcolext_c::gray_extrgb_convert_internal(
                 cinfo, input_buf, input_row, output_buf, num_rows,
@@ -894,7 +894,7 @@ unsafe extern "C" fn rgb_rgb_convert(
     mut output_buf: crate::jpeglib_h::JSAMPARRAY,
     mut num_rows: libc::c_int,
 ) {
-    match (*cinfo).out_color_space as libc::c_uint {
+    match  (*cinfo).out_color_space {
         6 => {
             crate::jdcolext_c::rgb_extrgb_convert_internal(
                 cinfo, input_buf, input_row, output_buf, num_rows,
@@ -976,7 +976,7 @@ unsafe extern "C" fn ycck_cmyk_convert(
         let fresh52 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh52;
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols {
             y = *inptr0.offset(col as isize) as libc::c_int;
             cb = *inptr1.offset(col as isize) as libc::c_int;
@@ -1012,10 +1012,10 @@ unsafe extern "C" fn ycck_cmyk_convert(
 pub const DITHER_MASK: libc::c_int = 0x3i32;
 
 pub(crate) static mut dither_matrix: [crate::jpegint_h::JLONG; 4] = [
-    0x8020ai32 as crate::jpegint_h::JLONG,
-    0xc040e06i32 as crate::jpegint_h::JLONG,
-    0x30b0109i32 as crate::jpegint_h::JLONG,
-    0xf070d05i32 as crate::jpegint_h::JLONG,
+    0x8020ai64,
+    0xc040e06i64,
+    0x30b0109i64,
+    0xf070d05i64,
 ];
 #[inline(always)]
 
@@ -1287,7 +1287,7 @@ pub unsafe extern "C" fn jinit_color_deconverter(mut cinfo: crate::jpeglib_h::j_
         start_pass_dcolor as unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> (),
     );
     /* Make sure num_components agrees with jpeg_color_space */
-    match (*cinfo).jpeg_color_space as libc::c_uint {
+    match  (*cinfo).jpeg_color_space {
         1 => {
             if (*cinfo).num_components != 1i32 {
                 (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_J_COLORSPACE as libc::c_int;
@@ -1346,13 +1346,13 @@ pub unsafe extern "C" fn jinit_color_deconverter(mut cinfo: crate::jpeglib_h::j_
      * Also clear the component_needed flags for any unused components,
      * so that earlier pipeline stages can avoid useless computation.
      */
-    match (*cinfo).out_color_space as libc::c_uint {
+    match  (*cinfo).out_color_space {
         1 => {
             (*cinfo).out_color_components = 1i32;
-            if (*cinfo).jpeg_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_GRAYSCALE as libc::c_int as libc::c_uint
-                || (*cinfo).jpeg_color_space as libc::c_uint
-                    == crate::jpeglib_h::JCS_YCbCr as libc::c_int as libc::c_uint
+            if  (*cinfo).jpeg_color_space
+                ==  crate::jpeglib_h::JCS_GRAYSCALE
+                ||  (*cinfo).jpeg_color_space
+                    ==  crate::jpeglib_h::JCS_YCbCr
             {
                 (*cconvert).pub_0.color_convert = Some(
                     grayscale_convert
@@ -1371,8 +1371,8 @@ pub unsafe extern "C" fn jinit_color_deconverter(mut cinfo: crate::jpeglib_h::j_
                         crate::jmorecfg_h::FALSE;
                     ci += 1
                 }
-            } else if (*cinfo).jpeg_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_RGB as libc::c_int as libc::c_uint
+            } else if  (*cinfo).jpeg_color_space
+                ==  crate::jpeglib_h::JCS_RGB
             {
                 (*cconvert).pub_0.color_convert = Some(
                     rgb_gray_convert
@@ -1401,8 +1401,8 @@ pub unsafe extern "C" fn jinit_color_deconverter(mut cinfo: crate::jpeglib_h::j_
         2 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 => {
             (*cinfo).out_color_components =
                 crate::jmorecfg_h::rgb_pixelsize[(*cinfo).out_color_space as usize];
-            if (*cinfo).jpeg_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_YCbCr as libc::c_int as libc::c_uint
+            if  (*cinfo).jpeg_color_space
+                ==  crate::jpeglib_h::JCS_YCbCr
             {
                 if crate::src::simd::x86_64::jsimd::jsimd_can_ycc_rgb() != 0 {
                     (*cconvert).pub_0.color_convert = Some(
@@ -1428,8 +1428,8 @@ pub unsafe extern "C" fn jinit_color_deconverter(mut cinfo: crate::jpeglib_h::j_
                     );
                     build_ycc_rgb_table(cinfo);
                 }
-            } else if (*cinfo).jpeg_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_GRAYSCALE as libc::c_int as libc::c_uint
+            } else if  (*cinfo).jpeg_color_space
+                ==  crate::jpeglib_h::JCS_GRAYSCALE
             {
                 (*cconvert).pub_0.color_convert = Some(
                     gray_rgb_convert
@@ -1441,8 +1441,8 @@ pub unsafe extern "C" fn jinit_color_deconverter(mut cinfo: crate::jpeglib_h::j_
                             _: libc::c_int,
                         ) -> (),
                 )
-            } else if (*cinfo).jpeg_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_RGB as libc::c_int as libc::c_uint
+            } else if  (*cinfo).jpeg_color_space
+                ==  crate::jpeglib_h::JCS_RGB
             {
                 if rgb_red[(*cinfo).out_color_space as usize] == 0i32
                     && rgb_green[(*cinfo).out_color_space as usize] == 1i32
@@ -1486,11 +1486,11 @@ pub unsafe extern "C" fn jinit_color_deconverter(mut cinfo: crate::jpeglib_h::j_
         }
         16 => {
             (*cinfo).out_color_components = 3i32;
-            if (*cinfo).dither_mode as libc::c_uint
-                == crate::jpeglib_h::JDITHER_NONE as libc::c_int as libc::c_uint
+            if  (*cinfo).dither_mode
+                ==  crate::jpeglib_h::JDITHER_NONE
             {
-                if (*cinfo).jpeg_color_space as libc::c_uint
-                    == crate::jpeglib_h::JCS_YCbCr as libc::c_int as libc::c_uint
+                if  (*cinfo).jpeg_color_space
+                    ==  crate::jpeglib_h::JCS_YCbCr
                 {
                     if crate::src::simd::x86_64::jsimd::jsimd_can_ycc_rgb565() != 0 {
                         (*cconvert).pub_0.color_convert = Some(
@@ -1516,8 +1516,8 @@ pub unsafe extern "C" fn jinit_color_deconverter(mut cinfo: crate::jpeglib_h::j_
                         );
                         build_ycc_rgb_table(cinfo);
                     }
-                } else if (*cinfo).jpeg_color_space as libc::c_uint
-                    == crate::jpeglib_h::JCS_GRAYSCALE as libc::c_int as libc::c_uint
+                } else if  (*cinfo).jpeg_color_space
+                    ==  crate::jpeglib_h::JCS_GRAYSCALE
                 {
                     (*cconvert).pub_0.color_convert = Some(
                         gray_rgb565_convert
@@ -1529,8 +1529,8 @@ pub unsafe extern "C" fn jinit_color_deconverter(mut cinfo: crate::jpeglib_h::j_
                                 _: libc::c_int,
                             ) -> (),
                     )
-                } else if (*cinfo).jpeg_color_space as libc::c_uint
-                    == crate::jpeglib_h::JCS_RGB as libc::c_int as libc::c_uint
+                } else if  (*cinfo).jpeg_color_space
+                    ==  crate::jpeglib_h::JCS_RGB
                 {
                     (*cconvert).pub_0.color_convert = Some(
                         rgb_rgb565_convert
@@ -1554,8 +1554,8 @@ pub unsafe extern "C" fn jinit_color_deconverter(mut cinfo: crate::jpeglib_h::j_
                         cinfo as crate::jpeglib_h::j_common_ptr
                     );
                 }
-            } else if (*cinfo).jpeg_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_YCbCr as libc::c_int as libc::c_uint
+            } else if  (*cinfo).jpeg_color_space
+                ==  crate::jpeglib_h::JCS_YCbCr
             {
                 (*cconvert).pub_0.color_convert = Some(
                     ycc_rgb565D_convert
@@ -1568,8 +1568,8 @@ pub unsafe extern "C" fn jinit_color_deconverter(mut cinfo: crate::jpeglib_h::j_
                         ) -> (),
                 );
                 build_ycc_rgb_table(cinfo);
-            } else if (*cinfo).jpeg_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_GRAYSCALE as libc::c_int as libc::c_uint
+            } else if  (*cinfo).jpeg_color_space
+                ==  crate::jpeglib_h::JCS_GRAYSCALE
             {
                 (*cconvert).pub_0.color_convert = Some(
                     gray_rgb565D_convert
@@ -1581,8 +1581,8 @@ pub unsafe extern "C" fn jinit_color_deconverter(mut cinfo: crate::jpeglib_h::j_
                             _: libc::c_int,
                         ) -> (),
                 )
-            } else if (*cinfo).jpeg_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_RGB as libc::c_int as libc::c_uint
+            } else if  (*cinfo).jpeg_color_space
+                ==  crate::jpeglib_h::JCS_RGB
             {
                 (*cconvert).pub_0.color_convert = Some(
                     rgb_rgb565D_convert
@@ -1609,8 +1609,8 @@ pub unsafe extern "C" fn jinit_color_deconverter(mut cinfo: crate::jpeglib_h::j_
         }
         4 => {
             (*cinfo).out_color_components = 4i32;
-            if (*cinfo).jpeg_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_YCCK as libc::c_int as libc::c_uint
+            if  (*cinfo).jpeg_color_space
+                ==  crate::jpeglib_h::JCS_YCCK
             {
                 (*cconvert).pub_0.color_convert = Some(
                     ycck_cmyk_convert
@@ -1623,8 +1623,8 @@ pub unsafe extern "C" fn jinit_color_deconverter(mut cinfo: crate::jpeglib_h::j_
                         ) -> (),
                 );
                 build_ycc_rgb_table(cinfo);
-            } else if (*cinfo).jpeg_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_CMYK as libc::c_int as libc::c_uint
+            } else if  (*cinfo).jpeg_color_space
+                ==  crate::jpeglib_h::JCS_CMYK
             {
                 (*cconvert).pub_0.color_convert = Some(
                     null_convert
@@ -1652,7 +1652,7 @@ pub unsafe extern "C" fn jinit_color_deconverter(mut cinfo: crate::jpeglib_h::j_
         _ => {
             /* only ordered dithering is supported */
             /* Permit null conversion to same output space */
-            if (*cinfo).out_color_space as libc::c_uint == (*cinfo).jpeg_color_space as libc::c_uint
+            if  (*cinfo).out_color_space ==  (*cinfo).jpeg_color_space
             {
                 (*cinfo).out_color_components = (*cinfo).num_components; /* unsupported non-null conversion */
                 (*cconvert).pub_0.color_convert = Some(

@@ -82,7 +82,7 @@ pub unsafe extern "C" fn ycc_rgb565_convert_le(
         let fresh53 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh53;
-        if outptr as crate::stddef_h::size_t & 3i32 as libc::c_ulong != 0 {
+        if outptr as crate::stddef_h::size_t & 3u64 != 0 {
             let fresh54 = inptr0;
             inptr0 = inptr0.offset(1);
             y = *fresh54 as libc::c_int;
@@ -98,14 +98,14 @@ pub unsafe extern "C" fn ycc_rgb565_convert_le(
                     as libc::c_int) as isize,
             ) as libc::c_uint;
             b = *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize) as libc::c_uint;
-            rgb = (r << 8i32 & 0xf800i32 as libc::c_uint
-                | g << 3i32 & 0x7e0i32 as libc::c_uint
+            rgb = (r << 8i32 & 0xf800u32
+                | g << 3i32 & 0x7e0u32
                 | b >> 3i32) as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16;
             outptr = outptr.offset(2);
             num_cols =  num_cols - 1
         }
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols >> 1i32 {
             let fresh57 = inptr0;
             inptr0 = inptr0.offset(1);
@@ -122,8 +122,8 @@ pub unsafe extern "C" fn ycc_rgb565_convert_le(
                     as libc::c_int) as isize,
             ) as libc::c_uint;
             b = *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize) as libc::c_uint;
-            rgb = (r << 8i32 & 0xf800i32 as libc::c_uint
-                | g << 3i32 & 0x7e0i32 as libc::c_uint
+            rgb = (r << 8i32 & 0xf800u32
+                | g << 3i32 & 0x7e0u32
                 | b >> 3i32) as crate::jpegint_h::JLONG;
             let fresh60 = inptr0;
             inptr0 = inptr0.offset(1);
@@ -140,8 +140,8 @@ pub unsafe extern "C" fn ycc_rgb565_convert_le(
                     as libc::c_int) as isize,
             ) as libc::c_uint;
             b = *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize) as libc::c_uint;
-            rgb = ((r << 8i32 & 0xf800i32 as libc::c_uint
-                | g << 3i32 & 0x7e0i32 as libc::c_uint
+            rgb = ((r << 8i32 & 0xf800u32
+                | g << 3i32 & 0x7e0u32
                 | b >> 3i32)
                 << 16i32) as libc::c_long
                 | rgb;
@@ -149,7 +149,7 @@ pub unsafe extern "C" fn ycc_rgb565_convert_le(
             outptr = outptr.offset(4);
             col =  col + 1
         }
-        if num_cols & 1i32 as libc::c_uint != 0 {
+        if num_cols & 1u32 != 0 {
             y = *inptr0 as libc::c_int;
             cb = *inptr1 as libc::c_int;
             cr = *inptr2 as libc::c_int;
@@ -159,8 +159,8 @@ pub unsafe extern "C" fn ycc_rgb565_convert_le(
                     as libc::c_int) as isize,
             ) as libc::c_uint;
             b = *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize) as libc::c_uint;
-            rgb = (r << 8i32 & 0xf800i32 as libc::c_uint
-                | g << 3i32 & 0x7e0i32 as libc::c_uint
+            rgb = (r << 8i32 & 0xf800u32
+                | g << 3i32 & 0x7e0u32
                 | b >> 3i32) as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16
         }
@@ -205,7 +205,7 @@ pub unsafe extern "C" fn ycc_rgb565_convert_be(
         let fresh63 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh63;
-        if outptr as crate::stddef_h::size_t & 3i32 as libc::c_ulong != 0 {
+        if outptr as crate::stddef_h::size_t & 3u64 != 0 {
             let fresh64 = inptr0;
             inptr0 = inptr0.offset(1);
             y = *fresh64 as libc::c_int;
@@ -221,16 +221,16 @@ pub unsafe extern "C" fn ycc_rgb565_convert_be(
                     as libc::c_int) as isize,
             ) as libc::c_uint;
             b = *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize) as libc::c_uint;
-            rgb = (r & 0xf8i32 as libc::c_uint
+            rgb = (r & 0xf8u32
                 | g >> 5i32
-                | g << 11i32 & 0xe000i32 as libc::c_uint
-                | b << 5i32 & 0x1f00i32 as libc::c_uint)
+                | g << 11i32 & 0xe000u32
+                | b << 5i32 & 0x1f00u32)
                 as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16;
             outptr = outptr.offset(2);
             num_cols =  num_cols - 1
         }
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols >> 1i32 {
             let fresh67 = inptr0;
             inptr0 = inptr0.offset(1);
@@ -247,10 +247,10 @@ pub unsafe extern "C" fn ycc_rgb565_convert_be(
                     as libc::c_int) as isize,
             ) as libc::c_uint;
             b = *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize) as libc::c_uint;
-            rgb = (r & 0xf8i32 as libc::c_uint
+            rgb = (r & 0xf8u32
                 | g >> 5i32
-                | g << 11i32 & 0xe000i32 as libc::c_uint
-                | b << 5i32 & 0x1f00i32 as libc::c_uint)
+                | g << 11i32 & 0xe000u32
+                | b << 5i32 & 0x1f00u32)
                 as crate::jpegint_h::JLONG;
             let fresh70 = inptr0;
             inptr0 = inptr0.offset(1);
@@ -268,15 +268,15 @@ pub unsafe extern "C" fn ycc_rgb565_convert_be(
             ) as libc::c_uint;
             b = *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize) as libc::c_uint;
             rgb = rgb << 16i32
-                | (r & 0xf8i32 as libc::c_uint
+                | (r & 0xf8u32
                     | g >> 5i32
-                    | g << 11i32 & 0xe000i32 as libc::c_uint
-                    | b << 5i32 & 0x1f00i32 as libc::c_uint) as libc::c_long;
+                    | g << 11i32 & 0xe000u32
+                    | b << 5i32 & 0x1f00u32) as libc::c_long;
             *(outptr as *mut libc::c_int) = rgb as libc::c_int;
             outptr = outptr.offset(4);
             col =  col + 1
         }
-        if num_cols & 1i32 as libc::c_uint != 0 {
+        if num_cols & 1u32 != 0 {
             y = *inptr0 as libc::c_int;
             cb = *inptr1 as libc::c_int;
             cr = *inptr2 as libc::c_int;
@@ -286,10 +286,10 @@ pub unsafe extern "C" fn ycc_rgb565_convert_be(
                     as libc::c_int) as isize,
             ) as libc::c_uint;
             b = *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize) as libc::c_uint;
-            rgb = (r & 0xf8i32 as libc::c_uint
+            rgb = (r & 0xf8u32
                 | g >> 5i32
-                | g << 11i32 & 0xe000i32 as libc::c_uint
-                | b << 5i32 & 0x1f00i32 as libc::c_uint)
+                | g << 11i32 & 0xe000u32
+                | b << 5i32 & 0x1f00u32)
                 as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16
         }
@@ -338,7 +338,7 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_le(
         let fresh73 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh73;
-        if outptr as crate::stddef_h::size_t & 3i32 as libc::c_ulong != 0 {
+        if outptr as crate::stddef_h::size_t & 3u64 != 0 {
             let fresh74 = inptr0;
             inptr0 = inptr0.offset(1);
             y = *fresh74 as libc::c_int;
@@ -349,26 +349,26 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_le(
             inptr2 = inptr2.offset(1);
             cr = *fresh76 as libc::c_int;
             r = *range_limit.offset(
-                ((y + *Crrtab.offset(cr as isize)) as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                ((y + *Crrtab.offset(cr as isize)) as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
             g = *range_limit.offset(
                 ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
                     as libc::c_int) as libc::c_long
-                    + ((d0 & 0xffi32 as libc::c_long) >> 1i32)) as isize,
+                    + ((d0 & 0xffi64) >> 1i32)) as isize,
             ) as libc::c_uint;
             b = *range_limit.offset(
-                ((y + *Cbbtab.offset(cb as isize)) as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                ((y + *Cbbtab.offset(cb as isize)) as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
-            rgb = (r << 8i32 & 0xf800i32 as libc::c_uint
-                | g << 3i32 & 0x7e0i32 as libc::c_uint
+            rgb = (r << 8i32 & 0xf800u32
+                | g << 3i32 & 0x7e0u32
                 | b >> 3i32) as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16;
             outptr = outptr.offset(2);
             num_cols =  num_cols - 1
         }
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols >> 1i32 {
             let fresh77 = inptr0;
             inptr0 = inptr0.offset(1);
@@ -380,21 +380,21 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_le(
             inptr2 = inptr2.offset(1);
             cr = *fresh79 as libc::c_int;
             r = *range_limit.offset(
-                ((y + *Crrtab.offset(cr as isize)) as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                ((y + *Crrtab.offset(cr as isize)) as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
             g = *range_limit.offset(
                 ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
                     as libc::c_int) as libc::c_long
-                    + ((d0 & 0xffi32 as libc::c_long) >> 1i32)) as isize,
+                    + ((d0 & 0xffi64) >> 1i32)) as isize,
             ) as libc::c_uint;
             b = *range_limit.offset(
-                ((y + *Cbbtab.offset(cb as isize)) as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                ((y + *Cbbtab.offset(cb as isize)) as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
-            d0 = (d0 & 0xffi32 as libc::c_long) << 24i32 | d0 >> 8i32 & 0xffffffi32 as libc::c_long;
-            rgb = (r << 8i32 & 0xf800i32 as libc::c_uint
-                | g << 3i32 & 0x7e0i32 as libc::c_uint
+            d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
+            rgb = (r << 8i32 & 0xf800u32
+                | g << 3i32 & 0x7e0u32
                 | b >> 3i32) as crate::jpegint_h::JLONG;
             let fresh80 = inptr0;
             inptr0 = inptr0.offset(1);
@@ -406,21 +406,21 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_le(
             inptr2 = inptr2.offset(1);
             cr = *fresh82 as libc::c_int;
             r = *range_limit.offset(
-                ((y + *Crrtab.offset(cr as isize)) as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                ((y + *Crrtab.offset(cr as isize)) as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
             g = *range_limit.offset(
                 ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
                     as libc::c_int) as libc::c_long
-                    + ((d0 & 0xffi32 as libc::c_long) >> 1i32)) as isize,
+                    + ((d0 & 0xffi64) >> 1i32)) as isize,
             ) as libc::c_uint;
             b = *range_limit.offset(
-                ((y + *Cbbtab.offset(cb as isize)) as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                ((y + *Cbbtab.offset(cb as isize)) as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
-            d0 = (d0 & 0xffi32 as libc::c_long) << 24i32 | d0 >> 8i32 & 0xffffffi32 as libc::c_long;
-            rgb = ((r << 8i32 & 0xf800i32 as libc::c_uint
-                | g << 3i32 & 0x7e0i32 as libc::c_uint
+            d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
+            rgb = ((r << 8i32 & 0xf800u32
+                | g << 3i32 & 0x7e0u32
                 | b >> 3i32)
                 << 16i32) as libc::c_long
                 | rgb;
@@ -428,25 +428,25 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_le(
             outptr = outptr.offset(4);
             col =  col + 1
         }
-        if num_cols & 1i32 as libc::c_uint != 0 {
+        if num_cols & 1u32 != 0 {
             y = *inptr0 as libc::c_int;
             cb = *inptr1 as libc::c_int;
             cr = *inptr2 as libc::c_int;
             r = *range_limit.offset(
-                ((y + *Crrtab.offset(cr as isize)) as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                ((y + *Crrtab.offset(cr as isize)) as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
             g = *range_limit.offset(
                 ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
                     as libc::c_int) as libc::c_long
-                    + ((d0 & 0xffi32 as libc::c_long) >> 1i32)) as isize,
+                    + ((d0 & 0xffi64) >> 1i32)) as isize,
             ) as libc::c_uint;
             b = *range_limit.offset(
-                ((y + *Cbbtab.offset(cb as isize)) as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                ((y + *Cbbtab.offset(cb as isize)) as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
-            rgb = (r << 8i32 & 0xf800i32 as libc::c_uint
-                | g << 3i32 & 0x7e0i32 as libc::c_uint
+            rgb = (r << 8i32 & 0xf800u32
+                | g << 3i32 & 0x7e0u32
                 | b >> 3i32) as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16
         }
@@ -493,7 +493,7 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_be(
         let fresh83 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh83;
-        if outptr as crate::stddef_h::size_t & 3i32 as libc::c_ulong != 0 {
+        if outptr as crate::stddef_h::size_t & 3u64 != 0 {
             let fresh84 = inptr0;
             inptr0 = inptr0.offset(1);
             y = *fresh84 as libc::c_int;
@@ -504,28 +504,28 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_be(
             inptr2 = inptr2.offset(1);
             cr = *fresh86 as libc::c_int;
             r = *range_limit.offset(
-                ((y + *Crrtab.offset(cr as isize)) as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                ((y + *Crrtab.offset(cr as isize)) as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
             g = *range_limit.offset(
                 ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
                     as libc::c_int) as libc::c_long
-                    + ((d0 & 0xffi32 as libc::c_long) >> 1i32)) as isize,
+                    + ((d0 & 0xffi64) >> 1i32)) as isize,
             ) as libc::c_uint;
             b = *range_limit.offset(
-                ((y + *Cbbtab.offset(cb as isize)) as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                ((y + *Cbbtab.offset(cb as isize)) as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
-            rgb = (r & 0xf8i32 as libc::c_uint
+            rgb = (r & 0xf8u32
                 | g >> 5i32
-                | g << 11i32 & 0xe000i32 as libc::c_uint
-                | b << 5i32 & 0x1f00i32 as libc::c_uint)
+                | g << 11i32 & 0xe000u32
+                | b << 5i32 & 0x1f00u32)
                 as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16;
             outptr = outptr.offset(2);
             num_cols =  num_cols - 1
         }
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols >> 1i32 {
             let fresh87 = inptr0;
             inptr0 = inptr0.offset(1);
@@ -537,23 +537,23 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_be(
             inptr2 = inptr2.offset(1);
             cr = *fresh89 as libc::c_int;
             r = *range_limit.offset(
-                ((y + *Crrtab.offset(cr as isize)) as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                ((y + *Crrtab.offset(cr as isize)) as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
             g = *range_limit.offset(
                 ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
                     as libc::c_int) as libc::c_long
-                    + ((d0 & 0xffi32 as libc::c_long) >> 1i32)) as isize,
+                    + ((d0 & 0xffi64) >> 1i32)) as isize,
             ) as libc::c_uint;
             b = *range_limit.offset(
-                ((y + *Cbbtab.offset(cb as isize)) as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                ((y + *Cbbtab.offset(cb as isize)) as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
-            d0 = (d0 & 0xffi32 as libc::c_long) << 24i32 | d0 >> 8i32 & 0xffffffi32 as libc::c_long;
-            rgb = (r & 0xf8i32 as libc::c_uint
+            d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
+            rgb = (r & 0xf8u32
                 | g >> 5i32
-                | g << 11i32 & 0xe000i32 as libc::c_uint
-                | b << 5i32 & 0x1f00i32 as libc::c_uint)
+                | g << 11i32 & 0xe000u32
+                | b << 5i32 & 0x1f00u32)
                 as crate::jpegint_h::JLONG;
             let fresh90 = inptr0;
             inptr0 = inptr0.offset(1);
@@ -565,49 +565,49 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_be(
             inptr2 = inptr2.offset(1);
             cr = *fresh92 as libc::c_int;
             r = *range_limit.offset(
-                ((y + *Crrtab.offset(cr as isize)) as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                ((y + *Crrtab.offset(cr as isize)) as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
             g = *range_limit.offset(
                 ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
                     as libc::c_int) as libc::c_long
-                    + ((d0 & 0xffi32 as libc::c_long) >> 1i32)) as isize,
+                    + ((d0 & 0xffi64) >> 1i32)) as isize,
             ) as libc::c_uint;
             b = *range_limit.offset(
-                ((y + *Cbbtab.offset(cb as isize)) as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                ((y + *Cbbtab.offset(cb as isize)) as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
-            d0 = (d0 & 0xffi32 as libc::c_long) << 24i32 | d0 >> 8i32 & 0xffffffi32 as libc::c_long;
+            d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
             rgb = rgb << 16i32
-                | (r & 0xf8i32 as libc::c_uint
+                | (r & 0xf8u32
                     | g >> 5i32
-                    | g << 11i32 & 0xe000i32 as libc::c_uint
-                    | b << 5i32 & 0x1f00i32 as libc::c_uint) as libc::c_long;
+                    | g << 11i32 & 0xe000u32
+                    | b << 5i32 & 0x1f00u32) as libc::c_long;
             *(outptr as *mut libc::c_int) = rgb as libc::c_int;
             outptr = outptr.offset(4);
             col =  col + 1
         }
-        if num_cols & 1i32 as libc::c_uint != 0 {
+        if num_cols & 1u32 != 0 {
             y = *inptr0 as libc::c_int;
             cb = *inptr1 as libc::c_int;
             cr = *inptr2 as libc::c_int;
             r = *range_limit.offset(
-                ((y + *Crrtab.offset(cr as isize)) as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                ((y + *Crrtab.offset(cr as isize)) as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
             g = *range_limit.offset(
                 ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
                     as libc::c_int) as libc::c_long
-                    + ((d0 & 0xffi32 as libc::c_long) >> 1i32)) as isize,
+                    + ((d0 & 0xffi64) >> 1i32)) as isize,
             ) as libc::c_uint;
             b = *range_limit.offset(
-                ((y + *Cbbtab.offset(cb as isize)) as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                ((y + *Cbbtab.offset(cb as isize)) as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
-            rgb = (r & 0xf8i32 as libc::c_uint
+            rgb = (r & 0xf8u32
                 | g >> 5i32
-                | g << 11i32 & 0xe000i32 as libc::c_uint
-                | b << 5i32 & 0x1f00i32 as libc::c_uint)
+                | g << 11i32 & 0xe000u32
+                | b << 5i32 & 0x1f00u32)
                 as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16
         }
@@ -643,48 +643,48 @@ pub unsafe extern "C" fn rgb_rgb565_convert_le(
         let fresh93 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh93;
-        if outptr as crate::stddef_h::size_t & 3i32 as libc::c_ulong != 0 {
+        if outptr as crate::stddef_h::size_t & 3u64 != 0 {
             let fresh94 = inptr0;
             inptr0 = inptr0.offset(1);
-            r = *fresh94 as libc::c_int as libc::c_uint;
+            r =  *fresh94 as libc::c_uint;
             let fresh95 = inptr1;
             inptr1 = inptr1.offset(1);
-            g = *fresh95 as libc::c_int as libc::c_uint;
+            g =  *fresh95 as libc::c_uint;
             let fresh96 = inptr2;
             inptr2 = inptr2.offset(1);
-            b = *fresh96 as libc::c_int as libc::c_uint;
-            rgb = (r << 8i32 & 0xf800i32 as libc::c_uint
-                | g << 3i32 & 0x7e0i32 as libc::c_uint
+            b =  *fresh96 as libc::c_uint;
+            rgb = (r << 8i32 & 0xf800u32
+                | g << 3i32 & 0x7e0u32
                 | b >> 3i32) as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16;
             outptr = outptr.offset(2);
             num_cols =  num_cols - 1
         }
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols >> 1i32 {
             let fresh97 = inptr0;
             inptr0 = inptr0.offset(1);
-            r = *fresh97 as libc::c_int as libc::c_uint;
+            r =  *fresh97 as libc::c_uint;
             let fresh98 = inptr1;
             inptr1 = inptr1.offset(1);
-            g = *fresh98 as libc::c_int as libc::c_uint;
+            g =  *fresh98 as libc::c_uint;
             let fresh99 = inptr2;
             inptr2 = inptr2.offset(1);
-            b = *fresh99 as libc::c_int as libc::c_uint;
-            rgb = (r << 8i32 & 0xf800i32 as libc::c_uint
-                | g << 3i32 & 0x7e0i32 as libc::c_uint
+            b =  *fresh99 as libc::c_uint;
+            rgb = (r << 8i32 & 0xf800u32
+                | g << 3i32 & 0x7e0u32
                 | b >> 3i32) as crate::jpegint_h::JLONG;
             let fresh100 = inptr0;
             inptr0 = inptr0.offset(1);
-            r = *fresh100 as libc::c_int as libc::c_uint;
+            r =  *fresh100 as libc::c_uint;
             let fresh101 = inptr1;
             inptr1 = inptr1.offset(1);
-            g = *fresh101 as libc::c_int as libc::c_uint;
+            g =  *fresh101 as libc::c_uint;
             let fresh102 = inptr2;
             inptr2 = inptr2.offset(1);
-            b = *fresh102 as libc::c_int as libc::c_uint;
-            rgb = ((r << 8i32 & 0xf800i32 as libc::c_uint
-                | g << 3i32 & 0x7e0i32 as libc::c_uint
+            b =  *fresh102 as libc::c_uint;
+            rgb = ((r << 8i32 & 0xf800u32
+                | g << 3i32 & 0x7e0u32
                 | b >> 3i32)
                 << 16i32) as libc::c_long
                 | rgb;
@@ -692,12 +692,12 @@ pub unsafe extern "C" fn rgb_rgb565_convert_le(
             outptr = outptr.offset(4);
             col =  col + 1
         }
-        if num_cols & 1i32 as libc::c_uint != 0 {
-            r = *inptr0 as libc::c_int as libc::c_uint;
-            g = *inptr1 as libc::c_int as libc::c_uint;
-            b = *inptr2 as libc::c_int as libc::c_uint;
-            rgb = (r << 8i32 & 0xf800i32 as libc::c_uint
-                | g << 3i32 & 0x7e0i32 as libc::c_uint
+        if num_cols & 1u32 != 0 {
+            r =  *inptr0 as libc::c_uint;
+            g =  *inptr1 as libc::c_uint;
+            b =  *inptr2 as libc::c_uint;
+            rgb = (r << 8i32 & 0xf800u32
+                | g << 3i32 & 0x7e0u32
                 | b >> 3i32) as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16
         }
@@ -733,67 +733,67 @@ pub unsafe extern "C" fn rgb_rgb565_convert_be(
         let fresh103 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh103;
-        if outptr as crate::stddef_h::size_t & 3i32 as libc::c_ulong != 0 {
+        if outptr as crate::stddef_h::size_t & 3u64 != 0 {
             let fresh104 = inptr0;
             inptr0 = inptr0.offset(1);
-            r = *fresh104 as libc::c_int as libc::c_uint;
+            r =  *fresh104 as libc::c_uint;
             let fresh105 = inptr1;
             inptr1 = inptr1.offset(1);
-            g = *fresh105 as libc::c_int as libc::c_uint;
+            g =  *fresh105 as libc::c_uint;
             let fresh106 = inptr2;
             inptr2 = inptr2.offset(1);
-            b = *fresh106 as libc::c_int as libc::c_uint;
-            rgb = (r & 0xf8i32 as libc::c_uint
+            b =  *fresh106 as libc::c_uint;
+            rgb = (r & 0xf8u32
                 | g >> 5i32
-                | g << 11i32 & 0xe000i32 as libc::c_uint
-                | b << 5i32 & 0x1f00i32 as libc::c_uint)
+                | g << 11i32 & 0xe000u32
+                | b << 5i32 & 0x1f00u32)
                 as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16;
             outptr = outptr.offset(2);
             num_cols =  num_cols - 1
         }
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols >> 1i32 {
             let fresh107 = inptr0;
             inptr0 = inptr0.offset(1);
-            r = *fresh107 as libc::c_int as libc::c_uint;
+            r =  *fresh107 as libc::c_uint;
             let fresh108 = inptr1;
             inptr1 = inptr1.offset(1);
-            g = *fresh108 as libc::c_int as libc::c_uint;
+            g =  *fresh108 as libc::c_uint;
             let fresh109 = inptr2;
             inptr2 = inptr2.offset(1);
-            b = *fresh109 as libc::c_int as libc::c_uint;
-            rgb = (r & 0xf8i32 as libc::c_uint
+            b =  *fresh109 as libc::c_uint;
+            rgb = (r & 0xf8u32
                 | g >> 5i32
-                | g << 11i32 & 0xe000i32 as libc::c_uint
-                | b << 5i32 & 0x1f00i32 as libc::c_uint)
+                | g << 11i32 & 0xe000u32
+                | b << 5i32 & 0x1f00u32)
                 as crate::jpegint_h::JLONG;
             let fresh110 = inptr0;
             inptr0 = inptr0.offset(1);
-            r = *fresh110 as libc::c_int as libc::c_uint;
+            r =  *fresh110 as libc::c_uint;
             let fresh111 = inptr1;
             inptr1 = inptr1.offset(1);
-            g = *fresh111 as libc::c_int as libc::c_uint;
+            g =  *fresh111 as libc::c_uint;
             let fresh112 = inptr2;
             inptr2 = inptr2.offset(1);
-            b = *fresh112 as libc::c_int as libc::c_uint;
+            b =  *fresh112 as libc::c_uint;
             rgb = rgb << 16i32
-                | (r & 0xf8i32 as libc::c_uint
+                | (r & 0xf8u32
                     | g >> 5i32
-                    | g << 11i32 & 0xe000i32 as libc::c_uint
-                    | b << 5i32 & 0x1f00i32 as libc::c_uint) as libc::c_long;
+                    | g << 11i32 & 0xe000u32
+                    | b << 5i32 & 0x1f00u32) as libc::c_long;
             *(outptr as *mut libc::c_int) = rgb as libc::c_int;
             outptr = outptr.offset(4);
             col =  col + 1
         }
-        if num_cols & 1i32 as libc::c_uint != 0 {
-            r = *inptr0 as libc::c_int as libc::c_uint;
-            g = *inptr1 as libc::c_int as libc::c_uint;
-            b = *inptr2 as libc::c_int as libc::c_uint;
-            rgb = (r & 0xf8i32 as libc::c_uint
+        if num_cols & 1u32 != 0 {
+            r =  *inptr0 as libc::c_uint;
+            g =  *inptr1 as libc::c_uint;
+            b =  *inptr2 as libc::c_uint;
+            rgb = (r & 0xf8u32
                 | g >> 5i32
-                | g << 11i32 & 0xe000i32 as libc::c_uint
-                | b << 5i32 & 0x1f00i32 as libc::c_uint)
+                | g << 11i32 & 0xe000u32
+                | b << 5i32 & 0x1f00u32)
                 as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16
         }
@@ -832,103 +832,103 @@ pub unsafe extern "C" fn rgb_rgb565D_convert_be(
         let fresh113 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh113;
-        if outptr as crate::stddef_h::size_t & 3i32 as libc::c_ulong != 0 {
+        if outptr as crate::stddef_h::size_t & 3u64 != 0 {
             let fresh114 = inptr0;
             inptr0 = inptr0.offset(1);
             r = *range_limit.offset(
-                (*fresh114 as libc::c_int as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                (*fresh114 as libc::c_int as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
             let fresh115 = inptr1;
             inptr1 = inptr1.offset(1);
             g = *range_limit.offset(
                 (*fresh115 as libc::c_int as libc::c_long
-                    + ((d0 & 0xffi32 as libc::c_long) >> 1i32)) as isize,
+                    + ((d0 & 0xffi64) >> 1i32)) as isize,
             ) as libc::c_uint;
             let fresh116 = inptr2;
             inptr2 = inptr2.offset(1);
             b = *range_limit.offset(
-                (*fresh116 as libc::c_int as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                (*fresh116 as libc::c_int as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
-            rgb = (r & 0xf8i32 as libc::c_uint
+            rgb = (r & 0xf8u32
                 | g >> 5i32
-                | g << 11i32 & 0xe000i32 as libc::c_uint
-                | b << 5i32 & 0x1f00i32 as libc::c_uint)
+                | g << 11i32 & 0xe000u32
+                | b << 5i32 & 0x1f00u32)
                 as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16;
             outptr = outptr.offset(2);
             num_cols =  num_cols - 1
         }
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols >> 1i32 {
             let fresh117 = inptr0;
             inptr0 = inptr0.offset(1);
             r = *range_limit.offset(
-                (*fresh117 as libc::c_int as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                (*fresh117 as libc::c_int as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
             let fresh118 = inptr1;
             inptr1 = inptr1.offset(1);
             g = *range_limit.offset(
                 (*fresh118 as libc::c_int as libc::c_long
-                    + ((d0 & 0xffi32 as libc::c_long) >> 1i32)) as isize,
+                    + ((d0 & 0xffi64) >> 1i32)) as isize,
             ) as libc::c_uint;
             let fresh119 = inptr2;
             inptr2 = inptr2.offset(1);
             b = *range_limit.offset(
-                (*fresh119 as libc::c_int as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                (*fresh119 as libc::c_int as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
-            d0 = (d0 & 0xffi32 as libc::c_long) << 24i32 | d0 >> 8i32 & 0xffffffi32 as libc::c_long;
-            rgb = (r & 0xf8i32 as libc::c_uint
+            d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
+            rgb = (r & 0xf8u32
                 | g >> 5i32
-                | g << 11i32 & 0xe000i32 as libc::c_uint
-                | b << 5i32 & 0x1f00i32 as libc::c_uint)
+                | g << 11i32 & 0xe000u32
+                | b << 5i32 & 0x1f00u32)
                 as crate::jpegint_h::JLONG;
             let fresh120 = inptr0;
             inptr0 = inptr0.offset(1);
             r = *range_limit.offset(
-                (*fresh120 as libc::c_int as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                (*fresh120 as libc::c_int as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
             let fresh121 = inptr1;
             inptr1 = inptr1.offset(1);
             g = *range_limit.offset(
                 (*fresh121 as libc::c_int as libc::c_long
-                    + ((d0 & 0xffi32 as libc::c_long) >> 1i32)) as isize,
+                    + ((d0 & 0xffi64) >> 1i32)) as isize,
             ) as libc::c_uint;
             let fresh122 = inptr2;
             inptr2 = inptr2.offset(1);
             b = *range_limit.offset(
-                (*fresh122 as libc::c_int as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                (*fresh122 as libc::c_int as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
-            d0 = (d0 & 0xffi32 as libc::c_long) << 24i32 | d0 >> 8i32 & 0xffffffi32 as libc::c_long;
+            d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
             rgb = rgb << 16i32
-                | (r & 0xf8i32 as libc::c_uint
+                | (r & 0xf8u32
                     | g >> 5i32
-                    | g << 11i32 & 0xe000i32 as libc::c_uint
-                    | b << 5i32 & 0x1f00i32 as libc::c_uint) as libc::c_long;
+                    | g << 11i32 & 0xe000u32
+                    | b << 5i32 & 0x1f00u32) as libc::c_long;
             *(outptr as *mut libc::c_int) = rgb as libc::c_int;
             outptr = outptr.offset(4);
             col =  col + 1
         }
-        if num_cols & 1i32 as libc::c_uint != 0 {
+        if num_cols & 1u32 != 0 {
             r = *range_limit.offset(
-                (*inptr0 as libc::c_int as libc::c_long + (d0 & 0xffi32 as libc::c_long)) as isize,
+                (*inptr0 as libc::c_int as libc::c_long + (d0 & 0xffi64)) as isize,
             ) as libc::c_uint;
             g = *range_limit.offset(
-                (*inptr1 as libc::c_int as libc::c_long + ((d0 & 0xffi32 as libc::c_long) >> 1i32))
+                (*inptr1 as libc::c_int as libc::c_long + ((d0 & 0xffi64) >> 1i32))
                     as isize,
             ) as libc::c_uint;
             b = *range_limit.offset(
-                (*inptr2 as libc::c_int as libc::c_long + (d0 & 0xffi32 as libc::c_long)) as isize,
+                (*inptr2 as libc::c_int as libc::c_long + (d0 & 0xffi64)) as isize,
             ) as libc::c_uint;
-            rgb = (r & 0xf8i32 as libc::c_uint
+            rgb = (r & 0xf8u32
                 | g >> 5i32
-                | g << 11i32 & 0xe000i32 as libc::c_uint
-                | b << 5i32 & 0x1f00i32 as libc::c_uint)
+                | g << 11i32 & 0xe000u32
+                | b << 5i32 & 0x1f00u32)
                 as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16
         }
@@ -967,77 +967,77 @@ pub unsafe extern "C" fn rgb_rgb565D_convert_le(
         let fresh123 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh123;
-        if outptr as crate::stddef_h::size_t & 3i32 as libc::c_ulong != 0 {
+        if outptr as crate::stddef_h::size_t & 3u64 != 0 {
             let fresh124 = inptr0;
             inptr0 = inptr0.offset(1);
             r = *range_limit.offset(
-                (*fresh124 as libc::c_int as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                (*fresh124 as libc::c_int as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
             let fresh125 = inptr1;
             inptr1 = inptr1.offset(1);
             g = *range_limit.offset(
                 (*fresh125 as libc::c_int as libc::c_long
-                    + ((d0 & 0xffi32 as libc::c_long) >> 1i32)) as isize,
+                    + ((d0 & 0xffi64) >> 1i32)) as isize,
             ) as libc::c_uint;
             let fresh126 = inptr2;
             inptr2 = inptr2.offset(1);
             b = *range_limit.offset(
-                (*fresh126 as libc::c_int as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                (*fresh126 as libc::c_int as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
-            rgb = (r << 8i32 & 0xf800i32 as libc::c_uint
-                | g << 3i32 & 0x7e0i32 as libc::c_uint
+            rgb = (r << 8i32 & 0xf800u32
+                | g << 3i32 & 0x7e0u32
                 | b >> 3i32) as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16;
             outptr = outptr.offset(2);
             num_cols =  num_cols - 1
         }
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols >> 1i32 {
             let fresh127 = inptr0;
             inptr0 = inptr0.offset(1);
             r = *range_limit.offset(
-                (*fresh127 as libc::c_int as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                (*fresh127 as libc::c_int as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
             let fresh128 = inptr1;
             inptr1 = inptr1.offset(1);
             g = *range_limit.offset(
                 (*fresh128 as libc::c_int as libc::c_long
-                    + ((d0 & 0xffi32 as libc::c_long) >> 1i32)) as isize,
+                    + ((d0 & 0xffi64) >> 1i32)) as isize,
             ) as libc::c_uint;
             let fresh129 = inptr2;
             inptr2 = inptr2.offset(1);
             b = *range_limit.offset(
-                (*fresh129 as libc::c_int as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                (*fresh129 as libc::c_int as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
-            d0 = (d0 & 0xffi32 as libc::c_long) << 24i32 | d0 >> 8i32 & 0xffffffi32 as libc::c_long;
-            rgb = (r << 8i32 & 0xf800i32 as libc::c_uint
-                | g << 3i32 & 0x7e0i32 as libc::c_uint
+            d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
+            rgb = (r << 8i32 & 0xf800u32
+                | g << 3i32 & 0x7e0u32
                 | b >> 3i32) as crate::jpegint_h::JLONG;
             let fresh130 = inptr0;
             inptr0 = inptr0.offset(1);
             r = *range_limit.offset(
-                (*fresh130 as libc::c_int as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                (*fresh130 as libc::c_int as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
             let fresh131 = inptr1;
             inptr1 = inptr1.offset(1);
             g = *range_limit.offset(
                 (*fresh131 as libc::c_int as libc::c_long
-                    + ((d0 & 0xffi32 as libc::c_long) >> 1i32)) as isize,
+                    + ((d0 & 0xffi64) >> 1i32)) as isize,
             ) as libc::c_uint;
             let fresh132 = inptr2;
             inptr2 = inptr2.offset(1);
             b = *range_limit.offset(
-                (*fresh132 as libc::c_int as libc::c_long + (d0 & 0xffi32 as libc::c_long))
+                (*fresh132 as libc::c_int as libc::c_long + (d0 & 0xffi64))
                     as isize,
             ) as libc::c_uint;
-            d0 = (d0 & 0xffi32 as libc::c_long) << 24i32 | d0 >> 8i32 & 0xffffffi32 as libc::c_long;
-            rgb = ((r << 8i32 & 0xf800i32 as libc::c_uint
-                | g << 3i32 & 0x7e0i32 as libc::c_uint
+            d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
+            rgb = ((r << 8i32 & 0xf800u32
+                | g << 3i32 & 0x7e0u32
                 | b >> 3i32)
                 << 16i32) as libc::c_long
                 | rgb;
@@ -1045,19 +1045,19 @@ pub unsafe extern "C" fn rgb_rgb565D_convert_le(
             outptr = outptr.offset(4);
             col =  col + 1
         }
-        if num_cols & 1i32 as libc::c_uint != 0 {
+        if num_cols & 1u32 != 0 {
             r = *range_limit.offset(
-                (*inptr0 as libc::c_int as libc::c_long + (d0 & 0xffi32 as libc::c_long)) as isize,
+                (*inptr0 as libc::c_int as libc::c_long + (d0 & 0xffi64)) as isize,
             ) as libc::c_uint;
             g = *range_limit.offset(
-                (*inptr1 as libc::c_int as libc::c_long + ((d0 & 0xffi32 as libc::c_long) >> 1i32))
+                (*inptr1 as libc::c_int as libc::c_long + ((d0 & 0xffi64) >> 1i32))
                     as isize,
             ) as libc::c_uint;
             b = *range_limit.offset(
-                (*inptr2 as libc::c_int as libc::c_long + (d0 & 0xffi32 as libc::c_long)) as isize,
+                (*inptr2 as libc::c_int as libc::c_long + (d0 & 0xffi64)) as isize,
             ) as libc::c_uint;
-            rgb = (r << 8i32 & 0xf800i32 as libc::c_uint
-                | g << 3i32 & 0x7e0i32 as libc::c_uint
+            rgb = (r << 8i32 & 0xf800u32
+                | g << 3i32 & 0x7e0u32
                 | b >> 3i32) as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16
         }
@@ -1088,47 +1088,47 @@ pub unsafe extern "C" fn gray_rgb565_convert_be(
         let fresh134 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh134;
-        if outptr as crate::stddef_h::size_t & 3i32 as libc::c_ulong != 0 {
+        if outptr as crate::stddef_h::size_t & 3u64 != 0 {
             let fresh135 = inptr;
             inptr = inptr.offset(1);
             g = *fresh135 as libc::c_uint;
-            rgb = (g & 0xf8i32 as libc::c_uint
+            rgb = (g & 0xf8u32
                 | g >> 5i32
-                | g << 11i32 & 0xe000i32 as libc::c_uint
-                | g << 5i32 & 0x1f00i32 as libc::c_uint)
+                | g << 11i32 & 0xe000u32
+                | g << 5i32 & 0x1f00u32)
                 as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16;
             outptr = outptr.offset(2);
             num_cols =  num_cols - 1
         }
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols >> 1i32 {
             let fresh136 = inptr;
             inptr = inptr.offset(1);
             g = *fresh136 as libc::c_uint;
-            rgb = (g & 0xf8i32 as libc::c_uint
+            rgb = (g & 0xf8u32
                 | g >> 5i32
-                | g << 11i32 & 0xe000i32 as libc::c_uint
-                | g << 5i32 & 0x1f00i32 as libc::c_uint)
+                | g << 11i32 & 0xe000u32
+                | g << 5i32 & 0x1f00u32)
                 as crate::jpegint_h::JLONG;
             let fresh137 = inptr;
             inptr = inptr.offset(1);
             g = *fresh137 as libc::c_uint;
             rgb = rgb << 16i32
-                | (g & 0xf8i32 as libc::c_uint
+                | (g & 0xf8u32
                     | g >> 5i32
-                    | g << 11i32 & 0xe000i32 as libc::c_uint
-                    | g << 5i32 & 0x1f00i32 as libc::c_uint) as libc::c_long;
+                    | g << 11i32 & 0xe000u32
+                    | g << 5i32 & 0x1f00u32) as libc::c_long;
             *(outptr as *mut libc::c_int) = rgb as libc::c_int;
             outptr = outptr.offset(4);
             col =  col + 1
         }
-        if num_cols & 1i32 as libc::c_uint != 0 {
+        if num_cols & 1u32 != 0 {
             g = *inptr as libc::c_uint;
-            rgb = (g & 0xf8i32 as libc::c_uint
+            rgb = (g & 0xf8u32
                 | g >> 5i32
-                | g << 11i32 & 0xe000i32 as libc::c_uint
-                | g << 5i32 & 0x1f00i32 as libc::c_uint)
+                | g << 11i32 & 0xe000u32
+                | g << 5i32 & 0x1f00u32)
                 as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16
         }
@@ -1159,30 +1159,30 @@ pub unsafe extern "C" fn gray_rgb565_convert_le(
         let fresh139 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh139;
-        if outptr as crate::stddef_h::size_t & 3i32 as libc::c_ulong != 0 {
+        if outptr as crate::stddef_h::size_t & 3u64 != 0 {
             let fresh140 = inptr;
             inptr = inptr.offset(1);
             g = *fresh140 as libc::c_uint;
-            rgb = (g << 8i32 & 0xf800i32 as libc::c_uint
-                | g << 3i32 & 0x7e0i32 as libc::c_uint
+            rgb = (g << 8i32 & 0xf800u32
+                | g << 3i32 & 0x7e0u32
                 | g >> 3i32) as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16;
             outptr = outptr.offset(2);
             num_cols =  num_cols - 1
         }
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols >> 1i32 {
             let fresh141 = inptr;
             inptr = inptr.offset(1);
             g = *fresh141 as libc::c_uint;
-            rgb = (g << 8i32 & 0xf800i32 as libc::c_uint
-                | g << 3i32 & 0x7e0i32 as libc::c_uint
+            rgb = (g << 8i32 & 0xf800u32
+                | g << 3i32 & 0x7e0u32
                 | g >> 3i32) as crate::jpegint_h::JLONG;
             let fresh142 = inptr;
             inptr = inptr.offset(1);
             g = *fresh142 as libc::c_uint;
-            rgb = ((g << 8i32 & 0xf800i32 as libc::c_uint
-                | g << 3i32 & 0x7e0i32 as libc::c_uint
+            rgb = ((g << 8i32 & 0xf800u32
+                | g << 3i32 & 0x7e0u32
                 | g >> 3i32)
                 << 16i32) as libc::c_long
                 | rgb;
@@ -1190,10 +1190,10 @@ pub unsafe extern "C" fn gray_rgb565_convert_le(
             outptr = outptr.offset(4);
             col =  col + 1
         }
-        if num_cols & 1i32 as libc::c_uint != 0 {
+        if num_cols & 1u32 != 0 {
             g = *inptr as libc::c_uint;
-            rgb = (g << 8i32 & 0xf800i32 as libc::c_uint
-                | g << 3i32 & 0x7e0i32 as libc::c_uint
+            rgb = (g << 8i32 & 0xf800u32
+                | g << 3i32 & 0x7e0u32
                 | g >> 3i32) as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16
         }
@@ -1227,51 +1227,51 @@ pub unsafe extern "C" fn gray_rgb565D_convert_le(
         let fresh144 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh144;
-        if outptr as crate::stddef_h::size_t & 3i32 as libc::c_ulong != 0 {
+        if outptr as crate::stddef_h::size_t & 3u64 != 0 {
             let fresh145 = inptr;
             inptr = inptr.offset(1);
             g = *fresh145 as libc::c_uint;
-            g = *range_limit.offset((g as libc::c_long + (d0 & 0xffi32 as libc::c_long)) as isize)
+            g = *range_limit.offset((g as libc::c_long + (d0 & 0xffi64)) as isize)
                 as libc::c_uint;
-            rgb = (g << 8i32 & 0xf800i32 as libc::c_uint
-                | g << 3i32 & 0x7e0i32 as libc::c_uint
+            rgb = (g << 8i32 & 0xf800u32
+                | g << 3i32 & 0x7e0u32
                 | g >> 3i32) as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16;
             outptr = outptr.offset(2);
             num_cols =  num_cols - 1
         }
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols >> 1i32 {
             let fresh146 = inptr;
             inptr = inptr.offset(1);
             g = *fresh146 as libc::c_uint;
-            g = *range_limit.offset((g as libc::c_long + (d0 & 0xffi32 as libc::c_long)) as isize)
+            g = *range_limit.offset((g as libc::c_long + (d0 & 0xffi64)) as isize)
                 as libc::c_uint;
-            rgb = (g << 8i32 & 0xf800i32 as libc::c_uint
-                | g << 3i32 & 0x7e0i32 as libc::c_uint
+            rgb = (g << 8i32 & 0xf800u32
+                | g << 3i32 & 0x7e0u32
                 | g >> 3i32) as crate::jpegint_h::JLONG;
-            d0 = (d0 & 0xffi32 as libc::c_long) << 24i32 | d0 >> 8i32 & 0xffffffi32 as libc::c_long;
+            d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
             let fresh147 = inptr;
             inptr = inptr.offset(1);
             g = *fresh147 as libc::c_uint;
-            g = *range_limit.offset((g as libc::c_long + (d0 & 0xffi32 as libc::c_long)) as isize)
+            g = *range_limit.offset((g as libc::c_long + (d0 & 0xffi64)) as isize)
                 as libc::c_uint;
-            rgb = ((g << 8i32 & 0xf800i32 as libc::c_uint
-                | g << 3i32 & 0x7e0i32 as libc::c_uint
+            rgb = ((g << 8i32 & 0xf800u32
+                | g << 3i32 & 0x7e0u32
                 | g >> 3i32)
                 << 16i32) as libc::c_long
                 | rgb;
-            d0 = (d0 & 0xffi32 as libc::c_long) << 24i32 | d0 >> 8i32 & 0xffffffi32 as libc::c_long;
+            d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
             *(outptr as *mut libc::c_int) = rgb as libc::c_int;
             outptr = outptr.offset(4);
             col =  col + 1
         }
-        if num_cols & 1i32 as libc::c_uint != 0 {
+        if num_cols & 1u32 != 0 {
             g = *inptr as libc::c_uint;
-            g = *range_limit.offset((g as libc::c_long + (d0 & 0xffi32 as libc::c_long)) as isize)
+            g = *range_limit.offset((g as libc::c_long + (d0 & 0xffi64)) as isize)
                 as libc::c_uint;
-            rgb = (g << 8i32 & 0xf800i32 as libc::c_uint
-                | g << 3i32 & 0x7e0i32 as libc::c_uint
+            rgb = (g << 8i32 & 0xf800u32
+                | g << 3i32 & 0x7e0u32
                 | g >> 3i32) as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16
         }
@@ -1305,57 +1305,57 @@ pub unsafe extern "C" fn gray_rgb565D_convert_be(
         let fresh149 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh149;
-        if outptr as crate::stddef_h::size_t & 3i32 as libc::c_ulong != 0 {
+        if outptr as crate::stddef_h::size_t & 3u64 != 0 {
             let fresh150 = inptr;
             inptr = inptr.offset(1);
             g = *fresh150 as libc::c_uint;
-            g = *range_limit.offset((g as libc::c_long + (d0 & 0xffi32 as libc::c_long)) as isize)
+            g = *range_limit.offset((g as libc::c_long + (d0 & 0xffi64)) as isize)
                 as libc::c_uint;
-            rgb = (g & 0xf8i32 as libc::c_uint
+            rgb = (g & 0xf8u32
                 | g >> 5i32
-                | g << 11i32 & 0xe000i32 as libc::c_uint
-                | g << 5i32 & 0x1f00i32 as libc::c_uint)
+                | g << 11i32 & 0xe000u32
+                | g << 5i32 & 0x1f00u32)
                 as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16;
             outptr = outptr.offset(2);
             num_cols =  num_cols - 1
         }
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols >> 1i32 {
             let fresh151 = inptr;
             inptr = inptr.offset(1);
             g = *fresh151 as libc::c_uint;
-            g = *range_limit.offset((g as libc::c_long + (d0 & 0xffi32 as libc::c_long)) as isize)
+            g = *range_limit.offset((g as libc::c_long + (d0 & 0xffi64)) as isize)
                 as libc::c_uint;
-            rgb = (g & 0xf8i32 as libc::c_uint
+            rgb = (g & 0xf8u32
                 | g >> 5i32
-                | g << 11i32 & 0xe000i32 as libc::c_uint
-                | g << 5i32 & 0x1f00i32 as libc::c_uint)
+                | g << 11i32 & 0xe000u32
+                | g << 5i32 & 0x1f00u32)
                 as crate::jpegint_h::JLONG;
-            d0 = (d0 & 0xffi32 as libc::c_long) << 24i32 | d0 >> 8i32 & 0xffffffi32 as libc::c_long;
+            d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
             let fresh152 = inptr;
             inptr = inptr.offset(1);
             g = *fresh152 as libc::c_uint;
-            g = *range_limit.offset((g as libc::c_long + (d0 & 0xffi32 as libc::c_long)) as isize)
+            g = *range_limit.offset((g as libc::c_long + (d0 & 0xffi64)) as isize)
                 as libc::c_uint;
             rgb = rgb << 16i32
-                | (g & 0xf8i32 as libc::c_uint
+                | (g & 0xf8u32
                     | g >> 5i32
-                    | g << 11i32 & 0xe000i32 as libc::c_uint
-                    | g << 5i32 & 0x1f00i32 as libc::c_uint) as libc::c_long;
-            d0 = (d0 & 0xffi32 as libc::c_long) << 24i32 | d0 >> 8i32 & 0xffffffi32 as libc::c_long;
+                    | g << 11i32 & 0xe000u32
+                    | g << 5i32 & 0x1f00u32) as libc::c_long;
+            d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
             *(outptr as *mut libc::c_int) = rgb as libc::c_int;
             outptr = outptr.offset(4);
             col =  col + 1
         }
-        if num_cols & 1i32 as libc::c_uint != 0 {
+        if num_cols & 1u32 != 0 {
             g = *inptr as libc::c_uint;
-            g = *range_limit.offset((g as libc::c_long + (d0 & 0xffi32 as libc::c_long)) as isize)
+            g = *range_limit.offset((g as libc::c_long + (d0 & 0xffi64)) as isize)
                 as libc::c_uint;
-            rgb = (g & 0xf8i32 as libc::c_uint
+            rgb = (g & 0xf8u32
                 | g >> 5i32
-                | g << 11i32 & 0xe000i32 as libc::c_uint
-                | g << 5i32 & 0x1f00i32 as libc::c_uint)
+                | g << 11i32 & 0xe000u32
+                | g << 5i32 & 0x1f00u32)
                 as crate::jpegint_h::JLONG;
             *(outptr as *mut crate::jmorecfg_h::INT16) = rgb as crate::jmorecfg_h::INT16
         }

@@ -470,7 +470,7 @@ unsafe extern "C" fn prescan_quantize(
     while row < num_rows {
         ptr = *input_buf.offset(row as isize);
         col = width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             /* get pixel value and index into the histogram */
             histp = &mut *(*(*histogram
                 .offset((*ptr.offset(0) as libc::c_int >> C0_SHIFT) as isize))
@@ -498,12 +498,12 @@ unsafe extern "C" fn find_biggest_color_pop(
 /* Returns NULL if no splittable boxes remain */ {
     let mut boxp: boxptr = ::std::ptr::null_mut::< box_0>();
     let mut i: libc::c_int = 0;
-    let mut maxc: libc::c_long = 0i32 as libc::c_long;
+    let mut maxc: libc::c_long = 0i64;
     let mut which: boxptr = crate::stddef_h::NULL as boxptr;
     i = 0i32;
     boxp = boxlist;
     while i < numboxes {
-        if (*boxp).colorcount > maxc && (*boxp).volume > 0i32 as libc::c_long {
+        if (*boxp).colorcount > maxc && (*boxp).volume > 0i64 {
             which = boxp;
             maxc = (*boxp).colorcount
         }
@@ -518,7 +518,7 @@ unsafe extern "C" fn find_biggest_volume(mut boxlist: boxptr, mut numboxes: libc
 /* Returns NULL if no splittable boxes remain */ {
     let mut boxp: boxptr = ::std::ptr::null_mut::< box_0>();
     let mut i: libc::c_int = 0;
-    let mut maxv: crate::jpegint_h::JLONG = 0i32 as crate::jpegint_h::JLONG;
+    let mut maxv: crate::jpegint_h::JLONG = 0i64;
     let mut which: boxptr = crate::stddef_h::NULL as boxptr;
     i = 0i32;
     boxp = boxlist;
@@ -726,7 +726,7 @@ unsafe extern "C" fn update_box(mut cinfo: crate::jpeglib_h::j_decompress_ptr, m
         as crate::jpegint_h::JLONG;
     (*boxp).volume = dist0 * dist0 + dist1 * dist1 + dist2 * dist2;
     /* Now scan remaining volume of box and compute population */
-    ccount = 0i32 as libc::c_long;
+    ccount = 0i64;
     c0 = c0min;
     while c0 <= c0max {
         c1 = c1min;
@@ -872,10 +872,10 @@ unsafe extern "C" fn compute_color(
     let mut c2min: libc::c_int = 0;
     let mut c2max: libc::c_int = 0;
     let mut count: libc::c_long = 0;
-    let mut total: libc::c_long = 0i32 as libc::c_long;
-    let mut c0total: libc::c_long = 0i32 as libc::c_long;
-    let mut c1total: libc::c_long = 0i32 as libc::c_long;
-    let mut c2total: libc::c_long = 0i32 as libc::c_long;
+    let mut total: libc::c_long = 0i64;
+    let mut c0total: libc::c_long = 0i64;
+    let mut c1total: libc::c_long = 0i64;
+    let mut c2total: libc::c_long = 0i64;
     c0min = (*boxp).c0min;
     c0max = (*boxp).c0max;
     c1min = (*boxp).c1min;
@@ -894,7 +894,7 @@ unsafe extern "C" fn compute_color(
                 let fresh4 = histp;
                 histp = histp.offset(1);
                 count = *fresh4 as libc::c_long;
-                if count != 0i32 as libc::c_long {
+                if count != 0i64 {
                     total += count;
                     c0total +=
                         ((c0 << C0_SHIFT) + (1i32 << C0_SHIFT >> 1i32)) as libc::c_long * count;
@@ -1121,7 +1121,7 @@ unsafe extern "C" fn find_nearby_colors(
             max_dist = tdist * tdist
         } else {
             /* within cell range so no contribution to min_dist */
-            min_dist = 0i32 as crate::jpegint_h::JLONG;
+            min_dist = 0i64;
             if x <= centerc0 {
                 tdist = ((x - maxc0)
                     * c_scales
@@ -1489,7 +1489,7 @@ unsafe extern "C" fn pass2_no_dither(
         inptr = *input_buf.offset(row as isize);
         outptr = *output_buf.offset(row as isize);
         col = width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             /* get pixel value and index into the cache */
             let fresh9 = inptr;
             inptr = inptr.offset(1);
@@ -1559,15 +1559,15 @@ unsafe extern "C" fn pass2_fs_dither(
             /* work right to left in this row */
             inptr = inptr.offset(
                 ((
-                width - 1i32 as libc::c_uint) * 3i32 as libc::c_uint) as isize,
+                width - 1u32) * 3u32) as isize,
             );
-            outptr = outptr.offset((width - 1i32 as libc::c_uint) as isize);
+            outptr = outptr.offset((width - 1u32) as isize);
             dir = -1i32;
             dir3 = -3i32; /* so point to rightmost pixel */
             /* flip for next time */
             errorptr = (*cquantize).fserrors.offset(
                 ((
-                width + 1i32 as libc::c_uint) * 3i32 as libc::c_uint) as isize,
+                width + 1u32) * 3u32) as isize,
             ); /* => entry after last column */
             (*cquantize).on_odd_row = crate::jmorecfg_h::FALSE
         } else {
@@ -1590,7 +1590,7 @@ unsafe extern "C" fn pass2_fs_dither(
         bpreverr1 = bpreverr2;
         bpreverr0 = bpreverr1;
         col = width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             /* curN holds the error propagated from the previous pixel on the
              * current line.  Add the error propagated from the previous line
              * to form the complete error correction term for this pixel, and
@@ -1770,8 +1770,8 @@ unsafe extern "C" fn start_pass_2_quant(
     let mut i: libc::c_int = 0;
     /* Only F-S dithering or no dithering is supported. */
     /* If user asks for ordered dither, give him F-S. */
-    if (*cinfo).dither_mode as libc::c_uint
-        != crate::jpeglib_h::JDITHER_NONE as libc::c_int as libc::c_uint
+    if  (*cinfo).dither_mode
+        !=  crate::jpeglib_h::JDITHER_NONE
     {
         (*cinfo).dither_mode = crate::jpeglib_h::JDITHER_FS
     }
@@ -1792,8 +1792,8 @@ unsafe extern "C" fn start_pass_2_quant(
     /* Always zero histogram */
     } else {
         /* Set up method pointers */
-        if (*cinfo).dither_mode as libc::c_uint
-            == crate::jpeglib_h::JDITHER_FS as libc::c_int as libc::c_uint
+        if  (*cinfo).dither_mode
+            ==  crate::jpeglib_h::JDITHER_FS
         {
             (*cquantize).pub_0.color_quantize = Some(
                 pass2_fs_dither
@@ -1843,12 +1843,12 @@ unsafe extern "C" fn start_pass_2_quant(
                 cinfo as crate::jpeglib_h::j_common_ptr
             );
         }
-        if (*cinfo).dither_mode as libc::c_uint
-            == crate::jpeglib_h::JDITHER_FS as libc::c_int as libc::c_uint
+        if  (*cinfo).dither_mode
+            ==  crate::jpeglib_h::JDITHER_FS
         {
             let mut arraysize: crate::stddef_h::size_t =
-                ((*cinfo).output_width + 2i32 as libc::c_uint) as libc::c_ulong *
-    (3i32 as libc::c_ulong *
+                ((*cinfo).output_width + 2u32) as libc::c_ulong *
+    (3u64 *
          ::std::mem::size_of::<FSERROR>() as libc::c_ulong);
             /* Allocate Floyd-Steinberg workspace if we didn't already. */
             if (*cquantize).fserrors.is_null() {
@@ -2007,7 +2007,7 @@ pub unsafe extern "C" fn jinit_2pass_quantizer(mut cinfo: crate::jpeglib_h::j_de
             cinfo as crate::jpeglib_h::j_common_ptr,
             crate::jpeglib_h::JPOOL_IMAGE,
             desired as crate::jmorecfg_h::JDIMENSION,
-            3i32 as crate::jmorecfg_h::JDIMENSION,
+            3u32,
         );
         (*cquantize).desired = desired
     } else {
@@ -2015,8 +2015,8 @@ pub unsafe extern "C" fn jinit_2pass_quantizer(mut cinfo: crate::jpeglib_h::j_de
     }
     /* Only F-S dithering or no dithering is supported. */
     /* If user asks for ordered dither, give him F-S. */
-    if (*cinfo).dither_mode as libc::c_uint
-        != crate::jpeglib_h::JDITHER_NONE as libc::c_int as libc::c_uint
+    if  (*cinfo).dither_mode
+        !=  crate::jpeglib_h::JDITHER_NONE
     {
         (*cinfo).dither_mode = crate::jpeglib_h::JDITHER_FS
     }
@@ -2026,8 +2026,8 @@ pub unsafe extern "C" fn jinit_2pass_quantizer(mut cinfo: crate::jpeglib_h::j_de
      * in dither_mode, we do not promise to honor max_memory_to_use if
      * dither_mode changes.
      */
-    if (*cinfo).dither_mode as libc::c_uint
-        == crate::jpeglib_h::JDITHER_FS as libc::c_int as libc::c_uint
+    if  (*cinfo).dither_mode
+        ==  crate::jpeglib_h::JDITHER_FS
     {
         (*cquantize).fserrors = Some(
             (*(*cinfo).mem)
@@ -2037,8 +2037,8 @@ pub unsafe extern "C" fn jinit_2pass_quantizer(mut cinfo: crate::jpeglib_h::j_de
         .expect("non-null function pointer")(
             cinfo as crate::jpeglib_h::j_common_ptr,
             crate::jpeglib_h::JPOOL_IMAGE,
-            ((*cinfo).output_width + 2i32 as libc::c_uint) as libc::c_ulong *
-    (3i32 as libc::c_ulong *
+            ((*cinfo).output_width + 2u32) as libc::c_ulong *
+    (3u64 *
          ::std::mem::size_of::<FSERROR>() as libc::c_ulong),
         ) as FSERRPTR;
         /* Might as well create the error-limiting table too. */

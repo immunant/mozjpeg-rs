@@ -339,14 +339,14 @@ pub unsafe extern "C" fn keymatch(
             return crate::jmorecfg_h::FALSE;
         }
         if *(*crate::stdlib::__ctype_b_loc()).offset(ca as isize) as libc::c_int
-            & crate::stdlib::_ISupper as libc::c_int as libc::c_ushort as libc::c_int
+            &  crate::stdlib::_ISupper as libc::c_ushort as libc::c_int
             != 0
         {
             /* count matched characters */
             /* force arg to lcase (assume ck is already) */
             ca = ({
                 let mut __res: libc::c_int = 0; /* no good */
-                if ::std::mem::size_of::<libc::c_int>() as libc::c_ulong > 1i32 as libc::c_ulong {
+                if ::std::mem::size_of::<libc::c_int>() as libc::c_ulong > 1u64 {
                     if 0 != 0 {
                         let mut __c: libc::c_int = ca;
                         __res = if __c < -128i32 || __c > 255i32 {

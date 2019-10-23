@@ -579,7 +579,7 @@ unsafe extern "C" fn put_pixel_rows(
     let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
-        1i32 as crate::stddef_h::size_t,
+        1u64,
         (*dest).buffer_width,
         (*dest).pub_0.output_file,
     );
@@ -606,7 +606,7 @@ unsafe extern "C" fn copy_pixel_rows(
     );
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
-        1i32 as crate::stddef_h::size_t,
+        1u64,
         (*dest).buffer_width,
         (*dest).pub_0.output_file,
     );
@@ -631,7 +631,7 @@ unsafe extern "C" fn put_rgb(
     ptr = *(*dest).pub_0.buffer.offset(0);
     bufferptr = (*dest).iobuffer;
     col = (*cinfo).output_width;
-    while col > 0i32 as libc::c_uint {
+    while col > 0u32 {
         let fresh0 = bufferptr;
         bufferptr = bufferptr.offset(1);
         *fresh0 = *ptr.offset(rindex as isize) as libc::c_char;
@@ -646,7 +646,7 @@ unsafe extern "C" fn put_rgb(
     }
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
-        1i32 as crate::stddef_h::size_t,
+        1u64,
         (*dest).buffer_width,
         (*dest).pub_0.output_file,
     );
@@ -667,7 +667,7 @@ unsafe extern "C" fn put_cmyk(
     ptr = *(*dest).pub_0.buffer.offset(0);
     bufferptr = (*dest).iobuffer;
     col = (*cinfo).output_width;
-    while col > 0i32 as libc::c_uint {
+    while col > 0u32 {
         let mut r: crate::jmorecfg_h::JSAMPLE = 0;
         let mut g: crate::jmorecfg_h::JSAMPLE = 0;
         let mut b: crate::jmorecfg_h::JSAMPLE = 0;
@@ -697,7 +697,7 @@ unsafe extern "C" fn put_cmyk(
     }
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
-        1i32 as crate::stddef_h::size_t,
+        1u64,
         (*dest).buffer_width,
         (*dest).pub_0.output_file,
     );
@@ -723,24 +723,24 @@ unsafe extern "C" fn put_demapped_rgb(
     ptr = *(*dest).pub_0.buffer.offset(0);
     bufferptr = (*dest).iobuffer;
     col = (*cinfo).output_width;
-    while col > 0i32 as libc::c_uint {
+    while col > 0u32 {
         let fresh10 = ptr;
         ptr = ptr.offset(1);
         pixval = *fresh10 as libc::c_int;
         let fresh11 = bufferptr;
         bufferptr = bufferptr.offset(1);
-        *fresh11 = *color_map0.offset(pixval as isize) as libc::c_int as libc::c_char;
+        *fresh11 =  *color_map0.offset(pixval as isize) as libc::c_char;
         let fresh12 = bufferptr;
         bufferptr = bufferptr.offset(1);
-        *fresh12 = *color_map1.offset(pixval as isize) as libc::c_int as libc::c_char;
+        *fresh12 =  *color_map1.offset(pixval as isize) as libc::c_char;
         let fresh13 = bufferptr;
         bufferptr = bufferptr.offset(1);
-        *fresh13 = *color_map2.offset(pixval as isize) as libc::c_int as libc::c_char;
+        *fresh13 =  *color_map2.offset(pixval as isize) as libc::c_char;
         col =  col - 1
     }
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
-        1i32 as crate::stddef_h::size_t,
+        1u64,
         (*dest).buffer_width,
         (*dest).pub_0.output_file,
     );
@@ -759,18 +759,19 @@ unsafe extern "C" fn put_demapped_gray(
     ptr = *(*dest).pub_0.buffer.offset(0);
     bufferptr = (*dest).iobuffer;
     col = (*cinfo).output_width;
-    while col > 0i32 as libc::c_uint {
+    while col > 0u32 {
         let fresh14 = ptr;
         ptr = ptr.offset(1);
         let fresh15 = bufferptr;
         bufferptr = bufferptr.offset(1);
         *fresh15 =
-            *color_map.offset(*fresh14 as libc::c_int as isize) as libc::c_int as libc::c_char;
+            
+            *color_map.offset(*fresh14 as libc::c_int as isize) as libc::c_char;
         col =  col - 1
     }
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
-        1i32 as crate::stddef_h::size_t,
+        1u64,
         (*dest).buffer_width,
         (*dest).pub_0.output_file,
     );
@@ -785,7 +786,7 @@ unsafe extern "C" fn start_output_ppm(
 ) {
     let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
     /* Emit file header */
-    match (*cinfo).out_color_space as libc::c_uint {
+    match  (*cinfo).out_color_space {
         1 => {
             /* emit header for raw PGM format */
             crate::stdlib::fprintf(
@@ -850,13 +851,13 @@ unsafe extern "C" fn calc_buffer_dimensions_ppm(
     mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
 ) {
     let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
-    if (*cinfo).out_color_space as libc::c_uint
-        == crate::jpeglib_h::JCS_GRAYSCALE as libc::c_int as libc::c_uint
+    if  (*cinfo).out_color_space
+        ==  crate::jpeglib_h::JCS_GRAYSCALE
     {
         (*dest).samples_per_row =  (*cinfo)
             .output_width * (*cinfo).out_color_components as libc::c_uint
     } else {
-        (*dest).samples_per_row =  (*cinfo).output_width * 3i32 as libc::c_uint
+        (*dest).samples_per_row =  (*cinfo).output_width * 3u32
     }
     (*dest).buffer_width = (*dest).samples_per_row as libc::c_ulong *
     (BYTESPERSAMPLE as libc::c_ulong *
@@ -924,10 +925,10 @@ pub unsafe extern "C" fn jinit_write_ppm(
         || crate::jconfig_h::BITS_IN_JSAMPLE != 8i32
         || ::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong
             != ::std::mem::size_of::<libc::c_char>() as libc::c_ulong
-        || (*cinfo).out_color_space as libc::c_uint
-            != crate::jpeglib_h::JCS_EXT_RGB as libc::c_int as libc::c_uint
-            && (*cinfo).out_color_space as libc::c_uint
-                != crate::jpeglib_h::JCS_RGB as libc::c_int as libc::c_uint
+        ||  (*cinfo).out_color_space
+            !=  crate::jpeglib_h::JCS_EXT_RGB
+            &&  (*cinfo).out_color_space
+                !=  crate::jpeglib_h::JCS_RGB
     {
         /* When quantizing, we need an output buffer for colormap indexes
          * that's separate from the physical I/O buffer.  We also need a
@@ -944,15 +945,15 @@ pub unsafe extern "C" fn jinit_write_ppm(
             
             (*cinfo)
                 .output_width * (*cinfo).output_components as libc::c_uint,
-            1i32 as crate::jmorecfg_h::JDIMENSION,
+            1u32,
         );
-        (*dest).pub_0.buffer_height = 1i32 as crate::jmorecfg_h::JDIMENSION;
-        if (*cinfo).out_color_space as libc::c_uint
-            == crate::jpeglib_h::JCS_RGB as libc::c_int as libc::c_uint
-            || (*cinfo).out_color_space as libc::c_uint
-                >= crate::jpeglib_h::JCS_EXT_RGB as libc::c_int as libc::c_uint
-                && (*cinfo).out_color_space as libc::c_uint
-                    <= crate::jpeglib_h::JCS_EXT_ARGB as libc::c_int as libc::c_uint
+        (*dest).pub_0.buffer_height = 1u32;
+        if  (*cinfo).out_color_space
+            ==  crate::jpeglib_h::JCS_RGB
+            ||  (*cinfo).out_color_space
+                >=  crate::jpeglib_h::JCS_EXT_RGB
+                &&  (*cinfo).out_color_space
+                    <=  crate::jpeglib_h::JCS_EXT_ARGB
         {
             (*dest).pub_0.put_pixel_rows = Some(
                 put_rgb
@@ -962,8 +963,8 @@ pub unsafe extern "C" fn jinit_write_ppm(
                         _: crate::jmorecfg_h::JDIMENSION,
                     ) -> (),
             )
-        } else if (*cinfo).out_color_space as libc::c_uint
-            == crate::jpeglib_h::JCS_CMYK as libc::c_int as libc::c_uint
+        } else if  (*cinfo).out_color_space
+            ==  crate::jpeglib_h::JCS_CMYK
         {
             (*dest).pub_0.put_pixel_rows = Some(
                 put_cmyk
@@ -982,8 +983,8 @@ pub unsafe extern "C" fn jinit_write_ppm(
                         _: crate::jmorecfg_h::JDIMENSION,
                     ) -> (),
             )
-        } else if (*cinfo).out_color_space as libc::c_uint
-            == crate::jpeglib_h::JCS_GRAYSCALE as libc::c_int as libc::c_uint
+        } else if  (*cinfo).out_color_space
+            ==  crate::jpeglib_h::JCS_GRAYSCALE
         {
             (*dest).pub_0.put_pixel_rows = Some(
                 put_demapped_gray
@@ -1008,7 +1009,7 @@ pub unsafe extern "C" fn jinit_write_ppm(
         /* Synthesize a JSAMPARRAY pointer structure */
         (*dest).pixrow = (*dest).iobuffer as crate::jpeglib_h::JSAMPROW;
         (*dest).pub_0.buffer = &mut (*dest).pixrow;
-        (*dest).pub_0.buffer_height = 1i32 as crate::jmorecfg_h::JDIMENSION;
+        (*dest).pub_0.buffer_height = 1u32;
         (*dest).pub_0.put_pixel_rows = Some(
             put_pixel_rows
                 as unsafe extern "C" fn(

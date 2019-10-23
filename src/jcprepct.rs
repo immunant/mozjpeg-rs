@@ -226,7 +226,7 @@ unsafe extern "C" fn start_pass_prep(
     mut pass_mode: crate::jpegint_h::J_BUF_MODE,
 ) {
     let mut prep: my_prep_ptr = (*cinfo).prep as my_prep_ptr;
-    if pass_mode as libc::c_uint != crate::jpegint_h::JBUF_PASS_THRU as libc::c_int as libc::c_uint
+    if  pass_mode !=  crate::jpegint_h::JBUF_PASS_THRU
     {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_BUFFER_MODE as libc::c_int;
         Some(
@@ -317,14 +317,12 @@ unsafe extern "C" fn pre_process_data(
             (*prep).next_buf_row as crate::jmorecfg_h::JDIMENSION,
             numrows,
         );
-        *in_row_ctr = (*in_row_ctr as libc::c_uint + numrows as libc::c_uint)
-            as crate::jmorecfg_h::JDIMENSION as crate::jmorecfg_h::JDIMENSION;
+        *in_row_ctr = *in_row_ctr + numrows as libc::c_uint;
         (*prep).next_buf_row += numrows;
         (*prep).rows_to_go =
-            ((*prep).rows_to_go as libc::c_uint - numrows as libc::c_uint)
-                as crate::jmorecfg_h::JDIMENSION as crate::jmorecfg_h::JDIMENSION;
+            (*prep).rows_to_go - numrows as libc::c_uint;
         /* If at bottom of image, pad to fill the conversion buffer. */
-        if (*prep).rows_to_go == 0i32 as libc::c_uint
+        if (*prep).rows_to_go == 0u32
             && (*prep).next_buf_row < (*cinfo).max_v_samp_factor
         {
             ci = 0i32;
@@ -349,7 +347,7 @@ unsafe extern "C" fn pre_process_data(
             .expect("non-null function pointer")(
                 cinfo,
                 (*prep).color_buf.as_mut_ptr(),
-                0i32 as crate::jmorecfg_h::JDIMENSION,
+                0u32,
                 output_buf,
                 *out_row_group_ctr,
             );
@@ -359,7 +357,7 @@ unsafe extern "C" fn pre_process_data(
         /* If at bottom of image, pad the output to a full iMCU height.
          * Note we assume the caller is providing a one-iMCU-height output buffer!
          */
-        if !((*prep).rows_to_go == 0i32 as libc::c_uint
+        if !((*prep).rows_to_go == 0u32
             && *out_row_group_ctr < out_row_groups_avail)
         {
             continue;
@@ -446,16 +444,12 @@ unsafe extern "C" fn pre_process_context(
                     ci += 1
                 }
             }
-            *in_row_ctr = (*in_row_ctr as libc::c_uint + numrows as libc::c_uint)
-                as crate::jmorecfg_h::JDIMENSION
-                as crate::jmorecfg_h::JDIMENSION;
+            *in_row_ctr = *in_row_ctr + numrows as libc::c_uint;
             (*prep).next_buf_row += numrows;
-            (*prep).rows_to_go = ((*prep).rows_to_go as libc::c_uint - numrows as libc::c_uint)
-                as crate::jmorecfg_h::JDIMENSION
-                as crate::jmorecfg_h::JDIMENSION
+            (*prep).rows_to_go = (*prep).rows_to_go - numrows as libc::c_uint
         } else {
             /* Return for more data, unless we are at the bottom of the image. */
-            if (*prep).rows_to_go != 0i32 as libc::c_uint {
+            if (*prep).rows_to_go != 0u32 {
                 break;
             }
             /* When at bottom of image, pad to fill the conversion buffer. */

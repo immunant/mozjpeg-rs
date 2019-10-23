@@ -353,8 +353,7 @@ unsafe extern "C" fn sep_upsample(
         num_rows = (*upsample).rows_to_go
     }
     /* And not more than what the client can accept: */
-    out_rows_avail = (out_rows_avail as libc::c_uint - *out_row_ctr)
-        as crate::jmorecfg_h::JDIMENSION as crate::jmorecfg_h::JDIMENSION;
+    out_rows_avail = out_rows_avail - *out_row_ctr;
     if num_rows > out_rows_avail {
         num_rows = out_rows_avail
     }
@@ -371,13 +370,9 @@ unsafe extern "C" fn sep_upsample(
         num_rows as libc::c_int,
     );
     /* Adjust counts */
-    *out_row_ctr = (*out_row_ctr as libc::c_uint + num_rows)
-        as crate::jmorecfg_h::JDIMENSION as crate::jmorecfg_h::JDIMENSION;
-    (*upsample).rows_to_go = ((*upsample).rows_to_go as libc::c_uint - num_rows)
-        as crate::jmorecfg_h::JDIMENSION
-        as crate::jmorecfg_h::JDIMENSION;
-    (*upsample).next_row_out = ((*upsample).next_row_out as libc::c_uint + num_rows)
-        as libc::c_int as libc::c_int;
+    *out_row_ctr = *out_row_ctr + num_rows;
+    (*upsample).rows_to_go = (*upsample).rows_to_go - num_rows;
+    (*upsample).next_row_out = (((*upsample).next_row_out as libc::c_uint + num_rows)) as libc::c_int;
     /* When the buffer is emptied, declare this input row group consumed */
     if (*upsample).next_row_out >= (*cinfo).max_v_samp_factor {
         *in_row_group_ctr = *in_row_group_ctr + 1
@@ -607,15 +602,15 @@ unsafe extern "C" fn h2v1_fancy_upsample(
         *fresh10 =
             (invalue * 3i32 + *inptr as libc::c_int + 2i32 >> 2i32) as crate::jmorecfg_h::JSAMPLE;
         colctr =  (*compptr)
-            .downsampled_width - 2i32 as libc::c_uint;
-        while colctr > 0i32 as libc::c_uint {
+            .downsampled_width - 2u32;
+        while colctr > 0u32 {
             /* General case: 3/4 * nearer pixel + 1/4 * further pixel */
             let fresh11 = inptr;
             inptr = inptr.offset(1);
             invalue = *fresh11 as libc::c_int * 3i32;
             let fresh12 = outptr;
             outptr = outptr.offset(1);
-            *fresh12 = (invalue + *inptr.offset(-2i32 as isize) as libc::c_int + 1i32 >> 2i32)
+            *fresh12 = (invalue + *inptr.offset(-2isize) as libc::c_int + 1i32 >> 2i32)
                 as crate::jmorecfg_h::JSAMPLE;
             let fresh13 = outptr;
             outptr = outptr.offset(1);
@@ -627,7 +622,7 @@ unsafe extern "C" fn h2v1_fancy_upsample(
         invalue = *inptr as libc::c_int;
         let fresh14 = outptr;
         outptr = outptr.offset(1);
-        *fresh14 = (invalue * 3i32 + *inptr.offset(-1i32 as isize) as libc::c_int + 1i32 >> 2i32)
+        *fresh14 = (invalue * 3i32 + *inptr.offset(-1isize) as libc::c_int + 1i32 >> 2i32)
             as crate::jmorecfg_h::JSAMPLE;
         let fresh15 = outptr;
         outptr = outptr.offset(1);
@@ -674,7 +669,7 @@ unsafe extern "C" fn h1v2_fancy_upsample(
             let fresh16 = outrow;
             outrow = outrow + 1;
             outptr = *output_data.offset(fresh16 as isize);
-            colctr = 0i32 as crate::jmorecfg_h::JDIMENSION;
+            colctr = 0u32;
             while colctr < (*compptr).downsampled_width {
                 let fresh17 = inptr0;
                 inptr0 = inptr0.offset(1);
@@ -754,8 +749,8 @@ unsafe extern "C" fn h2v2_fancy_upsample(
             lastcolsum = thiscolsum;
             thiscolsum = nextcolsum;
             colctr =  (*compptr)
-                .downsampled_width - 2i32 as libc::c_uint;
-            while colctr > 0i32 as libc::c_uint {
+                .downsampled_width - 2u32;
+            while colctr > 0u32 {
                 /* General case: 3/4 * nearer pixel + 1/4 * further pixel in each */
                 /* dimension, thus 9/16, 3/16, 3/16, 1/16 overall */
                 let fresh27 = inptr0;
@@ -896,7 +891,7 @@ pub unsafe extern "C" fn jinit_upsampler(mut cinfo: crate::jpeglib_h::j_decompre
             need_buffer = crate::jmorecfg_h::FALSE
         } else if h_in_group * 2i32 == h_out_group && v_in_group == v_out_group {
             /* Special cases for 2h1v upsampling */
-            if do_fancy != 0 && (*compptr).downsampled_width > 2i32 as libc::c_uint {
+            if do_fancy != 0 && (*compptr).downsampled_width > 2u32 {
                 if crate::src::simd::x86_64::jsimd::jsimd_can_h2v1_fancy_upsample() != 0 {
                     (*upsample).methods[ci as usize] = Some(
                         crate::src::simd::x86_64::jsimd::jsimd_h2v1_fancy_upsample
@@ -953,7 +948,7 @@ pub unsafe extern "C" fn jinit_upsampler(mut cinfo: crate::jpeglib_h::j_decompre
             (*upsample).pub_0.need_context_rows = crate::jmorecfg_h::TRUE
         } else if h_in_group * 2i32 == h_out_group && v_in_group * 2i32 == v_out_group {
             /* Special cases for 2h2v upsampling */
-            if do_fancy != 0 && (*compptr).downsampled_width > 2i32 as libc::c_uint {
+            if do_fancy != 0 && (*compptr).downsampled_width > 2u32 {
                 if crate::src::simd::x86_64::jsimd::jsimd_can_h2v2_fancy_upsample() != 0 {
                     (*upsample).methods[ci as usize] = Some(
                         crate::src::simd::x86_64::jsimd::jsimd_h2v2_fancy_upsample

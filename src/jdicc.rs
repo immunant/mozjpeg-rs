@@ -313,13 +313,13 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
     *icc_data_ptr = crate::stddef_h::NULL as *mut crate::jmorecfg_h::JOCTET;
-    *icc_data_len = 0i32 as libc::c_uint;
+    *icc_data_len = 0u32;
     /* This first pass over the saved markers discovers whether there are
      * any ICC markers and verifies the consistency of the marker numbering.
      */
     seq_no = 1i32; /* inconsistent num_markers fields */
     while seq_no <= MAX_SEQ_NO {
-        marker_present[seq_no as usize] = 0i32 as libc::c_char; /* bogus sequence number */
+        marker_present[seq_no as usize] = 0i8; /* bogus sequence number */
         seq_no += 1
     } /* duplicate sequence numbers */
     marker = (*cinfo).marker_list;
@@ -367,7 +367,7 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
                 );
                 return crate::jmorecfg_h::FALSE;
             }
-            marker_present[seq_no as usize] = 1i32 as libc::c_char;
+            marker_present[seq_no as usize] = 1i8;
             data_length[seq_no as usize] =  (*marker)
                 .data_length - ICC_OVERHEAD_LEN as libc::c_uint
         }
@@ -379,7 +379,7 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
     /* Check for missing markers, count total space needed,
      * compute offset of each marker's part of the data.
      */
-    total_length = 0i32 as libc::c_uint; /* missing sequence number */
+    total_length = 0u32; /* missing sequence number */
     seq_no = 1i32; /* found only empty markers? */
     while seq_no <= num_markers {
         if marker_present[seq_no as usize] as libc::c_int == 0i32 {
@@ -398,7 +398,7 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
         total_length =  total_length + data_length[seq_no as usize];
         seq_no += 1
     }
-    if total_length == 0i32 as libc::c_uint {
+    if total_length == 0u32 {
         (*(*cinfo).err).msg_code = crate::src::jerror::JWRN_BOGUS_ICC as libc::c_int;
         Some(
             (*(*cinfo).err)

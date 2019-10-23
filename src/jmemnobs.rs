@@ -308,7 +308,7 @@ pub unsafe extern "C" fn jpeg_mem_available(
         if (*(*cinfo).mem).max_memory_to_use as crate::stddef_h::size_t > already_allocated {
             return (*(*cinfo).mem).max_memory_to_use as libc::c_ulong - already_allocated;
         } else {
-            return 0i32 as crate::stddef_h::size_t;
+            return 0u64;
         }
     } else {
         /* Here we always say, "we got all you want bud!" */
@@ -360,7 +360,7 @@ pub unsafe extern "C" fn jpeg_open_backing_store(
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_mem_init(mut cinfo: crate::jpeglib_h::j_common_ptr) -> libc::c_long {
-    return 0i32 as libc::c_long;
+    return 0i64;
     /* just set max_memory_to_use to 0 */
 }
 #[no_mangle]

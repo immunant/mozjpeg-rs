@@ -347,7 +347,7 @@ unsafe extern "C" fn emit_byte(mut cinfo: crate::jpeglib_h::j_compress_ptr, mut 
     (*dest).next_output_byte = (*dest).next_output_byte.offset(1);
     *fresh0 = val as crate::jmorecfg_h::JOCTET;
     (*dest).free_in_buffer =  (*dest).free_in_buffer - 1;
-    if (*dest).free_in_buffer == 0i32 as libc::c_ulong {
+    if (*dest).free_in_buffer == 0u64 {
         if Some(
             (*dest)
                 .empty_output_buffer
@@ -440,7 +440,7 @@ unsafe extern "C" fn emit_dqt(
             if prec != 0 {
                 emit_byte(cinfo, (qval >> 8i32) as libc::c_int);
             }
-            emit_byte(cinfo, (qval & 0xffi32 as libc::c_uint) as libc::c_int);
+            emit_byte(cinfo, (qval & 0xffu32) as libc::c_int);
             i += 1
         }
         (*qtbl).sent_table = crate::jmorecfg_h::TRUE
@@ -507,7 +507,7 @@ unsafe extern "C" fn emit_multi_dqt(mut cinfo: crate::jpeglib_h::j_compress_ptr)
                 if prec[ci as usize] != 0 {
                     emit_byte(cinfo, (qval >> 8i32) as libc::c_int);
                 }
-                emit_byte(cinfo, (qval & 0xffi32 as libc::c_uint) as libc::c_int);
+                emit_byte(cinfo, (qval & 0xffu32) as libc::c_int);
                 i_0 += 1
             }
             (*qtbl_0).sent_table = crate::jmorecfg_h::TRUE
@@ -763,7 +763,7 @@ unsafe extern "C" fn emit_sof(mut cinfo: crate::jpeglib_h::j_compress_ptr, mut c
         || (*cinfo).image_width as libc::c_long > 65535i64
     {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_IMAGE_TOO_BIG as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = 65535i32 as libc::c_uint as libc::c_int;
+        (*(*cinfo).err).msg_parm.i[0] = 65535i32;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -888,7 +888,7 @@ unsafe extern "C" fn emit_adobe_app14(mut cinfo: crate::jpeglib_h::j_compress_pt
     emit_2bytes(cinfo, 100i32); /* Color transform = 0 */
     emit_2bytes(cinfo, 0i32);
     emit_2bytes(cinfo, 0i32);
-    match (*cinfo).jpeg_color_space as libc::c_uint {
+    match  (*cinfo).jpeg_color_space {
         3 => {
             emit_byte(cinfo, 1i32);
         }
@@ -915,7 +915,7 @@ unsafe extern "C" fn write_marker_header(
 )
 /* Emit an arbitrary marker header */
 {
-    if datalen > 65533i32 as libc::c_uint {
+    if datalen > 65533u32 {
         /* safety check */
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_LENGTH as libc::c_int;
         Some(
@@ -929,7 +929,7 @@ unsafe extern "C" fn write_marker_header(
     emit_2bytes(
         cinfo,
         (
-        datalen + 2i32 as libc::c_uint) as libc::c_int,
+        datalen + 2u32) as libc::c_int,
     );
     /* total length */
 }
@@ -957,7 +957,7 @@ unsafe extern "C" fn write_file_header(mut cinfo: crate::jpeglib_h::j_compress_p
     let mut marker: my_marker_ptr = (*cinfo).marker as my_marker_ptr; /* first the SOI */
     emit_marker(cinfo, M_SOI);
     /* SOI is defined to reset restart interval to 0 */
-    (*marker).last_restart_interval = 0i32 as libc::c_uint;
+    (*marker).last_restart_interval = 0u32;
     if (*cinfo).write_JFIF_header != 0 {
         /* next an optional JFIF APP0 */
         emit_jfif_app0(cinfo);
@@ -1169,5 +1169,5 @@ pub unsafe extern "C" fn jinit_marker_writer(mut cinfo: crate::jpeglib_h::j_comp
             as unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr, _: libc::c_int) -> (),
     );
     /* Initialize private state */
-    (*marker).last_restart_interval = 0i32 as libc::c_uint;
+    (*marker).last_restart_interval = 0u32;
 }

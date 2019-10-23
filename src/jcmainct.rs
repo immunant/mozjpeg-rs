@@ -245,7 +245,7 @@ unsafe extern "C" fn start_pass_main(
     if (*cinfo).raw_data_in != 0 {
         return;
     } /* initialize counters */
-    if pass_mode as libc::c_uint != crate::jpegint_h::JBUF_PASS_THRU as libc::c_int as libc::c_uint
+    if  pass_mode !=  crate::jpegint_h::JBUF_PASS_THRU
     {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_BUFFER_MODE as libc::c_int; /* save mode for use by process_data */
         Some(
@@ -255,8 +255,8 @@ unsafe extern "C" fn start_pass_main(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    (*main_ptr).cur_iMCU_row = 0i32 as crate::jmorecfg_h::JDIMENSION;
-    (*main_ptr).rowgroup_ctr = 0i32 as crate::jmorecfg_h::JDIMENSION;
+    (*main_ptr).cur_iMCU_row = 0u32;
+    (*main_ptr).rowgroup_ctr = 0u32;
     (*main_ptr).suspended = crate::jmorecfg_h::FALSE;
     (*main_ptr).pass_mode = pass_mode;
     (*main_ptr).pub_0.process_data = Some(
@@ -336,7 +336,7 @@ unsafe extern "C" fn process_data_simple_main(
             *in_row_ctr = *in_row_ctr + 1;
             (*main_ptr).suspended = crate::jmorecfg_h::FALSE
         }
-        (*main_ptr).rowgroup_ctr = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        (*main_ptr).rowgroup_ctr = 0u32;
         (*main_ptr).cur_iMCU_row =  (*main_ptr).cur_iMCU_row + 1
     }
 }

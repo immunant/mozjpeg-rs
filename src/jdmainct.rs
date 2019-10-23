@@ -487,7 +487,7 @@ unsafe extern "C" fn start_pass_main(
 ) {
     let mut main_ptr: crate::src::jdmainct::my_main_ptr =
         (*cinfo).main as crate::src::jdmainct::my_main_ptr; /* Create the xbuffer[] lists */
-    match pass_mode as libc::c_uint {
+    match  pass_mode {
         0 => {
             if (*(*cinfo).upsample).need_context_rows != 0 {
                 (*main_ptr).pub_0.process_data = Some(
@@ -502,7 +502,7 @@ unsafe extern "C" fn start_pass_main(
                 make_funny_pointers(cinfo);
                 (*main_ptr).whichptr = 0i32;
                 (*main_ptr).context_state = 0i32;
-                (*main_ptr).iMCU_row_ctr = 0i32 as crate::jmorecfg_h::JDIMENSION
+                (*main_ptr).iMCU_row_ctr = 0u32
             } else {
                 /* Simple case with no context needed */
                 (*main_ptr).pub_0.process_data = Some(
@@ -516,7 +516,7 @@ unsafe extern "C" fn start_pass_main(
                 )
             } /* Mark buffer empty */
             (*main_ptr).buffer_full = crate::jmorecfg_h::FALSE;
-            (*main_ptr).rowgroup_ctr = 0i32 as crate::jmorecfg_h::JDIMENSION
+            (*main_ptr).rowgroup_ctr = 0u32
         }
         2 => {
             /* For last pass of 2-pass quantization, just crank the postprocessor */
@@ -703,7 +703,7 @@ unsafe extern "C" fn process_data_simple_main(
     /* Has postprocessor consumed all the data yet? If so, mark buffer empty */
     if (*main_ptr).rowgroup_ctr >= rowgroups_avail {
         (*main_ptr).buffer_full = crate::jmorecfg_h::FALSE;
-        (*main_ptr).rowgroup_ctr = 0i32 as crate::jmorecfg_h::JDIMENSION
+        (*main_ptr).rowgroup_ctr = 0u32
     };
 }
 /*
@@ -784,7 +784,7 @@ unsafe extern "C" fn process_data_context_main(
         /*FALLTHROUGH*/
         /* Prepare to process first M-1 row groups of this iMCU row */
         {
-            (*main_ptr).rowgroup_ctr = 0i32 as crate::jmorecfg_h::JDIMENSION;
+            (*main_ptr).rowgroup_ctr = 0u32;
             (*main_ptr).rowgroups_avail =
                 ((*cinfo).min_DCT_scaled_size - 1i32) as crate::jmorecfg_h::JDIMENSION;
             /* Check for bottom of image: if so, tweak pointers to "duplicate"
@@ -821,7 +821,7 @@ unsafe extern "C" fn process_data_context_main(
                 return;
             }
             /* After the first iMCU, change wraparound pointers to normal state */
-            if (*main_ptr).iMCU_row_ctr == 1i32 as libc::c_uint {
+            if (*main_ptr).iMCU_row_ctr == 1u32 {
                 crate::src::jdmainct::set_wraparound_pointers(cinfo);
             }
             /* Prepare to load new iMCU row using other xbuffer list */
@@ -857,9 +857,11 @@ unsafe extern "C" fn process_data_crank_post(
     )
     .expect("non-null function pointer")(
         cinfo,
-        crate::stddef_h::NULL as *mut libc::c_void as crate::jpeglib_h::JSAMPIMAGE,
-        crate::stddef_h::NULL as *mut libc::c_void as *mut crate::jmorecfg_h::JDIMENSION,
-        0i32 as crate::jmorecfg_h::JDIMENSION,
+        
+        crate::stddef_h::NULL as crate::jpeglib_h::JSAMPIMAGE,
+        
+        crate::stddef_h::NULL as *mut crate::jmorecfg_h::JDIMENSION,
+        0u32,
         output_buf,
         out_row_ctr,
         out_rows_avail,

@@ -290,7 +290,7 @@ pub unsafe extern "C" fn jpeg_start_compress(
     /* Ready for application to drive first pass through jpeg_write_scanlines
      * or jpeg_write_raw_data.
      */
-    (*cinfo).next_scanline = 0i32 as crate::jmorecfg_h::JDIMENSION;
+    (*cinfo).next_scanline = 0u32;
     (*cinfo).global_state = if (*cinfo).raw_data_in != 0 {
         crate::jpegint_h::CSTATE_RAW_OK
     } else {
@@ -368,16 +368,14 @@ pub unsafe extern "C" fn jpeg_write_scanlines(
     if num_lines > rows_left {
         num_lines = rows_left
     }
-    row_ctr = 0i32 as crate::jmorecfg_h::JDIMENSION;
+    row_ctr = 0u32;
     Some(
         (*(*cinfo).main)
             .process_data
             .expect("non-null function pointer"),
     )
     .expect("non-null function pointer")(cinfo, scanlines, &mut row_ctr, num_lines);
-    (*cinfo).next_scanline = ((*cinfo).next_scanline as libc::c_uint + row_ctr)
-        as crate::jmorecfg_h::JDIMENSION
-        as crate::jmorecfg_h::JDIMENSION;
+    (*cinfo).next_scanline = (*cinfo).next_scanline + row_ctr;
     return row_ctr;
 }
 /* Replaces jpeg_write_scanlines when writing raw downsampled data. */
@@ -411,7 +409,7 @@ pub unsafe extern "C" fn jpeg_write_raw_data(
                 .expect("non-null function pointer"),
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, -1i32);
-        return 0i32 as crate::jmorecfg_h::JDIMENSION;
+        return 0u32;
     }
     /* Call progress monitor hook if present */
     if !(*cinfo).progress.is_null() {
@@ -459,11 +457,10 @@ pub unsafe extern "C" fn jpeg_write_raw_data(
         == 0
     {
         /* If compressor did not consume the whole row, suspend processing. */
-        return 0i32 as crate::jmorecfg_h::JDIMENSION;
+        return 0u32;
     }
     /* OK, we processed one iMCU row. */
     (*cinfo).next_scanline =
-        ((*cinfo).next_scanline as libc::c_uint + lines_per_iMCU_row)
-            as crate::jmorecfg_h::JDIMENSION as crate::jmorecfg_h::JDIMENSION;
+        (*cinfo).next_scanline + lines_per_iMCU_row;
     return lines_per_iMCU_row;
 }

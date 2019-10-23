@@ -482,14 +482,14 @@ unsafe extern "C" fn read_colormap(
             );
         }
     }
-    if (*(*sinfo).cinfo).in_color_space as libc::c_uint
-        == crate::jpeglib_h::JCS_UNKNOWN as libc::c_int as libc::c_uint
+    if  (*(*sinfo).cinfo).in_color_space
+        ==  crate::jpeglib_h::JCS_UNKNOWN
         && gray != 0
     {
         (*(*sinfo).cinfo).in_color_space = crate::jpeglib_h::JCS_GRAYSCALE
     }
-    if (*(*sinfo).cinfo).in_color_space as libc::c_uint
-        == crate::jpeglib_h::JCS_GRAYSCALE as libc::c_int as libc::c_uint
+    if  (*(*sinfo).cinfo).in_color_space
+        ==  crate::jpeglib_h::JCS_GRAYSCALE
         && gray == 0
     {
         (*(*(*sinfo).cinfo).err).msg_code =
@@ -536,14 +536,14 @@ unsafe extern "C" fn get_8bit_row(
             cinfo as crate::jpeglib_h::j_common_ptr,
             (*source).whole_image,
             (*source).source_row,
-            1i32 as crate::jmorecfg_h::JDIMENSION,
+            1u32,
             crate::jmorecfg_h::FALSE,
         );
         inptr = *image_ptr.offset(0)
     } else {
         if !(crate::stdlib::fread(
             (*source).iobuffer as *mut libc::c_void,
-            1i32 as crate::stddef_h::size_t,
+            1u64,
             (*source).row_width as crate::stddef_h::size_t,
             (*source).pub_0.input_file,
         ) == (*source).row_width as crate::stddef_h::size_t)
@@ -562,11 +562,11 @@ unsafe extern "C" fn get_8bit_row(
     }
     /* Expand the colormap indexes to real data */
     outptr = *(*source).pub_0.buffer.offset(0);
-    if (*cinfo).in_color_space as libc::c_uint
-        == crate::jpeglib_h::JCS_GRAYSCALE as libc::c_int as libc::c_uint
+    if  (*cinfo).in_color_space
+        ==  crate::jpeglib_h::JCS_GRAYSCALE
     {
         col = (*cinfo).image_width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             let fresh0 = inptr;
             inptr = inptr.offset(1);
             t = *fresh0 as libc::c_int;
@@ -586,11 +586,11 @@ unsafe extern "C" fn get_8bit_row(
             *fresh1 = *(*colormap.offset(0)).offset(t as isize);
             col =  col - 1
         }
-    } else if (*cinfo).in_color_space as libc::c_uint
-        == crate::jpeglib_h::JCS_CMYK as libc::c_int as libc::c_uint
+    } else if  (*cinfo).in_color_space
+        ==  crate::jpeglib_h::JCS_CMYK
     {
         col = (*cinfo).image_width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             let fresh2 = inptr;
             inptr = inptr.offset(1);
             t = *fresh2 as libc::c_int;
@@ -626,7 +626,7 @@ unsafe extern "C" fn get_8bit_row(
         let mut ps: libc::c_int = rgb_pixelsize[(*cinfo).in_color_space as usize];
         if aindex >= 0i32 {
             col = (*cinfo).image_width;
-            while col > 0i32 as libc::c_uint {
+            while col > 0u32 {
                 let fresh3 = inptr;
                 inptr = inptr.offset(1);
                 t = *fresh3 as libc::c_int;
@@ -644,13 +644,13 @@ unsafe extern "C" fn get_8bit_row(
                 *outptr.offset(rindex as isize) = *(*colormap.offset(0)).offset(t as isize);
                 *outptr.offset(gindex as isize) = *(*colormap.offset(1)).offset(t as isize);
                 *outptr.offset(bindex as isize) = *(*colormap.offset(2)).offset(t as isize);
-                *outptr.offset(aindex as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
+                *outptr.offset(aindex as isize) = 0xffu8;
                 outptr = outptr.offset(ps as isize);
                 col =  col - 1
             }
         } else {
             col = (*cinfo).image_width;
-            while col > 0i32 as libc::c_uint {
+            while col > 0u32 {
                 let fresh4 = inptr;
                 inptr = inptr.offset(1);
                 t = *fresh4 as libc::c_int;
@@ -673,7 +673,7 @@ unsafe extern "C" fn get_8bit_row(
             }
         }
     }
-    return 1i32 as crate::jmorecfg_h::JDIMENSION;
+    return 1u32;
 }
 
 unsafe extern "C" fn get_24bit_row(
@@ -698,14 +698,14 @@ unsafe extern "C" fn get_24bit_row(
             cinfo as crate::jpeglib_h::j_common_ptr,
             (*source).whole_image,
             (*source).source_row,
-            1i32 as crate::jmorecfg_h::JDIMENSION,
+            1u32,
             crate::jmorecfg_h::FALSE,
         );
         inptr = *image_ptr.offset(0)
     } else {
         if !(crate::stdlib::fread(
             (*source).iobuffer as *mut libc::c_void,
-            1i32 as crate::stddef_h::size_t,
+            1u64,
             (*source).row_width as crate::stddef_h::size_t,
             (*source).pub_0.input_file,
         ) == (*source).row_width as crate::stddef_h::size_t)
@@ -726,19 +726,19 @@ unsafe extern "C" fn get_24bit_row(
      * (even though Microsoft's own documents say the opposite).
      */
     outptr = *(*source).pub_0.buffer.offset(0);
-    if (*cinfo).in_color_space as libc::c_uint
-        == crate::jpeglib_h::JCS_EXT_BGR as libc::c_int as libc::c_uint
+    if  (*cinfo).in_color_space
+        ==  crate::jpeglib_h::JCS_EXT_BGR
     {
         crate::stdlib::memcpy(
             outptr as *mut libc::c_void,
             inptr as *const libc::c_void,
             (*source).row_width as crate::stddef_h::size_t,
         );
-    } else if (*cinfo).in_color_space as libc::c_uint
-        == crate::jpeglib_h::JCS_CMYK as libc::c_int as libc::c_uint
+    } else if  (*cinfo).in_color_space
+        ==  crate::jpeglib_h::JCS_CMYK
     {
         col = (*cinfo).image_width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             /* can omit GETJSAMPLE() safely */
             let fresh5 = inptr; /* can omit GETJSAMPLE() safely */
             inptr = inptr.offset(1); /* can omit GETJSAMPLE() safely */
@@ -770,7 +770,7 @@ unsafe extern "C" fn get_24bit_row(
         let mut ps: libc::c_int = rgb_pixelsize[(*cinfo).in_color_space as usize];
         if aindex >= 0i32 {
             col = (*cinfo).image_width;
-            while col > 0i32 as libc::c_uint {
+            while col > 0u32 {
                 let fresh8 = inptr;
                 inptr = inptr.offset(1);
                 *outptr.offset(bindex as isize) = *fresh8;
@@ -780,13 +780,13 @@ unsafe extern "C" fn get_24bit_row(
                 let fresh10 = inptr;
                 inptr = inptr.offset(1);
                 *outptr.offset(rindex as isize) = *fresh10;
-                *outptr.offset(aindex as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
+                *outptr.offset(aindex as isize) = 0xffu8;
                 outptr = outptr.offset(ps as isize);
                 col =  col - 1
             }
         } else {
             col = (*cinfo).image_width;
-            while col > 0i32 as libc::c_uint {
+            while col > 0u32 {
                 let fresh11 = inptr;
                 inptr = inptr.offset(1);
                 *outptr.offset(bindex as isize) = *fresh11;
@@ -801,7 +801,7 @@ unsafe extern "C" fn get_24bit_row(
             }
         }
     }
-    return 1i32 as crate::jmorecfg_h::JDIMENSION;
+    return 1u32;
 }
 
 unsafe extern "C" fn get_32bit_row(
@@ -826,14 +826,14 @@ unsafe extern "C" fn get_32bit_row(
             cinfo as crate::jpeglib_h::j_common_ptr,
             (*source).whole_image,
             (*source).source_row,
-            1i32 as crate::jmorecfg_h::JDIMENSION,
+            1u32,
             crate::jmorecfg_h::FALSE,
         );
         inptr = *image_ptr.offset(0)
     } else {
         if !(crate::stdlib::fread(
             (*source).iobuffer as *mut libc::c_void,
-            1i32 as crate::stddef_h::size_t,
+            1u64,
             (*source).row_width as crate::stddef_h::size_t,
             (*source).pub_0.input_file,
         ) == (*source).row_width as crate::stddef_h::size_t)
@@ -854,21 +854,21 @@ unsafe extern "C" fn get_32bit_row(
      * (even though Microsoft's own documents say the opposite).
      */
     outptr = *(*source).pub_0.buffer.offset(0);
-    if (*cinfo).in_color_space as libc::c_uint
-        == crate::jpeglib_h::JCS_EXT_BGRX as libc::c_int as libc::c_uint
-        || (*cinfo).in_color_space as libc::c_uint
-            == crate::jpeglib_h::JCS_EXT_BGRA as libc::c_int as libc::c_uint
+    if  (*cinfo).in_color_space
+        ==  crate::jpeglib_h::JCS_EXT_BGRX
+        ||  (*cinfo).in_color_space
+            ==  crate::jpeglib_h::JCS_EXT_BGRA
     {
         crate::stdlib::memcpy(
             outptr as *mut libc::c_void,
             inptr as *const libc::c_void,
             (*source).row_width as crate::stddef_h::size_t,
         );
-    } else if (*cinfo).in_color_space as libc::c_uint
-        == crate::jpeglib_h::JCS_CMYK as libc::c_int as libc::c_uint
+    } else if  (*cinfo).in_color_space
+        ==  crate::jpeglib_h::JCS_CMYK
     {
         col = (*cinfo).image_width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             /* can omit GETJSAMPLE() safely */
             let fresh14 = inptr; /* skip the 4th byte (Alpha channel) */
             inptr = inptr.offset(1); /* can omit GETJSAMPLE() safely */
@@ -901,7 +901,7 @@ unsafe extern "C" fn get_32bit_row(
         let mut ps: libc::c_int = rgb_pixelsize[(*cinfo).in_color_space as usize];
         if aindex >= 0i32 {
             col = (*cinfo).image_width;
-            while col > 0i32 as libc::c_uint {
+            while col > 0u32 {
                 let fresh17 = inptr;
                 inptr = inptr.offset(1);
                 *outptr.offset(bindex as isize) = *fresh17;
@@ -919,7 +919,7 @@ unsafe extern "C" fn get_32bit_row(
             }
         } else {
             col = (*cinfo).image_width;
-            while col > 0i32 as libc::c_uint {
+            while col > 0u32 {
                 let fresh21 = inptr;
                 inptr = inptr.offset(1);
                 *outptr.offset(bindex as isize) = *fresh21;
@@ -935,7 +935,7 @@ unsafe extern "C" fn get_32bit_row(
             }
         }
     }
-    return 1i32 as crate::jmorecfg_h::JDIMENSION;
+    return 1u32;
 }
 /*
  * This method loads the image into whole_image during the first call on
@@ -955,7 +955,7 @@ unsafe extern "C" fn preload_image(
     let mut progress: crate::src::cdjpeg::cd_progress_ptr =
         (*cinfo).progress as crate::src::cdjpeg::cd_progress_ptr;
     /* Read the data into a virtual array in input-file row order. */
-    row = 0i32 as crate::jmorecfg_h::JDIMENSION;
+    row = 0u32;
     while row < (*cinfo).image_height {
         if !progress.is_null() {
             (*progress).pub_0.pass_counter = row as libc::c_long;
@@ -979,13 +979,13 @@ unsafe extern "C" fn preload_image(
             cinfo as crate::jpeglib_h::j_common_ptr,
             (*source).whole_image,
             row,
-            1i32 as crate::jmorecfg_h::JDIMENSION,
+            1u32,
             crate::jmorecfg_h::TRUE,
         );
         out_ptr = *image_ptr.offset(0);
         if crate::stdlib::fread(
             out_ptr as *mut libc::c_void,
-            1i32 as libc::c_ulong,
+            1u64,
             (*source).row_width as libc::c_ulong,
             infile,
         ) != (*source).row_width as libc::c_ulong
@@ -1087,17 +1087,17 @@ unsafe extern "C" fn start_input_bmp(
     let mut biCompression: libc::c_uint = 0;
     let mut biXPelsPerMeter: libc::c_int = 0;
     let mut biYPelsPerMeter: libc::c_int = 0;
-    let mut biClrUsed: libc::c_uint = 0i32 as libc::c_uint;
+    let mut biClrUsed: libc::c_uint = 0u32;
     let mut mapentrysize: libc::c_int = 0i32;
     let mut bPad: libc::c_int = 0;
-    let mut row_width: crate::jmorecfg_h::JDIMENSION = 0i32 as crate::jmorecfg_h::JDIMENSION;
+    let mut row_width: crate::jmorecfg_h::JDIMENSION = 0u32;
     /* Read and verify the bitmap file header */
     if !(crate::stdlib::fread(
         bmpfileheader.as_mut_ptr() as *mut libc::c_void,
-        1i32 as crate::stddef_h::size_t,
-        14i32 as crate::stddef_h::size_t,
+        1u64,
+        14u64,
         (*source).pub_0.input_file,
-    ) == 14i32 as crate::stddef_h::size_t)
+    ) == 14u64)
     {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_INPUT_EOF as libc::c_int;
         Some(
@@ -1107,8 +1107,8 @@ unsafe extern "C" fn start_input_bmp(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    if bmpfileheader[0] as libc::c_int as libc::c_ushort as libc::c_int
-        + ((bmpfileheader[(0i32 + 1i32) as usize] as libc::c_int as libc::c_ushort as libc::c_int)
+    if  bmpfileheader[0] as libc::c_int
+        + ((bmpfileheader[(0i32 + 1i32) as usize] as libc::c_int)
             << 8i32)
         != 0x4d42i32
     {
@@ -1121,23 +1121,23 @@ unsafe extern "C" fn start_input_bmp(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    bfOffBits = bmpfileheader[10] as libc::c_int as libc::c_uint +
-    ((
-            (bmpfileheader[(10i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32)) +
-    ((
-            (bmpfileheader[(10i32 + 2i32) as usize] as libc::c_int as libc::c_uint) << 16i32)) +
-    ((
-            (bmpfileheader[(10i32 + 3i32) as usize] as libc::c_int as libc::c_uint) << 24i32));
+    bfOffBits =  bmpfileheader[10] as libc::c_uint +
+    (((
+            (bmpfileheader[(10i32 + 1i32) as usize] as libc::c_uint) << 8i32))) +
+    (((
+            (bmpfileheader[(10i32 + 2i32) as usize] as libc::c_uint) << 16i32))) +
+    (((
+            (bmpfileheader[(10i32 + 3i32) as usize] as libc::c_uint) << 24i32)));
     /* We ignore the remaining fileheader fields */
     /* The infoheader might be 12 bytes (OS/2 1.x), 40 bytes (Windows),
      * or 64 bytes (OS/2 2.x).  Check the first 4 bytes to find out which.
      */
     if !(crate::stdlib::fread(
         bmpinfoheader.as_mut_ptr() as *mut libc::c_void,
-        1i32 as crate::stddef_h::size_t,
-        4i32 as crate::stddef_h::size_t,
+        1u64,
+        4u64,
         (*source).pub_0.input_file,
-    ) == 4i32 as crate::stddef_h::size_t)
+    ) == 4u64)
     {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_INPUT_EOF as libc::c_int;
         Some(
@@ -1147,14 +1147,14 @@ unsafe extern "C" fn start_input_bmp(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    headerSize = bmpinfoheader[0] as libc::c_int as libc::c_uint +
-    ((
-            (bmpinfoheader[(0i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32)) +
-    ((
-            (bmpinfoheader[(0i32 + 2i32) as usize] as libc::c_int as libc::c_uint) << 16i32)) +
-    ((
-            (bmpinfoheader[(0i32 + 3i32) as usize] as libc::c_int as libc::c_uint) << 24i32));
-    if headerSize < 12i32 as libc::c_uint || headerSize > 64i32 as libc::c_uint {
+    headerSize =  bmpinfoheader[0] as libc::c_uint +
+    (((
+            (bmpinfoheader[(0i32 + 1i32) as usize] as libc::c_uint) << 8i32))) +
+    (((
+            (bmpinfoheader[(0i32 + 2i32) as usize] as libc::c_uint) << 16i32))) +
+    (((
+            (bmpinfoheader[(0i32 + 3i32) as usize] as libc::c_uint) << 24i32)));
+    if headerSize < 12u32 || headerSize > 64u32 {
         (*(*cinfo).err).msg_code = crate::cderror_h::JERR_BMP_BADHEADER as libc::c_int;
         Some(
             (*(*cinfo).err)
@@ -1165,11 +1165,11 @@ unsafe extern "C" fn start_input_bmp(
     }
     if !(crate::stdlib::fread(
         bmpinfoheader.as_mut_ptr().offset(4) as *mut libc::c_void,
-        1i32 as crate::stddef_h::size_t,
+        1u64,
         (
-        headerSize - 4i32 as libc::c_uint) as crate::stddef_h::size_t,
+        headerSize - 4u32) as crate::stddef_h::size_t,
         (*source).pub_0.input_file,
-    ) == ( headerSize - 4i32 as libc::c_uint) as crate::stddef_h::size_t)
+    ) == ( headerSize - 4u32) as crate::stddef_h::size_t)
     {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_INPUT_EOF as libc::c_int;
         Some(
@@ -1182,21 +1182,21 @@ unsafe extern "C" fn start_input_bmp(
     match headerSize {
         12 => {
             /* Decode OS/2 1.x header (Microsoft calls this a BITMAPCOREHEADER) */
-            biWidth = bmpinfoheader[4] as libc::c_int as libc::c_ushort as libc::c_int
-                + ((bmpinfoheader[(4i32 + 1i32) as usize] as libc::c_int as libc::c_ushort
+            biWidth =  bmpinfoheader[4] as libc::c_int
+                + ((bmpinfoheader[(4i32 + 1i32) as usize]
                     as libc::c_int)
                     << 8i32); /* OS/2 uses RGBTRIPLE colormap */
-            biHeight = bmpinfoheader[6] as libc::c_int as libc::c_ushort as libc::c_int
-                + ((bmpinfoheader[(6i32 + 1i32) as usize] as libc::c_int as libc::c_ushort
+            biHeight =  bmpinfoheader[6] as libc::c_int
+                + ((bmpinfoheader[(6i32 + 1i32) as usize]
                     as libc::c_int)
                     << 8i32);
-            biPlanes = (bmpinfoheader[8] as libc::c_int as libc::c_ushort as libc::c_int
-                + ((bmpinfoheader[(8i32 + 1i32) as usize] as libc::c_int as libc::c_ushort
+            biPlanes = (bmpinfoheader[8] as libc::c_int
+                + ((bmpinfoheader[(8i32 + 1i32) as usize]
                     as libc::c_int)
                     << 8i32)) as libc::c_ushort;
-            (*source).bits_per_pixel = bmpinfoheader[10] as libc::c_int as libc::c_ushort
+            (*source).bits_per_pixel =  bmpinfoheader[10]
                 as libc::c_int
-                + ((bmpinfoheader[(10i32 + 1i32) as usize] as libc::c_int as libc::c_ushort
+                + ((bmpinfoheader[(10i32 + 1i32) as usize]
                     as libc::c_int)
                     << 8i32);
             match (*source).bits_per_pixel {
@@ -1247,65 +1247,65 @@ unsafe extern "C" fn start_input_bmp(
         40 | 64 => {
             /* Decode Windows 3.x header (Microsoft calls this a BITMAPINFOHEADER) */
             /* or OS/2 2.x header, which has additional fields that we ignore */
-            biWidth = (bmpinfoheader[4] as libc::c_int as libc::c_uint +
-    ((
-                    (bmpinfoheader[(4i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32)) +
-    ((
-                    (bmpinfoheader[(4i32 + 2i32) as usize] as libc::c_int as libc::c_uint) << 16i32)) +
-    ((
-                    (bmpinfoheader[(4i32 + 3i32) as usize] as libc::c_int as libc::c_uint) << 24i32))) as libc::c_int;
-            biHeight = (bmpinfoheader[8] as libc::c_int as libc::c_uint +
-    ((
-                    (bmpinfoheader[(8i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32)) +
-    ((
-                    (bmpinfoheader[(8i32 + 2i32) as usize] as libc::c_int as libc::c_uint) << 16i32)) +
-    ((
-                    (bmpinfoheader[(8i32 + 3i32) as usize] as libc::c_int as libc::c_uint) << 24i32))) as libc::c_int;
-            biPlanes = (bmpinfoheader[12] as libc::c_int as libc::c_ushort as libc::c_int
-                + ((bmpinfoheader[(12i32 + 1i32) as usize] as libc::c_int as libc::c_ushort
+            biWidth = (bmpinfoheader[4] as libc::c_uint +
+    (((
+                    (bmpinfoheader[(4i32 + 1i32) as usize] as libc::c_uint) << 8i32))) +
+    (((
+                    (bmpinfoheader[(4i32 + 2i32) as usize] as libc::c_uint) << 16i32))) +
+    (((
+                    (bmpinfoheader[(4i32 + 3i32) as usize] as libc::c_uint) << 24i32)))) as libc::c_int;
+            biHeight = (bmpinfoheader[8] as libc::c_uint +
+    (((
+                    (bmpinfoheader[(8i32 + 1i32) as usize] as libc::c_uint) << 8i32))) +
+    (((
+                    (bmpinfoheader[(8i32 + 2i32) as usize] as libc::c_uint) << 16i32))) +
+    (((
+                    (bmpinfoheader[(8i32 + 3i32) as usize] as libc::c_uint) << 24i32)))) as libc::c_int;
+            biPlanes = (bmpinfoheader[12] as libc::c_int
+                + ((bmpinfoheader[(12i32 + 1i32) as usize]
                     as libc::c_int)
                     << 8i32)) as libc::c_ushort;
-            (*source).bits_per_pixel = bmpinfoheader[14] as libc::c_int as libc::c_ushort
+            (*source).bits_per_pixel =  bmpinfoheader[14]
                 as libc::c_int
-                + ((bmpinfoheader[(14i32 + 1i32) as usize] as libc::c_int as libc::c_ushort
+                + ((bmpinfoheader[(14i32 + 1i32) as usize]
                     as libc::c_int)
                     << 8i32);
-            biCompression = bmpinfoheader[16] as libc::c_int as libc::c_uint +
-    ((
-                    (bmpinfoheader[(16i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32)) +
-    ((
-                    (bmpinfoheader[(16i32 + 2i32) as usize] as libc::c_int as libc::c_uint)
-                        << 16i32)) +
-    ((
-                    (bmpinfoheader[(16i32 + 3i32) as usize] as libc::c_int as libc::c_uint)
-                        << 24i32));
-            biXPelsPerMeter = (bmpinfoheader[24] as libc::c_int as libc::c_uint +
-    ((
-                    (bmpinfoheader[(24i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32)) +
-    ((
-                    (bmpinfoheader[(24i32 + 2i32) as usize] as libc::c_int as libc::c_uint)
-                        << 16i32)) +
-    ((
-                    (bmpinfoheader[(24i32 + 3i32) as usize] as libc::c_int as libc::c_uint)
-                        << 24i32))) as libc::c_int;
-            biYPelsPerMeter = (bmpinfoheader[28] as libc::c_int as libc::c_uint +
-    ((
-                    (bmpinfoheader[(28i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32)) +
-    ((
-                    (bmpinfoheader[(28i32 + 2i32) as usize] as libc::c_int as libc::c_uint)
-                        << 16i32)) +
-    ((
-                    (bmpinfoheader[(28i32 + 3i32) as usize] as libc::c_int as libc::c_uint)
-                        << 24i32))) as libc::c_int;
-            biClrUsed = bmpinfoheader[32] as libc::c_int as libc::c_uint +
-    ((
-                    (bmpinfoheader[(32i32 + 1i32) as usize] as libc::c_int as libc::c_uint) << 8i32)) +
-    ((
-                    (bmpinfoheader[(32i32 + 2i32) as usize] as libc::c_int as libc::c_uint)
-                        << 16i32)) +
-    ((
-                    (bmpinfoheader[(32i32 + 3i32) as usize] as libc::c_int as libc::c_uint)
-                        << 24i32));
+            biCompression =  bmpinfoheader[16] as libc::c_uint +
+    (((
+                    (bmpinfoheader[(16i32 + 1i32) as usize] as libc::c_uint) << 8i32))) +
+    (((
+                    (bmpinfoheader[(16i32 + 2i32) as usize] as libc::c_uint)
+                        << 16i32))) +
+    (((
+                    (bmpinfoheader[(16i32 + 3i32) as usize] as libc::c_uint)
+                        << 24i32)));
+            biXPelsPerMeter = (bmpinfoheader[24] as libc::c_uint +
+    (((
+                    (bmpinfoheader[(24i32 + 1i32) as usize] as libc::c_uint) << 8i32))) +
+    (((
+                    (bmpinfoheader[(24i32 + 2i32) as usize] as libc::c_uint)
+                        << 16i32))) +
+    (((
+                    (bmpinfoheader[(24i32 + 3i32) as usize] as libc::c_uint)
+                        << 24i32)))) as libc::c_int;
+            biYPelsPerMeter = (bmpinfoheader[28] as libc::c_uint +
+    (((
+                    (bmpinfoheader[(28i32 + 1i32) as usize] as libc::c_uint) << 8i32))) +
+    (((
+                    (bmpinfoheader[(28i32 + 2i32) as usize] as libc::c_uint)
+                        << 16i32))) +
+    (((
+                    (bmpinfoheader[(28i32 + 3i32) as usize] as libc::c_uint)
+                        << 24i32)))) as libc::c_int;
+            biClrUsed =  bmpinfoheader[32] as libc::c_uint +
+    (((
+                    (bmpinfoheader[(32i32 + 1i32) as usize] as libc::c_uint) << 8i32))) +
+    (((
+                    (bmpinfoheader[(32i32 + 2i32) as usize] as libc::c_uint)
+                        << 16i32))) +
+    (((
+                    (bmpinfoheader[(32i32 + 3i32) as usize] as libc::c_uint)
+                        << 24i32)));
             /* biSizeImage, biClrImportant fields are ignored */
             match (*source).bits_per_pixel {
                 8 => {
@@ -1366,7 +1366,7 @@ unsafe extern "C" fn start_input_bmp(
                     );
                 }
             }
-            if biCompression != 0i32 as libc::c_uint {
+            if biCompression != 0u32 {
                 (*(*cinfo).err).msg_code = crate::cderror_h::JERR_BMP_COMPRESSED as libc::c_int;
                 Some(
                     (*(*cinfo).err)
@@ -1381,7 +1381,7 @@ unsafe extern "C" fn start_input_bmp(
                 /* Set JFIF density parameters from the BMP data */
                 (*cinfo).X_density = (biXPelsPerMeter / 100i32) as crate::jmorecfg_h::UINT16;
                 (*cinfo).Y_density = (biYPelsPerMeter / 100i32) as crate::jmorecfg_h::UINT16;
-                (*cinfo).density_unit = 2i32 as crate::jmorecfg_h::UINT8 /* 100 cm per meter */
+                (*cinfo).density_unit = 2u8 /* 100 cm per meter */
                 /* dots/cm */
             }
         }
@@ -1421,12 +1421,12 @@ unsafe extern "C" fn start_input_bmp(
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
     /* Compute distance to bitmap data --- will adjust for colormap below */
-    bPad = ( bfOffBits - (headerSize + 14i32 as libc::c_uint)) as libc::c_int;
+    bPad = ( bfOffBits - (headerSize + 14u32)) as libc::c_int;
     /* Read the colormap, if any */
     if mapentrysize > 0i32 {
-        if biClrUsed <= 0i32 as libc::c_uint {
-            biClrUsed = 256i32 as libc::c_uint
-        } else if biClrUsed > 256i32 as libc::c_uint {
+        if biClrUsed <= 0u32 {
+            biClrUsed = 256u32
+        } else if biClrUsed > 256u32 {
             (*(*cinfo).err).msg_code = crate::cderror_h::JERR_BMP_BADCMAP as libc::c_int; /* assume it's 256 */
             Some(
                 (*(*cinfo).err)
@@ -1447,14 +1447,13 @@ unsafe extern "C" fn start_input_bmp(
             cinfo as crate::jpeglib_h::j_common_ptr,
             crate::jpeglib_h::JPOOL_IMAGE,
             biClrUsed,
-            3i32 as crate::jmorecfg_h::JDIMENSION,
+            3u32,
         );
         (*source).cmap_length = biClrUsed as libc::c_int;
         /* and read it from the file */
         read_colormap(source, biClrUsed as libc::c_int, mapentrysize);
         /* account for size of colormap */
-        bPad = (bPad as libc::c_uint - biClrUsed * mapentrysize as libc::c_uint)
-            as libc::c_int as libc::c_int
+        bPad = ((bPad as libc::c_uint - biClrUsed * mapentrysize as libc::c_uint)) as libc::c_int
     }
     /* Skip any remaining pad bytes */
     if bPad < 0i32 {
@@ -1477,25 +1476,25 @@ unsafe extern "C" fn start_input_bmp(
     /* Compute row width in file, including padding to 4-byte boundary */
     match (*source).bits_per_pixel {
         8 => {
-            if (*cinfo).in_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_UNKNOWN as libc::c_int as libc::c_uint
+            if  (*cinfo).in_color_space
+                ==  crate::jpeglib_h::JCS_UNKNOWN
             {
                 (*cinfo).in_color_space = crate::jpeglib_h::JCS_EXT_RGB
             }
-            if (*cinfo).in_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_RGB as libc::c_int as libc::c_uint
-                || (*cinfo).in_color_space as libc::c_uint
-                    >= crate::jpeglib_h::JCS_EXT_RGB as libc::c_int as libc::c_uint
-                    && (*cinfo).in_color_space as libc::c_uint
-                        <= crate::jpeglib_h::JCS_EXT_ARGB as libc::c_int as libc::c_uint
+            if  (*cinfo).in_color_space
+                ==  crate::jpeglib_h::JCS_RGB
+                ||  (*cinfo).in_color_space
+                    >=  crate::jpeglib_h::JCS_EXT_RGB
+                    &&  (*cinfo).in_color_space
+                        <=  crate::jpeglib_h::JCS_EXT_ARGB
             {
                 (*cinfo).input_components = rgb_pixelsize[(*cinfo).in_color_space as usize]
-            } else if (*cinfo).in_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_GRAYSCALE as libc::c_int as libc::c_uint
+            } else if  (*cinfo).in_color_space
+                ==  crate::jpeglib_h::JCS_GRAYSCALE
             {
                 (*cinfo).input_components = 1i32
-            } else if (*cinfo).in_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_CMYK as libc::c_int as libc::c_uint
+            } else if  (*cinfo).in_color_space
+                ==  crate::jpeglib_h::JCS_CMYK
             {
                 (*cinfo).input_components = 4i32
             } else {
@@ -1513,21 +1512,21 @@ unsafe extern "C" fn start_input_bmp(
             row_width = biWidth as crate::jmorecfg_h::JDIMENSION
         }
         24 => {
-            if (*cinfo).in_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_UNKNOWN as libc::c_int as libc::c_uint
+            if  (*cinfo).in_color_space
+                ==  crate::jpeglib_h::JCS_UNKNOWN
             {
                 (*cinfo).in_color_space = crate::jpeglib_h::JCS_EXT_BGR
             }
-            if (*cinfo).in_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_RGB as libc::c_int as libc::c_uint
-                || (*cinfo).in_color_space as libc::c_uint
-                    >= crate::jpeglib_h::JCS_EXT_RGB as libc::c_int as libc::c_uint
-                    && (*cinfo).in_color_space as libc::c_uint
-                        <= crate::jpeglib_h::JCS_EXT_ARGB as libc::c_int as libc::c_uint
+            if  (*cinfo).in_color_space
+                ==  crate::jpeglib_h::JCS_RGB
+                ||  (*cinfo).in_color_space
+                    >=  crate::jpeglib_h::JCS_EXT_RGB
+                    &&  (*cinfo).in_color_space
+                        <=  crate::jpeglib_h::JCS_EXT_ARGB
             {
                 (*cinfo).input_components = rgb_pixelsize[(*cinfo).in_color_space as usize]
-            } else if (*cinfo).in_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_CMYK as libc::c_int as libc::c_uint
+            } else if  (*cinfo).in_color_space
+                ==  crate::jpeglib_h::JCS_CMYK
             {
                 (*cinfo).input_components = 4i32
             } else {
@@ -1545,21 +1544,21 @@ unsafe extern "C" fn start_input_bmp(
             row_width = (biWidth * 3i32) as crate::jmorecfg_h::JDIMENSION
         }
         32 => {
-            if (*cinfo).in_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_UNKNOWN as libc::c_int as libc::c_uint
+            if  (*cinfo).in_color_space
+                ==  crate::jpeglib_h::JCS_UNKNOWN
             {
                 (*cinfo).in_color_space = crate::jpeglib_h::JCS_EXT_BGRA
             }
-            if (*cinfo).in_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_RGB as libc::c_int as libc::c_uint
-                || (*cinfo).in_color_space as libc::c_uint
-                    >= crate::jpeglib_h::JCS_EXT_RGB as libc::c_int as libc::c_uint
-                    && (*cinfo).in_color_space as libc::c_uint
-                        <= crate::jpeglib_h::JCS_EXT_ARGB as libc::c_int as libc::c_uint
+            if  (*cinfo).in_color_space
+                ==  crate::jpeglib_h::JCS_RGB
+                ||  (*cinfo).in_color_space
+                    >=  crate::jpeglib_h::JCS_EXT_RGB
+                    &&  (*cinfo).in_color_space
+                        <=  crate::jpeglib_h::JCS_EXT_ARGB
             {
                 (*cinfo).input_components = rgb_pixelsize[(*cinfo).in_color_space as usize]
-            } else if (*cinfo).in_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_CMYK as libc::c_int as libc::c_uint
+            } else if  (*cinfo).in_color_space
+                ==  crate::jpeglib_h::JCS_CMYK
             {
                 (*cinfo).input_components = 4i32
             } else {
@@ -1588,7 +1587,7 @@ unsafe extern "C" fn start_input_bmp(
             );
         }
     }
-    while row_width & 3i32 as libc::c_uint != 0i32 as libc::c_uint {
+    while row_width & 3u32 != 0u32 {
         row_width =  row_width + 1
     }
     (*source).row_width = row_width;
@@ -1605,7 +1604,7 @@ unsafe extern "C" fn start_input_bmp(
             crate::jmorecfg_h::FALSE,
             row_width,
             biHeight as crate::jmorecfg_h::JDIMENSION,
-            1i32 as crate::jmorecfg_h::JDIMENSION,
+            1u32,
         );
         (*source).pub_0.get_pixel_rows = Some(
             preload_image
@@ -1699,9 +1698,9 @@ unsafe extern "C" fn start_input_bmp(
         cinfo as crate::jpeglib_h::j_common_ptr,
         crate::jpeglib_h::JPOOL_IMAGE,
         (biWidth * (*cinfo).input_components) as crate::jmorecfg_h::JDIMENSION,
-        1i32 as crate::jmorecfg_h::JDIMENSION,
+        1u32,
     );
-    (*source).pub_0.buffer_height = 1i32 as crate::jmorecfg_h::JDIMENSION;
+    (*source).pub_0.buffer_height = 1u32;
     (*cinfo).data_precision = 8i32;
     (*cinfo).image_width = biWidth as crate::jmorecfg_h::JDIMENSION;
     (*cinfo).image_height = biHeight as crate::jmorecfg_h::JDIMENSION;

@@ -231,7 +231,7 @@ pub unsafe extern "C" fn ycc_extxbgr_convert_internal(
         let fresh0 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh0;
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols {
             y = *inptr0.offset(col as isize) as libc::c_int;
             cb = *inptr1.offset(col as isize) as libc::c_int;
@@ -265,7 +265,7 @@ pub unsafe extern "C" fn ycc_extxbgr_convert_internal(
             /* alpha channel value */
             /* Set unused byte to 0xFF so it can be interpreted as an opaque */
             /* alpha channel value */
-            *outptr.offset(RGB_ALPHA_0 as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
+            *outptr.offset(RGB_ALPHA_0 as isize) = 0xffu8;
             outptr = outptr.offset(RGB_PIXELSIZE_0 as isize);
             col =  col + 1
         }
@@ -306,7 +306,7 @@ pub unsafe extern "C" fn ycc_extrgbx_convert_internal(
         let fresh1 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh1;
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols {
             y = *inptr0.offset(col as isize) as libc::c_int;
             cb = *inptr1.offset(col as isize) as libc::c_int;
@@ -319,7 +319,7 @@ pub unsafe extern "C" fn ycc_extrgbx_convert_internal(
             );
             *outptr.offset(RGB_BLUE_2 as isize) =
                 *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize);
-            *outptr.offset(RGB_ALPHA_2 as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
+            *outptr.offset(RGB_ALPHA_2 as isize) = 0xffu8;
             outptr = outptr.offset(RGB_PIXELSIZE_2 as isize);
             col =  col + 1
         }
@@ -360,7 +360,7 @@ pub unsafe extern "C" fn ycc_rgb_convert_internal(
         let fresh2 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh2;
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols {
             y = *inptr0.offset(col as isize) as libc::c_int;
             cb = *inptr1.offset(col as isize) as libc::c_int;
@@ -413,7 +413,7 @@ pub unsafe extern "C" fn ycc_extxrgb_convert_internal(
         let fresh3 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh3;
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols {
             y = *inptr0.offset(col as isize) as libc::c_int;
             cb = *inptr1.offset(col as isize) as libc::c_int;
@@ -426,7 +426,7 @@ pub unsafe extern "C" fn ycc_extxrgb_convert_internal(
             );
             *outptr.offset(RGB_BLUE as isize) =
                 *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize);
-            *outptr.offset(RGB_ALPHA as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
+            *outptr.offset(RGB_ALPHA as isize) = 0xffu8;
             outptr = outptr.offset(RGB_PIXELSIZE as isize);
             col =  col + 1
         }
@@ -467,7 +467,7 @@ pub unsafe extern "C" fn ycc_extbgr_convert_internal(
         let fresh4 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh4;
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols {
             y = *inptr0.offset(col as isize) as libc::c_int;
             cb = *inptr1.offset(col as isize) as libc::c_int;
@@ -520,7 +520,7 @@ pub unsafe extern "C" fn ycc_extbgrx_convert_internal(
         let fresh5 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh5;
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols {
             y = *inptr0.offset(col as isize) as libc::c_int;
             cb = *inptr1.offset(col as isize) as libc::c_int;
@@ -533,7 +533,7 @@ pub unsafe extern "C" fn ycc_extbgrx_convert_internal(
             );
             *outptr.offset(RGB_BLUE_1 as isize) =
                 *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize);
-            *outptr.offset(RGB_ALPHA_1 as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
+            *outptr.offset(RGB_ALPHA_1 as isize) = 0xffu8;
             outptr = outptr.offset(RGB_PIXELSIZE_1 as isize);
             col =  col + 1
         }
@@ -574,7 +574,7 @@ pub unsafe extern "C" fn ycc_extrgb_convert_internal(
         let fresh6 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh6;
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols {
             y = *inptr0.offset(col as isize) as libc::c_int;
             cb = *inptr1.offset(col as isize) as libc::c_int;
@@ -656,7 +656,7 @@ pub unsafe extern "C" fn gray_extrgb_convert_internal(
         let fresh8 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh8;
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols {
             /* We can dispense with GETJSAMPLE() here */
             /* We can dispense with GETJSAMPLE() here */
@@ -712,14 +712,14 @@ pub unsafe extern "C" fn gray_extrgbx_convert_internal(
         let fresh12 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh12;
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols {
             let ref mut fresh13 = *outptr.offset(RGB_BLUE_2 as isize);
             *fresh13 = *inptr.offset(col as isize);
             let ref mut fresh14 = *outptr.offset(RGB_GREEN_2 as isize);
             *fresh14 = *fresh13;
             *outptr.offset(RGB_RED_2 as isize) = *fresh14;
-            *outptr.offset(RGB_ALPHA_2 as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
+            *outptr.offset(RGB_ALPHA_2 as isize) = 0xffu8;
             outptr = outptr.offset(RGB_PIXELSIZE_2 as isize);
             col =  col + 1
         }
@@ -748,7 +748,7 @@ pub unsafe extern "C" fn gray_extbgr_convert_internal(
         let fresh16 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh16;
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols {
             let ref mut fresh17 = *outptr.offset(RGB_BLUE_3 as isize);
             *fresh17 = *inptr.offset(col as isize);
@@ -783,14 +783,14 @@ pub unsafe extern "C" fn gray_extbgrx_convert_internal(
         let fresh20 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh20;
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols {
             let ref mut fresh21 = *outptr.offset(RGB_BLUE_1 as isize);
             *fresh21 = *inptr.offset(col as isize);
             let ref mut fresh22 = *outptr.offset(RGB_GREEN_1 as isize);
             *fresh22 = *fresh21;
             *outptr.offset(RGB_RED_1 as isize) = *fresh22;
-            *outptr.offset(RGB_ALPHA_1 as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
+            *outptr.offset(RGB_ALPHA_1 as isize) = 0xffu8;
             outptr = outptr.offset(RGB_PIXELSIZE_1 as isize);
             col =  col + 1
         }
@@ -819,14 +819,14 @@ pub unsafe extern "C" fn gray_extxbgr_convert_internal(
         let fresh24 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh24;
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols {
             let ref mut fresh25 = *outptr.offset(RGB_BLUE_0 as isize);
             *fresh25 = *inptr.offset(col as isize);
             let ref mut fresh26 = *outptr.offset(RGB_GREEN_0 as isize);
             *fresh26 = *fresh25;
             *outptr.offset(RGB_RED_0 as isize) = *fresh26;
-            *outptr.offset(RGB_ALPHA_0 as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
+            *outptr.offset(RGB_ALPHA_0 as isize) = 0xffu8;
             outptr = outptr.offset(RGB_PIXELSIZE_0 as isize);
             col =  col + 1
         }
@@ -855,14 +855,14 @@ pub unsafe extern "C" fn gray_extxrgb_convert_internal(
         let fresh28 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh28;
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols {
             let ref mut fresh29 = *outptr.offset(RGB_BLUE as isize);
             *fresh29 = *inptr.offset(col as isize);
             let ref mut fresh30 = *outptr.offset(RGB_GREEN as isize);
             *fresh30 = *fresh29;
             *outptr.offset(RGB_RED as isize) = *fresh30;
-            *outptr.offset(RGB_ALPHA as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
+            *outptr.offset(RGB_ALPHA as isize) = 0xffu8;
             outptr = outptr.offset(RGB_PIXELSIZE as isize);
             col =  col + 1
         }
@@ -891,7 +891,7 @@ pub unsafe extern "C" fn gray_rgb_convert_internal(
         let fresh32 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh32;
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols {
             let ref mut fresh33 = *outptr.offset(crate::jmorecfg_h::RGB_BLUE_5 as isize);
             *fresh33 = *inptr.offset(col as isize);
@@ -956,7 +956,7 @@ pub unsafe extern "C" fn rgb_extbgr_convert_internal(
         let fresh35 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh35;
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols {
             /* We can dispense with GETJSAMPLE() here */
             /* We can dispense with GETJSAMPLE() here */
@@ -1013,7 +1013,7 @@ pub unsafe extern "C" fn rgb_extrgb_convert_internal(
         let fresh36 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh36;
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols {
             *outptr.offset(RGB_RED_4 as isize) = *inptr0.offset(col as isize);
             *outptr.offset(RGB_GREEN_4 as isize) = *inptr1.offset(col as isize);
@@ -1049,12 +1049,12 @@ pub unsafe extern "C" fn rgb_extrgbx_convert_internal(
         let fresh37 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh37;
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols {
             *outptr.offset(RGB_RED_2 as isize) = *inptr0.offset(col as isize);
             *outptr.offset(RGB_GREEN_2 as isize) = *inptr1.offset(col as isize);
             *outptr.offset(RGB_BLUE_2 as isize) = *inptr2.offset(col as isize);
-            *outptr.offset(RGB_ALPHA_2 as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
+            *outptr.offset(RGB_ALPHA_2 as isize) = 0xffu8;
             outptr = outptr.offset(RGB_PIXELSIZE_2 as isize);
             col =  col + 1
         }
@@ -1086,12 +1086,12 @@ pub unsafe extern "C" fn rgb_extbgrx_convert_internal(
         let fresh38 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh38;
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols {
             *outptr.offset(RGB_RED_1 as isize) = *inptr0.offset(col as isize);
             *outptr.offset(RGB_GREEN_1 as isize) = *inptr1.offset(col as isize);
             *outptr.offset(RGB_BLUE_1 as isize) = *inptr2.offset(col as isize);
-            *outptr.offset(RGB_ALPHA_1 as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
+            *outptr.offset(RGB_ALPHA_1 as isize) = 0xffu8;
             outptr = outptr.offset(RGB_PIXELSIZE_1 as isize);
             col =  col + 1
         }
@@ -1123,12 +1123,12 @@ pub unsafe extern "C" fn rgb_extxbgr_convert_internal(
         let fresh39 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh39;
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols {
             *outptr.offset(RGB_RED_0 as isize) = *inptr0.offset(col as isize);
             *outptr.offset(RGB_GREEN_0 as isize) = *inptr1.offset(col as isize);
             *outptr.offset(RGB_BLUE_0 as isize) = *inptr2.offset(col as isize);
-            *outptr.offset(RGB_ALPHA_0 as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
+            *outptr.offset(RGB_ALPHA_0 as isize) = 0xffu8;
             outptr = outptr.offset(RGB_PIXELSIZE_0 as isize);
             col =  col + 1
         }
@@ -1160,12 +1160,12 @@ pub unsafe extern "C" fn rgb_extxrgb_convert_internal(
         let fresh40 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh40;
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols {
             *outptr.offset(RGB_RED as isize) = *inptr0.offset(col as isize);
             *outptr.offset(RGB_GREEN as isize) = *inptr1.offset(col as isize);
             *outptr.offset(RGB_BLUE as isize) = *inptr2.offset(col as isize);
-            *outptr.offset(RGB_ALPHA as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
+            *outptr.offset(RGB_ALPHA as isize) = 0xffu8;
             outptr = outptr.offset(RGB_PIXELSIZE as isize);
             col =  col + 1
         }
@@ -1197,7 +1197,7 @@ pub unsafe extern "C" fn rgb_rgb_convert_internal(
         let fresh41 = output_buf;
         output_buf = output_buf.offset(1);
         outptr = *fresh41;
-        col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        col = 0u32;
         while col < num_cols {
             *outptr.offset(crate::jmorecfg_h::RGB_RED_5 as isize) = *inptr0.offset(col as isize);
             *outptr.offset(crate::jmorecfg_h::RGB_GREEN_5 as isize) = *inptr1.offset(col as isize);

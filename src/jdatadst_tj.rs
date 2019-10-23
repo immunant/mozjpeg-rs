@@ -283,7 +283,7 @@ unsafe extern "C" fn empty_mem_output_buffer(
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
     /* Try to allocate new buffer with double size */
-    nextsize =  (*dest).bufsize * 2i32 as libc::c_ulong;
+    nextsize =  (*dest).bufsize * 2u64;
     nextbuffer = crate::stdlib::malloc(nextsize) as *mut crate::jmorecfg_h::JOCTET;
     if nextbuffer.is_null() {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_OUT_OF_MEMORY as libc::c_int;
@@ -409,7 +409,7 @@ pub unsafe extern "C" fn jpeg_mem_dest_tj(
     (*dest).outbuffer = outbuffer;
     (*dest).outsize = outsize;
     (*dest).alloc = alloc;
-    if (*outbuffer).is_null() || *outsize == 0i32 as libc::c_ulong {
+    if (*outbuffer).is_null() || *outsize == 0u64 {
         if alloc != 0 {
             /* Allocate initial buffer */
             *outbuffer =

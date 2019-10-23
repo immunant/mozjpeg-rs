@@ -370,7 +370,8 @@ pub const EOF: libc::c_int = -1i32;
 pub unsafe extern "C" fn atof(mut __nptr: *const libc::c_char) -> libc::c_double {
     return crate::stdlib::strtod(
         __nptr,
-        crate::stddef_h::NULL as *mut libc::c_void as *mut *mut libc::c_char,
+        
+        crate::stddef_h::NULL as *mut *mut libc::c_char,
     );
 }
 // ================ END stdlib_float_h ================
@@ -379,7 +380,8 @@ pub unsafe extern "C" fn atof(mut __nptr: *const libc::c_char) -> libc::c_double
 pub unsafe extern "C" fn atoi(mut __nptr: *const libc::c_char) -> libc::c_int {
     return crate::stdlib::strtol(
         __nptr,
-        crate::stddef_h::NULL as *mut libc::c_void as *mut *mut libc::c_char,
+        
+        crate::stddef_h::NULL as *mut *mut libc::c_char,
         10i32,
     ) as libc::c_int;
 }

@@ -118,13 +118,13 @@ pub unsafe extern "C" fn start_iMCU_row(mut cinfo: crate::jpeglib_h::j_decompres
      */
     if (*cinfo).comps_in_scan > 1i32 {
         (*coef).MCU_rows_per_iMCU_row = 1i32
-    } else if (*cinfo).input_iMCU_row <  (*cinfo).total_iMCU_rows - 1i32 as libc::c_uint
+    } else if (*cinfo).input_iMCU_row <  (*cinfo).total_iMCU_rows - 1u32
     {
         (*coef).MCU_rows_per_iMCU_row = (*(*cinfo).cur_comp_info[0]).v_samp_factor
     } else {
         (*coef).MCU_rows_per_iMCU_row = (*(*cinfo).cur_comp_info[0]).last_row_height
     }
-    (*coef).MCU_ctr = 0i32 as crate::jmorecfg_h::JDIMENSION;
+    (*coef).MCU_ctr = 0u32;
     (*coef).MCU_vert_offset = 0i32;
 }
 /*
@@ -162,7 +162,7 @@ pub const SAVED_COEFS: libc::c_int = 6i32;
  */
 
 unsafe extern "C" fn start_input_pass(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
-    (*cinfo).input_iMCU_row = 0i32 as crate::jmorecfg_h::JDIMENSION;
+    (*cinfo).input_iMCU_row = 0u32;
     crate::src::jdcoefct::start_iMCU_row(cinfo);
 }
 /*
@@ -192,7 +192,7 @@ unsafe extern "C" fn start_output_pass(mut cinfo: crate::jpeglib_h::j_decompress
             )
         }
     }
-    (*cinfo).output_iMCU_row = 0i32 as crate::jmorecfg_h::JDIMENSION;
+    (*cinfo).output_iMCU_row = 0u32;
 }
 /*
  * jdcoefct.c
@@ -234,10 +234,10 @@ unsafe extern "C" fn decompress_onepass(
     let mut MCU_col_num: crate::jmorecfg_h::JDIMENSION = 0;
     let mut last_MCU_col: crate::jmorecfg_h::JDIMENSION =
         
-        (*cinfo).MCUs_per_row - 1i32 as libc::c_uint;
+        (*cinfo).MCUs_per_row - 1u32;
     let mut last_iMCU_row: crate::jmorecfg_h::JDIMENSION =
         
-        (*cinfo).total_iMCU_rows - 1i32 as libc::c_uint;
+        (*cinfo).total_iMCU_rows - 1u32;
     let mut blkn: libc::c_int = 0;
     let mut ci: libc::c_int = 0;
     let mut xindex: libc::c_int = 0;
@@ -323,9 +323,7 @@ unsafe extern "C" fn decompress_onepass(
                                         output_ptr,
                                         output_col,
                                     );
-                                    output_col = (output_col as libc::c_uint + (*compptr).DCT_scaled_size as libc::c_uint)
-                                        as crate::jmorecfg_h::JDIMENSION
-                                        as crate::jmorecfg_h::JDIMENSION;
+                                    output_col = output_col + (*compptr).DCT_scaled_size as libc::c_uint;
                                     xindex += 1
                                 }
                             }
@@ -340,7 +338,7 @@ unsafe extern "C" fn decompress_onepass(
             MCU_col_num =  MCU_col_num + 1
         }
         /* Completed an MCU row, but perhaps not an iMCU row */
-        (*coef).MCU_ctr = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        (*coef).MCU_ctr = 0u32;
         yoffset += 1
     }
     /* Completed the iMCU row, advance counters for next one */
@@ -460,7 +458,7 @@ unsafe extern "C" fn consume_data(mut cinfo: crate::jpeglib_h::j_decompress_ptr)
             MCU_col_num =  MCU_col_num + 1
         }
         /* Completed an MCU row, but perhaps not an iMCU row */
-        (*coef).MCU_ctr = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        (*coef).MCU_ctr = 0u32;
         yoffset += 1
     }
     /* Completed the iMCU row, advance counters for next one */
@@ -494,7 +492,7 @@ unsafe extern "C" fn decompress_data(
         (*cinfo).coef as crate::src::jdcoefct::my_coef_ptr;
     let mut last_iMCU_row: crate::jmorecfg_h::JDIMENSION =
         
-        (*cinfo).total_iMCU_rows - 1i32 as libc::c_uint;
+        (*cinfo).total_iMCU_rows - 1u32;
     let mut block_num: crate::jmorecfg_h::JDIMENSION = 0;
     let mut ci: libc::c_int = 0;
     let mut block_row: libc::c_int = 0;
@@ -562,7 +560,7 @@ unsafe extern "C" fn decompress_data(
             while block_row < block_rows {
                 buffer_ptr = (*buffer.offset(block_row as isize))
                     .offset((*(*cinfo).master).first_MCU_col[ci as usize] as isize);
-                output_col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+                output_col = 0u32;
                 block_num = (*(*cinfo).master).first_MCU_col[ci as usize];
                 while block_num <= (*(*cinfo).master).last_MCU_col[ci as usize] {
                     Some(inverse_DCT.expect("non-null function pointer"))
@@ -574,9 +572,7 @@ unsafe extern "C" fn decompress_data(
                         output_col,
                     );
                     buffer_ptr = buffer_ptr.offset(1);
-                    output_col = (output_col as libc::c_uint + (*compptr).DCT_scaled_size as libc::c_uint)
-                        as crate::jmorecfg_h::JDIMENSION
-                        as crate::jmorecfg_h::JDIMENSION;
+                    output_col = output_col + (*compptr).DCT_scaled_size as libc::c_uint;
                     block_num =  block_num + 1
                 }
                 output_ptr = output_ptr.offset((*compptr).DCT_scaled_size as isize);
@@ -701,7 +697,7 @@ unsafe extern "C" fn decompress_smooth_data(
         (*cinfo).coef as crate::src::jdcoefct::my_coef_ptr;
     let mut last_iMCU_row: crate::jmorecfg_h::JDIMENSION =
         
-        (*cinfo).total_iMCU_rows - 1i32 as libc::c_uint;
+        (*cinfo).total_iMCU_rows - 1u32;
     let mut block_num: crate::jmorecfg_h::JDIMENSION = 0;
     let mut last_block_column: crate::jmorecfg_h::JDIMENSION = 0;
     let mut ci: libc::c_int = 0;
@@ -792,7 +788,7 @@ unsafe extern "C" fn decompress_smooth_data(
                 last_row = crate::jmorecfg_h::TRUE
             }
             /* Align the virtual buffer for this component. */
-            if (*cinfo).output_iMCU_row > 0i32 as libc::c_uint {
+            if (*cinfo).output_iMCU_row > 0u32 {
                 access_rows += (*compptr).v_samp_factor; /* prior iMCU row too */
                 buffer = Some(
                     (*(*cinfo).mem)
@@ -804,7 +800,7 @@ unsafe extern "C" fn decompress_smooth_data(
                     (*coef).whole_image[ci as usize],
                     (
                     (*cinfo)
-                        .output_iMCU_row - 1i32 as libc::c_uint) *
+                        .output_iMCU_row - 1u32) *
     (*compptr).v_samp_factor as libc::c_uint,
                     access_rows as crate::jmorecfg_h::JDIMENSION,
                     crate::jmorecfg_h::FALSE,
@@ -820,7 +816,7 @@ unsafe extern "C" fn decompress_smooth_data(
                 .expect("non-null function pointer")(
                     cinfo as crate::jpeglib_h::j_common_ptr,
                     (*coef).whole_image[ci as usize],
-                    0i32 as crate::jmorecfg_h::JDIMENSION,
+                    0u32,
                     access_rows as crate::jmorecfg_h::JDIMENSION,
                     crate::jmorecfg_h::FALSE,
                 );
@@ -866,16 +862,16 @@ unsafe extern "C" fn decompress_smooth_data(
                 DC9 = (*next_block_row.offset(0))[0] as libc::c_int;
                 DC8 = DC9;
                 DC7 = DC8;
-                output_col = 0i32 as crate::jmorecfg_h::JDIMENSION;
+                output_col = 0u32;
                 last_block_column =  (*compptr)
-                    .width_in_blocks - 1i32 as libc::c_uint;
+                    .width_in_blocks - 1u32;
                 block_num = (*(*cinfo).master).first_MCU_col[ci as usize];
                 while block_num <= (*(*cinfo).master).last_MCU_col[ci as usize] {
                     /* Fetch current DCT block into workspace so we can modify it. */
                     crate::jpegint_h::jcopy_block_row(
                         buffer_ptr,
                         workspace as crate::jpeglib_h::JBLOCKROW,
-                        1i32 as crate::jmorecfg_h::JDIMENSION,
+                        1u32,
                     );
                     /* Update DC values */
                     if block_num < last_block_column {
@@ -890,8 +886,8 @@ unsafe extern "C" fn decompress_smooth_data(
                     /* AC01 */
                     Al = *coef_bits.offset(1);
                     if Al != 0i32 && *workspace.offset(1) as libc::c_int == 0i32 {
-                        num = 36i32 as libc::c_long * Q00 * (DC4 - DC6) as libc::c_long;
-                        if num >= 0i32 as libc::c_long {
+                        num = 36i64 * Q00 * (DC4 - DC6) as libc::c_long;
+                        if num >= 0i64 {
                             pred = (((Q01 << 7i32) + num) / (Q01 << 8i32)) as libc::c_int;
                             if Al > 0i32 && pred >= 1i32 << Al {
                                 pred = (1i32 << Al) - 1i32
@@ -908,8 +904,8 @@ unsafe extern "C" fn decompress_smooth_data(
                     /* AC10 */
                     Al = *coef_bits.offset(2);
                     if Al != 0i32 && *workspace.offset(8) as libc::c_int == 0i32 {
-                        num = 36i32 as libc::c_long * Q00 * (DC2 - DC8) as libc::c_long;
-                        if num >= 0i32 as libc::c_long {
+                        num = 36i64 * Q00 * (DC2 - DC8) as libc::c_long;
+                        if num >= 0i64 {
                             pred = (((Q10 << 7i32) + num) / (Q10 << 8i32)) as libc::c_int;
                             if Al > 0i32 && pred >= 1i32 << Al {
                                 pred = (1i32 << Al) - 1i32
@@ -926,8 +922,8 @@ unsafe extern "C" fn decompress_smooth_data(
                     /* AC20 */
                     Al = *coef_bits.offset(3);
                     if Al != 0i32 && *workspace.offset(16) as libc::c_int == 0i32 {
-                        num = 9i32 as libc::c_long * Q00 * (DC2 + DC8 - 2i32 * DC5) as libc::c_long;
-                        if num >= 0i32 as libc::c_long {
+                        num = 9i64 * Q00 * (DC2 + DC8 - 2i32 * DC5) as libc::c_long;
+                        if num >= 0i64 {
                             pred = (((Q20 << 7i32) + num) / (Q20 << 8i32)) as libc::c_int;
                             if Al > 0i32 && pred >= 1i32 << Al {
                                 pred = (1i32 << Al) - 1i32
@@ -944,8 +940,8 @@ unsafe extern "C" fn decompress_smooth_data(
                     /* AC11 */
                     Al = *coef_bits.offset(4);
                     if Al != 0i32 && *workspace.offset(9) as libc::c_int == 0i32 {
-                        num = 5i32 as libc::c_long * Q00 * (DC1 - DC3 - DC7 + DC9) as libc::c_long;
-                        if num >= 0i32 as libc::c_long {
+                        num = 5i64 * Q00 * (DC1 - DC3 - DC7 + DC9) as libc::c_long;
+                        if num >= 0i64 {
                             pred = (((Q11 << 7i32) + num) / (Q11 << 8i32)) as libc::c_int;
                             if Al > 0i32 && pred >= 1i32 << Al {
                                 pred = (1i32 << Al) - 1i32
@@ -962,8 +958,8 @@ unsafe extern "C" fn decompress_smooth_data(
                     /* AC02 */
                     Al = *coef_bits.offset(5);
                     if Al != 0i32 && *workspace.offset(2) as libc::c_int == 0i32 {
-                        num = 9i32 as libc::c_long * Q00 * (DC4 + DC6 - 2i32 * DC5) as libc::c_long;
-                        if num >= 0i32 as libc::c_long {
+                        num = 9i64 * Q00 * (DC4 + DC6 - 2i32 * DC5) as libc::c_long;
+                        if num >= 0i64 {
                             pred = (((Q02 << 7i32) + num) / (Q02 << 8i32)) as libc::c_int;
                             if Al > 0i32 && pred >= 1i32 << Al {
                                 pred = (1i32 << Al) - 1i32
@@ -992,9 +988,7 @@ unsafe extern "C" fn decompress_smooth_data(
                     buffer_ptr = buffer_ptr.offset(1);
                     prev_block_row = prev_block_row.offset(1);
                     next_block_row = next_block_row.offset(1);
-                    output_col = (output_col as libc::c_uint + (*compptr).DCT_scaled_size as libc::c_uint)
-                        as crate::jmorecfg_h::JDIMENSION
-                        as crate::jmorecfg_h::JDIMENSION;
+                    output_col = output_col + (*compptr).DCT_scaled_size as libc::c_uint;
                     block_num =  block_num + 1
                 }
                 output_ptr = output_ptr.offset((*compptr).DCT_scaled_size as isize);

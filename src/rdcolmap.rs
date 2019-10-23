@@ -520,7 +520,7 @@ unsafe extern "C" fn read_pbm_integer(
         if !(ch >= '0' as i32 && ch <= '9' as i32) {
             break;
         }
-        val =  val * 10i32 as libc::c_uint;
+        val =  val * 10u32;
         val =  val + (ch - '0' as i32) as libc::c_uint
     }
     return val;
@@ -548,7 +548,7 @@ unsafe extern "C" fn read_ppm_map(
     w = read_pbm_integer(cinfo, infile);
     h = read_pbm_integer(cinfo, infile);
     maxval = read_pbm_integer(cinfo, infile);
-    if w <= 0i32 as libc::c_uint || h <= 0i32 as libc::c_uint || maxval <= 0i32 as libc::c_uint {
+    if w <= 0u32 || h <= 0u32 || maxval <= 0u32 {
         /* error check */
         (*(*cinfo).err).msg_code = crate::cderror_h::JERR_BAD_CMAP_FILE as libc::c_int;
         Some(
@@ -571,9 +571,9 @@ unsafe extern "C" fn read_ppm_map(
     match c {
         51 => {
             /* it's a text-format PPM file */
-            row = 0i32 as libc::c_uint;
+            row = 0u32;
             while row < h {
-                col = 0i32 as libc::c_uint;
+                col = 0u32;
                 while col < w {
                     R = read_pbm_integer(cinfo, infile) as libc::c_int;
                     G = read_pbm_integer(cinfo, infile) as libc::c_int;
@@ -586,9 +586,9 @@ unsafe extern "C" fn read_ppm_map(
         }
         54 => {
             /* it's a raw-format PPM file */
-            row = 0i32 as libc::c_uint;
+            row = 0u32;
             while row < h {
-                col = 0i32 as libc::c_uint;
+                col = 0u32;
                 while col < w {
                     R = crate::stdlib::getc(infile);
                     G = crate::stdlib::getc(infile);
@@ -697,7 +697,7 @@ pub unsafe extern "C" fn read_color_map(
         cinfo as crate::jpeglib_h::j_common_ptr,
         crate::jpeglib_h::JPOOL_IMAGE,
         (crate::jmorecfg_h::MAXJSAMPLE + 1i32) as crate::jmorecfg_h::JDIMENSION,
-        3i32 as crate::jmorecfg_h::JDIMENSION,
+        3u32,
     ); /* initialize map to empty */
     (*cinfo).actual_number_of_colors = 0i32;
     /* Read first byte to determine file format */

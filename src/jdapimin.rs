@@ -277,9 +277,9 @@ pub unsafe extern "C" fn jpeg_CreateDecompress(
         != ::std::mem::size_of::<crate::jpeglib_h::jpeg_decompress_struct>() as libc::c_ulong
     {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STRUCT_SIZE as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = ::std::mem::size_of::<
+        (*(*cinfo).err).msg_parm.i[0] =  ::std::mem::size_of::<
             crate::jpeglib_h::jpeg_decompress_struct,
-        >() as libc::c_ulong as libc::c_int;
+        >() as libc::c_int;
         (*(*cinfo).err).msg_parm.i[1] = structsize as libc::c_int;
         Some(
             (*(*cinfo).err)
@@ -471,8 +471,8 @@ unsafe extern "C" fn default_decompress_parms(mut cinfo: crate::jpeglib_h::j_dec
         }
     }
     /* Set defaults for other decompression parameters. */
-    (*cinfo).scale_num = 1i32 as libc::c_uint; /* 1:1 scaling */
-    (*cinfo).scale_denom = 1i32 as libc::c_uint;
+    (*cinfo).scale_num = 1u32; /* 1:1 scaling */
+    (*cinfo).scale_denom = 1u32;
     (*cinfo).output_gamma = 1.0f64;
     (*cinfo).buffered_image = crate::jmorecfg_h::FALSE;
     (*cinfo).raw_data_out = crate::jmorecfg_h::FALSE;

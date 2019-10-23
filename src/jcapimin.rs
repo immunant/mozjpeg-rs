@@ -273,7 +273,8 @@ pub unsafe extern "C" fn jpeg_CreateCompress(
     {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STRUCT_SIZE as libc::c_int;
         (*(*cinfo).err).msg_parm.i[0] =
-            ::std::mem::size_of::<crate::jpeglib_h::jpeg_compress_struct>() as libc::c_ulong
+            
+            ::std::mem::size_of::<crate::jpeglib_h::jpeg_compress_struct>()
                 as libc::c_int;
         (*(*cinfo).err).msg_parm.i[1] = structsize as libc::c_int;
         Some(
@@ -482,7 +483,7 @@ pub unsafe extern "C" fn jpeg_finish_compress(mut cinfo: crate::jpeglib_h::j_com
                 .expect("non-null function pointer"),
         )
         .expect("non-null function pointer")(cinfo);
-        iMCU_row = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        iMCU_row = 0u32;
         while iMCU_row < (*cinfo).total_iMCU_rows {
             if !(*cinfo).progress.is_null() {
                 (*(*cinfo).progress).pass_counter = iMCU_row as libc::c_long;
@@ -506,7 +507,8 @@ pub unsafe extern "C" fn jpeg_finish_compress(mut cinfo: crate::jpeglib_h::j_com
             )
             .expect("non-null function pointer")(
                 cinfo,
-                crate::stddef_h::NULL as *mut libc::c_void as crate::jpeglib_h::JSAMPIMAGE,
+                
+                crate::stddef_h::NULL as crate::jpeglib_h::JSAMPIMAGE,
             ) == 0
             {
                 (*(*cinfo).err).msg_code = crate::src::jerror::JERR_CANT_SUSPEND as libc::c_int;
@@ -561,7 +563,7 @@ pub unsafe extern "C" fn jpeg_write_marker(
     let mut write_marker_byte: Option<
         unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr, _: libc::c_int) -> (),
     > = None; /* copy for speed */
-    if (*cinfo).next_scanline != 0i32 as libc::c_uint
+    if (*cinfo).next_scanline != 0u32
         || (*cinfo).global_state != crate::jpegint_h::CSTATE_SCANNING
             && (*cinfo).global_state != crate::jpegint_h::CSTATE_RAW_OK
             && (*cinfo).global_state != crate::jpegint_h::CSTATE_WRCOEFS
@@ -601,7 +603,7 @@ pub unsafe extern "C" fn jpeg_write_m_header(
     mut marker: libc::c_int,
     mut datalen: libc::c_uint,
 ) {
-    if (*cinfo).next_scanline != 0i32 as libc::c_uint
+    if (*cinfo).next_scanline != 0u32
         || (*cinfo).global_state != crate::jpegint_h::CSTATE_SCANNING
             && (*cinfo).global_state != crate::jpegint_h::CSTATE_RAW_OK
             && (*cinfo).global_state != crate::jpegint_h::CSTATE_WRCOEFS

@@ -124,7 +124,7 @@ pub unsafe extern "C" fn jcopy_block_row(
         output_row as *mut libc::c_void,
         input_row as *const libc::c_void,
         num_blocks as libc::c_ulong *
-    (64i32 as libc::c_ulong *
+    (64u64 *
          ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong),
     );
 }

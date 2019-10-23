@@ -294,8 +294,8 @@ unsafe extern "C" fn initial_setup(
     let mut samplesperrow: libc::c_long = 0;
     let mut jd_samplesperrow: crate::jmorecfg_h::JDIMENSION = 0;
     /* Sanity check on image dimensions */
-    if (*cinfo).image_height <= 0i32 as libc::c_uint
-        || (*cinfo).image_width <= 0i32 as libc::c_uint
+    if (*cinfo).image_height <= 0u32
+        || (*cinfo).image_width <= 0u32
         || (*cinfo).num_components <= 0i32
         || (*cinfo).input_components <= 0i32
     {
@@ -312,7 +312,7 @@ unsafe extern "C" fn initial_setup(
         || (*cinfo).image_width as libc::c_long > crate::jmorecfg_h::JPEG_MAX_DIMENSION
     {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_IMAGE_TOO_BIG as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = 65500i64 as libc::c_uint as libc::c_int;
+        (*(*cinfo).err).msg_parm.i[0] = 65500i32;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -973,7 +973,7 @@ unsafe extern "C" fn prepare_for_pass(mut cinfo: crate::jpeglib_h::j_compress_pt
     (*(*cinfo).master).trellis_passes =
         ((*master).pass_number < (*master).pass_number_scan_opt_base) as libc::c_int;
     let mut current_block_54: u64;
-    match (*master).pass_type as libc::c_uint {
+    match  (*master).pass_type {
         0 => {
             /* Initial pass: will collect input data, and do either Huffman
              * optimization or data output for the first scan.
@@ -1149,7 +1149,7 @@ unsafe extern "C" fn prepare_for_pass(mut cinfo: crate::jpeglib_h::j_compress_pt
                 (*master).saved_dest = (*cinfo).dest;
                 (*cinfo).dest =
                     crate::stddef_h::NULL as *mut crate::jpeglib_h::jpeg_destination_mgr;
-                (*master).scan_size[(*master).scan_number as usize] = 0i32 as libc::c_ulong;
+                (*master).scan_size[(*master).scan_number as usize] = 0u64;
                 crate::jpegint_h::jpeg_mem_dest_internal(
                     cinfo,
                     &mut *(*master)
@@ -1249,25 +1249,22 @@ unsafe extern "C" fn copy_buffer(
          eprint!("SCAN ");
         i = 0i32;
         while i < (*(*cinfo).scan_info.offset(scan_idx as isize)).comps_in_scan {
-              eprint!("{:}{:}",
+               eprint!("{:}{:}",
         unsafe {
     std::ffi::CStr::from_ptr(if i == 0i32 {
                                  b"\x00".as_ptr() as *const libc::c_char
                              } else {
                                  b",\x00".as_ptr() as *const libc::c_char
-                             } as *const libc::c_char).to_str().unwrap()
+                             }).to_str().unwrap()
 },
-        (*(*cinfo).scan_info.offset(scan_idx as isize)).component_index[i as usize] as
-    libc::c_int);
+        (*(*cinfo).scan_info.offset(scan_idx as isize)).component_index[i as usize]);
             i += 1
         }
         
         
-          eprint!(": {:} {:}",
-        (*(*cinfo).scan_info.offset(scan_idx as isize)).Ss as libc::c_int,
-        (*(*cinfo).scan_info.offset(scan_idx as isize)).Se as libc::c_int);  eprint!(" {:} {:}",
-        (*(*cinfo).scan_info.offset(scan_idx as isize)).Ah as libc::c_int,
-        (*master).actual_Al[scan_idx as usize] as libc::c_int); eprintln!("");
+           eprint!(": {:} {:}", (*(*cinfo).scan_info.offset(scan_idx as isize)).Ss,
+        (*(*cinfo).scan_info.offset(scan_idx as isize)).Se);   eprint!(" {:} {:}", (*(*cinfo).scan_info.offset(scan_idx as isize)).Ah,
+        (*master).actual_Al[scan_idx as usize]); eprintln!("");
     }
     while size >= (*(*cinfo).dest).free_in_buffer {
         crate::stdlib::memcpy(
@@ -1280,7 +1277,7 @@ unsafe extern "C" fn copy_buffer(
         (*(*cinfo).dest).next_output_byte = (*(*cinfo).dest)
             .next_output_byte
             .offset((*(*cinfo).dest).free_in_buffer as isize);
-        (*(*cinfo).dest).free_in_buffer = 0i32 as crate::stddef_h::size_t;
+        (*(*cinfo).dest).free_in_buffer = 0u64;
         if Some(
             (*(*cinfo).dest)
                 .empty_output_buffer
@@ -1306,8 +1303,7 @@ unsafe extern "C" fn copy_buffer(
         size,
     );
     (*(*cinfo).dest).next_output_byte = (*(*cinfo).dest).next_output_byte.offset(size as isize);
-    (*(*cinfo).dest).free_in_buffer = ((*(*cinfo).dest).free_in_buffer as libc::c_ulong - size) as crate::stddef_h::size_t
-        as crate::stddef_h::size_t;
+    (*(*cinfo).dest).free_in_buffer = (*(*cinfo).dest).free_in_buffer - size;
 }
 
 unsafe extern "C" fn select_scans(
@@ -1331,7 +1327,7 @@ unsafe extern "C" fn select_scans(
         if (next_scan_number - 1i32) % 3i32 == 2i32 {
             let mut Al: libc::c_int = (next_scan_number - 1i32) / 3i32;
             let mut i: libc::c_int = 0;
-            let mut cost: libc::c_ulong = 0i32 as libc::c_ulong;
+            let mut cost: libc::c_ulong = 0u64;
             cost =  cost + (*master).scan_size[(next_scan_number - 2i32) as usize];
             cost =  cost + (*master).scan_size[(next_scan_number - 1i32) as usize];
             i = 0i32;
@@ -1356,7 +1352,7 @@ unsafe extern "C" fn select_scans(
             (*master).best_cost = (*master).scan_size[(next_scan_number - 1i32) as usize]
         } else if (next_scan_number - luma_freq_split_scan_start) % 2i32 == 1i32 {
             let mut idx: libc::c_int = next_scan_number - luma_freq_split_scan_start >> 1i32;
-            let mut cost_0: libc::c_ulong = 0i32 as libc::c_ulong;
+            let mut cost_0: libc::c_ulong = 0u64;
             cost_0 =  cost_0 + (*master).scan_size[(next_scan_number - 2i32) as usize];
             cost_0 =  cost_0 + (*master).scan_size[(next_scan_number - 1i32) as usize];
             if cost_0 < (*master).best_cost {
@@ -1393,7 +1389,7 @@ unsafe extern "C" fn select_scans(
             if (next_scan_number - base_scan_idx) % 6i32 == 4i32 {
                 let mut Al_0: libc::c_int = (next_scan_number - base_scan_idx) / 6i32;
                 let mut i_0: libc::c_int = 0;
-                let mut cost_1: libc::c_ulong = 0i32 as libc::c_ulong;
+                let mut cost_1: libc::c_ulong = 0u64;
                 cost_1 =
                     
                     cost_1 + (*master).scan_size[(next_scan_number - 4i32) as usize];
@@ -1434,7 +1430,7 @@ unsafe extern "C" fn select_scans(
             } else if (next_scan_number - chroma_freq_split_scan_start) % 4i32 == 2i32 {
                 let mut idx_0: libc::c_int =
                     next_scan_number - chroma_freq_split_scan_start >> 2i32;
-                let mut cost_2: libc::c_ulong = 0i32 as libc::c_ulong;
+                let mut cost_2: libc::c_ulong = 0u64;
                 cost_2 =
                     
                     cost_2 + (*master).scan_size[(next_scan_number - 4i32) as usize];
@@ -1582,7 +1578,7 @@ unsafe extern "C" fn finish_pass_master(mut cinfo: crate::jpeglib_h::j_compress_
     )
     .expect("non-null function pointer")(cinfo);
     /* Update state for next pass */
-    match (*master).pass_type as libc::c_uint {
+    match  (*master).pass_type {
         0 => {
             /* next pass is either output of scan 0 (after optimization)
              * or output of scan 1 (if no optimization).

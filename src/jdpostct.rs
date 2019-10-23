@@ -236,7 +236,7 @@ unsafe extern "C" fn start_pass_dpost(
     mut pass_mode: crate::jpegint_h::J_BUF_MODE,
 ) {
     let mut post: my_post_ptr = (*cinfo).post as my_post_ptr;
-    match pass_mode as libc::c_uint {
+    match  pass_mode {
         0 => {
             if (*cinfo).quantize_colors != 0 {
                 /* Single-pass processing with color quantization. */
@@ -265,7 +265,7 @@ unsafe extern "C" fn start_pass_dpost(
                     .expect("non-null function pointer")(
                         cinfo as crate::jpeglib_h::j_common_ptr,
                         (*post).whole_image,
-                        0i32 as crate::jmorecfg_h::JDIMENSION,
+                        0u32,
                         (*post).strip_height,
                         crate::jmorecfg_h::TRUE,
                     )
@@ -342,7 +342,7 @@ unsafe extern "C" fn start_pass_dpost(
             );
         }
     }
-    (*post).next_row = 0i32 as crate::jmorecfg_h::JDIMENSION;
+    (*post).next_row = 0u32;
     (*post).starting_row = (*post).next_row;
 }
 /* Forward declarations */
@@ -369,7 +369,7 @@ unsafe extern "C" fn post_process_1pass(
     if max_rows > (*post).strip_height {
         max_rows = (*post).strip_height
     }
-    num_rows = 0i32 as crate::jmorecfg_h::JDIMENSION;
+    num_rows = 0u32;
     Some(
         (*(*cinfo).upsample)
             .upsample
@@ -396,8 +396,7 @@ unsafe extern "C" fn post_process_1pass(
         output_buf.offset(*out_row_ctr as isize),
         num_rows as libc::c_int,
     );
-    *out_row_ctr = (*out_row_ctr as libc::c_uint + num_rows)
-        as crate::jmorecfg_h::JDIMENSION as crate::jmorecfg_h::JDIMENSION;
+    *out_row_ctr = *out_row_ctr + num_rows;
 }
 /*
  * Process some data in the first pass of 2-pass quantization.
@@ -416,7 +415,7 @@ unsafe extern "C" fn post_process_prepass(
     let mut old_next_row: crate::jmorecfg_h::JDIMENSION = 0;
     let mut num_rows: crate::jmorecfg_h::JDIMENSION = 0;
     /* Reposition virtual buffer if at start of strip. */
-    if (*post).next_row == 0i32 as libc::c_uint {
+    if (*post).next_row == 0u32 {
         (*post).buffer = Some(
             (*(*cinfo).mem)
                 .access_virt_sarray
@@ -458,18 +457,17 @@ unsafe extern "C" fn post_process_prepass(
         .expect("non-null function pointer")(
             cinfo,
             (*post).buffer.offset(old_next_row as isize),
-            crate::stddef_h::NULL as *mut libc::c_void as crate::jpeglib_h::JSAMPARRAY,
+            
+            crate::stddef_h::NULL as crate::jpeglib_h::JSAMPARRAY,
             num_rows as libc::c_int,
         );
-        *out_row_ctr = (*out_row_ctr as libc::c_uint + num_rows)
-            as crate::jmorecfg_h::JDIMENSION as crate::jmorecfg_h::JDIMENSION
+        *out_row_ctr = *out_row_ctr + num_rows
     }
     /* Advance if we filled the strip. */
     if (*post).next_row >= (*post).strip_height {
         (*post).starting_row =
-            ((*post).starting_row as libc::c_uint + (*post).strip_height)
-                as crate::jmorecfg_h::JDIMENSION as crate::jmorecfg_h::JDIMENSION;
-        (*post).next_row = 0i32 as crate::jmorecfg_h::JDIMENSION
+            (*post).starting_row + (*post).strip_height;
+        (*post).next_row = 0u32
     };
 }
 /*
@@ -489,7 +487,7 @@ unsafe extern "C" fn post_process_2pass(
     let mut num_rows: crate::jmorecfg_h::JDIMENSION = 0;
     let mut max_rows: crate::jmorecfg_h::JDIMENSION = 0;
     /* Reposition virtual buffer if at start of strip. */
-    if (*post).next_row == 0i32 as libc::c_uint {
+    if (*post).next_row == 0u32 {
         (*post).buffer = Some(
             (*(*cinfo).mem)
                 .access_virt_sarray
@@ -526,16 +524,13 @@ unsafe extern "C" fn post_process_2pass(
         output_buf.offset(*out_row_ctr as isize),
         num_rows as libc::c_int,
     );
-    *out_row_ctr = (*out_row_ctr as libc::c_uint + num_rows)
-        as crate::jmorecfg_h::JDIMENSION as crate::jmorecfg_h::JDIMENSION;
+    *out_row_ctr = *out_row_ctr + num_rows;
     /* Advance if we filled the strip. */
-    (*post).next_row = ((*post).next_row as libc::c_uint + num_rows)
-        as crate::jmorecfg_h::JDIMENSION as crate::jmorecfg_h::JDIMENSION;
+    (*post).next_row = (*post).next_row + num_rows;
     if (*post).next_row >= (*post).strip_height {
         (*post).starting_row =
-            ((*post).starting_row as libc::c_uint + (*post).strip_height)
-                as crate::jmorecfg_h::JDIMENSION as crate::jmorecfg_h::JDIMENSION;
-        (*post).next_row = 0i32 as crate::jmorecfg_h::JDIMENSION
+            (*post).starting_row + (*post).strip_height;
+        (*post).next_row = 0u32
     };
 }
 /* It is useful to allow each component to have a separate IDCT method. */

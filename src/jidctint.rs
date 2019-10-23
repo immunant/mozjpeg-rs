@@ -293,10 +293,10 @@ pub unsafe extern "C" fn jpeg_idct_islow(
             && *inptr.offset((crate::jpeglib_h::DCTSIZE * 7i32) as isize) as libc::c_int == 0i32
         {
             /* AC terms all zero */
-            let mut dcval: libc::c_int = (((*inptr.offset((8i32 * 0i32) as isize) as libc::c_int
+            let mut dcval: libc::c_int = ((((*inptr.offset((8i32 * 0i32) as isize) as libc::c_int
                 * *quantptr.offset((8i32 * 0i32) as isize) as libc::c_int)
                 as libc::c_ulong)
-                << 2i32) as crate::jpegint_h::JLONG
+                << 2i32))
                 as libc::c_int; /* advance pointers to next column */
             *wsptr.offset((crate::jpeglib_h::DCTSIZE * 0i32) as isize) = dcval;
             *wsptr.offset((crate::jpeglib_h::DCTSIZE * 1i32) as isize) = dcval;
@@ -318,9 +318,9 @@ pub unsafe extern "C" fn jpeg_idct_islow(
             z3 = (*inptr.offset((8i32 * 6i32) as isize) as libc::c_int
                 * *quantptr.offset((8i32 * 6i32) as isize) as libc::c_int)
                 as crate::jpegint_h::JLONG;
-            z1 = (z2 + z3) * 4433i32 as crate::jpegint_h::JLONG;
-            tmp2 = z1 + z3 * -(15137i32 as crate::jpegint_h::JLONG);
-            tmp3 = z1 + z2 * 6270i32 as crate::jpegint_h::JLONG;
+            z1 = (z2 + z3) * 4433i64;
+            tmp2 = z1 + z3 * -(15137i64);
+            tmp3 = z1 + z2 * 6270i64;
             z2 = (*inptr.offset((8i32 * 0i32) as isize) as libc::c_int
                 * *quantptr.offset((8i32 * 0i32) as isize) as libc::c_int)
                 as crate::jpegint_h::JLONG;
@@ -352,15 +352,15 @@ pub unsafe extern "C" fn jpeg_idct_islow(
             z2 = tmp1 + tmp2; /* sqrt(2) * ( c7-c3) */
             z3 = tmp0 + tmp2; /* sqrt(2) * (-c1-c3) */
             z4 = tmp1 + tmp3; /* sqrt(2) * (-c3-c5) */
-            z5 = (z3 + z4) * 9633i32 as crate::jpegint_h::JLONG; /* sqrt(2) * ( c5-c3) */
-            tmp0 = tmp0 * 2446i32 as crate::jpegint_h::JLONG;
-            tmp1 = tmp1 * 16819i32 as crate::jpegint_h::JLONG;
-            tmp2 = tmp2 * 25172i32 as crate::jpegint_h::JLONG;
-            tmp3 = tmp3 * 12299i32 as crate::jpegint_h::JLONG;
-            z1 = z1 * -(7373i32 as crate::jpegint_h::JLONG);
-            z2 = z2 * -(20995i32 as crate::jpegint_h::JLONG);
-            z3 = z3 * -(16069i32 as crate::jpegint_h::JLONG);
-            z4 = z4 * -(3196i32 as crate::jpegint_h::JLONG);
+            z5 = (z3 + z4) * 9633i64; /* sqrt(2) * ( c5-c3) */
+            tmp0 = tmp0 * 2446i64;
+            tmp1 = tmp1 * 16819i64;
+            tmp2 = tmp2 * 25172i64;
+            tmp3 = tmp3 * 12299i64;
+            z1 = z1 * -(7373i64);
+            z2 = z2 * -(20995i64);
+            z3 = z3 * -(16069i64);
+            z4 = z4 * -(3196i64);
             z3 += z5;
             z4 += z5;
             tmp0 += z1 + z3;
@@ -369,28 +369,28 @@ pub unsafe extern "C" fn jpeg_idct_islow(
             tmp3 += z1 + z4;
             /* Final output stage: inputs are tmp10..tmp13, tmp0..tmp3 */
             *wsptr.offset((crate::jpeglib_h::DCTSIZE * 0i32) as isize) =
-                (tmp10 + tmp3 + ((1i32 as crate::jpegint_h::JLONG) << 13i32 - 2i32 - 1i32)
+                (tmp10 + tmp3 + ((1i64) << 13i32 - 2i32 - 1i32)
                     >> 13i32 - 2i32) as libc::c_int; /* advance pointers to next column */
             *wsptr.offset((crate::jpeglib_h::DCTSIZE * 7i32) as isize) =
-                (tmp10 - tmp3 + ((1i32 as crate::jpegint_h::JLONG) << 13i32 - 2i32 - 1i32)
+                (tmp10 - tmp3 + ((1i64) << 13i32 - 2i32 - 1i32)
                     >> 13i32 - 2i32) as libc::c_int;
             *wsptr.offset((crate::jpeglib_h::DCTSIZE * 1i32) as isize) =
-                (tmp11 + tmp2 + ((1i32 as crate::jpegint_h::JLONG) << 13i32 - 2i32 - 1i32)
+                (tmp11 + tmp2 + ((1i64) << 13i32 - 2i32 - 1i32)
                     >> 13i32 - 2i32) as libc::c_int;
             *wsptr.offset((crate::jpeglib_h::DCTSIZE * 6i32) as isize) =
-                (tmp11 - tmp2 + ((1i32 as crate::jpegint_h::JLONG) << 13i32 - 2i32 - 1i32)
+                (tmp11 - tmp2 + ((1i64) << 13i32 - 2i32 - 1i32)
                     >> 13i32 - 2i32) as libc::c_int;
             *wsptr.offset((crate::jpeglib_h::DCTSIZE * 2i32) as isize) =
-                (tmp12 + tmp1 + ((1i32 as crate::jpegint_h::JLONG) << 13i32 - 2i32 - 1i32)
+                (tmp12 + tmp1 + ((1i64) << 13i32 - 2i32 - 1i32)
                     >> 13i32 - 2i32) as libc::c_int;
             *wsptr.offset((crate::jpeglib_h::DCTSIZE * 5i32) as isize) =
-                (tmp12 - tmp1 + ((1i32 as crate::jpegint_h::JLONG) << 13i32 - 2i32 - 1i32)
+                (tmp12 - tmp1 + ((1i64) << 13i32 - 2i32 - 1i32)
                     >> 13i32 - 2i32) as libc::c_int;
             *wsptr.offset((crate::jpeglib_h::DCTSIZE * 3i32) as isize) =
-                (tmp13 + tmp0 + ((1i32 as crate::jpegint_h::JLONG) << 13i32 - 2i32 - 1i32)
+                (tmp13 + tmp0 + ((1i64) << 13i32 - 2i32 - 1i32)
                     >> 13i32 - 2i32) as libc::c_int;
             *wsptr.offset((crate::jpeglib_h::DCTSIZE * 4i32) as isize) =
-                (tmp13 - tmp0 + ((1i32 as crate::jpegint_h::JLONG) << 13i32 - 2i32 - 1i32)
+                (tmp13 - tmp0 + ((1i64) << 13i32 - 2i32 - 1i32)
                     >> 13i32 - 2i32) as libc::c_int;
             inptr = inptr.offset(1);
             quantptr = quantptr.offset(1);
@@ -424,7 +424,7 @@ pub unsafe extern "C" fn jpeg_idct_islow(
             /* AC terms all zero */
             let mut dcval_0: crate::jmorecfg_h::JSAMPLE = *range_limit.offset(
                 ((*wsptr.offset(0) as crate::jpegint_h::JLONG
-                    + ((1i32 as crate::jpegint_h::JLONG) << 2i32 + 3i32 - 1i32)
+                    + ((1i64) << 2i32 + 3i32 - 1i32)
                     >> 2i32 + 3i32) as libc::c_int
                     & crate::jdct_h::RANGE_MASK) as isize,
             ); /* advance pointer to next row */
@@ -442,9 +442,9 @@ pub unsafe extern "C" fn jpeg_idct_islow(
             /* The rotator is sqrt(2)*c(-6). */
             z2 = *wsptr.offset(2) as crate::jpegint_h::JLONG;
             z3 = *wsptr.offset(6) as crate::jpegint_h::JLONG;
-            z1 = (z2 + z3) * 4433i32 as crate::jpegint_h::JLONG;
-            tmp2 = z1 + z3 * -(15137i32 as crate::jpegint_h::JLONG);
-            tmp3 = z1 + z2 * 6270i32 as crate::jpegint_h::JLONG;
+            z1 = (z2 + z3) * 4433i64;
+            tmp2 = z1 + z3 * -(15137i64);
+            tmp3 = z1 + z2 * 6270i64;
             tmp0 = (((*wsptr.offset(0) as crate::jpegint_h::JLONG
                 + *wsptr.offset(4) as crate::jpegint_h::JLONG)
                 as libc::c_ulong)
@@ -468,15 +468,15 @@ pub unsafe extern "C" fn jpeg_idct_islow(
             z2 = tmp1 + tmp2; /* sqrt(2) * ( c7-c3) */
             z3 = tmp0 + tmp2; /* sqrt(2) * (-c1-c3) */
             z4 = tmp1 + tmp3; /* sqrt(2) * (-c3-c5) */
-            z5 = (z3 + z4) * 9633i32 as crate::jpegint_h::JLONG; /* sqrt(2) * ( c5-c3) */
-            tmp0 = tmp0 * 2446i32 as crate::jpegint_h::JLONG;
-            tmp1 = tmp1 * 16819i32 as crate::jpegint_h::JLONG;
-            tmp2 = tmp2 * 25172i32 as crate::jpegint_h::JLONG;
-            tmp3 = tmp3 * 12299i32 as crate::jpegint_h::JLONG;
-            z1 = z1 * -(7373i32 as crate::jpegint_h::JLONG);
-            z2 = z2 * -(20995i32 as crate::jpegint_h::JLONG);
-            z3 = z3 * -(16069i32 as crate::jpegint_h::JLONG);
-            z4 = z4 * -(3196i32 as crate::jpegint_h::JLONG);
+            z5 = (z3 + z4) * 9633i64; /* sqrt(2) * ( c5-c3) */
+            tmp0 = tmp0 * 2446i64;
+            tmp1 = tmp1 * 16819i64;
+            tmp2 = tmp2 * 25172i64;
+            tmp3 = tmp3 * 12299i64;
+            z1 = z1 * -(7373i64);
+            z2 = z2 * -(20995i64);
+            z3 = z3 * -(16069i64);
+            z4 = z4 * -(3196i64);
             z3 += z5;
             z4 += z5;
             tmp0 += z1 + z3;
@@ -485,42 +485,42 @@ pub unsafe extern "C" fn jpeg_idct_islow(
             tmp3 += z1 + z4;
             /* Final output stage: inputs are tmp10..tmp13, tmp0..tmp3 */
             *outptr.offset(0) = *range_limit.offset(
-                ((tmp10 + tmp3 + ((1i32 as crate::jpegint_h::JLONG) << 13i32 + 2i32 + 3i32 - 1i32)
+                ((tmp10 + tmp3 + ((1i64) << 13i32 + 2i32 + 3i32 - 1i32)
                     >> 13i32 + 2i32 + 3i32) as libc::c_int
                     & crate::jdct_h::RANGE_MASK) as isize,
             );
             *outptr.offset(7) = *range_limit.offset(
-                ((tmp10 - tmp3 + ((1i32 as crate::jpegint_h::JLONG) << 13i32 + 2i32 + 3i32 - 1i32)
+                ((tmp10 - tmp3 + ((1i64) << 13i32 + 2i32 + 3i32 - 1i32)
                     >> 13i32 + 2i32 + 3i32) as libc::c_int
                     & crate::jdct_h::RANGE_MASK) as isize,
             );
             *outptr.offset(1) = *range_limit.offset(
-                ((tmp11 + tmp2 + ((1i32 as crate::jpegint_h::JLONG) << 13i32 + 2i32 + 3i32 - 1i32)
+                ((tmp11 + tmp2 + ((1i64) << 13i32 + 2i32 + 3i32 - 1i32)
                     >> 13i32 + 2i32 + 3i32) as libc::c_int
                     & crate::jdct_h::RANGE_MASK) as isize,
             );
             *outptr.offset(6) = *range_limit.offset(
-                ((tmp11 - tmp2 + ((1i32 as crate::jpegint_h::JLONG) << 13i32 + 2i32 + 3i32 - 1i32)
+                ((tmp11 - tmp2 + ((1i64) << 13i32 + 2i32 + 3i32 - 1i32)
                     >> 13i32 + 2i32 + 3i32) as libc::c_int
                     & crate::jdct_h::RANGE_MASK) as isize,
             );
             *outptr.offset(2) = *range_limit.offset(
-                ((tmp12 + tmp1 + ((1i32 as crate::jpegint_h::JLONG) << 13i32 + 2i32 + 3i32 - 1i32)
+                ((tmp12 + tmp1 + ((1i64) << 13i32 + 2i32 + 3i32 - 1i32)
                     >> 13i32 + 2i32 + 3i32) as libc::c_int
                     & crate::jdct_h::RANGE_MASK) as isize,
             );
             *outptr.offset(5) = *range_limit.offset(
-                ((tmp12 - tmp1 + ((1i32 as crate::jpegint_h::JLONG) << 13i32 + 2i32 + 3i32 - 1i32)
+                ((tmp12 - tmp1 + ((1i64) << 13i32 + 2i32 + 3i32 - 1i32)
                     >> 13i32 + 2i32 + 3i32) as libc::c_int
                     & crate::jdct_h::RANGE_MASK) as isize,
             );
             *outptr.offset(3) = *range_limit.offset(
-                ((tmp13 + tmp0 + ((1i32 as crate::jpegint_h::JLONG) << 13i32 + 2i32 + 3i32 - 1i32)
+                ((tmp13 + tmp0 + ((1i64) << 13i32 + 2i32 + 3i32 - 1i32)
                     >> 13i32 + 2i32 + 3i32) as libc::c_int
                     & crate::jdct_h::RANGE_MASK) as isize,
             );
             *outptr.offset(4) = *range_limit.offset(
-                ((tmp13 - tmp0 + ((1i32 as crate::jpegint_h::JLONG) << 13i32 + 2i32 + 3i32 - 1i32)
+                ((tmp13 - tmp0 + ((1i64) << 13i32 + 2i32 + 3i32 - 1i32)
                     >> 13i32 + 2i32 + 3i32) as libc::c_int
                     & crate::jdct_h::RANGE_MASK) as isize,
             );
@@ -588,28 +588,28 @@ pub unsafe extern "C" fn jpeg_idct_7x7(
             * *quantptr.offset((8i32 * 6i32) as isize) as libc::c_int)
             as crate::jpegint_h::JLONG; /* c2 */
         tmp10 = (z2 - z3)
-            * (0.881747734f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.881747734f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c2-c4-c6 */
         tmp12 = (z1 - z2)
-            * (0.314692123f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.314692123f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c2+c4+c6 */
         tmp11 = tmp10 + tmp12 + tmp13
-            - z2 * (1.841218003f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z2 * (1.841218003f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c0 */
         tmp0 = z1 + z3;
         z2 -= tmp0;
         tmp0 = tmp0
-            * (1.274162392f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.274162392f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             + tmp13;
         tmp10 += tmp0
-            - z3 * (0.077722536f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z3 * (0.077722536f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp12 += tmp0
-            - z1 * (2.470602249f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z1 * (2.470602249f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp13 += z2
-            * (1.414213562f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.414213562f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         /* Odd part */
         z1 = (*inptr.offset((8i32 * 1i32) as isize) as libc::c_int
@@ -622,23 +622,23 @@ pub unsafe extern "C" fn jpeg_idct_7x7(
             * *quantptr.offset((8i32 * 5i32) as isize) as libc::c_int)
             as crate::jpegint_h::JLONG; /* -c1 */
         tmp1 = (z1 + z2)
-            * (0.935414347f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.935414347f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c5 */
         tmp2 = (z1 - z2)
-            * (0.170262339f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.170262339f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c3+c1-c5 */
         tmp0 = tmp1 - tmp2;
         tmp1 += tmp2;
         tmp2 = (z2 + z3)
-            * -((1.378756276f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((1.378756276f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG);
         tmp1 += tmp2;
         z2 = (z1 + z3)
-            * (0.613604268f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.613604268f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp0 += z2;
         tmp2 += z2
-            + z3 * (1.870828693f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z3 * (1.870828693f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         /* Final output stage */
         *wsptr.offset((7i32 * 0i32) as isize) = (tmp10 + tmp0 >> 13i32 - 2i32) as libc::c_int;
@@ -666,50 +666,50 @@ pub unsafe extern "C" fn jpeg_idct_7x7(
         z2 = *wsptr.offset(4) as crate::jpegint_h::JLONG;
         z3 = *wsptr.offset(6) as crate::jpegint_h::JLONG;
         tmp10 = (z2 - z3)
-            * (0.881747734f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.881747734f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp12 = (z1 - z2)
-            * (0.314692123f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.314692123f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp11 = tmp10 + tmp12 + tmp13
-            - z2 * (1.841218003f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z2 * (1.841218003f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp0 = z1 + z3;
         z2 -= tmp0;
         tmp0 = tmp0
-            * (1.274162392f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.274162392f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             + tmp13;
         tmp10 += tmp0
-            - z3 * (0.077722536f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z3 * (0.077722536f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp12 += tmp0
-            - z1 * (2.470602249f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z1 * (2.470602249f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp13 += z2
-            * (1.414213562f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.414213562f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z1 = *wsptr.offset(1) as crate::jpegint_h::JLONG;
         z2 = *wsptr.offset(3) as crate::jpegint_h::JLONG;
         z3 = *wsptr.offset(5) as crate::jpegint_h::JLONG;
         tmp1 = (z1 + z2)
-            * (0.935414347f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.935414347f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp2 = (z1 - z2)
-            * (0.170262339f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.170262339f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp0 = tmp1 - tmp2;
         tmp1 += tmp2;
         tmp2 = (z2 + z3)
-            * -((1.378756276f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((1.378756276f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG);
         tmp1 += tmp2;
         z2 = (z1 + z3)
-            * (0.613604268f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.613604268f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp0 += z2;
         tmp2 += z2
-            + z3 * (1.870828693f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z3 * (1.870828693f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         *outptr.offset(0) = *range_limit.offset(
             ((tmp10 + tmp0 >> 13i32 + 2i32 + 3i32) as libc::c_int & crate::jdct_h::RANGE_MASK)
@@ -810,7 +810,7 @@ pub unsafe extern "C" fn jpeg_idct_6x6(
             * *quantptr.offset((8i32 * 4i32) as isize) as libc::c_int)
             as crate::jpegint_h::JLONG; /* c2 */
         tmp10 = tmp2
-            * (0.707106781f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.707106781f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp1 = tmp0 + tmp10;
         tmp11 = tmp0 - tmp10 - tmp10 >> 13i32 - 2i32;
@@ -818,7 +818,7 @@ pub unsafe extern "C" fn jpeg_idct_6x6(
             * *quantptr.offset((8i32 * 2i32) as isize) as libc::c_int)
             as crate::jpegint_h::JLONG;
         tmp0 = tmp10
-            * (1.224744871f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.224744871f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp10 = tmp1 + tmp0;
         tmp12 = tmp1 - tmp0;
@@ -833,7 +833,7 @@ pub unsafe extern "C" fn jpeg_idct_6x6(
             * *quantptr.offset((8i32 * 5i32) as isize) as libc::c_int)
             as crate::jpegint_h::JLONG;
         tmp1 = (z1 + z3)
-            * (0.366025404f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.366025404f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp0 = tmp1 + (((z1 + z2) as libc::c_ulong) << 13i32) as crate::jpegint_h::JLONG;
         tmp2 = tmp1 + (((z3 - z2) as libc::c_ulong) << 13i32) as crate::jpegint_h::JLONG;
@@ -861,13 +861,13 @@ pub unsafe extern "C" fn jpeg_idct_6x6(
         tmp0 = ((tmp0 as libc::c_ulong) << 13i32) as crate::jpegint_h::JLONG;
         tmp2 = *wsptr.offset(4) as crate::jpegint_h::JLONG;
         tmp10 = tmp2
-            * (0.707106781f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.707106781f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp1 = tmp0 + tmp10;
         tmp11 = tmp0 - tmp10 - tmp10;
         tmp10 = *wsptr.offset(2) as crate::jpegint_h::JLONG;
         tmp0 = tmp10
-            * (1.224744871f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.224744871f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp10 = tmp1 + tmp0;
         tmp12 = tmp1 - tmp0;
@@ -875,7 +875,7 @@ pub unsafe extern "C" fn jpeg_idct_6x6(
         z2 = *wsptr.offset(3) as crate::jpegint_h::JLONG;
         z3 = *wsptr.offset(5) as crate::jpegint_h::JLONG;
         tmp1 = (z1 + z3)
-            * (0.366025404f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.366025404f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp0 = tmp1 + (((z1 + z2) as libc::c_ulong) << 13i32) as crate::jpegint_h::JLONG;
         tmp2 = tmp1 + (((z3 - z2) as libc::c_ulong) << 13i32) as crate::jpegint_h::JLONG;
@@ -969,10 +969,10 @@ pub unsafe extern "C" fn jpeg_idct_5x5(
             * *quantptr.offset((8i32 * 4i32) as isize) as libc::c_int)
             as crate::jpegint_h::JLONG;
         z1 = (tmp0 + tmp1)
-            * (0.790569415f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.790569415f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z2 = (tmp0 - tmp1)
-            * (0.353553391f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.353553391f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z3 = tmp12 + z2;
         tmp10 = z3 + z1;
@@ -986,13 +986,13 @@ pub unsafe extern "C" fn jpeg_idct_5x5(
             * *quantptr.offset((8i32 * 3i32) as isize) as libc::c_int)
             as crate::jpegint_h::JLONG; /* c1-c3 */
         z1 = (z2 + z3)
-            * (0.831253876f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.831253876f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c1+c3 */
         tmp0 = z1
-            + z2 * (0.513743148f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z2 * (0.513743148f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp1 = z1
-            - z3 * (2.176250899f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z3 * (2.176250899f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         /* Final output stage */
         *wsptr.offset((5i32 * 0i32) as isize) = (tmp10 + tmp0 >> 13i32 - 2i32) as libc::c_int;
@@ -1017,10 +1017,10 @@ pub unsafe extern "C" fn jpeg_idct_5x5(
         tmp0 = *wsptr.offset(2) as crate::jpegint_h::JLONG;
         tmp1 = *wsptr.offset(4) as crate::jpegint_h::JLONG;
         z1 = (tmp0 + tmp1)
-            * (0.790569415f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.790569415f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z2 = (tmp0 - tmp1)
-            * (0.353553391f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.353553391f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z3 = tmp12 + z2;
         tmp10 = z3 + z1;
@@ -1029,13 +1029,13 @@ pub unsafe extern "C" fn jpeg_idct_5x5(
         z2 = *wsptr.offset(1) as crate::jpegint_h::JLONG;
         z3 = *wsptr.offset(3) as crate::jpegint_h::JLONG;
         z1 = (z2 + z3)
-            * (0.831253876f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.831253876f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp0 = z1
-            + z2 * (0.513743148f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z2 * (0.513743148f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp1 = z1
-            - z3 * (2.176250899f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z3 * (2.176250899f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         *outptr.offset(0) = *range_limit.offset(
             ((tmp10 + tmp0 >> 13i32 + 2i32 + 3i32) as libc::c_int & crate::jdct_h::RANGE_MASK)
@@ -1116,7 +1116,7 @@ pub unsafe extern "C" fn jpeg_idct_3x3(
             * *quantptr.offset((8i32 * 2i32) as isize) as libc::c_int)
             as crate::jpegint_h::JLONG;
         tmp12 = tmp2
-            * (0.707106781f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.707106781f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp10 = tmp0 + tmp12;
         tmp2 = tmp0 - tmp12 - tmp12;
@@ -1125,7 +1125,7 @@ pub unsafe extern "C" fn jpeg_idct_3x3(
             * *quantptr.offset((8i32 * 1i32) as isize) as libc::c_int)
             as crate::jpegint_h::JLONG; /* c1 */
         tmp0 = tmp12
-            * (1.224744871f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.224744871f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         /* Final output stage */
         *wsptr.offset((3i32 * 0i32) as isize) = (tmp10 + tmp0 >> 13i32 - 2i32) as libc::c_int;
@@ -1147,13 +1147,13 @@ pub unsafe extern "C" fn jpeg_idct_3x3(
         tmp0 = ((tmp0 as libc::c_ulong) << 13i32) as crate::jpegint_h::JLONG;
         tmp2 = *wsptr.offset(2) as crate::jpegint_h::JLONG;
         tmp12 = tmp2
-            * (0.707106781f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.707106781f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp10 = tmp0 + tmp12;
         tmp2 = tmp0 - tmp12 - tmp12;
         tmp12 = *wsptr.offset(1) as crate::jpegint_h::JLONG;
         tmp0 = tmp12
-            * (1.224744871f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.224744871f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         *outptr.offset(0) = *range_limit.offset(
             ((tmp10 + tmp0 >> 13i32 + 2i32 + 3i32) as libc::c_int & crate::jdct_h::RANGE_MASK)
@@ -1238,23 +1238,23 @@ pub unsafe extern "C" fn jpeg_idct_9x9(
             * *quantptr.offset((8i32 * 6i32) as isize) as libc::c_int)
             as crate::jpegint_h::JLONG; /* c4 */
         tmp3 = z3
-            * (0.707106781f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.707106781f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c8 */
         tmp1 = tmp0 + tmp3;
         tmp2 = tmp0 - tmp3 - tmp3;
         tmp0 = (z1 - z2)
-            * (0.707106781f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.707106781f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp11 = tmp2 + tmp0;
         tmp14 = tmp2 - tmp0 - tmp0;
         tmp0 = (z1 + z2)
-            * (1.328926049f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.328926049f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp2 = z1
-            * (1.083350441f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.083350441f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp3 = z2
-            * (0.245575608f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.245575608f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp10 = tmp1 + tmp0 - tmp3;
         tmp12 = tmp1 - tmp0 + tmp2;
@@ -1273,22 +1273,22 @@ pub unsafe extern "C" fn jpeg_idct_9x9(
             * *quantptr.offset((8i32 * 7i32) as isize) as libc::c_int)
             as crate::jpegint_h::JLONG; /* c1 */
         z2 = z2
-            * -((1.224744871f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((1.224744871f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG); /* c3 */
         tmp2 = (z1 + z3)
-            * (0.909038955f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.909038955f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp3 = (z1 + z4)
-            * (0.483689525f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.483689525f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp0 = tmp2 + tmp3 - z2;
         tmp1 = (z3 - z4)
-            * (1.392728481f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.392728481f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp2 += z2 - tmp1;
         tmp3 += z2 + tmp1;
         tmp1 = (z1 - z3 - z4)
-            * (1.224744871f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.224744871f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         /* Final output stage */
         *wsptr.offset((8i32 * 0i32) as isize) = (tmp10 + tmp0 >> 13i32 - 2i32) as libc::c_int;
@@ -1318,23 +1318,23 @@ pub unsafe extern "C" fn jpeg_idct_9x9(
         z2 = *wsptr.offset(4) as crate::jpegint_h::JLONG;
         z3 = *wsptr.offset(6) as crate::jpegint_h::JLONG;
         tmp3 = z3
-            * (0.707106781f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.707106781f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp1 = tmp0 + tmp3;
         tmp2 = tmp0 - tmp3 - tmp3;
         tmp0 = (z1 - z2)
-            * (0.707106781f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.707106781f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp11 = tmp2 + tmp0;
         tmp14 = tmp2 - tmp0 - tmp0;
         tmp0 = (z1 + z2)
-            * (1.328926049f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.328926049f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp2 = z1
-            * (1.083350441f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.083350441f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp3 = z2
-            * (0.245575608f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.245575608f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp10 = tmp1 + tmp0 - tmp3;
         tmp12 = tmp1 - tmp0 + tmp2;
@@ -1344,22 +1344,22 @@ pub unsafe extern "C" fn jpeg_idct_9x9(
         z3 = *wsptr.offset(5) as crate::jpegint_h::JLONG;
         z4 = *wsptr.offset(7) as crate::jpegint_h::JLONG;
         z2 = z2
-            * -((1.224744871f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((1.224744871f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG);
         tmp2 = (z1 + z3)
-            * (0.909038955f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.909038955f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp3 = (z1 + z4)
-            * (0.483689525f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.483689525f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp0 = tmp2 + tmp3 - z2;
         tmp1 = (z3 - z4)
-            * (1.392728481f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.392728481f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp2 += z2 - tmp1;
         tmp3 += z2 + tmp1;
         tmp1 = (z1 - z3 - z4)
-            * (1.224744871f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.224744871f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         *outptr.offset(0) = *range_limit.offset(
             ((tmp10 + tmp0 >> 13i32 + 2i32 + 3i32) as libc::c_int & crate::jdct_h::RANGE_MASK)
@@ -1472,10 +1472,10 @@ pub unsafe extern "C" fn jpeg_idct_10x10(
             * *quantptr.offset((8i32 * 4i32) as isize) as libc::c_int)
             as crate::jpegint_h::JLONG; /* c8 */
         z1 = z4
-            * (1.144122806f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.144122806f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z2 = z4
-            * (0.437016024f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.437016024f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp10 = z3 + z1;
         tmp11 = z3 - z2;
@@ -1489,13 +1489,13 @@ pub unsafe extern "C" fn jpeg_idct_10x10(
             * *quantptr.offset((8i32 * 6i32) as isize) as libc::c_int)
             as crate::jpegint_h::JLONG; /* c2-c6 */
         z1 = (z2 + z3)
-            * (0.831253876f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.831253876f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c2+c6 */
         tmp12 = z1
-            + z2 * (0.513743148f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z2 * (0.513743148f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp13 = z1
-            - z3 * (2.176250899f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z3 * (2.176250899f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp20 = tmp10 + tmp12;
         tmp24 = tmp10 - tmp12;
@@ -1517,35 +1517,35 @@ pub unsafe extern "C" fn jpeg_idct_10x10(
         tmp11 = z2 + z4; /* (c1-c9)/2 */
         tmp13 = z2 - z4; /* c3 */
         tmp12 = tmp13
-            * (0.309016994f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.309016994f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c7 */
         z5 = ((z3 as libc::c_ulong) << 13i32) as crate::jpegint_h::JLONG;
         z2 = tmp11
-            * (0.951056516f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.951056516f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z4 = z5 + tmp12;
         tmp10 = z1
-            * (1.396802247f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.396802247f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             + z2
             + z4;
         tmp14 = z1
-            * (0.221231742f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.221231742f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             - z2
             + z4;
         z2 = tmp11
-            * (0.587785252f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.587785252f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z4 = z5 - tmp12 - ((tmp13 as libc::c_ulong) << 13i32 - 1i32) as crate::jpegint_h::JLONG;
         tmp12 = (((z1 - tmp13 - z3) as libc::c_ulong) << 2i32) as crate::jpegint_h::JLONG;
         tmp11 = z1
-            * (1.260073511f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.260073511f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             - z2
             - z4;
         tmp13 = z1
-            * (0.642039522f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.642039522f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             - z2
             + z4;
@@ -1576,10 +1576,10 @@ pub unsafe extern "C" fn jpeg_idct_10x10(
         z3 = ((z3 as libc::c_ulong) << 13i32) as crate::jpegint_h::JLONG;
         z4 = *wsptr.offset(4) as crate::jpegint_h::JLONG;
         z1 = z4
-            * (1.144122806f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.144122806f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z2 = z4
-            * (0.437016024f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.437016024f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp10 = z3 + z1;
         tmp11 = z3 - z2;
@@ -1587,13 +1587,13 @@ pub unsafe extern "C" fn jpeg_idct_10x10(
         z2 = *wsptr.offset(2) as crate::jpegint_h::JLONG;
         z3 = *wsptr.offset(6) as crate::jpegint_h::JLONG;
         z1 = (z2 + z3)
-            * (0.831253876f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.831253876f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp12 = z1
-            + z2 * (0.513743148f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z2 * (0.513743148f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp13 = z1
-            - z3 * (2.176250899f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z3 * (2.176250899f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp20 = tmp10 + tmp12;
         tmp24 = tmp10 - tmp12;
@@ -1607,34 +1607,34 @@ pub unsafe extern "C" fn jpeg_idct_10x10(
         tmp11 = z2 + z4;
         tmp13 = z2 - z4;
         tmp12 = tmp13
-            * (0.309016994f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.309016994f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z2 = tmp11
-            * (0.951056516f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.951056516f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z4 = z3 + tmp12;
         tmp10 = z1
-            * (1.396802247f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.396802247f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             + z2
             + z4;
         tmp14 = z1
-            * (0.221231742f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.221231742f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             - z2
             + z4;
         z2 = tmp11
-            * (0.587785252f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.587785252f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z4 = z3 - tmp12 - ((tmp13 as libc::c_ulong) << 13i32 - 1i32) as crate::jpegint_h::JLONG;
         tmp12 = (((z1 - tmp13) as libc::c_ulong) << 13i32) as crate::jpegint_h::JLONG - z3;
         tmp11 = z1
-            * (1.260073511f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.260073511f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             - z2
             - z4;
         tmp13 = z1
-            * (0.642039522f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.642039522f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             - z2
             + z4;
@@ -1763,39 +1763,39 @@ pub unsafe extern "C" fn jpeg_idct_11x11(
             * *quantptr.offset((8i32 * 6i32) as isize) as libc::c_int)
             as crate::jpegint_h::JLONG; /* c2 */
         tmp20 = (z2 - z3)
-            * (2.546640132f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (2.546640132f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c2+c4+c10-c6 */
         tmp23 = (z2 - z1)
-            * (0.430815045f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.430815045f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c4+c6 */
         z4 = z1 + z3; /* c6+c8 */
         tmp24 = z4
-            * -((1.155664402f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((1.155664402f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG); /* c8+c10 */
         z4 -= z2; /* c4+c10 */
         tmp25 = tmp10
-            + z4 * (1.356927976f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z4 * (1.356927976f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c0 */
         tmp21 = tmp20 + tmp23 + tmp25
-            - z2 * (1.821790775f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z2 * (1.821790775f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp20 += tmp25
-            + z3 * (2.115825087f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z3 * (2.115825087f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp23 += tmp25
-            - z1 * (1.513598477f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z1 * (1.513598477f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp24 += tmp25;
         tmp22 = tmp24
-            - z3 * (0.788749120f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z3 * (0.788749120f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp24 += z2
-            * (1.944413522f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.944413522f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
-            - z1 * (1.390975730f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z1 * (1.390975730f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp25 = tmp10
-            - z4 * (1.414213562f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z4 * (1.414213562f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         /* Odd part */
         z1 = (*inptr.offset((8i32 * 1i32) as isize) as libc::c_int
@@ -1812,44 +1812,44 @@ pub unsafe extern "C" fn jpeg_idct_11x11(
             as crate::jpegint_h::JLONG; /* c7-c9 */
         tmp11 = z1 + z2; /* c7+c5+c3-c1-2*c9 */
         tmp14 = (tmp11 + z3 + z4)
-            * (0.398430003f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.398430003f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c7+c9 */
         tmp11 = tmp11
-            * (0.887983902f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.887983902f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c1+c7+3*c9-c3 */
         tmp12 = (z1 + z3)
-            * (0.670361295f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.670361295f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c3+c5-c7-c9 */
         tmp13 = tmp14
             + (z1 + z4)
-                * (0.366151574f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+                * (0.366151574f64 * ((1i64) << 13i32) as libc::c_double
                     + 0.5f64) as crate::jpegint_h::JLONG; /* -(c1+c9) */
         tmp10 = tmp11 + tmp12 + tmp13
-            - z1 * (0.923107866f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z1 * (0.923107866f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c1+c5+c9-c7 */
         z1 = tmp14
             - (z2 + z3)
-                * (1.163011579f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+                * (1.163011579f64 * ((1i64) << 13i32) as libc::c_double
                     + 0.5f64) as crate::jpegint_h::JLONG; /* c3+c9 */
         tmp11 += z1
-            + z2 * (2.073276588f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z2 * (2.073276588f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp12 += z1
-            - z3 * (1.192193623f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z3 * (1.192193623f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z1 = (z2 + z4)
-            * -((1.798248910f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((1.798248910f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG);
         tmp11 += z1;
         tmp13 += z1
-            + z4 * (2.102458632f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z4 * (2.102458632f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp14 += z2
-            * -((1.467221301f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((1.467221301f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG)
-            + z3 * (1.001388905f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z3 * (1.001388905f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
-            - z4 * (1.684843907f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z4 * (1.684843907f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         /* Final output stage */
         *wsptr.offset((8i32 * 0i32) as isize) = (tmp20 + tmp10 >> 13i32 - 2i32) as libc::c_int;
@@ -1881,39 +1881,39 @@ pub unsafe extern "C" fn jpeg_idct_11x11(
         z2 = *wsptr.offset(4) as crate::jpegint_h::JLONG;
         z3 = *wsptr.offset(6) as crate::jpegint_h::JLONG;
         tmp20 = (z2 - z3)
-            * (2.546640132f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (2.546640132f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp23 = (z2 - z1)
-            * (0.430815045f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.430815045f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z4 = z1 + z3;
         tmp24 = z4
-            * -((1.155664402f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((1.155664402f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG);
         z4 -= z2;
         tmp25 = tmp10
-            + z4 * (1.356927976f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z4 * (1.356927976f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp21 = tmp20 + tmp23 + tmp25
-            - z2 * (1.821790775f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z2 * (1.821790775f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp20 += tmp25
-            + z3 * (2.115825087f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z3 * (2.115825087f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp23 += tmp25
-            - z1 * (1.513598477f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z1 * (1.513598477f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp24 += tmp25;
         tmp22 = tmp24
-            - z3 * (0.788749120f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z3 * (0.788749120f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp24 += z2
-            * (1.944413522f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.944413522f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
-            - z1 * (1.390975730f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z1 * (1.390975730f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp25 = tmp10
-            - z4 * (1.414213562f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z4 * (1.414213562f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z1 = *wsptr.offset(1) as crate::jpegint_h::JLONG;
         z2 = *wsptr.offset(3) as crate::jpegint_h::JLONG;
@@ -1921,44 +1921,44 @@ pub unsafe extern "C" fn jpeg_idct_11x11(
         z4 = *wsptr.offset(7) as crate::jpegint_h::JLONG;
         tmp11 = z1 + z2;
         tmp14 = (tmp11 + z3 + z4)
-            * (0.398430003f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.398430003f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp11 = tmp11
-            * (0.887983902f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.887983902f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp12 = (z1 + z3)
-            * (0.670361295f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.670361295f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp13 = tmp14
             + (z1 + z4)
-                * (0.366151574f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+                * (0.366151574f64 * ((1i64) << 13i32) as libc::c_double
                     + 0.5f64) as crate::jpegint_h::JLONG;
         tmp10 = tmp11 + tmp12 + tmp13
-            - z1 * (0.923107866f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z1 * (0.923107866f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z1 = tmp14
             - (z2 + z3)
-                * (1.163011579f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+                * (1.163011579f64 * ((1i64) << 13i32) as libc::c_double
                     + 0.5f64) as crate::jpegint_h::JLONG;
         tmp11 += z1
-            + z2 * (2.073276588f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z2 * (2.073276588f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp12 += z1
-            - z3 * (1.192193623f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z3 * (1.192193623f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z1 = (z2 + z4)
-            * -((1.798248910f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((1.798248910f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG);
         tmp11 += z1;
         tmp13 += z1
-            + z4 * (2.102458632f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z4 * (2.102458632f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp14 += z2
-            * -((1.467221301f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((1.467221301f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG)
-            + z3 * (1.001388905f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z3 * (1.001388905f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
-            - z4 * (1.684843907f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z4 * (1.684843907f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         *outptr.offset(0) = *range_limit.offset(
             ((tmp20 + tmp10 >> 13i32 + 2i32 + 3i32) as libc::c_int & crate::jdct_h::RANGE_MASK)
@@ -2091,7 +2091,7 @@ pub unsafe extern "C" fn jpeg_idct_12x12(
             * *quantptr.offset((8i32 * 4i32) as isize) as libc::c_int)
             as crate::jpegint_h::JLONG; /* c2 */
         z4 = z4
-            * (1.224744871f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.224744871f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp10 = z3 + z4;
         tmp11 = z3 - z4;
@@ -2099,7 +2099,7 @@ pub unsafe extern "C" fn jpeg_idct_12x12(
             * *quantptr.offset((8i32 * 2i32) as isize) as libc::c_int)
             as crate::jpegint_h::JLONG;
         z4 = z1
-            * (1.366025404f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.366025404f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z1 = ((z1 as libc::c_ulong) << 13i32) as crate::jpegint_h::JLONG;
         z2 = (*inptr.offset((8i32 * 6i32) as isize) as libc::c_int
@@ -2129,40 +2129,40 @@ pub unsafe extern "C" fn jpeg_idct_12x12(
             * *quantptr.offset((8i32 * 7i32) as isize) as libc::c_int)
             as crate::jpegint_h::JLONG; /* c5-c7 */
         tmp11 = z2
-            * (1.306562965f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.306562965f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c1-c5 */
-        tmp14 = z2 * -(4433i32 as crate::jpegint_h::JLONG); /* -(c7+c11) */
+        tmp14 = z2 * -(4433i64); /* -(c7+c11) */
         tmp10 = z1 + z3; /* c1+c5-c7-c11 */
         tmp15 = (tmp10 + z4)
-            * (0.860918669f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.860918669f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c1+c11 */
         tmp12 = tmp15
             + tmp10
-                * (0.261052384f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+                * (0.261052384f64 * ((1i64) << 13i32) as libc::c_double
                     + 0.5f64) as crate::jpegint_h::JLONG; /* c5+c7 */
         tmp10 = tmp12
             + tmp11
-            + z1 * (0.280143716f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z1 * (0.280143716f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c9 */
         tmp13 = (z3 + z4)
-            * -((1.045510580f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((1.045510580f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG); /* c3-c9 */
         tmp12 += tmp13 + tmp14
-            - z3 * (1.478575242f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z3 * (1.478575242f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c3+c9 */
         tmp13 += tmp15 - tmp11
-            + z4 * (1.586706681f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z4 * (1.586706681f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp15 += tmp14
-            - z1 * (0.676326758f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z1 * (0.676326758f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
-            - z4 * (1.982889723f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z4 * (1.982889723f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z1 -= z4;
         z2 -= z3;
-        z3 = (z1 + z2) * 4433i32 as crate::jpegint_h::JLONG;
-        tmp11 = z3 + z1 * 6270i32 as crate::jpegint_h::JLONG;
-        tmp14 = z3 - z2 * 15137i32 as crate::jpegint_h::JLONG;
+        z3 = (z1 + z2) * 4433i64;
+        tmp11 = z3 + z1 * 6270i64;
+        tmp14 = z3 - z2 * 15137i64;
         /* Final output stage */
         *wsptr.offset((8i32 * 0i32) as isize) = (tmp20 + tmp10 >> 13i32 - 2i32) as libc::c_int;
         *wsptr.offset((8i32 * 11i32) as isize) = (tmp20 - tmp10 >> 13i32 - 2i32) as libc::c_int;
@@ -2192,13 +2192,13 @@ pub unsafe extern "C" fn jpeg_idct_12x12(
         z3 = ((z3 as libc::c_ulong) << 13i32) as crate::jpegint_h::JLONG;
         z4 = *wsptr.offset(4) as crate::jpegint_h::JLONG;
         z4 = z4
-            * (1.224744871f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.224744871f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp10 = z3 + z4;
         tmp11 = z3 - z4;
         z1 = *wsptr.offset(2) as crate::jpegint_h::JLONG;
         z4 = z1
-            * (1.366025404f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.366025404f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z1 = ((z1 as libc::c_ulong) << 13i32) as crate::jpegint_h::JLONG;
         z2 = *wsptr.offset(6) as crate::jpegint_h::JLONG;
@@ -2217,40 +2217,40 @@ pub unsafe extern "C" fn jpeg_idct_12x12(
         z3 = *wsptr.offset(5) as crate::jpegint_h::JLONG;
         z4 = *wsptr.offset(7) as crate::jpegint_h::JLONG;
         tmp11 = z2
-            * (1.306562965f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.306562965f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
-        tmp14 = z2 * -(4433i32 as crate::jpegint_h::JLONG);
+        tmp14 = z2 * -(4433i64);
         tmp10 = z1 + z3;
         tmp15 = (tmp10 + z4)
-            * (0.860918669f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.860918669f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp12 = tmp15
             + tmp10
-                * (0.261052384f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+                * (0.261052384f64 * ((1i64) << 13i32) as libc::c_double
                     + 0.5f64) as crate::jpegint_h::JLONG;
         tmp10 = tmp12
             + tmp11
-            + z1 * (0.280143716f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z1 * (0.280143716f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp13 = (z3 + z4)
-            * -((1.045510580f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((1.045510580f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG);
         tmp12 += tmp13 + tmp14
-            - z3 * (1.478575242f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z3 * (1.478575242f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp13 += tmp15 - tmp11
-            + z4 * (1.586706681f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z4 * (1.586706681f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp15 += tmp14
-            - z1 * (0.676326758f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z1 * (0.676326758f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
-            - z4 * (1.982889723f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z4 * (1.982889723f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z1 -= z4;
         z2 -= z3;
-        z3 = (z1 + z2) * 4433i32 as crate::jpegint_h::JLONG;
-        tmp11 = z3 + z1 * 6270i32 as crate::jpegint_h::JLONG;
-        tmp14 = z3 - z2 * 15137i32 as crate::jpegint_h::JLONG;
+        z3 = (z1 + z2) * 4433i64;
+        tmp11 = z3 + z1 * 6270i64;
+        tmp14 = z3 - z2 * 15137i64;
         *outptr.offset(0) = *range_limit.offset(
             ((tmp20 + tmp10 >> 13i32 + 2i32 + 3i32) as libc::c_int & crate::jdct_h::RANGE_MASK)
                 as isize,
@@ -2389,58 +2389,58 @@ pub unsafe extern "C" fn jpeg_idct_13x13(
         tmp10 = z3 + z4; /* (c8-c12)/2 */
         tmp11 = z3 - z4; /* (c8+c12)/2 */
         tmp12 = tmp10
-            * (1.155388986f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.155388986f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c6 */
         tmp13 = tmp11
-            * (0.096834934f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.096834934f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             + z1; /* c4 */
         tmp20 = z2
-            * (1.373119086f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.373119086f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             + tmp12
             + tmp13; /* (c2-c10)/2 */
         tmp22 = z2
-            * (0.501487041f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.501487041f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             - tmp12
             + tmp13; /* (c2+c10)/2 */
         tmp12 = tmp10
-            * (0.316450131f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.316450131f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c12 */
         tmp13 = tmp11
-            * (0.486914739f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.486914739f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             + z1; /* c8 */
         tmp21 = z2
-            * (1.058554052f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.058554052f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             - tmp12
             + tmp13; /* c0 */
         tmp25 = z2
-            * -((1.252223920f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((1.252223920f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG)
             + tmp12
             + tmp13;
         tmp12 = tmp10
-            * (0.435816023f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.435816023f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp13 = tmp11
-            * (0.937303064f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.937303064f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             - z1;
         tmp23 = z2
-            * -((0.170464608f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((0.170464608f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG)
             - tmp12
             - tmp13;
         tmp24 = z2
-            * -((0.803364869f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((0.803364869f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG)
             + tmp12
             - tmp13;
         tmp26 = (tmp11 - z2)
-            * (1.414213562f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.414213562f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             + z1;
         /* Odd part */
@@ -2457,55 +2457,55 @@ pub unsafe extern "C" fn jpeg_idct_13x13(
             * *quantptr.offset((8i32 * 7i32) as isize) as libc::c_int)
             as crate::jpegint_h::JLONG; /* c7+c5+c3-c1 */
         tmp11 = (z1 + z2)
-            * (1.322312651f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.322312651f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* -c11 */
         tmp12 = (z1 + z3)
-            * (1.163874945f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.163874945f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c5+c9+c11-c3 */
         tmp15 = z1 + z4; /* c1+c5-c9-c11 */
         tmp13 = tmp15
-            * (0.937797057f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.937797057f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* -c5 */
         tmp10 = tmp11 + tmp12 + tmp13
-            - z1 * (2.020082300f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z1 * (2.020082300f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c3+c5+c9-c7 */
         tmp14 = (z2 + z3)
-            * -((0.338443458f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((0.338443458f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG); /* -c9 */
         tmp11 += tmp14
-            + z2 * (0.837223564f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z2 * (0.837223564f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c11 */
         tmp12 += tmp14
-            - z3 * (1.572116027f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z3 * (1.572116027f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c1-c7 */
         tmp14 = (z2 + z4)
-            * -((1.163874945f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((1.163874945f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG); /* c7 */
         tmp11 += tmp14; /* c1+c11 */
         tmp13 += tmp14
-            + z4 * (2.205608352f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z4 * (2.205608352f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp14 = (z3 + z4)
-            * -((0.657217813f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((0.657217813f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG);
         tmp12 += tmp14;
         tmp13 += tmp14;
         tmp15 = tmp15
-            * (0.338443458f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.338443458f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp14 = tmp15
-            + z1 * (0.318774355f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z1 * (0.318774355f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
-            - z2 * (0.466105296f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z2 * (0.466105296f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z1 = (z3 - z2)
-            * (0.937797057f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.937797057f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp14 += z1;
         tmp15 += z1
-            + z3 * (0.384515595f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z3 * (0.384515595f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
-            - z4 * (1.742345811f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z4 * (1.742345811f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         /* Final output stage */
         *wsptr.offset((8i32 * 0i32) as isize) = (tmp20 + tmp10 >> 13i32 - 2i32) as libc::c_int;
@@ -2541,58 +2541,58 @@ pub unsafe extern "C" fn jpeg_idct_13x13(
         tmp10 = z3 + z4;
         tmp11 = z3 - z4;
         tmp12 = tmp10
-            * (1.155388986f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.155388986f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp13 = tmp11
-            * (0.096834934f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.096834934f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             + z1;
         tmp20 = z2
-            * (1.373119086f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.373119086f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             + tmp12
             + tmp13;
         tmp22 = z2
-            * (0.501487041f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.501487041f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             - tmp12
             + tmp13;
         tmp12 = tmp10
-            * (0.316450131f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.316450131f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp13 = tmp11
-            * (0.486914739f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.486914739f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             + z1;
         tmp21 = z2
-            * (1.058554052f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.058554052f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             - tmp12
             + tmp13;
         tmp25 = z2
-            * -((1.252223920f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((1.252223920f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG)
             + tmp12
             + tmp13;
         tmp12 = tmp10
-            * (0.435816023f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.435816023f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp13 = tmp11
-            * (0.937303064f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.937303064f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             - z1;
         tmp23 = z2
-            * -((0.170464608f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((0.170464608f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG)
             - tmp12
             - tmp13;
         tmp24 = z2
-            * -((0.803364869f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((0.803364869f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG)
             + tmp12
             - tmp13;
         tmp26 = (tmp11 - z2)
-            * (1.414213562f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.414213562f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             + z1;
         z1 = *wsptr.offset(1) as crate::jpegint_h::JLONG;
@@ -2600,55 +2600,55 @@ pub unsafe extern "C" fn jpeg_idct_13x13(
         z3 = *wsptr.offset(5) as crate::jpegint_h::JLONG;
         z4 = *wsptr.offset(7) as crate::jpegint_h::JLONG;
         tmp11 = (z1 + z2)
-            * (1.322312651f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.322312651f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp12 = (z1 + z3)
-            * (1.163874945f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.163874945f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp15 = z1 + z4;
         tmp13 = tmp15
-            * (0.937797057f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.937797057f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp10 = tmp11 + tmp12 + tmp13
-            - z1 * (2.020082300f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z1 * (2.020082300f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp14 = (z2 + z3)
-            * -((0.338443458f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((0.338443458f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG);
         tmp11 += tmp14
-            + z2 * (0.837223564f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z2 * (0.837223564f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp12 += tmp14
-            - z3 * (1.572116027f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z3 * (1.572116027f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp14 = (z2 + z4)
-            * -((1.163874945f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((1.163874945f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG);
         tmp11 += tmp14;
         tmp13 += tmp14
-            + z4 * (2.205608352f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z4 * (2.205608352f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp14 = (z3 + z4)
-            * -((0.657217813f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((0.657217813f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG);
         tmp12 += tmp14;
         tmp13 += tmp14;
         tmp15 = tmp15
-            * (0.338443458f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.338443458f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp14 = tmp15
-            + z1 * (0.318774355f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z1 * (0.318774355f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
-            - z2 * (0.466105296f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z2 * (0.466105296f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z1 = (z3 - z2)
-            * (0.937797057f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.937797057f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp14 += z1;
         tmp15 += z1
-            + z3 * (0.384515595f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z3 * (0.384515595f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
-            - z4 * (1.742345811f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z4 * (1.742345811f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         *outptr.offset(0) = *range_limit.offset(
             ((tmp20 + tmp10 >> 13i32 + 2i32 + 3i32) as libc::c_int & crate::jdct_h::RANGE_MASK)
@@ -2797,13 +2797,13 @@ pub unsafe extern "C" fn jpeg_idct_14x14(
             * *quantptr.offset((8i32 * 4i32) as isize) as libc::c_int)
             as crate::jpegint_h::JLONG; /* c12 */
         z2 = z4
-            * (1.274162392f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.274162392f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c8 */
         z3 = z4
-            * (0.314692123f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.314692123f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z4 = z4
-            * (0.881747734f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.881747734f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp10 = z1 + z2;
         tmp11 = z1 + z3;
@@ -2818,18 +2818,18 @@ pub unsafe extern "C" fn jpeg_idct_14x14(
             * *quantptr.offset((8i32 * 6i32) as isize) as libc::c_int)
             as crate::jpegint_h::JLONG; /* c2-c6 */
         z3 = (z1 + z2)
-            * (1.105676686f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.105676686f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c6+c10 */
         tmp13 = z3
-            + z1 * (0.273079590f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z1 * (0.273079590f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c2 */
         tmp14 = z3
-            - z2 * (1.719280954f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z2 * (1.719280954f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp15 = z1
-            * (0.613604268f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.613604268f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
-            - z2 * (1.378756276f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z2 * (1.378756276f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp20 = tmp10 + tmp13;
         tmp26 = tmp10 - tmp13;
@@ -2853,46 +2853,46 @@ pub unsafe extern "C" fn jpeg_idct_14x14(
         tmp13 = ((z4 as libc::c_ulong) << 13i32) as crate::jpegint_h::JLONG; /* c9+c11-c13 */
         tmp14 = z1 + z3; /* c11 */
         tmp11 = (z1 + z2)
-            * (1.334852607f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.334852607f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* -c13 */
         tmp12 = tmp14
-            * (1.197448846f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.197448846f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c3-c9-c13 */
         tmp10 = tmp11 + tmp12 + tmp13
-            - z1 * (1.126980169f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z1 * (1.126980169f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c3+c5-c13 */
         tmp14 = tmp14
-            * (0.752406978f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.752406978f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c1 */
         tmp16 = tmp14
-            - z1 * (1.061150426f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z1 * (1.061150426f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c1+c9-c11 */
         z1 -= z2; /* c1+c11-c5 */
         tmp15 = z1
-            * (0.467085129f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.467085129f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             - tmp13;
         tmp16 += tmp15;
         z1 += z4;
         z4 = (z2 + z3)
-            * -((0.158341681f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((0.158341681f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG)
             - tmp13;
         tmp11 += z4
-            - z2 * (0.424103948f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z2 * (0.424103948f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp12 += z4
-            - z3 * (2.373959773f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z3 * (2.373959773f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z4 = (z3 - z2)
-            * (1.405321284f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.405321284f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp14 += z4 + tmp13
             - z3 * (1.6906431334f64
-                * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+                * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp15 += z4
-            + z2 * (0.674957567f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z2 * (0.674957567f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp13 = (((z1 - z3) as libc::c_ulong) << 2i32) as crate::jpegint_h::JLONG;
         /* Final output stage */
@@ -2926,13 +2926,13 @@ pub unsafe extern "C" fn jpeg_idct_14x14(
         z1 = ((z1 as libc::c_ulong) << 13i32) as crate::jpegint_h::JLONG;
         z4 = *wsptr.offset(4) as crate::jpegint_h::JLONG;
         z2 = z4
-            * (1.274162392f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.274162392f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z3 = z4
-            * (0.314692123f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.314692123f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z4 = z4
-            * (0.881747734f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.881747734f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp10 = z1 + z2;
         tmp11 = z1 + z3;
@@ -2941,18 +2941,18 @@ pub unsafe extern "C" fn jpeg_idct_14x14(
         z1 = *wsptr.offset(2) as crate::jpegint_h::JLONG;
         z2 = *wsptr.offset(6) as crate::jpegint_h::JLONG;
         z3 = (z1 + z2)
-            * (1.105676686f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.105676686f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp13 = z3
-            + z1 * (0.273079590f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z1 * (0.273079590f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp14 = z3
-            - z2 * (1.719280954f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z2 * (1.719280954f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp15 = z1
-            * (0.613604268f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.613604268f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
-            - z2 * (1.378756276f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z2 * (1.378756276f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp20 = tmp10 + tmp13;
         tmp26 = tmp10 - tmp13;
@@ -2967,45 +2967,45 @@ pub unsafe extern "C" fn jpeg_idct_14x14(
         z4 = ((z4 as libc::c_ulong) << 13i32) as crate::jpegint_h::JLONG;
         tmp14 = z1 + z3;
         tmp11 = (z1 + z2)
-            * (1.334852607f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.334852607f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp12 = tmp14
-            * (1.197448846f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.197448846f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp10 = tmp11 + tmp12 + z4
-            - z1 * (1.126980169f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z1 * (1.126980169f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp14 = tmp14
-            * (0.752406978f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.752406978f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp16 = tmp14
-            - z1 * (1.061150426f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z1 * (1.061150426f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z1 -= z2;
         tmp15 = z1
-            * (0.467085129f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.467085129f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             - z4;
         tmp16 += tmp15;
         tmp13 = (z2 + z3)
-            * -((0.158341681f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((0.158341681f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG)
             - z4;
         tmp11 += tmp13
-            - z2 * (0.424103948f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z2 * (0.424103948f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp12 += tmp13
-            - z3 * (2.373959773f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z3 * (2.373959773f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp13 = (z3 - z2)
-            * (1.405321284f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.405321284f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp14 += tmp13 + z4
             - z3 * (1.6906431334f64
-                * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+                * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp15 += tmp13
-            + z2 * (0.674957567f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z2 * (0.674957567f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp13 = (((z1 - z3) as libc::c_ulong) << 13i32) as crate::jpegint_h::JLONG + z4;
         *outptr.offset(0) = *range_limit.offset(
@@ -3160,10 +3160,10 @@ pub unsafe extern "C" fn jpeg_idct_15x15(
             * *quantptr.offset((8i32 * 6i32) as isize) as libc::c_int)
             as crate::jpegint_h::JLONG; /* (c2+c4)/2 */
         tmp10 = z4
-            * (0.437016024f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.437016024f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* (c2-c4)/2 */
         tmp11 = z4
-            * (1.144122806f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.144122806f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c4+c14 */
         tmp12 = z1 - tmp10; /* (c8+c14)/2 */
         tmp13 = z1 + tmp11; /* (c8-c14)/2 */
@@ -3171,29 +3171,29 @@ pub unsafe extern "C" fn jpeg_idct_15x15(
         z4 = z2 - z3; /* (c6-c12)/2 */
         z3 += z2; /* c10 = c6-c12 */
         tmp10 = z3
-            * (1.337628990f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.337628990f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c0 = (c6-c12)*2 */
         tmp11 = z4
-            * (0.045680613f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.045680613f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z2 = z2
-            * (1.439773946f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.439773946f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp20 = tmp13 + tmp10 + tmp11;
         tmp23 = tmp12 - tmp10 + tmp11 + z2;
         tmp10 = z3
-            * (0.547059574f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.547059574f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp11 = z4
-            * (0.399234004f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.399234004f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp25 = tmp13 - tmp10 - tmp11;
         tmp26 = tmp12 + tmp10 - tmp11 - z2;
         tmp10 = z3
-            * (0.790569415f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.790569415f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp11 = z4
-            * (0.353553391f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.353553391f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp21 = tmp12 + tmp10 + tmp11;
         tmp24 = tmp13 - tmp10 + tmp11;
@@ -3211,53 +3211,53 @@ pub unsafe extern "C" fn jpeg_idct_15x15(
             * *quantptr.offset((8i32 * 5i32) as isize) as libc::c_int)
             as crate::jpegint_h::JLONG; /* c3-c9 */
         z3 = z4
-            * (1.224744871f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.224744871f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c3+c9 */
         z4 = (*inptr.offset((8i32 * 7i32) as isize) as libc::c_int
             * *quantptr.offset((8i32 * 7i32) as isize) as libc::c_int)
             as crate::jpegint_h::JLONG; /* -c9 */
         tmp13 = z2 - z4; /* -c3 */
         tmp15 = (z1 + tmp13)
-            * (0.831253876f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.831253876f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c1 */
         tmp11 = tmp15
-            + z1 * (0.513743148f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z1 * (0.513743148f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c1+c7 */
         tmp14 = tmp15
             - tmp13
-                * (2.176250899f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+                * (2.176250899f64 * ((1i64) << 13i32) as libc::c_double
                     + 0.5f64) as crate::jpegint_h::JLONG; /* c1-c13 */
         tmp13 = z2
-            * -((0.831253876f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((0.831253876f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG); /* c5 */
         tmp15 = z2
-            * -((1.344997024f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((1.344997024f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG); /* c11 */
         z2 = z1 - z4; /* c7-c11 */
         tmp12 = z3
-            + z2 * (1.406466353f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z2 * (1.406466353f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c11+c13 */
         tmp10 = tmp12
-            + z4 * (2.457431844f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z4 * (2.457431844f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             - tmp15;
         tmp16 = tmp12
-            - z1 * (1.112434820f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z1 * (1.112434820f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             + tmp13;
         tmp12 = z2
-            * (1.224744871f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.224744871f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             - z3;
         z2 = (z1 + z4)
-            * (0.575212477f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.575212477f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp13 += z2
-            + z1 * (0.475753014f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z1 * (0.475753014f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             - z3;
         tmp15 += z2
-            - z4 * (0.869244010f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z4 * (0.869244010f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             + z3;
         /* Final output stage */
@@ -3294,10 +3294,10 @@ pub unsafe extern "C" fn jpeg_idct_15x15(
         z3 = *wsptr.offset(4) as crate::jpegint_h::JLONG;
         z4 = *wsptr.offset(6) as crate::jpegint_h::JLONG;
         tmp10 = z4
-            * (0.437016024f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.437016024f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp11 = z4
-            * (1.144122806f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.144122806f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp12 = z1 - tmp10;
         tmp13 = z1 + tmp11;
@@ -3305,29 +3305,29 @@ pub unsafe extern "C" fn jpeg_idct_15x15(
         z4 = z2 - z3;
         z3 += z2;
         tmp10 = z3
-            * (1.337628990f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.337628990f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp11 = z4
-            * (0.045680613f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.045680613f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z2 = z2
-            * (1.439773946f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.439773946f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp20 = tmp13 + tmp10 + tmp11;
         tmp23 = tmp12 - tmp10 + tmp11 + z2;
         tmp10 = z3
-            * (0.547059574f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.547059574f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp11 = z4
-            * (0.399234004f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.399234004f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp25 = tmp13 - tmp10 - tmp11;
         tmp26 = tmp12 + tmp10 - tmp11 - z2;
         tmp10 = z3
-            * (0.790569415f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.790569415f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp11 = z4
-            * (0.353553391f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.353553391f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp21 = tmp12 + tmp10 + tmp11;
         tmp24 = tmp13 - tmp10 + tmp11;
@@ -3338,51 +3338,51 @@ pub unsafe extern "C" fn jpeg_idct_15x15(
         z2 = *wsptr.offset(3) as crate::jpegint_h::JLONG;
         z4 = *wsptr.offset(5) as crate::jpegint_h::JLONG;
         z3 = z4
-            * (1.224744871f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.224744871f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z4 = *wsptr.offset(7) as crate::jpegint_h::JLONG;
         tmp13 = z2 - z4;
         tmp15 = (z1 + tmp13)
-            * (0.831253876f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.831253876f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp11 = tmp15
-            + z1 * (0.513743148f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z1 * (0.513743148f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp14 = tmp15
             - tmp13
-                * (2.176250899f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+                * (2.176250899f64 * ((1i64) << 13i32) as libc::c_double
                     + 0.5f64) as crate::jpegint_h::JLONG;
         tmp13 = z2
-            * -((0.831253876f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((0.831253876f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG);
         tmp15 = z2
-            * -((1.344997024f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((1.344997024f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG);
         z2 = z1 - z4;
         tmp12 = z3
-            + z2 * (1.406466353f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z2 * (1.406466353f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp10 = tmp12
-            + z4 * (2.457431844f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z4 * (2.457431844f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             - tmp15;
         tmp16 = tmp12
-            - z1 * (1.112434820f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z1 * (1.112434820f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             + tmp13;
         tmp12 = z2
-            * (1.224744871f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.224744871f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             - z3;
         z2 = (z1 + z4)
-            * (0.575212477f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.575212477f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp13 += z2
-            + z1 * (0.475753014f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z1 * (0.475753014f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             - z3;
         tmp15 += z2
-            - z4 * (0.869244010f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z4 * (0.869244010f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG
             + z3;
         *outptr.offset(0) = *range_limit.offset(
@@ -3540,9 +3540,9 @@ pub unsafe extern "C" fn jpeg_idct_16x16(
             * *quantptr.offset((8i32 * 4i32) as isize) as libc::c_int)
             as crate::jpegint_h::JLONG; /* c12[16] = c6[8] */
         tmp1 = z1
-            * (1.306562965f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.306562965f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c14[16] = c7[8] */
-        tmp2 = z1 * 4433i32 as crate::jpegint_h::JLONG; /* c2[16] = c1[8] */
+        tmp2 = z1 * 4433i64; /* c2[16] = c1[8] */
         tmp10 = tmp0 + tmp1; /* (c6+c2)[16] = (c3+c1)[8] */
         tmp11 = tmp0 - tmp1; /* (c6-c14)[16] = (c3-c7)[8] */
         tmp12 = tmp0 + tmp2; /* (c2-c10)[16] = (c1-c5)[8] */
@@ -3555,18 +3555,18 @@ pub unsafe extern "C" fn jpeg_idct_16x16(
             as crate::jpegint_h::JLONG;
         z3 = z1 - z2;
         z4 = z3
-            * (0.275899379f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.275899379f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z3 = z3
-            * (1.387039845f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.387039845f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
-        tmp0 = z3 + z2 * 20995i32 as crate::jpegint_h::JLONG;
-        tmp1 = z4 + z1 * 7373i32 as crate::jpegint_h::JLONG;
+        tmp0 = z3 + z2 * 20995i64;
+        tmp1 = z4 + z1 * 7373i64;
         tmp2 = z3
-            - z1 * (0.601344887f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z1 * (0.601344887f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp3 = z4
-            - z2 * (0.509795579f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z2 * (0.509795579f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp20 = tmp10 + tmp0;
         tmp27 = tmp10 - tmp0;
@@ -3591,69 +3591,69 @@ pub unsafe extern "C" fn jpeg_idct_16x16(
             as crate::jpegint_h::JLONG; /* c9 */
         tmp11 = z1 + z3; /* c11 */
         tmp1 = (z1 + z2)
-            * (1.353318001f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.353318001f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c13 */
         tmp2 = tmp11
-            * (1.247225013f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.247225013f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c7+c5+c3-c1 */
         tmp3 = (z1 + z4)
-            * (1.093201867f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.093201867f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c9+c11+c13-c15 */
         tmp10 = (z1 - z4)
-            * (0.897167586f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.897167586f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c15 */
         tmp11 = tmp11
-            * (0.666655658f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.666655658f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c9+c11-c3-c15 */
         tmp12 = (z1 - z2)
-            * (0.410524528f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.410524528f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c5+c7+c15-c3 */
         tmp0 = tmp1 + tmp2 + tmp3
-            - z1 * (2.286341144f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z1 * (2.286341144f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c1 */
         tmp13 = tmp10 + tmp11 + tmp12
-            - z1 * (1.835730603f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z1 * (1.835730603f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c1+c11-c9-c13 */
         z1 = (z2 + z3)
-            * (0.138617169f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.138617169f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c1+c5+c13-c7 */
         tmp1 += z1
-            + z2 * (0.071888074f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z2 * (0.071888074f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* -c11 */
         tmp2 += z1
-            - z3 * (1.125726048f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z3 * (1.125726048f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c3+c11+c15-c7 */
         z1 = (z3 - z2)
-            * (1.407403738f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.407403738f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* -c5 */
         tmp11 += z1
-            - z3 * (0.766367282f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z3 * (0.766367282f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* c1+c5+c9-c13 */
         tmp12 += z1
-            + z2 * (1.971951411f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z2 * (1.971951411f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG; /* -c3 */
         z2 += z4; /* c13 */
         z1 = z2
-            * -((0.666655658f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((0.666655658f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG);
         tmp1 += z1;
         tmp3 += z1
-            + z4 * (1.065388962f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z4 * (1.065388962f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z2 = z2
-            * -((1.247225013f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((1.247225013f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG);
         tmp10 += z2
-            + z4 * (3.141271809f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z4 * (3.141271809f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp12 += z2;
         z2 = (z3 + z4)
-            * -((1.353318001f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((1.353318001f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG);
         tmp2 += z2;
         tmp3 += z2;
         z2 = (z4 - z3)
-            * (0.410524528f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.410524528f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp10 += z2;
         tmp11 += z2;
@@ -3690,9 +3690,9 @@ pub unsafe extern "C" fn jpeg_idct_16x16(
         tmp0 = ((tmp0 as libc::c_ulong) << 13i32) as crate::jpegint_h::JLONG;
         z1 = *wsptr.offset(4) as crate::jpegint_h::JLONG;
         tmp1 = z1
-            * (1.306562965f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.306562965f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
-        tmp2 = z1 * 4433i32 as crate::jpegint_h::JLONG;
+        tmp2 = z1 * 4433i64;
         tmp10 = tmp0 + tmp1;
         tmp11 = tmp0 - tmp1;
         tmp12 = tmp0 + tmp2;
@@ -3701,18 +3701,18 @@ pub unsafe extern "C" fn jpeg_idct_16x16(
         z2 = *wsptr.offset(6) as crate::jpegint_h::JLONG;
         z3 = z1 - z2;
         z4 = z3
-            * (0.275899379f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.275899379f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z3 = z3
-            * (1.387039845f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.387039845f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
-        tmp0 = z3 + z2 * 20995i32 as crate::jpegint_h::JLONG;
-        tmp1 = z4 + z1 * 7373i32 as crate::jpegint_h::JLONG;
+        tmp0 = z3 + z2 * 20995i64;
+        tmp1 = z4 + z1 * 7373i64;
         tmp2 = z3
-            - z1 * (0.601344887f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z1 * (0.601344887f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp3 = z4
-            - z2 * (0.509795579f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z2 * (0.509795579f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp20 = tmp10 + tmp0;
         tmp27 = tmp10 - tmp0;
@@ -3728,69 +3728,69 @@ pub unsafe extern "C" fn jpeg_idct_16x16(
         z4 = *wsptr.offset(7) as crate::jpegint_h::JLONG;
         tmp11 = z1 + z3;
         tmp1 = (z1 + z2)
-            * (1.353318001f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.353318001f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp2 = tmp11
-            * (1.247225013f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.247225013f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp3 = (z1 + z4)
-            * (1.093201867f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.093201867f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp10 = (z1 - z4)
-            * (0.897167586f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.897167586f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp11 = tmp11
-            * (0.666655658f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.666655658f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp12 = (z1 - z2)
-            * (0.410524528f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.410524528f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp0 = tmp1 + tmp2 + tmp3
-            - z1 * (2.286341144f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z1 * (2.286341144f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp13 = tmp10 + tmp11 + tmp12
-            - z1 * (1.835730603f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z1 * (1.835730603f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z1 = (z2 + z3)
-            * (0.138617169f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.138617169f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp1 += z1
-            + z2 * (0.071888074f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z2 * (0.071888074f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp2 += z1
-            - z3 * (1.125726048f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z3 * (1.125726048f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z1 = (z3 - z2)
-            * (1.407403738f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (1.407403738f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp11 += z1
-            - z3 * (0.766367282f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            - z3 * (0.766367282f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp12 += z1
-            + z2 * (1.971951411f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z2 * (1.971951411f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z2 += z4;
         z1 = z2
-            * -((0.666655658f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((0.666655658f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG);
         tmp1 += z1;
         tmp3 += z1
-            + z4 * (1.065388962f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z4 * (1.065388962f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         z2 = z2
-            * -((1.247225013f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((1.247225013f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG);
         tmp10 += z2
-            + z4 * (3.141271809f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            + z4 * (3.141271809f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp12 += z2;
         z2 = (z3 + z4)
-            * -((1.353318001f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * -((1.353318001f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG);
         tmp2 += z2;
         tmp3 += z2;
         z2 = (z4 - z3)
-            * (0.410524528f64 * ((1i32 as crate::jpegint_h::JLONG) << 13i32) as libc::c_double
+            * (0.410524528f64 * ((1i64) << 13i32) as libc::c_double
                 + 0.5f64) as crate::jpegint_h::JLONG;
         tmp10 += z2;
         tmp11 += z2;

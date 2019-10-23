@@ -291,36 +291,36 @@ unsafe extern "C" fn write_header(
         ::std::mem::size_of::<[libc::c_char; 18]>() as libc::c_ulong,
     ); /* color map type 1 */
     if num_colors > 0i32 {
-        targaheader[1] = 1i32 as libc::c_char;
+        targaheader[1] = 1i8;
         targaheader[5] = (num_colors & 0xffi32) as libc::c_char;
         targaheader[6] = (num_colors >> 8i32) as libc::c_char;
-        targaheader[7] = 24i32 as libc::c_char
+        targaheader[7] = 24i8
         /* 24 bits per cmap entry */
     } /* Top-down, non-interlaced */
-    targaheader[12] = ((*cinfo).output_width & 0xffi32 as libc::c_uint) as libc::c_char; /* image type = uncompressed grayscale */
+    targaheader[12] = ((*cinfo).output_width & 0xffu32) as libc::c_char; /* image type = uncompressed grayscale */
     targaheader[13] = ((*cinfo).output_width >> 8i32) as libc::c_char;
-    targaheader[14] = ((*cinfo).output_height & 0xffi32 as libc::c_uint) as libc::c_char;
+    targaheader[14] = ((*cinfo).output_height & 0xffu32) as libc::c_char;
     targaheader[15] = ((*cinfo).output_height >> 8i32) as libc::c_char;
-    targaheader[17] = 0x20i32 as libc::c_char;
-    if (*cinfo).out_color_space as libc::c_uint
-        == crate::jpeglib_h::JCS_GRAYSCALE as libc::c_int as libc::c_uint
+    targaheader[17] = 0x20i8;
+    if  (*cinfo).out_color_space
+        ==  crate::jpeglib_h::JCS_GRAYSCALE
     {
-        targaheader[2] = 3i32 as libc::c_char;
-        targaheader[16] = 8i32 as libc::c_char
+        targaheader[2] = 3i8;
+        targaheader[16] = 8i8
     /* bits per pixel */
     } else if num_colors > 0i32 {
-        targaheader[2] = 1i32 as libc::c_char; /* image type = colormapped RGB */
-        targaheader[16] = 8i32 as libc::c_char
+        targaheader[2] = 1i8; /* image type = colormapped RGB */
+        targaheader[16] = 8i8
     } else {
-        targaheader[2] = 2i32 as libc::c_char; /* image type = uncompressed RGB */
-        targaheader[16] = 24i32 as libc::c_char
+        targaheader[2] = 2i8; /* image type = uncompressed RGB */
+        targaheader[16] = 24i8
     }
     if crate::stdlib::fwrite(
         targaheader.as_mut_ptr() as *const libc::c_void,
-        1i32 as crate::stddef_h::size_t,
-        18i32 as crate::stddef_h::size_t,
+        1u64,
+        18u64,
         (*dinfo).output_file,
-    ) != 18i32 as crate::stddef_h::size_t
+    ) != 18u64
     {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_FILE_WRITE as libc::c_int;
         Some(
@@ -350,17 +350,17 @@ unsafe extern "C" fn put_pixel_rows(
     inptr = *(*dest).pub_0.buffer.offset(0);
     outptr = (*dest).iobuffer;
     col = (*cinfo).output_width;
-    while col > 0i32 as libc::c_uint {
-        *outptr.offset(0) = *inptr.offset(2) as libc::c_int as libc::c_char;
-        *outptr.offset(1) = *inptr.offset(1) as libc::c_int as libc::c_char;
-        *outptr.offset(2) = *inptr.offset(0) as libc::c_int as libc::c_char;
+    while col > 0u32 {
+        *outptr.offset(0) =  *inptr.offset(2) as libc::c_char;
+        *outptr.offset(1) =  *inptr.offset(1) as libc::c_char;
+        *outptr.offset(2) =  *inptr.offset(0) as libc::c_char;
         inptr = inptr.offset(3);
         outptr = outptr.offset(3);
         col =  col - 1
     }
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
-        1i32 as crate::stddef_h::size_t,
+        1u64,
         (*dest).buffer_width as crate::stddef_h::size_t,
         (*dest).pub_0.output_file,
     );
@@ -380,17 +380,17 @@ unsafe extern "C" fn put_gray_rows(
     inptr = *(*dest).pub_0.buffer.offset(0);
     outptr = (*dest).iobuffer;
     col = (*cinfo).output_width;
-    while col > 0i32 as libc::c_uint {
+    while col > 0u32 {
         let fresh0 = inptr;
         inptr = inptr.offset(1);
         let fresh1 = outptr;
         outptr = outptr.offset(1);
-        *fresh1 = *fresh0 as libc::c_int as libc::c_char;
+        *fresh1 =  *fresh0 as libc::c_char;
         col =  col - 1
     }
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
-        1i32 as crate::stddef_h::size_t,
+        1u64,
         (*dest).buffer_width as crate::stddef_h::size_t,
         (*dest).pub_0.output_file,
     );
@@ -413,18 +413,19 @@ unsafe extern "C" fn put_demapped_gray(
     inptr = *(*dest).pub_0.buffer.offset(0);
     outptr = (*dest).iobuffer;
     col = (*cinfo).output_width;
-    while col > 0i32 as libc::c_uint {
+    while col > 0u32 {
         let fresh2 = inptr;
         inptr = inptr.offset(1);
         let fresh3 = outptr;
         outptr = outptr.offset(1);
         *fresh3 =
-            *color_map0.offset(*fresh2 as libc::c_int as isize) as libc::c_int as libc::c_char;
+            
+            *color_map0.offset(*fresh2 as libc::c_int as isize) as libc::c_char;
         col =  col - 1
     }
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
-        1i32 as crate::stddef_h::size_t,
+        1u64,
         (*dest).buffer_width as crate::stddef_h::size_t,
         (*dest).pub_0.output_file,
     );
@@ -441,8 +442,8 @@ unsafe extern "C" fn start_output_tga(
     let mut num_colors: libc::c_int = 0;
     let mut i: libc::c_int = 0;
     let mut outfile: *mut crate::stdlib::FILE = ::std::ptr::null_mut::< crate::stdlib::FILE>();
-    if (*cinfo).out_color_space as libc::c_uint
-        == crate::jpeglib_h::JCS_GRAYSCALE as libc::c_int as libc::c_uint
+    if  (*cinfo).out_color_space
+        ==  crate::jpeglib_h::JCS_GRAYSCALE
     {
         /* Targa doesn't have a mapped grayscale format, so we will */
         /* demap quantized gray output.  Never emit a colormap. */
@@ -466,8 +467,8 @@ unsafe extern "C" fn start_output_tga(
                     ) -> (),
             )
         }
-    } else if (*cinfo).out_color_space as libc::c_uint
-        == crate::jpeglib_h::JCS_RGB as libc::c_int as libc::c_uint
+    } else if  (*cinfo).out_color_space
+        ==  crate::jpeglib_h::JCS_RGB
     {
         if (*cinfo).quantize_colors != 0 {
             /* We only support 8-bit colormap indexes, so only 256 colors */
@@ -633,9 +634,9 @@ pub unsafe extern "C" fn jinit_write_targa(
         cinfo as crate::jpeglib_h::j_common_ptr,
         crate::jpeglib_h::JPOOL_IMAGE,
         (*dest).buffer_width,
-        1i32 as crate::jmorecfg_h::JDIMENSION,
+        1u32,
     );
-    (*dest).pub_0.buffer_height = 1i32 as crate::jmorecfg_h::JDIMENSION;
+    (*dest).pub_0.buffer_height = 1u32;
     return dest as crate::src::cdjpeg::djpeg_dest_ptr;
 }
 /* TARGA_SUPPORTED */

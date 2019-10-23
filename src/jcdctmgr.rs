@@ -426,22 +426,22 @@ unsafe extern "C" fn compute_reciprocal(
          * identity function.  Since only the C quantization algorithm is used in
          * these cases, the scale value is irrelevant.
          */
-        *dtbl.offset((crate::jpeglib_h::DCTSIZE2 * 0i32) as isize) = 1i32 as crate::jdct_h::DCTELEM; /* reciprocal */
-        *dtbl.offset((crate::jpeglib_h::DCTSIZE2 * 1i32) as isize) = 0i32 as crate::jdct_h::DCTELEM; /* correction */
-        *dtbl.offset((crate::jpeglib_h::DCTSIZE2 * 2i32) as isize) = 1i32 as crate::jdct_h::DCTELEM; /* scale */
+        *dtbl.offset((crate::jpeglib_h::DCTSIZE2 * 0i32) as isize) = 1i16; /* reciprocal */
+        *dtbl.offset((crate::jpeglib_h::DCTSIZE2 * 1i32) as isize) = 0i16; /* correction */
+        *dtbl.offset((crate::jpeglib_h::DCTSIZE2 * 2i32) as isize) = 1i16; /* scale */
         *dtbl.offset((crate::jpeglib_h::DCTSIZE2 * 3i32) as isize) =
             -((::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong *
-    8i32 as libc::c_ulong) as crate::jdct_h::DCTELEM
+    8u64) as crate::jdct_h::DCTELEM
                 as libc::c_int) as crate::jdct_h::DCTELEM; /* shift */
         return 0i32;
     } /* for rounding */
     b = flss(divisor) - 1i32; /* fractional part is < 0.5 */
     r = (::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong *
-    8i32 as libc::c_ulong + b as libc::c_ulong) as libc::c_int;
-    fq = (((1i32 as crate::jdct_h::UDCTELEM2) << r)) / divisor as libc::c_uint;
-    fr = (((1i32 as crate::jdct_h::UDCTELEM2) << r)) % divisor as libc::c_uint;
+    8u64 + b as libc::c_ulong) as libc::c_int;
+    fq = ((((1u32) << r))) / divisor as libc::c_uint;
+    fr = ((((1u32) << r))) % divisor as libc::c_uint;
     c = (divisor as libc::c_int / 2i32) as crate::jdct_h::UDCTELEM;
-    if fr == 0i32 as libc::c_uint {
+    if fr == 0u32 {
         /* divisor is power of two */
         /* fq will be one bit too large to fit in DCTELEM, so adjust */
         fq >>= 1i32; /* fractional part is > 0.5 */
@@ -455,12 +455,12 @@ unsafe extern "C" fn compute_reciprocal(
     *dtbl.offset((crate::jpeglib_h::DCTSIZE2 * 1i32) as isize) = c as crate::jdct_h::DCTELEM; /* scale */
     *dtbl.offset((crate::jpeglib_h::DCTSIZE2 * 2i32) as isize) = (1i32
         << ::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong *
-    8i32 as libc::c_ulong * 2i32 as libc::c_ulong - r as libc::c_ulong)
+    8u64 * 2u64 - r as libc::c_ulong)
         as crate::jdct_h::DCTELEM; /* shift */
     *dtbl.offset((crate::jpeglib_h::DCTSIZE2 * 3i32) as isize) =
         (r as crate::jdct_h::DCTELEM as libc::c_ulong -
     ::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong *
-        8i32 as libc::c_ulong) as crate::jdct_h::DCTELEM;
+        8u64) as crate::jdct_h::DCTELEM;
     if r <= 16i32 {
         return 0i32;
     } else {
@@ -508,7 +508,7 @@ unsafe extern "C" fn start_pass_fdctmgr(mut cinfo: crate::jpeglib_h::j_compress_
         qtbl = (*cinfo).quant_tbl_ptrs[qtblno as usize];
         /* Compute divisors for this quant table */
         /* We may do this more than once for same table, but it's not a big deal */
-        match (*cinfo).dct_method as libc::c_uint {
+        match  (*cinfo).dct_method {
             0 => {
                 /* For LL&M IDCT method, divisors are equal to raw quantization
                  * coefficients multiplied by 8 (to counteract scaling).
@@ -567,70 +567,70 @@ unsafe extern "C" fn start_pass_fdctmgr(mut cinfo: crate::jpeglib_h::j_compress_
                  * We apply a further scale factor of 8.
                  */
                 static mut aanscales: [crate::jmorecfg_h::INT16; 64] = [
-                    16384i32 as crate::jmorecfg_h::INT16,
-                    22725i32 as crate::jmorecfg_h::INT16,
-                    21407i32 as crate::jmorecfg_h::INT16,
-                    19266i32 as crate::jmorecfg_h::INT16,
-                    16384i32 as crate::jmorecfg_h::INT16,
-                    12873i32 as crate::jmorecfg_h::INT16,
-                    8867i32 as crate::jmorecfg_h::INT16,
-                    4520i32 as crate::jmorecfg_h::INT16,
-                    22725i32 as crate::jmorecfg_h::INT16,
-                    31521i32 as crate::jmorecfg_h::INT16,
-                    29692i32 as crate::jmorecfg_h::INT16,
-                    26722i32 as crate::jmorecfg_h::INT16,
-                    22725i32 as crate::jmorecfg_h::INT16,
-                    17855i32 as crate::jmorecfg_h::INT16,
-                    12299i32 as crate::jmorecfg_h::INT16,
-                    6270i32 as crate::jmorecfg_h::INT16,
-                    21407i32 as crate::jmorecfg_h::INT16,
-                    29692i32 as crate::jmorecfg_h::INT16,
-                    27969i32 as crate::jmorecfg_h::INT16,
-                    25172i32 as crate::jmorecfg_h::INT16,
-                    21407i32 as crate::jmorecfg_h::INT16,
-                    16819i32 as crate::jmorecfg_h::INT16,
-                    11585i32 as crate::jmorecfg_h::INT16,
-                    5906i32 as crate::jmorecfg_h::INT16,
-                    19266i32 as crate::jmorecfg_h::INT16,
-                    26722i32 as crate::jmorecfg_h::INT16,
-                    25172i32 as crate::jmorecfg_h::INT16,
-                    22654i32 as crate::jmorecfg_h::INT16,
-                    19266i32 as crate::jmorecfg_h::INT16,
-                    15137i32 as crate::jmorecfg_h::INT16,
-                    10426i32 as crate::jmorecfg_h::INT16,
-                    5315i32 as crate::jmorecfg_h::INT16,
-                    16384i32 as crate::jmorecfg_h::INT16,
-                    22725i32 as crate::jmorecfg_h::INT16,
-                    21407i32 as crate::jmorecfg_h::INT16,
-                    19266i32 as crate::jmorecfg_h::INT16,
-                    16384i32 as crate::jmorecfg_h::INT16,
-                    12873i32 as crate::jmorecfg_h::INT16,
-                    8867i32 as crate::jmorecfg_h::INT16,
-                    4520i32 as crate::jmorecfg_h::INT16,
-                    12873i32 as crate::jmorecfg_h::INT16,
-                    17855i32 as crate::jmorecfg_h::INT16,
-                    16819i32 as crate::jmorecfg_h::INT16,
-                    15137i32 as crate::jmorecfg_h::INT16,
-                    12873i32 as crate::jmorecfg_h::INT16,
-                    10114i32 as crate::jmorecfg_h::INT16,
-                    6967i32 as crate::jmorecfg_h::INT16,
-                    3552i32 as crate::jmorecfg_h::INT16,
-                    8867i32 as crate::jmorecfg_h::INT16,
-                    12299i32 as crate::jmorecfg_h::INT16,
-                    11585i32 as crate::jmorecfg_h::INT16,
-                    10426i32 as crate::jmorecfg_h::INT16,
-                    8867i32 as crate::jmorecfg_h::INT16,
-                    6967i32 as crate::jmorecfg_h::INT16,
-                    4799i32 as crate::jmorecfg_h::INT16,
-                    2446i32 as crate::jmorecfg_h::INT16,
-                    4520i32 as crate::jmorecfg_h::INT16,
-                    6270i32 as crate::jmorecfg_h::INT16,
-                    5906i32 as crate::jmorecfg_h::INT16,
-                    5315i32 as crate::jmorecfg_h::INT16,
-                    4520i32 as crate::jmorecfg_h::INT16,
-                    3552i32 as crate::jmorecfg_h::INT16,
-                    2446i32 as crate::jmorecfg_h::INT16,
-                    1247i32 as crate::jmorecfg_h::INT16,
+                    16384i16,
+                    22725i16,
+                    21407i16,
+                    19266i16,
+                    16384i16,
+                    12873i16,
+                    8867i16,
+                    4520i16,
+                    22725i16,
+                    31521i16,
+                    29692i16,
+                    26722i16,
+                    22725i16,
+                    17855i16,
+                    12299i16,
+                    6270i16,
+                    21407i16,
+                    29692i16,
+                    27969i16,
+                    25172i16,
+                    21407i16,
+                    16819i16,
+                    11585i16,
+                    5906i16,
+                    19266i16,
+                    26722i16,
+                    25172i16,
+                    22654i16,
+                    19266i16,
+                    15137i16,
+                    10426i16,
+                    5315i16,
+                    16384i16,
+                    22725i16,
+                    21407i16,
+                    19266i16,
+                    16384i16,
+                    12873i16,
+                    8867i16,
+                    4520i16,
+                    12873i16,
+                    17855i16,
+                    16819i16,
+                    15137i16,
+                    12873i16,
+                    10114i16,
+                    6967i16,
+                    3552i16,
+                    8867i16,
+                    12299i16,
+                    11585i16,
+                    10426i16,
+                    8867i16,
+                    6967i16,
+                    4799i16,
+                    2446i16,
+                    4520i16,
+                    6270i16,
+                    5906i16,
+                    5315i16,
+                    4520i16,
+                    3552i16,
+                    2446i16,
+                    1247i16,
                 ];
                 if (*fdct).divisors[qtblno as usize].is_null() {
                     (*fdct).divisors[qtblno as usize] = Some(
@@ -653,7 +653,7 @@ unsafe extern "C" fn start_pass_fdctmgr(mut cinfo: crate::jpeglib_h::j_compress_
                     if compute_reciprocal(
                         ((*qtbl).quantval[i as usize] as crate::jpegint_h::JLONG
                             * aanscales[i as usize] as crate::jpegint_h::JLONG
-                            + ((1i32 as crate::jpegint_h::JLONG) << 14i32 - 3i32 - 1i32)
+                            + ((1i64) << 14i32 - 3i32 - 1i32)
                             >> 14i32 - 3i32) as crate::jmorecfg_h::UINT16,
                         &mut *dtbl.offset(i as isize),
                     ) == 0
@@ -963,7 +963,7 @@ unsafe extern "C" fn float_preprocess_deringing(
 ) {
     let maxsample: libc::c_float = (255i32 - crate::jmorecfg_h::CENTERJSAMPLE) as libc::c_float;
     let size: libc::c_int = crate::jpeglib_h::DCTSIZE * crate::jpeglib_h::DCTSIZE;
-    let mut sum: libc::c_float = 0i32 as libc::c_float;
+    let mut sum: libc::c_float = 0f32;
     let mut maxsample_count: libc::c_int = 0i32;
     let mut i: libc::c_int = 0;
     let mut n: libc::c_int = 0;
@@ -1204,7 +1204,7 @@ unsafe extern "C" fn quantize(
     recip as libc::c_uint;
             product >>= shift as libc::c_ulong +
     ::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong *
-        8i32 as libc::c_ulong;
+        8u64;
             temp = product as crate::jdct_h::DCTELEM;
             temp = -(temp as libc::c_int) as crate::jdct_h::DCTELEM
         } else {
@@ -1212,7 +1212,7 @@ unsafe extern "C" fn quantize(
     recip as libc::c_uint;
             product >>= shift as libc::c_ulong +
     ::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong *
-        8i32 as libc::c_ulong;
+        8u64;
             temp = product as crate::jdct_h::DCTELEM
         }
         *output_ptr.offset(i as isize) = temp;
@@ -1254,7 +1254,7 @@ unsafe extern "C" fn forward_DCT(
     let mut do_quantize: quantize_method_ptr = (*fdct).quantize;
     workspace = (*fdct).workspace;
     sample_data = sample_data.offset(start_row as isize);
-    bi = 0i32 as crate::jmorecfg_h::JDIMENSION;
+    bi = 0u32;
     while bi < num_blocks {
         /* Load data into workspace, applying unsigned->signed conversion */
         Some(do_convsamp.expect("non-null function pointer")).expect("non-null function pointer")(
@@ -1273,74 +1273,74 @@ unsafe extern "C" fn forward_DCT(
         /* Save unquantized transform coefficients for later trellis quantization */
         if !dst.is_null() {
             let mut i: libc::c_int = 0;
-            if (*cinfo).dct_method as libc::c_uint
-                == crate::jpeglib_h::JDCT_IFAST as libc::c_int as libc::c_uint
+            if  (*cinfo).dct_method
+                ==  crate::jpeglib_h::JDCT_IFAST
             {
                 static mut aanscales: [crate::jmorecfg_h::INT16; 64] = [
-                    16384i32 as crate::jmorecfg_h::INT16,
-                    22725i32 as crate::jmorecfg_h::INT16,
-                    21407i32 as crate::jmorecfg_h::INT16,
-                    19266i32 as crate::jmorecfg_h::INT16,
-                    16384i32 as crate::jmorecfg_h::INT16,
-                    12873i32 as crate::jmorecfg_h::INT16,
-                    8867i32 as crate::jmorecfg_h::INT16,
-                    4520i32 as crate::jmorecfg_h::INT16,
-                    22725i32 as crate::jmorecfg_h::INT16,
-                    31521i32 as crate::jmorecfg_h::INT16,
-                    29692i32 as crate::jmorecfg_h::INT16,
-                    26722i32 as crate::jmorecfg_h::INT16,
-                    22725i32 as crate::jmorecfg_h::INT16,
-                    17855i32 as crate::jmorecfg_h::INT16,
-                    12299i32 as crate::jmorecfg_h::INT16,
-                    6270i32 as crate::jmorecfg_h::INT16,
-                    21407i32 as crate::jmorecfg_h::INT16,
-                    29692i32 as crate::jmorecfg_h::INT16,
-                    27969i32 as crate::jmorecfg_h::INT16,
-                    25172i32 as crate::jmorecfg_h::INT16,
-                    21407i32 as crate::jmorecfg_h::INT16,
-                    16819i32 as crate::jmorecfg_h::INT16,
-                    11585i32 as crate::jmorecfg_h::INT16,
-                    5906i32 as crate::jmorecfg_h::INT16,
-                    19266i32 as crate::jmorecfg_h::INT16,
-                    26722i32 as crate::jmorecfg_h::INT16,
-                    25172i32 as crate::jmorecfg_h::INT16,
-                    22654i32 as crate::jmorecfg_h::INT16,
-                    19266i32 as crate::jmorecfg_h::INT16,
-                    15137i32 as crate::jmorecfg_h::INT16,
-                    10426i32 as crate::jmorecfg_h::INT16,
-                    5315i32 as crate::jmorecfg_h::INT16,
-                    16384i32 as crate::jmorecfg_h::INT16,
-                    22725i32 as crate::jmorecfg_h::INT16,
-                    21407i32 as crate::jmorecfg_h::INT16,
-                    19266i32 as crate::jmorecfg_h::INT16,
-                    16384i32 as crate::jmorecfg_h::INT16,
-                    12873i32 as crate::jmorecfg_h::INT16,
-                    8867i32 as crate::jmorecfg_h::INT16,
-                    4520i32 as crate::jmorecfg_h::INT16,
-                    12873i32 as crate::jmorecfg_h::INT16,
-                    17855i32 as crate::jmorecfg_h::INT16,
-                    16819i32 as crate::jmorecfg_h::INT16,
-                    15137i32 as crate::jmorecfg_h::INT16,
-                    12873i32 as crate::jmorecfg_h::INT16,
-                    10114i32 as crate::jmorecfg_h::INT16,
-                    6967i32 as crate::jmorecfg_h::INT16,
-                    3552i32 as crate::jmorecfg_h::INT16,
-                    8867i32 as crate::jmorecfg_h::INT16,
-                    12299i32 as crate::jmorecfg_h::INT16,
-                    11585i32 as crate::jmorecfg_h::INT16,
-                    10426i32 as crate::jmorecfg_h::INT16,
-                    8867i32 as crate::jmorecfg_h::INT16,
-                    6967i32 as crate::jmorecfg_h::INT16,
-                    4799i32 as crate::jmorecfg_h::INT16,
-                    2446i32 as crate::jmorecfg_h::INT16,
-                    4520i32 as crate::jmorecfg_h::INT16,
-                    6270i32 as crate::jmorecfg_h::INT16,
-                    5906i32 as crate::jmorecfg_h::INT16,
-                    5315i32 as crate::jmorecfg_h::INT16,
-                    4520i32 as crate::jmorecfg_h::INT16,
-                    3552i32 as crate::jmorecfg_h::INT16,
-                    2446i32 as crate::jmorecfg_h::INT16,
-                    1247i32 as crate::jmorecfg_h::INT16,
+                    16384i16,
+                    22725i16,
+                    21407i16,
+                    19266i16,
+                    16384i16,
+                    12873i16,
+                    8867i16,
+                    4520i16,
+                    22725i16,
+                    31521i16,
+                    29692i16,
+                    26722i16,
+                    22725i16,
+                    17855i16,
+                    12299i16,
+                    6270i16,
+                    21407i16,
+                    29692i16,
+                    27969i16,
+                    25172i16,
+                    21407i16,
+                    16819i16,
+                    11585i16,
+                    5906i16,
+                    19266i16,
+                    26722i16,
+                    25172i16,
+                    22654i16,
+                    19266i16,
+                    15137i16,
+                    10426i16,
+                    5315i16,
+                    16384i16,
+                    22725i16,
+                    21407i16,
+                    19266i16,
+                    16384i16,
+                    12873i16,
+                    8867i16,
+                    4520i16,
+                    12873i16,
+                    17855i16,
+                    16819i16,
+                    15137i16,
+                    12873i16,
+                    10114i16,
+                    6967i16,
+                    3552i16,
+                    8867i16,
+                    12299i16,
+                    11585i16,
+                    10426i16,
+                    8867i16,
+                    6967i16,
+                    4799i16,
+                    2446i16,
+                    4520i16,
+                    6270i16,
+                    5906i16,
+                    5315i16,
+                    4520i16,
+                    3552i16,
+                    2446i16,
+                    1247i16,
                 ];
                 i = 0i32;
                 while i < crate::jpeglib_h::DCTSIZE2 {
@@ -1385,8 +1385,7 @@ unsafe extern "C" fn forward_DCT(
             }
         }
         bi =  bi + 1;
-        start_col = (start_col as libc::c_uint + crate::jpeglib_h::DCTSIZE as libc::c_uint)
-            as crate::jmorecfg_h::JDIMENSION as crate::jmorecfg_h::JDIMENSION
+        start_col = start_col + crate::jpeglib_h::DCTSIZE as libc::c_uint
     }
 }
 
@@ -1465,7 +1464,7 @@ unsafe extern "C" fn quantize_float(
          * The maximum coefficient size is +-16K (for 12-bit data), so this
          * code should work for either 16-bit or 32-bit ints.
          */
-        *output_ptr.offset(i as isize) = ((temp + 16384.5f64 as libc::c_float) as libc::c_int
+        *output_ptr.offset(i as isize) = ((temp + 16384.5f32) as libc::c_int
             - 16384i32) as crate::jmorecfg_h::JCOEF;
         i += 1
     }
@@ -1499,7 +1498,7 @@ unsafe extern "C" fn forward_DCT_float(
     let mut do_quantize: float_quantize_method_ptr = (*fdct).float_quantize;
     workspace = (*fdct).float_workspace;
     sample_data = sample_data.offset(start_row as isize);
-    bi = 0i32 as crate::jmorecfg_h::JDIMENSION;
+    bi = 0u32;
     while bi < num_blocks {
         /* Load data into workspace, applying unsigned->signed conversion */
         Some(do_convsamp.expect("non-null function pointer")).expect("non-null function pointer")(
@@ -1567,8 +1566,7 @@ unsafe extern "C" fn forward_DCT_float(
             }
         }
         bi =  bi + 1;
-        start_col = (start_col as libc::c_uint + crate::jpeglib_h::DCTSIZE as libc::c_uint)
-            as crate::jmorecfg_h::JDIMENSION as crate::jmorecfg_h::JDIMENSION
+        start_col = start_col + crate::jpeglib_h::DCTSIZE as libc::c_uint
     }
 }
 /* DCT_FLOAT_SUPPORTED */
@@ -1627,7 +1625,7 @@ pub unsafe extern "C" fn quantize_trellis(
     let mut bi: libc::c_int = 0;
     let mut best_cost: libc::c_float = 0.;
     let mut last_coeff_idx: libc::c_int = 0;
-    let mut norm: libc::c_float = 0.0f64 as libc::c_float;
+    let mut norm: libc::c_float = 0f32;
     let mut lambda_base: libc::c_float = 0.;
     let mut lambda: libc::c_float = 0.;
     let mut lambda_dc: libc::c_float = 0.;
@@ -1669,11 +1667,11 @@ pub unsafe extern "C" fn quantize_trellis(
     }
     if (*(*cinfo).master).trellis_eob_opt != 0 {
         accumulated_zero_block_cost = crate::stdlib::malloc(
-            (num_blocks + 1i32 as libc::c_uint) as libc::c_ulong *
+            (num_blocks + 1u32) as libc::c_ulong *
     ::std::mem::size_of::<libc::c_float>() as libc::c_ulong,
         ) as *mut libc::c_float;
         accumulated_block_cost = crate::stdlib::malloc(
-            (num_blocks + 1i32 as libc::c_uint) as libc::c_ulong *
+            (num_blocks + 1u32) as libc::c_ulong *
     ::std::mem::size_of::<libc::c_float>() as libc::c_ulong,
         ) as *mut libc::c_float;
         block_run_start = crate::stdlib::malloc(
@@ -1681,7 +1679,7 @@ pub unsafe extern "C" fn quantize_trellis(
     ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
         ) as *mut libc::c_int;
         requires_eob = crate::stdlib::malloc(
-            (num_blocks + 1i32 as libc::c_uint) as libc::c_ulong *
+            (num_blocks + 1u32) as libc::c_ulong *
     ::std::mem::size_of::<libc::c_int>() as libc::c_ulong,
         ) as *mut libc::c_int;
         if accumulated_zero_block_cost.is_null()
@@ -1699,8 +1697,8 @@ pub unsafe extern "C" fn quantize_trellis(
                 cinfo as crate::jpeglib_h::j_common_ptr
             );
         }
-        *accumulated_zero_block_cost.offset(0) = 0i32 as libc::c_float;
-        *accumulated_block_cost.offset(0) = 0i32 as libc::c_float;
+        *accumulated_zero_block_cost.offset(0) = 0f32;
+        *accumulated_block_cost.offset(0) = 0f32;
         *requires_eob.offset(0) = 0i32
     }
     if (*(*cinfo).master).trellis_quant_dc != 0 {
@@ -1735,7 +1733,7 @@ pub unsafe extern "C" fn quantize_trellis(
             i += 1
         }
     }
-    norm = 0.0f64 as libc::c_float;
+    norm = 0f32;
     i = 1i32;
     while i < crate::jpeglib_h::DCTSIZE2 {
         norm += ((*qtbl).quantval[i as usize] as libc::c_int
@@ -1744,7 +1742,7 @@ pub unsafe extern "C" fn quantize_trellis(
     }
     norm = (norm as libc::c_double / 63.0f64) as libc::c_float;
     if mode == 1i32 {
-        lambda_base = 1.0f64 as libc::c_float;
+        lambda_base = 1f32;
         lambda_tbl = lambda_table.as_mut_ptr();
         i = 0i32;
         while i < crate::jpeglib_h::DCTSIZE2 {
@@ -1759,7 +1757,7 @@ pub unsafe extern "C" fn quantize_trellis(
     }
     bi = 0i32;
     while (bi as libc::c_uint) < num_blocks {
-        norm = 0.0f64 as libc::c_float;
+        norm = 0f32;
         i = 1i32;
         while i < crate::jpeglib_h::DCTSIZE2 {
             norm += ((*src.offset(bi as isize))[i as usize] as libc::c_int
@@ -1784,8 +1782,8 @@ pub unsafe extern "C" fn quantize_trellis(
             ) * lambda_base as libc::c_double) as libc::c_float
         }
         lambda_dc = lambda * *lambda_tbl.offset(0);
-        accumulated_zero_dist[(Ss - 1i32) as usize] = 0.0f64 as libc::c_float;
-        accumulated_cost[(Ss - 1i32) as usize] = 0.0f64 as libc::c_float;
+        accumulated_zero_dist[(Ss - 1i32) as usize] = 0f32;
+        accumulated_cost[(Ss - 1i32) as usize] = 0f32;
         /* Do DC coefficient */
         if (*(*cinfo).master).trellis_quant_dc != 0 {
             let mut sign: libc::c_int = (*src.offset(bi as isize))[0] as libc::c_int >> 31i32; /* quantized value (round nearest) */
@@ -1903,8 +1901,8 @@ pub unsafe extern "C" fn quantize_trellis(
                     + accumulated_zero_dist[(i - 1i32) as usize];
             qval_0 = (x_0 + q_0 / 2i32) / q_0;
             if qval_0 == 0i32 {
-                (*coef_blocks.offset(bi as isize))[z as usize] = 0i32 as crate::jmorecfg_h::JCOEF;
-                accumulated_cost[i as usize] = 1e38f64 as libc::c_float
+                (*coef_blocks.offset(bi as isize))[z as usize] = 0i16;
+                accumulated_cost[i as usize] = 100000000000000000000000000000000000000f32
             } else {
                 if qval_0 >= 1i32 << crate::src::jchuff::MAX_COEF_BITS {
                     qval_0 = (1i32 << crate::src::jchuff::MAX_COEF_BITS) - 1i32
@@ -1926,7 +1924,7 @@ pub unsafe extern "C" fn quantize_trellis(
                         * *lambda_tbl.offset(z as isize);
                     k += 1
                 }
-                accumulated_cost[i as usize] = 1e38f64 as libc::c_float;
+                accumulated_cost[i as usize] = 100000000000000000000000000000000000000f32;
                 j = Ss - 1i32;
                 while j < i {
                     let mut zz: libc::c_int = *crate::jpegint_h::jpeg_natural_order
@@ -1937,10 +1935,10 @@ pub unsafe extern "C" fn quantize_trellis(
                     {
                         zero_run = i - 1i32 - j;
                         if !(zero_run >> 4i32 != 0
-                            && (*actbl).ehufsi[0xf0i32 as usize] as libc::c_int == 0i32)
+                            && (*actbl).ehufsi[0xf0usize] as libc::c_int == 0i32)
                         {
                             run_bits = (zero_run >> 4i32)
-                                * (*actbl).ehufsi[0xf0i32 as usize] as libc::c_int;
+                                * (*actbl).ehufsi[0xf0usize] as libc::c_int;
                             zero_run &= 15i32;
                             k = 0i32;
                             while k < num_candidates {
@@ -2005,7 +2003,7 @@ pub unsafe extern "C" fn quantize_trellis(
                 let mut z_1: libc::c_int = *crate::jpegint_h::jpeg_natural_order
                     .as_ptr()
                     .offset(i as isize);
-                (*coef_blocks.offset(bi as isize))[z_1 as usize] = 0i32 as crate::jmorecfg_h::JCOEF;
+                (*coef_blocks.offset(bi as isize))[z_1 as usize] = 0i16;
                 i -= 1
             }
             last_coeff_idx = run_start[i as usize];
@@ -2016,7 +2014,7 @@ pub unsafe extern "C" fn quantize_trellis(
                 *accumulated_zero_block_cost.offset(bi as isize);
             *accumulated_zero_block_cost.offset((bi + 1i32) as isize) += cost_all_zeros;
             *requires_eob.offset((bi + 1i32) as isize) = has_eob;
-            best_cost = 1e38f64 as libc::c_float;
+            best_cost = 100000000000000000000000000000000000000f32;
             if has_eob != 2i32 {
                 i = 0i32;
                 while i <= bi {
@@ -2047,12 +2045,12 @@ pub unsafe extern "C" fn quantize_trellis(
     }
     if (*(*cinfo).master).trellis_eob_opt != 0 {
         let mut last_block: libc::c_int = num_blocks as libc::c_int;
-        best_cost = 1e38f64 as libc::c_float;
+        best_cost = 100000000000000000000000000000000000000f32;
         i = 0i32;
         while i as libc::c_uint <= num_blocks {
             let mut zero_block_run_0: libc::c_int = 0;
             let mut nbits_0: libc::c_int = 0;
-            let mut cost_2: libc::c_float = 0.0f64 as libc::c_float;
+            let mut cost_2: libc::c_float = 0f32;
             if !(*requires_eob.offset(i as isize) == 2i32) {
                 cost_2 += *accumulated_zero_block_cost.offset(num_blocks as isize);
                 cost_2 -= *accumulated_zero_block_cost.offset(i as isize);
@@ -2071,7 +2069,7 @@ pub unsafe extern "C" fn quantize_trellis(
             i += 1
         }
         last_block -= 1;
-        bi = ( num_blocks - 1i32 as libc::c_uint) as libc::c_int;
+        bi = ( num_blocks - 1u32) as libc::c_int;
         while bi >= 0i32 {
             while bi > last_block {
                 j = Ss;
@@ -2080,7 +2078,7 @@ pub unsafe extern "C" fn quantize_trellis(
                         .as_ptr()
                         .offset(j as isize);
                     (*coef_blocks.offset(bi as isize))[z_2 as usize] =
-                        0i32 as crate::jmorecfg_h::JCOEF;
+                        0i16;
                     j += 1
                 }
                 bi -= 1
@@ -2116,15 +2114,15 @@ pub unsafe extern "C" fn quantize_trellis(
         i = 1i32;
         while i < dc_trellis_candidates {
             if *accumulated_dc_cost[i as usize]
-                .offset((num_blocks - 1i32 as libc::c_uint) as isize)
+                .offset((num_blocks - 1u32) as isize)
                 < *accumulated_dc_cost[j as usize]
-                    .offset((num_blocks - 1i32 as libc::c_uint) as isize)
+                    .offset((num_blocks - 1u32) as isize)
             {
                 j = i
             }
             i += 1
         }
-        bi = ( num_blocks - 1i32 as libc::c_uint) as libc::c_int;
+        bi = ( num_blocks - 1u32) as libc::c_int;
         while bi >= 0i32 {
             (*coef_blocks.offset(bi as isize))[0] = *dc_candidate[j as usize].offset(bi as isize);
             j = *dc_cost_backtrack[j as usize].offset(bi as isize);
@@ -2132,7 +2130,7 @@ pub unsafe extern "C" fn quantize_trellis(
         }
         /* Save DC predictor */
         *last_dc_val =
-            (*coef_blocks.offset((num_blocks - 1i32 as libc::c_uint) as isize))[0];
+            (*coef_blocks.offset((num_blocks - 1u32) as isize))[0];
         i = 0i32;
         while i < dc_trellis_candidates {
             crate::stdlib::free(accumulated_dc_cost[i as usize] as *mut libc::c_void);
@@ -2164,7 +2162,7 @@ pub unsafe extern "C" fn jinit_forward_dct(mut cinfo: crate::jpeglib_h::j_compre
     (*fdct).pub_0.start_pass =
         Some(start_pass_fdctmgr as unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ());
     /* First determine the DCT... */
-    match (*cinfo).dct_method as libc::c_uint {
+    match  (*cinfo).dct_method {
         0 => {
             (*fdct).pub_0.forward_DCT = Some(
                 forward_DCT
@@ -2256,7 +2254,7 @@ pub unsafe extern "C" fn jinit_forward_dct(mut cinfo: crate::jpeglib_h::j_compre
         }
     }
     /* ...then the supporting stages. */
-    match (*cinfo).dct_method as libc::c_uint {
+    match  (*cinfo).dct_method {
         0 | 1 => {
             if crate::src::simd::x86_64::jsimd::jsimd_can_convsamp() != 0 {
                 (*fdct).convsamp = Some(
@@ -2377,8 +2375,8 @@ pub unsafe extern "C" fn jinit_forward_dct(mut cinfo: crate::jpeglib_h::j_compre
         }
     }
     /* Allocate workspace memory */
-    if (*cinfo).dct_method as libc::c_uint
-        == crate::jpeglib_h::JDCT_FLOAT as libc::c_int as libc::c_uint
+    if  (*cinfo).dct_method
+        ==  crate::jpeglib_h::JDCT_FLOAT
     {
         (*fdct).float_workspace = Some(
             (*(*cinfo).mem)

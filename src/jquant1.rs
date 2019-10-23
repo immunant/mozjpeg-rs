@@ -366,292 +366,292 @@ pub const ODITHER_MASK: libc::c_int = ODITHER_SIZE - 1i32;
 
 static mut base_dither_matrix: [[crate::jmorecfg_h::UINT8; 16]; 16] = [
     [
-        0i32 as crate::jmorecfg_h::UINT8,
-        192i32 as crate::jmorecfg_h::UINT8,
-        48i32 as crate::jmorecfg_h::UINT8,
-        240i32 as crate::jmorecfg_h::UINT8,
-        12i32 as crate::jmorecfg_h::UINT8,
-        204i32 as crate::jmorecfg_h::UINT8,
-        60i32 as crate::jmorecfg_h::UINT8,
-        252i32 as crate::jmorecfg_h::UINT8,
-        3i32 as crate::jmorecfg_h::UINT8,
-        195i32 as crate::jmorecfg_h::UINT8,
-        51i32 as crate::jmorecfg_h::UINT8,
-        243i32 as crate::jmorecfg_h::UINT8,
-        15i32 as crate::jmorecfg_h::UINT8,
-        207i32 as crate::jmorecfg_h::UINT8,
-        63i32 as crate::jmorecfg_h::UINT8,
-        255i32 as crate::jmorecfg_h::UINT8,
+        0u8,
+        192u8,
+        48u8,
+        240u8,
+        12u8,
+        204u8,
+        60u8,
+        252u8,
+        3u8,
+        195u8,
+        51u8,
+        243u8,
+        15u8,
+        207u8,
+        63u8,
+        255u8,
     ],
     [
-        128i32 as crate::jmorecfg_h::UINT8,
-        64i32 as crate::jmorecfg_h::UINT8,
-        176i32 as crate::jmorecfg_h::UINT8,
-        112i32 as crate::jmorecfg_h::UINT8,
-        140i32 as crate::jmorecfg_h::UINT8,
-        76i32 as crate::jmorecfg_h::UINT8,
-        188i32 as crate::jmorecfg_h::UINT8,
-        124i32 as crate::jmorecfg_h::UINT8,
-        131i32 as crate::jmorecfg_h::UINT8,
-        67i32 as crate::jmorecfg_h::UINT8,
-        179i32 as crate::jmorecfg_h::UINT8,
-        115i32 as crate::jmorecfg_h::UINT8,
-        143i32 as crate::jmorecfg_h::UINT8,
-        79i32 as crate::jmorecfg_h::UINT8,
-        191i32 as crate::jmorecfg_h::UINT8,
-        127i32 as crate::jmorecfg_h::UINT8,
+        128u8,
+        64u8,
+        176u8,
+        112u8,
+        140u8,
+        76u8,
+        188u8,
+        124u8,
+        131u8,
+        67u8,
+        179u8,
+        115u8,
+        143u8,
+        79u8,
+        191u8,
+        127u8,
     ],
     [
-        32i32 as crate::jmorecfg_h::UINT8,
-        224i32 as crate::jmorecfg_h::UINT8,
-        16i32 as crate::jmorecfg_h::UINT8,
-        208i32 as crate::jmorecfg_h::UINT8,
-        44i32 as crate::jmorecfg_h::UINT8,
-        236i32 as crate::jmorecfg_h::UINT8,
-        28i32 as crate::jmorecfg_h::UINT8,
-        220i32 as crate::jmorecfg_h::UINT8,
-        35i32 as crate::jmorecfg_h::UINT8,
-        227i32 as crate::jmorecfg_h::UINT8,
-        19i32 as crate::jmorecfg_h::UINT8,
-        211i32 as crate::jmorecfg_h::UINT8,
-        47i32 as crate::jmorecfg_h::UINT8,
-        239i32 as crate::jmorecfg_h::UINT8,
-        31i32 as crate::jmorecfg_h::UINT8,
-        223i32 as crate::jmorecfg_h::UINT8,
+        32u8,
+        224u8,
+        16u8,
+        208u8,
+        44u8,
+        236u8,
+        28u8,
+        220u8,
+        35u8,
+        227u8,
+        19u8,
+        211u8,
+        47u8,
+        239u8,
+        31u8,
+        223u8,
     ],
     [
-        160i32 as crate::jmorecfg_h::UINT8,
-        96i32 as crate::jmorecfg_h::UINT8,
-        144i32 as crate::jmorecfg_h::UINT8,
-        80i32 as crate::jmorecfg_h::UINT8,
-        172i32 as crate::jmorecfg_h::UINT8,
-        108i32 as crate::jmorecfg_h::UINT8,
-        156i32 as crate::jmorecfg_h::UINT8,
-        92i32 as crate::jmorecfg_h::UINT8,
-        163i32 as crate::jmorecfg_h::UINT8,
-        99i32 as crate::jmorecfg_h::UINT8,
-        147i32 as crate::jmorecfg_h::UINT8,
-        83i32 as crate::jmorecfg_h::UINT8,
-        175i32 as crate::jmorecfg_h::UINT8,
-        111i32 as crate::jmorecfg_h::UINT8,
-        159i32 as crate::jmorecfg_h::UINT8,
-        95i32 as crate::jmorecfg_h::UINT8,
+        160u8,
+        96u8,
+        144u8,
+        80u8,
+        172u8,
+        108u8,
+        156u8,
+        92u8,
+        163u8,
+        99u8,
+        147u8,
+        83u8,
+        175u8,
+        111u8,
+        159u8,
+        95u8,
     ],
     [
-        8i32 as crate::jmorecfg_h::UINT8,
-        200i32 as crate::jmorecfg_h::UINT8,
-        56i32 as crate::jmorecfg_h::UINT8,
-        248i32 as crate::jmorecfg_h::UINT8,
-        4i32 as crate::jmorecfg_h::UINT8,
-        196i32 as crate::jmorecfg_h::UINT8,
-        52i32 as crate::jmorecfg_h::UINT8,
-        244i32 as crate::jmorecfg_h::UINT8,
-        11i32 as crate::jmorecfg_h::UINT8,
-        203i32 as crate::jmorecfg_h::UINT8,
-        59i32 as crate::jmorecfg_h::UINT8,
-        251i32 as crate::jmorecfg_h::UINT8,
-        7i32 as crate::jmorecfg_h::UINT8,
-        199i32 as crate::jmorecfg_h::UINT8,
-        55i32 as crate::jmorecfg_h::UINT8,
-        247i32 as crate::jmorecfg_h::UINT8,
+        8u8,
+        200u8,
+        56u8,
+        248u8,
+        4u8,
+        196u8,
+        52u8,
+        244u8,
+        11u8,
+        203u8,
+        59u8,
+        251u8,
+        7u8,
+        199u8,
+        55u8,
+        247u8,
     ],
     [
-        136i32 as crate::jmorecfg_h::UINT8,
-        72i32 as crate::jmorecfg_h::UINT8,
-        184i32 as crate::jmorecfg_h::UINT8,
-        120i32 as crate::jmorecfg_h::UINT8,
-        132i32 as crate::jmorecfg_h::UINT8,
-        68i32 as crate::jmorecfg_h::UINT8,
-        180i32 as crate::jmorecfg_h::UINT8,
-        116i32 as crate::jmorecfg_h::UINT8,
-        139i32 as crate::jmorecfg_h::UINT8,
-        75i32 as crate::jmorecfg_h::UINT8,
-        187i32 as crate::jmorecfg_h::UINT8,
-        123i32 as crate::jmorecfg_h::UINT8,
-        135i32 as crate::jmorecfg_h::UINT8,
-        71i32 as crate::jmorecfg_h::UINT8,
-        183i32 as crate::jmorecfg_h::UINT8,
-        119i32 as crate::jmorecfg_h::UINT8,
+        136u8,
+        72u8,
+        184u8,
+        120u8,
+        132u8,
+        68u8,
+        180u8,
+        116u8,
+        139u8,
+        75u8,
+        187u8,
+        123u8,
+        135u8,
+        71u8,
+        183u8,
+        119u8,
     ],
     [
-        40i32 as crate::jmorecfg_h::UINT8,
-        232i32 as crate::jmorecfg_h::UINT8,
-        24i32 as crate::jmorecfg_h::UINT8,
-        216i32 as crate::jmorecfg_h::UINT8,
-        36i32 as crate::jmorecfg_h::UINT8,
-        228i32 as crate::jmorecfg_h::UINT8,
-        20i32 as crate::jmorecfg_h::UINT8,
-        212i32 as crate::jmorecfg_h::UINT8,
-        43i32 as crate::jmorecfg_h::UINT8,
-        235i32 as crate::jmorecfg_h::UINT8,
-        27i32 as crate::jmorecfg_h::UINT8,
-        219i32 as crate::jmorecfg_h::UINT8,
-        39i32 as crate::jmorecfg_h::UINT8,
-        231i32 as crate::jmorecfg_h::UINT8,
-        23i32 as crate::jmorecfg_h::UINT8,
-        215i32 as crate::jmorecfg_h::UINT8,
+        40u8,
+        232u8,
+        24u8,
+        216u8,
+        36u8,
+        228u8,
+        20u8,
+        212u8,
+        43u8,
+        235u8,
+        27u8,
+        219u8,
+        39u8,
+        231u8,
+        23u8,
+        215u8,
     ],
     [
-        168i32 as crate::jmorecfg_h::UINT8,
-        104i32 as crate::jmorecfg_h::UINT8,
-        152i32 as crate::jmorecfg_h::UINT8,
-        88i32 as crate::jmorecfg_h::UINT8,
-        164i32 as crate::jmorecfg_h::UINT8,
-        100i32 as crate::jmorecfg_h::UINT8,
-        148i32 as crate::jmorecfg_h::UINT8,
-        84i32 as crate::jmorecfg_h::UINT8,
-        171i32 as crate::jmorecfg_h::UINT8,
-        107i32 as crate::jmorecfg_h::UINT8,
-        155i32 as crate::jmorecfg_h::UINT8,
-        91i32 as crate::jmorecfg_h::UINT8,
-        167i32 as crate::jmorecfg_h::UINT8,
-        103i32 as crate::jmorecfg_h::UINT8,
-        151i32 as crate::jmorecfg_h::UINT8,
-        87i32 as crate::jmorecfg_h::UINT8,
+        168u8,
+        104u8,
+        152u8,
+        88u8,
+        164u8,
+        100u8,
+        148u8,
+        84u8,
+        171u8,
+        107u8,
+        155u8,
+        91u8,
+        167u8,
+        103u8,
+        151u8,
+        87u8,
     ],
     [
-        2i32 as crate::jmorecfg_h::UINT8,
-        194i32 as crate::jmorecfg_h::UINT8,
-        50i32 as crate::jmorecfg_h::UINT8,
-        242i32 as crate::jmorecfg_h::UINT8,
-        14i32 as crate::jmorecfg_h::UINT8,
-        206i32 as crate::jmorecfg_h::UINT8,
-        62i32 as crate::jmorecfg_h::UINT8,
-        254i32 as crate::jmorecfg_h::UINT8,
-        1i32 as crate::jmorecfg_h::UINT8,
-        193i32 as crate::jmorecfg_h::UINT8,
-        49i32 as crate::jmorecfg_h::UINT8,
-        241i32 as crate::jmorecfg_h::UINT8,
-        13i32 as crate::jmorecfg_h::UINT8,
-        205i32 as crate::jmorecfg_h::UINT8,
-        61i32 as crate::jmorecfg_h::UINT8,
-        253i32 as crate::jmorecfg_h::UINT8,
+        2u8,
+        194u8,
+        50u8,
+        242u8,
+        14u8,
+        206u8,
+        62u8,
+        254u8,
+        1u8,
+        193u8,
+        49u8,
+        241u8,
+        13u8,
+        205u8,
+        61u8,
+        253u8,
     ],
     [
-        130i32 as crate::jmorecfg_h::UINT8,
-        66i32 as crate::jmorecfg_h::UINT8,
-        178i32 as crate::jmorecfg_h::UINT8,
-        114i32 as crate::jmorecfg_h::UINT8,
-        142i32 as crate::jmorecfg_h::UINT8,
-        78i32 as crate::jmorecfg_h::UINT8,
-        190i32 as crate::jmorecfg_h::UINT8,
-        126i32 as crate::jmorecfg_h::UINT8,
-        129i32 as crate::jmorecfg_h::UINT8,
-        65i32 as crate::jmorecfg_h::UINT8,
-        177i32 as crate::jmorecfg_h::UINT8,
-        113i32 as crate::jmorecfg_h::UINT8,
-        141i32 as crate::jmorecfg_h::UINT8,
-        77i32 as crate::jmorecfg_h::UINT8,
-        189i32 as crate::jmorecfg_h::UINT8,
-        125i32 as crate::jmorecfg_h::UINT8,
+        130u8,
+        66u8,
+        178u8,
+        114u8,
+        142u8,
+        78u8,
+        190u8,
+        126u8,
+        129u8,
+        65u8,
+        177u8,
+        113u8,
+        141u8,
+        77u8,
+        189u8,
+        125u8,
     ],
     [
-        34i32 as crate::jmorecfg_h::UINT8,
-        226i32 as crate::jmorecfg_h::UINT8,
-        18i32 as crate::jmorecfg_h::UINT8,
-        210i32 as crate::jmorecfg_h::UINT8,
-        46i32 as crate::jmorecfg_h::UINT8,
-        238i32 as crate::jmorecfg_h::UINT8,
-        30i32 as crate::jmorecfg_h::UINT8,
-        222i32 as crate::jmorecfg_h::UINT8,
-        33i32 as crate::jmorecfg_h::UINT8,
-        225i32 as crate::jmorecfg_h::UINT8,
-        17i32 as crate::jmorecfg_h::UINT8,
-        209i32 as crate::jmorecfg_h::UINT8,
-        45i32 as crate::jmorecfg_h::UINT8,
-        237i32 as crate::jmorecfg_h::UINT8,
-        29i32 as crate::jmorecfg_h::UINT8,
-        221i32 as crate::jmorecfg_h::UINT8,
+        34u8,
+        226u8,
+        18u8,
+        210u8,
+        46u8,
+        238u8,
+        30u8,
+        222u8,
+        33u8,
+        225u8,
+        17u8,
+        209u8,
+        45u8,
+        237u8,
+        29u8,
+        221u8,
     ],
     [
-        162i32 as crate::jmorecfg_h::UINT8,
-        98i32 as crate::jmorecfg_h::UINT8,
-        146i32 as crate::jmorecfg_h::UINT8,
-        82i32 as crate::jmorecfg_h::UINT8,
-        174i32 as crate::jmorecfg_h::UINT8,
-        110i32 as crate::jmorecfg_h::UINT8,
-        158i32 as crate::jmorecfg_h::UINT8,
-        94i32 as crate::jmorecfg_h::UINT8,
-        161i32 as crate::jmorecfg_h::UINT8,
-        97i32 as crate::jmorecfg_h::UINT8,
-        145i32 as crate::jmorecfg_h::UINT8,
-        81i32 as crate::jmorecfg_h::UINT8,
-        173i32 as crate::jmorecfg_h::UINT8,
-        109i32 as crate::jmorecfg_h::UINT8,
-        157i32 as crate::jmorecfg_h::UINT8,
-        93i32 as crate::jmorecfg_h::UINT8,
+        162u8,
+        98u8,
+        146u8,
+        82u8,
+        174u8,
+        110u8,
+        158u8,
+        94u8,
+        161u8,
+        97u8,
+        145u8,
+        81u8,
+        173u8,
+        109u8,
+        157u8,
+        93u8,
     ],
     [
-        10i32 as crate::jmorecfg_h::UINT8,
-        202i32 as crate::jmorecfg_h::UINT8,
-        58i32 as crate::jmorecfg_h::UINT8,
-        250i32 as crate::jmorecfg_h::UINT8,
-        6i32 as crate::jmorecfg_h::UINT8,
-        198i32 as crate::jmorecfg_h::UINT8,
-        54i32 as crate::jmorecfg_h::UINT8,
-        246i32 as crate::jmorecfg_h::UINT8,
-        9i32 as crate::jmorecfg_h::UINT8,
-        201i32 as crate::jmorecfg_h::UINT8,
-        57i32 as crate::jmorecfg_h::UINT8,
-        249i32 as crate::jmorecfg_h::UINT8,
-        5i32 as crate::jmorecfg_h::UINT8,
-        197i32 as crate::jmorecfg_h::UINT8,
-        53i32 as crate::jmorecfg_h::UINT8,
-        245i32 as crate::jmorecfg_h::UINT8,
+        10u8,
+        202u8,
+        58u8,
+        250u8,
+        6u8,
+        198u8,
+        54u8,
+        246u8,
+        9u8,
+        201u8,
+        57u8,
+        249u8,
+        5u8,
+        197u8,
+        53u8,
+        245u8,
     ],
     [
-        138i32 as crate::jmorecfg_h::UINT8,
-        74i32 as crate::jmorecfg_h::UINT8,
-        186i32 as crate::jmorecfg_h::UINT8,
-        122i32 as crate::jmorecfg_h::UINT8,
-        134i32 as crate::jmorecfg_h::UINT8,
-        70i32 as crate::jmorecfg_h::UINT8,
-        182i32 as crate::jmorecfg_h::UINT8,
-        118i32 as crate::jmorecfg_h::UINT8,
-        137i32 as crate::jmorecfg_h::UINT8,
-        73i32 as crate::jmorecfg_h::UINT8,
-        185i32 as crate::jmorecfg_h::UINT8,
-        121i32 as crate::jmorecfg_h::UINT8,
-        133i32 as crate::jmorecfg_h::UINT8,
-        69i32 as crate::jmorecfg_h::UINT8,
-        181i32 as crate::jmorecfg_h::UINT8,
-        117i32 as crate::jmorecfg_h::UINT8,
+        138u8,
+        74u8,
+        186u8,
+        122u8,
+        134u8,
+        70u8,
+        182u8,
+        118u8,
+        137u8,
+        73u8,
+        185u8,
+        121u8,
+        133u8,
+        69u8,
+        181u8,
+        117u8,
     ],
     [
-        42i32 as crate::jmorecfg_h::UINT8,
-        234i32 as crate::jmorecfg_h::UINT8,
-        26i32 as crate::jmorecfg_h::UINT8,
-        218i32 as crate::jmorecfg_h::UINT8,
-        38i32 as crate::jmorecfg_h::UINT8,
-        230i32 as crate::jmorecfg_h::UINT8,
-        22i32 as crate::jmorecfg_h::UINT8,
-        214i32 as crate::jmorecfg_h::UINT8,
-        41i32 as crate::jmorecfg_h::UINT8,
-        233i32 as crate::jmorecfg_h::UINT8,
-        25i32 as crate::jmorecfg_h::UINT8,
-        217i32 as crate::jmorecfg_h::UINT8,
-        37i32 as crate::jmorecfg_h::UINT8,
-        229i32 as crate::jmorecfg_h::UINT8,
-        21i32 as crate::jmorecfg_h::UINT8,
-        213i32 as crate::jmorecfg_h::UINT8,
+        42u8,
+        234u8,
+        26u8,
+        218u8,
+        38u8,
+        230u8,
+        22u8,
+        214u8,
+        41u8,
+        233u8,
+        25u8,
+        217u8,
+        37u8,
+        229u8,
+        21u8,
+        213u8,
     ],
     [
-        170i32 as crate::jmorecfg_h::UINT8,
-        106i32 as crate::jmorecfg_h::UINT8,
-        154i32 as crate::jmorecfg_h::UINT8,
-        90i32 as crate::jmorecfg_h::UINT8,
-        166i32 as crate::jmorecfg_h::UINT8,
-        102i32 as crate::jmorecfg_h::UINT8,
-        150i32 as crate::jmorecfg_h::UINT8,
-        86i32 as crate::jmorecfg_h::UINT8,
-        169i32 as crate::jmorecfg_h::UINT8,
-        105i32 as crate::jmorecfg_h::UINT8,
-        153i32 as crate::jmorecfg_h::UINT8,
-        89i32 as crate::jmorecfg_h::UINT8,
-        165i32 as crate::jmorecfg_h::UINT8,
-        101i32 as crate::jmorecfg_h::UINT8,
-        149i32 as crate::jmorecfg_h::UINT8,
-        85i32 as crate::jmorecfg_h::UINT8,
+        170u8,
+        106u8,
+        154u8,
+        90u8,
+        166u8,
+        102u8,
+        150u8,
+        86u8,
+        169u8,
+        105u8,
+        153u8,
+        89u8,
+        165u8,
+        101u8,
+        149u8,
+        85u8,
     ],
 ];
 /* pointer to error array */
@@ -741,8 +741,8 @@ unsafe extern "C" fn select_ncolors(
         changed = crate::jmorecfg_h::FALSE;
         i = 0i32;
         while i < nc {
-            j = if (*cinfo).out_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_RGB as libc::c_int as libc::c_uint
+            j = if  (*cinfo).out_color_space
+                ==  crate::jpeglib_h::JCS_RGB
             {
                 RGB_order[i as usize]
             } else {
@@ -911,8 +911,8 @@ unsafe extern "C" fn create_colorindex(mut cinfo: crate::jpeglib_h::j_decompress
      * This is not necessary in the other dithering modes.  However, we
      * flag whether it was done in case user changes dithering mode.
      */
-    if (*cinfo).dither_mode as libc::c_uint
-        == crate::jpeglib_h::JDITHER_ORDERED as libc::c_int as libc::c_uint
+    if  (*cinfo).dither_mode
+        ==  crate::jpeglib_h::JDITHER_ORDERED
     {
         pad = crate::jmorecfg_h::MAXJSAMPLE * 2i32;
         (*cquantize).is_padded = crate::jmorecfg_h::TRUE
@@ -1014,7 +1014,7 @@ unsafe extern "C" fn make_odither_array(
             /* Ensure round towards zero despite C's lack of consistency
              * about rounding negative values in integer division...
              */
-            (*odither.offset(j as isize))[k as usize] = if num < 0i32 as libc::c_long {
+            (*odither.offset(j as isize))[k as usize] = if num < 0i64 {
                 -(-num / den)
             } else {
                 (num) / den
@@ -1085,7 +1085,7 @@ unsafe extern "C" fn color_quantize(
         ptrin = *input_buf.offset(row as isize);
         ptrout = *output_buf.offset(row as isize);
         col = width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             pixcode = 0i32;
             ci = 0i32;
             while ci < nc {
@@ -1128,7 +1128,7 @@ unsafe extern "C" fn color_quantize3(
         ptrin = *input_buf.offset(row as isize);
         ptrout = *output_buf.offset(row as isize);
         col = width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             let fresh4 = ptrin;
             ptrin = ptrin.offset(1);
             pixcode = *colorindex0.offset(*fresh4 as libc::c_int as isize) as libc::c_int;
@@ -1184,7 +1184,7 @@ unsafe extern "C" fn quantize_ord_dither(
             dither = (*(*cquantize).odither[ci as usize].offset(row_index as isize)).as_mut_ptr();
             col_index = 0i32;
             col = width;
-            while col > 0i32 as libc::c_uint {
+            while col > 0u32 {
                 /* Form pixel value + dither, range-limit to 0..MAXJSAMPLE,
                  * select output value, accumulate into output code for this pixel.
                  * Range-limiting need not be done explicitly, as we have extended
@@ -1243,7 +1243,7 @@ unsafe extern "C" fn quantize3_ord_dither(
         dither2 = (*(*cquantize).odither[2].offset(row_index as isize)).as_mut_ptr();
         col_index = 0i32;
         col = width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             let fresh8 = input_ptr;
             input_ptr = input_ptr.offset(1);
             pixcode = *colorindex0
@@ -1316,13 +1316,13 @@ unsafe extern "C" fn quantize_fs_dither(
                 /* work right to left in this row */
                 input_ptr = input_ptr.offset(
                     ((
-                    width - 1i32 as libc::c_uint) * nc as libc::c_uint) as isize,
+                    width - 1u32) * nc as libc::c_uint) as isize,
                 );
-                output_ptr = output_ptr.offset((width - 1i32 as libc::c_uint) as isize);
+                output_ptr = output_ptr.offset((width - 1u32) as isize);
                 dir = -1i32;
                 dirnc = -nc;
                 errorptr = (*cquantize).fserrors[ci as usize]
-                    .offset((width + 1i32 as libc::c_uint) as isize) /* so point to rightmost pixel */
+                    .offset((width + 1u32) as isize) /* so point to rightmost pixel */
             /* => entry after last column */
             } else {
                 /* work left to right in this row */
@@ -1337,7 +1337,7 @@ unsafe extern "C" fn quantize_fs_dither(
             bpreverr = 0i32;
             belowerr = bpreverr;
             col = width;
-            while col > 0i32 as libc::c_uint {
+            while col > 0u32 {
                 /* Preset error values: no error propagated to first pixel from left */
                 /* and no error propagated to row below yet */
                 /* cur holds the error propagated from the previous pixel on the
@@ -1414,7 +1414,7 @@ unsafe extern "C" fn alloc_fs_workspace(mut cinfo: crate::jpeglib_h::j_decompres
     let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr;
     let mut arraysize: crate::stddef_h::size_t = 0;
     let mut i: libc::c_int = 0;
-    arraysize = ((*cinfo).output_width + 2i32 as libc::c_uint) as libc::c_ulong *
+    arraysize = ((*cinfo).output_width + 2u32) as libc::c_ulong *
     ::std::mem::size_of::<FSERROR>() as libc::c_ulong;
     i = 0i32;
     while i < (*cinfo).out_color_components {
@@ -1446,7 +1446,7 @@ unsafe extern "C" fn start_pass_1_quant(
     (*cinfo).colormap = (*cquantize).sv_colormap;
     (*cinfo).actual_number_of_colors = (*cquantize).sv_actual;
     /* Initialize for desired dithering mode. */
-    match (*cinfo).dither_mode as libc::c_uint {
+    match  (*cinfo).dither_mode {
         0 => {
             if (*cinfo).out_color_components == 3i32 {
                 (*cquantize).pub_0.color_quantize = Some(
@@ -1521,7 +1521,7 @@ unsafe extern "C" fn start_pass_1_quant(
                 alloc_fs_workspace(cinfo);
             }
             /* Initialize the propagated errors to zero. */
-            arraysize = ((*cinfo).output_width + 2i32 as libc::c_uint) as libc::c_ulong *
+            arraysize = ((*cinfo).output_width + 2u32) as libc::c_ulong *
     ::std::mem::size_of::<FSERROR>() as libc::c_ulong;
             i = 0i32;
             while i < (*cinfo).out_color_components {
@@ -1630,8 +1630,8 @@ pub unsafe extern "C" fn jinit_1pass_quantizer(mut cinfo: crate::jpeglib_h::j_de
      * will allocate the space then, and will possibly overrun the
      * max_memory_to_use setting.
      */
-    if (*cinfo).dither_mode as libc::c_uint
-        == crate::jpeglib_h::JDITHER_FS as libc::c_int as libc::c_uint
+    if  (*cinfo).dither_mode
+        ==  crate::jpeglib_h::JDITHER_FS
     {
         alloc_fs_workspace(cinfo);
     };

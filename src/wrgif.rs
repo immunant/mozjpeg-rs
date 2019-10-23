@@ -300,7 +300,7 @@ unsafe extern "C" fn flush_packet(mut dinfo: gif_dest_ptr)
         (*dinfo).packetbuf[0] = fresh0 as libc::c_char;
         if crate::stdlib::fwrite(
             (*dinfo).packetbuf.as_mut_ptr() as *const libc::c_void,
-            1i32 as crate::stddef_h::size_t,
+            1u64,
             (*dinfo).bytesinpkt as crate::stddef_h::size_t,
             (*dinfo).pub_0.output_file,
         ) != (*dinfo).bytesinpkt as crate::stddef_h::size_t
@@ -330,7 +330,7 @@ unsafe extern "C" fn output(mut dinfo: gif_dest_ptr, mut code: libc::c_int)
     while (*dinfo).cur_bits >= 8i32 {
         (*dinfo).bytesinpkt += 1;
         (*dinfo).packetbuf[(*dinfo).bytesinpkt as usize] =
-            ((*dinfo).cur_accum & 0xffi32 as libc::c_long) as libc::c_char;
+            ((*dinfo).cur_accum & 0xffi64) as libc::c_char;
         if (*dinfo).bytesinpkt >= 255i32 {
             flush_packet(dinfo);
         }
@@ -371,7 +371,7 @@ unsafe extern "C" fn compress_init(mut dinfo: gif_dest_ptr, mut i_bits: libc::c_
     (*dinfo).code_counter = (*dinfo).ClearCode + 2i32;
     /* init output buffering vars */
     (*dinfo).bytesinpkt = 0i32;
-    (*dinfo).cur_accum = 0i32 as libc::c_long;
+    (*dinfo).cur_accum = 0i64;
     (*dinfo).cur_bits = 0i32;
     /* GIF specifies an initial Clear code */
     output(dinfo, (*dinfo).ClearCode);
@@ -405,7 +405,7 @@ unsafe extern "C" fn compress_term(mut dinfo: gif_dest_ptr)
     if (*dinfo).cur_bits > 0i32 {
         (*dinfo).bytesinpkt += 1;
         (*dinfo).packetbuf[(*dinfo).bytesinpkt as usize] =
-            ((*dinfo).cur_accum & 0xffi32 as libc::c_long) as libc::c_char;
+            ((*dinfo).cur_accum & 0xffi64) as libc::c_char;
         if (*dinfo).bytesinpkt >= 255i32 {
             flush_packet(dinfo);
         }
@@ -419,11 +419,11 @@ unsafe extern "C" fn put_word(mut dinfo: gif_dest_ptr, mut w: libc::c_uint)
 /* Emit a 16-bit word, LSB first */
 {
     crate::stdlib::putc(
-        (w & 0xffi32 as libc::c_uint) as libc::c_int,
+        (w & 0xffu32) as libc::c_int,
         (*dinfo).pub_0.output_file,
     );
     crate::stdlib::putc(
-        (w >> 8i32 & 0xffi32 as libc::c_uint) as libc::c_int,
+        (w >> 8i32 & 0xffu32) as libc::c_int,
         (*dinfo).pub_0.output_file,
     );
 }
@@ -499,8 +499,8 @@ unsafe extern "C" fn emit_header(
     while i < ColorMapSize {
         if i < num_colors {
             if !colormap.is_null() {
-                if (*(*dinfo).cinfo).out_color_space as libc::c_uint
-                    == crate::jpeglib_h::JCS_RGB as libc::c_int as libc::c_uint
+                if  (*(*dinfo).cinfo).out_color_space
+                    ==  crate::jpeglib_h::JCS_RGB
                 {
                     /* Normal case: RGB color map */
                     crate::stdlib::putc(
@@ -537,8 +537,8 @@ unsafe extern "C" fn emit_header(
     }
     /* Write image separator and Image Descriptor */
     crate::stdlib::putc(',' as i32, (*dinfo).pub_0.output_file); /* separator */
-    put_word(dinfo, 0i32 as libc::c_uint); /* left/top offset */
-    put_word(dinfo, 0i32 as libc::c_uint); /* image size */
+    put_word(dinfo, 0u32); /* left/top offset */
+    put_word(dinfo, 0u32); /* image size */
     put_word(dinfo, (*(*dinfo).cinfo).output_width);
     put_word(dinfo, (*(*dinfo).cinfo).output_height);
     /* flag byte: not interlaced, no local color map */
@@ -563,7 +563,8 @@ unsafe extern "C" fn start_output_gif(
         emit_header(
             dest,
             256i32,
-            crate::stddef_h::NULL as *mut libc::c_void as crate::jpeglib_h::JSAMPARRAY,
+            
+            crate::stddef_h::NULL as crate::jpeglib_h::JSAMPARRAY,
         );
     };
 }
@@ -582,7 +583,7 @@ unsafe extern "C" fn put_pixel_rows(
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     ptr = *(*dest).pub_0.buffer.offset(0);
     col = (*cinfo).output_width;
-    while col > 0i32 as libc::c_uint {
+    while col > 0u32 {
         let fresh1 = ptr;
         ptr = ptr.offset(1);
         compress_pixel(dest, *fresh1 as libc::c_int);
@@ -724,10 +725,10 @@ pub unsafe extern "C" fn jinit_write_gif(
                 _: crate::src::cdjpeg::djpeg_dest_ptr,
             ) -> (),
     );
-    if (*cinfo).out_color_space as libc::c_uint
-        != crate::jpeglib_h::JCS_GRAYSCALE as libc::c_int as libc::c_uint
-        && (*cinfo).out_color_space as libc::c_uint
-            != crate::jpeglib_h::JCS_RGB as libc::c_int as libc::c_uint
+    if  (*cinfo).out_color_space
+        !=  crate::jpeglib_h::JCS_GRAYSCALE
+        &&  (*cinfo).out_color_space
+            !=  crate::jpeglib_h::JCS_RGB
     {
         (*(*cinfo).err).msg_code = crate::cderror_h::JERR_GIF_COLORSPACE as libc::c_int;
         Some(
@@ -738,8 +739,8 @@ pub unsafe extern "C" fn jinit_write_gif(
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
     /* Force quantization if color or if > 8 bits input */
-    if (*cinfo).out_color_space as libc::c_uint
-        != crate::jpeglib_h::JCS_GRAYSCALE as libc::c_int as libc::c_uint
+    if  (*cinfo).out_color_space
+        !=  crate::jpeglib_h::JCS_GRAYSCALE
         || (*cinfo).data_precision > 8i32
     {
         /* Force quantization to at most 256 colors */
@@ -770,9 +771,9 @@ pub unsafe extern "C" fn jinit_write_gif(
         cinfo as crate::jpeglib_h::j_common_ptr,
         crate::jpeglib_h::JPOOL_IMAGE,
         (*cinfo).output_width,
-        1i32 as crate::jmorecfg_h::JDIMENSION,
+        1u32,
     );
-    (*dest).pub_0.buffer_height = 1i32 as crate::jmorecfg_h::JDIMENSION;
+    (*dest).pub_0.buffer_height = 1u32;
     return dest as crate::src::cdjpeg::djpeg_dest_ptr;
 }
 /* GIF_SUPPORTED */

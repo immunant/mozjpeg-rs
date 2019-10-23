@@ -233,7 +233,7 @@ pub unsafe extern "C" fn jpeg_idct_float(
             /* AC terms all zero */
             let mut dcval: libc::c_float = *inptr.offset((8i32 * 0i32) as isize) as libc::c_float
                 * (*quantptr.offset((8i32 * 0i32) as isize)
-                    * 0.125f64 as crate::jdct_h::FLOAT_MULT_TYPE); /* advance pointers to next column */
+                    * 0.125f32); /* advance pointers to next column */
             *wsptr.offset((crate::jpeglib_h::DCTSIZE * 0i32) as isize) = dcval;
             *wsptr.offset((crate::jpeglib_h::DCTSIZE * 1i32) as isize) = dcval;
             *wsptr.offset((crate::jpeglib_h::DCTSIZE * 2i32) as isize) = dcval;
@@ -249,20 +249,20 @@ pub unsafe extern "C" fn jpeg_idct_float(
             /* Even part */
             tmp0 = *inptr.offset((8i32 * 0i32) as isize) as libc::c_float
                 * (*quantptr.offset((8i32 * 0i32) as isize)
-                    * 0.125f64 as crate::jdct_h::FLOAT_MULT_TYPE); /* phase 3 */
+                    * 0.125f32); /* phase 3 */
             tmp1 = *inptr.offset((8i32 * 2i32) as isize) as libc::c_float
                 * (*quantptr.offset((8i32 * 2i32) as isize)
-                    * 0.125f64 as crate::jdct_h::FLOAT_MULT_TYPE); /* phases 5-3 */
+                    * 0.125f32); /* phases 5-3 */
             tmp2 = *inptr.offset((8i32 * 4i32) as isize) as libc::c_float
                 * (*quantptr.offset((8i32 * 4i32) as isize)
-                    * 0.125f64 as crate::jdct_h::FLOAT_MULT_TYPE); /* 2*c4 */
+                    * 0.125f32); /* 2*c4 */
             tmp3 = *inptr.offset((8i32 * 6i32) as isize) as libc::c_float
                 * (*quantptr.offset((8i32 * 6i32) as isize)
-                    * 0.125f64 as crate::jdct_h::FLOAT_MULT_TYPE); /* phase 2 */
+                    * 0.125f32); /* phase 2 */
             tmp10 = tmp0 + tmp2;
             tmp11 = tmp0 - tmp2;
             tmp13 = tmp1 + tmp3;
-            tmp12 = (tmp1 - tmp3) * 1.414213562f64 as libc::c_float - tmp13;
+            tmp12 = (tmp1 - tmp3) * 1.414213562f32 - tmp13;
             tmp0 = tmp10 + tmp13;
             tmp3 = tmp10 - tmp13;
             tmp1 = tmp11 + tmp12;
@@ -270,25 +270,25 @@ pub unsafe extern "C" fn jpeg_idct_float(
             /* Odd part */
             tmp4 = *inptr.offset((8i32 * 1i32) as isize) as libc::c_float
                 * (*quantptr.offset((8i32 * 1i32) as isize)
-                    * 0.125f64 as crate::jdct_h::FLOAT_MULT_TYPE); /* phase 6 */
+                    * 0.125f32); /* phase 6 */
             tmp5 = *inptr.offset((8i32 * 3i32) as isize) as libc::c_float
                 * (*quantptr.offset((8i32 * 3i32) as isize)
-                    * 0.125f64 as crate::jdct_h::FLOAT_MULT_TYPE); /* phase 5 */
+                    * 0.125f32); /* phase 5 */
             tmp6 = *inptr.offset((8i32 * 5i32) as isize) as libc::c_float
                 * (*quantptr.offset((8i32 * 5i32) as isize)
-                    * 0.125f64 as crate::jdct_h::FLOAT_MULT_TYPE); /* 2*c4 */
+                    * 0.125f32); /* 2*c4 */
             tmp7 = *inptr.offset((8i32 * 7i32) as isize) as libc::c_float
                 * (*quantptr.offset((8i32 * 7i32) as isize)
-                    * 0.125f64 as crate::jdct_h::FLOAT_MULT_TYPE); /* 2*c2 */
+                    * 0.125f32); /* 2*c2 */
             z13 = tmp6 + tmp5; /* 2*(c2-c6) */
             z10 = tmp6 - tmp5; /* 2*(c2+c6) */
             z11 = tmp4 + tmp7; /* phase 2 */
             z12 = tmp4 - tmp7; /* advance pointers to next column */
             tmp7 = z11 + z13;
-            tmp11 = (z11 - z13) * 1.414213562f64 as libc::c_float;
-            z5 = (z10 + z12) * 1.847759065f64 as libc::c_float;
-            tmp10 = z5 - z12 * 1.082392200f64 as libc::c_float;
-            tmp12 = z5 - z10 * 2.613125930f64 as libc::c_float;
+            tmp11 = (z11 - z13) * 1.414213562f32;
+            z5 = (z10 + z12) * 1.847759065f32;
+            tmp10 = z5 - z12 * 1.0823922f32;
+            tmp12 = z5 - z10 * 2.61312593f32;
             tmp6 = tmp12 - tmp7;
             tmp5 = tmp11 - tmp6;
             tmp4 = tmp10 - tmp5;
@@ -313,11 +313,11 @@ pub unsafe extern "C" fn jpeg_idct_float(
         outptr = (*output_buf.offset(ctr as isize)).offset(output_col as isize);
         /* advance pointer to next row */
         z5 = *wsptr.offset(0)
-            + (crate::jmorecfg_h::CENTERJSAMPLE as libc::c_float + 0.5f64 as libc::c_float);
+            + (crate::jmorecfg_h::CENTERJSAMPLE as libc::c_float + 0.5f32);
         tmp10 = z5 + *wsptr.offset(4);
         tmp11 = z5 - *wsptr.offset(4);
         tmp13 = *wsptr.offset(2) + *wsptr.offset(6);
-        tmp12 = (*wsptr.offset(2) - *wsptr.offset(6)) * 1.414213562f64 as libc::c_float - tmp13;
+        tmp12 = (*wsptr.offset(2) - *wsptr.offset(6)) * 1.414213562f32 - tmp13;
         tmp0 = tmp10 + tmp13;
         tmp3 = tmp10 - tmp13;
         tmp1 = tmp11 + tmp12;
@@ -327,10 +327,10 @@ pub unsafe extern "C" fn jpeg_idct_float(
         z11 = *wsptr.offset(1) + *wsptr.offset(7);
         z12 = *wsptr.offset(1) - *wsptr.offset(7);
         tmp7 = z11 + z13;
-        tmp11 = (z11 - z13) * 1.414213562f64 as libc::c_float;
-        z5 = (z10 + z12) * 1.847759065f64 as libc::c_float;
-        tmp10 = z5 - z12 * 1.082392200f64 as libc::c_float;
-        tmp12 = z5 - z10 * 2.613125930f64 as libc::c_float;
+        tmp11 = (z11 - z13) * 1.414213562f32;
+        z5 = (z10 + z12) * 1.847759065f32;
+        tmp10 = z5 - z12 * 1.0823922f32;
+        tmp12 = z5 - z10 * 2.61312593f32;
         tmp6 = tmp12 - tmp7;
         tmp5 = tmp11 - tmp6;
         tmp4 = tmp10 - tmp5;

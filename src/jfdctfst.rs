@@ -158,7 +158,7 @@ pub unsafe extern "C" fn jpeg_fdct_ifast(mut data: *mut crate::jdct_h::DCTELEM) 
         *dataptr.offset(4) =
             (tmp10 as libc::c_int - tmp11 as libc::c_int) as crate::jdct_h::DCTELEM;
         z1 = ((tmp12 as libc::c_int + tmp13 as libc::c_int) as libc::c_long
-            * 181i32 as crate::jpegint_h::JLONG
+            * 181i64
             >> 8i32) as crate::jdct_h::DCTELEM;
         *dataptr.offset(2) = (tmp13 as libc::c_int + z1 as libc::c_int) as crate::jdct_h::DCTELEM;
         *dataptr.offset(6) = (tmp13 as libc::c_int - z1 as libc::c_int) as crate::jdct_h::DCTELEM;
@@ -166,15 +166,15 @@ pub unsafe extern "C" fn jpeg_fdct_ifast(mut data: *mut crate::jdct_h::DCTELEM) 
         tmp11 = (tmp5 as libc::c_int + tmp6 as libc::c_int) as crate::jdct_h::DCTELEM;
         tmp12 = (tmp6 as libc::c_int + tmp7 as libc::c_int) as crate::jdct_h::DCTELEM;
         z5 = ((tmp10 as libc::c_int - tmp12 as libc::c_int) as libc::c_long
-            * 98i32 as crate::jpegint_h::JLONG
+            * 98i64
             >> 8i32) as crate::jdct_h::DCTELEM;
-        z2 = ((tmp10 as libc::c_long * 139i32 as crate::jpegint_h::JLONG >> 8i32)
+        z2 = ((tmp10 as libc::c_long * 139i64 >> 8i32)
             as crate::jdct_h::DCTELEM as libc::c_int
             + z5 as libc::c_int) as crate::jdct_h::DCTELEM;
-        z4 = ((tmp12 as libc::c_long * 334i32 as crate::jpegint_h::JLONG >> 8i32)
+        z4 = ((tmp12 as libc::c_long * 334i64 >> 8i32)
             as crate::jdct_h::DCTELEM as libc::c_int
             + z5 as libc::c_int) as crate::jdct_h::DCTELEM;
-        z3 = (tmp11 as libc::c_long * 181i32 as crate::jpegint_h::JLONG >> 8i32)
+        z3 = (tmp11 as libc::c_long * 181i64 >> 8i32)
             as crate::jdct_h::DCTELEM;
         z11 = (tmp7 as libc::c_int + z3 as libc::c_int) as crate::jdct_h::DCTELEM;
         z13 = (tmp7 as libc::c_int - z3 as libc::c_int) as crate::jdct_h::DCTELEM;
@@ -237,7 +237,7 @@ pub unsafe extern "C" fn jpeg_fdct_ifast(mut data: *mut crate::jdct_h::DCTELEM) 
         *dataptr.offset((crate::jpeglib_h::DCTSIZE * 4i32) as isize) =
             (tmp10 as libc::c_int - tmp11 as libc::c_int) as crate::jdct_h::DCTELEM;
         z1 = ((tmp12 as libc::c_int + tmp13 as libc::c_int) as libc::c_long
-            * 181i32 as crate::jpegint_h::JLONG
+            * 181i64
             >> 8i32) as crate::jdct_h::DCTELEM;
         *dataptr.offset((crate::jpeglib_h::DCTSIZE * 2i32) as isize) =
             (tmp13 as libc::c_int + z1 as libc::c_int) as crate::jdct_h::DCTELEM;
@@ -247,15 +247,15 @@ pub unsafe extern "C" fn jpeg_fdct_ifast(mut data: *mut crate::jdct_h::DCTELEM) 
         tmp11 = (tmp5 as libc::c_int + tmp6 as libc::c_int) as crate::jdct_h::DCTELEM;
         tmp12 = (tmp6 as libc::c_int + tmp7 as libc::c_int) as crate::jdct_h::DCTELEM;
         z5 = ((tmp10 as libc::c_int - tmp12 as libc::c_int) as libc::c_long
-            * 98i32 as crate::jpegint_h::JLONG
+            * 98i64
             >> 8i32) as crate::jdct_h::DCTELEM;
-        z2 = ((tmp10 as libc::c_long * 139i32 as crate::jpegint_h::JLONG >> 8i32)
+        z2 = ((tmp10 as libc::c_long * 139i64 >> 8i32)
             as crate::jdct_h::DCTELEM as libc::c_int
             + z5 as libc::c_int) as crate::jdct_h::DCTELEM;
-        z4 = ((tmp12 as libc::c_long * 334i32 as crate::jpegint_h::JLONG >> 8i32)
+        z4 = ((tmp12 as libc::c_long * 334i64 >> 8i32)
             as crate::jdct_h::DCTELEM as libc::c_int
             + z5 as libc::c_int) as crate::jdct_h::DCTELEM;
-        z3 = (tmp11 as libc::c_long * 181i32 as crate::jpegint_h::JLONG >> 8i32)
+        z3 = (tmp11 as libc::c_long * 181i64 >> 8i32)
             as crate::jdct_h::DCTELEM;
         z11 = (tmp7 as libc::c_int + z3 as libc::c_int) as crate::jdct_h::DCTELEM;
         z13 = (tmp7 as libc::c_int - z3 as libc::c_int) as crate::jdct_h::DCTELEM;

@@ -169,7 +169,7 @@ pub struct my_upsampler {
 pub const SCALEBITS: libc::c_int = 16i32;
 /* speediest right-shift on some machines */
 
-pub const ONE_HALF: crate::jpegint_h::JLONG = (1i32 as crate::jpegint_h::JLONG) << SCALEBITS - 1i32;
+pub const ONE_HALF: crate::jpegint_h::JLONG = (1i64) << SCALEBITS - 1i32;
 /* Include inline routines for colorspace extensions */
 
 pub const RGB_RED_4: libc::c_int = crate::jmorecfg_h::EXT_RGB_RED;
@@ -289,13 +289,13 @@ unsafe extern "C" fn build_ycc_rgb_table(mut cinfo: crate::jpeglib_h::j_decompre
         *(*upsample).Cr_r_tab.offset(i as isize) =
             ((1.40200f64 * (1i64 << 16i32) as libc::c_double + 0.5f64) as crate::jpegint_h::JLONG
                 * x
-                + ((1i32 as crate::jpegint_h::JLONG) << 16i32 - 1i32)
+                + ((1i64) << 16i32 - 1i32)
                 >> 16i32) as libc::c_int;
         /* Cb=>B value is nearest int to 1.77200 * x */
         *(*upsample).Cb_b_tab.offset(i as isize) =
             ((1.77200f64 * (1i64 << 16i32) as libc::c_double + 0.5f64) as crate::jpegint_h::JLONG
                 * x
-                + ((1i32 as crate::jpegint_h::JLONG) << 16i32 - 1i32)
+                + ((1i64) << 16i32 - 1i32)
                 >> 16i32) as libc::c_int;
         /* Cr=>G value is scaled-up -0.71414 * x */
         *(*upsample).Cr_g_tab.offset(i as isize) =
@@ -347,10 +347,10 @@ unsafe extern "C" fn merged_2v_upsample(
     if (*upsample).spare_full != 0 {
         /* If we have a spare row saved from a previous cycle, just return it. */
         let mut size: crate::jmorecfg_h::JDIMENSION = (*upsample).out_row_width;
-        if (*cinfo).out_color_space as libc::c_uint
-            == crate::jpeglib_h::JCS_RGB565 as libc::c_int as libc::c_uint
+        if  (*cinfo).out_color_space
+            ==  crate::jpeglib_h::JCS_RGB565
         {
-            size =  (*cinfo).output_width * 2i32 as libc::c_uint
+            size =  (*cinfo).output_width * 2u32
         }
         crate::jpegint_h::jcopy_sample_rows(
             &mut (*upsample).spare_row,
@@ -360,27 +360,25 @@ unsafe extern "C" fn merged_2v_upsample(
             1i32,
             size,
         );
-        num_rows = 1i32 as crate::jmorecfg_h::JDIMENSION;
+        num_rows = 1u32;
         (*upsample).spare_full = crate::jmorecfg_h::FALSE
     } else {
         /* Figure number of rows to return to caller. */
-        num_rows = 2i32 as crate::jmorecfg_h::JDIMENSION;
+        num_rows = 2u32;
         /* Not more than the distance to the end of the image. */
         if num_rows > (*upsample).rows_to_go {
             num_rows = (*upsample).rows_to_go
         }
         /* And not more than what the client can accept: */
-        out_rows_avail = (out_rows_avail as libc::c_uint - *out_row_ctr)
-            as crate::jmorecfg_h::JDIMENSION
-            as crate::jmorecfg_h::JDIMENSION;
+        out_rows_avail = out_rows_avail - *out_row_ctr;
         if num_rows > out_rows_avail {
             num_rows = out_rows_avail
         }
         /* Create output pointer array for upsampler. */
         work_ptrs[0] = *output_buf.offset(*out_row_ctr as isize);
-        if num_rows > 1i32 as libc::c_uint {
+        if num_rows > 1u32 {
             work_ptrs[1] =
-                *output_buf.offset((*out_row_ctr + 1i32 as libc::c_uint) as isize)
+                *output_buf.offset((*out_row_ctr + 1u32) as isize)
         } else {
             work_ptrs[1] = (*upsample).spare_row;
             (*upsample).spare_full = crate::jmorecfg_h::TRUE
@@ -395,11 +393,8 @@ unsafe extern "C" fn merged_2v_upsample(
         );
     }
     /* Adjust counts */
-    *out_row_ctr = (*out_row_ctr as libc::c_uint + num_rows)
-        as crate::jmorecfg_h::JDIMENSION as crate::jmorecfg_h::JDIMENSION;
-    (*upsample).rows_to_go = ((*upsample).rows_to_go as libc::c_uint - num_rows)
-        as crate::jmorecfg_h::JDIMENSION
-        as crate::jmorecfg_h::JDIMENSION;
+    *out_row_ctr = *out_row_ctr + num_rows;
+    (*upsample).rows_to_go = (*upsample).rows_to_go - num_rows;
     /* When the buffer is emptied, declare this input row group consumed */
     if (*upsample).spare_full == 0 {
         *in_row_group_ctr = *in_row_group_ctr + 1
@@ -448,7 +443,7 @@ unsafe extern "C" fn h2v1_merged_upsample(
     mut in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
     mut output_buf: crate::jpeglib_h::JSAMPARRAY,
 ) {
-    match (*cinfo).out_color_space as libc::c_uint {
+    match  (*cinfo).out_color_space {
         6 => {
             crate::jdmrgext_c::extrgb_h2v1_merged_upsample_internal(
                 cinfo,
@@ -517,7 +512,7 @@ unsafe extern "C" fn h2v2_merged_upsample(
     mut in_row_group_ctr: crate::jmorecfg_h::JDIMENSION,
     mut output_buf: crate::jpeglib_h::JSAMPARRAY,
 ) {
-    match (*cinfo).out_color_space as libc::c_uint {
+    match  (*cinfo).out_color_space {
         6 => {
             crate::jdmrgext_c::extrgb_h2v2_merged_upsample_internal(
                 cinfo,
@@ -588,10 +583,10 @@ unsafe extern "C" fn h2v2_merged_upsample(
 pub const DITHER_MASK: libc::c_int = 0x3i32;
 
 pub(crate) static mut dither_matrix: [crate::jpegint_h::JLONG; 4] = [
-    0x8020ai32 as crate::jpegint_h::JLONG,
-    0xc040e06i32 as crate::jpegint_h::JLONG,
-    0x30b0109i32 as crate::jpegint_h::JLONG,
-    0xf070d05i32 as crate::jpegint_h::JLONG,
+    0x8020ai64,
+    0xc040e06i64,
+    0x30b0109i64,
+    0xf070d05i64,
 ];
 /* Include inline routines for RGB565 conversion */
 #[inline(always)]
@@ -758,11 +753,11 @@ pub unsafe extern "C" fn jinit_merged_upsampler(mut cinfo: crate::jpeglib_h::j_d
                     ) -> (),
             )
         }
-        if (*cinfo).out_color_space as libc::c_uint
-            == crate::jpeglib_h::JCS_RGB565 as libc::c_int as libc::c_uint
+        if  (*cinfo).out_color_space
+            ==  crate::jpeglib_h::JCS_RGB565
         {
-            if (*cinfo).dither_mode as libc::c_uint
-                != crate::jpeglib_h::JDITHER_NONE as libc::c_int as libc::c_uint
+            if  (*cinfo).dither_mode
+                !=  crate::jpeglib_h::JDITHER_NONE
             {
                 (*upsample).upmethod = Some(
                     h2v2_merged_upsample_565D
@@ -831,11 +826,11 @@ pub unsafe extern "C" fn jinit_merged_upsampler(mut cinfo: crate::jpeglib_h::j_d
                     ) -> (),
             )
         }
-        if (*cinfo).out_color_space as libc::c_uint
-            == crate::jpeglib_h::JCS_RGB565 as libc::c_int as libc::c_uint
+        if  (*cinfo).out_color_space
+            ==  crate::jpeglib_h::JCS_RGB565
         {
-            if (*cinfo).dither_mode as libc::c_uint
-                != crate::jpeglib_h::JDITHER_NONE as libc::c_int as libc::c_uint
+            if  (*cinfo).dither_mode
+                !=  crate::jpeglib_h::JDITHER_NONE
             {
                 (*upsample).upmethod = Some(
                     h2v1_merged_upsample_565D

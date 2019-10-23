@@ -258,7 +258,7 @@ pub unsafe extern "C" fn jpeg_write_icc_profile(
     let mut num_markers: libc::c_uint = 0; /* total number of markers we'll write */
     let mut cur_marker: libc::c_int = 1i32; /* per spec, counting starts at 1 */
     let mut length: libc::c_uint = 0; /* number of bytes to write in this marker */
-    if icc_data_ptr.is_null() || icc_data_len == 0i32 as libc::c_uint {
+    if icc_data_ptr.is_null() || icc_data_len == 0u32 {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BUFFER_SIZE as libc::c_int;
         Some(
             (*(*cinfo).err)
@@ -282,7 +282,7 @@ pub unsafe extern "C" fn jpeg_write_icc_profile(
     if  num_markers * MAX_DATA_BYTES_IN_MARKER as libc::c_uint != icc_data_len {
         num_markers =  num_markers + 1
     }
-    while icc_data_len > 0i32 as libc::c_uint {
+    while icc_data_len > 0u32 {
         /* length of profile to put in this marker */
         length = icc_data_len;
         if length > MAX_DATA_BYTES_IN_MARKER as libc::c_uint {

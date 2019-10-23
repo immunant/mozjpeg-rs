@@ -495,7 +495,7 @@ unsafe extern "C" fn read_pbm_integer(
         if !(ch >= '0' as i32 && ch <= '9' as i32) {
             break;
         }
-        val =  val * 10i32 as libc::c_uint;
+        val =  val * 10u32;
         val =  val + (ch - '0' as i32) as libc::c_uint
     }
     if val > maxval {
@@ -532,13 +532,13 @@ unsafe extern "C" fn get_text_gray_row(
     let mut maxval: libc::c_uint = (*source).maxval;
     ptr = *(*source).pub_0.buffer.offset(0);
     col = (*cinfo).image_width;
-    while col > 0i32 as libc::c_uint {
+    while col > 0u32 {
         let fresh0 = ptr;
         ptr = ptr.offset(1);
         *fresh0 = *rescale.offset(read_pbm_integer(cinfo, infile, maxval) as isize);
         col =  col - 1
     }
-    return 1i32 as crate::jmorecfg_h::JDIMENSION;
+    return 1u32;
 }
 
 unsafe extern "C" fn get_text_gray_rgb_row(
@@ -562,19 +562,19 @@ unsafe extern "C" fn get_text_gray_rgb_row(
     if maxval == crate::jmorecfg_h::MAXJSAMPLE as libc::c_uint {
         if aindex >= 0i32 {
             col = (*cinfo).image_width;
-            while col > 0i32 as libc::c_uint {
+            while col > 0u32 {
                 let ref mut fresh1 = *ptr.offset(bindex as isize);
                 *fresh1 = read_pbm_integer(cinfo, infile, maxval) as crate::jmorecfg_h::JSAMPLE;
                 let ref mut fresh2 = *ptr.offset(gindex as isize);
                 *fresh2 = *fresh1;
                 *ptr.offset(rindex as isize) = *fresh2;
-                *ptr.offset(aindex as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
+                *ptr.offset(aindex as isize) = 0xffu8;
                 ptr = ptr.offset(ps as isize);
                 col =  col - 1
             }
         } else {
             col = (*cinfo).image_width;
-            while col > 0i32 as libc::c_uint {
+            while col > 0u32 {
                 let ref mut fresh3 = *ptr.offset(bindex as isize);
                 *fresh3 = read_pbm_integer(cinfo, infile, maxval) as crate::jmorecfg_h::JSAMPLE;
                 let ref mut fresh4 = *ptr.offset(gindex as isize);
@@ -586,19 +586,19 @@ unsafe extern "C" fn get_text_gray_rgb_row(
         }
     } else if aindex >= 0i32 {
         col = (*cinfo).image_width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             let ref mut fresh5 = *ptr.offset(bindex as isize);
             *fresh5 = *rescale.offset(read_pbm_integer(cinfo, infile, maxval) as isize);
             let ref mut fresh6 = *ptr.offset(gindex as isize);
             *fresh6 = *fresh5;
             *ptr.offset(rindex as isize) = *fresh6;
-            *ptr.offset(aindex as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
+            *ptr.offset(aindex as isize) = 0xffu8;
             ptr = ptr.offset(ps as isize);
             col =  col - 1
         }
     } else {
         col = (*cinfo).image_width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             let ref mut fresh7 = *ptr.offset(bindex as isize);
             *fresh7 = *rescale.offset(read_pbm_integer(cinfo, infile, maxval) as isize);
             let ref mut fresh8 = *ptr.offset(gindex as isize);
@@ -608,7 +608,7 @@ unsafe extern "C" fn get_text_gray_rgb_row(
             col =  col - 1
         }
     }
-    return 1i32 as crate::jmorecfg_h::JDIMENSION;
+    return 1u32;
 }
 
 unsafe extern "C" fn get_text_gray_cmyk_row(
@@ -626,7 +626,7 @@ unsafe extern "C" fn get_text_gray_cmyk_row(
     ptr = *(*source).pub_0.buffer.offset(0);
     if maxval == crate::jmorecfg_h::MAXJSAMPLE as libc::c_uint {
         col = (*cinfo).image_width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             let mut gray: crate::jmorecfg_h::JSAMPLE =
                 read_pbm_integer(cinfo, infile, maxval) as crate::jmorecfg_h::JSAMPLE;
             crate::cmyk_h::rgb_to_cmyk(
@@ -643,7 +643,7 @@ unsafe extern "C" fn get_text_gray_cmyk_row(
         }
     } else {
         col = (*cinfo).image_width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             let mut gray_0: crate::jmorecfg_h::JSAMPLE =
                 *rescale.offset(read_pbm_integer(cinfo, infile, maxval) as isize);
             crate::cmyk_h::rgb_to_cmyk(
@@ -659,7 +659,7 @@ unsafe extern "C" fn get_text_gray_cmyk_row(
             col =  col - 1
         }
     }
-    return 1i32 as crate::jmorecfg_h::JDIMENSION;
+    return 1u32;
 }
 
 unsafe extern "C" fn get_text_rgb_row(
@@ -682,20 +682,20 @@ unsafe extern "C" fn get_text_rgb_row(
     if maxval == crate::jmorecfg_h::MAXJSAMPLE as libc::c_uint {
         if aindex >= 0i32 {
             col = (*cinfo).image_width;
-            while col > 0i32 as libc::c_uint {
+            while col > 0u32 {
                 *ptr.offset(rindex as isize) =
                     read_pbm_integer(cinfo, infile, maxval) as crate::jmorecfg_h::JSAMPLE;
                 *ptr.offset(gindex as isize) =
                     read_pbm_integer(cinfo, infile, maxval) as crate::jmorecfg_h::JSAMPLE;
                 *ptr.offset(bindex as isize) =
                     read_pbm_integer(cinfo, infile, maxval) as crate::jmorecfg_h::JSAMPLE;
-                *ptr.offset(aindex as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
+                *ptr.offset(aindex as isize) = 0xffu8;
                 ptr = ptr.offset(ps as isize);
                 col =  col - 1
             }
         } else {
             col = (*cinfo).image_width;
-            while col > 0i32 as libc::c_uint {
+            while col > 0u32 {
                 *ptr.offset(rindex as isize) =
                     read_pbm_integer(cinfo, infile, maxval) as crate::jmorecfg_h::JSAMPLE;
                 *ptr.offset(gindex as isize) =
@@ -708,20 +708,20 @@ unsafe extern "C" fn get_text_rgb_row(
         }
     } else if aindex >= 0i32 {
         col = (*cinfo).image_width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             *ptr.offset(rindex as isize) =
                 *rescale.offset(read_pbm_integer(cinfo, infile, maxval) as isize);
             *ptr.offset(gindex as isize) =
                 *rescale.offset(read_pbm_integer(cinfo, infile, maxval) as isize);
             *ptr.offset(bindex as isize) =
                 *rescale.offset(read_pbm_integer(cinfo, infile, maxval) as isize);
-            *ptr.offset(aindex as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
+            *ptr.offset(aindex as isize) = 0xffu8;
             ptr = ptr.offset(ps as isize);
             col =  col - 1
         }
     } else {
         col = (*cinfo).image_width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             *ptr.offset(rindex as isize) =
                 *rescale.offset(read_pbm_integer(cinfo, infile, maxval) as isize);
             *ptr.offset(gindex as isize) =
@@ -732,7 +732,7 @@ unsafe extern "C" fn get_text_rgb_row(
             col =  col - 1
         }
     }
-    return 1i32 as crate::jmorecfg_h::JDIMENSION;
+    return 1u32;
 }
 
 unsafe extern "C" fn get_text_rgb_cmyk_row(
@@ -750,7 +750,7 @@ unsafe extern "C" fn get_text_rgb_cmyk_row(
     ptr = *(*source).pub_0.buffer.offset(0);
     if maxval == crate::jmorecfg_h::MAXJSAMPLE as libc::c_uint {
         col = (*cinfo).image_width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             let mut r: crate::jmorecfg_h::JSAMPLE =
                 read_pbm_integer(cinfo, infile, maxval) as crate::jmorecfg_h::JSAMPLE;
             let mut g: crate::jmorecfg_h::JSAMPLE =
@@ -763,7 +763,7 @@ unsafe extern "C" fn get_text_rgb_cmyk_row(
         }
     } else {
         col = (*cinfo).image_width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             let mut r_0: crate::jmorecfg_h::JSAMPLE =
                 *rescale.offset(read_pbm_integer(cinfo, infile, maxval) as isize);
             let mut g_0: crate::jmorecfg_h::JSAMPLE =
@@ -783,7 +783,7 @@ unsafe extern "C" fn get_text_rgb_cmyk_row(
             col =  col - 1
         }
     }
-    return 1i32 as crate::jmorecfg_h::JDIMENSION;
+    return 1u32;
 }
 
 unsafe extern "C" fn get_scaled_gray_row(
@@ -798,7 +798,7 @@ unsafe extern "C" fn get_scaled_gray_row(
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
     if !(crate::stdlib::fread(
         (*source).iobuffer as *mut libc::c_void,
-        1i32 as crate::stddef_h::size_t,
+        1u64,
         (*source).buffer_width,
         (*source).pub_0.input_file,
     ) == (*source).buffer_width)
@@ -814,7 +814,7 @@ unsafe extern "C" fn get_scaled_gray_row(
     ptr = *(*source).pub_0.buffer.offset(0);
     bufferptr = (*source).iobuffer;
     col = (*cinfo).image_width;
-    while col > 0i32 as libc::c_uint {
+    while col > 0u32 {
         let fresh9 = bufferptr;
         bufferptr = bufferptr.offset(1);
         let fresh10 = ptr;
@@ -822,7 +822,7 @@ unsafe extern "C" fn get_scaled_gray_row(
         *fresh10 = *rescale.offset(*fresh9 as libc::c_int as isize);
         col =  col - 1
     }
-    return 1i32 as crate::jmorecfg_h::JDIMENSION;
+    return 1u32;
 }
 
 unsafe extern "C" fn get_gray_rgb_row(
@@ -844,7 +844,7 @@ unsafe extern "C" fn get_gray_rgb_row(
     let mut ps: libc::c_int = rgb_pixelsize[(*cinfo).in_color_space as usize];
     if !(crate::stdlib::fread(
         (*source).iobuffer as *mut libc::c_void,
-        1i32 as crate::stddef_h::size_t,
+        1u64,
         (*source).buffer_width,
         (*source).pub_0.input_file,
     ) == (*source).buffer_width)
@@ -862,7 +862,7 @@ unsafe extern "C" fn get_gray_rgb_row(
     if maxval == crate::jmorecfg_h::MAXJSAMPLE as libc::c_uint {
         if aindex >= 0i32 {
             col = (*cinfo).image_width;
-            while col > 0i32 as libc::c_uint {
+            while col > 0u32 {
                 let fresh11 = bufferptr;
                 bufferptr = bufferptr.offset(1);
                 let ref mut fresh12 = *ptr.offset(bindex as isize);
@@ -870,13 +870,13 @@ unsafe extern "C" fn get_gray_rgb_row(
                 let ref mut fresh13 = *ptr.offset(gindex as isize);
                 *fresh13 = *fresh12;
                 *ptr.offset(rindex as isize) = *fresh13;
-                *ptr.offset(aindex as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
+                *ptr.offset(aindex as isize) = 0xffu8;
                 ptr = ptr.offset(ps as isize);
                 col =  col - 1
             }
         } else {
             col = (*cinfo).image_width;
-            while col > 0i32 as libc::c_uint {
+            while col > 0u32 {
                 let fresh14 = bufferptr;
                 bufferptr = bufferptr.offset(1);
                 let ref mut fresh15 = *ptr.offset(bindex as isize);
@@ -890,7 +890,7 @@ unsafe extern "C" fn get_gray_rgb_row(
         }
     } else if aindex >= 0i32 {
         col = (*cinfo).image_width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             let fresh17 = bufferptr;
             bufferptr = bufferptr.offset(1);
             let ref mut fresh18 = *ptr.offset(bindex as isize);
@@ -898,13 +898,13 @@ unsafe extern "C" fn get_gray_rgb_row(
             let ref mut fresh19 = *ptr.offset(gindex as isize);
             *fresh19 = *fresh18;
             *ptr.offset(rindex as isize) = *fresh19;
-            *ptr.offset(aindex as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
+            *ptr.offset(aindex as isize) = 0xffu8;
             ptr = ptr.offset(ps as isize);
             col =  col - 1
         }
     } else {
         col = (*cinfo).image_width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             let fresh20 = bufferptr;
             bufferptr = bufferptr.offset(1);
             let ref mut fresh21 = *ptr.offset(bindex as isize);
@@ -916,7 +916,7 @@ unsafe extern "C" fn get_gray_rgb_row(
             col =  col - 1
         }
     }
-    return 1i32 as crate::jmorecfg_h::JDIMENSION;
+    return 1u32;
 }
 
 unsafe extern "C" fn get_gray_cmyk_row(
@@ -933,7 +933,7 @@ unsafe extern "C" fn get_gray_cmyk_row(
     let mut maxval: libc::c_uint = (*source).maxval;
     if !(crate::stdlib::fread(
         (*source).iobuffer as *mut libc::c_void,
-        1i32 as crate::stddef_h::size_t,
+        1u64,
         (*source).buffer_width,
         (*source).pub_0.input_file,
     ) == (*source).buffer_width)
@@ -950,7 +950,7 @@ unsafe extern "C" fn get_gray_cmyk_row(
     bufferptr = (*source).iobuffer;
     if maxval == crate::jmorecfg_h::MAXJSAMPLE as libc::c_uint {
         col = (*cinfo).image_width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             let fresh23 = bufferptr;
             bufferptr = bufferptr.offset(1);
             let mut gray: crate::jmorecfg_h::JSAMPLE = *fresh23;
@@ -968,7 +968,7 @@ unsafe extern "C" fn get_gray_cmyk_row(
         }
     } else {
         col = (*cinfo).image_width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             let fresh24 = bufferptr;
             bufferptr = bufferptr.offset(1);
             let mut gray_0: crate::jmorecfg_h::JSAMPLE =
@@ -986,7 +986,7 @@ unsafe extern "C" fn get_gray_cmyk_row(
             col =  col - 1
         }
     }
-    return 1i32 as crate::jmorecfg_h::JDIMENSION;
+    return 1u32;
 }
 
 unsafe extern "C" fn get_rgb_row(
@@ -1007,7 +1007,7 @@ unsafe extern "C" fn get_rgb_row(
     let mut ps: libc::c_int = rgb_pixelsize[(*cinfo).in_color_space as usize];
     if !(crate::stdlib::fread(
         (*source).iobuffer as *mut libc::c_void,
-        1i32 as crate::stddef_h::size_t,
+        1u64,
         (*source).buffer_width,
         (*source).pub_0.input_file,
     ) == (*source).buffer_width)
@@ -1025,7 +1025,7 @@ unsafe extern "C" fn get_rgb_row(
     if maxval == crate::jmorecfg_h::MAXJSAMPLE as libc::c_uint {
         if aindex >= 0i32 {
             col = (*cinfo).image_width;
-            while col > 0i32 as libc::c_uint {
+            while col > 0u32 {
                 let fresh25 = bufferptr;
                 bufferptr = bufferptr.offset(1);
                 *ptr.offset(rindex as isize) = *fresh25;
@@ -1035,13 +1035,13 @@ unsafe extern "C" fn get_rgb_row(
                 let fresh27 = bufferptr;
                 bufferptr = bufferptr.offset(1);
                 *ptr.offset(bindex as isize) = *fresh27;
-                *ptr.offset(aindex as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
+                *ptr.offset(aindex as isize) = 0xffu8;
                 ptr = ptr.offset(ps as isize);
                 col =  col - 1
             }
         } else {
             col = (*cinfo).image_width;
-            while col > 0i32 as libc::c_uint {
+            while col > 0u32 {
                 let fresh28 = bufferptr;
                 bufferptr = bufferptr.offset(1);
                 *ptr.offset(rindex as isize) = *fresh28;
@@ -1057,7 +1057,7 @@ unsafe extern "C" fn get_rgb_row(
         }
     } else if aindex >= 0i32 {
         col = (*cinfo).image_width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             let fresh31 = bufferptr;
             bufferptr = bufferptr.offset(1);
             *ptr.offset(rindex as isize) = *rescale.offset(*fresh31 as libc::c_int as isize);
@@ -1067,13 +1067,13 @@ unsafe extern "C" fn get_rgb_row(
             let fresh33 = bufferptr;
             bufferptr = bufferptr.offset(1);
             *ptr.offset(bindex as isize) = *rescale.offset(*fresh33 as libc::c_int as isize);
-            *ptr.offset(aindex as isize) = 0xffi32 as crate::jmorecfg_h::JSAMPLE;
+            *ptr.offset(aindex as isize) = 0xffu8;
             ptr = ptr.offset(ps as isize);
             col =  col - 1
         }
     } else {
         col = (*cinfo).image_width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             let fresh34 = bufferptr;
             bufferptr = bufferptr.offset(1);
             *ptr.offset(rindex as isize) = *rescale.offset(*fresh34 as libc::c_int as isize);
@@ -1087,7 +1087,7 @@ unsafe extern "C" fn get_rgb_row(
             col =  col - 1
         }
     }
-    return 1i32 as crate::jmorecfg_h::JDIMENSION;
+    return 1u32;
 }
 
 unsafe extern "C" fn get_rgb_cmyk_row(
@@ -1104,7 +1104,7 @@ unsafe extern "C" fn get_rgb_cmyk_row(
     let mut maxval: libc::c_uint = (*source).maxval;
     if !(crate::stdlib::fread(
         (*source).iobuffer as *mut libc::c_void,
-        1i32 as crate::stddef_h::size_t,
+        1u64,
         (*source).buffer_width,
         (*source).pub_0.input_file,
     ) == (*source).buffer_width)
@@ -1121,7 +1121,7 @@ unsafe extern "C" fn get_rgb_cmyk_row(
     bufferptr = (*source).iobuffer;
     if maxval == crate::jmorecfg_h::MAXJSAMPLE as libc::c_uint {
         col = (*cinfo).image_width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             let fresh37 = bufferptr;
             bufferptr = bufferptr.offset(1);
             let mut r: crate::jmorecfg_h::JSAMPLE = *fresh37;
@@ -1137,7 +1137,7 @@ unsafe extern "C" fn get_rgb_cmyk_row(
         }
     } else {
         col = (*cinfo).image_width;
-        while col > 0i32 as libc::c_uint {
+        while col > 0u32 {
             let fresh40 = bufferptr;
             bufferptr = bufferptr.offset(1);
             let mut r_0: crate::jmorecfg_h::JSAMPLE =
@@ -1163,7 +1163,7 @@ unsafe extern "C" fn get_rgb_cmyk_row(
             col =  col - 1
         }
     }
-    return 1i32 as crate::jmorecfg_h::JDIMENSION;
+    return 1u32;
 }
 
 unsafe extern "C" fn get_raw_row(
@@ -1177,7 +1177,7 @@ unsafe extern "C" fn get_raw_row(
     let mut source: ppm_source_ptr = sinfo as ppm_source_ptr;
     if !(crate::stdlib::fread(
         (*source).iobuffer as *mut libc::c_void,
-        1i32 as crate::stddef_h::size_t,
+        1u64,
         (*source).buffer_width,
         (*source).pub_0.input_file,
     ) == (*source).buffer_width)
@@ -1190,7 +1190,7 @@ unsafe extern "C" fn get_raw_row(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    return 1i32 as crate::jmorecfg_h::JDIMENSION;
+    return 1u32;
 }
 
 unsafe extern "C" fn get_word_gray_row(
@@ -1206,7 +1206,7 @@ unsafe extern "C" fn get_word_gray_row(
     let mut maxval: libc::c_uint = (*source).maxval;
     if !(crate::stdlib::fread(
         (*source).iobuffer as *mut libc::c_void,
-        1i32 as crate::stddef_h::size_t,
+        1u64,
         (*source).buffer_width,
         (*source).pub_0.input_file,
     ) == (*source).buffer_width)
@@ -1222,14 +1222,14 @@ unsafe extern "C" fn get_word_gray_row(
     ptr = *(*source).pub_0.buffer.offset(0);
     bufferptr = (*source).iobuffer;
     col = (*cinfo).image_width;
-    while col > 0i32 as libc::c_uint {
+    while col > 0u32 {
         let mut temp: libc::c_uint = 0;
         let fresh43 = bufferptr;
         bufferptr = bufferptr.offset(1);
         temp = ((*fresh43 as libc::c_int) << 8i32) as libc::c_uint;
         let fresh44 = bufferptr;
         bufferptr = bufferptr.offset(1);
-        temp |= *fresh44 as libc::c_int as libc::c_uint;
+        temp |=  *fresh44 as libc::c_uint;
         if temp > maxval {
             (*(*cinfo).err).msg_code = crate::cderror_h::JERR_PPM_OUTOFRANGE as libc::c_int;
             Some(
@@ -1246,7 +1246,7 @@ unsafe extern "C" fn get_word_gray_row(
         *fresh45 = *rescale.offset(temp as isize);
         col =  col - 1
     }
-    return 1i32 as crate::jmorecfg_h::JDIMENSION;
+    return 1u32;
 }
 
 unsafe extern "C" fn get_word_rgb_row(
@@ -1262,7 +1262,7 @@ unsafe extern "C" fn get_word_rgb_row(
     let mut maxval: libc::c_uint = (*source).maxval;
     if !(crate::stdlib::fread(
         (*source).iobuffer as *mut libc::c_void,
-        1i32 as crate::stddef_h::size_t,
+        1u64,
         (*source).buffer_width,
         (*source).pub_0.input_file,
     ) == (*source).buffer_width)
@@ -1278,14 +1278,14 @@ unsafe extern "C" fn get_word_rgb_row(
     ptr = *(*source).pub_0.buffer.offset(0);
     bufferptr = (*source).iobuffer;
     col = (*cinfo).image_width;
-    while col > 0i32 as libc::c_uint {
+    while col > 0u32 {
         let mut temp: libc::c_uint = 0;
         let fresh46 = bufferptr;
         bufferptr = bufferptr.offset(1);
         temp = ((*fresh46 as libc::c_int) << 8i32) as libc::c_uint;
         let fresh47 = bufferptr;
         bufferptr = bufferptr.offset(1);
-        temp |= *fresh47 as libc::c_int as libc::c_uint;
+        temp |=  *fresh47 as libc::c_uint;
         if temp > maxval {
             (*(*cinfo).err).msg_code = crate::cderror_h::JERR_PPM_OUTOFRANGE as libc::c_int;
             Some(
@@ -1305,7 +1305,7 @@ unsafe extern "C" fn get_word_rgb_row(
         temp = ((*fresh49 as libc::c_int) << 8i32) as libc::c_uint;
         let fresh50 = bufferptr;
         bufferptr = bufferptr.offset(1);
-        temp |= *fresh50 as libc::c_int as libc::c_uint;
+        temp |=  *fresh50 as libc::c_uint;
         if temp > maxval {
             (*(*cinfo).err).msg_code = crate::cderror_h::JERR_PPM_OUTOFRANGE as libc::c_int;
             Some(
@@ -1325,7 +1325,7 @@ unsafe extern "C" fn get_word_rgb_row(
         temp = ((*fresh52 as libc::c_int) << 8i32) as libc::c_uint;
         let fresh53 = bufferptr;
         bufferptr = bufferptr.offset(1);
-        temp |= *fresh53 as libc::c_int as libc::c_uint;
+        temp |=  *fresh53 as libc::c_uint;
         if temp > maxval {
             (*(*cinfo).err).msg_code = crate::cderror_h::JERR_PPM_OUTOFRANGE as libc::c_int;
             Some(
@@ -1342,7 +1342,7 @@ unsafe extern "C" fn get_word_rgb_row(
         *fresh54 = *rescale.offset(temp as isize);
         col =  col - 1
     }
-    return 1i32 as crate::jmorecfg_h::JDIMENSION;
+    return 1u32;
 }
 /*
  * Read the file header; return image size and component count.
@@ -1414,10 +1414,10 @@ unsafe extern "C" fn start_input_ppm(
         _ => {}
     }
     /* fetch the remaining header info */
-    w = read_pbm_integer(cinfo, (*source).pub_0.input_file, 65535i32 as libc::c_uint);
-    h = read_pbm_integer(cinfo, (*source).pub_0.input_file, 65535i32 as libc::c_uint);
-    maxval = read_pbm_integer(cinfo, (*source).pub_0.input_file, 65535i32 as libc::c_uint);
-    if w <= 0i32 as libc::c_uint || h <= 0i32 as libc::c_uint || maxval <= 0i32 as libc::c_uint {
+    w = read_pbm_integer(cinfo, (*source).pub_0.input_file, 65535u32);
+    h = read_pbm_integer(cinfo, (*source).pub_0.input_file, 65535u32);
+    maxval = read_pbm_integer(cinfo, (*source).pub_0.input_file, 65535u32);
+    if w <= 0u32 || h <= 0u32 || maxval <= 0u32 {
         /* error check */
         (*(*cinfo).err).msg_code = crate::cderror_h::JERR_PPM_NOT as libc::c_int; /* we always rescale data to this */
         Some(
@@ -1438,8 +1438,8 @@ unsafe extern "C" fn start_input_ppm(
     match c {
         50 => {
             /* it's a text-format PGM file */
-            if (*cinfo).in_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_UNKNOWN as libc::c_int as libc::c_uint
+            if  (*cinfo).in_color_space
+                ==  crate::jpeglib_h::JCS_UNKNOWN
             {
                 (*cinfo).in_color_space = crate::jpeglib_h::JCS_GRAYSCALE
             }
@@ -1454,8 +1454,8 @@ unsafe extern "C" fn start_input_ppm(
             .expect("non-null function pointer")(
                 cinfo as crate::jpeglib_h::j_common_ptr, 1i32
             );
-            if (*cinfo).in_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_GRAYSCALE as libc::c_int as libc::c_uint
+            if  (*cinfo).in_color_space
+                ==  crate::jpeglib_h::JCS_GRAYSCALE
             {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_text_gray_row
@@ -1465,12 +1465,12 @@ unsafe extern "C" fn start_input_ppm(
                         )
                             -> crate::jmorecfg_h::JDIMENSION,
                 )
-            } else if (*cinfo).in_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_RGB as libc::c_int as libc::c_uint
-                || (*cinfo).in_color_space as libc::c_uint
-                    >= crate::jpeglib_h::JCS_EXT_RGB as libc::c_int as libc::c_uint
-                    && (*cinfo).in_color_space as libc::c_uint
-                        <= crate::jpeglib_h::JCS_EXT_ARGB as libc::c_int as libc::c_uint
+            } else if  (*cinfo).in_color_space
+                ==  crate::jpeglib_h::JCS_RGB
+                ||  (*cinfo).in_color_space
+                    >=  crate::jpeglib_h::JCS_EXT_RGB
+                    &&  (*cinfo).in_color_space
+                        <=  crate::jpeglib_h::JCS_EXT_ARGB
             {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_text_gray_rgb_row
@@ -1480,8 +1480,8 @@ unsafe extern "C" fn start_input_ppm(
                         )
                             -> crate::jmorecfg_h::JDIMENSION,
                 )
-            } else if (*cinfo).in_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_CMYK as libc::c_int as libc::c_uint
+            } else if  (*cinfo).in_color_space
+                ==  crate::jpeglib_h::JCS_CMYK
             {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_text_gray_cmyk_row
@@ -1507,8 +1507,8 @@ unsafe extern "C" fn start_input_ppm(
         }
         51 => {
             /* it's a text-format PPM file */
-            if (*cinfo).in_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_UNKNOWN as libc::c_int as libc::c_uint
+            if  (*cinfo).in_color_space
+                ==  crate::jpeglib_h::JCS_UNKNOWN
             {
                 (*cinfo).in_color_space = crate::jpeglib_h::JCS_EXT_RGB
             }
@@ -1523,12 +1523,12 @@ unsafe extern "C" fn start_input_ppm(
             .expect("non-null function pointer")(
                 cinfo as crate::jpeglib_h::j_common_ptr, 1i32
             );
-            if (*cinfo).in_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_RGB as libc::c_int as libc::c_uint
-                || (*cinfo).in_color_space as libc::c_uint
-                    >= crate::jpeglib_h::JCS_EXT_RGB as libc::c_int as libc::c_uint
-                    && (*cinfo).in_color_space as libc::c_uint
-                        <= crate::jpeglib_h::JCS_EXT_ARGB as libc::c_int as libc::c_uint
+            if  (*cinfo).in_color_space
+                ==  crate::jpeglib_h::JCS_RGB
+                ||  (*cinfo).in_color_space
+                    >=  crate::jpeglib_h::JCS_EXT_RGB
+                    &&  (*cinfo).in_color_space
+                        <=  crate::jpeglib_h::JCS_EXT_ARGB
             {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_text_rgb_row
@@ -1538,8 +1538,8 @@ unsafe extern "C" fn start_input_ppm(
                         )
                             -> crate::jmorecfg_h::JDIMENSION,
                 )
-            } else if (*cinfo).in_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_CMYK as libc::c_int as libc::c_uint
+            } else if  (*cinfo).in_color_space
+                ==  crate::jpeglib_h::JCS_CMYK
             {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_text_rgb_cmyk_row
@@ -1565,8 +1565,8 @@ unsafe extern "C" fn start_input_ppm(
         }
         53 => {
             /* it's a raw-format PGM file */
-            if (*cinfo).in_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_UNKNOWN as libc::c_int as libc::c_uint
+            if  (*cinfo).in_color_space
+                ==  crate::jpeglib_h::JCS_UNKNOWN
             {
                 (*cinfo).in_color_space = crate::jpeglib_h::JCS_GRAYSCALE
             }
@@ -1581,7 +1581,7 @@ unsafe extern "C" fn start_input_ppm(
             .expect("non-null function pointer")(
                 cinfo as crate::jpeglib_h::j_common_ptr, 1i32
             );
-            if maxval > 255i32 as libc::c_uint {
+            if maxval > 255u32 {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_word_gray_row
                         as unsafe extern "C" fn(
@@ -1593,8 +1593,8 @@ unsafe extern "C" fn start_input_ppm(
             } else if maxval == crate::jmorecfg_h::MAXJSAMPLE as libc::c_uint
                 && ::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong
                     == ::std::mem::size_of::<U_CHAR>() as libc::c_ulong
-                && (*cinfo).in_color_space as libc::c_uint
-                    == crate::jpeglib_h::JCS_GRAYSCALE as libc::c_int as libc::c_uint
+                &&  (*cinfo).in_color_space
+                    ==  crate::jpeglib_h::JCS_GRAYSCALE
             {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_raw_row
@@ -1606,8 +1606,8 @@ unsafe extern "C" fn start_input_ppm(
                 );
                 use_raw_buffer = crate::jmorecfg_h::TRUE;
                 need_rescale = crate::jmorecfg_h::FALSE
-            } else if (*cinfo).in_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_GRAYSCALE as libc::c_int as libc::c_uint
+            } else if  (*cinfo).in_color_space
+                ==  crate::jpeglib_h::JCS_GRAYSCALE
             {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_scaled_gray_row
@@ -1617,12 +1617,12 @@ unsafe extern "C" fn start_input_ppm(
                         )
                             -> crate::jmorecfg_h::JDIMENSION,
                 )
-            } else if (*cinfo).in_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_RGB as libc::c_int as libc::c_uint
-                || (*cinfo).in_color_space as libc::c_uint
-                    >= crate::jpeglib_h::JCS_EXT_RGB as libc::c_int as libc::c_uint
-                    && (*cinfo).in_color_space as libc::c_uint
-                        <= crate::jpeglib_h::JCS_EXT_ARGB as libc::c_int as libc::c_uint
+            } else if  (*cinfo).in_color_space
+                ==  crate::jpeglib_h::JCS_RGB
+                ||  (*cinfo).in_color_space
+                    >=  crate::jpeglib_h::JCS_EXT_RGB
+                    &&  (*cinfo).in_color_space
+                        <=  crate::jpeglib_h::JCS_EXT_ARGB
             {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_gray_rgb_row
@@ -1632,8 +1632,8 @@ unsafe extern "C" fn start_input_ppm(
                         )
                             -> crate::jmorecfg_h::JDIMENSION,
                 )
-            } else if (*cinfo).in_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_CMYK as libc::c_int as libc::c_uint
+            } else if  (*cinfo).in_color_space
+                ==  crate::jpeglib_h::JCS_CMYK
             {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_gray_cmyk_row
@@ -1658,8 +1658,8 @@ unsafe extern "C" fn start_input_ppm(
         }
         54 => {
             /* it's a raw-format PPM file */
-            if (*cinfo).in_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_UNKNOWN as libc::c_int as libc::c_uint
+            if  (*cinfo).in_color_space
+                ==  crate::jpeglib_h::JCS_UNKNOWN
             {
                 (*cinfo).in_color_space = crate::jpeglib_h::JCS_EXT_RGB
             }
@@ -1674,7 +1674,7 @@ unsafe extern "C" fn start_input_ppm(
             .expect("non-null function pointer")(
                 cinfo as crate::jpeglib_h::j_common_ptr, 1i32
             );
-            if maxval > 255i32 as libc::c_uint {
+            if maxval > 255u32 {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_word_rgb_row
                         as unsafe extern "C" fn(
@@ -1686,10 +1686,10 @@ unsafe extern "C" fn start_input_ppm(
             } else if maxval == crate::jmorecfg_h::MAXJSAMPLE as libc::c_uint
                 && ::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong
                     == ::std::mem::size_of::<U_CHAR>() as libc::c_ulong
-                && ((*cinfo).in_color_space as libc::c_uint
-                    == crate::jpeglib_h::JCS_EXT_RGB as libc::c_int as libc::c_uint
-                    || (*cinfo).in_color_space as libc::c_uint
-                        == crate::jpeglib_h::JCS_RGB as libc::c_int as libc::c_uint)
+                && ((*cinfo).in_color_space
+                    ==  crate::jpeglib_h::JCS_EXT_RGB
+                    ||  (*cinfo).in_color_space
+                        ==  crate::jpeglib_h::JCS_RGB)
             {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_raw_row
@@ -1701,12 +1701,12 @@ unsafe extern "C" fn start_input_ppm(
                 );
                 use_raw_buffer = crate::jmorecfg_h::TRUE;
                 need_rescale = crate::jmorecfg_h::FALSE
-            } else if (*cinfo).in_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_RGB as libc::c_int as libc::c_uint
-                || (*cinfo).in_color_space as libc::c_uint
-                    >= crate::jpeglib_h::JCS_EXT_RGB as libc::c_int as libc::c_uint
-                    && (*cinfo).in_color_space as libc::c_uint
-                        <= crate::jpeglib_h::JCS_EXT_ARGB as libc::c_int as libc::c_uint
+            } else if  (*cinfo).in_color_space
+                ==  crate::jpeglib_h::JCS_RGB
+                ||  (*cinfo).in_color_space
+                    >=  crate::jpeglib_h::JCS_EXT_RGB
+                    &&  (*cinfo).in_color_space
+                        <=  crate::jpeglib_h::JCS_EXT_ARGB
             {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_rgb_row
@@ -1716,8 +1716,8 @@ unsafe extern "C" fn start_input_ppm(
                         )
                             -> crate::jmorecfg_h::JDIMENSION,
                 )
-            } else if (*cinfo).in_color_space as libc::c_uint
-                == crate::jpeglib_h::JCS_CMYK as libc::c_int as libc::c_uint
+            } else if  (*cinfo).in_color_space
+                ==  crate::jpeglib_h::JCS_CMYK
             {
                 (*source).pub_0.get_pixel_rows = Some(
                     get_rgb_cmyk_row
@@ -1742,38 +1742,38 @@ unsafe extern "C" fn start_input_ppm(
         }
         _ => {}
     }
-    if (*cinfo).in_color_space as libc::c_uint
-        == crate::jpeglib_h::JCS_RGB as libc::c_int as libc::c_uint
-        || (*cinfo).in_color_space as libc::c_uint
-            >= crate::jpeglib_h::JCS_EXT_RGB as libc::c_int as libc::c_uint
-            && (*cinfo).in_color_space as libc::c_uint
-                <= crate::jpeglib_h::JCS_EXT_ARGB as libc::c_int as libc::c_uint
+    if  (*cinfo).in_color_space
+        ==  crate::jpeglib_h::JCS_RGB
+        ||  (*cinfo).in_color_space
+            >=  crate::jpeglib_h::JCS_EXT_RGB
+            &&  (*cinfo).in_color_space
+                <=  crate::jpeglib_h::JCS_EXT_ARGB
     {
         (*cinfo).input_components = rgb_pixelsize[(*cinfo).in_color_space as usize]
-    } else if (*cinfo).in_color_space as libc::c_uint
-        == crate::jpeglib_h::JCS_GRAYSCALE as libc::c_int as libc::c_uint
+    } else if  (*cinfo).in_color_space
+        ==  crate::jpeglib_h::JCS_GRAYSCALE
     {
         (*cinfo).input_components = 1i32
-    } else if (*cinfo).in_color_space as libc::c_uint
-        == crate::jpeglib_h::JCS_CMYK as libc::c_int as libc::c_uint
+    } else if  (*cinfo).in_color_space
+        ==  crate::jpeglib_h::JCS_CMYK
     {
         (*cinfo).input_components = 4i32
     }
     /* Allocate space for I/O buffer: 1 or 3 bytes or words/pixel. */
     if need_iobuffer != 0 {
         if c == '6' as i32 {
-            (*source).buffer_width = w as crate::stddef_h::size_t * 3i32 as libc::c_ulong *
-    if maxval <= 255i32 as libc::c_uint {
+            (*source).buffer_width = w as crate::stddef_h::size_t * 3u64 *
+    if maxval <= 255u32 {
                         ::std::mem::size_of::<U_CHAR>() as libc::c_ulong
                     } else {
-                        2i32 as libc::c_ulong * ::std::mem::size_of::<U_CHAR>() as libc::c_ulong
+                        2u64 * ::std::mem::size_of::<U_CHAR>() as libc::c_ulong
                     }
         } else {
             (*source).buffer_width = w as crate::stddef_h::size_t *
-    if maxval <= 255i32 as libc::c_uint {
+    if maxval <= 255u32 {
                     ::std::mem::size_of::<U_CHAR>() as libc::c_ulong
                 } else {
-                    2i32 as libc::c_ulong * ::std::mem::size_of::<U_CHAR>() as libc::c_ulong
+                    2u64 * ::std::mem::size_of::<U_CHAR>() as libc::c_ulong
                 }
         }
         (*source).iobuffer = Some(
@@ -1791,9 +1791,9 @@ unsafe extern "C" fn start_input_ppm(
     if use_raw_buffer != 0 {
         /* For unscaled raw-input case, we can just map it onto the I/O buffer. */
         /* Synthesize a JSAMPARRAY pointer structure */
-        (*source).pixrow = (*source).iobuffer as crate::jpeglib_h::JSAMPROW;
+        (*source).pixrow =  (*source).iobuffer;
         (*source).pub_0.buffer = &mut (*source).pixrow;
-        (*source).pub_0.buffer_height = 1i32 as crate::jmorecfg_h::JDIMENSION
+        (*source).pub_0.buffer_height = 1u32
     } else {
         /* Need to translate anyway, so make a separate sample buffer. */
         (*source).pub_0.buffer = Some(
@@ -1806,9 +1806,9 @@ unsafe extern "C" fn start_input_ppm(
             crate::jpeglib_h::JPOOL_IMAGE,
             
             w * (*cinfo).input_components as libc::c_uint,
-            1i32 as crate::jmorecfg_h::JDIMENSION,
+            1u32,
         );
-        (*source).pub_0.buffer_height = 1i32 as crate::jmorecfg_h::JDIMENSION
+        (*source).pub_0.buffer_height = 1u32
     }
     /* Compute the rescaling array if required. */
     if need_rescale != 0 {
@@ -1826,8 +1826,8 @@ unsafe extern "C" fn start_input_ppm(
             (maxval as libc::c_long + 1i64) as libc::c_ulong *
     ::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong,
         ) as *mut crate::jmorecfg_h::JSAMPLE;
-        half_maxval = ( maxval / 2i32 as libc::c_uint) as libc::c_long;
-        val = 0i32 as libc::c_long;
+        half_maxval = ( maxval / 2u32) as libc::c_long;
+        val = 0i64;
         while val <= maxval as libc::c_long {
             /* The multiplication here must be done in 32 bits to avoid overflow */
             *(*source).rescale.offset(val as isize) =
