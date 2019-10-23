@@ -2899,8 +2899,7 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                                         == crate::src::turbojpeg::TJXOP_ROT180
                                                             as libc::c_int
                                                 {
-                                                    tw = tw
-                                                        - tw % crate::src::turbojpeg::tjMCUWidth
+                                                    tw -=  tw % crate::src::turbojpeg::tjMCUWidth
                                                             [tsubsamp as usize]
                                                 }
                                                 if xformOp
@@ -2910,8 +2909,7 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                                         == crate::src::turbojpeg::TJXOP_ROT180
                                                             as libc::c_int
                                                 {
-                                                    th = th
-                                                        - th % crate::src::turbojpeg::tjMCUHeight
+                                                    th -=  th % crate::src::turbojpeg::tjMCUHeight
                                                             [tsubsamp as usize]
                                                 }
                                                 if xformOp
@@ -2921,8 +2919,7 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                                         == crate::src::turbojpeg::TJXOP_ROT90
                                                             as libc::c_int
                                                 {
-                                                    tw = tw
-                                                        - tw % crate::src::turbojpeg::tjMCUHeight
+                                                    tw -=  tw % crate::src::turbojpeg::tjMCUHeight
                                                             [tsubsamp as usize]
                                                 }
                                                 if xformOp
@@ -2932,8 +2929,7 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                                         == crate::src::turbojpeg::TJXOP_ROT270
                                                             as libc::c_int
                                                 {
-                                                    th = th
-                                                        - th % crate::src::turbojpeg::tjMCUWidth
+                                                    th -=  th % crate::src::turbojpeg::tjMCUWidth
                                                             [tsubsamp as usize]
                                                 }
                                                 
@@ -3149,7 +3145,7 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                                 tile = 0i32;
                                                  let mut totalJpegSize:   libc::c_ulong =  0u64;
                                                 while tile < tntilesw * tntilesh {
-                                                    totalJpegSize =  totalJpegSize + 
+                                                    totalJpegSize +=  
                                                         *jpegSize.offset(tile as isize);
                                                     tile += 1
                                                 }
