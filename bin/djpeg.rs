@@ -1709,7 +1709,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                     );
                 }
             }
-            insize =  insize + nbytes;
+            insize +=  nbytes;
             if !(nbytes == INPUT_BUF_SIZE as libc::c_ulong) {
                 break;
             }
