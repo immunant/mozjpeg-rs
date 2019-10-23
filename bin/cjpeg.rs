@@ -397,7 +397,7 @@ pub use crate::stdlib::SEEK_SET;
 /* Create the add-on message string table. */
 
 static mut cdjpeg_message_table: [*const libc::c_char; 47] = [
-    0 as *const libc::c_char,
+    ::std::ptr::null::< libc::c_char>(),
     b"Unsupported BMP colormap format\x00" as *const u8 as *const libc::c_char,
     b"Only 8- and 24-bit BMP files are supported\x00" as *const u8 as *const libc::c_char,
     b"Invalid BMP file: bad header length\x00" as *const u8 as *const libc::c_char,
@@ -539,13 +539,13 @@ unsafe extern "C" fn select_file_type(
  * The main program in this file doesn't actually use this capability...
  */
 
-static mut progname: *const libc::c_char = 0 as *const libc::c_char;
+static mut progname: *const libc::c_char = ::std::ptr::null::< libc::c_char>();
 /* program name for error messages */
 
-static mut icc_filename: *mut libc::c_char = 0 as *const libc::c_char as *mut libc::c_char;
+static mut icc_filename: *mut libc::c_char = ::std::ptr::null::< libc::c_char>() as *mut libc::c_char;
 /* for -icc switch */
 
-static mut outfilename: *mut libc::c_char = 0 as *const libc::c_char as *mut libc::c_char;
+static mut outfilename: *mut libc::c_char = ::std::ptr::null::< libc::c_char>() as *mut libc::c_char;
 /* for -outfile switch */
 #[no_mangle]
 
@@ -826,7 +826,7 @@ unsafe extern "C" fn parse_switches(
  * processing.
  */ {
     let mut argn: libc::c_int = 0; /* saves -quality parm if any */
-    let mut arg: *mut libc::c_char = 0 as *mut libc::c_char; /* saves -qtables filename if any */
+    let mut arg: *mut libc::c_char = ::std::ptr::null_mut::< libc::c_char>(); /* saves -qtables filename if any */
     let mut force_baseline: crate::jmorecfg_h::boolean = 0; /* saves -qslots parm if any */
     let mut simple_progressive: crate::jmorecfg_h::boolean = 0; /* saves -sample parm if any */
     let mut qualityarg: *mut libc::c_char = crate::stddef_h::NULL_0 as *mut libc::c_char; /* saves -scans parm if any */
@@ -1634,13 +1634,13 @@ unsafe extern "C" fn parse_switches(
 unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> libc::c_int {
     let mut cinfo: crate::jpeglib_h::jpeg_compress_struct =
         crate::jpeglib_h::jpeg_compress_struct {
-            err: 0 as *mut crate::jpeglib_h::jpeg_error_mgr,
-            mem: 0 as *mut crate::jpeglib_h::jpeg_memory_mgr,
-            progress: 0 as *mut crate::jpeglib_h::jpeg_progress_mgr,
-            client_data: 0 as *mut libc::c_void,
+            err: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_error_mgr>(),
+            mem: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_memory_mgr>(),
+            progress: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_progress_mgr>(),
+            client_data: ::std::ptr::null_mut::< libc::c_void>(),
             is_decompressor: 0,
             global_state: 0,
-            dest: 0 as *mut crate::jpeglib_h::jpeg_destination_mgr,
+            dest: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_destination_mgr>(),
             image_width: 0,
             image_height: 0,
             input_components: 0,
@@ -1649,15 +1649,15 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             data_precision: 0,
             num_components: 0,
             jpeg_color_space: crate::jpeglib_h::JCS_UNKNOWN,
-            comp_info: 0 as *mut crate::jpeglib_h::jpeg_component_info,
-            quant_tbl_ptrs: [0 as *mut crate::jpeglib_h::JQUANT_TBL; 4],
-            dc_huff_tbl_ptrs: [0 as *mut crate::jpeglib_h::JHUFF_TBL; 4],
-            ac_huff_tbl_ptrs: [0 as *mut crate::jpeglib_h::JHUFF_TBL; 4],
+            comp_info: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>(),
+            quant_tbl_ptrs: [::std::ptr::null_mut::< crate::jpeglib_h::JQUANT_TBL>(); 4],
+            dc_huff_tbl_ptrs: [::std::ptr::null_mut::< crate::jpeglib_h::JHUFF_TBL>(); 4],
+            ac_huff_tbl_ptrs: [::std::ptr::null_mut::< crate::jpeglib_h::JHUFF_TBL>(); 4],
             arith_dc_L: [0; 16],
             arith_dc_U: [0; 16],
             arith_ac_K: [0; 16],
             num_scans: 0,
-            scan_info: 0 as *const crate::jpeglib_h::jpeg_scan_info,
+            scan_info: ::std::ptr::null::< crate::jpeglib_h::jpeg_scan_info>(),
             raw_data_in: 0,
             arith_code: 0,
             optimize_coding: 0,
@@ -1679,7 +1679,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             max_v_samp_factor: 0,
             total_iMCU_rows: 0,
             comps_in_scan: 0,
-            cur_comp_info: [0 as *mut crate::jpeglib_h::jpeg_component_info; 4],
+            cur_comp_info: [::std::ptr::null_mut::< crate::jpeglib_h::jpeg_component_info>(); 4],
             MCUs_per_row: 0,
             MCU_rows_in_scan: 0,
             blocks_in_MCU: 0,
@@ -1688,16 +1688,16 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             Se: 0,
             Ah: 0,
             Al: 0,
-            master: 0 as *mut crate::jpeglib_h::jpeg_comp_master,
-            main: 0 as *mut crate::jpeglib_h::jpeg_c_main_controller,
-            prep: 0 as *mut crate::jpeglib_h::jpeg_c_prep_controller,
-            coef: 0 as *mut crate::jpeglib_h::jpeg_c_coef_controller,
-            marker: 0 as *mut crate::jpeglib_h::jpeg_marker_writer,
-            cconvert: 0 as *mut crate::jpeglib_h::jpeg_color_converter,
-            downsample: 0 as *mut crate::jpeglib_h::jpeg_downsampler,
-            fdct: 0 as *mut crate::jpeglib_h::jpeg_forward_dct,
-            entropy: 0 as *mut crate::jpeglib_h::jpeg_entropy_encoder,
-            script_space: 0 as *mut crate::jpeglib_h::jpeg_scan_info,
+            master: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_comp_master>(),
+            main: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_c_main_controller>(),
+            prep: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_c_prep_controller>(),
+            coef: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_c_coef_controller>(),
+            marker: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_marker_writer>(),
+            cconvert: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_color_converter>(),
+            downsample: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_downsampler>(),
+            fdct: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_forward_dct>(),
+            entropy: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_entropy_encoder>(),
+            script_space: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_scan_info>(),
             script_space_size: 0,
         };
     let mut jerr: crate::jpeglib_h::jpeg_error_mgr = crate::jpeglib_h::jpeg_error_mgr {
@@ -1710,17 +1710,17 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         msg_parm: crate::jpeglib_h::C2RustUnnamed_2 { i: [0; 8] },
         trace_level: 0,
         num_warnings: 0,
-        jpeg_message_table: 0 as *const *const libc::c_char,
+        jpeg_message_table: ::std::ptr::null::< *const libc::c_char>(),
         last_jpeg_message: 0,
-        addon_message_table: 0 as *const *const libc::c_char,
+        addon_message_table: ::std::ptr::null::< *const libc::c_char>(),
         first_addon_message: 0,
         last_addon_message: 0,
     };
     let mut file_index: libc::c_int = 0;
     let mut src_mgr: crate::src::cdjpeg::cjpeg_source_ptr =
-        0 as *mut crate::src::cdjpeg::cjpeg_source_struct;
-    let mut input_file: *mut crate::stdlib::FILE = 0 as *mut crate::stdlib::FILE;
-    let mut icc_file: *mut crate::stdlib::FILE = 0 as *mut crate::stdlib::FILE;
+        ::std::ptr::null_mut::< crate::src::cdjpeg::cjpeg_source_struct>();
+    let mut input_file: *mut crate::stdlib::FILE = ::std::ptr::null_mut::< crate::stdlib::FILE>();
+    let mut icc_file: *mut crate::stdlib::FILE = ::std::ptr::null_mut::< crate::stdlib::FILE>();
     let mut icc_profile: *mut crate::jmorecfg_h::JOCTET =
         crate::stddef_h::NULL_0 as *mut crate::jmorecfg_h::JOCTET;
     let mut icc_len: libc::c_long = 0i32 as libc::c_long;
@@ -1881,7 +1881,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     /* Copy metadata */
     if copy_markers != 0 {
         let mut marker: crate::jpeglib_h::jpeg_saved_marker_ptr =
-            0 as *mut crate::jpeglib_h::jpeg_marker_struct;
+            ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_marker_struct>();
         /* In the current implementation, we don't actually need to examine the
          * option flag here; we just copy everything that got saved.
          * But to avoid confusion, we do not output JFIF and Adobe APP14 markers
