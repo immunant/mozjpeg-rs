@@ -319,9 +319,10 @@ unsafe fn main_0() -> libc::c_int {
         }; 1],
     };
     crate::stdlib::printf(
-        b"libjpeg-turbo colorspace extensions:\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"libjpeg-turbo colorspace extensions:\n\x00".as_ptr() as *const libc::c_char,
     );
-    crate::stdlib::printf(b"  Present at compile time\n\x00" as *const u8 as *const libc::c_char);
+    crate::stdlib::printf(b"  Present at compile time\n\x00".as_ptr() as *const libc::c_char);
     cinfo.err = crate::jpeglib_h::jpeg_std_error(&mut jerr.pub_0);
     jerr.pub_0.error_exit =
         Some(my_error_exit as unsafe extern "C" fn(_: crate::jpeglib_h::j_common_ptr) -> ());
@@ -343,18 +344,20 @@ unsafe fn main_0() -> libc::c_int {
         jcs_valid = 1i32
     }
     if jcs_valid != 0 {
-        crate::stdlib::printf(b"  Working properly\n\x00" as *const u8 as *const libc::c_char);
+        crate::stdlib::printf(b"  Working properly\n\x00".as_ptr() as *const libc::c_char);
     } else {
         crate::stdlib::printf(
-            b"  Not working properly.  Error returned was:\n    %s\n\x00" as *const u8
+            
+            b"  Not working properly.  Error returned was:\n    %s\n\x00".as_ptr()
                 as *const libc::c_char,
             lasterror.as_mut_ptr(),
         );
     }
     crate::stdlib::printf(
-        b"libjpeg-turbo alpha colorspace extensions:\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"libjpeg-turbo alpha colorspace extensions:\n\x00".as_ptr() as *const libc::c_char,
     );
-    crate::stdlib::printf(b"  Present at compile time\n\x00" as *const u8 as *const libc::c_char);
+    crate::stdlib::printf(b"  Present at compile time\n\x00".as_ptr() as *const libc::c_char);
     if crate::stdlib::_setjmp(jerr.jb.as_mut_ptr()) != 0 {
         /* this will execute if libjpeg has an error */
         jcs_alpha_valid = 0i32
@@ -364,10 +367,11 @@ unsafe fn main_0() -> libc::c_int {
         jcs_alpha_valid = 1i32
     }
     if jcs_alpha_valid != 0 {
-        crate::stdlib::printf(b"  Working properly\n\x00" as *const u8 as *const libc::c_char);
+        crate::stdlib::printf(b"  Working properly\n\x00".as_ptr() as *const libc::c_char);
     } else {
         crate::stdlib::printf(
-            b"  Not working properly.  Error returned was:\n    %s\n\x00" as *const u8
+            
+            b"  Not working properly.  Error returned was:\n    %s\n\x00".as_ptr()
                 as *const libc::c_char,
             lasterror.as_mut_ptr(),
         );
