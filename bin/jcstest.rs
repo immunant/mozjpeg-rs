@@ -381,5 +381,5 @@ unsafe fn main_0() -> libc::c_int {
 }
 #[main]
 pub fn main() {
-    unsafe { ::std::process::exit(main_0() as i32) }
+    unsafe { ::std::process::exit(main_0()) }
 }
