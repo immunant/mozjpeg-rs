@@ -272,11 +272,11 @@ unsafe extern "C" fn copy_variable()
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
-    length =  length - 2u32;
+    length -=  2u32;
     /* Copy the remaining bytes */
     while length > 0u32 {
         write_1_byte(read_1_byte());
-        length =  length - 1
+        length -=  1
     }
 }
 
@@ -296,11 +296,11 @@ unsafe extern "C" fn skip_variable()
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
-    length =  length - 2u32;
+    length -=  2u32;
     /* Skip over the remaining bytes */
     while length > 0u32 {
         read_1_byte();
-        length =  length - 1
+        length -=  1
     }
 }
 /*
@@ -873,7 +873,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                 crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
             }
             let fresh2 = comment_length;
-            comment_length =  comment_length + 1;
+            comment_length +=  1;
             *comment_arg.offset(fresh2 as isize) = c as libc::c_char
         }
         if !comment_file.is_null() {
@@ -895,7 +895,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             let fresh3 = comment_arg;
             comment_arg = comment_arg.offset(1);
             write_1_byte(*fresh3 as libc::c_int);
-            comment_length =  comment_length - 1
+            comment_length -=  1
         }
     }
     /* Duplicate the remainder of the source file.
