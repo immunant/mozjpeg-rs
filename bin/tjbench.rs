@@ -227,7 +227,7 @@ pub static mut quiet: libc::c_int = 0i32;
 pub static mut doTile: libc::c_int = 0i32;
 #[no_mangle]
 
-pub static mut pf: libc::c_int = crate::src::turbojpeg::TJPF_BGR as libc::c_int;
+pub static mut pf: libc::c_int =  crate::src::turbojpeg::TJPF_BGR;
 #[no_mangle]
 
 pub static mut yuvPad: libc::c_int = 1i32;
@@ -238,7 +238,9 @@ pub static mut doWrite: libc::c_int = 1i32;
 
 pub static mut ext: *mut libc::c_char =
     
-    b"ppm\x00".as_ptr() as *const libc::c_char as *mut libc::c_char;
+    
+    
+    b"ppm\x00".as_ptr() as *mut libc::c_char;
 #[no_mangle]
 
 pub static mut pixFormatStr: [*const libc::c_char; 12] = [
@@ -367,7 +369,7 @@ pub unsafe extern "C" fn formatName(
     {
         crate::stdlib::snprintf(
             buf,
-            80i32 as libc::c_ulong,
+            80u64,
             
             b"%s %s\x00".as_ptr() as *const libc::c_char,
             csName[cs as usize],
@@ -392,14 +394,14 @@ pub unsafe extern "C" fn sigfig(
     if digitsAfterDecimal < 1i32 {
         crate::stdlib::snprintf(
             format.as_mut_ptr(),
-            80i32 as libc::c_ulong,
+            80u64,
             
             b"%%.0f\x00".as_ptr() as *const libc::c_char,
         );
     } else {
         crate::stdlib::snprintf(
             format.as_mut_ptr(),
-            80i32 as libc::c_ulong,
+            80u64,
             
             b"%%.%df\x00".as_ptr() as *const libc::c_char,
             digitsAfterDecimal,
@@ -473,12 +475,12 @@ pub unsafe extern "C" fn decomp(
     if jpegQual > 0i32 {
         crate::stdlib::snprintf(
             qualStr.as_mut_ptr(),
-            6i32 as libc::c_ulong,
+            6u64,
             
             b"_Q%d\x00".as_ptr() as *const libc::c_char,
             jpegQual,
         );
-        qualStr[5] = 0i32 as libc::c_char
+        qualStr[5] = 0i8
     }
     handle = crate::src::turbojpeg::tjInitDecompress();
     if handle.is_null() {
@@ -1129,7 +1131,7 @@ pub unsafe extern "C" fn decomp(
                                                 if sf.num != 1i32 || sf.denom != 1i32 {
                                                     crate::stdlib::snprintf(
                                                         sizeStr.as_mut_ptr(),
-                                                        20i32 as libc::c_ulong,
+                                                        20u64,
                                                         
                                                         b"%d_%d\x00".as_ptr()
                                                             as *const libc::c_char,
@@ -1139,7 +1141,7 @@ pub unsafe extern "C" fn decomp(
                                                 } else if tilew != w || tileh != h {
                                                     crate::stdlib::snprintf(
                                                         sizeStr.as_mut_ptr(),
-                                                        20i32 as libc::c_ulong,
+                                                        20u64,
                                                         
                                                         b"%dx%d\x00".as_ptr()
                                                             as *const libc::c_char,
@@ -1149,7 +1151,7 @@ pub unsafe extern "C" fn decomp(
                                                 } else {
                                                     crate::stdlib::snprintf(
                                                         sizeStr.as_mut_ptr(),
-                                                        20i32 as libc::c_ulong,
+                                                        20u64,
                                                         
                                                         b"full\x00".as_ptr()
                                                             as *const libc::c_char,
@@ -1158,7 +1160,7 @@ pub unsafe extern "C" fn decomp(
                                                 if decompOnly != 0 {
                                                     crate::stdlib::snprintf(
                                                         tempStr.as_mut_ptr(),
-                                                        1024i32 as libc::c_ulong,
+                                                        1024u64,
                                                         
                                                         b"%s_%s.%s\x00".as_ptr()
                                                             as *const libc::c_char,
@@ -1169,7 +1171,7 @@ pub unsafe extern "C" fn decomp(
                                                 } else {
                                                     crate::stdlib::snprintf(
                                                         tempStr.as_mut_ptr(),
-                                                        1024i32 as libc::c_ulong,
+                                                        1024u64,
                                                         
                                                         b"%s_%s%s_%s.%s\x00".as_ptr()
                                                             as *const libc::c_char,
@@ -1211,7 +1213,7 @@ pub unsafe extern "C" fn decomp(
                                                     );
                                                     crate::stdlib::snprintf(
                                                         ptr,
-                                                        (1024i32 as libc::c_long
+                                                        (1024i64
                                                             - ptr.wrapping_offset_from(
                                                                 tempStr.as_mut_ptr(),
                                                             )
@@ -1964,8 +1966,7 @@ pub unsafe extern "C" fn fullTest(
                                         break 's_73;
                                     }
                                 }
-                                totalJpegSize = (totalJpegSize as libc::c_ulong + *jpegSize.offset(tile as isize))
-                                    as libc::c_int
+                                totalJpegSize = ((totalJpegSize as libc::c_ulong + *jpegSize.offset(tile as isize)))
                                     as libc::c_int;
                                 col += 1;
                                 tile += 1;
@@ -2217,7 +2218,7 @@ pub unsafe extern "C" fn fullTest(
                     if tilew == w && tileh == h && doWrite != 0 {
                         crate::stdlib::snprintf(
                             tempStr.as_mut_ptr(),
-                            1024i32 as libc::c_ulong,
+                            1024u64,
                             
                             b"%s_%s_Q%d.jpg\x00".as_ptr() as *const libc::c_char,
                             fileName,
@@ -2244,9 +2245,9 @@ pub unsafe extern "C" fn fullTest(
                         } else if crate::stdlib::fwrite(
                             *jpegBuf.offset(0) as *const libc::c_void,
                             *jpegSize.offset(0),
-                            1i32 as libc::c_ulong,
+                            1u64,
                             file,
-                        ) != 1i32 as libc::c_ulong
+                        ) != 1u64
                         {
                             crate::stdlib::printf(
                                 
@@ -2397,7 +2398,7 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
             crate::stdlib::strerror(*crate::stdlib::__errno_location()),
         );
         retval = -1i32
-    } else if crate::stdlib::fseek(file, 0i32 as libc::c_long, crate::stdlib::SEEK_END) < 0i32 || {
+    } else if crate::stdlib::fseek(file, 0i64, crate::stdlib::SEEK_END) < 0i32 || {
         srcSize = crate::stdlib::ftell(file) as libc::c_ulong;
         (srcSize) == -1i32 as libc::c_ulong
     } {
@@ -2422,7 +2423,7 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                 crate::stdlib::strerror(*crate::stdlib::__errno_location()),
             );
             retval = -1i32
-        } else if crate::stdlib::fseek(file, 0i32 as libc::c_long, crate::stdlib::SEEK_SET) < 0i32 {
+        } else if crate::stdlib::fseek(file, 0i64, crate::stdlib::SEEK_SET) < 0i32 {
             crate::stdlib::printf(
                 
                 b"ERROR in line %d while %s:\n%s\n\x00".as_ptr() as *const libc::c_char,
@@ -2435,9 +2436,9 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
         } else if crate::stdlib::fread(
             srcBuf as *mut libc::c_void,
             srcSize,
-            1i32 as libc::c_ulong,
+            1u64,
             file,
-        ) < 1i32 as libc::c_ulong
+        ) < 1u64
         {
             crate::stdlib::printf(
                 
@@ -2453,7 +2454,7 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
             file = crate::stddef_h::NULL_0 as *mut crate::stdlib::FILE;
             temp = crate::stdlib::strrchr(fileName, '.' as i32);
             if !temp.is_null() {
-                *temp = '\u{0}' as i32 as libc::c_char
+                *temp =  '\u{0}' as libc::c_char
             }
             handle = crate::src::turbojpeg::tjInitTransform();
             if handle.is_null() {
@@ -2616,7 +2617,7 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                             if cs == crate::src::turbojpeg::TJCS_YCCK as libc::c_int
                                 || cs == crate::src::turbojpeg::TJCS_CMYK as libc::c_int
                             {
-                                pf = crate::src::turbojpeg::TJPF_CMYK as libc::c_int;
+                                pf =  crate::src::turbojpeg::TJPF_CMYK;
                                 ps = crate::src::turbojpeg::tjPixelSize[pf as usize]
                             }
                             if quiet == 1i32 {
@@ -3147,7 +3148,7 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut libc::c_char) -> libc::c_
                                                 t = crate::stddef_h::NULL_0
                                                     as *mut crate::src::turbojpeg::tjtransform;
                                                 tile = 0i32;
-                                                totalJpegSize = 0i32 as libc::c_ulong;
+                                                totalJpegSize = 0u64;
                                                 while tile < tntilesw * tntilesh {
                                                     totalJpegSize =  totalJpegSize + 
                                                         *jpegSize.offset(tile as isize);
@@ -3614,7 +3615,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         if !temp.is_null() {
             if crate::stdlib::strcasecmp(temp,  b".bmp\x00".as_ptr() as *const libc::c_char) == 0
             {
-                ext =  b"bmp\x00".as_ptr() as *const libc::c_char as *mut libc::c_char
+                ext =    b"bmp\x00".as_ptr() as *mut libc::c_char
             }
             if crate::stdlib::strcasecmp(temp,  b".jpg\x00".as_ptr() as *const libc::c_char) == 0
                 || crate::stdlib::strcasecmp(temp,  b".jpeg\x00".as_ptr() as *const libc::c_char)
@@ -3640,7 +3641,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             }
             temp = crate::stdlib::strchr(*argv.offset(2), '-' as i32);
             if !(!temp.is_null()
-                && crate::stdlib::strlen(temp) > 1i32 as libc::c_ulong
+                && crate::stdlib::strlen(temp) > 1u64
                 && crate::stdlib::sscanf(
                     &mut *temp.offset(1) as *mut libc::c_char,
                     
@@ -3718,49 +3719,49 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                     b"-rgb\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
-                    pf = crate::src::turbojpeg::TJPF_RGB as libc::c_int
+                    pf =  crate::src::turbojpeg::TJPF_RGB
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
                     
                     b"-rgbx\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
-                    pf = crate::src::turbojpeg::TJPF_RGBX as libc::c_int
+                    pf =  crate::src::turbojpeg::TJPF_RGBX
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
                     
                     b"-bgr\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
-                    pf = crate::src::turbojpeg::TJPF_BGR as libc::c_int
+                    pf =  crate::src::turbojpeg::TJPF_BGR
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
                     
                     b"-bgrx\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
-                    pf = crate::src::turbojpeg::TJPF_BGRX as libc::c_int
+                    pf =  crate::src::turbojpeg::TJPF_BGRX
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
                     
                     b"-xbgr\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
-                    pf = crate::src::turbojpeg::TJPF_XBGR as libc::c_int
+                    pf =  crate::src::turbojpeg::TJPF_XBGR
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
                     
                     b"-xrgb\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
-                    pf = crate::src::turbojpeg::TJPF_XRGB as libc::c_int
+                    pf =  crate::src::turbojpeg::TJPF_XRGB
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
                     
                     b"-cmyk\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
-                    pf = crate::src::turbojpeg::TJPF_CMYK as libc::c_int
+                    pf =  crate::src::turbojpeg::TJPF_CMYK
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
                     
@@ -3953,7 +3954,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                     b"-bmp\x00".as_ptr() as *const libc::c_char,
                 ) == 0
                 {
-                    ext =  b"bmp\x00".as_ptr() as *const libc::c_char as *mut libc::c_char
+                    ext =    b"bmp\x00".as_ptr() as *mut libc::c_char
                 } else if crate::stdlib::strcasecmp(
                     *argv.offset(i as isize),
                     
@@ -3989,7 +3990,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                     if ({
                         let mut __res: libc::c_int = 0;
                         if ::std::mem::size_of::<libc::c_char>() as libc::c_ulong
-                            > 1i32 as libc::c_ulong
+                            > 1u64
                         {
                             if 0 != 0 {
                                 let mut __c: libc::c_int =
@@ -4101,7 +4102,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             } else {
                 temp = crate::stdlib::strrchr(*argv.offset(1), '.' as i32);
                 if !temp.is_null() {
-                    *temp = '\u{0}' as i32 as libc::c_char
+                    *temp =  '\u{0}' as libc::c_char
                 }
                 current_block = 11359721434352816539;
             }
@@ -4175,7 +4176,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                     }
                     crate::stdlib::printf(b"\n\x00".as_ptr() as *const libc::c_char);
                 } else {
-                    if pf != crate::src::turbojpeg::TJPF_CMYK as libc::c_int {
+                    if pf !=  crate::src::turbojpeg::TJPF_CMYK {
                         i = maxQual;
                         while i >= minQual {
                             fullTest(
@@ -4252,7 +4253,8 @@ pub fn main() {
     unsafe {
         ::std::process::exit(main_0(
             (args.len() - 1) as libc::c_int,
-            args.as_mut_ptr() as *mut *mut libc::c_char,
-        ) as i32)
+            
+            args.as_mut_ptr(),
+        ))
     }
 }
