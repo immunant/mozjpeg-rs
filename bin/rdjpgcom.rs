@@ -139,7 +139,7 @@ unsafe extern "C" fn read_2_bytes() -> libc::c_uint {
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
-    return (((c1 as libc::c_uint) << 8i32)) + c2 as libc::c_uint;
+    return ((((c1 as libc::c_uint) << 8i32))) + c2 as libc::c_uint;
 }
 
 pub const M_SOI: libc::c_int = 0xd8i32;
@@ -223,7 +223,7 @@ unsafe extern "C" fn skip_variable()
     /* Get the marker parameter length count */
     length = read_2_bytes();
     /* Length includes itself, so must be at least 2 */
-    if length < 2i32 as libc::c_uint {
+    if length < 2u32 {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
             
@@ -233,9 +233,9 @@ unsafe extern "C" fn skip_variable()
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
-    length =  length - 2i32 as libc::c_uint;
+    length =  length - 2u32;
     /* Skip over the remaining bytes */
-    while length > 0i32 as libc::c_uint {
+    while length > 0u32 {
         read_1_byte();
         length =  length - 1
     }
@@ -259,7 +259,7 @@ unsafe extern "C" fn process_COM(mut raw: libc::c_int) {
     /* Get the marker parameter length count */
     length = read_2_bytes();
     /* Length includes itself, so must be at least 2 */
-    if length < 2i32 as libc::c_uint {
+    if length < 2u32 {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
             
@@ -269,8 +269,8 @@ unsafe extern "C" fn process_COM(mut raw: libc::c_int) {
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
-    length =  length - 2i32 as libc::c_uint;
-    while length > 0i32 as libc::c_uint {
+    length =  length - 2u32;
+    while length > 0u32 {
         ch = read_1_byte();
         if raw != 0 {
             crate::stdlib::putc(ch, crate::stdlib::stdout);
@@ -288,7 +288,7 @@ unsafe extern "C" fn process_COM(mut raw: libc::c_int) {
         } else if ch == '\\' as i32 {
             crate::stdlib::printf(b"\\\\\x00".as_ptr() as *const libc::c_char);
         } else if *(*crate::stdlib::__ctype_b_loc()).offset(ch as isize) as libc::c_int
-            & crate::stdlib::_ISprint as libc::c_int as libc::c_ushort as libc::c_int
+            &  crate::stdlib::_ISprint as libc::c_ushort as libc::c_int
             != 0
         {
             crate::stdlib::putc(ch, crate::stdlib::stdout);
@@ -663,14 +663,14 @@ unsafe extern "C" fn keymatch(
             return 0i32;
         }
         if *(*crate::stdlib::__ctype_b_loc()).offset(ca as isize) as libc::c_int
-            & crate::stdlib::_ISupper as libc::c_int as libc::c_ushort as libc::c_int
+            &  crate::stdlib::_ISupper as libc::c_ushort as libc::c_int
             != 0
         {
             /* count matched characters */
             /* force arg to lcase (assume ck is already) */
             ca = ({
                 let mut __res: libc::c_int = 0; /* no good */
-                if ::std::mem::size_of::<libc::c_int>() as libc::c_ulong > 1i32 as libc::c_ulong {
+                if ::std::mem::size_of::<libc::c_int>() as libc::c_ulong > 1u64 {
                     if 0 != 0 {
                         let mut __c: libc::c_int = ca;
                         __res = if __c < -128i32 || __c > 255i32 {
@@ -785,7 +785,8 @@ pub fn main() {
     unsafe {
         ::std::process::exit(main_0(
             (args.len() - 1) as libc::c_int,
-            args.as_mut_ptr() as *mut *mut libc::c_char,
-        ) as i32)
+            
+            args.as_mut_ptr(),
+        ))
     }
 }
