@@ -1,13 +1,8 @@
-
-
-
-
-
-
-
-
-use libc::{c_double, self};pub use crate::stdlib::{__suseconds_t, __time_t, __timezone_ptr_t,
-                        gettimeofday, timeval, timezone};pub use crate::stddef_h::NULL;
+pub use crate::stddef_h::NULL;
+pub use crate::stdlib::{
+    __suseconds_t, __time_t, __timezone_ptr_t, gettimeofday, timeval, timezone,
+};
+use libc::{self, c_double};
 /*
  * Copyright (C)2011 D. R. Commander.  All Rights Reserved.
  *
@@ -38,13 +33,11 @@ use libc::{c_double, self};pub use crate::stdlib::{__suseconds_t, __time_t, __ti
 #[no_mangle]
 
 pub unsafe extern "C" fn getTime() -> c_double {
-     let mut tv:  timeval =
-     timeval{tv_sec:  0, tv_usec:  0,};
-    if gettimeofday(
-        &mut tv,
-        NULL as *mut timezone,
-    ) < 0i32
-    {
+    let mut tv: timeval = timeval {
+        tv_sec: 0,
+        tv_usec: 0,
+    };
+    if gettimeofday(&mut tv, NULL as *mut timezone) < 0i32 {
         return 0.0f64;
     } else {
         return tv.tv_sec as c_double + tv.tv_usec as c_double / 1000000.0f64;

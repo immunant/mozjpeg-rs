@@ -1,4 +1,5 @@
-use libc::{c_uint, c_ushort, c_float, c_short, c_int};extern "C" {
+use libc::{c_float, c_int, c_short, c_uint, c_ushort};
+extern "C" {
     #[no_mangle]
     pub fn jpeg_fdct_islow(data: *mut DCTELEM);
 
@@ -232,16 +233,10 @@ pub type IFAST_MULT_TYPE = c_short;
  */
 pub type ISLOW_MULT_TYPE = c_short;
 
-
-
-
-
-
-
-
-use crate::jmorecfg_h::{JDIMENSION, MAXJSAMPLE};use crate::jpeglib_h::{j_decompress_ptr, jpeg_component_info,
-                       jpeg_decompress_struct, JCOEFPTR, JSAMPARRAY,
-                       JSAMPROW};
+use crate::jmorecfg_h::{JDIMENSION, MAXJSAMPLE};
+use crate::jpeglib_h::{
+    j_decompress_ptr, jpeg_component_info, jpeg_decompress_struct, JCOEFPTR, JSAMPARRAY, JSAMPROW,
+};
 /* preferred floating type */
 
 /*

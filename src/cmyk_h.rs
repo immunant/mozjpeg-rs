@@ -1,4 +1,5 @@
-use crate::jmorecfg_h::JSAMPLE;use libc::c_double;
+use crate::jmorecfg_h::JSAMPLE;
+use libc::c_double;
 #[inline(always)]
 pub unsafe extern "C" fn rgb_to_cmyk(
     mut r: JSAMPLE,
@@ -61,10 +62,7 @@ pub unsafe extern "C" fn cmyk_to_rgb(
     mut g: *mut JSAMPLE,
     mut b: *mut JSAMPLE,
 ) {
-    *r = (c as c_double * k as c_double / 255.0f64 + 0.5f64)
-        as JSAMPLE;
-    *g = (m as c_double * k as c_double / 255.0f64 + 0.5f64)
-        as JSAMPLE;
-    *b = (y as c_double * k as c_double / 255.0f64 + 0.5f64)
-        as JSAMPLE;
+    *r = (c as c_double * k as c_double / 255.0f64 + 0.5f64) as JSAMPLE;
+    *g = (m as c_double * k as c_double / 255.0f64 + 0.5f64) as JSAMPLE;
+    *b = (y as c_double * k as c_double / 255.0f64 + 0.5f64) as JSAMPLE;
 }

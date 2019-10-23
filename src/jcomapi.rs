@@ -1,116 +1,24 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-use libc::{c_int, c_ulong, self};pub use crate::jmorecfg_h::{boolean, FALSE, JCOEF, JDIMENSION, JOCTET,
-                            JSAMPLE, UINT16, UINT8};pub use crate::jpegint_h::{inverse_DCT_method_ptr, CSTATE_START, DSTATE_START,
-                           JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT,
-                           JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, J_BUF_MODE};pub use crate::stddef_h::{size_t, NULL};pub use crate::jpeglib_h::{j_common_ptr, j_decompress_ptr,
-                           jpeg_color_deconverter, jpeg_color_quantizer,
-                           jpeg_common_struct, jpeg_component_info,
-                           jpeg_d_coef_controller, jpeg_d_main_controller,
-                           jpeg_d_post_controller, jpeg_decomp_master,
-                           jpeg_decompress_struct, jpeg_entropy_decoder,
-                           jpeg_error_mgr, jpeg_input_controller,
-                           jpeg_inverse_dct, jpeg_marker_parser_method,
-                           jpeg_marker_reader, jpeg_marker_struct,
-                           jpeg_memory_mgr, jpeg_progress_mgr,
-                           jpeg_saved_marker_ptr, jpeg_source_mgr,
-                           jpeg_upsampler, jvirt_barray_control,
-                           jvirt_barray_ptr, jvirt_sarray_control,
-                           jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr,
-                           JBLOCK, JBLOCKARRAY, JBLOCKROW, JCOEFPTR, JCS_CMYK,
-                           JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR,
-                           JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB,
-                           JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR,
-                           JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565,
-                           JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST,
-                           JDCT_ISLOW, JDITHER_FS, JDITHER_NONE,
-                           JDITHER_ORDERED, JHUFF_TBL, JPOOL_NUMPOOLS,
-                           JPOOL_PERMANENT, JQUANT_TBL, JSAMPARRAY,
-                           JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD,
-                           J_DITHER_MODE};
+pub use crate::jmorecfg_h::{boolean, FALSE, JCOEF, JDIMENSION, JOCTET, JSAMPLE, UINT16, UINT8};
+pub use crate::jpegint_h::{
+    inverse_DCT_method_ptr, CSTATE_START, DSTATE_START, JBUF_CRANK_DEST, JBUF_PASS_THRU,
+    JBUF_REQUANT, JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, J_BUF_MODE,
+};
+pub use crate::jpeglib_h::{
+    j_common_ptr, j_decompress_ptr, jpeg_color_deconverter, jpeg_color_quantizer,
+    jpeg_common_struct, jpeg_component_info, jpeg_d_coef_controller, jpeg_d_main_controller,
+    jpeg_d_post_controller, jpeg_decomp_master, jpeg_decompress_struct, jpeg_entropy_decoder,
+    jpeg_error_mgr, jpeg_input_controller, jpeg_inverse_dct, jpeg_marker_parser_method,
+    jpeg_marker_reader, jpeg_marker_struct, jpeg_memory_mgr, jpeg_progress_mgr,
+    jpeg_saved_marker_ptr, jpeg_source_mgr, jpeg_upsampler, jvirt_barray_control, jvirt_barray_ptr,
+    jvirt_sarray_control, jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr, JBLOCK, JBLOCKARRAY,
+    JBLOCKROW, JCOEFPTR, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA,
+    JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB,
+    JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW,
+    JDITHER_FS, JDITHER_NONE, JDITHER_ORDERED, JHUFF_TBL, JPOOL_NUMPOOLS, JPOOL_PERMANENT,
+    JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD, J_DITHER_MODE,
+};
+pub use crate::stddef_h::{size_t, NULL};
+use libc::{self, c_int, c_ulong};
 /*
  * jcomapi.c
  *
@@ -137,7 +45,6 @@ use libc::{c_int, c_ulong, self};pub use crate::jmorecfg_h::{boolean, FALSE, JCO
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_abort(mut cinfo: j_common_ptr) {
-     
     /* Do nothing if called on a not-initialized or destroyed JPEG object. */
     if (*cinfo).mem.is_null() {
         return;
@@ -145,7 +52,7 @@ pub unsafe extern "C" fn jpeg_abort(mut cinfo: j_common_ptr) {
     /* Releasing pools in reverse order might help avoid fragmentation
      * with some (brain-damaged) malloc libraries.
      */
-     let mut pool:   c_int =  JPOOL_NUMPOOLS - 1i32;
+    let mut pool: c_int = JPOOL_NUMPOOLS - 1i32;
     while pool > JPOOL_PERMANENT {
         Some(
             (*(*cinfo).mem)
@@ -238,12 +145,9 @@ pub unsafe extern "C" fn jpeg_destroy(mut cinfo: j_common_ptr) {
  */
 #[no_mangle]
 
-pub unsafe extern "C" fn jpeg_alloc_quant_table(
-    mut cinfo: j_common_ptr,
-) -> *mut JQUANT_TBL {
-      /* make sure this is false in any new table */
-     let mut tbl:   *mut JQUANT_TBL =
-     Some(
+pub unsafe extern "C" fn jpeg_alloc_quant_table(mut cinfo: j_common_ptr) -> *mut JQUANT_TBL {
+    /* make sure this is false in any new table */
+    let mut tbl: *mut JQUANT_TBL = Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),
@@ -258,12 +162,8 @@ pub unsafe extern "C" fn jpeg_alloc_quant_table(
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jpeg_alloc_huff_table(
-    mut cinfo: j_common_ptr,
-) -> *mut JHUFF_TBL {
-     
-     let mut tbl:   *mut JHUFF_TBL =
-     Some(
+pub unsafe extern "C" fn jpeg_alloc_huff_table(mut cinfo: j_common_ptr) -> *mut JHUFF_TBL {
+    let mut tbl: *mut JHUFF_TBL = Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),

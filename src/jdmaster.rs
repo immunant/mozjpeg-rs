@@ -1,19 +1,19 @@
-
-
-
-
-
-
-use libc::{c_uint, c_ulong, c_void, c_long, c_int, self};pub use crate::jmorecfg_h::boolean;pub use crate::jpeglib_h::{jpeg_color_quantizer, jpeg_decomp_master,
-                           jpeg_idct_method_selector, C2RustUnnamed_2};pub use super::jerror::C2RustUnnamed_3;
+pub use super::jerror::C2RustUnnamed_3;
+pub use crate::jmorecfg_h::boolean;
+pub use crate::jpeglib_h::{
+    jpeg_color_quantizer, jpeg_decomp_master, jpeg_idct_method_selector, C2RustUnnamed_2,
+};
+use libc::{self, c_int, c_long, c_uint, c_ulong, c_void};
 
 #[header_src = "/home/sjcrane/projects/c2rust/mozjpeg/mozjpeg-c2rust/mozjpeg-c/jmorecfg.h:22"]
 pub mod jmorecfg_h {
 
-    use crate::jmorecfg_h::{EXT_RGB_PIXELSIZE, EXT_RGBX_PIXELSIZE,
-                        EXT_XBGR_PIXELSIZE, EXT_BGR_PIXELSIZE,
-                        EXT_BGRX_PIXELSIZE, EXT_XRGB_PIXELSIZE,
-                        RGB_PIXELSIZE};use libc::c_int;pub static mut rgb_pixelsize: [c_int; 17] = [
+    use crate::jmorecfg_h::{
+        EXT_BGRX_PIXELSIZE, EXT_BGR_PIXELSIZE, EXT_RGBX_PIXELSIZE, EXT_RGB_PIXELSIZE,
+        EXT_XBGR_PIXELSIZE, EXT_XRGB_PIXELSIZE, RGB_PIXELSIZE,
+    };
+    use libc::c_int;
+    pub static mut rgb_pixelsize: [c_int; 17] = [
         -1i32,
         -1i32,
         RGB_PIXELSIZE,
@@ -46,332 +46,66 @@ pub mod jmorecfg_h {
     /* Definitions for speed-related optimizations. */
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-use crate::stdlib::{memcpy, memset};pub use jmorecfg_h::rgb_pixelsize;pub use super::jerror::{JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE,
-                        JERR_BAD_ALLOC_CHUNK, JERR_BAD_BUFFER_MODE,
-                        JERR_BAD_COMPONENT_ID, JERR_BAD_CROP_SPEC,
-                        JERR_BAD_DCTSIZE, JERR_BAD_DCT_COEF,
-                        JERR_BAD_HUFF_TABLE, JERR_BAD_IN_COLORSPACE,
-                        JERR_BAD_J_COLORSPACE, JERR_BAD_LENGTH,
-                        JERR_BAD_LIB_VERSION, JERR_BAD_MCU_SIZE,
-                        JERR_BAD_PARAM, JERR_BAD_PARAM_VALUE,
-                        JERR_BAD_POOL_ID, JERR_BAD_PRECISION,
-                        JERR_BAD_PROGRESSION, JERR_BAD_PROG_SCRIPT,
-                        JERR_BAD_SAMPLING, JERR_BAD_SCAN_SCRIPT,
-                        JERR_BAD_STATE, JERR_BAD_STRUCT_SIZE,
-                        JERR_BAD_VIRTUAL_ACCESS, JERR_BUFFER_SIZE,
-                        JERR_CANT_SUSPEND, JERR_CCIR601_NOTIMPL,
-                        JERR_COMPONENT_COUNT, JERR_CONVERSION_NOTIMPL,
-                        JERR_DAC_INDEX, JERR_DAC_VALUE, JERR_DHT_INDEX,
-                        JERR_DQT_INDEX, JERR_EMPTY_IMAGE, JERR_EMS_READ,
-                        JERR_EMS_WRITE, JERR_EOI_EXPECTED, JERR_FILE_READ,
-                        JERR_FILE_WRITE, JERR_FRACT_SAMPLE_NOTIMPL,
-                        JERR_HUFF_CLEN_OVERFLOW, JERR_HUFF_MISSING_CODE,
-                        JERR_IMAGE_TOO_BIG, JERR_INPUT_EMPTY, JERR_INPUT_EOF,
-                        JERR_MISMATCHED_QUANT_TABLE, JERR_MISSING_DATA,
-                        JERR_MODE_CHANGE, JERR_NOTIMPL, JERR_NOT_COMPILED,
-                        JERR_NO_BACKING_STORE, JERR_NO_HUFF_TABLE,
-                        JERR_NO_IMAGE, JERR_NO_QUANT_TABLE, JERR_NO_SOI,
-                        JERR_OUT_OF_MEMORY, JERR_QUANT_COMPONENTS,
-                        JERR_QUANT_FEW_COLORS, JERR_QUANT_MANY_COLORS,
-                        JERR_SOF_DUPLICATE, JERR_SOF_NO_SOS,
-                        JERR_SOF_UNSUPPORTED, JERR_SOI_DUPLICATE,
-                        JERR_SOS_NO_SOF, JERR_TFILE_CREATE, JERR_TFILE_READ,
-                        JERR_TFILE_SEEK, JERR_TFILE_WRITE,
-                        JERR_TOO_LITTLE_DATA, JERR_UNKNOWN_MARKER,
-                        JERR_UNSUPPORTED_SUSPEND, JERR_VIRTUAL_BUG,
-                        JERR_WIDTH_OVERFLOW, JERR_XMS_READ, JERR_XMS_WRITE,
-                        JMSG_COPYRIGHT, JMSG_LASTMSGCODE, JMSG_NOMESSAGE,
-                        JMSG_VERSION, JTRC_16BIT_TABLES, JTRC_ADOBE,
-                        JTRC_APP0, JTRC_APP14, JTRC_DAC, JTRC_DHT, JTRC_DQT,
-                        JTRC_DRI, JTRC_EMS_CLOSE, JTRC_EMS_OPEN, JTRC_EOI,
-                        JTRC_HUFFBITS, JTRC_JFIF, JTRC_JFIF_BADTHUMBNAILSIZE,
-                        JTRC_JFIF_EXTENSION, JTRC_JFIF_THUMBNAIL,
-                        JTRC_MISC_MARKER, JTRC_PARMLESS_MARKER,
-                        JTRC_QUANTVALS, JTRC_QUANT_3_NCOLORS,
-                        JTRC_QUANT_NCOLORS, JTRC_QUANT_SELECTED,
-                        JTRC_RECOVERY_ACTION, JTRC_RST, JTRC_SMOOTH_NOTIMPL,
-                        JTRC_SOF, JTRC_SOF_COMPONENT, JTRC_SOI, JTRC_SOS,
-                        JTRC_SOS_COMPONENT, JTRC_SOS_PARAMS, JTRC_TFILE_CLOSE,
-                        JTRC_TFILE_OPEN, JTRC_THUMB_JPEG, JTRC_THUMB_PALETTE,
-                        JTRC_THUMB_RGB, JTRC_UNKNOWN_IDS, JTRC_XMS_CLOSE,
-                        JTRC_XMS_OPEN, JWRN_ADOBE_XFORM, JWRN_BOGUS_ICC,
-                        JWRN_BOGUS_PROGRESSION, JWRN_EXTRANEOUS_DATA,
-                        JWRN_HIT_MARKER, JWRN_HUFF_BAD_CODE, JWRN_JFIF_MAJOR,
-                        JWRN_JPEG_EOF, JWRN_MUST_RESYNC, JWRN_NOT_SEQUENTIAL,
-                        JWRN_TOO_MUCH_DATA};pub use crate::jmorecfg_h::{CENTERJSAMPLE, EXT_BGRX_PIXELSIZE,
-                            EXT_BGR_PIXELSIZE, EXT_RGBX_PIXELSIZE,
-                            EXT_RGB_PIXELSIZE, EXT_XBGR_PIXELSIZE,
-                            EXT_XRGB_PIXELSIZE, FALSE, JCOEF, JDIMENSION,
-                            JOCTET, JSAMPLE, MAXJSAMPLE, RGB_PIXELSIZE, TRUE,
-                            UINT16, UINT8};pub use crate::jpegint_h::{inverse_DCT_method_ptr, jdiv_round_up,
-                           jinit_1pass_quantizer, jinit_2pass_quantizer,
-                           jinit_color_deconverter, jinit_d_coef_controller,
-                           jinit_d_main_controller, jinit_d_post_controller,
-                           jinit_huff_decoder, jinit_inverse_dct,
-                           jinit_merged_upsampler, jinit_phuff_decoder,
-                           jinit_upsampler, DSTATE_BUFIMAGE, DSTATE_READY,
-                           JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT,
-                           JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, J_BUF_MODE};pub use crate::stddef_h::{size_t, NULL};pub use crate::jpeglib_h::{j_common_ptr, j_decompress_ptr,
-                           jpeg_color_deconverter, jpeg_common_struct,
-                           jpeg_component_info, jpeg_d_coef_controller,
-                           jpeg_d_main_controller, jpeg_d_post_controller,
-                           jpeg_decompress_struct, jpeg_entropy_decoder,
-                           jpeg_error_mgr, jpeg_idct_method,
-                           jpeg_input_controller, jpeg_inverse_dct,
-                           jpeg_marker_parser_method, jpeg_marker_reader,
-                           jpeg_marker_struct, jpeg_memory_mgr,
-                           jpeg_progress_mgr, jpeg_saved_marker_ptr,
-                           jpeg_source_mgr, jpeg_upsampler,
-                           jvirt_barray_control, jvirt_barray_ptr,
-                           jvirt_sarray_control, jvirt_sarray_ptr, JCS_YCbCr,
-                           DCTSIZE, JBLOCK, JBLOCKARRAY, JBLOCKROW, JCOEFPTR,
-                           JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR,
-                           JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB,
-                           JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR,
-                           JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565,
-                           JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST,
-                           JDCT_ISLOW, JDITHER_FS, JDITHER_NONE,
-                           JDITHER_ORDERED, JHUFF_TBL, JPOOL_IMAGE,
-                           JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE, JSAMPROW,
-                           J_COLOR_SPACE, J_DCT_METHOD, J_DITHER_MODE};
+pub use super::jerror::{
+    JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK, JERR_BAD_BUFFER_MODE,
+    JERR_BAD_COMPONENT_ID, JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE, JERR_BAD_DCT_COEF,
+    JERR_BAD_HUFF_TABLE, JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE, JERR_BAD_LENGTH,
+    JERR_BAD_LIB_VERSION, JERR_BAD_MCU_SIZE, JERR_BAD_PARAM, JERR_BAD_PARAM_VALUE,
+    JERR_BAD_POOL_ID, JERR_BAD_PRECISION, JERR_BAD_PROGRESSION, JERR_BAD_PROG_SCRIPT,
+    JERR_BAD_SAMPLING, JERR_BAD_SCAN_SCRIPT, JERR_BAD_STATE, JERR_BAD_STRUCT_SIZE,
+    JERR_BAD_VIRTUAL_ACCESS, JERR_BUFFER_SIZE, JERR_CANT_SUSPEND, JERR_CCIR601_NOTIMPL,
+    JERR_COMPONENT_COUNT, JERR_CONVERSION_NOTIMPL, JERR_DAC_INDEX, JERR_DAC_VALUE, JERR_DHT_INDEX,
+    JERR_DQT_INDEX, JERR_EMPTY_IMAGE, JERR_EMS_READ, JERR_EMS_WRITE, JERR_EOI_EXPECTED,
+    JERR_FILE_READ, JERR_FILE_WRITE, JERR_FRACT_SAMPLE_NOTIMPL, JERR_HUFF_CLEN_OVERFLOW,
+    JERR_HUFF_MISSING_CODE, JERR_IMAGE_TOO_BIG, JERR_INPUT_EMPTY, JERR_INPUT_EOF,
+    JERR_MISMATCHED_QUANT_TABLE, JERR_MISSING_DATA, JERR_MODE_CHANGE, JERR_NOTIMPL,
+    JERR_NOT_COMPILED, JERR_NO_BACKING_STORE, JERR_NO_HUFF_TABLE, JERR_NO_IMAGE,
+    JERR_NO_QUANT_TABLE, JERR_NO_SOI, JERR_OUT_OF_MEMORY, JERR_QUANT_COMPONENTS,
+    JERR_QUANT_FEW_COLORS, JERR_QUANT_MANY_COLORS, JERR_SOF_DUPLICATE, JERR_SOF_NO_SOS,
+    JERR_SOF_UNSUPPORTED, JERR_SOI_DUPLICATE, JERR_SOS_NO_SOF, JERR_TFILE_CREATE, JERR_TFILE_READ,
+    JERR_TFILE_SEEK, JERR_TFILE_WRITE, JERR_TOO_LITTLE_DATA, JERR_UNKNOWN_MARKER,
+    JERR_UNSUPPORTED_SUSPEND, JERR_VIRTUAL_BUG, JERR_WIDTH_OVERFLOW, JERR_XMS_READ, JERR_XMS_WRITE,
+    JMSG_COPYRIGHT, JMSG_LASTMSGCODE, JMSG_NOMESSAGE, JMSG_VERSION, JTRC_16BIT_TABLES, JTRC_ADOBE,
+    JTRC_APP0, JTRC_APP14, JTRC_DAC, JTRC_DHT, JTRC_DQT, JTRC_DRI, JTRC_EMS_CLOSE, JTRC_EMS_OPEN,
+    JTRC_EOI, JTRC_HUFFBITS, JTRC_JFIF, JTRC_JFIF_BADTHUMBNAILSIZE, JTRC_JFIF_EXTENSION,
+    JTRC_JFIF_THUMBNAIL, JTRC_MISC_MARKER, JTRC_PARMLESS_MARKER, JTRC_QUANTVALS,
+    JTRC_QUANT_3_NCOLORS, JTRC_QUANT_NCOLORS, JTRC_QUANT_SELECTED, JTRC_RECOVERY_ACTION, JTRC_RST,
+    JTRC_SMOOTH_NOTIMPL, JTRC_SOF, JTRC_SOF_COMPONENT, JTRC_SOI, JTRC_SOS, JTRC_SOS_COMPONENT,
+    JTRC_SOS_PARAMS, JTRC_TFILE_CLOSE, JTRC_TFILE_OPEN, JTRC_THUMB_JPEG, JTRC_THUMB_PALETTE,
+    JTRC_THUMB_RGB, JTRC_UNKNOWN_IDS, JTRC_XMS_CLOSE, JTRC_XMS_OPEN, JWRN_ADOBE_XFORM,
+    JWRN_BOGUS_ICC, JWRN_BOGUS_PROGRESSION, JWRN_EXTRANEOUS_DATA, JWRN_HIT_MARKER,
+    JWRN_HUFF_BAD_CODE, JWRN_JFIF_MAJOR, JWRN_JPEG_EOF, JWRN_MUST_RESYNC, JWRN_NOT_SEQUENTIAL,
+    JWRN_TOO_MUCH_DATA,
+};
+pub use crate::jmorecfg_h::{
+    CENTERJSAMPLE, EXT_BGRX_PIXELSIZE, EXT_BGR_PIXELSIZE, EXT_RGBX_PIXELSIZE, EXT_RGB_PIXELSIZE,
+    EXT_XBGR_PIXELSIZE, EXT_XRGB_PIXELSIZE, FALSE, JCOEF, JDIMENSION, JOCTET, JSAMPLE, MAXJSAMPLE,
+    RGB_PIXELSIZE, TRUE, UINT16, UINT8,
+};
+pub use crate::jpegint_h::{
+    inverse_DCT_method_ptr, jdiv_round_up, jinit_1pass_quantizer, jinit_2pass_quantizer,
+    jinit_color_deconverter, jinit_d_coef_controller, jinit_d_main_controller,
+    jinit_d_post_controller, jinit_huff_decoder, jinit_inverse_dct, jinit_merged_upsampler,
+    jinit_phuff_decoder, jinit_upsampler, DSTATE_BUFIMAGE, DSTATE_READY, JBUF_CRANK_DEST,
+    JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, J_BUF_MODE,
+};
+pub use crate::jpeglib_h::{
+    j_common_ptr, j_decompress_ptr, jpeg_color_deconverter, jpeg_common_struct,
+    jpeg_component_info, jpeg_d_coef_controller, jpeg_d_main_controller, jpeg_d_post_controller,
+    jpeg_decompress_struct, jpeg_entropy_decoder, jpeg_error_mgr, jpeg_idct_method,
+    jpeg_input_controller, jpeg_inverse_dct, jpeg_marker_parser_method, jpeg_marker_reader,
+    jpeg_marker_struct, jpeg_memory_mgr, jpeg_progress_mgr, jpeg_saved_marker_ptr, jpeg_source_mgr,
+    jpeg_upsampler, jvirt_barray_control, jvirt_barray_ptr, jvirt_sarray_control, jvirt_sarray_ptr,
+    JCS_YCbCr, DCTSIZE, JBLOCK, JBLOCKARRAY, JBLOCKROW, JCOEFPTR, JCS_CMYK, JCS_EXT_ABGR,
+    JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX,
+    JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK,
+    JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JDITHER_FS, JDITHER_NONE, JDITHER_ORDERED, JHUFF_TBL,
+    JPOOL_IMAGE, JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD,
+    J_DITHER_MODE,
+};
+pub use crate::stddef_h::{size_t, NULL};
+use crate::stdlib::{memcpy, memset};
+pub use jmorecfg_h::rgb_pixelsize;
 // =============== BEGIN jdmaster_h ================
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -408,49 +142,31 @@ pub type my_master_ptr = *mut my_decomp_master;
  * CRUCIAL: this must match the actual capabilities of jdmerge.c!
  */
 
-unsafe extern "C" fn use_merged_upsample(
-    mut cinfo: j_decompress_ptr,
-) -> boolean {
+unsafe extern "C" fn use_merged_upsample(mut cinfo: j_decompress_ptr) -> boolean {
     /* Merging is the equivalent of plain box-filter upsampling */
     if (*cinfo).do_fancy_upsampling != 0 || (*cinfo).CCIR601_sampling != 0 {
         return FALSE;
     }
     /* jdmerge.c only supports YCC=>RGB and YCC=>RGB565 color conversion */
-    if  (*cinfo).jpeg_color_space
-        !=  JCS_YCbCr
+    if (*cinfo).jpeg_color_space != JCS_YCbCr
         || (*cinfo).num_components != 3i32
-        ||  (*cinfo).out_color_space
-            !=  JCS_RGB
-            &&  (*cinfo).out_color_space
-                !=  JCS_RGB565
-            &&  (*cinfo).out_color_space
-                !=  JCS_EXT_RGB
-            &&  (*cinfo).out_color_space
-                !=  JCS_EXT_RGBX
-            &&  (*cinfo).out_color_space
-                !=  JCS_EXT_BGR
-            &&  (*cinfo).out_color_space
-                !=  JCS_EXT_BGRX
-            &&  (*cinfo).out_color_space
-                !=  JCS_EXT_XBGR
-            &&  (*cinfo).out_color_space
-                !=  JCS_EXT_XRGB
-            &&  (*cinfo).out_color_space
-                !=  JCS_EXT_RGBA
-            &&  (*cinfo).out_color_space
-                !=  JCS_EXT_BGRA
-            &&  (*cinfo).out_color_space
-                !=  JCS_EXT_ABGR
-            &&  (*cinfo).out_color_space
-                !=  JCS_EXT_ARGB
+        || (*cinfo).out_color_space != JCS_RGB
+            && (*cinfo).out_color_space != JCS_RGB565
+            && (*cinfo).out_color_space != JCS_EXT_RGB
+            && (*cinfo).out_color_space != JCS_EXT_RGBX
+            && (*cinfo).out_color_space != JCS_EXT_BGR
+            && (*cinfo).out_color_space != JCS_EXT_BGRX
+            && (*cinfo).out_color_space != JCS_EXT_XBGR
+            && (*cinfo).out_color_space != JCS_EXT_XRGB
+            && (*cinfo).out_color_space != JCS_EXT_RGBA
+            && (*cinfo).out_color_space != JCS_EXT_BGRA
+            && (*cinfo).out_color_space != JCS_EXT_ABGR
+            && (*cinfo).out_color_space != JCS_EXT_ARGB
     {
         return FALSE;
     }
-    if  (*cinfo).out_color_space
-        ==  JCS_RGB565
-        && (*cinfo).out_color_components != 3i32
-        ||  (*cinfo).out_color_space
-            !=  JCS_RGB565
+    if (*cinfo).out_color_space == JCS_RGB565 && (*cinfo).out_color_components != 3i32
+        || (*cinfo).out_color_space != JCS_RGB565
             && (*cinfo).out_color_components != rgb_pixelsize[(*cinfo).out_color_space as usize]
     {
         return FALSE;
@@ -478,14 +194,9 @@ unsafe extern "C" fn use_merged_upsample(
     if super::simd::x86_64::jsimd::jsimd_can_h2v2_merged_upsample() == 0
         && super::simd::x86_64::jsimd::jsimd_can_h2v1_merged_upsample() == 0
         && super::simd::x86_64::jsimd::jsimd_can_ycc_rgb() != 0
-        &&  (*cinfo).jpeg_color_space
-            ==  JCS_YCbCr
-        && ((*cinfo).out_color_space
-            ==  JCS_RGB
-            ||  (*cinfo).out_color_space
-                >=  JCS_EXT_RGB
-                &&  (*cinfo).out_color_space
-                    <=  JCS_EXT_ARGB)
+        && (*cinfo).jpeg_color_space == JCS_YCbCr
+        && ((*cinfo).out_color_space == JCS_RGB
+            || (*cinfo).out_color_space >= JCS_EXT_RGB && (*cinfo).out_color_space <= JCS_EXT_ARGB)
     {
         return FALSE;
     }
@@ -504,250 +215,139 @@ unsafe extern "C" fn jpeg_core_output_dimensions(mut cinfo: j_decompress_ptr)
  * This function is used for transcoding and full decompression.
  */
 {
-    
-      
     /* Compute actual output image dimensions and DCT scaling choices. */
-    if  (*cinfo)
-        .scale_num * DCTSIZE as c_uint
-        <= (*cinfo).scale_denom
-    {
+    if (*cinfo).scale_num * DCTSIZE as c_uint <= (*cinfo).scale_denom {
         /* Provide 1/block_size scaling */
-        (*cinfo).output_width = jdiv_round_up(
-            (*cinfo).image_width as c_long,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
-        (*cinfo).output_height = jdiv_round_up(
-            (*cinfo).image_height as c_long,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
+        (*cinfo).output_width =
+            jdiv_round_up((*cinfo).image_width as c_long, DCTSIZE as c_long) as JDIMENSION;
+        (*cinfo).output_height =
+            jdiv_round_up((*cinfo).image_height as c_long, DCTSIZE as c_long) as JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 1i32;
         (*cinfo).min_DCT_scaled_size = 1i32
-    } else if  (*cinfo)
-        .scale_num * DCTSIZE as c_uint
-        <=  (*cinfo).scale_denom * 2u32
-    {
+    } else if (*cinfo).scale_num * DCTSIZE as c_uint <= (*cinfo).scale_denom * 2u32 {
         /* Provide 2/block_size scaling */
-        (*cinfo).output_width = jdiv_round_up(
-            (*cinfo).image_width as c_long * 2i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
-        (*cinfo).output_height = jdiv_round_up(
-            (*cinfo).image_height as c_long * 2i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
+        (*cinfo).output_width =
+            jdiv_round_up((*cinfo).image_width as c_long * 2i64, DCTSIZE as c_long) as JDIMENSION;
+        (*cinfo).output_height =
+            jdiv_round_up((*cinfo).image_height as c_long * 2i64, DCTSIZE as c_long) as JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 2i32;
         (*cinfo).min_DCT_scaled_size = 2i32
-    } else if  (*cinfo)
-        .scale_num * DCTSIZE as c_uint
-        <=  (*cinfo).scale_denom * 3u32
-    {
+    } else if (*cinfo).scale_num * DCTSIZE as c_uint <= (*cinfo).scale_denom * 3u32 {
         /* Provide 3/block_size scaling */
-        (*cinfo).output_width = jdiv_round_up(
-            (*cinfo).image_width as c_long * 3i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
-        (*cinfo).output_height = jdiv_round_up(
-            (*cinfo).image_height as c_long * 3i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
+        (*cinfo).output_width =
+            jdiv_round_up((*cinfo).image_width as c_long * 3i64, DCTSIZE as c_long) as JDIMENSION;
+        (*cinfo).output_height =
+            jdiv_round_up((*cinfo).image_height as c_long * 3i64, DCTSIZE as c_long) as JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 3i32;
         (*cinfo).min_DCT_scaled_size = 3i32
-    } else if  (*cinfo)
-        .scale_num * DCTSIZE as c_uint
-        <=  (*cinfo).scale_denom * 4u32
-    {
+    } else if (*cinfo).scale_num * DCTSIZE as c_uint <= (*cinfo).scale_denom * 4u32 {
         /* Provide 4/block_size scaling */
-        (*cinfo).output_width = jdiv_round_up(
-            (*cinfo).image_width as c_long * 4i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
-        (*cinfo).output_height = jdiv_round_up(
-            (*cinfo).image_height as c_long * 4i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
+        (*cinfo).output_width =
+            jdiv_round_up((*cinfo).image_width as c_long * 4i64, DCTSIZE as c_long) as JDIMENSION;
+        (*cinfo).output_height =
+            jdiv_round_up((*cinfo).image_height as c_long * 4i64, DCTSIZE as c_long) as JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 4i32;
         (*cinfo).min_DCT_scaled_size = 4i32
-    } else if  (*cinfo)
-        .scale_num * DCTSIZE as c_uint
-        <=  (*cinfo).scale_denom * 5u32
-    {
+    } else if (*cinfo).scale_num * DCTSIZE as c_uint <= (*cinfo).scale_denom * 5u32 {
         /* Provide 5/block_size scaling */
-        (*cinfo).output_width = jdiv_round_up(
-            (*cinfo).image_width as c_long * 5i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
-        (*cinfo).output_height = jdiv_round_up(
-            (*cinfo).image_height as c_long * 5i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
+        (*cinfo).output_width =
+            jdiv_round_up((*cinfo).image_width as c_long * 5i64, DCTSIZE as c_long) as JDIMENSION;
+        (*cinfo).output_height =
+            jdiv_round_up((*cinfo).image_height as c_long * 5i64, DCTSIZE as c_long) as JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 5i32;
         (*cinfo).min_DCT_scaled_size = 5i32
-    } else if  (*cinfo)
-        .scale_num * DCTSIZE as c_uint
-        <=  (*cinfo).scale_denom * 6u32
-    {
+    } else if (*cinfo).scale_num * DCTSIZE as c_uint <= (*cinfo).scale_denom * 6u32 {
         /* Provide 6/block_size scaling */
-        (*cinfo).output_width = jdiv_round_up(
-            (*cinfo).image_width as c_long * 6i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
-        (*cinfo).output_height = jdiv_round_up(
-            (*cinfo).image_height as c_long * 6i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
+        (*cinfo).output_width =
+            jdiv_round_up((*cinfo).image_width as c_long * 6i64, DCTSIZE as c_long) as JDIMENSION;
+        (*cinfo).output_height =
+            jdiv_round_up((*cinfo).image_height as c_long * 6i64, DCTSIZE as c_long) as JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 6i32;
         (*cinfo).min_DCT_scaled_size = 6i32
-    } else if  (*cinfo)
-        .scale_num * DCTSIZE as c_uint
-        <=  (*cinfo).scale_denom * 7u32
-    {
+    } else if (*cinfo).scale_num * DCTSIZE as c_uint <= (*cinfo).scale_denom * 7u32 {
         /* Provide 7/block_size scaling */
-        (*cinfo).output_width = jdiv_round_up(
-            (*cinfo).image_width as c_long * 7i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
-        (*cinfo).output_height = jdiv_round_up(
-            (*cinfo).image_height as c_long * 7i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
+        (*cinfo).output_width =
+            jdiv_round_up((*cinfo).image_width as c_long * 7i64, DCTSIZE as c_long) as JDIMENSION;
+        (*cinfo).output_height =
+            jdiv_round_up((*cinfo).image_height as c_long * 7i64, DCTSIZE as c_long) as JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 7i32;
         (*cinfo).min_DCT_scaled_size = 7i32
-    } else if  (*cinfo)
-        .scale_num * DCTSIZE as c_uint
-        <=  (*cinfo).scale_denom * 8u32
-    {
+    } else if (*cinfo).scale_num * DCTSIZE as c_uint <= (*cinfo).scale_denom * 8u32 {
         /* Provide 8/block_size scaling */
-        (*cinfo).output_width = jdiv_round_up(
-            (*cinfo).image_width as c_long * 8i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
-        (*cinfo).output_height = jdiv_round_up(
-            (*cinfo).image_height as c_long * 8i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
+        (*cinfo).output_width =
+            jdiv_round_up((*cinfo).image_width as c_long * 8i64, DCTSIZE as c_long) as JDIMENSION;
+        (*cinfo).output_height =
+            jdiv_round_up((*cinfo).image_height as c_long * 8i64, DCTSIZE as c_long) as JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 8i32;
         (*cinfo).min_DCT_scaled_size = 8i32
-    } else if  (*cinfo)
-        .scale_num * DCTSIZE as c_uint
-        <=  (*cinfo).scale_denom * 9u32
-    {
+    } else if (*cinfo).scale_num * DCTSIZE as c_uint <= (*cinfo).scale_denom * 9u32 {
         /* Provide 9/block_size scaling */
-        (*cinfo).output_width = jdiv_round_up(
-            (*cinfo).image_width as c_long * 9i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
-        (*cinfo).output_height = jdiv_round_up(
-            (*cinfo).image_height as c_long * 9i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
+        (*cinfo).output_width =
+            jdiv_round_up((*cinfo).image_width as c_long * 9i64, DCTSIZE as c_long) as JDIMENSION;
+        (*cinfo).output_height =
+            jdiv_round_up((*cinfo).image_height as c_long * 9i64, DCTSIZE as c_long) as JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 9i32;
         (*cinfo).min_DCT_scaled_size = 9i32
-    } else if  (*cinfo)
-        .scale_num * DCTSIZE as c_uint
-        <=  (*cinfo).scale_denom * 10u32
-    {
+    } else if (*cinfo).scale_num * DCTSIZE as c_uint <= (*cinfo).scale_denom * 10u32 {
         /* Provide 10/block_size scaling */
-        (*cinfo).output_width = jdiv_round_up(
-            (*cinfo).image_width as c_long * 10i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
-        (*cinfo).output_height = jdiv_round_up(
-            (*cinfo).image_height as c_long * 10i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
+        (*cinfo).output_width =
+            jdiv_round_up((*cinfo).image_width as c_long * 10i64, DCTSIZE as c_long) as JDIMENSION;
+        (*cinfo).output_height =
+            jdiv_round_up((*cinfo).image_height as c_long * 10i64, DCTSIZE as c_long) as JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 10i32;
         (*cinfo).min_DCT_scaled_size = 10i32
-    } else if  (*cinfo)
-        .scale_num * DCTSIZE as c_uint
-        <=  (*cinfo).scale_denom * 11u32
-    {
+    } else if (*cinfo).scale_num * DCTSIZE as c_uint <= (*cinfo).scale_denom * 11u32 {
         /* Provide 11/block_size scaling */
-        (*cinfo).output_width = jdiv_round_up(
-            (*cinfo).image_width as c_long * 11i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
-        (*cinfo).output_height = jdiv_round_up(
-            (*cinfo).image_height as c_long * 11i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
+        (*cinfo).output_width =
+            jdiv_round_up((*cinfo).image_width as c_long * 11i64, DCTSIZE as c_long) as JDIMENSION;
+        (*cinfo).output_height =
+            jdiv_round_up((*cinfo).image_height as c_long * 11i64, DCTSIZE as c_long) as JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 11i32;
         (*cinfo).min_DCT_scaled_size = 11i32
-    } else if  (*cinfo)
-        .scale_num * DCTSIZE as c_uint
-        <=  (*cinfo).scale_denom * 12u32
-    {
+    } else if (*cinfo).scale_num * DCTSIZE as c_uint <= (*cinfo).scale_denom * 12u32 {
         /* Provide 12/block_size scaling */
-        (*cinfo).output_width = jdiv_round_up(
-            (*cinfo).image_width as c_long * 12i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
-        (*cinfo).output_height = jdiv_round_up(
-            (*cinfo).image_height as c_long * 12i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
+        (*cinfo).output_width =
+            jdiv_round_up((*cinfo).image_width as c_long * 12i64, DCTSIZE as c_long) as JDIMENSION;
+        (*cinfo).output_height =
+            jdiv_round_up((*cinfo).image_height as c_long * 12i64, DCTSIZE as c_long) as JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 12i32;
         (*cinfo).min_DCT_scaled_size = 12i32
-    } else if  (*cinfo)
-        .scale_num * DCTSIZE as c_uint
-        <=  (*cinfo).scale_denom * 13u32
-    {
+    } else if (*cinfo).scale_num * DCTSIZE as c_uint <= (*cinfo).scale_denom * 13u32 {
         /* Provide 13/block_size scaling */
-        (*cinfo).output_width = jdiv_round_up(
-            (*cinfo).image_width as c_long * 13i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
-        (*cinfo).output_height = jdiv_round_up(
-            (*cinfo).image_height as c_long * 13i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
+        (*cinfo).output_width =
+            jdiv_round_up((*cinfo).image_width as c_long * 13i64, DCTSIZE as c_long) as JDIMENSION;
+        (*cinfo).output_height =
+            jdiv_round_up((*cinfo).image_height as c_long * 13i64, DCTSIZE as c_long) as JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 13i32;
         (*cinfo).min_DCT_scaled_size = 13i32
-    } else if  (*cinfo)
-        .scale_num * DCTSIZE as c_uint
-        <=  (*cinfo).scale_denom * 14u32
-    {
+    } else if (*cinfo).scale_num * DCTSIZE as c_uint <= (*cinfo).scale_denom * 14u32 {
         /* Provide 14/block_size scaling */
-        (*cinfo).output_width = jdiv_round_up(
-            (*cinfo).image_width as c_long * 14i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
-        (*cinfo).output_height = jdiv_round_up(
-            (*cinfo).image_height as c_long * 14i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
+        (*cinfo).output_width =
+            jdiv_round_up((*cinfo).image_width as c_long * 14i64, DCTSIZE as c_long) as JDIMENSION;
+        (*cinfo).output_height =
+            jdiv_round_up((*cinfo).image_height as c_long * 14i64, DCTSIZE as c_long) as JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 14i32;
         (*cinfo).min_DCT_scaled_size = 14i32
-    } else if  (*cinfo)
-        .scale_num * DCTSIZE as c_uint
-        <=  (*cinfo).scale_denom * 15u32
-    {
+    } else if (*cinfo).scale_num * DCTSIZE as c_uint <= (*cinfo).scale_denom * 15u32 {
         /* Provide 15/block_size scaling */
-        (*cinfo).output_width = jdiv_round_up(
-            (*cinfo).image_width as c_long * 15i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
-        (*cinfo).output_height = jdiv_round_up(
-            (*cinfo).image_height as c_long * 15i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
+        (*cinfo).output_width =
+            jdiv_round_up((*cinfo).image_width as c_long * 15i64, DCTSIZE as c_long) as JDIMENSION;
+        (*cinfo).output_height =
+            jdiv_round_up((*cinfo).image_height as c_long * 15i64, DCTSIZE as c_long) as JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 15i32;
         (*cinfo).min_DCT_scaled_size = 15i32
     } else {
         /* Provide 16/block_size scaling */
-        (*cinfo).output_width = jdiv_round_up(
-            (*cinfo).image_width as c_long * 16i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
-        (*cinfo).output_height = jdiv_round_up(
-            (*cinfo).image_height as c_long * 16i64,
-            DCTSIZE as c_long,
-        ) as JDIMENSION;
+        (*cinfo).output_width =
+            jdiv_round_up((*cinfo).image_width as c_long * 16i64, DCTSIZE as c_long) as JDIMENSION;
+        (*cinfo).output_height =
+            jdiv_round_up((*cinfo).image_height as c_long * 16i64, DCTSIZE as c_long) as JDIMENSION;
         (*cinfo).min_DCT_scaled_size = 16i32;
         (*cinfo).min_DCT_scaled_size = 16i32
     }
-    
-     let mut ci:   c_int =  0i32; let mut compptr:   *mut jpeg_component_info =
-     (*cinfo).comp_info;
+
+    let mut ci: c_int = 0i32;
+    let mut compptr: *mut jpeg_component_info = (*cinfo).comp_info;
     while ci < (*cinfo).num_components {
         (*compptr).DCT_scaled_size = (*cinfo).min_DCT_scaled_size;
         (*compptr).DCT_scaled_size = (*cinfo).min_DCT_scaled_size;
@@ -772,13 +372,9 @@ unsafe extern "C" fn jpeg_core_output_dimensions(mut cinfo: j_decompress_ptr)
  */
 #[no_mangle]
 
-pub unsafe extern "C" fn jpeg_calc_output_dimensions(
-    mut cinfo: j_decompress_ptr,
-)
+pub unsafe extern "C" fn jpeg_calc_output_dimensions(mut cinfo: j_decompress_ptr)
 /* Do computations that are needed before master selection phase */
 {
-    
-      
     /* Prevent application from calling me at wrong times */
     if (*cinfo).global_state != DSTATE_READY {
         (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_STATE as c_int;
@@ -797,9 +393,9 @@ pub unsafe extern "C" fn jpeg_calc_output_dimensions(
      * This saves time if the upsampler gets to use 1:1 scaling.
      * Note this code adapts subsampling ratios which are powers of 2.
      */
-    
-     let mut ci:   c_int =  0i32; let mut compptr:   *mut jpeg_component_info =
-     (*cinfo).comp_info;
+
+    let mut ci: c_int = 0i32;
+    let mut compptr: *mut jpeg_component_info = (*cinfo).comp_info;
     while ci < (*cinfo).num_components {
         let mut ssize: c_int = (*cinfo).min_DCT_scaled_size;
         while ssize < DCTSIZE
@@ -840,7 +436,7 @@ pub unsafe extern "C" fn jpeg_calc_output_dimensions(
     /* IDCT_SCALING_SUPPORTED */
     /* Report number of components in selected colorspace. */
     /* Probably this should be in the color conversion module... */
-    match  (*cinfo).out_color_space {
+    match (*cinfo).out_color_space {
         1 => (*cinfo).out_color_components = 1i32,
         2 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 => {
             (*cinfo).out_color_components = rgb_pixelsize[(*cinfo).out_color_space as usize]
@@ -907,9 +503,7 @@ pub unsafe extern "C" fn jpeg_calc_output_dimensions(
 unsafe extern "C" fn prepare_range_limit_table(mut cinfo: j_decompress_ptr)
 /* Allocate and fill in the sample_range_limit table */
 {
-      
-     let mut table:   *mut JSAMPLE =
-     Some(
+    let mut table: *mut JSAMPLE = Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),
@@ -917,9 +511,8 @@ unsafe extern "C" fn prepare_range_limit_table(mut cinfo: j_decompress_ptr)
     .expect("non-null function pointer")(
         cinfo as j_common_ptr,
         JPOOL_IMAGE,
-        (5i32 * (MAXJSAMPLE + 1i32) + CENTERJSAMPLE)
-            as c_ulong *
-    ::std::mem::size_of::<JSAMPLE>() as c_ulong,
+        (5i32 * (MAXJSAMPLE + 1i32) + CENTERJSAMPLE) as c_ulong
+            * ::std::mem::size_of::<JSAMPLE>() as c_ulong,
     ) as *mut JSAMPLE;
     table = table.offset((MAXJSAMPLE + 1i32) as isize);
     (*cinfo).sample_range_limit = table;
@@ -927,10 +520,9 @@ unsafe extern "C" fn prepare_range_limit_table(mut cinfo: j_decompress_ptr)
     memset(
         table.offset(-((255i32 + 1i32) as isize)) as *mut c_void,
         0i32,
-        (255i32 + 1i32) as c_ulong *
-    ::std::mem::size_of::<JSAMPLE>() as c_ulong,
+        (255i32 + 1i32) as c_ulong * ::std::mem::size_of::<JSAMPLE>() as c_ulong,
     );
-     let mut i:   c_int =  0i32; /* Point to where post-IDCT table starts */
+    let mut i: c_int = 0i32; /* Point to where post-IDCT table starts */
     while i <= MAXJSAMPLE {
         *table.offset(i as isize) = i as JSAMPLE;
         i += 1
@@ -946,14 +538,12 @@ unsafe extern "C" fn prepare_range_limit_table(mut cinfo: j_decompress_ptr)
     memset(
         table.offset((2i32 * (255i32 + 1i32)) as isize) as *mut c_void,
         0i32,
-        (2i32 * (255i32 + 1i32) - 128i32) as c_ulong *
-    ::std::mem::size_of::<JSAMPLE>() as c_ulong,
+        (2i32 * (255i32 + 1i32) - 128i32) as c_ulong * ::std::mem::size_of::<JSAMPLE>() as c_ulong,
     );
     memcpy(
         table.offset((4i32 * (255i32 + 1i32) - 128i32) as isize) as *mut c_void,
         (*cinfo).sample_range_limit as *const c_void,
-        128u64 *
-    ::std::mem::size_of::<JSAMPLE>() as c_ulong,
+        128u64 * ::std::mem::size_of::<JSAMPLE>() as c_ulong,
     );
 }
 /*
@@ -968,19 +558,15 @@ unsafe extern "C" fn prepare_range_limit_table(mut cinfo: j_decompress_ptr)
  */
 
 unsafe extern "C" fn master_selection(mut cinfo: j_decompress_ptr) {
-       let mut master: my_master_ptr =
-        (*cinfo).master as my_master_ptr;
-    
-    
-    
+    let mut master: my_master_ptr = (*cinfo).master as my_master_ptr;
+
     /* Initialize dimensions and other stuff */
     jpeg_calc_output_dimensions(cinfo);
     prepare_range_limit_table(cinfo);
-    
-     let mut samplesperrow:   c_long =
-    
-        (*cinfo).output_width as c_long * (*cinfo).out_color_components as c_long; let mut jd_samplesperrow:   JDIMENSION =
-     samplesperrow as JDIMENSION;
+
+    let mut samplesperrow: c_long =
+        (*cinfo).output_width as c_long * (*cinfo).out_color_components as c_long;
+    let mut jd_samplesperrow: JDIMENSION = samplesperrow as JDIMENSION;
     if jd_samplesperrow as c_long != samplesperrow {
         (*(*cinfo).err).msg_code = super::jerror::JERR_WIDTH_OVERFLOW as c_int;
         Some(
@@ -994,10 +580,8 @@ unsafe extern "C" fn master_selection(mut cinfo: j_decompress_ptr) {
     (*master).pass_number = 0i32;
     (*master).using_merged_upsample = use_merged_upsample(cinfo);
     /* Color quantizer selection */
-    (*master).quantizer_1pass =
-        NULL as *mut jpeg_color_quantizer;
-    (*master).quantizer_2pass =
-        NULL as *mut jpeg_color_quantizer;
+    (*master).quantizer_1pass = NULL as *mut jpeg_color_quantizer;
+    (*master).quantizer_2pass = NULL as *mut jpeg_color_quantizer;
     /* No mode changes if not using buffered-image mode. */
     if (*cinfo).quantize_colors == 0 || (*cinfo).buffered_image == 0 {
         (*cinfo).enable_1pass_quant = FALSE;
@@ -1012,9 +596,7 @@ unsafe extern "C" fn master_selection(mut cinfo: j_decompress_ptr) {
                     .error_exit
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+            .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         /* If both quantizers are initialized, the 2-pass one is left active;
          * this is necessary for starting with quantization to an external map.
@@ -1069,9 +651,8 @@ unsafe extern "C" fn master_selection(mut cinfo: j_decompress_ptr) {
     } else {
         jinit_huff_decoder(cinfo);
     }
-     let mut use_c_buffer:   boolean =
-     ((*(*cinfo).inputctl).has_multiple_scans != 0 || (*cinfo).buffered_image != 0)
-        as c_int;
+    let mut use_c_buffer: boolean =
+        ((*(*cinfo).inputctl).has_multiple_scans != 0 || (*cinfo).buffered_image != 0) as c_int;
     jinit_d_coef_controller(cinfo, use_c_buffer);
     if (*cinfo).raw_data_out == 0 {
         jinit_d_main_controller(cinfo, FALSE);
@@ -1094,7 +675,7 @@ unsafe extern "C" fn master_selection(mut cinfo: j_decompress_ptr) {
      * By default, decompress all of the iMCU columns.
      */
     (*(*cinfo).master).first_iMCU_col = 0u32;
-    (*(*cinfo).master).last_iMCU_col =  (*cinfo).MCUs_per_row - 1u32;
+    (*(*cinfo).master).last_iMCU_col = (*cinfo).MCUs_per_row - 1u32;
     /* If jpeg_start_decompress will read the whole file, initialize
      * progress monitoring appropriately.  The input step is counted
      * as one pass.
@@ -1103,7 +684,7 @@ unsafe extern "C" fn master_selection(mut cinfo: j_decompress_ptr) {
         && (*cinfo).buffered_image == 0
         && (*(*cinfo).inputctl).has_multiple_scans != 0
     {
-         let mut nscans:  c_int =  0;
+        let mut nscans: c_int = 0;
         /* Estimate number of scans to set pass_limit. */
         if (*cinfo).progressive_mode != 0 {
             /* Arbitrarily estimate 2 interleaved DC scans + 3 AC scans/component. */
@@ -1113,8 +694,7 @@ unsafe extern "C" fn master_selection(mut cinfo: j_decompress_ptr) {
             nscans = (*cinfo).num_components
         }
         (*(*cinfo).progress).pass_counter = 0i64;
-        (*(*cinfo).progress).pass_limit =
-            (*cinfo).total_iMCU_rows as c_long * nscans as c_long;
+        (*(*cinfo).progress).pass_limit = (*cinfo).total_iMCU_rows as c_long * nscans as c_long;
         (*(*cinfo).progress).completed_passes = 0i32;
         (*(*cinfo).progress).total_passes = if (*cinfo).enable_2pass_quant != 0 {
             3i32
@@ -1136,8 +716,7 @@ unsafe extern "C" fn master_selection(mut cinfo: j_decompress_ptr) {
  */
 
 unsafe extern "C" fn prepare_for_output_pass(mut cinfo: j_decompress_ptr) {
-    let mut master: my_master_ptr =
-        (*cinfo).master as my_master_ptr;
+    let mut master: my_master_ptr = (*cinfo).master as my_master_ptr;
     if (*master).pub_0.is_dummy_pass != 0 {
         /* Final pass of 2-pass quantization */
         (*master).pub_0.is_dummy_pass = FALSE;
@@ -1175,9 +754,7 @@ unsafe extern "C" fn prepare_for_output_pass(mut cinfo: j_decompress_ptr) {
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
         }
         Some(
@@ -1235,9 +812,7 @@ unsafe extern "C" fn prepare_for_output_pass(mut cinfo: j_decompress_ptr) {
                     .start_pass
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(
-                cinfo, JBUF_PASS_THRU
-            );
+            .expect("non-null function pointer")(cinfo, JBUF_PASS_THRU);
         }
     }
     /* Set up progress monitor's pass info if present */
@@ -1266,8 +841,7 @@ unsafe extern "C" fn prepare_for_output_pass(mut cinfo: j_decompress_ptr) {
  */
 
 unsafe extern "C" fn finish_output_pass(mut cinfo: j_decompress_ptr) {
-    let mut master: my_master_ptr =
-        (*cinfo).master as my_master_ptr;
+    let mut master: my_master_ptr = (*cinfo).master as my_master_ptr;
     if (*cinfo).quantize_colors != 0 {
         Some(
             (*(*cinfo).cquantize)
@@ -1284,8 +858,7 @@ unsafe extern "C" fn finish_output_pass(mut cinfo: j_decompress_ptr) {
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_new_colormap(mut cinfo: j_decompress_ptr) {
-    let mut master: my_master_ptr =
-        (*cinfo).master as my_master_ptr;
+    let mut master: my_master_ptr = (*cinfo).master as my_master_ptr;
     /* Prevent application from calling me at wrong times */
     if (*cinfo).global_state != DSTATE_BUFIMAGE {
         (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_STATE as c_int;
@@ -1330,15 +903,11 @@ pub unsafe extern "C" fn jpeg_new_colormap(mut cinfo: j_decompress_ptr) {
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_master_decompress(mut cinfo: j_decompress_ptr) {
-    let mut master: my_master_ptr =
-        (*cinfo).master as my_master_ptr;
-    (*master).pub_0.prepare_for_output_pass = Some(
-        prepare_for_output_pass
-            as unsafe extern "C" fn(_: j_decompress_ptr) -> (),
-    );
-    (*master).pub_0.finish_output_pass = Some(
-        finish_output_pass as unsafe extern "C" fn(_: j_decompress_ptr) -> (),
-    );
+    let mut master: my_master_ptr = (*cinfo).master as my_master_ptr;
+    (*master).pub_0.prepare_for_output_pass =
+        Some(prepare_for_output_pass as unsafe extern "C" fn(_: j_decompress_ptr) -> ());
+    (*master).pub_0.finish_output_pass =
+        Some(finish_output_pass as unsafe extern "C" fn(_: j_decompress_ptr) -> ());
     (*master).pub_0.is_dummy_pass = FALSE;
     (*master).pub_0.jinit_upsampler_no_alloc = FALSE;
     master_selection(cinfo);

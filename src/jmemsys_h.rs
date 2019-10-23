@@ -1,16 +1,10 @@
-use libc::{c_char, c_void, c_long};extern "C" {
+use libc::{c_char, c_long, c_void};
+extern "C" {
     #[no_mangle]
-    pub fn jpeg_get_small(
-        cinfo: j_common_ptr,
-        sizeofobject: size_t,
-    ) -> *mut c_void;
+    pub fn jpeg_get_small(cinfo: j_common_ptr, sizeofobject: size_t) -> *mut c_void;
 
     #[no_mangle]
-    pub fn jpeg_free_small(
-        cinfo: j_common_ptr,
-        object: *mut c_void,
-        sizeofobject: size_t,
-    );
+    pub fn jpeg_free_small(cinfo: j_common_ptr, object: *mut c_void, sizeofobject: size_t);
     /*
      * These two functions are used to allocate and release large chunks of
      * memory (up to the total free space designated by jpeg_mem_available).
@@ -19,17 +13,10 @@ use libc::{c_char, c_void, c_long};extern "C" {
      * large chunks.
      */
     #[no_mangle]
-    pub fn jpeg_get_large(
-        cinfo: j_common_ptr,
-        sizeofobject: size_t,
-    ) -> *mut c_void;
+    pub fn jpeg_get_large(cinfo: j_common_ptr, sizeofobject: size_t) -> *mut c_void;
 
     #[no_mangle]
-    pub fn jpeg_free_large(
-        cinfo: j_common_ptr,
-        object: *mut c_void,
-        sizeofobject: size_t,
-    );
+    pub fn jpeg_free_large(cinfo: j_common_ptr, object: *mut c_void, sizeofobject: size_t);
     /*
      * This routine computes the total space still available for allocation by
      * jpeg_get_large.  If more space than this is needed, backing store will be
@@ -89,7 +76,8 @@ use libc::{c_char, c_void, c_long};extern "C" {
     pub fn jpeg_mem_term(cinfo: j_common_ptr);
 }
 
-use crate::stdlib::FILE;use crate::jpeglib_h::j_common_ptr;
+use crate::jpeglib_h::j_common_ptr;
+use crate::stdlib::FILE;
 pub type backing_store_info = backing_store_struct;
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -112,12 +100,8 @@ pub struct backing_store_struct {
             _: c_long,
         ) -> (),
     >,
-    pub close_backing_store: Option<
-        unsafe extern "C" fn(
-            _: j_common_ptr,
-            _: backing_store_ptr,
-        ) -> (),
-    >,
+    pub close_backing_store:
+        Option<unsafe extern "C" fn(_: j_common_ptr, _: backing_store_ptr) -> ()>,
     pub temp_file: *mut FILE,
     pub temp_name: [c_char; 64],
 }

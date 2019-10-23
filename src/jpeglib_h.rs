@@ -1,42 +1,25 @@
-use libc::{c_uchar, c_ulong, c_char, c_long, c_void, c_int, c_uint, c_double,
-           c_float};extern "C" {
+use libc::{c_char, c_double, c_float, c_int, c_long, c_uchar, c_uint, c_ulong, c_void};
+extern "C" {
     #[no_mangle]
-    pub fn jpeg_write_m_header(
-        cinfo: j_compress_ptr,
-        marker: c_int,
-        datalen: c_uint,
-    );
+    pub fn jpeg_write_m_header(cinfo: j_compress_ptr, marker: c_int, datalen: c_uint);
 
     #[no_mangle]
     pub fn jpeg_write_m_byte(cinfo: j_compress_ptr, val: c_int);
     /* Read or write raw DCT coefficients --- useful for lossless transcoding. */
     #[no_mangle]
-    pub fn jpeg_read_coefficients(
-        cinfo: j_decompress_ptr,
-    ) -> *mut jvirt_barray_ptr;
+    pub fn jpeg_read_coefficients(cinfo: j_decompress_ptr) -> *mut jvirt_barray_ptr;
 
     #[no_mangle]
-    pub fn jpeg_write_coefficients(
-        cinfo: j_compress_ptr,
-        coef_arrays: *mut jvirt_barray_ptr,
-    );
+    pub fn jpeg_write_coefficients(cinfo: j_compress_ptr, coef_arrays: *mut jvirt_barray_ptr);
 
     #[no_mangle]
-    pub fn jpeg_copy_critical_parameters(
-        srcinfo: j_decompress_ptr,
-        dstinfo: j_compress_ptr,
-    );
+    pub fn jpeg_copy_critical_parameters(srcinfo: j_decompress_ptr, dstinfo: j_compress_ptr);
 
     #[no_mangle]
-    pub fn jpeg_c_int_param_supported(
-        cinfo: j_compress_ptr,
-        param: J_INT_PARAM,
-    ) -> boolean;
+    pub fn jpeg_c_int_param_supported(cinfo: j_compress_ptr, param: J_INT_PARAM) -> boolean;
 
     #[no_mangle]
-    pub fn jpeg_alloc_quant_table(
-        cinfo: j_common_ptr,
-    ) -> *mut JQUANT_TBL;
+    pub fn jpeg_alloc_quant_table(cinfo: j_common_ptr) -> *mut JQUANT_TBL;
 
     #[no_mangle]
     pub fn jpeg_add_quant_table(
@@ -51,16 +34,10 @@ use libc::{c_uchar, c_ulong, c_char, c_long, c_void, c_int, c_uint, c_double,
     pub fn jpeg_float_quality_scaling(quality: c_float) -> c_float;
 
     #[no_mangle]
-    pub fn jpeg_suppress_tables(
-        cinfo: j_compress_ptr,
-        suppress: boolean,
-    );
+    pub fn jpeg_suppress_tables(cinfo: j_compress_ptr, suppress: boolean);
 
     #[no_mangle]
-    pub fn jpeg_resync_to_restart(
-        cinfo: j_decompress_ptr,
-        desired: c_int,
-    ) -> boolean;
+    pub fn jpeg_resync_to_restart(cinfo: j_decompress_ptr, desired: c_int) -> boolean;
     /* Generic versions of jpeg_abort and jpeg_destroy that work on either
      * flavor of JPEG object.  These may be more convenient in some places.
      */
@@ -71,30 +48,19 @@ use libc::{c_uchar, c_ulong, c_char, c_long, c_void, c_int, c_uint, c_double,
     pub fn jpeg_abort(cinfo: j_common_ptr);
 
     #[no_mangle]
-    pub fn jpeg_alloc_huff_table(
-        cinfo: j_common_ptr,
-    ) -> *mut JHUFF_TBL;
+    pub fn jpeg_alloc_huff_table(cinfo: j_common_ptr) -> *mut JHUFF_TBL;
 
     #[no_mangle]
-    pub fn jpeg_std_error(
-        err: *mut jpeg_error_mgr,
-    ) -> *mut jpeg_error_mgr;
+    pub fn jpeg_std_error(err: *mut jpeg_error_mgr) -> *mut jpeg_error_mgr;
 
     #[no_mangle]
-    pub fn jpeg_CreateCompress(
-        cinfo: j_compress_ptr,
-        version: c_int,
-        structsize: size_t,
-    );
+    pub fn jpeg_CreateCompress(cinfo: j_compress_ptr, version: c_int, structsize: size_t);
 
     #[no_mangle]
     pub fn jpeg_destroy_compress(cinfo: j_compress_ptr);
 
     #[no_mangle]
-    pub fn jpeg_stdio_dest(
-        cinfo: j_compress_ptr,
-        outfile: *mut FILE,
-    );
+    pub fn jpeg_stdio_dest(cinfo: j_compress_ptr, outfile: *mut FILE);
 
     #[no_mangle]
     pub fn jpeg_mem_dest(
@@ -107,29 +73,19 @@ use libc::{c_uchar, c_ulong, c_char, c_long, c_void, c_int, c_uint, c_double,
     pub fn jpeg_set_defaults(cinfo: j_compress_ptr);
 
     #[no_mangle]
-    pub fn jpeg_set_colorspace(
-        cinfo: j_compress_ptr,
-        colorspace: J_COLOR_SPACE,
-    );
+    pub fn jpeg_set_colorspace(cinfo: j_compress_ptr, colorspace: J_COLOR_SPACE);
 
     #[no_mangle]
     pub fn jpeg_default_colorspace(cinfo: j_compress_ptr);
 
     #[no_mangle]
-    pub fn jpeg_set_quality(
-        cinfo: j_compress_ptr,
-        quality: c_int,
-        force_baseline: boolean,
-    );
+    pub fn jpeg_set_quality(cinfo: j_compress_ptr, quality: c_int, force_baseline: boolean);
 
     #[no_mangle]
     pub fn jpeg_simple_progression(cinfo: j_compress_ptr);
 
     #[no_mangle]
-    pub fn jpeg_start_compress(
-        cinfo: j_compress_ptr,
-        write_all_tables: boolean,
-    );
+    pub fn jpeg_start_compress(cinfo: j_compress_ptr, write_all_tables: boolean);
 
     #[no_mangle]
     pub fn jpeg_write_scanlines(
@@ -157,60 +113,31 @@ use libc::{c_uchar, c_ulong, c_char, c_long, c_void, c_int, c_uint, c_double,
     );
 
     #[no_mangle]
-    pub fn jpeg_c_set_bool_param(
-        cinfo: j_compress_ptr,
-        param: J_BOOLEAN_PARAM,
-        value: boolean,
-    );
+    pub fn jpeg_c_set_bool_param(cinfo: j_compress_ptr, param: J_BOOLEAN_PARAM, value: boolean);
 
     #[no_mangle]
-    pub fn jpeg_c_set_float_param(
-        cinfo: j_compress_ptr,
-        param: J_FLOAT_PARAM,
-        value: c_float,
-    );
+    pub fn jpeg_c_set_float_param(cinfo: j_compress_ptr, param: J_FLOAT_PARAM, value: c_float);
 
     #[no_mangle]
-    pub fn jpeg_c_set_int_param(
-        cinfo: j_compress_ptr,
-        param: J_INT_PARAM,
-        value: c_int,
-    );
+    pub fn jpeg_c_set_int_param(cinfo: j_compress_ptr, param: J_INT_PARAM, value: c_int);
 
     #[no_mangle]
-    pub fn jpeg_c_get_int_param(
-        cinfo: j_compress_ptr,
-        param: J_INT_PARAM,
-    ) -> c_int;
+    pub fn jpeg_c_get_int_param(cinfo: j_compress_ptr, param: J_INT_PARAM) -> c_int;
 
     #[no_mangle]
-    pub fn jpeg_CreateDecompress(
-        cinfo: j_decompress_ptr,
-        version: c_int,
-        structsize: size_t,
-    );
+    pub fn jpeg_CreateDecompress(cinfo: j_decompress_ptr, version: c_int, structsize: size_t);
 
     #[no_mangle]
     pub fn jpeg_destroy_decompress(cinfo: j_decompress_ptr);
 
     #[no_mangle]
-    pub fn jpeg_stdio_src(
-        cinfo: j_decompress_ptr,
-        infile: *mut FILE,
-    );
+    pub fn jpeg_stdio_src(cinfo: j_decompress_ptr, infile: *mut FILE);
 
     #[no_mangle]
-    pub fn jpeg_mem_src(
-        cinfo: j_decompress_ptr,
-        inbuffer: *const c_uchar,
-        insize: c_ulong,
-    );
+    pub fn jpeg_mem_src(cinfo: j_decompress_ptr, inbuffer: *const c_uchar, insize: c_ulong);
     /* Decompression startup: read start of JPEG datastream to see what's there */
     #[no_mangle]
-    pub fn jpeg_read_header(
-        cinfo: j_decompress_ptr,
-        require_image: boolean,
-    ) -> c_int;
+    pub fn jpeg_read_header(cinfo: j_decompress_ptr, require_image: boolean) -> c_int;
     /* Return value is one of: */
     /* Suspended due to lack of input data */
     /* Found valid image datastream */
@@ -222,9 +149,7 @@ use libc::{c_uchar, c_ulong, c_char, c_long, c_void, c_int, c_uint, c_double,
      */
     /* Main entry points for decompression */
     #[no_mangle]
-    pub fn jpeg_start_decompress(
-        cinfo: j_decompress_ptr,
-    ) -> boolean;
+    pub fn jpeg_start_decompress(cinfo: j_decompress_ptr) -> boolean;
 
     #[no_mangle]
     pub fn jpeg_read_scanlines(
@@ -234,10 +159,7 @@ use libc::{c_uchar, c_ulong, c_char, c_long, c_void, c_int, c_uint, c_double,
     ) -> JDIMENSION;
 
     #[no_mangle]
-    pub fn jpeg_skip_scanlines(
-        cinfo: j_decompress_ptr,
-        num_lines: JDIMENSION,
-    ) -> JDIMENSION;
+    pub fn jpeg_skip_scanlines(cinfo: j_decompress_ptr, num_lines: JDIMENSION) -> JDIMENSION;
 
     #[no_mangle]
     pub fn jpeg_crop_scanline(
@@ -247,16 +169,10 @@ use libc::{c_uchar, c_ulong, c_char, c_long, c_void, c_int, c_uint, c_double,
     );
 
     #[no_mangle]
-    pub fn jpeg_finish_decompress(
-        cinfo: j_decompress_ptr,
-    ) -> boolean;
+    pub fn jpeg_finish_decompress(cinfo: j_decompress_ptr) -> boolean;
     /* Control saving of COM and APPn markers into marker_list. */
     #[no_mangle]
-    pub fn jpeg_save_markers(
-        cinfo: j_decompress_ptr,
-        marker_code: c_int,
-        length_limit: c_uint,
-    );
+    pub fn jpeg_save_markers(cinfo: j_decompress_ptr, marker_code: c_int, length_limit: c_uint);
     /* Install a special processing method for COM or APPn markers. */
     #[no_mangle]
     pub fn jpeg_set_marker_processor(
@@ -299,19 +215,9 @@ use crate::stdlib::FILE;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_color_quantizer {
-    pub start_pass: Option<
-        unsafe extern "C" fn(
-            _: j_decompress_ptr,
-            _: boolean,
-        ) -> (),
-    >,
+    pub start_pass: Option<unsafe extern "C" fn(_: j_decompress_ptr, _: boolean) -> ()>,
     pub color_quantize: Option<
-        unsafe extern "C" fn(
-            _: j_decompress_ptr,
-            _: JSAMPARRAY,
-            _: JSAMPARRAY,
-            _: c_int,
-        ) -> (),
+        unsafe extern "C" fn(_: j_decompress_ptr, _: JSAMPARRAY, _: JSAMPARRAY, _: c_int) -> (),
     >,
     pub finish_pass: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
     pub new_color_map: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
@@ -357,21 +263,14 @@ pub struct jpeg_inverse_dct {
 #[derive(Copy, Clone)]
 pub struct jpeg_entropy_decoder {
     pub start_pass: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
-    pub decode_mcu: Option<
-        unsafe extern "C" fn(
-            _: j_decompress_ptr,
-            _: *mut JBLOCKROW,
-        ) -> boolean,
-    >,
+    pub decode_mcu: Option<unsafe extern "C" fn(_: j_decompress_ptr, _: *mut JBLOCKROW) -> boolean>,
     pub insufficient_data: boolean,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_marker_reader {
-    pub reset_marker_reader:
-        Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
-    pub read_markers:
-        Option<unsafe extern "C" fn(_: j_decompress_ptr) -> c_int>,
+    pub reset_marker_reader: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
+    pub read_markers: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> c_int>,
     pub read_restart_marker: jpeg_marker_parser_method,
     pub saw_SOI: boolean,
     pub saw_SOF: boolean,
@@ -381,25 +280,17 @@ pub struct jpeg_marker_reader {
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_input_controller {
-    pub consume_input:
-        Option<unsafe extern "C" fn(_: j_decompress_ptr) -> c_int>,
-    pub reset_input_controller:
-        Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
+    pub consume_input: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> c_int>,
+    pub reset_input_controller: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
     pub start_input_pass: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
-    pub finish_input_pass:
-        Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
+    pub finish_input_pass: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
     pub has_multiple_scans: boolean,
     pub eoi_reached: boolean,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_d_post_controller {
-    pub start_pass: Option<
-        unsafe extern "C" fn(
-            _: j_decompress_ptr,
-            _: J_BUF_MODE,
-        ) -> (),
-    >,
+    pub start_pass: Option<unsafe extern "C" fn(_: j_decompress_ptr, _: J_BUF_MODE) -> ()>,
     pub post_process_data: Option<
         unsafe extern "C" fn(
             _: j_decompress_ptr,
@@ -416,27 +307,15 @@ pub struct jpeg_d_post_controller {
 #[derive(Copy, Clone)]
 pub struct jpeg_d_coef_controller {
     pub start_input_pass: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
-    pub consume_data:
-        Option<unsafe extern "C" fn(_: j_decompress_ptr) -> c_int>,
-    pub start_output_pass:
-        Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
-    pub decompress_data: Option<
-        unsafe extern "C" fn(
-            _: j_decompress_ptr,
-            _: JSAMPIMAGE,
-        ) -> c_int,
-    >,
+    pub consume_data: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> c_int>,
+    pub start_output_pass: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
+    pub decompress_data: Option<unsafe extern "C" fn(_: j_decompress_ptr, _: JSAMPIMAGE) -> c_int>,
     pub coef_arrays: *mut jvirt_barray_ptr,
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_d_main_controller {
-    pub start_pass: Option<
-        unsafe extern "C" fn(
-            _: j_decompress_ptr,
-            _: J_BUF_MODE,
-        ) -> (),
-    >,
+    pub start_pass: Option<unsafe extern "C" fn(_: j_decompress_ptr, _: J_BUF_MODE) -> ()>,
     pub process_data: Option<
         unsafe extern "C" fn(
             _: j_decompress_ptr,
@@ -449,10 +328,8 @@ pub struct jpeg_d_main_controller {
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_decomp_master {
-    pub prepare_for_output_pass:
-        Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
-    pub finish_output_pass:
-        Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
+    pub prepare_for_output_pass: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
+    pub finish_output_pass: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
     pub is_dummy_pass: boolean,
     pub first_iMCU_col: JDIMENSION,
     pub last_iMCU_col: JDIMENSION,
@@ -500,14 +377,8 @@ pub const C_MAX_BLOCKS_IN_MCU: c_int = 10i32;
 /* lasts until master record is destroyed */
 pub const JPOOL_IMAGE: c_int = 1i32;
 
-
-
-
-
-
-
-use crate::jmorecfg_h::{boolean, JCOEF, JDIMENSION, JOCTET, JSAMPLE, UINT16,
-                        UINT8};use crate::stddef_h::size_t;
+use crate::jmorecfg_h::{boolean, JCOEF, JDIMENSION, JOCTET, JSAMPLE, UINT16, UINT8};
+use crate::stddef_h::size_t;
 /* Quantization tables are numbered 0..3 */
 
 /* Huffman tables are numbered 0..3 */
@@ -581,18 +452,8 @@ pub const JPEG_SCAN_COMPLETED: c_int = 4i32;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_entropy_encoder {
-    pub start_pass: Option<
-        unsafe extern "C" fn(
-            _: j_compress_ptr,
-            _: boolean,
-        ) -> (),
-    >,
-    pub encode_mcu: Option<
-        unsafe extern "C" fn(
-            _: j_compress_ptr,
-            _: *mut JBLOCKROW,
-        ) -> boolean,
-    >,
+    pub start_pass: Option<unsafe extern "C" fn(_: j_compress_ptr, _: boolean) -> ()>,
+    pub encode_mcu: Option<unsafe extern "C" fn(_: j_compress_ptr, _: *mut JBLOCKROW) -> boolean>,
     pub finish_pass: Option<unsafe extern "C" fn(_: j_compress_ptr) -> ()>,
 }
 /* TRUE if need rows above & below */
@@ -655,43 +516,22 @@ pub struct jpeg_marker_writer {
     pub write_scan_header: Option<unsafe extern "C" fn(_: j_compress_ptr) -> ()>,
     pub write_file_trailer: Option<unsafe extern "C" fn(_: j_compress_ptr) -> ()>,
     pub write_tables_only: Option<unsafe extern "C" fn(_: j_compress_ptr) -> ()>,
-    pub write_marker_header: Option<
-        unsafe extern "C" fn(
-            _: j_compress_ptr,
-            _: c_int,
-            _: c_uint,
-        ) -> (),
-    >,
-    pub write_marker_byte:
-        Option<unsafe extern "C" fn(_: j_compress_ptr, _: c_int) -> ()>,
+    pub write_marker_header:
+        Option<unsafe extern "C" fn(_: j_compress_ptr, _: c_int, _: c_uint) -> ()>,
+    pub write_marker_byte: Option<unsafe extern "C" fn(_: j_compress_ptr, _: c_int) -> ()>,
 }
 /* Coefficient buffer control */
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_c_coef_controller {
-    pub start_pass: Option<
-        unsafe extern "C" fn(
-            _: j_compress_ptr,
-            _: J_BUF_MODE,
-        ) -> (),
-    >,
-    pub compress_data: Option<
-        unsafe extern "C" fn(
-            _: j_compress_ptr,
-            _: JSAMPIMAGE,
-        ) -> boolean,
-    >,
+    pub start_pass: Option<unsafe extern "C" fn(_: j_compress_ptr, _: J_BUF_MODE) -> ()>,
+    pub compress_data: Option<unsafe extern "C" fn(_: j_compress_ptr, _: JSAMPIMAGE) -> boolean>,
 }
 /* Compression preprocessing (downsampling input buffer control) */
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_c_prep_controller {
-    pub start_pass: Option<
-        unsafe extern "C" fn(
-            _: j_compress_ptr,
-            _: J_BUF_MODE,
-        ) -> (),
-    >,
+    pub start_pass: Option<unsafe extern "C" fn(_: j_compress_ptr, _: J_BUF_MODE) -> ()>,
     pub pre_process_data: Option<
         unsafe extern "C" fn(
             _: j_compress_ptr,
@@ -708,12 +548,7 @@ pub struct jpeg_c_prep_controller {
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_c_main_controller {
-    pub start_pass: Option<
-        unsafe extern "C" fn(
-            _: j_compress_ptr,
-            _: J_BUF_MODE,
-        ) -> (),
-    >,
+    pub start_pass: Option<unsafe extern "C" fn(_: j_compress_ptr, _: J_BUF_MODE) -> ()>,
     pub process_data: Option<
         unsafe extern "C" fn(
             _: j_compress_ptr,
@@ -1464,27 +1299,12 @@ pub type j_common_ptr = *mut jpeg_common_struct;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_memory_mgr {
-    pub alloc_small: Option<
-        unsafe extern "C" fn(
-            _: j_common_ptr,
-            _: c_int,
-            _: size_t,
-        ) -> *mut c_void,
-    >,
-    pub alloc_large: Option<
-        unsafe extern "C" fn(
-            _: j_common_ptr,
-            _: c_int,
-            _: size_t,
-        ) -> *mut c_void,
-    >,
+    pub alloc_small:
+        Option<unsafe extern "C" fn(_: j_common_ptr, _: c_int, _: size_t) -> *mut c_void>,
+    pub alloc_large:
+        Option<unsafe extern "C" fn(_: j_common_ptr, _: c_int, _: size_t) -> *mut c_void>,
     pub alloc_sarray: Option<
-        unsafe extern "C" fn(
-            _: j_common_ptr,
-            _: c_int,
-            _: JDIMENSION,
-            _: JDIMENSION,
-        ) -> JSAMPARRAY,
+        unsafe extern "C" fn(_: j_common_ptr, _: c_int, _: JDIMENSION, _: JDIMENSION) -> JSAMPARRAY,
     >,
     pub alloc_barray: Option<
         unsafe extern "C" fn(
@@ -1533,8 +1353,7 @@ pub struct jpeg_memory_mgr {
             _: boolean,
         ) -> JBLOCKARRAY,
     >,
-    pub free_pool:
-        Option<unsafe extern "C" fn(_: j_common_ptr, _: c_int) -> ()>,
+    pub free_pool: Option<unsafe extern "C" fn(_: j_common_ptr, _: c_int) -> ()>,
     pub self_destruct: Option<unsafe extern "C" fn(_: j_common_ptr) -> ()>,
     pub max_memory_to_use: c_long,
     pub max_alloc_chunk: c_long,
@@ -1545,11 +1364,9 @@ pub type jvirt_sarray_ptr = *mut jvirt_sarray_control;
 #[derive(Copy, Clone)]
 pub struct jpeg_error_mgr {
     pub error_exit: Option<unsafe extern "C" fn(_: j_common_ptr) -> ()>,
-    pub emit_message:
-        Option<unsafe extern "C" fn(_: j_common_ptr, _: c_int) -> ()>,
+    pub emit_message: Option<unsafe extern "C" fn(_: j_common_ptr, _: c_int) -> ()>,
     pub output_message: Option<unsafe extern "C" fn(_: j_common_ptr) -> ()>,
-    pub format_message:
-        Option<unsafe extern "C" fn(_: j_common_ptr, _: *mut c_char) -> ()>,
+    pub format_message: Option<unsafe extern "C" fn(_: j_common_ptr, _: *mut c_char) -> ()>,
     pub reset_error_mgr: Option<unsafe extern "C" fn(_: j_common_ptr) -> ()>,
     pub msg_code: c_int,
     pub msg_parm: C2RustUnnamed_2,
@@ -1636,9 +1453,7 @@ pub struct jpeg_destination_mgr {
     pub next_output_byte: *mut JOCTET,
     pub free_in_buffer: size_t,
     pub init_destination: Option<unsafe extern "C" fn(_: j_compress_ptr) -> ()>,
-    pub empty_output_buffer: Option<
-        unsafe extern "C" fn(_: j_compress_ptr) -> boolean,
-    >,
+    pub empty_output_buffer: Option<unsafe extern "C" fn(_: j_compress_ptr) -> boolean>,
     pub term_destination: Option<unsafe extern "C" fn(_: j_compress_ptr) -> ()>,
 }
 pub type j_compress_ptr = *mut jpeg_compress_struct;
@@ -1746,26 +1561,16 @@ pub struct jpeg_source_mgr {
     pub next_input_byte: *const JOCTET,
     pub bytes_in_buffer: size_t,
     pub init_source: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
-    pub fill_input_buffer: Option<
-        unsafe extern "C" fn(_: j_decompress_ptr) -> boolean,
-    >,
-    pub skip_input_data:
-        Option<unsafe extern "C" fn(_: j_decompress_ptr, _: c_long) -> ()>,
-    pub resync_to_restart: Option<
-        unsafe extern "C" fn(
-            _: j_decompress_ptr,
-            _: c_int,
-        ) -> boolean,
-    >,
+    pub fill_input_buffer: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> boolean>,
+    pub skip_input_data: Option<unsafe extern "C" fn(_: j_decompress_ptr, _: c_long) -> ()>,
+    pub resync_to_restart: Option<unsafe extern "C" fn(_: j_decompress_ptr, _: c_int) -> boolean>,
     pub term_source: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()>,
 }
 pub type j_decompress_ptr = *mut jpeg_decompress_struct;
 /* Routine signature for application-supplied marker processing methods.
  * Need not pass marker code since it is stored in cinfo->unread_marker.
  */
-pub type jpeg_marker_parser_method = Option<
-    unsafe extern "C" fn(_: j_decompress_ptr) -> boolean,
->;
+pub type jpeg_marker_parser_method = Option<unsafe extern "C" fn(_: j_decompress_ptr) -> boolean>;
 pub const JCS_RGB565: J_COLOR_SPACE = 16;
 pub const JCS_EXT_ARGB: J_COLOR_SPACE = 15;
 pub const JCS_EXT_ABGR: J_COLOR_SPACE = 14;

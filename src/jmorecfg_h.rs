@@ -1,4 +1,5 @@
-use libc::{c_uchar, c_long, c_ushort, c_short, c_uint, c_int};pub type boolean = c_int;
+use libc::{c_int, c_long, c_short, c_uchar, c_uint, c_ushort};
+pub type boolean = c_int;
 /*
  * jmorecfg.h
  *

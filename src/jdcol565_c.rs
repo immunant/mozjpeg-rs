@@ -1,16 +1,9 @@
-
-
-
-
-
-
-
-
-
-
-
-use crate::jpegint_h::JLONG;use crate::jpeglib_h::{j_decompress_ptr, JSAMPARRAY,
-                       JSAMPIMAGE, JSAMPROW};use crate::jmorecfg_h::{INT16, JDIMENSION, JSAMPLE};use crate::stddef_h::size_t;use crate::src::jdcolor::{my_cconvert_ptr};use libc::{c_uint, c_int, c_long};
+use crate::jmorecfg_h::{INT16, JDIMENSION, JSAMPLE};
+use crate::jpegint_h::JLONG;
+use crate::jpeglib_h::{j_decompress_ptr, JSAMPARRAY, JSAMPIMAGE, JSAMPROW};
+use crate::src::jdcolor::my_cconvert_ptr;
+use crate::stddef_h::size_t;
+use libc::{c_int, c_long, c_uint};
 /*
  * jdcol565.c
  *
@@ -51,14 +44,7 @@ pub unsafe extern "C" fn ycc_rgb565_convert_le(
     mut num_rows: c_int,
 ) {
     let mut cconvert: my_cconvert_ptr = (*cinfo).cconvert as my_cconvert_ptr;
-    
-    
-    
-    
-    
-    
-    
-    
+
     let mut num_cols: JDIMENSION = (*cinfo).output_width;
     /* copy these pointers into registers if possible */
     /* copy these pointers into registers if possible */
@@ -68,24 +54,25 @@ pub unsafe extern "C" fn ycc_rgb565_convert_le(
     let mut Crgtab: *mut JLONG = (*cconvert).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*cconvert).Cb_g_tab;
     loop {
-         let mut y:  c_int =  0; let mut cb:  c_int =  0; let mut cr:  c_int =  0;      let mut rgb:  JLONG =  0; let mut r:  c_uint =  0; let mut g:  c_uint =  0; let mut b:  c_uint =  0;num_rows -= 1;
+        let mut y: c_int = 0;
+        let mut cb: c_int = 0;
+        let mut cr: c_int = 0;
+        let mut rgb: JLONG = 0;
+        let mut r: c_uint = 0;
+        let mut g: c_uint = 0;
+        let mut b: c_uint = 0;
+        num_rows -= 1;
         if !(num_rows >= 0i32) {
             break;
         }
-        
-        
-        
-        
-        
-        
-         let mut inptr0:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(input_row as isize); let mut inptr1:   JSAMPROW =
-     *(*input_buf.offset(1)).offset(input_row as isize); let mut inptr2:   JSAMPROW =
-     *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row +=  1;
+
+        let mut inptr0: JSAMPROW = *(*input_buf.offset(0)).offset(input_row as isize);
+        let mut inptr1: JSAMPROW = *(*input_buf.offset(1)).offset(input_row as isize);
+        let mut inptr2: JSAMPROW = *(*input_buf.offset(2)).offset(input_row as isize);
+        input_row += 1;
         let fresh53 = output_buf;
         output_buf = output_buf.offset(1);
-         let mut outptr:   JSAMPROW =  *fresh53;
+        let mut outptr: JSAMPROW = *fresh53;
         if outptr as size_t & 3u64 != 0 {
             let fresh54 = inptr0;
             inptr0 = inptr0.offset(1);
@@ -98,18 +85,16 @@ pub unsafe extern "C" fn ycc_rgb565_convert_le(
             cr = *fresh56 as c_int;
             r = *range_limit.offset((y + *Crrtab.offset(cr as isize)) as isize) as c_uint;
             g = *range_limit.offset(
-                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as isize,
+                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as isize,
             ) as c_uint;
             b = *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize) as c_uint;
-            rgb = (r << 8i32 & 0xf800u32
-                | g << 3i32 & 0x7e0u32
-                | b >> 3i32) as JLONG;
+            rgb = (r << 8i32 & 0xf800u32 | g << 3i32 & 0x7e0u32 | b >> 3i32) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16;
             outptr = outptr.offset(2);
-            num_cols -=  1
+            num_cols -= 1
         }
-         let mut col:   JDIMENSION =  0u32;
+        let mut col: JDIMENSION = 0u32;
         while col < num_cols >> 1i32 {
             let fresh57 = inptr0;
             inptr0 = inptr0.offset(1);
@@ -122,13 +107,11 @@ pub unsafe extern "C" fn ycc_rgb565_convert_le(
             cr = *fresh59 as c_int;
             r = *range_limit.offset((y + *Crrtab.offset(cr as isize)) as isize) as c_uint;
             g = *range_limit.offset(
-                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as isize,
+                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as isize,
             ) as c_uint;
             b = *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize) as c_uint;
-            rgb = (r << 8i32 & 0xf800u32
-                | g << 3i32 & 0x7e0u32
-                | b >> 3i32) as JLONG;
+            rgb = (r << 8i32 & 0xf800u32 | g << 3i32 & 0x7e0u32 | b >> 3i32) as JLONG;
             let fresh60 = inptr0;
             inptr0 = inptr0.offset(1);
             y = *fresh60 as c_int;
@@ -140,18 +123,15 @@ pub unsafe extern "C" fn ycc_rgb565_convert_le(
             cr = *fresh62 as c_int;
             r = *range_limit.offset((y + *Crrtab.offset(cr as isize)) as isize) as c_uint;
             g = *range_limit.offset(
-                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as isize,
+                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as isize,
             ) as c_uint;
             b = *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize) as c_uint;
-            rgb = ((r << 8i32 & 0xf800u32
-                | g << 3i32 & 0x7e0u32
-                | b >> 3i32)
-                << 16i32) as c_long
+            rgb = ((r << 8i32 & 0xf800u32 | g << 3i32 & 0x7e0u32 | b >> 3i32) << 16i32) as c_long
                 | rgb;
             *(outptr as *mut c_int) = rgb as c_int;
             outptr = outptr.offset(4);
-            col +=  1
+            col += 1
         }
         if num_cols & 1u32 != 0 {
             y = *inptr0 as c_int;
@@ -159,13 +139,11 @@ pub unsafe extern "C" fn ycc_rgb565_convert_le(
             cr = *inptr2 as c_int;
             r = *range_limit.offset((y + *Crrtab.offset(cr as isize)) as isize) as c_uint;
             g = *range_limit.offset(
-                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as isize,
+                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as isize,
             ) as c_uint;
             b = *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize) as c_uint;
-            rgb = (r << 8i32 & 0xf800u32
-                | g << 3i32 & 0x7e0u32
-                | b >> 3i32) as JLONG;
+            rgb = (r << 8i32 & 0xf800u32 | g << 3i32 & 0x7e0u32 | b >> 3i32) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16
         }
     }
@@ -179,14 +157,7 @@ pub unsafe extern "C" fn ycc_rgb565_convert_be(
     mut num_rows: c_int,
 ) {
     let mut cconvert: my_cconvert_ptr = (*cinfo).cconvert as my_cconvert_ptr;
-    
-    
-    
-    
-    
-    
-    
-    
+
     let mut num_cols: JDIMENSION = (*cinfo).output_width;
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit;
     let mut Crrtab: *mut c_int = (*cconvert).Cr_r_tab;
@@ -194,24 +165,25 @@ pub unsafe extern "C" fn ycc_rgb565_convert_be(
     let mut Crgtab: *mut JLONG = (*cconvert).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*cconvert).Cb_g_tab;
     loop {
-         let mut y:  c_int =  0; let mut cb:  c_int =  0; let mut cr:  c_int =  0;      let mut rgb:  JLONG =  0; let mut r:  c_uint =  0; let mut g:  c_uint =  0; let mut b:  c_uint =  0;num_rows -= 1;
+        let mut y: c_int = 0;
+        let mut cb: c_int = 0;
+        let mut cr: c_int = 0;
+        let mut rgb: JLONG = 0;
+        let mut r: c_uint = 0;
+        let mut g: c_uint = 0;
+        let mut b: c_uint = 0;
+        num_rows -= 1;
         if !(num_rows >= 0i32) {
             break;
         }
-        
-        
-        
-        
-        
-        
-         let mut inptr0:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(input_row as isize); let mut inptr1:   JSAMPROW =
-     *(*input_buf.offset(1)).offset(input_row as isize); let mut inptr2:   JSAMPROW =
-     *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row +=  1;
+
+        let mut inptr0: JSAMPROW = *(*input_buf.offset(0)).offset(input_row as isize);
+        let mut inptr1: JSAMPROW = *(*input_buf.offset(1)).offset(input_row as isize);
+        let mut inptr2: JSAMPROW = *(*input_buf.offset(2)).offset(input_row as isize);
+        input_row += 1;
         let fresh63 = output_buf;
         output_buf = output_buf.offset(1);
-         let mut outptr:   JSAMPROW =  *fresh63;
+        let mut outptr: JSAMPROW = *fresh63;
         if outptr as size_t & 3u64 != 0 {
             let fresh64 = inptr0;
             inptr0 = inptr0.offset(1);
@@ -224,20 +196,17 @@ pub unsafe extern "C" fn ycc_rgb565_convert_be(
             cr = *fresh66 as c_int;
             r = *range_limit.offset((y + *Crrtab.offset(cr as isize)) as isize) as c_uint;
             g = *range_limit.offset(
-                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as isize,
+                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as isize,
             ) as c_uint;
             b = *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize) as c_uint;
-            rgb = (r & 0xf8u32
-                | g >> 5i32
-                | g << 11i32 & 0xe000u32
-                | b << 5i32 & 0x1f00u32)
-                as JLONG;
+            rgb =
+                (r & 0xf8u32 | g >> 5i32 | g << 11i32 & 0xe000u32 | b << 5i32 & 0x1f00u32) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16;
             outptr = outptr.offset(2);
-            num_cols -=  1
+            num_cols -= 1
         }
-         let mut col:   JDIMENSION =  0u32;
+        let mut col: JDIMENSION = 0u32;
         while col < num_cols >> 1i32 {
             let fresh67 = inptr0;
             inptr0 = inptr0.offset(1);
@@ -250,15 +219,12 @@ pub unsafe extern "C" fn ycc_rgb565_convert_be(
             cr = *fresh69 as c_int;
             r = *range_limit.offset((y + *Crrtab.offset(cr as isize)) as isize) as c_uint;
             g = *range_limit.offset(
-                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as isize,
+                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as isize,
             ) as c_uint;
             b = *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize) as c_uint;
-            rgb = (r & 0xf8u32
-                | g >> 5i32
-                | g << 11i32 & 0xe000u32
-                | b << 5i32 & 0x1f00u32)
-                as JLONG;
+            rgb =
+                (r & 0xf8u32 | g >> 5i32 | g << 11i32 & 0xe000u32 | b << 5i32 & 0x1f00u32) as JLONG;
             let fresh70 = inptr0;
             inptr0 = inptr0.offset(1);
             y = *fresh70 as c_int;
@@ -270,18 +236,16 @@ pub unsafe extern "C" fn ycc_rgb565_convert_be(
             cr = *fresh72 as c_int;
             r = *range_limit.offset((y + *Crrtab.offset(cr as isize)) as isize) as c_uint;
             g = *range_limit.offset(
-                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as isize,
+                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as isize,
             ) as c_uint;
             b = *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize) as c_uint;
             rgb = rgb << 16i32
-                | (r & 0xf8u32
-                    | g >> 5i32
-                    | g << 11i32 & 0xe000u32
-                    | b << 5i32 & 0x1f00u32) as c_long;
+                | (r & 0xf8u32 | g >> 5i32 | g << 11i32 & 0xe000u32 | b << 5i32 & 0x1f00u32)
+                    as c_long;
             *(outptr as *mut c_int) = rgb as c_int;
             outptr = outptr.offset(4);
-            col +=  1
+            col += 1
         }
         if num_cols & 1u32 != 0 {
             y = *inptr0 as c_int;
@@ -289,15 +253,12 @@ pub unsafe extern "C" fn ycc_rgb565_convert_be(
             cr = *inptr2 as c_int;
             r = *range_limit.offset((y + *Crrtab.offset(cr as isize)) as isize) as c_uint;
             g = *range_limit.offset(
-                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as isize,
+                (y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as isize,
             ) as c_uint;
             b = *range_limit.offset((y + *Cbbtab.offset(cb as isize)) as isize) as c_uint;
-            rgb = (r & 0xf8u32
-                | g >> 5i32
-                | g << 11i32 & 0xe000u32
-                | b << 5i32 & 0x1f00u32)
-                as JLONG;
+            rgb =
+                (r & 0xf8u32 | g >> 5i32 | g << 11i32 & 0xe000u32 | b << 5i32 & 0x1f00u32) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16
         }
     }
@@ -311,14 +272,7 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_le(
     mut num_rows: c_int,
 ) {
     let mut cconvert: my_cconvert_ptr = (*cinfo).cconvert as my_cconvert_ptr;
-    
-    
-    
-    
-    
-    
-    
-    
+
     let mut num_cols: JDIMENSION = (*cinfo).output_width;
     /* copy these pointers into registers if possible */
     /* copy these pointers into registers if possible */
@@ -327,27 +281,27 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_le(
     let mut Cbbtab: *mut c_int = (*cconvert).Cb_b_tab;
     let mut Crgtab: *mut JLONG = (*cconvert).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*cconvert).Cb_g_tab;
-    let mut d0: JLONG =
-        dither_matrix[((*cinfo).output_scanline & DITHER_MASK as c_uint) as usize];
+    let mut d0: JLONG = dither_matrix[((*cinfo).output_scanline & DITHER_MASK as c_uint) as usize];
     loop {
-         let mut y:  c_int =  0; let mut cb:  c_int =  0; let mut cr:  c_int =  0;      let mut rgb:  JLONG =  0; let mut r:  c_uint =  0; let mut g:  c_uint =  0; let mut b:  c_uint =  0;num_rows -= 1;
+        let mut y: c_int = 0;
+        let mut cb: c_int = 0;
+        let mut cr: c_int = 0;
+        let mut rgb: JLONG = 0;
+        let mut r: c_uint = 0;
+        let mut g: c_uint = 0;
+        let mut b: c_uint = 0;
+        num_rows -= 1;
         if !(num_rows >= 0i32) {
             break;
         }
-        
-        
-        
-        
-        
-        
-         let mut inptr0:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(input_row as isize); let mut inptr1:   JSAMPROW =
-     *(*input_buf.offset(1)).offset(input_row as isize); let mut inptr2:   JSAMPROW =
-     *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row +=  1;
+
+        let mut inptr0: JSAMPROW = *(*input_buf.offset(0)).offset(input_row as isize);
+        let mut inptr1: JSAMPROW = *(*input_buf.offset(1)).offset(input_row as isize);
+        let mut inptr2: JSAMPROW = *(*input_buf.offset(2)).offset(input_row as isize);
+        input_row += 1;
         let fresh73 = output_buf;
         output_buf = output_buf.offset(1);
-         let mut outptr:   JSAMPROW =  *fresh73;
+        let mut outptr: JSAMPROW = *fresh73;
         if outptr as size_t & 3u64 != 0 {
             let fresh74 = inptr0;
             inptr0 = inptr0.offset(1);
@@ -358,27 +312,23 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_le(
             let fresh76 = inptr2;
             inptr2 = inptr2.offset(1);
             cr = *fresh76 as c_int;
-            r = *range_limit.offset(
-                ((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
+            r = *range_limit
+                .offset(((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
             g = *range_limit.offset(
-                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as c_long
+                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as c_long
                     + ((d0 & 0xffi64) >> 1i32)) as isize,
             ) as c_uint;
-            b = *range_limit.offset(
-                ((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
-            rgb = (r << 8i32 & 0xf800u32
-                | g << 3i32 & 0x7e0u32
-                | b >> 3i32) as JLONG;
+            b = *range_limit
+                .offset(((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
+            rgb = (r << 8i32 & 0xf800u32 | g << 3i32 & 0x7e0u32 | b >> 3i32) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16;
             outptr = outptr.offset(2);
-            num_cols -=  1
+            num_cols -= 1
         }
-         let mut col:   JDIMENSION =  0u32;
+        let mut col: JDIMENSION = 0u32;
         while col < num_cols >> 1i32 {
             let fresh77 = inptr0;
             inptr0 = inptr0.offset(1);
@@ -389,23 +339,19 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_le(
             let fresh79 = inptr2;
             inptr2 = inptr2.offset(1);
             cr = *fresh79 as c_int;
-            r = *range_limit.offset(
-                ((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
+            r = *range_limit
+                .offset(((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
             g = *range_limit.offset(
-                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as c_long
+                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as c_long
                     + ((d0 & 0xffi64) >> 1i32)) as isize,
             ) as c_uint;
-            b = *range_limit.offset(
-                ((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
+            b = *range_limit
+                .offset(((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
             d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
-            rgb = (r << 8i32 & 0xf800u32
-                | g << 3i32 & 0x7e0u32
-                | b >> 3i32) as JLONG;
+            rgb = (r << 8i32 & 0xf800u32 | g << 3i32 & 0x7e0u32 | b >> 3i32) as JLONG;
             let fresh80 = inptr0;
             inptr0 = inptr0.offset(1);
             y = *fresh80 as c_int;
@@ -415,49 +361,40 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_le(
             let fresh82 = inptr2;
             inptr2 = inptr2.offset(1);
             cr = *fresh82 as c_int;
-            r = *range_limit.offset(
-                ((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
+            r = *range_limit
+                .offset(((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
             g = *range_limit.offset(
-                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as c_long
+                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as c_long
                     + ((d0 & 0xffi64) >> 1i32)) as isize,
             ) as c_uint;
-            b = *range_limit.offset(
-                ((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
+            b = *range_limit
+                .offset(((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
             d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
-            rgb = ((r << 8i32 & 0xf800u32
-                | g << 3i32 & 0x7e0u32
-                | b >> 3i32)
-                << 16i32) as c_long
+            rgb = ((r << 8i32 & 0xf800u32 | g << 3i32 & 0x7e0u32 | b >> 3i32) << 16i32) as c_long
                 | rgb;
             *(outptr as *mut c_int) = rgb as c_int;
             outptr = outptr.offset(4);
-            col +=  1
+            col += 1
         }
         if num_cols & 1u32 != 0 {
             y = *inptr0 as c_int;
             cb = *inptr1 as c_int;
             cr = *inptr2 as c_int;
-            r = *range_limit.offset(
-                ((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
+            r = *range_limit
+                .offset(((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
             g = *range_limit.offset(
-                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as c_long
+                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as c_long
                     + ((d0 & 0xffi64) >> 1i32)) as isize,
             ) as c_uint;
-            b = *range_limit.offset(
-                ((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
-            rgb = (r << 8i32 & 0xf800u32
-                | g << 3i32 & 0x7e0u32
-                | b >> 3i32) as JLONG;
+            b = *range_limit
+                .offset(((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
+            rgb = (r << 8i32 & 0xf800u32 | g << 3i32 & 0x7e0u32 | b >> 3i32) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16
         }
     }
@@ -471,41 +408,34 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_be(
     mut num_rows: c_int,
 ) {
     let mut cconvert: my_cconvert_ptr = (*cinfo).cconvert as my_cconvert_ptr;
-    
-    
-    
-    
-    
-    
-    
-    
+
     let mut num_cols: JDIMENSION = (*cinfo).output_width;
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit;
     let mut Crrtab: *mut c_int = (*cconvert).Cr_r_tab;
     let mut Cbbtab: *mut c_int = (*cconvert).Cb_b_tab;
     let mut Crgtab: *mut JLONG = (*cconvert).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*cconvert).Cb_g_tab;
-    let mut d0: JLONG =
-        dither_matrix[((*cinfo).output_scanline & DITHER_MASK as c_uint) as usize];
+    let mut d0: JLONG = dither_matrix[((*cinfo).output_scanline & DITHER_MASK as c_uint) as usize];
     loop {
-         let mut y:  c_int =  0; let mut cb:  c_int =  0; let mut cr:  c_int =  0;      let mut rgb:  JLONG =  0; let mut r:  c_uint =  0; let mut g:  c_uint =  0; let mut b:  c_uint =  0;num_rows -= 1;
+        let mut y: c_int = 0;
+        let mut cb: c_int = 0;
+        let mut cr: c_int = 0;
+        let mut rgb: JLONG = 0;
+        let mut r: c_uint = 0;
+        let mut g: c_uint = 0;
+        let mut b: c_uint = 0;
+        num_rows -= 1;
         if !(num_rows >= 0i32) {
             break;
         }
-        
-        
-        
-        
-        
-        
-         let mut inptr0:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(input_row as isize); let mut inptr1:   JSAMPROW =
-     *(*input_buf.offset(1)).offset(input_row as isize); let mut inptr2:   JSAMPROW =
-     *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row +=  1;
+
+        let mut inptr0: JSAMPROW = *(*input_buf.offset(0)).offset(input_row as isize);
+        let mut inptr1: JSAMPROW = *(*input_buf.offset(1)).offset(input_row as isize);
+        let mut inptr2: JSAMPROW = *(*input_buf.offset(2)).offset(input_row as isize);
+        input_row += 1;
         let fresh83 = output_buf;
         output_buf = output_buf.offset(1);
-         let mut outptr:   JSAMPROW =  *fresh83;
+        let mut outptr: JSAMPROW = *fresh83;
         if outptr as size_t & 3u64 != 0 {
             let fresh84 = inptr0;
             inptr0 = inptr0.offset(1);
@@ -516,29 +446,24 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_be(
             let fresh86 = inptr2;
             inptr2 = inptr2.offset(1);
             cr = *fresh86 as c_int;
-            r = *range_limit.offset(
-                ((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
+            r = *range_limit
+                .offset(((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
             g = *range_limit.offset(
-                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as c_long
+                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as c_long
                     + ((d0 & 0xffi64) >> 1i32)) as isize,
             ) as c_uint;
-            b = *range_limit.offset(
-                ((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
-            rgb = (r & 0xf8u32
-                | g >> 5i32
-                | g << 11i32 & 0xe000u32
-                | b << 5i32 & 0x1f00u32)
-                as JLONG;
+            b = *range_limit
+                .offset(((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
+            rgb =
+                (r & 0xf8u32 | g >> 5i32 | g << 11i32 & 0xe000u32 | b << 5i32 & 0x1f00u32) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16;
             outptr = outptr.offset(2);
-            num_cols -=  1
+            num_cols -= 1
         }
-         let mut col:   JDIMENSION =  0u32;
+        let mut col: JDIMENSION = 0u32;
         while col < num_cols >> 1i32 {
             let fresh87 = inptr0;
             inptr0 = inptr0.offset(1);
@@ -549,25 +474,20 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_be(
             let fresh89 = inptr2;
             inptr2 = inptr2.offset(1);
             cr = *fresh89 as c_int;
-            r = *range_limit.offset(
-                ((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
+            r = *range_limit
+                .offset(((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
             g = *range_limit.offset(
-                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as c_long
+                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as c_long
                     + ((d0 & 0xffi64) >> 1i32)) as isize,
             ) as c_uint;
-            b = *range_limit.offset(
-                ((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
+            b = *range_limit
+                .offset(((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
             d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
-            rgb = (r & 0xf8u32
-                | g >> 5i32
-                | g << 11i32 & 0xe000u32
-                | b << 5i32 & 0x1f00u32)
-                as JLONG;
+            rgb =
+                (r & 0xf8u32 | g >> 5i32 | g << 11i32 & 0xe000u32 | b << 5i32 & 0x1f00u32) as JLONG;
             let fresh90 = inptr0;
             inptr0 = inptr0.offset(1);
             y = *fresh90 as c_int;
@@ -577,51 +497,42 @@ pub unsafe extern "C" fn ycc_rgb565D_convert_be(
             let fresh92 = inptr2;
             inptr2 = inptr2.offset(1);
             cr = *fresh92 as c_int;
-            r = *range_limit.offset(
-                ((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
+            r = *range_limit
+                .offset(((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
             g = *range_limit.offset(
-                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as c_long
+                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as c_long
                     + ((d0 & 0xffi64) >> 1i32)) as isize,
             ) as c_uint;
-            b = *range_limit.offset(
-                ((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
+            b = *range_limit
+                .offset(((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
             d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
             rgb = rgb << 16i32
-                | (r & 0xf8u32
-                    | g >> 5i32
-                    | g << 11i32 & 0xe000u32
-                    | b << 5i32 & 0x1f00u32) as c_long;
+                | (r & 0xf8u32 | g >> 5i32 | g << 11i32 & 0xe000u32 | b << 5i32 & 0x1f00u32)
+                    as c_long;
             *(outptr as *mut c_int) = rgb as c_int;
             outptr = outptr.offset(4);
-            col +=  1
+            col += 1
         }
         if num_cols & 1u32 != 0 {
             y = *inptr0 as c_int;
             cb = *inptr1 as c_int;
             cr = *inptr2 as c_int;
-            r = *range_limit.offset(
-                ((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
+            r = *range_limit
+                .offset(((y + *Crrtab.offset(cr as isize)) as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
             g = *range_limit.offset(
-                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32)
-                    as c_int) as c_long
+                ((y + (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int)
+                    as c_long
                     + ((d0 & 0xffi64) >> 1i32)) as isize,
             ) as c_uint;
-            b = *range_limit.offset(
-                ((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
-            rgb = (r & 0xf8u32
-                | g >> 5i32
-                | g << 11i32 & 0xe000u32
-                | b << 5i32 & 0x1f00u32)
-                as JLONG;
+            b = *range_limit
+                .offset(((y + *Cbbtab.offset(cb as isize)) as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
+            rgb =
+                (r & 0xf8u32 | g >> 5i32 | g << 11i32 & 0xe000u32 | b << 5i32 & 0x1f00u32) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16
         }
     }
@@ -634,87 +545,71 @@ pub unsafe extern "C" fn rgb_rgb565_convert_le(
     mut output_buf: JSAMPARRAY,
     mut num_rows: c_int,
 ) {
-    
-    
-    
-    
-    
     let mut num_cols: JDIMENSION = (*cinfo).output_width;
     loop {
-              let mut rgb:  JLONG =  0; let mut r:  c_uint =  0; let mut g:  c_uint =  0; let mut b:  c_uint =  0;num_rows -= 1;
+        let mut rgb: JLONG = 0;
+        let mut r: c_uint = 0;
+        let mut g: c_uint = 0;
+        let mut b: c_uint = 0;
+        num_rows -= 1;
         if !(num_rows >= 0i32) {
             break;
         }
-        
-        
-        
-        
-        
-        
-         let mut inptr0:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(input_row as isize); let mut inptr1:   JSAMPROW =
-     *(*input_buf.offset(1)).offset(input_row as isize); let mut inptr2:   JSAMPROW =
-     *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row +=  1;
+
+        let mut inptr0: JSAMPROW = *(*input_buf.offset(0)).offset(input_row as isize);
+        let mut inptr1: JSAMPROW = *(*input_buf.offset(1)).offset(input_row as isize);
+        let mut inptr2: JSAMPROW = *(*input_buf.offset(2)).offset(input_row as isize);
+        input_row += 1;
         let fresh93 = output_buf;
         output_buf = output_buf.offset(1);
-         let mut outptr:   JSAMPROW =  *fresh93;
+        let mut outptr: JSAMPROW = *fresh93;
         if outptr as size_t & 3u64 != 0 {
             let fresh94 = inptr0;
             inptr0 = inptr0.offset(1);
-            r =  *fresh94 as c_uint;
+            r = *fresh94 as c_uint;
             let fresh95 = inptr1;
             inptr1 = inptr1.offset(1);
-            g =  *fresh95 as c_uint;
+            g = *fresh95 as c_uint;
             let fresh96 = inptr2;
             inptr2 = inptr2.offset(1);
-            b =  *fresh96 as c_uint;
-            rgb = (r << 8i32 & 0xf800u32
-                | g << 3i32 & 0x7e0u32
-                | b >> 3i32) as JLONG;
+            b = *fresh96 as c_uint;
+            rgb = (r << 8i32 & 0xf800u32 | g << 3i32 & 0x7e0u32 | b >> 3i32) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16;
             outptr = outptr.offset(2);
-            num_cols -=  1
+            num_cols -= 1
         }
-         let mut col:   JDIMENSION =  0u32;
+        let mut col: JDIMENSION = 0u32;
         while col < num_cols >> 1i32 {
             let fresh97 = inptr0;
             inptr0 = inptr0.offset(1);
-            r =  *fresh97 as c_uint;
+            r = *fresh97 as c_uint;
             let fresh98 = inptr1;
             inptr1 = inptr1.offset(1);
-            g =  *fresh98 as c_uint;
+            g = *fresh98 as c_uint;
             let fresh99 = inptr2;
             inptr2 = inptr2.offset(1);
-            b =  *fresh99 as c_uint;
-            rgb = (r << 8i32 & 0xf800u32
-                | g << 3i32 & 0x7e0u32
-                | b >> 3i32) as JLONG;
+            b = *fresh99 as c_uint;
+            rgb = (r << 8i32 & 0xf800u32 | g << 3i32 & 0x7e0u32 | b >> 3i32) as JLONG;
             let fresh100 = inptr0;
             inptr0 = inptr0.offset(1);
-            r =  *fresh100 as c_uint;
+            r = *fresh100 as c_uint;
             let fresh101 = inptr1;
             inptr1 = inptr1.offset(1);
-            g =  *fresh101 as c_uint;
+            g = *fresh101 as c_uint;
             let fresh102 = inptr2;
             inptr2 = inptr2.offset(1);
-            b =  *fresh102 as c_uint;
-            rgb = ((r << 8i32 & 0xf800u32
-                | g << 3i32 & 0x7e0u32
-                | b >> 3i32)
-                << 16i32) as c_long
+            b = *fresh102 as c_uint;
+            rgb = ((r << 8i32 & 0xf800u32 | g << 3i32 & 0x7e0u32 | b >> 3i32) << 16i32) as c_long
                 | rgb;
             *(outptr as *mut c_int) = rgb as c_int;
             outptr = outptr.offset(4);
-            col +=  1
+            col += 1
         }
         if num_cols & 1u32 != 0 {
-            r =  *inptr0 as c_uint;
-            g =  *inptr1 as c_uint;
-            b =  *inptr2 as c_uint;
-            rgb = (r << 8i32 & 0xf800u32
-                | g << 3i32 & 0x7e0u32
-                | b >> 3i32) as JLONG;
+            r = *inptr0 as c_uint;
+            g = *inptr1 as c_uint;
+            b = *inptr2 as c_uint;
+            rgb = (r << 8i32 & 0xf800u32 | g << 3i32 & 0x7e0u32 | b >> 3i32) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16
         }
     }
@@ -727,93 +622,75 @@ pub unsafe extern "C" fn rgb_rgb565_convert_be(
     mut output_buf: JSAMPARRAY,
     mut num_rows: c_int,
 ) {
-    
-    
-    
-    
-    
     let mut num_cols: JDIMENSION = (*cinfo).output_width;
     loop {
-              let mut rgb:  JLONG =  0; let mut r:  c_uint =  0; let mut g:  c_uint =  0; let mut b:  c_uint =  0;num_rows -= 1;
+        let mut rgb: JLONG = 0;
+        let mut r: c_uint = 0;
+        let mut g: c_uint = 0;
+        let mut b: c_uint = 0;
+        num_rows -= 1;
         if !(num_rows >= 0i32) {
             break;
         }
-        
-        
-        
-        
-        
-        
-         let mut inptr0:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(input_row as isize); let mut inptr1:   JSAMPROW =
-     *(*input_buf.offset(1)).offset(input_row as isize); let mut inptr2:   JSAMPROW =
-     *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row +=  1;
+
+        let mut inptr0: JSAMPROW = *(*input_buf.offset(0)).offset(input_row as isize);
+        let mut inptr1: JSAMPROW = *(*input_buf.offset(1)).offset(input_row as isize);
+        let mut inptr2: JSAMPROW = *(*input_buf.offset(2)).offset(input_row as isize);
+        input_row += 1;
         let fresh103 = output_buf;
         output_buf = output_buf.offset(1);
-         let mut outptr:   JSAMPROW =  *fresh103;
+        let mut outptr: JSAMPROW = *fresh103;
         if outptr as size_t & 3u64 != 0 {
             let fresh104 = inptr0;
             inptr0 = inptr0.offset(1);
-            r =  *fresh104 as c_uint;
+            r = *fresh104 as c_uint;
             let fresh105 = inptr1;
             inptr1 = inptr1.offset(1);
-            g =  *fresh105 as c_uint;
+            g = *fresh105 as c_uint;
             let fresh106 = inptr2;
             inptr2 = inptr2.offset(1);
-            b =  *fresh106 as c_uint;
-            rgb = (r & 0xf8u32
-                | g >> 5i32
-                | g << 11i32 & 0xe000u32
-                | b << 5i32 & 0x1f00u32)
-                as JLONG;
+            b = *fresh106 as c_uint;
+            rgb =
+                (r & 0xf8u32 | g >> 5i32 | g << 11i32 & 0xe000u32 | b << 5i32 & 0x1f00u32) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16;
             outptr = outptr.offset(2);
-            num_cols -=  1
+            num_cols -= 1
         }
-         let mut col:   JDIMENSION =  0u32;
+        let mut col: JDIMENSION = 0u32;
         while col < num_cols >> 1i32 {
             let fresh107 = inptr0;
             inptr0 = inptr0.offset(1);
-            r =  *fresh107 as c_uint;
+            r = *fresh107 as c_uint;
             let fresh108 = inptr1;
             inptr1 = inptr1.offset(1);
-            g =  *fresh108 as c_uint;
+            g = *fresh108 as c_uint;
             let fresh109 = inptr2;
             inptr2 = inptr2.offset(1);
-            b =  *fresh109 as c_uint;
-            rgb = (r & 0xf8u32
-                | g >> 5i32
-                | g << 11i32 & 0xe000u32
-                | b << 5i32 & 0x1f00u32)
-                as JLONG;
+            b = *fresh109 as c_uint;
+            rgb =
+                (r & 0xf8u32 | g >> 5i32 | g << 11i32 & 0xe000u32 | b << 5i32 & 0x1f00u32) as JLONG;
             let fresh110 = inptr0;
             inptr0 = inptr0.offset(1);
-            r =  *fresh110 as c_uint;
+            r = *fresh110 as c_uint;
             let fresh111 = inptr1;
             inptr1 = inptr1.offset(1);
-            g =  *fresh111 as c_uint;
+            g = *fresh111 as c_uint;
             let fresh112 = inptr2;
             inptr2 = inptr2.offset(1);
-            b =  *fresh112 as c_uint;
+            b = *fresh112 as c_uint;
             rgb = rgb << 16i32
-                | (r & 0xf8u32
-                    | g >> 5i32
-                    | g << 11i32 & 0xe000u32
-                    | b << 5i32 & 0x1f00u32) as c_long;
+                | (r & 0xf8u32 | g >> 5i32 | g << 11i32 & 0xe000u32 | b << 5i32 & 0x1f00u32)
+                    as c_long;
             *(outptr as *mut c_int) = rgb as c_int;
             outptr = outptr.offset(4);
-            col +=  1
+            col += 1
         }
         if num_cols & 1u32 != 0 {
-            r =  *inptr0 as c_uint;
-            g =  *inptr1 as c_uint;
-            b =  *inptr2 as c_uint;
-            rgb = (r & 0xf8u32
-                | g >> 5i32
-                | g << 11i32 & 0xe000u32
-                | b << 5i32 & 0x1f00u32)
-                as JLONG;
+            r = *inptr0 as c_uint;
+            g = *inptr1 as c_uint;
+            b = *inptr2 as c_uint;
+            rgb =
+                (r & 0xf8u32 | g >> 5i32 | g << 11i32 & 0xe000u32 | b << 5i32 & 0x1f00u32) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16
         }
     }
@@ -826,132 +703,95 @@ pub unsafe extern "C" fn rgb_rgb565D_convert_be(
     mut output_buf: JSAMPARRAY,
     mut num_rows: c_int,
 ) {
-    
-    
-    
-    
-    
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit;
     let mut num_cols: JDIMENSION = (*cinfo).output_width;
-    let mut d0: JLONG =
-        dither_matrix[((*cinfo).output_scanline & DITHER_MASK as c_uint) as usize];
+    let mut d0: JLONG = dither_matrix[((*cinfo).output_scanline & DITHER_MASK as c_uint) as usize];
     loop {
-              let mut rgb:  JLONG =  0; let mut r:  c_uint =  0; let mut g:  c_uint =  0; let mut b:  c_uint =  0;num_rows -= 1;
+        let mut rgb: JLONG = 0;
+        let mut r: c_uint = 0;
+        let mut g: c_uint = 0;
+        let mut b: c_uint = 0;
+        num_rows -= 1;
         if !(num_rows >= 0i32) {
             break;
         }
-        
-        
-        
-        
-        
-        
-         let mut inptr0:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(input_row as isize); let mut inptr1:   JSAMPROW =
-     *(*input_buf.offset(1)).offset(input_row as isize); let mut inptr2:   JSAMPROW =
-     *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row +=  1;
+
+        let mut inptr0: JSAMPROW = *(*input_buf.offset(0)).offset(input_row as isize);
+        let mut inptr1: JSAMPROW = *(*input_buf.offset(1)).offset(input_row as isize);
+        let mut inptr2: JSAMPROW = *(*input_buf.offset(2)).offset(input_row as isize);
+        input_row += 1;
         let fresh113 = output_buf;
         output_buf = output_buf.offset(1);
-         let mut outptr:   JSAMPROW =  *fresh113;
+        let mut outptr: JSAMPROW = *fresh113;
         if outptr as size_t & 3u64 != 0 {
             let fresh114 = inptr0;
             inptr0 = inptr0.offset(1);
-            r = *range_limit.offset(
-                (*fresh114 as c_int as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
+            r = *range_limit.offset((*fresh114 as c_int as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
             let fresh115 = inptr1;
             inptr1 = inptr1.offset(1);
-            g = *range_limit.offset(
-                (*fresh115 as c_int as c_long
-                    + ((d0 & 0xffi64) >> 1i32)) as isize,
-            ) as c_uint;
+            g = *range_limit
+                .offset((*fresh115 as c_int as c_long + ((d0 & 0xffi64) >> 1i32)) as isize)
+                as c_uint;
             let fresh116 = inptr2;
             inptr2 = inptr2.offset(1);
-            b = *range_limit.offset(
-                (*fresh116 as c_int as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
-            rgb = (r & 0xf8u32
-                | g >> 5i32
-                | g << 11i32 & 0xe000u32
-                | b << 5i32 & 0x1f00u32)
-                as JLONG;
+            b = *range_limit.offset((*fresh116 as c_int as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
+            rgb =
+                (r & 0xf8u32 | g >> 5i32 | g << 11i32 & 0xe000u32 | b << 5i32 & 0x1f00u32) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16;
             outptr = outptr.offset(2);
-            num_cols -=  1
+            num_cols -= 1
         }
-         let mut col:   JDIMENSION =  0u32;
+        let mut col: JDIMENSION = 0u32;
         while col < num_cols >> 1i32 {
             let fresh117 = inptr0;
             inptr0 = inptr0.offset(1);
-            r = *range_limit.offset(
-                (*fresh117 as c_int as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
+            r = *range_limit.offset((*fresh117 as c_int as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
             let fresh118 = inptr1;
             inptr1 = inptr1.offset(1);
-            g = *range_limit.offset(
-                (*fresh118 as c_int as c_long
-                    + ((d0 & 0xffi64) >> 1i32)) as isize,
-            ) as c_uint;
+            g = *range_limit
+                .offset((*fresh118 as c_int as c_long + ((d0 & 0xffi64) >> 1i32)) as isize)
+                as c_uint;
             let fresh119 = inptr2;
             inptr2 = inptr2.offset(1);
-            b = *range_limit.offset(
-                (*fresh119 as c_int as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
+            b = *range_limit.offset((*fresh119 as c_int as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
             d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
-            rgb = (r & 0xf8u32
-                | g >> 5i32
-                | g << 11i32 & 0xe000u32
-                | b << 5i32 & 0x1f00u32)
-                as JLONG;
+            rgb =
+                (r & 0xf8u32 | g >> 5i32 | g << 11i32 & 0xe000u32 | b << 5i32 & 0x1f00u32) as JLONG;
             let fresh120 = inptr0;
             inptr0 = inptr0.offset(1);
-            r = *range_limit.offset(
-                (*fresh120 as c_int as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
+            r = *range_limit.offset((*fresh120 as c_int as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
             let fresh121 = inptr1;
             inptr1 = inptr1.offset(1);
-            g = *range_limit.offset(
-                (*fresh121 as c_int as c_long
-                    + ((d0 & 0xffi64) >> 1i32)) as isize,
-            ) as c_uint;
+            g = *range_limit
+                .offset((*fresh121 as c_int as c_long + ((d0 & 0xffi64) >> 1i32)) as isize)
+                as c_uint;
             let fresh122 = inptr2;
             inptr2 = inptr2.offset(1);
-            b = *range_limit.offset(
-                (*fresh122 as c_int as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
+            b = *range_limit.offset((*fresh122 as c_int as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
             d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
             rgb = rgb << 16i32
-                | (r & 0xf8u32
-                    | g >> 5i32
-                    | g << 11i32 & 0xe000u32
-                    | b << 5i32 & 0x1f00u32) as c_long;
+                | (r & 0xf8u32 | g >> 5i32 | g << 11i32 & 0xe000u32 | b << 5i32 & 0x1f00u32)
+                    as c_long;
             *(outptr as *mut c_int) = rgb as c_int;
             outptr = outptr.offset(4);
-            col +=  1
+            col += 1
         }
         if num_cols & 1u32 != 0 {
-            r = *range_limit.offset(
-                (*inptr0 as c_int as c_long + (d0 & 0xffi64)) as isize,
-            ) as c_uint;
-            g = *range_limit.offset(
-                (*inptr1 as c_int as c_long + ((d0 & 0xffi64) >> 1i32))
-                    as isize,
-            ) as c_uint;
-            b = *range_limit.offset(
-                (*inptr2 as c_int as c_long + (d0 & 0xffi64)) as isize,
-            ) as c_uint;
-            rgb = (r & 0xf8u32
-                | g >> 5i32
-                | g << 11i32 & 0xe000u32
-                | b << 5i32 & 0x1f00u32)
-                as JLONG;
+            r = *range_limit.offset((*inptr0 as c_int as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
+            g = *range_limit
+                .offset((*inptr1 as c_int as c_long + ((d0 & 0xffi64) >> 1i32)) as isize)
+                as c_uint;
+            b = *range_limit.offset((*inptr2 as c_int as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
+            rgb =
+                (r & 0xf8u32 | g >> 5i32 | g << 11i32 & 0xe000u32 | b << 5i32 & 0x1f00u32) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16
         }
     }
@@ -964,126 +804,91 @@ pub unsafe extern "C" fn rgb_rgb565D_convert_le(
     mut output_buf: JSAMPARRAY,
     mut num_rows: c_int,
 ) {
-    
-    
-    
-    
-    
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit;
     let mut num_cols: JDIMENSION = (*cinfo).output_width;
-    let mut d0: JLONG =
-        dither_matrix[((*cinfo).output_scanline & DITHER_MASK as c_uint) as usize];
+    let mut d0: JLONG = dither_matrix[((*cinfo).output_scanline & DITHER_MASK as c_uint) as usize];
     loop {
-              let mut rgb:  JLONG =  0; let mut r:  c_uint =  0; let mut g:  c_uint =  0; let mut b:  c_uint =  0;num_rows -= 1;
+        let mut rgb: JLONG = 0;
+        let mut r: c_uint = 0;
+        let mut g: c_uint = 0;
+        let mut b: c_uint = 0;
+        num_rows -= 1;
         if !(num_rows >= 0i32) {
             break;
         }
-        
-        
-        
-        
-        
-        
-         let mut inptr0:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(input_row as isize); let mut inptr1:   JSAMPROW =
-     *(*input_buf.offset(1)).offset(input_row as isize); let mut inptr2:   JSAMPROW =
-     *(*input_buf.offset(2)).offset(input_row as isize);
-        input_row +=  1;
+
+        let mut inptr0: JSAMPROW = *(*input_buf.offset(0)).offset(input_row as isize);
+        let mut inptr1: JSAMPROW = *(*input_buf.offset(1)).offset(input_row as isize);
+        let mut inptr2: JSAMPROW = *(*input_buf.offset(2)).offset(input_row as isize);
+        input_row += 1;
         let fresh123 = output_buf;
         output_buf = output_buf.offset(1);
-         let mut outptr:   JSAMPROW =  *fresh123;
+        let mut outptr: JSAMPROW = *fresh123;
         if outptr as size_t & 3u64 != 0 {
             let fresh124 = inptr0;
             inptr0 = inptr0.offset(1);
-            r = *range_limit.offset(
-                (*fresh124 as c_int as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
+            r = *range_limit.offset((*fresh124 as c_int as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
             let fresh125 = inptr1;
             inptr1 = inptr1.offset(1);
-            g = *range_limit.offset(
-                (*fresh125 as c_int as c_long
-                    + ((d0 & 0xffi64) >> 1i32)) as isize,
-            ) as c_uint;
+            g = *range_limit
+                .offset((*fresh125 as c_int as c_long + ((d0 & 0xffi64) >> 1i32)) as isize)
+                as c_uint;
             let fresh126 = inptr2;
             inptr2 = inptr2.offset(1);
-            b = *range_limit.offset(
-                (*fresh126 as c_int as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
-            rgb = (r << 8i32 & 0xf800u32
-                | g << 3i32 & 0x7e0u32
-                | b >> 3i32) as JLONG;
+            b = *range_limit.offset((*fresh126 as c_int as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
+            rgb = (r << 8i32 & 0xf800u32 | g << 3i32 & 0x7e0u32 | b >> 3i32) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16;
             outptr = outptr.offset(2);
-            num_cols -=  1
+            num_cols -= 1
         }
-         let mut col:   JDIMENSION =  0u32;
+        let mut col: JDIMENSION = 0u32;
         while col < num_cols >> 1i32 {
             let fresh127 = inptr0;
             inptr0 = inptr0.offset(1);
-            r = *range_limit.offset(
-                (*fresh127 as c_int as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
+            r = *range_limit.offset((*fresh127 as c_int as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
             let fresh128 = inptr1;
             inptr1 = inptr1.offset(1);
-            g = *range_limit.offset(
-                (*fresh128 as c_int as c_long
-                    + ((d0 & 0xffi64) >> 1i32)) as isize,
-            ) as c_uint;
+            g = *range_limit
+                .offset((*fresh128 as c_int as c_long + ((d0 & 0xffi64) >> 1i32)) as isize)
+                as c_uint;
             let fresh129 = inptr2;
             inptr2 = inptr2.offset(1);
-            b = *range_limit.offset(
-                (*fresh129 as c_int as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
+            b = *range_limit.offset((*fresh129 as c_int as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
             d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
-            rgb = (r << 8i32 & 0xf800u32
-                | g << 3i32 & 0x7e0u32
-                | b >> 3i32) as JLONG;
+            rgb = (r << 8i32 & 0xf800u32 | g << 3i32 & 0x7e0u32 | b >> 3i32) as JLONG;
             let fresh130 = inptr0;
             inptr0 = inptr0.offset(1);
-            r = *range_limit.offset(
-                (*fresh130 as c_int as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
+            r = *range_limit.offset((*fresh130 as c_int as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
             let fresh131 = inptr1;
             inptr1 = inptr1.offset(1);
-            g = *range_limit.offset(
-                (*fresh131 as c_int as c_long
-                    + ((d0 & 0xffi64) >> 1i32)) as isize,
-            ) as c_uint;
+            g = *range_limit
+                .offset((*fresh131 as c_int as c_long + ((d0 & 0xffi64) >> 1i32)) as isize)
+                as c_uint;
             let fresh132 = inptr2;
             inptr2 = inptr2.offset(1);
-            b = *range_limit.offset(
-                (*fresh132 as c_int as c_long + (d0 & 0xffi64))
-                    as isize,
-            ) as c_uint;
+            b = *range_limit.offset((*fresh132 as c_int as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
             d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
-            rgb = ((r << 8i32 & 0xf800u32
-                | g << 3i32 & 0x7e0u32
-                | b >> 3i32)
-                << 16i32) as c_long
+            rgb = ((r << 8i32 & 0xf800u32 | g << 3i32 & 0x7e0u32 | b >> 3i32) << 16i32) as c_long
                 | rgb;
             *(outptr as *mut c_int) = rgb as c_int;
             outptr = outptr.offset(4);
-            col +=  1
+            col += 1
         }
         if num_cols & 1u32 != 0 {
-            r = *range_limit.offset(
-                (*inptr0 as c_int as c_long + (d0 & 0xffi64)) as isize,
-            ) as c_uint;
-            g = *range_limit.offset(
-                (*inptr1 as c_int as c_long + ((d0 & 0xffi64) >> 1i32))
-                    as isize,
-            ) as c_uint;
-            b = *range_limit.offset(
-                (*inptr2 as c_int as c_long + (d0 & 0xffi64)) as isize,
-            ) as c_uint;
-            rgb = (r << 8i32 & 0xf800u32
-                | g << 3i32 & 0x7e0u32
-                | b >> 3i32) as JLONG;
+            r = *range_limit.offset((*inptr0 as c_int as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
+            g = *range_limit
+                .offset((*inptr1 as c_int as c_long + ((d0 & 0xffi64) >> 1i32)) as isize)
+                as c_uint;
+            b = *range_limit.offset((*inptr2 as c_int as c_long + (d0 & 0xffi64)) as isize)
+                as c_uint;
+            rgb = (r << 8i32 & 0xf800u32 | g << 3i32 & 0x7e0u32 | b >> 3i32) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16
         }
     }
@@ -1096,66 +901,52 @@ pub unsafe extern "C" fn gray_rgb565_convert_be(
     mut output_buf: JSAMPARRAY,
     mut num_rows: c_int,
 ) {
-    
-    
-    
     let mut num_cols: JDIMENSION = (*cinfo).output_width;
     loop {
-            let mut rgb:  JLONG =  0; let mut g:  c_uint =  0;num_rows -= 1;
+        let mut rgb: JLONG = 0;
+        let mut g: c_uint = 0;
+        num_rows -= 1;
         if !(num_rows >= 0i32) {
             break;
         }
-        
-        
+
         let fresh133 = input_row;
-        input_row +=  1;
-         let mut inptr:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(fresh133 as isize);
+        input_row += 1;
+        let mut inptr: JSAMPROW = *(*input_buf.offset(0)).offset(fresh133 as isize);
         let fresh134 = output_buf;
         output_buf = output_buf.offset(1);
-         let mut outptr:   JSAMPROW =  *fresh134;
+        let mut outptr: JSAMPROW = *fresh134;
         if outptr as size_t & 3u64 != 0 {
             let fresh135 = inptr;
             inptr = inptr.offset(1);
             g = *fresh135 as c_uint;
-            rgb = (g & 0xf8u32
-                | g >> 5i32
-                | g << 11i32 & 0xe000u32
-                | g << 5i32 & 0x1f00u32)
-                as JLONG;
+            rgb =
+                (g & 0xf8u32 | g >> 5i32 | g << 11i32 & 0xe000u32 | g << 5i32 & 0x1f00u32) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16;
             outptr = outptr.offset(2);
-            num_cols -=  1
+            num_cols -= 1
         }
-         let mut col:   JDIMENSION =  0u32;
+        let mut col: JDIMENSION = 0u32;
         while col < num_cols >> 1i32 {
             let fresh136 = inptr;
             inptr = inptr.offset(1);
             g = *fresh136 as c_uint;
-            rgb = (g & 0xf8u32
-                | g >> 5i32
-                | g << 11i32 & 0xe000u32
-                | g << 5i32 & 0x1f00u32)
-                as JLONG;
+            rgb =
+                (g & 0xf8u32 | g >> 5i32 | g << 11i32 & 0xe000u32 | g << 5i32 & 0x1f00u32) as JLONG;
             let fresh137 = inptr;
             inptr = inptr.offset(1);
             g = *fresh137 as c_uint;
             rgb = rgb << 16i32
-                | (g & 0xf8u32
-                    | g >> 5i32
-                    | g << 11i32 & 0xe000u32
-                    | g << 5i32 & 0x1f00u32) as c_long;
+                | (g & 0xf8u32 | g >> 5i32 | g << 11i32 & 0xe000u32 | g << 5i32 & 0x1f00u32)
+                    as c_long;
             *(outptr as *mut c_int) = rgb as c_int;
             outptr = outptr.offset(4);
-            col +=  1
+            col += 1
         }
         if num_cols & 1u32 != 0 {
             g = *inptr as c_uint;
-            rgb = (g & 0xf8u32
-                | g >> 5i32
-                | g << 11i32 & 0xe000u32
-                | g << 5i32 & 0x1f00u32)
-                as JLONG;
+            rgb =
+                (g & 0xf8u32 | g >> 5i32 | g << 11i32 & 0xe000u32 | g << 5i32 & 0x1f00u32) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16
         }
     }
@@ -1168,60 +959,48 @@ pub unsafe extern "C" fn gray_rgb565_convert_le(
     mut output_buf: JSAMPARRAY,
     mut num_rows: c_int,
 ) {
-    
-    
-    
     let mut num_cols: JDIMENSION = (*cinfo).output_width;
     loop {
-            let mut rgb:  JLONG =  0; let mut g:  c_uint =  0;num_rows -= 1;
+        let mut rgb: JLONG = 0;
+        let mut g: c_uint = 0;
+        num_rows -= 1;
         if !(num_rows >= 0i32) {
             break;
         }
-        
-        
+
         let fresh138 = input_row;
-        input_row +=  1;
-         let mut inptr:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(fresh138 as isize);
+        input_row += 1;
+        let mut inptr: JSAMPROW = *(*input_buf.offset(0)).offset(fresh138 as isize);
         let fresh139 = output_buf;
         output_buf = output_buf.offset(1);
-         let mut outptr:   JSAMPROW =  *fresh139;
+        let mut outptr: JSAMPROW = *fresh139;
         if outptr as size_t & 3u64 != 0 {
             let fresh140 = inptr;
             inptr = inptr.offset(1);
             g = *fresh140 as c_uint;
-            rgb = (g << 8i32 & 0xf800u32
-                | g << 3i32 & 0x7e0u32
-                | g >> 3i32) as JLONG;
+            rgb = (g << 8i32 & 0xf800u32 | g << 3i32 & 0x7e0u32 | g >> 3i32) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16;
             outptr = outptr.offset(2);
-            num_cols -=  1
+            num_cols -= 1
         }
-         let mut col:   JDIMENSION =  0u32;
+        let mut col: JDIMENSION = 0u32;
         while col < num_cols >> 1i32 {
             let fresh141 = inptr;
             inptr = inptr.offset(1);
             g = *fresh141 as c_uint;
-            rgb = (g << 8i32 & 0xf800u32
-                | g << 3i32 & 0x7e0u32
-                | g >> 3i32) as JLONG;
+            rgb = (g << 8i32 & 0xf800u32 | g << 3i32 & 0x7e0u32 | g >> 3i32) as JLONG;
             let fresh142 = inptr;
             inptr = inptr.offset(1);
             g = *fresh142 as c_uint;
-            rgb = ((g << 8i32 & 0xf800u32
-                | g << 3i32 & 0x7e0u32
-                | g >> 3i32)
-                << 16i32) as c_long
+            rgb = ((g << 8i32 & 0xf800u32 | g << 3i32 & 0x7e0u32 | g >> 3i32) << 16i32) as c_long
                 | rgb;
             *(outptr as *mut c_int) = rgb as c_int;
             outptr = outptr.offset(4);
-            col +=  1
+            col += 1
         }
         if num_cols & 1u32 != 0 {
             g = *inptr as c_uint;
-            rgb = (g << 8i32 & 0xf800u32
-                | g << 3i32 & 0x7e0u32
-                | g >> 3i32) as JLONG;
+            rgb = (g << 8i32 & 0xf800u32 | g << 3i32 & 0x7e0u32 | g >> 3i32) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16
         }
     }
@@ -1234,73 +1013,56 @@ pub unsafe extern "C" fn gray_rgb565D_convert_le(
     mut output_buf: JSAMPARRAY,
     mut num_rows: c_int,
 ) {
-    
-    
-    
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit;
     let mut num_cols: JDIMENSION = (*cinfo).output_width;
-    let mut d0: JLONG =
-        dither_matrix[((*cinfo).output_scanline & DITHER_MASK as c_uint) as usize];
+    let mut d0: JLONG = dither_matrix[((*cinfo).output_scanline & DITHER_MASK as c_uint) as usize];
     loop {
-            let mut rgb:  JLONG =  0; let mut g:  c_uint =  0;num_rows -= 1;
+        let mut rgb: JLONG = 0;
+        let mut g: c_uint = 0;
+        num_rows -= 1;
         if !(num_rows >= 0i32) {
             break;
         }
-        
-        
+
         let fresh143 = input_row;
-        input_row +=  1;
-         let mut inptr:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(fresh143 as isize);
+        input_row += 1;
+        let mut inptr: JSAMPROW = *(*input_buf.offset(0)).offset(fresh143 as isize);
         let fresh144 = output_buf;
         output_buf = output_buf.offset(1);
-         let mut outptr:   JSAMPROW =  *fresh144;
+        let mut outptr: JSAMPROW = *fresh144;
         if outptr as size_t & 3u64 != 0 {
             let fresh145 = inptr;
             inptr = inptr.offset(1);
             g = *fresh145 as c_uint;
-            g = *range_limit.offset((g as c_long + (d0 & 0xffi64)) as isize)
-                as c_uint;
-            rgb = (g << 8i32 & 0xf800u32
-                | g << 3i32 & 0x7e0u32
-                | g >> 3i32) as JLONG;
+            g = *range_limit.offset((g as c_long + (d0 & 0xffi64)) as isize) as c_uint;
+            rgb = (g << 8i32 & 0xf800u32 | g << 3i32 & 0x7e0u32 | g >> 3i32) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16;
             outptr = outptr.offset(2);
-            num_cols -=  1
+            num_cols -= 1
         }
-         let mut col:   JDIMENSION =  0u32;
+        let mut col: JDIMENSION = 0u32;
         while col < num_cols >> 1i32 {
             let fresh146 = inptr;
             inptr = inptr.offset(1);
             g = *fresh146 as c_uint;
-            g = *range_limit.offset((g as c_long + (d0 & 0xffi64)) as isize)
-                as c_uint;
-            rgb = (g << 8i32 & 0xf800u32
-                | g << 3i32 & 0x7e0u32
-                | g >> 3i32) as JLONG;
+            g = *range_limit.offset((g as c_long + (d0 & 0xffi64)) as isize) as c_uint;
+            rgb = (g << 8i32 & 0xf800u32 | g << 3i32 & 0x7e0u32 | g >> 3i32) as JLONG;
             d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
             let fresh147 = inptr;
             inptr = inptr.offset(1);
             g = *fresh147 as c_uint;
-            g = *range_limit.offset((g as c_long + (d0 & 0xffi64)) as isize)
-                as c_uint;
-            rgb = ((g << 8i32 & 0xf800u32
-                | g << 3i32 & 0x7e0u32
-                | g >> 3i32)
-                << 16i32) as c_long
+            g = *range_limit.offset((g as c_long + (d0 & 0xffi64)) as isize) as c_uint;
+            rgb = ((g << 8i32 & 0xf800u32 | g << 3i32 & 0x7e0u32 | g >> 3i32) << 16i32) as c_long
                 | rgb;
             d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
             *(outptr as *mut c_int) = rgb as c_int;
             outptr = outptr.offset(4);
-            col +=  1
+            col += 1
         }
         if num_cols & 1u32 != 0 {
             g = *inptr as c_uint;
-            g = *range_limit.offset((g as c_long + (d0 & 0xffi64)) as isize)
-                as c_uint;
-            rgb = (g << 8i32 & 0xf800u32
-                | g << 3i32 & 0x7e0u32
-                | g >> 3i32) as JLONG;
+            g = *range_limit.offset((g as c_long + (d0 & 0xffi64)) as isize) as c_uint;
+            rgb = (g << 8i32 & 0xf800u32 | g << 3i32 & 0x7e0u32 | g >> 3i32) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16
         }
     }
@@ -1313,79 +1075,60 @@ pub unsafe extern "C" fn gray_rgb565D_convert_be(
     mut output_buf: JSAMPARRAY,
     mut num_rows: c_int,
 ) {
-    
-    
-    
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit;
     let mut num_cols: JDIMENSION = (*cinfo).output_width;
-    let mut d0: JLONG =
-        dither_matrix[((*cinfo).output_scanline & DITHER_MASK as c_uint) as usize];
+    let mut d0: JLONG = dither_matrix[((*cinfo).output_scanline & DITHER_MASK as c_uint) as usize];
     loop {
-            let mut rgb:  JLONG =  0; let mut g:  c_uint =  0;num_rows -= 1;
+        let mut rgb: JLONG = 0;
+        let mut g: c_uint = 0;
+        num_rows -= 1;
         if !(num_rows >= 0i32) {
             break;
         }
-        
-        
+
         let fresh148 = input_row;
-        input_row +=  1;
-         let mut inptr:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(fresh148 as isize);
+        input_row += 1;
+        let mut inptr: JSAMPROW = *(*input_buf.offset(0)).offset(fresh148 as isize);
         let fresh149 = output_buf;
         output_buf = output_buf.offset(1);
-         let mut outptr:   JSAMPROW =  *fresh149;
+        let mut outptr: JSAMPROW = *fresh149;
         if outptr as size_t & 3u64 != 0 {
             let fresh150 = inptr;
             inptr = inptr.offset(1);
             g = *fresh150 as c_uint;
-            g = *range_limit.offset((g as c_long + (d0 & 0xffi64)) as isize)
-                as c_uint;
-            rgb = (g & 0xf8u32
-                | g >> 5i32
-                | g << 11i32 & 0xe000u32
-                | g << 5i32 & 0x1f00u32)
-                as JLONG;
+            g = *range_limit.offset((g as c_long + (d0 & 0xffi64)) as isize) as c_uint;
+            rgb =
+                (g & 0xf8u32 | g >> 5i32 | g << 11i32 & 0xe000u32 | g << 5i32 & 0x1f00u32) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16;
             outptr = outptr.offset(2);
-            num_cols -=  1
+            num_cols -= 1
         }
-         let mut col:   JDIMENSION =  0u32;
+        let mut col: JDIMENSION = 0u32;
         while col < num_cols >> 1i32 {
             let fresh151 = inptr;
             inptr = inptr.offset(1);
             g = *fresh151 as c_uint;
-            g = *range_limit.offset((g as c_long + (d0 & 0xffi64)) as isize)
-                as c_uint;
-            rgb = (g & 0xf8u32
-                | g >> 5i32
-                | g << 11i32 & 0xe000u32
-                | g << 5i32 & 0x1f00u32)
-                as JLONG;
+            g = *range_limit.offset((g as c_long + (d0 & 0xffi64)) as isize) as c_uint;
+            rgb =
+                (g & 0xf8u32 | g >> 5i32 | g << 11i32 & 0xe000u32 | g << 5i32 & 0x1f00u32) as JLONG;
             d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
             let fresh152 = inptr;
             inptr = inptr.offset(1);
             g = *fresh152 as c_uint;
-            g = *range_limit.offset((g as c_long + (d0 & 0xffi64)) as isize)
-                as c_uint;
+            g = *range_limit.offset((g as c_long + (d0 & 0xffi64)) as isize) as c_uint;
             rgb = rgb << 16i32
-                | (g & 0xf8u32
-                    | g >> 5i32
-                    | g << 11i32 & 0xe000u32
-                    | g << 5i32 & 0x1f00u32) as c_long;
+                | (g & 0xf8u32 | g >> 5i32 | g << 11i32 & 0xe000u32 | g << 5i32 & 0x1f00u32)
+                    as c_long;
             d0 = (d0 & 0xffi64) << 24i32 | d0 >> 8i32 & 0xffffffi64;
             *(outptr as *mut c_int) = rgb as c_int;
             outptr = outptr.offset(4);
-            col +=  1
+            col += 1
         }
         if num_cols & 1u32 != 0 {
             g = *inptr as c_uint;
-            g = *range_limit.offset((g as c_long + (d0 & 0xffi64)) as isize)
-                as c_uint;
-            rgb = (g & 0xf8u32
-                | g >> 5i32
-                | g << 11i32 & 0xe000u32
-                | g << 5i32 & 0x1f00u32)
-                as JLONG;
+            g = *range_limit.offset((g as c_long + (d0 & 0xffi64)) as isize) as c_uint;
+            rgb =
+                (g & 0xf8u32 | g >> 5i32 | g << 11i32 & 0xe000u32 | g << 5i32 & 0x1f00u32) as JLONG;
             *(outptr as *mut INT16) = rgb as INT16
         }
     }

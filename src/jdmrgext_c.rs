@@ -1,14 +1,8 @@
-
-
-
-
-
-
-
-
-
-use crate::jmorecfg_h::{JDIMENSION, JSAMPLE};use crate::jpegint_h::JLONG;use crate::src::jdmerge::{my_upsample_ptr};use crate::jpeglib_h::{j_decompress_ptr, JSAMPARRAY,
-                       JSAMPIMAGE, JSAMPROW};use libc::c_int;
+use crate::jmorecfg_h::{JDIMENSION, JSAMPLE};
+use crate::jpegint_h::JLONG;
+use crate::jpeglib_h::{j_decompress_ptr, JSAMPARRAY, JSAMPIMAGE, JSAMPROW};
+use crate::src::jdmerge::my_upsample_ptr;
+use libc::c_int;
 /*
  * jdmrgext.c
  *
@@ -148,18 +142,14 @@ pub unsafe extern "C" fn extxbgr_h2v1_merged_upsample_internal(
     mut in_row_group_ctr: JDIMENSION,
     mut output_buf: JSAMPARRAY,
 ) {
-     let mut y:  c_int =  0; let mut cred:  c_int =  0; let mut cgreen:  c_int =  0; let mut cblue:  c_int =  0; let mut cb:  c_int =  0; let mut cr:  c_int =  0;     let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    let mut y: c_int = 0;
+    let mut cred: c_int = 0;
+    let mut cgreen: c_int = 0;
+    let mut cblue: c_int = 0;
+    let mut cb: c_int = 0;
+    let mut cr: c_int = 0;
+    let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
+
     /* copy these pointers into registers if possible */
     /* copy these pointers into registers if possible */
     /* copy these pointers into registers if possible */
@@ -172,14 +162,12 @@ pub unsafe extern "C" fn extxbgr_h2v1_merged_upsample_internal(
     let mut Cbbtab: *mut c_int = (*upsample).Cb_b_tab;
     let mut Crgtab: *mut JLONG = (*upsample).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*upsample).Cb_g_tab;
-    
-    
-    
-    
-     let mut inptr0:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(in_row_group_ctr as isize); let mut inptr1:   JSAMPROW =
-     *(*input_buf.offset(1)).offset(in_row_group_ctr as isize); let mut inptr2:   JSAMPROW =
-     *(*input_buf.offset(2)).offset(in_row_group_ctr as isize); let mut outptr:   JSAMPROW =  *output_buf.offset(0); let mut col:   JDIMENSION =  (*cinfo).output_width >> 1i32;
+
+    let mut inptr0: JSAMPROW = *(*input_buf.offset(0)).offset(in_row_group_ctr as isize);
+    let mut inptr1: JSAMPROW = *(*input_buf.offset(1)).offset(in_row_group_ctr as isize);
+    let mut inptr2: JSAMPROW = *(*input_buf.offset(2)).offset(in_row_group_ctr as isize);
+    let mut outptr: JSAMPROW = *output_buf.offset(0);
+    let mut col: JDIMENSION = (*cinfo).output_width >> 1i32;
     while col > 0u32 {
         /* Do the chroma part of the calculation */
         /* Do the chroma part of the calculation */
@@ -195,8 +183,7 @@ pub unsafe extern "C" fn extxbgr_h2v1_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh1 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         /* Fetch 2 Y values and emit 2 pixels */
         /* Fetch 2 Y values and emit 2 pixels */
@@ -221,7 +208,7 @@ pub unsafe extern "C" fn extxbgr_h2v1_merged_upsample_internal(
         *outptr.offset(RGB_BLUE_0 as isize) = *range_limit.offset((y + cblue) as isize);
         *outptr.offset(RGB_ALPHA_0 as isize) = 0xffu8;
         outptr = outptr.offset(RGB_PIXELSIZE_0 as isize);
-        col -=  1
+        col -= 1
     }
     /* If image width is odd, do the last output column separately */
     /* If image width is odd, do the last output column separately */
@@ -234,8 +221,7 @@ pub unsafe extern "C" fn extxbgr_h2v1_merged_upsample_internal(
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr0 as c_int;
         *outptr.offset(RGB_RED_0 as isize) = *range_limit.offset((y + cred) as isize);
@@ -251,31 +237,25 @@ pub unsafe extern "C" fn h2v1_merged_upsample_internal(
     mut in_row_group_ctr: JDIMENSION,
     mut output_buf: JSAMPARRAY,
 ) {
-     let mut y:  c_int =  0; let mut cred:  c_int =  0; let mut cgreen:  c_int =  0; let mut cblue:  c_int =  0; let mut cb:  c_int =  0; let mut cr:  c_int =  0;     let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    let mut y: c_int = 0;
+    let mut cred: c_int = 0;
+    let mut cgreen: c_int = 0;
+    let mut cblue: c_int = 0;
+    let mut cb: c_int = 0;
+    let mut cr: c_int = 0;
+    let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
+
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit;
     let mut Crrtab: *mut c_int = (*upsample).Cr_r_tab;
     let mut Cbbtab: *mut c_int = (*upsample).Cb_b_tab;
     let mut Crgtab: *mut JLONG = (*upsample).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*upsample).Cb_g_tab;
-    
-    
-    
-    
-     let mut inptr0:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(in_row_group_ctr as isize); let mut inptr1:   JSAMPROW =
-     *(*input_buf.offset(1)).offset(in_row_group_ctr as isize); let mut inptr2:   JSAMPROW =
-     *(*input_buf.offset(2)).offset(in_row_group_ctr as isize); let mut outptr:   JSAMPROW =  *output_buf.offset(0); let mut col:   JDIMENSION =  (*cinfo).output_width >> 1i32;
+
+    let mut inptr0: JSAMPROW = *(*input_buf.offset(0)).offset(in_row_group_ctr as isize);
+    let mut inptr1: JSAMPROW = *(*input_buf.offset(1)).offset(in_row_group_ctr as isize);
+    let mut inptr2: JSAMPROW = *(*input_buf.offset(2)).offset(in_row_group_ctr as isize);
+    let mut outptr: JSAMPROW = *output_buf.offset(0);
+    let mut col: JDIMENSION = (*cinfo).output_width >> 1i32;
     while col > 0u32 {
         let fresh4 = inptr1;
         inptr1 = inptr1.offset(1);
@@ -284,45 +264,34 @@ pub unsafe extern "C" fn h2v1_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh5 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh6 = inptr0;
         inptr0 = inptr0.offset(1);
         y = *fresh6 as c_int;
-        *outptr.offset(RGB_RED_5 as isize) =
-            *range_limit.offset((y + cred) as isize);
-        *outptr.offset(RGB_GREEN_5 as isize) =
-            *range_limit.offset((y + cgreen) as isize);
-        *outptr.offset(RGB_BLUE_5 as isize) =
-            *range_limit.offset((y + cblue) as isize);
+        *outptr.offset(RGB_RED_5 as isize) = *range_limit.offset((y + cred) as isize);
+        *outptr.offset(RGB_GREEN_5 as isize) = *range_limit.offset((y + cgreen) as isize);
+        *outptr.offset(RGB_BLUE_5 as isize) = *range_limit.offset((y + cblue) as isize);
         outptr = outptr.offset(RGB_PIXELSIZE_5 as isize);
         let fresh7 = inptr0;
         inptr0 = inptr0.offset(1);
         y = *fresh7 as c_int;
-        *outptr.offset(RGB_RED_5 as isize) =
-            *range_limit.offset((y + cred) as isize);
-        *outptr.offset(RGB_GREEN_5 as isize) =
-            *range_limit.offset((y + cgreen) as isize);
-        *outptr.offset(RGB_BLUE_5 as isize) =
-            *range_limit.offset((y + cblue) as isize);
+        *outptr.offset(RGB_RED_5 as isize) = *range_limit.offset((y + cred) as isize);
+        *outptr.offset(RGB_GREEN_5 as isize) = *range_limit.offset((y + cgreen) as isize);
+        *outptr.offset(RGB_BLUE_5 as isize) = *range_limit.offset((y + cblue) as isize);
         outptr = outptr.offset(RGB_PIXELSIZE_5 as isize);
-        col -=  1
+        col -= 1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr0 as c_int;
-        *outptr.offset(RGB_RED_5 as isize) =
-            *range_limit.offset((y + cred) as isize);
-        *outptr.offset(RGB_GREEN_5 as isize) =
-            *range_limit.offset((y + cgreen) as isize);
-        *outptr.offset(RGB_BLUE_5 as isize) =
-            *range_limit.offset((y + cblue) as isize)
+        *outptr.offset(RGB_RED_5 as isize) = *range_limit.offset((y + cred) as isize);
+        *outptr.offset(RGB_GREEN_5 as isize) = *range_limit.offset((y + cgreen) as isize);
+        *outptr.offset(RGB_BLUE_5 as isize) = *range_limit.offset((y + cblue) as isize)
     };
 }
 #[inline(always)]
@@ -332,31 +301,25 @@ pub unsafe extern "C" fn extrgb_h2v1_merged_upsample_internal(
     mut in_row_group_ctr: JDIMENSION,
     mut output_buf: JSAMPARRAY,
 ) {
-     let mut y:  c_int =  0; let mut cred:  c_int =  0; let mut cgreen:  c_int =  0; let mut cblue:  c_int =  0; let mut cb:  c_int =  0; let mut cr:  c_int =  0;     let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    let mut y: c_int = 0;
+    let mut cred: c_int = 0;
+    let mut cgreen: c_int = 0;
+    let mut cblue: c_int = 0;
+    let mut cb: c_int = 0;
+    let mut cr: c_int = 0;
+    let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
+
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit;
     let mut Crrtab: *mut c_int = (*upsample).Cr_r_tab;
     let mut Cbbtab: *mut c_int = (*upsample).Cb_b_tab;
     let mut Crgtab: *mut JLONG = (*upsample).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*upsample).Cb_g_tab;
-    
-    
-    
-    
-     let mut inptr0:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(in_row_group_ctr as isize); let mut inptr1:   JSAMPROW =
-     *(*input_buf.offset(1)).offset(in_row_group_ctr as isize); let mut inptr2:   JSAMPROW =
-     *(*input_buf.offset(2)).offset(in_row_group_ctr as isize); let mut outptr:   JSAMPROW =  *output_buf.offset(0); let mut col:   JDIMENSION =  (*cinfo).output_width >> 1i32;
+
+    let mut inptr0: JSAMPROW = *(*input_buf.offset(0)).offset(in_row_group_ctr as isize);
+    let mut inptr1: JSAMPROW = *(*input_buf.offset(1)).offset(in_row_group_ctr as isize);
+    let mut inptr2: JSAMPROW = *(*input_buf.offset(2)).offset(in_row_group_ctr as isize);
+    let mut outptr: JSAMPROW = *output_buf.offset(0);
+    let mut col: JDIMENSION = (*cinfo).output_width >> 1i32;
     while col > 0u32 {
         let fresh8 = inptr1;
         inptr1 = inptr1.offset(1);
@@ -365,8 +328,7 @@ pub unsafe extern "C" fn extrgb_h2v1_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh9 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh10 = inptr0;
         inptr0 = inptr0.offset(1);
@@ -382,14 +344,13 @@ pub unsafe extern "C" fn extrgb_h2v1_merged_upsample_internal(
         *outptr.offset(RGB_GREEN_4 as isize) = *range_limit.offset((y + cgreen) as isize);
         *outptr.offset(RGB_BLUE_4 as isize) = *range_limit.offset((y + cblue) as isize);
         outptr = outptr.offset(RGB_PIXELSIZE_4 as isize);
-        col -=  1
+        col -= 1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr0 as c_int;
         *outptr.offset(RGB_RED_4 as isize) = *range_limit.offset((y + cred) as isize);
@@ -404,31 +365,25 @@ pub unsafe extern "C" fn extrgbx_h2v1_merged_upsample_internal(
     mut in_row_group_ctr: JDIMENSION,
     mut output_buf: JSAMPARRAY,
 ) {
-     let mut y:  c_int =  0; let mut cred:  c_int =  0; let mut cgreen:  c_int =  0; let mut cblue:  c_int =  0; let mut cb:  c_int =  0; let mut cr:  c_int =  0;     let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    let mut y: c_int = 0;
+    let mut cred: c_int = 0;
+    let mut cgreen: c_int = 0;
+    let mut cblue: c_int = 0;
+    let mut cb: c_int = 0;
+    let mut cr: c_int = 0;
+    let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
+
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit;
     let mut Crrtab: *mut c_int = (*upsample).Cr_r_tab;
     let mut Cbbtab: *mut c_int = (*upsample).Cb_b_tab;
     let mut Crgtab: *mut JLONG = (*upsample).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*upsample).Cb_g_tab;
-    
-    
-    
-    
-     let mut inptr0:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(in_row_group_ctr as isize); let mut inptr1:   JSAMPROW =
-     *(*input_buf.offset(1)).offset(in_row_group_ctr as isize); let mut inptr2:   JSAMPROW =
-     *(*input_buf.offset(2)).offset(in_row_group_ctr as isize); let mut outptr:   JSAMPROW =  *output_buf.offset(0); let mut col:   JDIMENSION =  (*cinfo).output_width >> 1i32;
+
+    let mut inptr0: JSAMPROW = *(*input_buf.offset(0)).offset(in_row_group_ctr as isize);
+    let mut inptr1: JSAMPROW = *(*input_buf.offset(1)).offset(in_row_group_ctr as isize);
+    let mut inptr2: JSAMPROW = *(*input_buf.offset(2)).offset(in_row_group_ctr as isize);
+    let mut outptr: JSAMPROW = *output_buf.offset(0);
+    let mut col: JDIMENSION = (*cinfo).output_width >> 1i32;
     while col > 0u32 {
         let fresh12 = inptr1;
         inptr1 = inptr1.offset(1);
@@ -437,8 +392,7 @@ pub unsafe extern "C" fn extrgbx_h2v1_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh13 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh14 = inptr0;
         inptr0 = inptr0.offset(1);
@@ -456,14 +410,13 @@ pub unsafe extern "C" fn extrgbx_h2v1_merged_upsample_internal(
         *outptr.offset(RGB_BLUE_2 as isize) = *range_limit.offset((y + cblue) as isize);
         *outptr.offset(RGB_ALPHA_2 as isize) = 0xffu8;
         outptr = outptr.offset(RGB_PIXELSIZE_2 as isize);
-        col -=  1
+        col -= 1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr0 as c_int;
         *outptr.offset(RGB_RED_2 as isize) = *range_limit.offset((y + cred) as isize);
@@ -479,31 +432,25 @@ pub unsafe extern "C" fn extbgr_h2v1_merged_upsample_internal(
     mut in_row_group_ctr: JDIMENSION,
     mut output_buf: JSAMPARRAY,
 ) {
-     let mut y:  c_int =  0; let mut cred:  c_int =  0; let mut cgreen:  c_int =  0; let mut cblue:  c_int =  0; let mut cb:  c_int =  0; let mut cr:  c_int =  0;     let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    let mut y: c_int = 0;
+    let mut cred: c_int = 0;
+    let mut cgreen: c_int = 0;
+    let mut cblue: c_int = 0;
+    let mut cb: c_int = 0;
+    let mut cr: c_int = 0;
+    let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
+
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit;
     let mut Crrtab: *mut c_int = (*upsample).Cr_r_tab;
     let mut Cbbtab: *mut c_int = (*upsample).Cb_b_tab;
     let mut Crgtab: *mut JLONG = (*upsample).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*upsample).Cb_g_tab;
-    
-    
-    
-    
-     let mut inptr0:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(in_row_group_ctr as isize); let mut inptr1:   JSAMPROW =
-     *(*input_buf.offset(1)).offset(in_row_group_ctr as isize); let mut inptr2:   JSAMPROW =
-     *(*input_buf.offset(2)).offset(in_row_group_ctr as isize); let mut outptr:   JSAMPROW =  *output_buf.offset(0); let mut col:   JDIMENSION =  (*cinfo).output_width >> 1i32;
+
+    let mut inptr0: JSAMPROW = *(*input_buf.offset(0)).offset(in_row_group_ctr as isize);
+    let mut inptr1: JSAMPROW = *(*input_buf.offset(1)).offset(in_row_group_ctr as isize);
+    let mut inptr2: JSAMPROW = *(*input_buf.offset(2)).offset(in_row_group_ctr as isize);
+    let mut outptr: JSAMPROW = *output_buf.offset(0);
+    let mut col: JDIMENSION = (*cinfo).output_width >> 1i32;
     while col > 0u32 {
         let fresh16 = inptr1;
         inptr1 = inptr1.offset(1);
@@ -512,8 +459,7 @@ pub unsafe extern "C" fn extbgr_h2v1_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh17 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh18 = inptr0;
         inptr0 = inptr0.offset(1);
@@ -529,14 +475,13 @@ pub unsafe extern "C" fn extbgr_h2v1_merged_upsample_internal(
         *outptr.offset(RGB_GREEN_3 as isize) = *range_limit.offset((y + cgreen) as isize);
         *outptr.offset(RGB_BLUE_3 as isize) = *range_limit.offset((y + cblue) as isize);
         outptr = outptr.offset(RGB_PIXELSIZE_3 as isize);
-        col -=  1
+        col -= 1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr0 as c_int;
         *outptr.offset(RGB_RED_3 as isize) = *range_limit.offset((y + cred) as isize);
@@ -551,31 +496,25 @@ pub unsafe extern "C" fn extbgrx_h2v1_merged_upsample_internal(
     mut in_row_group_ctr: JDIMENSION,
     mut output_buf: JSAMPARRAY,
 ) {
-     let mut y:  c_int =  0; let mut cred:  c_int =  0; let mut cgreen:  c_int =  0; let mut cblue:  c_int =  0; let mut cb:  c_int =  0; let mut cr:  c_int =  0;     let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    let mut y: c_int = 0;
+    let mut cred: c_int = 0;
+    let mut cgreen: c_int = 0;
+    let mut cblue: c_int = 0;
+    let mut cb: c_int = 0;
+    let mut cr: c_int = 0;
+    let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
+
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit;
     let mut Crrtab: *mut c_int = (*upsample).Cr_r_tab;
     let mut Cbbtab: *mut c_int = (*upsample).Cb_b_tab;
     let mut Crgtab: *mut JLONG = (*upsample).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*upsample).Cb_g_tab;
-    
-    
-    
-    
-     let mut inptr0:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(in_row_group_ctr as isize); let mut inptr1:   JSAMPROW =
-     *(*input_buf.offset(1)).offset(in_row_group_ctr as isize); let mut inptr2:   JSAMPROW =
-     *(*input_buf.offset(2)).offset(in_row_group_ctr as isize); let mut outptr:   JSAMPROW =  *output_buf.offset(0); let mut col:   JDIMENSION =  (*cinfo).output_width >> 1i32;
+
+    let mut inptr0: JSAMPROW = *(*input_buf.offset(0)).offset(in_row_group_ctr as isize);
+    let mut inptr1: JSAMPROW = *(*input_buf.offset(1)).offset(in_row_group_ctr as isize);
+    let mut inptr2: JSAMPROW = *(*input_buf.offset(2)).offset(in_row_group_ctr as isize);
+    let mut outptr: JSAMPROW = *output_buf.offset(0);
+    let mut col: JDIMENSION = (*cinfo).output_width >> 1i32;
     while col > 0u32 {
         let fresh20 = inptr1;
         inptr1 = inptr1.offset(1);
@@ -584,8 +523,7 @@ pub unsafe extern "C" fn extbgrx_h2v1_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh21 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh22 = inptr0;
         inptr0 = inptr0.offset(1);
@@ -603,14 +541,13 @@ pub unsafe extern "C" fn extbgrx_h2v1_merged_upsample_internal(
         *outptr.offset(RGB_BLUE_1 as isize) = *range_limit.offset((y + cblue) as isize);
         *outptr.offset(RGB_ALPHA_1 as isize) = 0xffu8;
         outptr = outptr.offset(RGB_PIXELSIZE_1 as isize);
-        col -=  1
+        col -= 1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr0 as c_int;
         *outptr.offset(RGB_RED_1 as isize) = *range_limit.offset((y + cred) as isize);
@@ -626,31 +563,25 @@ pub unsafe extern "C" fn extxrgb_h2v1_merged_upsample_internal(
     mut in_row_group_ctr: JDIMENSION,
     mut output_buf: JSAMPARRAY,
 ) {
-     let mut y:  c_int =  0; let mut cred:  c_int =  0; let mut cgreen:  c_int =  0; let mut cblue:  c_int =  0; let mut cb:  c_int =  0; let mut cr:  c_int =  0;     let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    let mut y: c_int = 0;
+    let mut cred: c_int = 0;
+    let mut cgreen: c_int = 0;
+    let mut cblue: c_int = 0;
+    let mut cb: c_int = 0;
+    let mut cr: c_int = 0;
+    let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
+
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit;
     let mut Crrtab: *mut c_int = (*upsample).Cr_r_tab;
     let mut Cbbtab: *mut c_int = (*upsample).Cb_b_tab;
     let mut Crgtab: *mut JLONG = (*upsample).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*upsample).Cb_g_tab;
-    
-    
-    
-    
-     let mut inptr0:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(in_row_group_ctr as isize); let mut inptr1:   JSAMPROW =
-     *(*input_buf.offset(1)).offset(in_row_group_ctr as isize); let mut inptr2:   JSAMPROW =
-     *(*input_buf.offset(2)).offset(in_row_group_ctr as isize); let mut outptr:   JSAMPROW =  *output_buf.offset(0); let mut col:   JDIMENSION =  (*cinfo).output_width >> 1i32;
+
+    let mut inptr0: JSAMPROW = *(*input_buf.offset(0)).offset(in_row_group_ctr as isize);
+    let mut inptr1: JSAMPROW = *(*input_buf.offset(1)).offset(in_row_group_ctr as isize);
+    let mut inptr2: JSAMPROW = *(*input_buf.offset(2)).offset(in_row_group_ctr as isize);
+    let mut outptr: JSAMPROW = *output_buf.offset(0);
+    let mut col: JDIMENSION = (*cinfo).output_width >> 1i32;
     while col > 0u32 {
         let fresh24 = inptr1;
         inptr1 = inptr1.offset(1);
@@ -659,8 +590,7 @@ pub unsafe extern "C" fn extxrgb_h2v1_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh25 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh26 = inptr0;
         inptr0 = inptr0.offset(1);
@@ -678,14 +608,13 @@ pub unsafe extern "C" fn extxrgb_h2v1_merged_upsample_internal(
         *outptr.offset(RGB_BLUE as isize) = *range_limit.offset((y + cblue) as isize);
         *outptr.offset(RGB_ALPHA as isize) = 0xffu8;
         outptr = outptr.offset(RGB_PIXELSIZE as isize);
-        col -=  1
+        col -= 1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr0 as c_int;
         *outptr.offset(RGB_RED as isize) = *range_limit.offset((y + cred) as isize);
@@ -728,20 +657,14 @@ pub unsafe extern "C" fn extbgr_h2v2_merged_upsample_internal(
     mut in_row_group_ctr: JDIMENSION,
     mut output_buf: JSAMPARRAY,
 ) {
-     let mut y:  c_int =  0; let mut cred:  c_int =  0; let mut cgreen:  c_int =  0; let mut cblue:  c_int =  0; let mut cb:  c_int =  0; let mut cr:  c_int =  0;       let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    let mut y: c_int = 0;
+    let mut cred: c_int = 0;
+    let mut cgreen: c_int = 0;
+    let mut cblue: c_int = 0;
+    let mut cb: c_int = 0;
+    let mut cr: c_int = 0;
+    let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
+
     /* copy these pointers into registers if possible */
     /* copy these pointers into registers if possible */
     /* copy these pointers into registers if possible */
@@ -754,21 +677,15 @@ pub unsafe extern "C" fn extbgr_h2v2_merged_upsample_internal(
     let mut Cbbtab: *mut c_int = (*upsample).Cb_b_tab;
     let mut Crgtab: *mut JLONG = (*upsample).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*upsample).Cb_g_tab;
-    
-    
-    
-    
-    
-    
-     let mut inptr00:   JSAMPROW =
-     *(*input_buf.offset(0))
-        .offset((in_row_group_ctr * 2u32) as isize); let mut inptr01:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(
-        (
-        in_row_group_ctr * 2u32 + 1u32) as isize,
-    ); let mut inptr1:   JSAMPROW =
-     *(*input_buf.offset(1)).offset(in_row_group_ctr as isize); let mut inptr2:   JSAMPROW =
-     *(*input_buf.offset(2)).offset(in_row_group_ctr as isize); let mut outptr0:   JSAMPROW =  *output_buf.offset(0); let mut outptr1:   JSAMPROW =  *output_buf.offset(1); let mut col:   JDIMENSION =  (*cinfo).output_width >> 1i32;
+
+    let mut inptr00: JSAMPROW = *(*input_buf.offset(0)).offset((in_row_group_ctr * 2u32) as isize);
+    let mut inptr01: JSAMPROW =
+        *(*input_buf.offset(0)).offset((in_row_group_ctr * 2u32 + 1u32) as isize);
+    let mut inptr1: JSAMPROW = *(*input_buf.offset(1)).offset(in_row_group_ctr as isize);
+    let mut inptr2: JSAMPROW = *(*input_buf.offset(2)).offset(in_row_group_ctr as isize);
+    let mut outptr0: JSAMPROW = *output_buf.offset(0);
+    let mut outptr1: JSAMPROW = *output_buf.offset(1);
+    let mut col: JDIMENSION = (*cinfo).output_width >> 1i32;
     while col > 0u32 {
         /* Do the chroma part of the calculation */
         /* Do the chroma part of the calculation */
@@ -784,8 +701,7 @@ pub unsafe extern "C" fn extbgr_h2v2_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh29 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         /* Fetch 4 Y values and emit 4 pixels */
         /* Fetch 4 Y values and emit 4 pixels */
@@ -822,7 +738,7 @@ pub unsafe extern "C" fn extbgr_h2v2_merged_upsample_internal(
         *outptr1.offset(RGB_GREEN_3 as isize) = *range_limit.offset((y + cgreen) as isize);
         *outptr1.offset(RGB_BLUE_3 as isize) = *range_limit.offset((y + cblue) as isize);
         outptr1 = outptr1.offset(RGB_PIXELSIZE_3 as isize);
-        col -=  1
+        col -= 1
     }
     /* If image width is odd, do the last output column separately */
     /* If image width is odd, do the last output column separately */
@@ -835,8 +751,7 @@ pub unsafe extern "C" fn extbgr_h2v2_merged_upsample_internal(
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr00 as c_int;
         *outptr0.offset(RGB_RED_3 as isize) = *range_limit.offset((y + cred) as isize);
@@ -855,40 +770,28 @@ pub unsafe extern "C" fn extrgbx_h2v2_merged_upsample_internal(
     mut in_row_group_ctr: JDIMENSION,
     mut output_buf: JSAMPARRAY,
 ) {
-     let mut y:  c_int =  0; let mut cred:  c_int =  0; let mut cgreen:  c_int =  0; let mut cblue:  c_int =  0; let mut cb:  c_int =  0; let mut cr:  c_int =  0;       let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    let mut y: c_int = 0;
+    let mut cred: c_int = 0;
+    let mut cgreen: c_int = 0;
+    let mut cblue: c_int = 0;
+    let mut cb: c_int = 0;
+    let mut cr: c_int = 0;
+    let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
+
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit;
     let mut Crrtab: *mut c_int = (*upsample).Cr_r_tab;
     let mut Cbbtab: *mut c_int = (*upsample).Cb_b_tab;
     let mut Crgtab: *mut JLONG = (*upsample).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*upsample).Cb_g_tab;
-    
-    
-    
-    
-    
-    
-     let mut inptr00:   JSAMPROW =
-     *(*input_buf.offset(0))
-        .offset((in_row_group_ctr * 2u32) as isize); let mut inptr01:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(
-        (
-        in_row_group_ctr * 2u32 + 1u32) as isize,
-    ); let mut inptr1:   JSAMPROW =
-     *(*input_buf.offset(1)).offset(in_row_group_ctr as isize); let mut inptr2:   JSAMPROW =
-     *(*input_buf.offset(2)).offset(in_row_group_ctr as isize); let mut outptr0:   JSAMPROW =  *output_buf.offset(0); let mut outptr1:   JSAMPROW =  *output_buf.offset(1); let mut col:   JDIMENSION =  (*cinfo).output_width >> 1i32;
+
+    let mut inptr00: JSAMPROW = *(*input_buf.offset(0)).offset((in_row_group_ctr * 2u32) as isize);
+    let mut inptr01: JSAMPROW =
+        *(*input_buf.offset(0)).offset((in_row_group_ctr * 2u32 + 1u32) as isize);
+    let mut inptr1: JSAMPROW = *(*input_buf.offset(1)).offset(in_row_group_ctr as isize);
+    let mut inptr2: JSAMPROW = *(*input_buf.offset(2)).offset(in_row_group_ctr as isize);
+    let mut outptr0: JSAMPROW = *output_buf.offset(0);
+    let mut outptr1: JSAMPROW = *output_buf.offset(1);
+    let mut col: JDIMENSION = (*cinfo).output_width >> 1i32;
     while col > 0u32 {
         let fresh34 = inptr1;
         inptr1 = inptr1.offset(1);
@@ -897,8 +800,7 @@ pub unsafe extern "C" fn extrgbx_h2v2_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh35 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh36 = inptr00;
         inptr00 = inptr00.offset(1);
@@ -932,14 +834,13 @@ pub unsafe extern "C" fn extrgbx_h2v2_merged_upsample_internal(
         *outptr1.offset(RGB_BLUE_2 as isize) = *range_limit.offset((y + cblue) as isize);
         *outptr1.offset(RGB_ALPHA_2 as isize) = 0xffu8;
         outptr1 = outptr1.offset(RGB_PIXELSIZE_2 as isize);
-        col -=  1
+        col -= 1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr00 as c_int;
         *outptr0.offset(RGB_RED_2 as isize) = *range_limit.offset((y + cred) as isize);
@@ -960,40 +861,28 @@ pub unsafe extern "C" fn extrgb_h2v2_merged_upsample_internal(
     mut in_row_group_ctr: JDIMENSION,
     mut output_buf: JSAMPARRAY,
 ) {
-     let mut y:  c_int =  0; let mut cred:  c_int =  0; let mut cgreen:  c_int =  0; let mut cblue:  c_int =  0; let mut cb:  c_int =  0; let mut cr:  c_int =  0;       let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    let mut y: c_int = 0;
+    let mut cred: c_int = 0;
+    let mut cgreen: c_int = 0;
+    let mut cblue: c_int = 0;
+    let mut cb: c_int = 0;
+    let mut cr: c_int = 0;
+    let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
+
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit;
     let mut Crrtab: *mut c_int = (*upsample).Cr_r_tab;
     let mut Cbbtab: *mut c_int = (*upsample).Cb_b_tab;
     let mut Crgtab: *mut JLONG = (*upsample).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*upsample).Cb_g_tab;
-    
-    
-    
-    
-    
-    
-     let mut inptr00:   JSAMPROW =
-     *(*input_buf.offset(0))
-        .offset((in_row_group_ctr * 2u32) as isize); let mut inptr01:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(
-        (
-        in_row_group_ctr * 2u32 + 1u32) as isize,
-    ); let mut inptr1:   JSAMPROW =
-     *(*input_buf.offset(1)).offset(in_row_group_ctr as isize); let mut inptr2:   JSAMPROW =
-     *(*input_buf.offset(2)).offset(in_row_group_ctr as isize); let mut outptr0:   JSAMPROW =  *output_buf.offset(0); let mut outptr1:   JSAMPROW =  *output_buf.offset(1); let mut col:   JDIMENSION =  (*cinfo).output_width >> 1i32;
+
+    let mut inptr00: JSAMPROW = *(*input_buf.offset(0)).offset((in_row_group_ctr * 2u32) as isize);
+    let mut inptr01: JSAMPROW =
+        *(*input_buf.offset(0)).offset((in_row_group_ctr * 2u32 + 1u32) as isize);
+    let mut inptr1: JSAMPROW = *(*input_buf.offset(1)).offset(in_row_group_ctr as isize);
+    let mut inptr2: JSAMPROW = *(*input_buf.offset(2)).offset(in_row_group_ctr as isize);
+    let mut outptr0: JSAMPROW = *output_buf.offset(0);
+    let mut outptr1: JSAMPROW = *output_buf.offset(1);
+    let mut col: JDIMENSION = (*cinfo).output_width >> 1i32;
     while col > 0u32 {
         let fresh40 = inptr1;
         inptr1 = inptr1.offset(1);
@@ -1002,8 +891,7 @@ pub unsafe extern "C" fn extrgb_h2v2_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh41 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh42 = inptr00;
         inptr00 = inptr00.offset(1);
@@ -1033,14 +921,13 @@ pub unsafe extern "C" fn extrgb_h2v2_merged_upsample_internal(
         *outptr1.offset(RGB_GREEN_4 as isize) = *range_limit.offset((y + cgreen) as isize);
         *outptr1.offset(RGB_BLUE_4 as isize) = *range_limit.offset((y + cblue) as isize);
         outptr1 = outptr1.offset(RGB_PIXELSIZE_4 as isize);
-        col -=  1
+        col -= 1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr00 as c_int;
         *outptr0.offset(RGB_RED_4 as isize) = *range_limit.offset((y + cred) as isize);
@@ -1059,40 +946,28 @@ pub unsafe extern "C" fn extbgrx_h2v2_merged_upsample_internal(
     mut in_row_group_ctr: JDIMENSION,
     mut output_buf: JSAMPARRAY,
 ) {
-     let mut y:  c_int =  0; let mut cred:  c_int =  0; let mut cgreen:  c_int =  0; let mut cblue:  c_int =  0; let mut cb:  c_int =  0; let mut cr:  c_int =  0;       let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    let mut y: c_int = 0;
+    let mut cred: c_int = 0;
+    let mut cgreen: c_int = 0;
+    let mut cblue: c_int = 0;
+    let mut cb: c_int = 0;
+    let mut cr: c_int = 0;
+    let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
+
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit;
     let mut Crrtab: *mut c_int = (*upsample).Cr_r_tab;
     let mut Cbbtab: *mut c_int = (*upsample).Cb_b_tab;
     let mut Crgtab: *mut JLONG = (*upsample).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*upsample).Cb_g_tab;
-    
-    
-    
-    
-    
-    
-     let mut inptr00:   JSAMPROW =
-     *(*input_buf.offset(0))
-        .offset((in_row_group_ctr * 2u32) as isize); let mut inptr01:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(
-        (
-        in_row_group_ctr * 2u32 + 1u32) as isize,
-    ); let mut inptr1:   JSAMPROW =
-     *(*input_buf.offset(1)).offset(in_row_group_ctr as isize); let mut inptr2:   JSAMPROW =
-     *(*input_buf.offset(2)).offset(in_row_group_ctr as isize); let mut outptr0:   JSAMPROW =  *output_buf.offset(0); let mut outptr1:   JSAMPROW =  *output_buf.offset(1); let mut col:   JDIMENSION =  (*cinfo).output_width >> 1i32;
+
+    let mut inptr00: JSAMPROW = *(*input_buf.offset(0)).offset((in_row_group_ctr * 2u32) as isize);
+    let mut inptr01: JSAMPROW =
+        *(*input_buf.offset(0)).offset((in_row_group_ctr * 2u32 + 1u32) as isize);
+    let mut inptr1: JSAMPROW = *(*input_buf.offset(1)).offset(in_row_group_ctr as isize);
+    let mut inptr2: JSAMPROW = *(*input_buf.offset(2)).offset(in_row_group_ctr as isize);
+    let mut outptr0: JSAMPROW = *output_buf.offset(0);
+    let mut outptr1: JSAMPROW = *output_buf.offset(1);
+    let mut col: JDIMENSION = (*cinfo).output_width >> 1i32;
     while col > 0u32 {
         let fresh46 = inptr1;
         inptr1 = inptr1.offset(1);
@@ -1101,8 +976,7 @@ pub unsafe extern "C" fn extbgrx_h2v2_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh47 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh48 = inptr00;
         inptr00 = inptr00.offset(1);
@@ -1136,14 +1010,13 @@ pub unsafe extern "C" fn extbgrx_h2v2_merged_upsample_internal(
         *outptr1.offset(RGB_BLUE_1 as isize) = *range_limit.offset((y + cblue) as isize);
         *outptr1.offset(RGB_ALPHA_1 as isize) = 0xffu8;
         outptr1 = outptr1.offset(RGB_PIXELSIZE_1 as isize);
-        col -=  1
+        col -= 1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr00 as c_int;
         *outptr0.offset(RGB_RED_1 as isize) = *range_limit.offset((y + cred) as isize);
@@ -1164,40 +1037,28 @@ pub unsafe extern "C" fn h2v2_merged_upsample_internal(
     mut in_row_group_ctr: JDIMENSION,
     mut output_buf: JSAMPARRAY,
 ) {
-     let mut y:  c_int =  0; let mut cred:  c_int =  0; let mut cgreen:  c_int =  0; let mut cblue:  c_int =  0; let mut cb:  c_int =  0; let mut cr:  c_int =  0;       let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    let mut y: c_int = 0;
+    let mut cred: c_int = 0;
+    let mut cgreen: c_int = 0;
+    let mut cblue: c_int = 0;
+    let mut cb: c_int = 0;
+    let mut cr: c_int = 0;
+    let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
+
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit;
     let mut Crrtab: *mut c_int = (*upsample).Cr_r_tab;
     let mut Cbbtab: *mut c_int = (*upsample).Cb_b_tab;
     let mut Crgtab: *mut JLONG = (*upsample).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*upsample).Cb_g_tab;
-    
-    
-    
-    
-    
-    
-     let mut inptr00:   JSAMPROW =
-     *(*input_buf.offset(0))
-        .offset((in_row_group_ctr * 2u32) as isize); let mut inptr01:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(
-        (
-        in_row_group_ctr * 2u32 + 1u32) as isize,
-    ); let mut inptr1:   JSAMPROW =
-     *(*input_buf.offset(1)).offset(in_row_group_ctr as isize); let mut inptr2:   JSAMPROW =
-     *(*input_buf.offset(2)).offset(in_row_group_ctr as isize); let mut outptr0:   JSAMPROW =  *output_buf.offset(0); let mut outptr1:   JSAMPROW =  *output_buf.offset(1); let mut col:   JDIMENSION =  (*cinfo).output_width >> 1i32;
+
+    let mut inptr00: JSAMPROW = *(*input_buf.offset(0)).offset((in_row_group_ctr * 2u32) as isize);
+    let mut inptr01: JSAMPROW =
+        *(*input_buf.offset(0)).offset((in_row_group_ctr * 2u32 + 1u32) as isize);
+    let mut inptr1: JSAMPROW = *(*input_buf.offset(1)).offset(in_row_group_ctr as isize);
+    let mut inptr2: JSAMPROW = *(*input_buf.offset(2)).offset(in_row_group_ctr as isize);
+    let mut outptr0: JSAMPROW = *output_buf.offset(0);
+    let mut outptr1: JSAMPROW = *output_buf.offset(1);
+    let mut col: JDIMENSION = (*cinfo).output_width >> 1i32;
     while col > 0u32 {
         let fresh52 = inptr1;
         inptr1 = inptr1.offset(1);
@@ -1206,72 +1067,52 @@ pub unsafe extern "C" fn h2v2_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh53 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh54 = inptr00;
         inptr00 = inptr00.offset(1);
         y = *fresh54 as c_int;
-        *outptr0.offset(RGB_RED_5 as isize) =
-            *range_limit.offset((y + cred) as isize);
-        *outptr0.offset(RGB_GREEN_5 as isize) =
-            *range_limit.offset((y + cgreen) as isize);
-        *outptr0.offset(RGB_BLUE_5 as isize) =
-            *range_limit.offset((y + cblue) as isize);
+        *outptr0.offset(RGB_RED_5 as isize) = *range_limit.offset((y + cred) as isize);
+        *outptr0.offset(RGB_GREEN_5 as isize) = *range_limit.offset((y + cgreen) as isize);
+        *outptr0.offset(RGB_BLUE_5 as isize) = *range_limit.offset((y + cblue) as isize);
         outptr0 = outptr0.offset(RGB_PIXELSIZE_5 as isize);
         let fresh55 = inptr00;
         inptr00 = inptr00.offset(1);
         y = *fresh55 as c_int;
-        *outptr0.offset(RGB_RED_5 as isize) =
-            *range_limit.offset((y + cred) as isize);
-        *outptr0.offset(RGB_GREEN_5 as isize) =
-            *range_limit.offset((y + cgreen) as isize);
-        *outptr0.offset(RGB_BLUE_5 as isize) =
-            *range_limit.offset((y + cblue) as isize);
+        *outptr0.offset(RGB_RED_5 as isize) = *range_limit.offset((y + cred) as isize);
+        *outptr0.offset(RGB_GREEN_5 as isize) = *range_limit.offset((y + cgreen) as isize);
+        *outptr0.offset(RGB_BLUE_5 as isize) = *range_limit.offset((y + cblue) as isize);
         outptr0 = outptr0.offset(RGB_PIXELSIZE_5 as isize);
         let fresh56 = inptr01;
         inptr01 = inptr01.offset(1);
         y = *fresh56 as c_int;
-        *outptr1.offset(RGB_RED_5 as isize) =
-            *range_limit.offset((y + cred) as isize);
-        *outptr1.offset(RGB_GREEN_5 as isize) =
-            *range_limit.offset((y + cgreen) as isize);
-        *outptr1.offset(RGB_BLUE_5 as isize) =
-            *range_limit.offset((y + cblue) as isize);
+        *outptr1.offset(RGB_RED_5 as isize) = *range_limit.offset((y + cred) as isize);
+        *outptr1.offset(RGB_GREEN_5 as isize) = *range_limit.offset((y + cgreen) as isize);
+        *outptr1.offset(RGB_BLUE_5 as isize) = *range_limit.offset((y + cblue) as isize);
         outptr1 = outptr1.offset(RGB_PIXELSIZE_5 as isize);
         let fresh57 = inptr01;
         inptr01 = inptr01.offset(1);
         y = *fresh57 as c_int;
-        *outptr1.offset(RGB_RED_5 as isize) =
-            *range_limit.offset((y + cred) as isize);
-        *outptr1.offset(RGB_GREEN_5 as isize) =
-            *range_limit.offset((y + cgreen) as isize);
-        *outptr1.offset(RGB_BLUE_5 as isize) =
-            *range_limit.offset((y + cblue) as isize);
+        *outptr1.offset(RGB_RED_5 as isize) = *range_limit.offset((y + cred) as isize);
+        *outptr1.offset(RGB_GREEN_5 as isize) = *range_limit.offset((y + cgreen) as isize);
+        *outptr1.offset(RGB_BLUE_5 as isize) = *range_limit.offset((y + cblue) as isize);
         outptr1 = outptr1.offset(RGB_PIXELSIZE_5 as isize);
-        col -=  1
+        col -= 1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr00 as c_int;
-        *outptr0.offset(RGB_RED_5 as isize) =
-            *range_limit.offset((y + cred) as isize);
-        *outptr0.offset(RGB_GREEN_5 as isize) =
-            *range_limit.offset((y + cgreen) as isize);
-        *outptr0.offset(RGB_BLUE_5 as isize) =
-            *range_limit.offset((y + cblue) as isize);
+        *outptr0.offset(RGB_RED_5 as isize) = *range_limit.offset((y + cred) as isize);
+        *outptr0.offset(RGB_GREEN_5 as isize) = *range_limit.offset((y + cgreen) as isize);
+        *outptr0.offset(RGB_BLUE_5 as isize) = *range_limit.offset((y + cblue) as isize);
         y = *inptr01 as c_int;
-        *outptr1.offset(RGB_RED_5 as isize) =
-            *range_limit.offset((y + cred) as isize);
-        *outptr1.offset(RGB_GREEN_5 as isize) =
-            *range_limit.offset((y + cgreen) as isize);
-        *outptr1.offset(RGB_BLUE_5 as isize) =
-            *range_limit.offset((y + cblue) as isize)
+        *outptr1.offset(RGB_RED_5 as isize) = *range_limit.offset((y + cred) as isize);
+        *outptr1.offset(RGB_GREEN_5 as isize) = *range_limit.offset((y + cgreen) as isize);
+        *outptr1.offset(RGB_BLUE_5 as isize) = *range_limit.offset((y + cblue) as isize)
     };
 }
 #[inline(always)]
@@ -1281,40 +1122,28 @@ pub unsafe extern "C" fn extxrgb_h2v2_merged_upsample_internal(
     mut in_row_group_ctr: JDIMENSION,
     mut output_buf: JSAMPARRAY,
 ) {
-     let mut y:  c_int =  0; let mut cred:  c_int =  0; let mut cgreen:  c_int =  0; let mut cblue:  c_int =  0; let mut cb:  c_int =  0; let mut cr:  c_int =  0;       let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    let mut y: c_int = 0;
+    let mut cred: c_int = 0;
+    let mut cgreen: c_int = 0;
+    let mut cblue: c_int = 0;
+    let mut cb: c_int = 0;
+    let mut cr: c_int = 0;
+    let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
+
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit;
     let mut Crrtab: *mut c_int = (*upsample).Cr_r_tab;
     let mut Cbbtab: *mut c_int = (*upsample).Cb_b_tab;
     let mut Crgtab: *mut JLONG = (*upsample).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*upsample).Cb_g_tab;
-    
-    
-    
-    
-    
-    
-     let mut inptr00:   JSAMPROW =
-     *(*input_buf.offset(0))
-        .offset((in_row_group_ctr * 2u32) as isize); let mut inptr01:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(
-        (
-        in_row_group_ctr * 2u32 + 1u32) as isize,
-    ); let mut inptr1:   JSAMPROW =
-     *(*input_buf.offset(1)).offset(in_row_group_ctr as isize); let mut inptr2:   JSAMPROW =
-     *(*input_buf.offset(2)).offset(in_row_group_ctr as isize); let mut outptr0:   JSAMPROW =  *output_buf.offset(0); let mut outptr1:   JSAMPROW =  *output_buf.offset(1); let mut col:   JDIMENSION =  (*cinfo).output_width >> 1i32;
+
+    let mut inptr00: JSAMPROW = *(*input_buf.offset(0)).offset((in_row_group_ctr * 2u32) as isize);
+    let mut inptr01: JSAMPROW =
+        *(*input_buf.offset(0)).offset((in_row_group_ctr * 2u32 + 1u32) as isize);
+    let mut inptr1: JSAMPROW = *(*input_buf.offset(1)).offset(in_row_group_ctr as isize);
+    let mut inptr2: JSAMPROW = *(*input_buf.offset(2)).offset(in_row_group_ctr as isize);
+    let mut outptr0: JSAMPROW = *output_buf.offset(0);
+    let mut outptr1: JSAMPROW = *output_buf.offset(1);
+    let mut col: JDIMENSION = (*cinfo).output_width >> 1i32;
     while col > 0u32 {
         let fresh58 = inptr1;
         inptr1 = inptr1.offset(1);
@@ -1323,8 +1152,7 @@ pub unsafe extern "C" fn extxrgb_h2v2_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh59 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh60 = inptr00;
         inptr00 = inptr00.offset(1);
@@ -1358,14 +1186,13 @@ pub unsafe extern "C" fn extxrgb_h2v2_merged_upsample_internal(
         *outptr1.offset(RGB_BLUE as isize) = *range_limit.offset((y + cblue) as isize);
         *outptr1.offset(RGB_ALPHA as isize) = 0xffu8;
         outptr1 = outptr1.offset(RGB_PIXELSIZE as isize);
-        col -=  1
+        col -= 1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr00 as c_int;
         *outptr0.offset(RGB_RED as isize) = *range_limit.offset((y + cred) as isize);
@@ -1386,40 +1213,28 @@ pub unsafe extern "C" fn extxbgr_h2v2_merged_upsample_internal(
     mut in_row_group_ctr: JDIMENSION,
     mut output_buf: JSAMPARRAY,
 ) {
-     let mut y:  c_int =  0; let mut cred:  c_int =  0; let mut cgreen:  c_int =  0; let mut cblue:  c_int =  0; let mut cb:  c_int =  0; let mut cr:  c_int =  0;       let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    let mut y: c_int = 0;
+    let mut cred: c_int = 0;
+    let mut cgreen: c_int = 0;
+    let mut cblue: c_int = 0;
+    let mut cb: c_int = 0;
+    let mut cr: c_int = 0;
+    let mut upsample: my_upsample_ptr = (*cinfo).upsample as my_upsample_ptr;
+
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit;
     let mut Crrtab: *mut c_int = (*upsample).Cr_r_tab;
     let mut Cbbtab: *mut c_int = (*upsample).Cb_b_tab;
     let mut Crgtab: *mut JLONG = (*upsample).Cr_g_tab;
     let mut Cbgtab: *mut JLONG = (*upsample).Cb_g_tab;
-    
-    
-    
-    
-    
-    
-     let mut inptr00:   JSAMPROW =
-     *(*input_buf.offset(0))
-        .offset((in_row_group_ctr * 2u32) as isize); let mut inptr01:   JSAMPROW =
-     *(*input_buf.offset(0)).offset(
-        (
-        in_row_group_ctr * 2u32 + 1u32) as isize,
-    ); let mut inptr1:   JSAMPROW =
-     *(*input_buf.offset(1)).offset(in_row_group_ctr as isize); let mut inptr2:   JSAMPROW =
-     *(*input_buf.offset(2)).offset(in_row_group_ctr as isize); let mut outptr0:   JSAMPROW =  *output_buf.offset(0); let mut outptr1:   JSAMPROW =  *output_buf.offset(1); let mut col:   JDIMENSION =  (*cinfo).output_width >> 1i32;
+
+    let mut inptr00: JSAMPROW = *(*input_buf.offset(0)).offset((in_row_group_ctr * 2u32) as isize);
+    let mut inptr01: JSAMPROW =
+        *(*input_buf.offset(0)).offset((in_row_group_ctr * 2u32 + 1u32) as isize);
+    let mut inptr1: JSAMPROW = *(*input_buf.offset(1)).offset(in_row_group_ctr as isize);
+    let mut inptr2: JSAMPROW = *(*input_buf.offset(2)).offset(in_row_group_ctr as isize);
+    let mut outptr0: JSAMPROW = *output_buf.offset(0);
+    let mut outptr1: JSAMPROW = *output_buf.offset(1);
+    let mut col: JDIMENSION = (*cinfo).output_width >> 1i32;
     while col > 0u32 {
         let fresh64 = inptr1;
         inptr1 = inptr1.offset(1);
@@ -1428,8 +1243,7 @@ pub unsafe extern "C" fn extxbgr_h2v2_merged_upsample_internal(
         inptr2 = inptr2.offset(1);
         cr = *fresh65 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         let fresh66 = inptr00;
         inptr00 = inptr00.offset(1);
@@ -1463,14 +1277,13 @@ pub unsafe extern "C" fn extxbgr_h2v2_merged_upsample_internal(
         *outptr1.offset(RGB_BLUE_0 as isize) = *range_limit.offset((y + cblue) as isize);
         *outptr1.offset(RGB_ALPHA_0 as isize) = 0xffu8;
         outptr1 = outptr1.offset(RGB_PIXELSIZE_0 as isize);
-        col -=  1
+        col -= 1
     }
     if (*cinfo).output_width & 1u32 != 0 {
         cb = *inptr1 as c_int;
         cr = *inptr2 as c_int;
         cred = *Crrtab.offset(cr as isize);
-        cgreen =
-            (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
+        cgreen = (*Cbgtab.offset(cb as isize) + *Crgtab.offset(cr as isize) >> 16i32) as c_int;
         cblue = *Cbbtab.offset(cb as isize);
         y = *inptr00 as c_int;
         *outptr0.offset(RGB_RED_0 as isize) = *range_limit.offset((y + cred) as isize);
@@ -1485,65 +1298,10 @@ pub unsafe extern "C" fn extxbgr_h2v2_merged_upsample_internal(
     };
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-use crate::jmorecfg_h::{RGB_BLUE_5, RGB_GREEN_5, RGB_PIXELSIZE_5, RGB_RED_5};use crate::src::jdmerge::{RGB_ALPHA, RGB_ALPHA_0, RGB_ALPHA_1, RGB_ALPHA_2,
-                          RGB_BLUE, RGB_BLUE_0, RGB_BLUE_1, RGB_BLUE_2,
-                          RGB_BLUE_3, RGB_BLUE_4, RGB_GREEN, RGB_GREEN_0,
-                          RGB_GREEN_1, RGB_GREEN_2, RGB_GREEN_3, RGB_GREEN_4,
-                          RGB_PIXELSIZE, RGB_PIXELSIZE_0, RGB_PIXELSIZE_1,
-                          RGB_PIXELSIZE_2, RGB_PIXELSIZE_3, RGB_PIXELSIZE_4,
-                          RGB_RED, RGB_RED_0, RGB_RED_1, RGB_RED_2, RGB_RED_3,
-                          RGB_RED_4};
+use crate::jmorecfg_h::{RGB_BLUE_5, RGB_GREEN_5, RGB_PIXELSIZE_5, RGB_RED_5};
+use crate::src::jdmerge::{
+    RGB_ALPHA, RGB_ALPHA_0, RGB_ALPHA_1, RGB_ALPHA_2, RGB_BLUE, RGB_BLUE_0, RGB_BLUE_1, RGB_BLUE_2,
+    RGB_BLUE_3, RGB_BLUE_4, RGB_GREEN, RGB_GREEN_0, RGB_GREEN_1, RGB_GREEN_2, RGB_GREEN_3,
+    RGB_GREEN_4, RGB_PIXELSIZE, RGB_PIXELSIZE_0, RGB_PIXELSIZE_1, RGB_PIXELSIZE_2, RGB_PIXELSIZE_3,
+    RGB_PIXELSIZE_4, RGB_RED, RGB_RED_0, RGB_RED_1, RGB_RED_2, RGB_RED_3, RGB_RED_4,
+};

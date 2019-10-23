@@ -1,107 +1,23 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-pub use crate::jmorecfg_h::{boolean, JCOEF, JDIMENSION, JOCTET, JSAMPLE,
-                            UINT16, UINT8};pub use crate::stddef_h::{size_t, NULL};pub use crate::jpeglib_h::{j_common_ptr, j_compress_ptr,
-                           jpeg_c_coef_controller, jpeg_c_main_controller,
-                           jpeg_c_prep_controller, jpeg_color_converter,
-                           jpeg_common_struct, jpeg_comp_master,
-                           jpeg_component_info, jpeg_compress_struct,
-                           jpeg_destination_mgr, jpeg_downsampler,
-                           jpeg_entropy_encoder, jpeg_error_mgr,
-                           jpeg_forward_dct, jpeg_marker_struct,
-                           jpeg_marker_writer, jpeg_memory_mgr,
-                           jpeg_progress_mgr, jpeg_saved_marker_ptr,
-                           jpeg_scan_info, jvirt_barray_control,
-                           jvirt_barray_ptr, jvirt_sarray_control,
-                           jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr,
-                           JBLOCK, JBLOCKARRAY, JBLOCKROW, JCS_CMYK,
-                           JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR,
-                           JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB,
-                           JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR,
-                           JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565,
-                           JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST,
-                           JDCT_ISLOW, JHUFF_TBL, JQUANT_TBL, JSAMPARRAY,
-                           JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD};pub use crate::stdlib::{_IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data,
-                        __off64_t, __off_t, FILE, _IO_FILE, exit,
-                        EXIT_FAILURE};pub use super::cdjpeg::{cjpeg_source_ptr, cjpeg_source_struct};
+pub use super::cdjpeg::{cjpeg_source_ptr, cjpeg_source_struct};
+pub use crate::jmorecfg_h::{boolean, JCOEF, JDIMENSION, JOCTET, JSAMPLE, UINT16, UINT8};
+pub use crate::jpeglib_h::{
+    j_common_ptr, j_compress_ptr, jpeg_c_coef_controller, jpeg_c_main_controller,
+    jpeg_c_prep_controller, jpeg_color_converter, jpeg_common_struct, jpeg_comp_master,
+    jpeg_component_info, jpeg_compress_struct, jpeg_destination_mgr, jpeg_downsampler,
+    jpeg_entropy_encoder, jpeg_error_mgr, jpeg_forward_dct, jpeg_marker_struct, jpeg_marker_writer,
+    jpeg_memory_mgr, jpeg_progress_mgr, jpeg_saved_marker_ptr, jpeg_scan_info,
+    jvirt_barray_control, jvirt_barray_ptr, jvirt_sarray_control, jvirt_sarray_ptr,
+    C2RustUnnamed_2, JCS_YCbCr, JBLOCK, JBLOCKARRAY, JBLOCKROW, JCS_CMYK, JCS_EXT_ABGR,
+    JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX,
+    JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK,
+    JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JHUFF_TBL, JQUANT_TBL, JSAMPARRAY, JSAMPROW, J_COLOR_SPACE,
+    J_DCT_METHOD,
+};
+pub use crate::stddef_h::{size_t, NULL};
+pub use crate::stdlib::{
+    _IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data, __off64_t, __off_t, exit, EXIT_FAILURE,
+    FILE, _IO_FILE,
+};
 /*
  * cdjpeg.h
  *
@@ -180,7 +96,7 @@ to write the image in bottom-up order.) */
 pub unsafe extern "C" fn jinit_read_gif(
     mut _cinfo: j_compress_ptr,
 ) -> super::cdjpeg::cjpeg_source_ptr {
-     eprintln!("GIF input is unsupported for legal reasons.  Sorry.");
+    eprintln!("GIF input is unsupported for legal reasons.  Sorry.");
     exit(EXIT_FAILURE);
     /* keep compiler happy */
 }

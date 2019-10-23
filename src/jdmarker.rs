@@ -1,317 +1,60 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-use crate::stdlib::{memcpy, memset};use libc::{c_uint, c_ulong, c_void, c_long, c_int, self};pub use crate::jmorecfg_h::{boolean, FALSE, JCOEF, JDIMENSION, JOCTET,
-                            JSAMPLE, TRUE, UINT16, UINT8};pub use crate::jpegint_h::{inverse_DCT_method_ptr, jpeg_natural_order,
-                           JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT,
-                           JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, JLONG,
-                           J_BUF_MODE};pub use crate::stddef_h::{size_t, NULL};pub use crate::jpeglib_h::{j_common_ptr, j_decompress_ptr,
-                           jpeg_alloc_huff_table, jpeg_alloc_quant_table,
-                           jpeg_color_deconverter, jpeg_color_quantizer,
-                           jpeg_common_struct, jpeg_component_info,
-                           jpeg_d_coef_controller, jpeg_d_main_controller,
-                           jpeg_d_post_controller, jpeg_decomp_master,
-                           jpeg_decompress_struct, jpeg_entropy_decoder,
-                           jpeg_error_mgr, jpeg_input_controller,
-                           jpeg_inverse_dct, jpeg_marker_parser_method,
-                           jpeg_marker_reader, jpeg_marker_struct,
-                           jpeg_memory_mgr, jpeg_progress_mgr,
-                           jpeg_saved_marker_ptr, jpeg_source_mgr,
-                           jpeg_upsampler, jvirt_barray_control,
-                           jvirt_barray_ptr, jvirt_sarray_control,
-                           jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr,
-                           DCTSIZE2, JBLOCK, JBLOCKARRAY, JBLOCKROW, JCOEFPTR,
-                           JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR,
-                           JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB,
-                           JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR,
-                           JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565,
-                           JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST,
-                           JDCT_ISLOW, JDITHER_FS, JDITHER_NONE,
-                           JDITHER_ORDERED, JHUFF_TBL, JPEG_REACHED_EOI,
-                           JPEG_REACHED_SOS, JPEG_SUSPENDED, JPOOL_IMAGE,
-                           JPOOL_PERMANENT, JQUANT_TBL, JSAMPARRAY,
-                           JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD,
-                           J_DITHER_MODE, MAX_COMPS_IN_SCAN, NUM_ARITH_TBLS,
-                           NUM_HUFF_TBLS, NUM_QUANT_TBLS};pub use super::jerror::{C2RustUnnamed_3, JERR_ARITH_NOTIMPL,
-                        JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
-                        JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID,
-                        JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
-                        JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE,
-                        JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
-                        JERR_BAD_LENGTH, JERR_BAD_LIB_VERSION,
-                        JERR_BAD_MCU_SIZE, JERR_BAD_PARAM,
-                        JERR_BAD_PARAM_VALUE, JERR_BAD_POOL_ID,
-                        JERR_BAD_PRECISION, JERR_BAD_PROGRESSION,
-                        JERR_BAD_PROG_SCRIPT, JERR_BAD_SAMPLING,
-                        JERR_BAD_SCAN_SCRIPT, JERR_BAD_STATE,
-                        JERR_BAD_STRUCT_SIZE, JERR_BAD_VIRTUAL_ACCESS,
-                        JERR_BUFFER_SIZE, JERR_CANT_SUSPEND,
-                        JERR_CCIR601_NOTIMPL, JERR_COMPONENT_COUNT,
-                        JERR_CONVERSION_NOTIMPL, JERR_DAC_INDEX,
-                        JERR_DAC_VALUE, JERR_DHT_INDEX, JERR_DQT_INDEX,
-                        JERR_EMPTY_IMAGE, JERR_EMS_READ, JERR_EMS_WRITE,
-                        JERR_EOI_EXPECTED, JERR_FILE_READ, JERR_FILE_WRITE,
-                        JERR_FRACT_SAMPLE_NOTIMPL, JERR_HUFF_CLEN_OVERFLOW,
-                        JERR_HUFF_MISSING_CODE, JERR_IMAGE_TOO_BIG,
-                        JERR_INPUT_EMPTY, JERR_INPUT_EOF,
-                        JERR_MISMATCHED_QUANT_TABLE, JERR_MISSING_DATA,
-                        JERR_MODE_CHANGE, JERR_NOTIMPL, JERR_NOT_COMPILED,
-                        JERR_NO_BACKING_STORE, JERR_NO_HUFF_TABLE,
-                        JERR_NO_IMAGE, JERR_NO_QUANT_TABLE, JERR_NO_SOI,
-                        JERR_OUT_OF_MEMORY, JERR_QUANT_COMPONENTS,
-                        JERR_QUANT_FEW_COLORS, JERR_QUANT_MANY_COLORS,
-                        JERR_SOF_DUPLICATE, JERR_SOF_NO_SOS,
-                        JERR_SOF_UNSUPPORTED, JERR_SOI_DUPLICATE,
-                        JERR_SOS_NO_SOF, JERR_TFILE_CREATE, JERR_TFILE_READ,
-                        JERR_TFILE_SEEK, JERR_TFILE_WRITE,
-                        JERR_TOO_LITTLE_DATA, JERR_UNKNOWN_MARKER,
-                        JERR_UNSUPPORTED_SUSPEND, JERR_VIRTUAL_BUG,
-                        JERR_WIDTH_OVERFLOW, JERR_XMS_READ, JERR_XMS_WRITE,
-                        JMSG_COPYRIGHT, JMSG_LASTMSGCODE, JMSG_NOMESSAGE,
-                        JMSG_VERSION, JTRC_16BIT_TABLES, JTRC_ADOBE,
-                        JTRC_APP0, JTRC_APP14, JTRC_DAC, JTRC_DHT, JTRC_DQT,
-                        JTRC_DRI, JTRC_EMS_CLOSE, JTRC_EMS_OPEN, JTRC_EOI,
-                        JTRC_HUFFBITS, JTRC_JFIF, JTRC_JFIF_BADTHUMBNAILSIZE,
-                        JTRC_JFIF_EXTENSION, JTRC_JFIF_THUMBNAIL,
-                        JTRC_MISC_MARKER, JTRC_PARMLESS_MARKER,
-                        JTRC_QUANTVALS, JTRC_QUANT_3_NCOLORS,
-                        JTRC_QUANT_NCOLORS, JTRC_QUANT_SELECTED,
-                        JTRC_RECOVERY_ACTION, JTRC_RST, JTRC_SMOOTH_NOTIMPL,
-                        JTRC_SOF, JTRC_SOF_COMPONENT, JTRC_SOI, JTRC_SOS,
-                        JTRC_SOS_COMPONENT, JTRC_SOS_PARAMS, JTRC_TFILE_CLOSE,
-                        JTRC_TFILE_OPEN, JTRC_THUMB_JPEG, JTRC_THUMB_PALETTE,
-                        JTRC_THUMB_RGB, JTRC_UNKNOWN_IDS, JTRC_XMS_CLOSE,
-                        JTRC_XMS_OPEN, JWRN_ADOBE_XFORM, JWRN_BOGUS_ICC,
-                        JWRN_BOGUS_PROGRESSION, JWRN_EXTRANEOUS_DATA,
-                        JWRN_HIT_MARKER, JWRN_HUFF_BAD_CODE, JWRN_JFIF_MAJOR,
-                        JWRN_JPEG_EOF, JWRN_MUST_RESYNC, JWRN_NOT_SEQUENTIAL,
-                        JWRN_TOO_MUCH_DATA};
+pub use super::jerror::{
+    C2RustUnnamed_3, JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
+    JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID, JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
+    JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE, JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
+    JERR_BAD_LENGTH, JERR_BAD_LIB_VERSION, JERR_BAD_MCU_SIZE, JERR_BAD_PARAM, JERR_BAD_PARAM_VALUE,
+    JERR_BAD_POOL_ID, JERR_BAD_PRECISION, JERR_BAD_PROGRESSION, JERR_BAD_PROG_SCRIPT,
+    JERR_BAD_SAMPLING, JERR_BAD_SCAN_SCRIPT, JERR_BAD_STATE, JERR_BAD_STRUCT_SIZE,
+    JERR_BAD_VIRTUAL_ACCESS, JERR_BUFFER_SIZE, JERR_CANT_SUSPEND, JERR_CCIR601_NOTIMPL,
+    JERR_COMPONENT_COUNT, JERR_CONVERSION_NOTIMPL, JERR_DAC_INDEX, JERR_DAC_VALUE, JERR_DHT_INDEX,
+    JERR_DQT_INDEX, JERR_EMPTY_IMAGE, JERR_EMS_READ, JERR_EMS_WRITE, JERR_EOI_EXPECTED,
+    JERR_FILE_READ, JERR_FILE_WRITE, JERR_FRACT_SAMPLE_NOTIMPL, JERR_HUFF_CLEN_OVERFLOW,
+    JERR_HUFF_MISSING_CODE, JERR_IMAGE_TOO_BIG, JERR_INPUT_EMPTY, JERR_INPUT_EOF,
+    JERR_MISMATCHED_QUANT_TABLE, JERR_MISSING_DATA, JERR_MODE_CHANGE, JERR_NOTIMPL,
+    JERR_NOT_COMPILED, JERR_NO_BACKING_STORE, JERR_NO_HUFF_TABLE, JERR_NO_IMAGE,
+    JERR_NO_QUANT_TABLE, JERR_NO_SOI, JERR_OUT_OF_MEMORY, JERR_QUANT_COMPONENTS,
+    JERR_QUANT_FEW_COLORS, JERR_QUANT_MANY_COLORS, JERR_SOF_DUPLICATE, JERR_SOF_NO_SOS,
+    JERR_SOF_UNSUPPORTED, JERR_SOI_DUPLICATE, JERR_SOS_NO_SOF, JERR_TFILE_CREATE, JERR_TFILE_READ,
+    JERR_TFILE_SEEK, JERR_TFILE_WRITE, JERR_TOO_LITTLE_DATA, JERR_UNKNOWN_MARKER,
+    JERR_UNSUPPORTED_SUSPEND, JERR_VIRTUAL_BUG, JERR_WIDTH_OVERFLOW, JERR_XMS_READ, JERR_XMS_WRITE,
+    JMSG_COPYRIGHT, JMSG_LASTMSGCODE, JMSG_NOMESSAGE, JMSG_VERSION, JTRC_16BIT_TABLES, JTRC_ADOBE,
+    JTRC_APP0, JTRC_APP14, JTRC_DAC, JTRC_DHT, JTRC_DQT, JTRC_DRI, JTRC_EMS_CLOSE, JTRC_EMS_OPEN,
+    JTRC_EOI, JTRC_HUFFBITS, JTRC_JFIF, JTRC_JFIF_BADTHUMBNAILSIZE, JTRC_JFIF_EXTENSION,
+    JTRC_JFIF_THUMBNAIL, JTRC_MISC_MARKER, JTRC_PARMLESS_MARKER, JTRC_QUANTVALS,
+    JTRC_QUANT_3_NCOLORS, JTRC_QUANT_NCOLORS, JTRC_QUANT_SELECTED, JTRC_RECOVERY_ACTION, JTRC_RST,
+    JTRC_SMOOTH_NOTIMPL, JTRC_SOF, JTRC_SOF_COMPONENT, JTRC_SOI, JTRC_SOS, JTRC_SOS_COMPONENT,
+    JTRC_SOS_PARAMS, JTRC_TFILE_CLOSE, JTRC_TFILE_OPEN, JTRC_THUMB_JPEG, JTRC_THUMB_PALETTE,
+    JTRC_THUMB_RGB, JTRC_UNKNOWN_IDS, JTRC_XMS_CLOSE, JTRC_XMS_OPEN, JWRN_ADOBE_XFORM,
+    JWRN_BOGUS_ICC, JWRN_BOGUS_PROGRESSION, JWRN_EXTRANEOUS_DATA, JWRN_HIT_MARKER,
+    JWRN_HUFF_BAD_CODE, JWRN_JFIF_MAJOR, JWRN_JPEG_EOF, JWRN_MUST_RESYNC, JWRN_NOT_SEQUENTIAL,
+    JWRN_TOO_MUCH_DATA,
+};
+pub use crate::jmorecfg_h::{
+    boolean, FALSE, JCOEF, JDIMENSION, JOCTET, JSAMPLE, TRUE, UINT16, UINT8,
+};
+pub use crate::jpegint_h::{
+    inverse_DCT_method_ptr, jpeg_natural_order, JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT,
+    JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, JLONG, J_BUF_MODE,
+};
+pub use crate::jpeglib_h::{
+    j_common_ptr, j_decompress_ptr, jpeg_alloc_huff_table, jpeg_alloc_quant_table,
+    jpeg_color_deconverter, jpeg_color_quantizer, jpeg_common_struct, jpeg_component_info,
+    jpeg_d_coef_controller, jpeg_d_main_controller, jpeg_d_post_controller, jpeg_decomp_master,
+    jpeg_decompress_struct, jpeg_entropy_decoder, jpeg_error_mgr, jpeg_input_controller,
+    jpeg_inverse_dct, jpeg_marker_parser_method, jpeg_marker_reader, jpeg_marker_struct,
+    jpeg_memory_mgr, jpeg_progress_mgr, jpeg_saved_marker_ptr, jpeg_source_mgr, jpeg_upsampler,
+    jvirt_barray_control, jvirt_barray_ptr, jvirt_sarray_control, jvirt_sarray_ptr,
+    C2RustUnnamed_2, JCS_YCbCr, DCTSIZE2, JBLOCK, JBLOCKARRAY, JBLOCKROW, JCOEFPTR, JCS_CMYK,
+    JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA,
+    JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN,
+    JCS_YCCK, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JDITHER_FS, JDITHER_NONE, JDITHER_ORDERED,
+    JHUFF_TBL, JPEG_REACHED_EOI, JPEG_REACHED_SOS, JPEG_SUSPENDED, JPOOL_IMAGE, JPOOL_PERMANENT,
+    JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD, J_DITHER_MODE,
+    MAX_COMPS_IN_SCAN, NUM_ARITH_TBLS, NUM_HUFF_TBLS, NUM_QUANT_TBLS,
+};
+pub use crate::stddef_h::{size_t, NULL};
+use crate::stdlib::{memcpy, memset};
+use libc::{self, c_int, c_long, c_uint, c_ulong, c_void};
 
 pub const M_APP0: C2RustUnnamed_76 = 224;
 
@@ -484,11 +227,8 @@ pub const M_DHP: C2RustUnnamed_76 = 222;
  * require more care.
  */
 
-unsafe extern "C" fn get_soi(
-    mut cinfo: j_decompress_ptr,
-) -> boolean
+unsafe extern "C" fn get_soi(mut cinfo: j_decompress_ptr) -> boolean
 /* Process an SOI marker */ {
-     
     (*(*cinfo).err).msg_code = super::jerror::JTRC_SOI as c_int;
     Some(
         (*(*cinfo).err)
@@ -505,7 +245,7 @@ unsafe extern "C" fn get_soi(
         )
         .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
-     let mut i:   c_int =  0i32;
+    let mut i: c_int = 0i32;
     while i < NUM_ARITH_TBLS {
         (*cinfo).arith_dc_L[i as usize] = 0u8;
         (*cinfo).arith_dc_U[i as usize] = 1u8;
@@ -534,10 +274,6 @@ unsafe extern "C" fn get_sof(
     mut is_arith: boolean,
 ) -> boolean
 /* Process a SOFn marker */ {
-    
-    
-    
-       
     let mut datasrc: *mut jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: size_t = (*datasrc).bytes_in_buffer;
@@ -557,11 +293,10 @@ unsafe extern "C" fn get_sof(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh0 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
-     let mut length:   JLONG =
-     ((*fresh0 as c_uint) << 8i32) as JLONG;
+    let mut length: JLONG = ((*fresh0 as c_uint) << 8i32) as JLONG;
     if bytes_in_buffer == 0u64 {
         if Some(
             (*datasrc)
@@ -576,7 +311,7 @@ unsafe extern "C" fn get_sof(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh1 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     length += *fresh1 as c_long;
@@ -594,7 +329,7 @@ unsafe extern "C" fn get_sof(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh2 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     (*cinfo).data_precision = *fresh2 as c_int;
@@ -612,7 +347,7 @@ unsafe extern "C" fn get_sof(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh3 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     (*cinfo).image_height = (*fresh3 as c_uint) << 8i32;
@@ -630,11 +365,10 @@ unsafe extern "C" fn get_sof(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh4 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
-    (*cinfo).image_height =
-        (*cinfo).image_height + *fresh4 as c_uint;
+    (*cinfo).image_height = (*cinfo).image_height + *fresh4 as c_uint;
     if bytes_in_buffer == 0u64 {
         if Some(
             (*datasrc)
@@ -649,7 +383,7 @@ unsafe extern "C" fn get_sof(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh5 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     (*cinfo).image_width = (*fresh5 as c_uint) << 8i32;
@@ -667,11 +401,10 @@ unsafe extern "C" fn get_sof(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh6 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
-    (*cinfo).image_width =
-        (*cinfo).image_width + *fresh6 as c_uint;
+    (*cinfo).image_width = (*cinfo).image_width + *fresh6 as c_uint;
     if bytes_in_buffer == 0u64 {
         if Some(
             (*datasrc)
@@ -686,7 +419,7 @@ unsafe extern "C" fn get_sof(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh7 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     (*cinfo).num_components = *fresh7 as c_int;
@@ -746,16 +479,15 @@ unsafe extern "C" fn get_sof(
         .expect("non-null function pointer")(
             cinfo as j_common_ptr,
             JPOOL_IMAGE,
-            (*cinfo).num_components as c_ulong *
-    
-                    ::std::mem::size_of::<jpeg_component_info>() as c_ulong,
+            (*cinfo).num_components as c_ulong
+                * ::std::mem::size_of::<jpeg_component_info>() as c_ulong,
         ) as *mut jpeg_component_info
     }
-    
-     let mut ci:   c_int =  0i32; let mut compptr:   *mut jpeg_component_info =
-     (*cinfo).comp_info;
+
+    let mut ci: c_int = 0i32;
+    let mut compptr: *mut jpeg_component_info = (*cinfo).comp_info;
     while ci < (*cinfo).num_components {
-         (*compptr).component_index = ci;
+        (*compptr).component_index = ci;
         if bytes_in_buffer == 0u64 {
             if Some(
                 (*datasrc)
@@ -770,7 +502,7 @@ unsafe extern "C" fn get_sof(
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
         }
-        bytes_in_buffer -=  1;
+        bytes_in_buffer -= 1;
         let fresh8 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
         (*compptr).component_id = *fresh8 as c_int;
@@ -788,10 +520,10 @@ unsafe extern "C" fn get_sof(
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
         }
-        bytes_in_buffer -=  1;
+        bytes_in_buffer -= 1;
         let fresh9 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
-         let mut c:   c_int =  *fresh9 as c_int;
+        let mut c: c_int = *fresh9 as c_int;
         (*compptr).h_samp_factor = c >> 4i32 & 15i32;
         (*compptr).v_samp_factor = c & 15i32;
         if bytes_in_buffer == 0u64 {
@@ -808,7 +540,7 @@ unsafe extern "C" fn get_sof(
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
         }
-        bytes_in_buffer -=  1;
+        bytes_in_buffer -= 1;
         let fresh10 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
         (*compptr).quant_tbl_no = *fresh10 as c_int;
@@ -833,11 +565,9 @@ unsafe extern "C" fn get_sof(
     return TRUE;
 }
 
-unsafe extern "C" fn get_sos(
-    mut cinfo: j_decompress_ptr,
-) -> boolean
+unsafe extern "C" fn get_sos(mut cinfo: j_decompress_ptr) -> boolean
 /* Process a SOS marker */ {
-        let mut c:  c_int =  0;
+    let mut c: c_int = 0;
     let mut datasrc: *mut jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: size_t = (*datasrc).bytes_in_buffer;
@@ -864,11 +594,10 @@ unsafe extern "C" fn get_sos(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh11 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
-     let mut length:   JLONG =
-     ((*fresh11 as c_uint) << 8i32) as JLONG;
+    let mut length: JLONG = ((*fresh11 as c_uint) << 8i32) as JLONG;
     if bytes_in_buffer == 0u64 {
         if Some(
             (*datasrc)
@@ -883,7 +612,7 @@ unsafe extern "C" fn get_sos(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh12 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     length += *fresh12 as c_long;
@@ -901,10 +630,10 @@ unsafe extern "C" fn get_sos(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh13 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
-     let mut n:   c_int =  *fresh13 as c_int;
+    let mut n: c_int = *fresh13 as c_int;
     (*(*cinfo).err).msg_code = super::jerror::JTRC_SOS as c_int;
     (*(*cinfo).err).msg_parm.i[0] = n;
     Some(
@@ -913,10 +642,7 @@ unsafe extern "C" fn get_sos(
             .expect("non-null function pointer"),
     )
     .expect("non-null function pointer")(cinfo as j_common_ptr, 1i32);
-    if length != (n * 2i32 + 6i32) as c_long
-        || n < 1i32
-        || n > MAX_COMPS_IN_SCAN
-    {
+    if length != (n * 2i32 + 6i32) as c_long || n < 1i32 || n > MAX_COMPS_IN_SCAN {
         (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_LENGTH as c_int;
         Some(
             (*(*cinfo).err)
@@ -926,15 +652,14 @@ unsafe extern "C" fn get_sos(
         .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     (*cinfo).comps_in_scan = n;
-     let mut i:   c_int =  0i32;
+    let mut i: c_int = 0i32;
     while i < MAX_COMPS_IN_SCAN {
-        (*cinfo).cur_comp_info[i as usize] =
-            NULL as *mut jpeg_component_info;
+        (*cinfo).cur_comp_info[i as usize] = NULL as *mut jpeg_component_info;
         i += 1
     }
     i = 0i32;
     while i < n {
-             let mut current_block_80:  u64;
+        let mut current_block_80: u64;
         if bytes_in_buffer == 0u64 {
             if Some(
                 (*datasrc)
@@ -949,10 +674,10 @@ unsafe extern "C" fn get_sos(
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
         }
-        bytes_in_buffer -=  1;
+        bytes_in_buffer -= 1;
         let fresh14 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
-         let mut cc:   c_int =  *fresh14 as c_int;
+        let mut cc: c_int = *fresh14 as c_int;
         if bytes_in_buffer == 0u64 {
             if Some(
                 (*datasrc)
@@ -967,13 +692,13 @@ unsafe extern "C" fn get_sos(
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
         }
-        bytes_in_buffer -=  1;
+        bytes_in_buffer -= 1;
         let fresh15 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
         c = *fresh15 as c_int;
-        
-         let mut ci:   c_int =  0i32; let mut compptr:   *mut jpeg_component_info =
-     (*cinfo).comp_info;
+
+        let mut ci: c_int = 0i32;
+        let mut compptr: *mut jpeg_component_info = (*cinfo).comp_info;
         loop {
             if !(ci < (*cinfo).num_components && ci < MAX_COMPS_IN_SCAN) {
                 current_block_80 = 5181772461570869434;
@@ -995,9 +720,7 @@ unsafe extern "C" fn get_sos(
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             _ => {}
         }
@@ -1015,7 +738,7 @@ unsafe extern "C" fn get_sos(
                 .expect("non-null function pointer"),
         )
         .expect("non-null function pointer")(cinfo as j_common_ptr, 1i32);
-         let mut pi:   c_int =  0i32;
+        let mut pi: c_int = 0i32;
         while pi < i {
             if (*cinfo).cur_comp_info[pi as usize] == compptr {
                 (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_COMPONENT_ID as c_int;
@@ -1025,9 +748,7 @@ unsafe extern "C" fn get_sos(
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             pi += 1
         }
@@ -1048,7 +769,7 @@ unsafe extern "C" fn get_sos(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh16 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     c = *fresh16 as c_int;
@@ -1067,7 +788,7 @@ unsafe extern "C" fn get_sos(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh17 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     c = *fresh17 as c_int;
@@ -1086,7 +807,7 @@ unsafe extern "C" fn get_sos(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh18 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     c = *fresh18 as c_int;
@@ -1115,17 +836,8 @@ unsafe extern "C" fn get_sos(
 /* !D_ARITH_CODING_SUPPORTED */
 /* D_ARITH_CODING_SUPPORTED */
 
-unsafe extern "C" fn get_dht(
-    mut cinfo: j_decompress_ptr,
-) -> boolean
+unsafe extern "C" fn get_dht(mut cinfo: j_decompress_ptr) -> boolean
 /* Process a DHT marker */ {
-    
-    
-    
-    
-    
-    
-     
     let mut datasrc: *mut jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: size_t = (*datasrc).bytes_in_buffer;
@@ -1143,11 +855,10 @@ unsafe extern "C" fn get_dht(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh19 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
-     let mut length:   JLONG =
-     ((*fresh19 as c_uint) << 8i32) as JLONG;
+    let mut length: JLONG = ((*fresh19 as c_uint) << 8i32) as JLONG;
     if bytes_in_buffer == 0u64 {
         if Some(
             (*datasrc)
@@ -1162,15 +873,16 @@ unsafe extern "C" fn get_dht(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh20 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     length += *fresh20 as c_long;
     length -= 2i64;
     while length > 16i64 {
-         let mut bits:  [UINT8; 17] =  [0; 17]; let mut huffval:  [UINT8; 256] =  [0; 256];    let mut htblptr:  *mut *mut JHUFF_TBL =
-    
-        ::std::ptr::null_mut::< *mut JHUFF_TBL>();if bytes_in_buffer == 0u64 {
+        let mut bits: [UINT8; 17] = [0; 17];
+        let mut huffval: [UINT8; 256] = [0; 256];
+        let mut htblptr: *mut *mut JHUFF_TBL = ::std::ptr::null_mut::<*mut JHUFF_TBL>();
+        if bytes_in_buffer == 0u64 {
             if Some(
                 (*datasrc)
                     .fill_input_buffer
@@ -1184,10 +896,10 @@ unsafe extern "C" fn get_dht(
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
         }
-        bytes_in_buffer -=  1;
+        bytes_in_buffer -= 1;
         let fresh21 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
-         let mut index:   c_int =  *fresh21 as c_int;
+        let mut index: c_int = *fresh21 as c_int;
         (*(*cinfo).err).msg_code = super::jerror::JTRC_DHT as c_int;
         (*(*cinfo).err).msg_parm.i[0] = index;
         Some(
@@ -1197,8 +909,9 @@ unsafe extern "C" fn get_dht(
         )
         .expect("non-null function pointer")(cinfo as j_common_ptr, 1i32);
         bits[0] = 0u8;
-        
-         let mut count:   c_int =  0i32; let mut i:   c_int =  1i32;
+
+        let mut count: c_int = 0i32;
+        let mut i: c_int = 1i32;
         while i <= 16i32 {
             if bytes_in_buffer == 0u64 {
                 if Some(
@@ -1214,7 +927,7 @@ unsafe extern "C" fn get_dht(
                 next_input_byte = (*datasrc).next_input_byte;
                 bytes_in_buffer = (*datasrc).bytes_in_buffer
             }
-            bytes_in_buffer -=  1;
+            bytes_in_buffer -= 1;
             let fresh22 = next_input_byte;
             next_input_byte = next_input_byte.offset(1);
             bits[i as usize] = *fresh22;
@@ -1264,9 +977,7 @@ unsafe extern "C" fn get_dht(
                     .error_exit
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+            .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         i = 0i32;
         while i < count {
@@ -1284,18 +995,16 @@ unsafe extern "C" fn get_dht(
                 next_input_byte = (*datasrc).next_input_byte;
                 bytes_in_buffer = (*datasrc).bytes_in_buffer
             }
-            bytes_in_buffer -=  1;
+            bytes_in_buffer -= 1;
             let fresh23 = next_input_byte;
             next_input_byte = next_input_byte.offset(1);
             huffval[i as usize] = *fresh23;
             i += 1
         }
         memset(
-            &mut *huffval.as_mut_ptr().offset(count as isize) as *mut UINT8
-                as *mut c_void,
+            &mut *huffval.as_mut_ptr().offset(count as isize) as *mut UINT8 as *mut c_void,
             0i32,
-            (256i32 - count) as c_ulong *
-    ::std::mem::size_of::<UINT8>() as c_ulong,
+            (256i32 - count) as c_ulong * ::std::mem::size_of::<UINT8>() as c_ulong,
         );
         length -= count as c_long;
         if index & 0x10i32 != 0 {
@@ -1309,15 +1018,12 @@ unsafe extern "C" fn get_dht(
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             htblptr = &mut *(*cinfo)
                 .ac_huff_tbl_ptrs
                 .as_mut_ptr()
-                .offset(index as isize)
-                as *mut *mut JHUFF_TBL
+                .offset(index as isize) as *mut *mut JHUFF_TBL
         } else {
             if index < 0i32 || index >= NUM_HUFF_TBLS {
                 (*(*cinfo).err).msg_code = super::jerror::JERR_DHT_INDEX as c_int;
@@ -1327,19 +1033,15 @@ unsafe extern "C" fn get_dht(
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             htblptr = &mut *(*cinfo)
                 .dc_huff_tbl_ptrs
                 .as_mut_ptr()
-                .offset(index as isize)
-                as *mut *mut JHUFF_TBL
+                .offset(index as isize) as *mut *mut JHUFF_TBL
         }
         if (*htblptr).is_null() {
-            *htblptr =
-                jpeg_alloc_huff_table(cinfo as j_common_ptr)
+            *htblptr = jpeg_alloc_huff_table(cinfo as j_common_ptr)
         }
         memcpy(
             (**htblptr).bits.as_mut_ptr() as *mut c_void,
@@ -1366,16 +1068,8 @@ unsafe extern "C" fn get_dht(
     return TRUE;
 }
 
-unsafe extern "C" fn get_dqt(
-    mut cinfo: j_decompress_ptr,
-) -> boolean
+unsafe extern "C" fn get_dqt(mut cinfo: j_decompress_ptr) -> boolean
 /* Process a DQT marker */ {
-    
-    
-    
-    
-    
-     
     let mut datasrc: *mut jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: size_t = (*datasrc).bytes_in_buffer;
@@ -1393,11 +1087,10 @@ unsafe extern "C" fn get_dqt(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh24 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
-     let mut length:   JLONG =
-     ((*fresh24 as c_uint) << 8i32) as JLONG;
+    let mut length: JLONG = ((*fresh24 as c_uint) << 8i32) as JLONG;
     if bytes_in_buffer == 0u64 {
         if Some(
             (*datasrc)
@@ -1412,13 +1105,13 @@ unsafe extern "C" fn get_dqt(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh25 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     length += *fresh25 as c_long;
     length -= 2i64;
     while length > 0i64 {
-            if bytes_in_buffer == 0u64 {
+        if bytes_in_buffer == 0u64 {
             if Some(
                 (*datasrc)
                     .fill_input_buffer
@@ -1432,11 +1125,12 @@ unsafe extern "C" fn get_dqt(
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
         }
-        bytes_in_buffer -=  1;
+        bytes_in_buffer -= 1;
         let fresh26 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
-        
-         let mut n:   c_int =  *fresh26 as c_int; let mut prec:   c_int =  n >> 4i32;
+
+        let mut n: c_int = *fresh26 as c_int;
+        let mut prec: c_int = n >> 4i32;
         n &= 0xfi32;
         (*(*cinfo).err).msg_code = super::jerror::JTRC_DQT as c_int;
         (*(*cinfo).err).msg_parm.i[0] = n;
@@ -1455,19 +1149,17 @@ unsafe extern "C" fn get_dqt(
                     .error_exit
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+            .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         if (*cinfo).quant_tbl_ptrs[n as usize].is_null() {
-            (*cinfo).quant_tbl_ptrs[n as usize] =
-                jpeg_alloc_quant_table(cinfo as j_common_ptr)
+            (*cinfo).quant_tbl_ptrs[n as usize] = jpeg_alloc_quant_table(cinfo as j_common_ptr)
         }
-        
-         let mut quant_ptr:   *mut JQUANT_TBL =
-     (*cinfo).quant_tbl_ptrs[n as usize]; let mut i:   c_int =  0i32;
+
+        let mut quant_ptr: *mut JQUANT_TBL = (*cinfo).quant_tbl_ptrs[n as usize];
+        let mut i: c_int = 0i32;
         while i < DCTSIZE2 {
-             let mut tmp:  c_uint =  0;if prec != 0 {
+            let mut tmp: c_uint = 0;
+            if prec != 0 {
                 if bytes_in_buffer == 0u64 {
                     if Some(
                         (*datasrc)
@@ -1482,7 +1174,7 @@ unsafe extern "C" fn get_dqt(
                     next_input_byte = (*datasrc).next_input_byte;
                     bytes_in_buffer = (*datasrc).bytes_in_buffer
                 }
-                bytes_in_buffer -=  1;
+                bytes_in_buffer -= 1;
                 let fresh27 = next_input_byte;
                 next_input_byte = next_input_byte.offset(1);
                 tmp = (*fresh27 as c_uint) << 8i32;
@@ -1500,10 +1192,10 @@ unsafe extern "C" fn get_dqt(
                     next_input_byte = (*datasrc).next_input_byte;
                     bytes_in_buffer = (*datasrc).bytes_in_buffer
                 }
-                bytes_in_buffer -=  1;
+                bytes_in_buffer -= 1;
                 let fresh28 = next_input_byte;
                 next_input_byte = next_input_byte.offset(1);
-                tmp +=  *fresh28 as c_uint
+                tmp += *fresh28 as c_uint
             } else {
                 if bytes_in_buffer == 0u64 {
                     if Some(
@@ -1519,15 +1211,14 @@ unsafe extern "C" fn get_dqt(
                     next_input_byte = (*datasrc).next_input_byte;
                     bytes_in_buffer = (*datasrc).bytes_in_buffer
                 }
-                bytes_in_buffer -=  1;
+                bytes_in_buffer -= 1;
                 let fresh29 = next_input_byte;
                 next_input_byte = next_input_byte.offset(1);
                 tmp = *fresh29 as c_uint
             }
             /* We convert the zigzag-order table to natural array order. */
-            (*quant_ptr).quantval[*jpeg_natural_order
-                .as_ptr()
-                .offset(i as isize) as usize] = tmp as UINT16;
+            (*quant_ptr).quantval[*jpeg_natural_order.as_ptr().offset(i as isize) as usize] =
+                tmp as UINT16;
             i += 1
         }
         if (*(*cinfo).err).trace_level >= 2i32 {
@@ -1548,9 +1239,7 @@ unsafe extern "C" fn get_dqt(
                         .emit_message
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr, 2i32
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr, 2i32);
                 i += 8i32
             }
         }
@@ -1573,12 +1262,8 @@ unsafe extern "C" fn get_dqt(
     return TRUE;
 }
 
-unsafe extern "C" fn get_dri(
-    mut cinfo: j_decompress_ptr,
-) -> boolean
+unsafe extern "C" fn get_dri(mut cinfo: j_decompress_ptr) -> boolean
 /* Process a DRI marker */ {
-    
-      
     let mut datasrc: *mut jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: size_t = (*datasrc).bytes_in_buffer;
@@ -1596,11 +1281,10 @@ unsafe extern "C" fn get_dri(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh30 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
-     let mut length:   JLONG =
-     ((*fresh30 as c_uint) << 8i32) as JLONG;
+    let mut length: JLONG = ((*fresh30 as c_uint) << 8i32) as JLONG;
     if bytes_in_buffer == 0u64 {
         if Some(
             (*datasrc)
@@ -1615,7 +1299,7 @@ unsafe extern "C" fn get_dri(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh31 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     length += *fresh31 as c_long;
@@ -1642,10 +1326,10 @@ unsafe extern "C" fn get_dri(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh32 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
-     let mut tmp:   c_uint =  (*fresh32 as c_uint) << 8i32;
+    let mut tmp: c_uint = (*fresh32 as c_uint) << 8i32;
     if bytes_in_buffer == 0u64 {
         if Some(
             (*datasrc)
@@ -1660,10 +1344,10 @@ unsafe extern "C" fn get_dri(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh33 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
-    tmp +=  *fresh33 as c_uint;
+    tmp += *fresh33 as c_uint;
     (*(*cinfo).err).msg_code = super::jerror::JTRC_DRI as c_int;
     (*(*cinfo).err).msg_parm.i[0] = tmp as c_int;
     Some(
@@ -1717,12 +1401,10 @@ unsafe extern "C" fn examine_app0(
         (*cinfo).JFIF_major_version = *data.offset(5);
         (*cinfo).JFIF_minor_version = *data.offset(6);
         (*cinfo).density_unit = *data.offset(7);
-        (*cinfo).X_density = (((*data.offset(8) as c_int) << 8i32)
-            + *data.offset(9) as c_int)
-            as UINT16;
-        (*cinfo).Y_density = (((*data.offset(10) as c_int) << 8i32)
-            + *data.offset(11) as c_int)
-            as UINT16;
+        (*cinfo).X_density =
+            (((*data.offset(8) as c_int) << 8i32) + *data.offset(9) as c_int) as UINT16;
+        (*cinfo).Y_density =
+            (((*data.offset(10) as c_int) << 8i32) + *data.offset(11) as c_int) as UINT16;
         /* Check version.
          * Major version must be 1, anything else signals an incompatible change.
          * (We used to treat this as an error, but now it's a nonfatal warning,
@@ -1738,9 +1420,7 @@ unsafe extern "C" fn examine_app0(
                     .emit_message
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(
-                cinfo as j_common_ptr, -1i32
-            );
+            .expect("non-null function pointer")(cinfo as j_common_ptr, -1i32);
         }
         /* Generate trace messages */
         let mut _mp: *mut c_int = (*(*cinfo).err).msg_parm.i.as_mut_ptr();
@@ -1766,27 +1446,18 @@ unsafe extern "C" fn examine_app0(
                     .emit_message
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(
-                cinfo as j_common_ptr, 1i32
-            );
+            .expect("non-null function pointer")(cinfo as j_common_ptr, 1i32);
         }
         totallen -= APP0_DATA_LEN as c_long;
-        if totallen
-            != *data.offset(12) as JLONG
-                * *data.offset(13) as JLONG
-                * 3i64
-        {
-            (*(*cinfo).err).msg_code =
-                super::jerror::JTRC_JFIF_BADTHUMBNAILSIZE as c_int;
+        if totallen != *data.offset(12) as JLONG * *data.offset(13) as JLONG * 3i64 {
+            (*(*cinfo).err).msg_code = super::jerror::JTRC_JFIF_BADTHUMBNAILSIZE as c_int;
             (*(*cinfo).err).msg_parm.i[0] = totallen as c_int;
             Some(
                 (*(*cinfo).err)
                     .emit_message
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(
-                cinfo as j_common_ptr, 1i32
-            );
+            .expect("non-null function pointer")(cinfo as j_common_ptr, 1i32);
         }
     } else if datalen >= 6u32
         && *data.offset(0) as c_int == 0x4ai32
@@ -1808,9 +1479,7 @@ unsafe extern "C" fn examine_app0(
                         .emit_message
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr, 1i32
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr, 1i32);
             }
             17 => {
                 (*(*cinfo).err).msg_code = super::jerror::JTRC_THUMB_PALETTE as c_int;
@@ -1820,9 +1489,7 @@ unsafe extern "C" fn examine_app0(
                         .emit_message
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr, 1i32
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr, 1i32);
             }
             19 => {
                 (*(*cinfo).err).msg_code = super::jerror::JTRC_THUMB_RGB as c_int;
@@ -1832,9 +1499,7 @@ unsafe extern "C" fn examine_app0(
                         .emit_message
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr, 1i32
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr, 1i32);
             }
             _ => {
                 (*(*cinfo).err).msg_code = super::jerror::JTRC_JFIF_EXTENSION as c_int;
@@ -1845,9 +1510,7 @@ unsafe extern "C" fn examine_app0(
                         .emit_message
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr, 1i32
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr, 1i32);
             }
         }
     } else {
@@ -1874,10 +1537,6 @@ unsafe extern "C" fn examine_app14(
  * datalen is # of bytes at data[], remaining is length of rest of marker data.
  */
 {
-    
-    
-    
-    
     if datalen >= APP14_DATA_LEN as c_uint
         && *data.offset(0) as c_int == 0x41i32
         && *data.offset(1) as c_int == 0x64i32
@@ -1885,16 +1544,13 @@ unsafe extern "C" fn examine_app14(
         && *data.offset(3) as c_int == 0x62i32
         && *data.offset(4) as c_int == 0x65i32
     {
-           
-        
-        
-         let mut version:   c_uint =
-     (((*data.offset(5) as c_int) << 8i32) + *data.offset(6) as c_int)
-            as c_uint; let mut flags0:   c_uint =
-     (((*data.offset(7) as c_int) << 8i32) + *data.offset(8) as c_int)
-            as c_uint; let mut flags1:   c_uint =
-     (((*data.offset(9) as c_int) << 8i32) + *data.offset(10) as c_int)
-            as c_uint; let mut transform:   c_uint =  *data.offset(11) as c_uint;
+        let mut version: c_uint =
+            (((*data.offset(5) as c_int) << 8i32) + *data.offset(6) as c_int) as c_uint;
+        let mut flags0: c_uint =
+            (((*data.offset(7) as c_int) << 8i32) + *data.offset(8) as c_int) as c_uint;
+        let mut flags1: c_uint =
+            (((*data.offset(9) as c_int) << 8i32) + *data.offset(10) as c_int) as c_uint;
+        let mut transform: c_uint = *data.offset(11) as c_uint;
         let mut _mp: *mut c_int = (*(*cinfo).err).msg_parm.i.as_mut_ptr();
         *_mp.offset(0) = version as c_int;
         *_mp.offset(1) = flags0 as c_int;
@@ -1922,14 +1578,10 @@ unsafe extern "C" fn examine_app14(
     };
 }
 
-unsafe extern "C" fn get_interesting_appn(
-    mut cinfo: j_decompress_ptr,
-) -> boolean
+unsafe extern "C" fn get_interesting_appn(mut cinfo: j_decompress_ptr) -> boolean
 /* Process an APP0 or APP14 marker without saving it */ {
-    
-    
-    
-      let mut b:  [JOCTET; 14] =  [0; 14];  let mut numtoread:  c_uint =  0;
+    let mut b: [JOCTET; 14] = [0; 14];
+    let mut numtoread: c_uint = 0;
     let mut datasrc: *mut jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: size_t = (*datasrc).bytes_in_buffer;
@@ -1947,11 +1599,10 @@ unsafe extern "C" fn get_interesting_appn(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh34 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
-     let mut length:   JLONG =
-     ((*fresh34 as c_uint) << 8i32) as JLONG;
+    let mut length: JLONG = ((*fresh34 as c_uint) << 8i32) as JLONG;
     if bytes_in_buffer == 0u64 {
         if Some(
             (*datasrc)
@@ -1966,7 +1617,7 @@ unsafe extern "C" fn get_interesting_appn(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh35 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     length += *fresh35 as c_long;
@@ -1979,7 +1630,7 @@ unsafe extern "C" fn get_interesting_appn(
     } else {
         numtoread = 0u32
     }
-     let mut i:   c_uint =  0u32;
+    let mut i: c_uint = 0u32;
     while i < numtoread {
         if bytes_in_buffer == 0u64 {
             if Some(
@@ -1995,11 +1646,11 @@ unsafe extern "C" fn get_interesting_appn(
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
         }
-        bytes_in_buffer -=  1;
+        bytes_in_buffer -= 1;
         let fresh36 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
         b[i as usize] = *fresh36;
-        i +=  1
+        i += 1
     }
     length -= numtoread as c_long;
     /* process it */
@@ -2019,9 +1670,7 @@ unsafe extern "C" fn get_interesting_appn(
                     .error_exit
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+            .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
     }
     /* skip any remaining data -- could be lots */
@@ -2038,17 +1687,15 @@ unsafe extern "C" fn get_interesting_appn(
     return TRUE;
 }
 
-unsafe extern "C" fn save_marker(
-    mut cinfo: j_decompress_ptr,
-) -> boolean
+unsafe extern "C" fn save_marker(mut cinfo: j_decompress_ptr) -> boolean
 /* Save an APPn or COM marker into the marker list */ {
-     let mut bytes_read:  c_uint =  0; let mut data_length:  c_uint =  0; let mut data:  *mut JOCTET =
-     ::std::ptr::null_mut::< JOCTET>(); let mut length:  JLONG =  0i64;let mut marker: my_marker_ptr = (*cinfo).marker as my_marker_ptr;
+    let mut bytes_read: c_uint = 0;
+    let mut data_length: c_uint = 0;
+    let mut data: *mut JOCTET = ::std::ptr::null_mut::<JOCTET>();
+    let mut length: JLONG = 0i64;
+    let mut marker: my_marker_ptr = (*cinfo).marker as my_marker_ptr;
     let mut cur_marker: jpeg_saved_marker_ptr = (*marker).cur_marker;
-    
-    
-    
-    
+
     let mut datasrc: *mut jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: size_t = (*datasrc).bytes_in_buffer;
@@ -2068,7 +1715,7 @@ unsafe extern "C" fn save_marker(
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
         }
-        bytes_in_buffer -=  1;
+        bytes_in_buffer -= 1;
         let fresh37 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
         length = ((*fresh37 as c_uint) << 8i32) as JLONG;
@@ -2086,18 +1733,18 @@ unsafe extern "C" fn save_marker(
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
         }
-        bytes_in_buffer -=  1;
+        bytes_in_buffer -= 1;
         let fresh38 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
         length += *fresh38 as c_long;
         length -= 2i64;
         if length >= 0i64 {
-             let mut limit:  c_uint =  0;
+            let mut limit: c_uint = 0;
             if (*cinfo).unread_marker == M_COM as c_int {
                 limit = (*marker).length_limit_COM
             } else {
-                limit = (*marker).length_limit_APPn
-                    [((*cinfo).unread_marker - M_APP0 as c_int) as usize]
+                limit =
+                    (*marker).length_limit_APPn[((*cinfo).unread_marker - M_APP0 as c_int) as usize]
             }
             if (length as c_uint) < limit {
                 limit = length as c_uint
@@ -2111,8 +1758,7 @@ unsafe extern "C" fn save_marker(
             .expect("non-null function pointer")(
                 cinfo as j_common_ptr,
                 JPOOL_IMAGE,
-                ::std::mem::size_of::<jpeg_marker_struct>() as c_ulong
-    + limit as c_ulong,
+                ::std::mem::size_of::<jpeg_marker_struct>() as c_ulong + limit as c_ulong,
             ) as jpeg_saved_marker_ptr;
             (*cur_marker).next = NULL as jpeg_saved_marker_ptr;
             (*cur_marker).marker = (*cinfo).unread_marker as UINT8;
@@ -2163,8 +1809,8 @@ unsafe extern "C" fn save_marker(
             let fresh40 = data;
             data = data.offset(1);
             *fresh40 = *fresh39;
-            bytes_in_buffer -=  1;
-            bytes_read +=  1
+            bytes_in_buffer -= 1;
+            bytes_read += 1
         }
     }
     /* Done reading what we want to read */
@@ -2182,7 +1828,7 @@ unsafe extern "C" fn save_marker(
         }
         /* Reset pointer & calc remaining data length */
         data = (*cur_marker).data;
-        length = ( (*cur_marker).original_length - data_length) as JLONG
+        length = ((*cur_marker).original_length - data_length) as JLONG
     }
     /* Reset to initial state for next marker */
     (*marker).cur_marker = NULL as jpeg_saved_marker_ptr;
@@ -2203,9 +1849,7 @@ unsafe extern "C" fn save_marker(
                     .emit_message
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(
-                cinfo as j_common_ptr, 1i32
-            );
+            .expect("non-null function pointer")(cinfo as j_common_ptr, 1i32);
         }
     }
     /* skip any remaining data -- could be lots */
@@ -2223,11 +1867,9 @@ unsafe extern "C" fn save_marker(
 }
 /* SAVE_MARKERS_SUPPORTED */
 
-unsafe extern "C" fn skip_variable(
-    mut cinfo: j_decompress_ptr,
-) -> boolean
+unsafe extern "C" fn skip_variable(mut cinfo: j_decompress_ptr) -> boolean
 /* Skip over an unknown or uninteresting variable-length marker */ {
-      /* do before skip_input_data */
+    /* do before skip_input_data */
     let mut datasrc: *mut jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: size_t = (*datasrc).bytes_in_buffer;
@@ -2245,11 +1887,10 @@ unsafe extern "C" fn skip_variable(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh41 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
-     let mut length:   JLONG =
-     ((*fresh41 as c_uint) << 8i32) as JLONG;
+    let mut length: JLONG = ((*fresh41 as c_uint) << 8i32) as JLONG;
     if bytes_in_buffer == 0u64 {
         if Some(
             (*datasrc)
@@ -2264,7 +1905,7 @@ unsafe extern "C" fn skip_variable(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh42 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     length += *fresh42 as c_long;
@@ -2299,10 +1940,8 @@ unsafe extern "C" fn skip_variable(
  * but it will never be 0 or FF.
  */
 
-unsafe extern "C" fn next_marker(
-    mut cinfo: j_decompress_ptr,
-) -> boolean {
-     let mut c:  c_int =  0;
+unsafe extern "C" fn next_marker(mut cinfo: j_decompress_ptr) -> boolean {
+    let mut c: c_int = 0;
     let mut datasrc: *mut jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: size_t = (*datasrc).bytes_in_buffer;
@@ -2321,7 +1960,7 @@ unsafe extern "C" fn next_marker(
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
         }
-        bytes_in_buffer -=  1;
+        bytes_in_buffer -= 1;
         let fresh43 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
         c = *fresh43 as c_int;
@@ -2331,7 +1970,7 @@ unsafe extern "C" fn next_marker(
          * can discard the byte from its buffer.
          */
         while c != 0xffi32 {
-            (*(*cinfo).marker).discarded_bytes =  (*(*cinfo).marker).discarded_bytes + 1;
+            (*(*cinfo).marker).discarded_bytes = (*(*cinfo).marker).discarded_bytes + 1;
             (*datasrc).next_input_byte = next_input_byte;
             (*datasrc).bytes_in_buffer = bytes_in_buffer;
             if bytes_in_buffer == 0u64 {
@@ -2348,7 +1987,7 @@ unsafe extern "C" fn next_marker(
                 next_input_byte = (*datasrc).next_input_byte;
                 bytes_in_buffer = (*datasrc).bytes_in_buffer
             }
-            bytes_in_buffer -=  1;
+            bytes_in_buffer -= 1;
             let fresh44 = next_input_byte;
             next_input_byte = next_input_byte.offset(1);
             c = *fresh44 as c_int
@@ -2374,7 +2013,7 @@ unsafe extern "C" fn next_marker(
                 next_input_byte = (*datasrc).next_input_byte;
                 bytes_in_buffer = (*datasrc).bytes_in_buffer
             }
-            bytes_in_buffer -=  1;
+            bytes_in_buffer -= 1;
             let fresh45 = next_input_byte;
             next_input_byte = next_input_byte.offset(1);
             c = *fresh45 as c_int;
@@ -2388,8 +2027,7 @@ unsafe extern "C" fn next_marker(
         /* Reach here if we found a stuffed-zero data sequence (FF/00).
          * Discard it and loop back to try again.
          */
-        (*(*cinfo).marker).discarded_bytes =  (*(*cinfo).marker)
-            .discarded_bytes + 2u32;
+        (*(*cinfo).marker).discarded_bytes = (*(*cinfo).marker).discarded_bytes + 2u32;
         (*datasrc).next_input_byte = next_input_byte;
         (*datasrc).bytes_in_buffer = bytes_in_buffer
     }
@@ -2411,17 +2049,13 @@ unsafe extern "C" fn next_marker(
     return TRUE;
 }
 
-unsafe extern "C" fn first_marker(
-    mut cinfo: j_decompress_ptr,
-) -> boolean
+unsafe extern "C" fn first_marker(mut cinfo: j_decompress_ptr) -> boolean
 /* Like next_marker, but used to obtain the initial SOI marker. */
 /* For this marker, we do not allow preceding garbage or fill; otherwise,
  * we might well scan an entire input file before realizing it ain't JPEG.
  * If an application wants to process non-JFIF files, it must seek to the
  * SOI before calling the JPEG library.
  */ {
-    
-      
     let mut datasrc: *mut jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: size_t = (*datasrc).bytes_in_buffer;
@@ -2439,10 +2073,10 @@ unsafe extern "C" fn first_marker(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh46 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
-     let mut c:   c_int =  *fresh46 as c_int;
+    let mut c: c_int = *fresh46 as c_int;
     if bytes_in_buffer == 0u64 {
         if Some(
             (*datasrc)
@@ -2457,10 +2091,10 @@ unsafe extern "C" fn first_marker(
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
     }
-    bytes_in_buffer -=  1;
+    bytes_in_buffer -= 1;
     let fresh47 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
-     let mut c2:   c_int =  *fresh47 as c_int;
+    let mut c2: c_int = *fresh47 as c_int;
     if c != 0xffi32 || c2 != M_SOI as c_int {
         (*(*cinfo).err).msg_code = super::jerror::JERR_NO_SOI as c_int;
         (*(*cinfo).err).msg_parm.i[0] = c;
@@ -2490,7 +2124,8 @@ unsafe extern "C" fn read_markers(mut cinfo: j_decompress_ptr) -> c_int {
     /* Collect the marker proper, unless we already did. */
     /* NB: first_marker() enforces the requirement that SOI appear first. */
     {
-         let mut current_block_42:  u64;if (*cinfo).unread_marker == 0i32 {
+        let mut current_block_42: u64;
+        if (*cinfo).unread_marker == 0i32 {
             if (*(*cinfo).marker).saw_SOI == 0 {
                 if first_marker(cinfo) == 0 {
                     return JPEG_SUSPENDED;
@@ -2499,7 +2134,7 @@ unsafe extern "C" fn read_markers(mut cinfo: j_decompress_ptr) -> c_int {
                 return JPEG_SUSPENDED;
             }
         }
-        
+
         /* At this point cinfo->unread_marker contains the marker code and the
          * input point is just past the marker proper, but before any parameters.
          * A suspension will cause us to return with this state still true.
@@ -2579,9 +2214,7 @@ unsafe extern "C" fn read_markers(mut cinfo: j_decompress_ptr) -> c_int {
                         .emit_message
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr, 1i32
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr, 1i32);
                 (*cinfo).unread_marker = 0i32;
                 return JPEG_REACHED_EOI;
             }
@@ -2647,9 +2280,7 @@ unsafe extern "C" fn read_markers(mut cinfo: j_decompress_ptr) -> c_int {
                         .emit_message
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr, 1i32
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr, 1i32);
                 current_block_42 = 15594603006322722090;
             }
             220 => {
@@ -2673,9 +2304,7 @@ unsafe extern "C" fn read_markers(mut cinfo: j_decompress_ptr) -> c_int {
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
                 current_block_42 = 15594603006322722090;
             }
         }
@@ -2739,9 +2368,7 @@ unsafe extern "C" fn read_markers(mut cinfo: j_decompress_ptr) -> c_int {
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             _ => {}
         }
@@ -2762,9 +2389,7 @@ unsafe extern "C" fn read_markers(mut cinfo: j_decompress_ptr) -> c_int {
  * it holds a marker which the decoder will be unable to read past.
  */
 
-unsafe extern "C" fn read_restart_marker(
-    mut cinfo: j_decompress_ptr,
-) -> boolean {
+unsafe extern "C" fn read_restart_marker(mut cinfo: j_decompress_ptr) -> boolean {
     /* Obtain a marker unless we already did. */
     /* Note that next_marker will complain if it skips any data. */
     if (*cinfo).unread_marker == 0i32 {
@@ -2855,7 +2480,7 @@ pub unsafe extern "C" fn jpeg_resync_to_restart(
     mut desired: c_int,
 ) -> boolean {
     let mut marker: c_int = (*cinfo).unread_marker;
-    
+
     /* Always put up a warning. */
     (*(*cinfo).err).msg_code = super::jerror::JWRN_MUST_RESYNC as c_int;
     (*(*cinfo).err).msg_parm.i[0] = marker;
@@ -2869,7 +2494,8 @@ pub unsafe extern "C" fn jpeg_resync_to_restart(
     loop
     /* Outer loop handles repeated decision after scanning forward. */
     {
-         let mut action:  c_int =  1i32;if marker < M_SOF0 as c_int {
+        let mut action: c_int = 1i32;
+        if marker < M_SOF0 as c_int {
             action = 2i32
         } else if marker < M_RST0 as c_int || marker > M_RST7 as c_int {
             /* invalid marker */
@@ -2941,10 +2567,7 @@ unsafe extern "C" fn reset_marker_reader(mut cinfo: j_decompress_ptr) {
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_marker_reader(mut cinfo: j_decompress_ptr) {
-    
-      
-     let mut marker:   my_marker_ptr =
-     Some(
+    let mut marker: my_marker_ptr = Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),
@@ -2956,52 +2579,30 @@ pub unsafe extern "C" fn jinit_marker_reader(mut cinfo: j_decompress_ptr) {
     ) as my_marker_ptr;
     (*cinfo).marker = marker as *mut jpeg_marker_reader;
     /* Initialize public method pointers */
-    (*marker).pub_0.reset_marker_reader = Some(
-        reset_marker_reader as unsafe extern "C" fn(_: j_decompress_ptr) -> (),
-    );
-    (*marker).pub_0.read_markers = Some(
-        read_markers as unsafe extern "C" fn(_: j_decompress_ptr) -> c_int,
-    );
-    (*marker).pub_0.read_restart_marker = Some(
-        read_restart_marker
-            as unsafe extern "C" fn(
-                _: j_decompress_ptr,
-            ) -> boolean,
-    );
+    (*marker).pub_0.reset_marker_reader =
+        Some(reset_marker_reader as unsafe extern "C" fn(_: j_decompress_ptr) -> ());
+    (*marker).pub_0.read_markers =
+        Some(read_markers as unsafe extern "C" fn(_: j_decompress_ptr) -> c_int);
+    (*marker).pub_0.read_restart_marker =
+        Some(read_restart_marker as unsafe extern "C" fn(_: j_decompress_ptr) -> boolean);
     /* Initialize COM/APPn processing.
      * By default, we examine and then discard APP0 and APP14,
      * but simply discard COM and all other APPn.
      */
-    (*marker).process_COM = Some(
-        skip_variable
-            as unsafe extern "C" fn(
-                _: j_decompress_ptr,
-            ) -> boolean,
-    );
+    (*marker).process_COM =
+        Some(skip_variable as unsafe extern "C" fn(_: j_decompress_ptr) -> boolean);
     (*marker).length_limit_COM = 0u32;
-     let mut i:   c_int =  0i32;
+    let mut i: c_int = 0i32;
     while i < 16i32 {
-        (*marker).process_APPn[i as usize] = Some(
-            skip_variable
-                as unsafe extern "C" fn(
-                    _: j_decompress_ptr,
-                ) -> boolean,
-        );
+        (*marker).process_APPn[i as usize] =
+            Some(skip_variable as unsafe extern "C" fn(_: j_decompress_ptr) -> boolean);
         (*marker).length_limit_APPn[i as usize] = 0u32;
         i += 1
     }
-    (*marker).process_APPn[0] = Some(
-        get_interesting_appn
-            as unsafe extern "C" fn(
-                _: j_decompress_ptr,
-            ) -> boolean,
-    );
-    (*marker).process_APPn[14] = Some(
-        get_interesting_appn
-            as unsafe extern "C" fn(
-                _: j_decompress_ptr,
-            ) -> boolean,
-    );
+    (*marker).process_APPn[0] =
+        Some(get_interesting_appn as unsafe extern "C" fn(_: j_decompress_ptr) -> boolean);
+    (*marker).process_APPn[14] =
+        Some(get_interesting_appn as unsafe extern "C" fn(_: j_decompress_ptr) -> boolean);
     /* Reset marker processing state */
     reset_marker_reader(cinfo);
 }
@@ -3016,17 +2617,15 @@ pub unsafe extern "C" fn jpeg_save_markers(
     mut marker_code: c_int,
     mut length_limit: c_uint,
 ) {
-     let mut marker: my_marker_ptr = (*cinfo).marker as my_marker_ptr;
-    
+    let mut marker: my_marker_ptr = (*cinfo).marker as my_marker_ptr;
+
     let mut processor: jpeg_marker_parser_method = None;
     /* Length limit mustn't be larger than what we can allocate
      * (should only be a concern in a 16-bit environment).
      */
-     let mut maxlength:   c_long =
-    
-        ((*(*cinfo).mem).max_alloc_chunk as c_ulong -
-    
-                ::std::mem::size_of::<jpeg_marker_struct>() as c_ulong) as c_long;
+    let mut maxlength: c_long = ((*(*cinfo).mem).max_alloc_chunk as c_ulong
+        - ::std::mem::size_of::<jpeg_marker_struct>() as c_ulong)
+        as c_long;
     if length_limit as c_long > maxlength {
         length_limit = maxlength as c_uint
     }
@@ -3034,35 +2633,19 @@ pub unsafe extern "C" fn jpeg_save_markers(
      * APP0/APP14 have special requirements.
      */
     if length_limit != 0 {
-        processor = Some(
-            save_marker
-                as unsafe extern "C" fn(
-                    _: j_decompress_ptr,
-                ) -> boolean,
-        );
+        processor = Some(save_marker as unsafe extern "C" fn(_: j_decompress_ptr) -> boolean);
         /* If saving APP0/APP14, save at least enough for our internal use. */
         if marker_code == M_APP0 as c_int && length_limit < APP0_DATA_LEN as c_uint {
             length_limit = APP0_DATA_LEN as c_uint
-        } else if marker_code == M_APP14 as c_int
-            && length_limit < APP14_DATA_LEN as c_uint
-        {
+        } else if marker_code == M_APP14 as c_int && length_limit < APP14_DATA_LEN as c_uint {
             length_limit = APP14_DATA_LEN as c_uint
         }
     } else {
-        processor = Some(
-            skip_variable
-                as unsafe extern "C" fn(
-                    _: j_decompress_ptr,
-                ) -> boolean,
-        );
+        processor = Some(skip_variable as unsafe extern "C" fn(_: j_decompress_ptr) -> boolean);
         /* If discarding APP0/APP14, use our regular on-the-fly processor. */
         if marker_code == M_APP0 as c_int || marker_code == M_APP14 as c_int {
-            processor = Some(
-                get_interesting_appn
-                    as unsafe extern "C" fn(
-                        _: j_decompress_ptr,
-                    ) -> boolean,
-            )
+            processor =
+                Some(get_interesting_appn as unsafe extern "C" fn(_: j_decompress_ptr) -> boolean)
         }
     }
     if marker_code == M_COM as c_int {

@@ -1,372 +1,70 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-use libc::{c_double, c_ulong, c_int, c_long, self};pub use crate::jpegint_h::{JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT,
-                           JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, JLONG,
-                           J_BUF_MODE};pub use crate::jccolext_c::{extbgr_gray_convert_internal,
-                            extbgr_rgb_convert_internal,
-                            extbgr_ycc_convert_internal,
-                            extbgrx_gray_convert_internal,
-                            extbgrx_rgb_convert_internal,
-                            extbgrx_ycc_convert_internal,
-                            extrgb_gray_convert_internal,
-                            extrgb_rgb_convert_internal,
-                            extrgb_ycc_convert_internal,
-                            extrgbx_gray_convert_internal,
-                            extrgbx_rgb_convert_internal,
-                            extrgbx_ycc_convert_internal,
-                            extxbgr_gray_convert_internal,
-                            extxbgr_rgb_convert_internal,
-                            extxbgr_ycc_convert_internal,
-                            extxrgb_gray_convert_internal,
-                            extxrgb_rgb_convert_internal,
-                            extxrgb_ycc_convert_internal,
-                            rgb_gray_convert_internal,
-                            rgb_rgb_convert_internal,
-                            rgb_ycc_convert_internal};pub use crate::jpeglib_h::{j_common_ptr, j_compress_ptr,
-                           jpeg_c_coef_controller, jpeg_c_main_controller,
-                           jpeg_c_prep_controller, jpeg_color_converter,
-                           jpeg_common_struct, jpeg_comp_master,
-                           jpeg_component_info, jpeg_compress_struct,
-                           jpeg_destination_mgr, jpeg_downsampler,
-                           jpeg_entropy_encoder, jpeg_error_mgr,
-                           jpeg_forward_dct, jpeg_marker_writer,
-                           jpeg_memory_mgr, jpeg_progress_mgr, jpeg_scan_info,
-                           jvirt_barray_control, jvirt_barray_ptr,
-                           jvirt_sarray_control, jvirt_sarray_ptr,
-                           C2RustUnnamed_2, JCS_YCbCr, JBLOCK, JBLOCKARRAY,
-                           JBLOCKROW, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB,
-                           JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX,
-                           JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX,
-                           JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB,
-                           JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT,
-                           JDCT_IFAST, JDCT_ISLOW, JHUFF_TBL, JPOOL_IMAGE,
-                           JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE, JSAMPROW,
-                           J_COLOR_SPACE, J_DCT_METHOD};pub use crate::jmorecfg_h::{boolean, rgb_blue, rgb_green, rgb_pixelsize,
-                            rgb_red, CENTERJSAMPLE, EXT_BGRX_BLUE,
-                            EXT_BGRX_GREEN, EXT_BGRX_PIXELSIZE, EXT_BGRX_RED,
-                            EXT_BGR_BLUE, EXT_BGR_GREEN, EXT_BGR_PIXELSIZE,
-                            EXT_BGR_RED, EXT_RGBX_BLUE, EXT_RGBX_GREEN,
-                            EXT_RGBX_PIXELSIZE, EXT_RGBX_RED, EXT_RGB_BLUE,
-                            EXT_RGB_GREEN, EXT_RGB_PIXELSIZE, EXT_RGB_RED,
-                            EXT_XBGR_BLUE, EXT_XBGR_GREEN, EXT_XBGR_PIXELSIZE,
-                            EXT_XBGR_RED, EXT_XRGB_BLUE, EXT_XRGB_GREEN,
-                            EXT_XRGB_PIXELSIZE, EXT_XRGB_RED, JCOEF,
-                            JDIMENSION, JOCTET, JSAMPLE, MAXJSAMPLE, RGB_BLUE,
-                            RGB_GREEN, RGB_PIXELSIZE_5, RGB_RED, UINT16,
-                            UINT8};pub use crate::stddef_h::size_t;pub use super::jerror::{C2RustUnnamed_3, JERR_ARITH_NOTIMPL,
-                        JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
-                        JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID,
-                        JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
-                        JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE,
-                        JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
-                        JERR_BAD_LENGTH, JERR_BAD_LIB_VERSION,
-                        JERR_BAD_MCU_SIZE, JERR_BAD_PARAM,
-                        JERR_BAD_PARAM_VALUE, JERR_BAD_POOL_ID,
-                        JERR_BAD_PRECISION, JERR_BAD_PROGRESSION,
-                        JERR_BAD_PROG_SCRIPT, JERR_BAD_SAMPLING,
-                        JERR_BAD_SCAN_SCRIPT, JERR_BAD_STATE,
-                        JERR_BAD_STRUCT_SIZE, JERR_BAD_VIRTUAL_ACCESS,
-                        JERR_BUFFER_SIZE, JERR_CANT_SUSPEND,
-                        JERR_CCIR601_NOTIMPL, JERR_COMPONENT_COUNT,
-                        JERR_CONVERSION_NOTIMPL, JERR_DAC_INDEX,
-                        JERR_DAC_VALUE, JERR_DHT_INDEX, JERR_DQT_INDEX,
-                        JERR_EMPTY_IMAGE, JERR_EMS_READ, JERR_EMS_WRITE,
-                        JERR_EOI_EXPECTED, JERR_FILE_READ, JERR_FILE_WRITE,
-                        JERR_FRACT_SAMPLE_NOTIMPL, JERR_HUFF_CLEN_OVERFLOW,
-                        JERR_HUFF_MISSING_CODE, JERR_IMAGE_TOO_BIG,
-                        JERR_INPUT_EMPTY, JERR_INPUT_EOF,
-                        JERR_MISMATCHED_QUANT_TABLE, JERR_MISSING_DATA,
-                        JERR_MODE_CHANGE, JERR_NOTIMPL, JERR_NOT_COMPILED,
-                        JERR_NO_BACKING_STORE, JERR_NO_HUFF_TABLE,
-                        JERR_NO_IMAGE, JERR_NO_QUANT_TABLE, JERR_NO_SOI,
-                        JERR_OUT_OF_MEMORY, JERR_QUANT_COMPONENTS,
-                        JERR_QUANT_FEW_COLORS, JERR_QUANT_MANY_COLORS,
-                        JERR_SOF_DUPLICATE, JERR_SOF_NO_SOS,
-                        JERR_SOF_UNSUPPORTED, JERR_SOI_DUPLICATE,
-                        JERR_SOS_NO_SOF, JERR_TFILE_CREATE, JERR_TFILE_READ,
-                        JERR_TFILE_SEEK, JERR_TFILE_WRITE,
-                        JERR_TOO_LITTLE_DATA, JERR_UNKNOWN_MARKER,
-                        JERR_UNSUPPORTED_SUSPEND, JERR_VIRTUAL_BUG,
-                        JERR_WIDTH_OVERFLOW, JERR_XMS_READ, JERR_XMS_WRITE,
-                        JMSG_COPYRIGHT, JMSG_LASTMSGCODE, JMSG_NOMESSAGE,
-                        JMSG_VERSION, JTRC_16BIT_TABLES, JTRC_ADOBE,
-                        JTRC_APP0, JTRC_APP14, JTRC_DAC, JTRC_DHT, JTRC_DQT,
-                        JTRC_DRI, JTRC_EMS_CLOSE, JTRC_EMS_OPEN, JTRC_EOI,
-                        JTRC_HUFFBITS, JTRC_JFIF, JTRC_JFIF_BADTHUMBNAILSIZE,
-                        JTRC_JFIF_EXTENSION, JTRC_JFIF_THUMBNAIL,
-                        JTRC_MISC_MARKER, JTRC_PARMLESS_MARKER,
-                        JTRC_QUANTVALS, JTRC_QUANT_3_NCOLORS,
-                        JTRC_QUANT_NCOLORS, JTRC_QUANT_SELECTED,
-                        JTRC_RECOVERY_ACTION, JTRC_RST, JTRC_SMOOTH_NOTIMPL,
-                        JTRC_SOF, JTRC_SOF_COMPONENT, JTRC_SOI, JTRC_SOS,
-                        JTRC_SOS_COMPONENT, JTRC_SOS_PARAMS, JTRC_TFILE_CLOSE,
-                        JTRC_TFILE_OPEN, JTRC_THUMB_JPEG, JTRC_THUMB_PALETTE,
-                        JTRC_THUMB_RGB, JTRC_UNKNOWN_IDS, JTRC_XMS_CLOSE,
-                        JTRC_XMS_OPEN, JWRN_ADOBE_XFORM, JWRN_BOGUS_ICC,
-                        JWRN_BOGUS_PROGRESSION, JWRN_EXTRANEOUS_DATA,
-                        JWRN_HIT_MARKER, JWRN_HUFF_BAD_CODE, JWRN_JFIF_MAJOR,
-                        JWRN_JPEG_EOF, JWRN_MUST_RESYNC, JWRN_NOT_SEQUENTIAL,
-                        JWRN_TOO_MUCH_DATA};
+pub use super::jerror::{
+    C2RustUnnamed_3, JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
+    JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID, JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
+    JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE, JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
+    JERR_BAD_LENGTH, JERR_BAD_LIB_VERSION, JERR_BAD_MCU_SIZE, JERR_BAD_PARAM, JERR_BAD_PARAM_VALUE,
+    JERR_BAD_POOL_ID, JERR_BAD_PRECISION, JERR_BAD_PROGRESSION, JERR_BAD_PROG_SCRIPT,
+    JERR_BAD_SAMPLING, JERR_BAD_SCAN_SCRIPT, JERR_BAD_STATE, JERR_BAD_STRUCT_SIZE,
+    JERR_BAD_VIRTUAL_ACCESS, JERR_BUFFER_SIZE, JERR_CANT_SUSPEND, JERR_CCIR601_NOTIMPL,
+    JERR_COMPONENT_COUNT, JERR_CONVERSION_NOTIMPL, JERR_DAC_INDEX, JERR_DAC_VALUE, JERR_DHT_INDEX,
+    JERR_DQT_INDEX, JERR_EMPTY_IMAGE, JERR_EMS_READ, JERR_EMS_WRITE, JERR_EOI_EXPECTED,
+    JERR_FILE_READ, JERR_FILE_WRITE, JERR_FRACT_SAMPLE_NOTIMPL, JERR_HUFF_CLEN_OVERFLOW,
+    JERR_HUFF_MISSING_CODE, JERR_IMAGE_TOO_BIG, JERR_INPUT_EMPTY, JERR_INPUT_EOF,
+    JERR_MISMATCHED_QUANT_TABLE, JERR_MISSING_DATA, JERR_MODE_CHANGE, JERR_NOTIMPL,
+    JERR_NOT_COMPILED, JERR_NO_BACKING_STORE, JERR_NO_HUFF_TABLE, JERR_NO_IMAGE,
+    JERR_NO_QUANT_TABLE, JERR_NO_SOI, JERR_OUT_OF_MEMORY, JERR_QUANT_COMPONENTS,
+    JERR_QUANT_FEW_COLORS, JERR_QUANT_MANY_COLORS, JERR_SOF_DUPLICATE, JERR_SOF_NO_SOS,
+    JERR_SOF_UNSUPPORTED, JERR_SOI_DUPLICATE, JERR_SOS_NO_SOF, JERR_TFILE_CREATE, JERR_TFILE_READ,
+    JERR_TFILE_SEEK, JERR_TFILE_WRITE, JERR_TOO_LITTLE_DATA, JERR_UNKNOWN_MARKER,
+    JERR_UNSUPPORTED_SUSPEND, JERR_VIRTUAL_BUG, JERR_WIDTH_OVERFLOW, JERR_XMS_READ, JERR_XMS_WRITE,
+    JMSG_COPYRIGHT, JMSG_LASTMSGCODE, JMSG_NOMESSAGE, JMSG_VERSION, JTRC_16BIT_TABLES, JTRC_ADOBE,
+    JTRC_APP0, JTRC_APP14, JTRC_DAC, JTRC_DHT, JTRC_DQT, JTRC_DRI, JTRC_EMS_CLOSE, JTRC_EMS_OPEN,
+    JTRC_EOI, JTRC_HUFFBITS, JTRC_JFIF, JTRC_JFIF_BADTHUMBNAILSIZE, JTRC_JFIF_EXTENSION,
+    JTRC_JFIF_THUMBNAIL, JTRC_MISC_MARKER, JTRC_PARMLESS_MARKER, JTRC_QUANTVALS,
+    JTRC_QUANT_3_NCOLORS, JTRC_QUANT_NCOLORS, JTRC_QUANT_SELECTED, JTRC_RECOVERY_ACTION, JTRC_RST,
+    JTRC_SMOOTH_NOTIMPL, JTRC_SOF, JTRC_SOF_COMPONENT, JTRC_SOI, JTRC_SOS, JTRC_SOS_COMPONENT,
+    JTRC_SOS_PARAMS, JTRC_TFILE_CLOSE, JTRC_TFILE_OPEN, JTRC_THUMB_JPEG, JTRC_THUMB_PALETTE,
+    JTRC_THUMB_RGB, JTRC_UNKNOWN_IDS, JTRC_XMS_CLOSE, JTRC_XMS_OPEN, JWRN_ADOBE_XFORM,
+    JWRN_BOGUS_ICC, JWRN_BOGUS_PROGRESSION, JWRN_EXTRANEOUS_DATA, JWRN_HIT_MARKER,
+    JWRN_HUFF_BAD_CODE, JWRN_JFIF_MAJOR, JWRN_JPEG_EOF, JWRN_MUST_RESYNC, JWRN_NOT_SEQUENTIAL,
+    JWRN_TOO_MUCH_DATA,
+};
+pub use crate::jccolext_c::{
+    extbgr_gray_convert_internal, extbgr_rgb_convert_internal, extbgr_ycc_convert_internal,
+    extbgrx_gray_convert_internal, extbgrx_rgb_convert_internal, extbgrx_ycc_convert_internal,
+    extrgb_gray_convert_internal, extrgb_rgb_convert_internal, extrgb_ycc_convert_internal,
+    extrgbx_gray_convert_internal, extrgbx_rgb_convert_internal, extrgbx_ycc_convert_internal,
+    extxbgr_gray_convert_internal, extxbgr_rgb_convert_internal, extxbgr_ycc_convert_internal,
+    extxrgb_gray_convert_internal, extxrgb_rgb_convert_internal, extxrgb_ycc_convert_internal,
+    rgb_gray_convert_internal, rgb_rgb_convert_internal, rgb_ycc_convert_internal,
+};
+pub use crate::jmorecfg_h::{
+    boolean, rgb_blue, rgb_green, rgb_pixelsize, rgb_red, CENTERJSAMPLE, EXT_BGRX_BLUE,
+    EXT_BGRX_GREEN, EXT_BGRX_PIXELSIZE, EXT_BGRX_RED, EXT_BGR_BLUE, EXT_BGR_GREEN,
+    EXT_BGR_PIXELSIZE, EXT_BGR_RED, EXT_RGBX_BLUE, EXT_RGBX_GREEN, EXT_RGBX_PIXELSIZE,
+    EXT_RGBX_RED, EXT_RGB_BLUE, EXT_RGB_GREEN, EXT_RGB_PIXELSIZE, EXT_RGB_RED, EXT_XBGR_BLUE,
+    EXT_XBGR_GREEN, EXT_XBGR_PIXELSIZE, EXT_XBGR_RED, EXT_XRGB_BLUE, EXT_XRGB_GREEN,
+    EXT_XRGB_PIXELSIZE, EXT_XRGB_RED, JCOEF, JDIMENSION, JOCTET, JSAMPLE, MAXJSAMPLE, RGB_BLUE,
+    RGB_GREEN, RGB_PIXELSIZE_5, RGB_RED, UINT16, UINT8,
+};
+pub use crate::jpegint_h::{
+    JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, JLONG,
+    J_BUF_MODE,
+};
+pub use crate::jpeglib_h::{
+    j_common_ptr, j_compress_ptr, jpeg_c_coef_controller, jpeg_c_main_controller,
+    jpeg_c_prep_controller, jpeg_color_converter, jpeg_common_struct, jpeg_comp_master,
+    jpeg_component_info, jpeg_compress_struct, jpeg_destination_mgr, jpeg_downsampler,
+    jpeg_entropy_encoder, jpeg_error_mgr, jpeg_forward_dct, jpeg_marker_writer, jpeg_memory_mgr,
+    jpeg_progress_mgr, jpeg_scan_info, jvirt_barray_control, jvirt_barray_ptr,
+    jvirt_sarray_control, jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr, JBLOCK, JBLOCKARRAY,
+    JBLOCKROW, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX,
+    JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB,
+    JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JHUFF_TBL, JPOOL_IMAGE,
+    JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD,
+};
+pub use crate::stddef_h::size_t;
+use libc::{self, c_double, c_int, c_long, c_ulong};
 
 pub type my_cconvert_ptr = *mut my_color_converter;
 
@@ -408,8 +106,7 @@ pub struct my_color_converter {
 pub const SCALEBITS: c_int = 16i32;
 /* speediest right-shift on some machines */
 
-pub const CBCR_OFFSET: JLONG =
-    (CENTERJSAMPLE as JLONG) << SCALEBITS;
+pub const CBCR_OFFSET: JLONG = (CENTERJSAMPLE as JLONG) << SCALEBITS;
 
 pub const ONE_HALF: JLONG = (1i64) << SCALEBITS - 1i32;
 /* We allocate one big table and divide it up into eight parts, instead of
@@ -459,11 +156,9 @@ pub const RGB_PIXELSIZE: c_int = EXT_XRGB_PIXELSIZE;
  */
 
 unsafe extern "C" fn rgb_ycc_start(mut cinfo: j_compress_ptr) {
-      let mut cconvert: my_cconvert_ptr = (*cinfo).cconvert as my_cconvert_ptr;
-    
-    
-     let mut rgb_ycc_tab:   *mut JLONG =
-     Some(
+    let mut cconvert: my_cconvert_ptr = (*cinfo).cconvert as my_cconvert_ptr;
+
+    let mut rgb_ycc_tab: *mut JLONG = Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),
@@ -471,41 +166,27 @@ unsafe extern "C" fn rgb_ycc_start(mut cinfo: j_compress_ptr) {
     .expect("non-null function pointer")(
         cinfo as j_common_ptr,
         JPOOL_IMAGE,
-        TABLE_SIZE as c_ulong *
-    ::std::mem::size_of::<JLONG>() as c_ulong,
+        TABLE_SIZE as c_ulong * ::std::mem::size_of::<JLONG>() as c_ulong,
     ) as *mut JLONG;
     (*cconvert).rgb_ycc_tab = rgb_ycc_tab;
-     let mut i:   JLONG =  0i64;
+    let mut i: JLONG = 0i64;
     while i <= MAXJSAMPLE as c_long {
         *rgb_ycc_tab.offset((i + R_Y_OFF as c_long) as isize) =
-            (0.29900f64 * (1i64 << SCALEBITS) as c_double + 0.5f64)
-                as JLONG
-                * i;
+            (0.29900f64 * (1i64 << SCALEBITS) as c_double + 0.5f64) as JLONG * i;
         *rgb_ycc_tab.offset((i + G_Y_OFF as c_long) as isize) =
-            (0.58700f64 * (1i64 << SCALEBITS) as c_double + 0.5f64)
-                as JLONG
-                * i;
+            (0.58700f64 * (1i64 << SCALEBITS) as c_double + 0.5f64) as JLONG * i;
         *rgb_ycc_tab.offset((i + B_Y_OFF as c_long) as isize) =
-            (0.11400f64 * (1i64 << SCALEBITS) as c_double + 0.5f64)
-                as JLONG
-                * i
-                + ONE_HALF;
+            (0.11400f64 * (1i64 << SCALEBITS) as c_double + 0.5f64) as JLONG * i + ONE_HALF;
         *rgb_ycc_tab.offset((i + R_CB_OFF as c_long) as isize) =
-            -((0.16874f64 * (1i64 << SCALEBITS) as c_double + 0.5f64)
-                as JLONG)
-                * i;
+            -((0.16874f64 * (1i64 << SCALEBITS) as c_double + 0.5f64) as JLONG) * i;
         *rgb_ycc_tab.offset((i + G_CB_OFF as c_long) as isize) =
-            -((0.33126f64 * (1i64 << SCALEBITS) as c_double + 0.5f64)
-                as JLONG)
-                * i;
+            -((0.33126f64 * (1i64 << SCALEBITS) as c_double + 0.5f64) as JLONG) * i;
         /* We use a rounding fudge-factor of 0.5-epsilon for Cb and Cr.
          * This ensures that the maximum output will round to MAXJSAMPLE
          * not MAXJSAMPLE+1, and thus that we don't have to range-limit.
          */
         *rgb_ycc_tab.offset((i + B_CB_OFF as c_long) as isize) =
-            (0.50000f64 * (1i64 << SCALEBITS) as c_double + 0.5f64)
-                as JLONG
-                * i
+            (0.50000f64 * (1i64 << SCALEBITS) as c_double + 0.5f64) as JLONG * i
                 + CBCR_OFFSET
                 + ONE_HALF
                 - 1i64;
@@ -513,13 +194,9 @@ unsafe extern "C" fn rgb_ycc_start(mut cinfo: j_compress_ptr) {
             rgb_ycc_tab[i + R_CR_OFF] = FIX(0.50000) * i  + CBCR_OFFSET + ONE_HALF - 1;
         */
         *rgb_ycc_tab.offset((i + G_CR_OFF as c_long) as isize) =
-            -((0.41869f64 * (1i64 << SCALEBITS) as c_double + 0.5f64)
-                as JLONG)
-                * i;
+            -((0.41869f64 * (1i64 << SCALEBITS) as c_double + 0.5f64) as JLONG) * i;
         *rgb_ycc_tab.offset((i + B_CR_OFF as c_long) as isize) =
-            -((0.08131f64 * (1i64 << SCALEBITS) as c_double + 0.5f64)
-                as JLONG)
-                * i;
+            -((0.08131f64 * (1i64 << SCALEBITS) as c_double + 0.5f64) as JLONG) * i;
         i += 1
     }
 }
@@ -534,41 +211,27 @@ unsafe extern "C" fn rgb_ycc_convert(
     mut output_row: JDIMENSION,
     mut num_rows: c_int,
 ) {
-    match  (*cinfo).in_color_space {
+    match (*cinfo).in_color_space {
         6 => {
-            extrgb_ycc_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extrgb_ycc_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         7 | 12 => {
-            extrgbx_ycc_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extrgbx_ycc_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         8 => {
-            extbgr_ycc_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extbgr_ycc_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         9 | 13 => {
-            extbgrx_ycc_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extbgrx_ycc_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         10 | 14 => {
-            extxbgr_ycc_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extxbgr_ycc_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         11 | 15 => {
-            extxrgb_ycc_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extxrgb_ycc_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         _ => {
-            rgb_ycc_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            rgb_ycc_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
     };
 }
@@ -584,41 +247,27 @@ unsafe extern "C" fn rgb_gray_convert(
     mut output_row: JDIMENSION,
     mut num_rows: c_int,
 ) {
-    match  (*cinfo).in_color_space {
+    match (*cinfo).in_color_space {
         6 => {
-            extrgb_gray_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extrgb_gray_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         7 | 12 => {
-            extrgbx_gray_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extrgbx_gray_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         8 => {
-            extbgr_gray_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extbgr_gray_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         9 | 13 => {
-            extbgrx_gray_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extbgrx_gray_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         10 | 14 => {
-            extxbgr_gray_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extxbgr_gray_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         11 | 15 => {
-            extxrgb_gray_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extxrgb_gray_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         _ => {
-            rgb_gray_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            rgb_gray_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
     };
 }
@@ -633,41 +282,27 @@ unsafe extern "C" fn rgb_rgb_convert(
     mut output_row: JDIMENSION,
     mut num_rows: c_int,
 ) {
-    match  (*cinfo).in_color_space {
+    match (*cinfo).in_color_space {
         6 => {
-            extrgb_rgb_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extrgb_rgb_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         7 | 12 => {
-            extrgbx_rgb_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extrgbx_rgb_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         8 => {
-            extbgr_rgb_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extbgr_rgb_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         9 | 13 => {
-            extbgrx_rgb_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extbgrx_rgb_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         10 | 14 => {
-            extxbgr_rgb_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extxbgr_rgb_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         11 | 15 => {
-            extxrgb_rgb_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            extxrgb_rgb_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
         _ => {
-            rgb_rgb_convert_internal(
-                cinfo, input_buf, output_buf, output_row, num_rows,
-            );
+            rgb_rgb_convert_internal(cinfo, input_buf, output_buf, output_row, num_rows);
         }
     };
 }
@@ -687,42 +322,29 @@ unsafe extern "C" fn cmyk_ycck_convert(
     mut num_rows: c_int,
 ) {
     let mut cconvert: my_cconvert_ptr = (*cinfo).cconvert as my_cconvert_ptr;
-    
-    
-    
+
     let mut ctab: *mut JLONG = (*cconvert).rgb_ycc_tab;
-    
-    
-    
-    
-    
-    
+
     let mut num_cols: JDIMENSION = (*cinfo).image_width;
     loop {
-              num_rows -= 1;
+        num_rows -= 1;
         if !(num_rows >= 0i32) {
             break;
         }
         let fresh21 = input_buf;
         input_buf = input_buf.offset(1);
-        
-        
-        
-        
-         let mut inptr:   JSAMPROW =  *fresh21; let mut outptr0:   JSAMPROW =
-     *(*output_buf.offset(0)).offset(output_row as isize); let mut outptr1:   JSAMPROW =
-     *(*output_buf.offset(1)).offset(output_row as isize); let mut outptr2:   JSAMPROW =
-     *(*output_buf.offset(2)).offset(output_row as isize); let mut outptr3:   JSAMPROW =
-     *(*output_buf.offset(3)).offset(output_row as isize);
-        output_row +=  1;
-         let mut col:   JDIMENSION =  0u32;
+
+        let mut inptr: JSAMPROW = *fresh21;
+        let mut outptr0: JSAMPROW = *(*output_buf.offset(0)).offset(output_row as isize);
+        let mut outptr1: JSAMPROW = *(*output_buf.offset(1)).offset(output_row as isize);
+        let mut outptr2: JSAMPROW = *(*output_buf.offset(2)).offset(output_row as isize);
+        let mut outptr3: JSAMPROW = *(*output_buf.offset(3)).offset(output_row as isize);
+        output_row += 1;
+        let mut col: JDIMENSION = 0u32;
         while col < num_cols {
-               
-            
-             let mut r:   c_int =
-     MAXJSAMPLE - *inptr.offset(0) as c_int; let mut g:   c_int =
-     MAXJSAMPLE - *inptr.offset(1) as c_int; let mut b:   c_int =
-     MAXJSAMPLE - *inptr.offset(2) as c_int;
+            let mut r: c_int = MAXJSAMPLE - *inptr.offset(0) as c_int;
+            let mut g: c_int = MAXJSAMPLE - *inptr.offset(1) as c_int;
+            let mut b: c_int = MAXJSAMPLE - *inptr.offset(2) as c_int;
             /* K passes through as-is */
             *outptr3.offset(col as isize) = *inptr.offset(3); /* don't need GETJSAMPLE here */
             inptr = inptr.offset(4);
@@ -735,21 +357,18 @@ unsafe extern "C" fn cmyk_ycck_convert(
             *outptr0.offset(col as isize) = (*ctab.offset((r + R_Y_OFF) as isize)
                 + *ctab.offset((g + G_Y_OFF) as isize)
                 + *ctab.offset((b + B_Y_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             /* Cb */
             *outptr1.offset(col as isize) = (*ctab.offset((r + R_CB_OFF) as isize)
                 + *ctab.offset((g + G_CB_OFF) as isize)
                 + *ctab.offset((b + B_CB_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
+                >> SCALEBITS) as JSAMPLE;
             /* Cr */
             *outptr2.offset(col as isize) = (*ctab.offset((r + R_CR_OFF) as isize)
                 + *ctab.offset((g + G_CR_OFF) as isize)
                 + *ctab.offset((b + B_CR_OFF) as isize)
-                >> SCALEBITS)
-                as JSAMPLE;
-            col +=  1
+                >> SCALEBITS) as JSAMPLE;
+            col += 1
         }
     }
 }
@@ -766,27 +385,26 @@ unsafe extern "C" fn grayscale_convert(
     mut output_row: JDIMENSION,
     mut num_rows: c_int,
 ) {
-     /* don't need GETJSAMPLE() here */
-    
-    
+    /* don't need GETJSAMPLE() here */
+
     let mut num_cols: JDIMENSION = (*cinfo).image_width;
     let mut instride: c_int = (*cinfo).input_components;
     loop {
-           num_rows -= 1;
+        num_rows -= 1;
         if !(num_rows >= 0i32) {
             break;
         }
         let fresh22 = input_buf;
         input_buf = input_buf.offset(1);
-        
-         let mut inptr:   JSAMPROW =  *fresh22; let mut outptr:   JSAMPROW =
-     *(*output_buf.offset(0)).offset(output_row as isize);
-        output_row +=  1;
-         let mut col:   JDIMENSION =  0u32;
+
+        let mut inptr: JSAMPROW = *fresh22;
+        let mut outptr: JSAMPROW = *(*output_buf.offset(0)).offset(output_row as isize);
+        output_row += 1;
+        let mut col: JDIMENSION = 0u32;
         while col < num_cols {
             *outptr.offset(col as isize) = *inptr.offset(0);
             inptr = inptr.offset(instride as isize);
-            col +=  1
+            col += 1
         }
     }
 }
@@ -803,18 +421,11 @@ unsafe extern "C" fn null_convert(
     mut output_row: JDIMENSION,
     mut num_rows: c_int,
 ) {
-    
-    
-    
-    
-    
-    
-    
-     let mut inptr:  JSAMPROW =
-     ::std::ptr::null_mut::< JSAMPLE>(); let mut outptr0:  JSAMPROW =
-     ::std::ptr::null_mut::< JSAMPLE>(); let mut outptr1:  JSAMPROW =
-     ::std::ptr::null_mut::< JSAMPLE>(); let mut outptr2:  JSAMPROW =
-     ::std::ptr::null_mut::< JSAMPLE>(); let mut col:  JDIMENSION =  0;
+    let mut inptr: JSAMPROW = ::std::ptr::null_mut::<JSAMPLE>();
+    let mut outptr0: JSAMPROW = ::std::ptr::null_mut::<JSAMPLE>();
+    let mut outptr1: JSAMPROW = ::std::ptr::null_mut::<JSAMPLE>();
+    let mut outptr2: JSAMPROW = ::std::ptr::null_mut::<JSAMPLE>();
+    let mut col: JDIMENSION = 0;
     let mut nc: c_int = (*cinfo).num_components;
     let mut num_cols: JDIMENSION = (*cinfo).image_width;
     if nc == 3i32 {
@@ -829,7 +440,7 @@ unsafe extern "C" fn null_convert(
             outptr0 = *(*output_buf.offset(0)).offset(output_row as isize);
             outptr1 = *(*output_buf.offset(1)).offset(output_row as isize);
             outptr2 = *(*output_buf.offset(2)).offset(output_row as isize);
-            output_row +=  1;
+            output_row += 1;
             col = 0u32;
             while col < num_cols {
                 let fresh24 = inptr;
@@ -841,12 +452,12 @@ unsafe extern "C" fn null_convert(
                 let fresh26 = inptr;
                 inptr = inptr.offset(1);
                 *outptr2.offset(col as isize) = *fresh26;
-                col +=  1
+                col += 1
             }
         }
     } else if nc == 4i32 {
         loop {
-             num_rows -= 1;
+            num_rows -= 1;
             if !(num_rows >= 0i32) {
                 break;
             }
@@ -856,9 +467,8 @@ unsafe extern "C" fn null_convert(
             outptr0 = *(*output_buf.offset(0)).offset(output_row as isize);
             outptr1 = *(*output_buf.offset(1)).offset(output_row as isize);
             outptr2 = *(*output_buf.offset(2)).offset(output_row as isize);
-             let mut outptr3:   JSAMPROW =
-     *(*output_buf.offset(3)).offset(output_row as isize);
-            output_row +=  1;
+            let mut outptr3: JSAMPROW = *(*output_buf.offset(3)).offset(output_row as isize);
+            output_row += 1;
             col = 0u32;
             while col < num_cols {
                 let fresh28 = inptr;
@@ -873,30 +483,30 @@ unsafe extern "C" fn null_convert(
                 let fresh31 = inptr;
                 inptr = inptr.offset(1);
                 *outptr3.offset(col as isize) = *fresh31;
-                col +=  1
+                col += 1
             }
         }
     } else {
         loop {
-             num_rows -= 1;
+            num_rows -= 1;
             if !(num_rows >= 0i32) {
                 break;
             }
-             let mut ci:   c_int =  0i32; /* don't need GETJSAMPLE() here */
+            let mut ci: c_int = 0i32; /* don't need GETJSAMPLE() here */
             while ci < nc {
-                 inptr = *input_buf;
-                 let mut outptr:   JSAMPROW =
-     *(*output_buf.offset(ci as isize)).offset(output_row as isize);
+                inptr = *input_buf;
+                let mut outptr: JSAMPROW =
+                    *(*output_buf.offset(ci as isize)).offset(output_row as isize);
                 col = 0u32;
                 while col < num_cols {
                     *outptr.offset(col as isize) = *inptr.offset(ci as isize);
                     inptr = inptr.offset(nc as isize);
-                    col +=  1
+                    col += 1
                 }
                 ci += 1
             }
             input_buf = input_buf.offset(1);
-            output_row +=  1
+            output_row += 1
         }
     };
 }
@@ -913,9 +523,7 @@ unsafe extern "C" fn null_method(mut _cinfo: j_compress_ptr) {
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
-     
-     let mut cconvert:   my_cconvert_ptr =
-     Some(
+    let mut cconvert: my_cconvert_ptr = Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),
@@ -930,83 +538,66 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
     (*cconvert).pub_0.start_pass =
         Some(null_method as unsafe extern "C" fn(_: j_compress_ptr) -> ());
     /* Make sure input_components agrees with in_color_space */
-    match  (*cinfo).in_color_space {
+    match (*cinfo).in_color_space {
         1 => {
             if (*cinfo).input_components != 1i32 {
-                (*(*cinfo).err).msg_code =
-                    super::jerror::JERR_BAD_IN_COLORSPACE as c_int;
+                (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_IN_COLORSPACE as c_int;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
         }
         2 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 => {
-            if (*cinfo).input_components
-                != rgb_pixelsize[(*cinfo).in_color_space as usize]
-            {
-                (*(*cinfo).err).msg_code =
-                    super::jerror::JERR_BAD_IN_COLORSPACE as c_int;
+            if (*cinfo).input_components != rgb_pixelsize[(*cinfo).in_color_space as usize] {
+                (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_IN_COLORSPACE as c_int;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
         }
         3 => {
             if (*cinfo).input_components != 3i32 {
-                (*(*cinfo).err).msg_code =
-                    super::jerror::JERR_BAD_IN_COLORSPACE as c_int;
+                (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_IN_COLORSPACE as c_int;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
         }
         4 | 5 => {
             if (*cinfo).input_components != 4i32 {
-                (*(*cinfo).err).msg_code =
-                    super::jerror::JERR_BAD_IN_COLORSPACE as c_int;
+                (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_IN_COLORSPACE as c_int;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
         }
         _ => {
             /* JCS_UNKNOWN can be anything */
             if (*cinfo).input_components < 1i32 {
-                (*(*cinfo).err).msg_code =
-                    super::jerror::JERR_BAD_IN_COLORSPACE as c_int;
+                (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_IN_COLORSPACE as c_int;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
         }
     }
     /* Check num_components, set conversion method based on requested space */
-    match  (*cinfo).jpeg_color_space {
+    match (*cinfo).jpeg_color_space {
         1 => {
             if (*cinfo).num_components != 1i32 {
                 (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_J_COLORSPACE as c_int;
@@ -1015,13 +606,9 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
-            if  (*cinfo).in_color_space
-                ==  JCS_GRAYSCALE
-            {
+            if (*cinfo).in_color_space == JCS_GRAYSCALE {
                 (*cconvert).pub_0.color_convert = Some(
                     grayscale_convert
                         as unsafe extern "C" fn(
@@ -1032,28 +619,17 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                             _: c_int,
                         ) -> (),
                 )
-            } else if  (*cinfo).in_color_space
-                ==  JCS_RGB
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_RGB
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_RGBX
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_BGR
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_BGRX
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_XBGR
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_XRGB
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_RGBA
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_BGRA
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_ABGR
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_ARGB
+            } else if (*cinfo).in_color_space == JCS_RGB
+                || (*cinfo).in_color_space == JCS_EXT_RGB
+                || (*cinfo).in_color_space == JCS_EXT_RGBX
+                || (*cinfo).in_color_space == JCS_EXT_BGR
+                || (*cinfo).in_color_space == JCS_EXT_BGRX
+                || (*cinfo).in_color_space == JCS_EXT_XBGR
+                || (*cinfo).in_color_space == JCS_EXT_XRGB
+                || (*cinfo).in_color_space == JCS_EXT_RGBA
+                || (*cinfo).in_color_space == JCS_EXT_BGRA
+                || (*cinfo).in_color_space == JCS_EXT_ABGR
+                || (*cinfo).in_color_space == JCS_EXT_ARGB
             {
                 if super::simd::x86_64::jsimd::jsimd_can_rgb_gray() != 0 {
                     (*cconvert).pub_0.color_convert = Some(
@@ -1067,10 +643,8 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                             ) -> (),
                     )
                 } else {
-                    (*cconvert).pub_0.start_pass = Some(
-                        rgb_ycc_start
-                            as unsafe extern "C" fn(_: j_compress_ptr) -> (),
-                    );
+                    (*cconvert).pub_0.start_pass =
+                        Some(rgb_ycc_start as unsafe extern "C" fn(_: j_compress_ptr) -> ());
                     (*cconvert).pub_0.color_convert = Some(
                         rgb_gray_convert
                             as unsafe extern "C" fn(
@@ -1082,9 +656,7 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                             ) -> (),
                     )
                 }
-            } else if  (*cinfo).in_color_space
-                ==  JCS_YCbCr
-            {
+            } else if (*cinfo).in_color_space == JCS_YCbCr {
                 (*cconvert).pub_0.color_convert = Some(
                     grayscale_convert
                         as unsafe extern "C" fn(
@@ -1096,16 +668,13 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                         ) -> (),
                 )
             } else {
-                (*(*cinfo).err).msg_code =
-                    super::jerror::JERR_CONVERSION_NOTIMPL as c_int;
+                (*(*cinfo).err).msg_code = super::jerror::JERR_CONVERSION_NOTIMPL as c_int;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
         }
         2 => {
@@ -1116,9 +685,7 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             if rgb_red[(*cinfo).in_color_space as usize] == 0i32
                 && rgb_green[(*cinfo).in_color_space as usize] == 1i32
@@ -1135,28 +702,17 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                             _: c_int,
                         ) -> (),
                 )
-            } else if  (*cinfo).in_color_space
-                ==  JCS_RGB
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_RGB
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_RGBX
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_BGR
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_BGRX
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_XBGR
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_XRGB
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_RGBA
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_BGRA
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_ABGR
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_ARGB
+            } else if (*cinfo).in_color_space == JCS_RGB
+                || (*cinfo).in_color_space == JCS_EXT_RGB
+                || (*cinfo).in_color_space == JCS_EXT_RGBX
+                || (*cinfo).in_color_space == JCS_EXT_BGR
+                || (*cinfo).in_color_space == JCS_EXT_BGRX
+                || (*cinfo).in_color_space == JCS_EXT_XBGR
+                || (*cinfo).in_color_space == JCS_EXT_XRGB
+                || (*cinfo).in_color_space == JCS_EXT_RGBA
+                || (*cinfo).in_color_space == JCS_EXT_BGRA
+                || (*cinfo).in_color_space == JCS_EXT_ABGR
+                || (*cinfo).in_color_space == JCS_EXT_ARGB
             {
                 (*cconvert).pub_0.color_convert = Some(
                     rgb_rgb_convert
@@ -1169,16 +725,13 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                         ) -> (),
                 )
             } else {
-                (*(*cinfo).err).msg_code =
-                    super::jerror::JERR_CONVERSION_NOTIMPL as c_int;
+                (*(*cinfo).err).msg_code = super::jerror::JERR_CONVERSION_NOTIMPL as c_int;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
         }
         3 => {
@@ -1189,32 +742,19 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
-            if  (*cinfo).in_color_space
-                ==  JCS_RGB
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_RGB
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_RGBX
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_BGR
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_BGRX
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_XBGR
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_XRGB
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_RGBA
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_BGRA
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_ABGR
-                ||  (*cinfo).in_color_space
-                    ==  JCS_EXT_ARGB
+            if (*cinfo).in_color_space == JCS_RGB
+                || (*cinfo).in_color_space == JCS_EXT_RGB
+                || (*cinfo).in_color_space == JCS_EXT_RGBX
+                || (*cinfo).in_color_space == JCS_EXT_BGR
+                || (*cinfo).in_color_space == JCS_EXT_BGRX
+                || (*cinfo).in_color_space == JCS_EXT_XBGR
+                || (*cinfo).in_color_space == JCS_EXT_XRGB
+                || (*cinfo).in_color_space == JCS_EXT_RGBA
+                || (*cinfo).in_color_space == JCS_EXT_BGRA
+                || (*cinfo).in_color_space == JCS_EXT_ABGR
+                || (*cinfo).in_color_space == JCS_EXT_ARGB
             {
                 if super::simd::x86_64::jsimd::jsimd_can_rgb_ycc() != 0 {
                     (*cconvert).pub_0.color_convert = Some(
@@ -1228,10 +768,8 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                             ) -> (),
                     )
                 } else {
-                    (*cconvert).pub_0.start_pass = Some(
-                        rgb_ycc_start
-                            as unsafe extern "C" fn(_: j_compress_ptr) -> (),
-                    );
+                    (*cconvert).pub_0.start_pass =
+                        Some(rgb_ycc_start as unsafe extern "C" fn(_: j_compress_ptr) -> ());
                     (*cconvert).pub_0.color_convert = Some(
                         rgb_ycc_convert
                             as unsafe extern "C" fn(
@@ -1243,9 +781,7 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                             ) -> (),
                     )
                 }
-            } else if  (*cinfo).in_color_space
-                ==  JCS_YCbCr
-            {
+            } else if (*cinfo).in_color_space == JCS_YCbCr {
                 (*cconvert).pub_0.color_convert = Some(
                     null_convert
                         as unsafe extern "C" fn(
@@ -1257,16 +793,13 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                         ) -> (),
                 )
             } else {
-                (*(*cinfo).err).msg_code =
-                    super::jerror::JERR_CONVERSION_NOTIMPL as c_int;
+                (*(*cinfo).err).msg_code = super::jerror::JERR_CONVERSION_NOTIMPL as c_int;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
         }
         4 => {
@@ -1277,13 +810,9 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
-            if  (*cinfo).in_color_space
-                ==  JCS_CMYK
-            {
+            if (*cinfo).in_color_space == JCS_CMYK {
                 (*cconvert).pub_0.color_convert = Some(
                     null_convert
                         as unsafe extern "C" fn(
@@ -1295,16 +824,13 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                         ) -> (),
                 )
             } else {
-                (*(*cinfo).err).msg_code =
-                    super::jerror::JERR_CONVERSION_NOTIMPL as c_int;
+                (*(*cinfo).err).msg_code = super::jerror::JERR_CONVERSION_NOTIMPL as c_int;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
         }
         5 => {
@@ -1315,17 +841,11 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
-            if  (*cinfo).in_color_space
-                ==  JCS_CMYK
-            {
-                (*cconvert).pub_0.start_pass = Some(
-                    rgb_ycc_start
-                        as unsafe extern "C" fn(_: j_compress_ptr) -> (),
-                );
+            if (*cinfo).in_color_space == JCS_CMYK {
+                (*cconvert).pub_0.start_pass =
+                    Some(rgb_ycc_start as unsafe extern "C" fn(_: j_compress_ptr) -> ());
                 (*cconvert).pub_0.color_convert = Some(
                     cmyk_ycck_convert
                         as unsafe extern "C" fn(
@@ -1336,9 +856,7 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                             _: c_int,
                         ) -> (),
                 )
-            } else if  (*cinfo).in_color_space
-                ==  JCS_YCCK
-            {
+            } else if (*cinfo).in_color_space == JCS_YCCK {
                 (*cconvert).pub_0.color_convert = Some(
                     null_convert
                         as unsafe extern "C" fn(
@@ -1350,33 +868,27 @@ pub unsafe extern "C" fn jinit_color_converter(mut cinfo: j_compress_ptr) {
                         ) -> (),
                 )
             } else {
-                (*(*cinfo).err).msg_code =
-                    super::jerror::JERR_CONVERSION_NOTIMPL as c_int;
+                (*(*cinfo).err).msg_code = super::jerror::JERR_CONVERSION_NOTIMPL as c_int;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
         }
         _ => {
             /* allow null conversion of JCS_UNKNOWN */
-            if  (*cinfo).jpeg_color_space !=  (*cinfo).in_color_space
+            if (*cinfo).jpeg_color_space != (*cinfo).in_color_space
                 || (*cinfo).num_components != (*cinfo).input_components
             {
-                (*(*cinfo).err).msg_code =
-                    super::jerror::JERR_CONVERSION_NOTIMPL as c_int;
+                (*(*cinfo).err).msg_code = super::jerror::JERR_CONVERSION_NOTIMPL as c_int;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             (*cconvert).pub_0.color_convert = Some(
                 null_convert

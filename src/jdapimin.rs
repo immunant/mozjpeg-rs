@@ -1,317 +1,63 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-use crate::stdlib::memset;use libc::{c_void, c_ulong, c_int, self};pub use crate::jpegint_h::{inverse_DCT_method_ptr, jinit_input_controller,
-                           jinit_marker_reader, jinit_memory_mgr,
-                           JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT,
-                           JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, J_BUF_MODE};pub use crate::jpeglib_h::{j_common_ptr, j_decompress_ptr, jpeg_abort,
-                           jpeg_color_deconverter, jpeg_color_quantizer,
-                           jpeg_common_struct, jpeg_component_info,
-                           jpeg_d_coef_controller, jpeg_d_main_controller,
-                           jpeg_d_post_controller, jpeg_decomp_master,
-                           jpeg_decompress_struct, jpeg_destroy,
-                           jpeg_entropy_decoder, jpeg_error_mgr,
-                           jpeg_idct_method, jpeg_idct_method_selector,
-                           jpeg_input_controller, jpeg_inverse_dct,
-                           jpeg_marker_parser_method, jpeg_marker_reader,
-                           jpeg_marker_struct, jpeg_memory_mgr,
-                           jpeg_progress_mgr, jpeg_saved_marker_ptr,
-                           jpeg_source_mgr, jpeg_upsampler,
-                           jvirt_barray_control, jvirt_barray_ptr,
-                           jvirt_sarray_control, jvirt_sarray_ptr,
-                           C2RustUnnamed_2, JCS_YCbCr, JBLOCK, JBLOCKARRAY,
-                           JBLOCKROW, JCOEFPTR, JCS_CMYK, JCS_EXT_ABGR,
-                           JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA,
-                           JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA,
-                           JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB,
-                           JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN,
-                           JCS_YCCK, JDCT_DEFAULT, JDCT_FLOAT, JDCT_IFAST,
-                           JDCT_ISLOW, JDITHER_FS, JDITHER_NONE,
-                           JDITHER_ORDERED, JHUFF_TBL, JPEG_HEADER_OK,
-                           JPEG_HEADER_TABLES_ONLY, JPOOL_PERMANENT,
-                           JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE, JSAMPROW,
-                           J_COLOR_SPACE, J_DCT_METHOD, J_DITHER_MODE,
-                           NUM_HUFF_TBLS, NUM_QUANT_TBLS};pub use crate::jmorecfg_h::{boolean, FALSE, JCOEF, JDIMENSION, JOCTET,
-                            JSAMPLE, TRUE, UINT16, UINT8};pub use crate::stddef_h::{size_t, NULL};pub use crate::jconfig_h::JPEG_LIB_VERSION;pub use super::jdmaster::my_decomp_master;pub use super::jerror::{C2RustUnnamed_3, JERR_ARITH_NOTIMPL,
-                        JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
-                        JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID,
-                        JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
-                        JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE,
-                        JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
-                        JERR_BAD_LENGTH, JERR_BAD_LIB_VERSION,
-                        JERR_BAD_MCU_SIZE, JERR_BAD_PARAM,
-                        JERR_BAD_PARAM_VALUE, JERR_BAD_POOL_ID,
-                        JERR_BAD_PRECISION, JERR_BAD_PROGRESSION,
-                        JERR_BAD_PROG_SCRIPT, JERR_BAD_SAMPLING,
-                        JERR_BAD_SCAN_SCRIPT, JERR_BAD_STATE,
-                        JERR_BAD_STRUCT_SIZE, JERR_BAD_VIRTUAL_ACCESS,
-                        JERR_BUFFER_SIZE, JERR_CANT_SUSPEND,
-                        JERR_CCIR601_NOTIMPL, JERR_COMPONENT_COUNT,
-                        JERR_CONVERSION_NOTIMPL, JERR_DAC_INDEX,
-                        JERR_DAC_VALUE, JERR_DHT_INDEX, JERR_DQT_INDEX,
-                        JERR_EMPTY_IMAGE, JERR_EMS_READ, JERR_EMS_WRITE,
-                        JERR_EOI_EXPECTED, JERR_FILE_READ, JERR_FILE_WRITE,
-                        JERR_FRACT_SAMPLE_NOTIMPL, JERR_HUFF_CLEN_OVERFLOW,
-                        JERR_HUFF_MISSING_CODE, JERR_IMAGE_TOO_BIG,
-                        JERR_INPUT_EMPTY, JERR_INPUT_EOF,
-                        JERR_MISMATCHED_QUANT_TABLE, JERR_MISSING_DATA,
-                        JERR_MODE_CHANGE, JERR_NOTIMPL, JERR_NOT_COMPILED,
-                        JERR_NO_BACKING_STORE, JERR_NO_HUFF_TABLE,
-                        JERR_NO_IMAGE, JERR_NO_QUANT_TABLE, JERR_NO_SOI,
-                        JERR_OUT_OF_MEMORY, JERR_QUANT_COMPONENTS,
-                        JERR_QUANT_FEW_COLORS, JERR_QUANT_MANY_COLORS,
-                        JERR_SOF_DUPLICATE, JERR_SOF_NO_SOS,
-                        JERR_SOF_UNSUPPORTED, JERR_SOI_DUPLICATE,
-                        JERR_SOS_NO_SOF, JERR_TFILE_CREATE, JERR_TFILE_READ,
-                        JERR_TFILE_SEEK, JERR_TFILE_WRITE,
-                        JERR_TOO_LITTLE_DATA, JERR_UNKNOWN_MARKER,
-                        JERR_UNSUPPORTED_SUSPEND, JERR_VIRTUAL_BUG,
-                        JERR_WIDTH_OVERFLOW, JERR_XMS_READ, JERR_XMS_WRITE,
-                        JMSG_COPYRIGHT, JMSG_LASTMSGCODE, JMSG_NOMESSAGE,
-                        JMSG_VERSION, JTRC_16BIT_TABLES, JTRC_ADOBE,
-                        JTRC_APP0, JTRC_APP14, JTRC_DAC, JTRC_DHT, JTRC_DQT,
-                        JTRC_DRI, JTRC_EMS_CLOSE, JTRC_EMS_OPEN, JTRC_EOI,
-                        JTRC_HUFFBITS, JTRC_JFIF, JTRC_JFIF_BADTHUMBNAILSIZE,
-                        JTRC_JFIF_EXTENSION, JTRC_JFIF_THUMBNAIL,
-                        JTRC_MISC_MARKER, JTRC_PARMLESS_MARKER,
-                        JTRC_QUANTVALS, JTRC_QUANT_3_NCOLORS,
-                        JTRC_QUANT_NCOLORS, JTRC_QUANT_SELECTED,
-                        JTRC_RECOVERY_ACTION, JTRC_RST, JTRC_SMOOTH_NOTIMPL,
-                        JTRC_SOF, JTRC_SOF_COMPONENT, JTRC_SOI, JTRC_SOS,
-                        JTRC_SOS_COMPONENT, JTRC_SOS_PARAMS, JTRC_TFILE_CLOSE,
-                        JTRC_TFILE_OPEN, JTRC_THUMB_JPEG, JTRC_THUMB_PALETTE,
-                        JTRC_THUMB_RGB, JTRC_UNKNOWN_IDS, JTRC_XMS_CLOSE,
-                        JTRC_XMS_OPEN, JWRN_ADOBE_XFORM, JWRN_BOGUS_ICC,
-                        JWRN_BOGUS_PROGRESSION, JWRN_EXTRANEOUS_DATA,
-                        JWRN_HIT_MARKER, JWRN_HUFF_BAD_CODE, JWRN_JFIF_MAJOR,
-                        JWRN_JPEG_EOF, JWRN_MUST_RESYNC, JWRN_NOT_SEQUENTIAL,
-                        JWRN_TOO_MUCH_DATA};
+pub use super::jdmaster::my_decomp_master;
+pub use super::jerror::{
+    C2RustUnnamed_3, JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
+    JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID, JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
+    JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE, JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
+    JERR_BAD_LENGTH, JERR_BAD_LIB_VERSION, JERR_BAD_MCU_SIZE, JERR_BAD_PARAM, JERR_BAD_PARAM_VALUE,
+    JERR_BAD_POOL_ID, JERR_BAD_PRECISION, JERR_BAD_PROGRESSION, JERR_BAD_PROG_SCRIPT,
+    JERR_BAD_SAMPLING, JERR_BAD_SCAN_SCRIPT, JERR_BAD_STATE, JERR_BAD_STRUCT_SIZE,
+    JERR_BAD_VIRTUAL_ACCESS, JERR_BUFFER_SIZE, JERR_CANT_SUSPEND, JERR_CCIR601_NOTIMPL,
+    JERR_COMPONENT_COUNT, JERR_CONVERSION_NOTIMPL, JERR_DAC_INDEX, JERR_DAC_VALUE, JERR_DHT_INDEX,
+    JERR_DQT_INDEX, JERR_EMPTY_IMAGE, JERR_EMS_READ, JERR_EMS_WRITE, JERR_EOI_EXPECTED,
+    JERR_FILE_READ, JERR_FILE_WRITE, JERR_FRACT_SAMPLE_NOTIMPL, JERR_HUFF_CLEN_OVERFLOW,
+    JERR_HUFF_MISSING_CODE, JERR_IMAGE_TOO_BIG, JERR_INPUT_EMPTY, JERR_INPUT_EOF,
+    JERR_MISMATCHED_QUANT_TABLE, JERR_MISSING_DATA, JERR_MODE_CHANGE, JERR_NOTIMPL,
+    JERR_NOT_COMPILED, JERR_NO_BACKING_STORE, JERR_NO_HUFF_TABLE, JERR_NO_IMAGE,
+    JERR_NO_QUANT_TABLE, JERR_NO_SOI, JERR_OUT_OF_MEMORY, JERR_QUANT_COMPONENTS,
+    JERR_QUANT_FEW_COLORS, JERR_QUANT_MANY_COLORS, JERR_SOF_DUPLICATE, JERR_SOF_NO_SOS,
+    JERR_SOF_UNSUPPORTED, JERR_SOI_DUPLICATE, JERR_SOS_NO_SOF, JERR_TFILE_CREATE, JERR_TFILE_READ,
+    JERR_TFILE_SEEK, JERR_TFILE_WRITE, JERR_TOO_LITTLE_DATA, JERR_UNKNOWN_MARKER,
+    JERR_UNSUPPORTED_SUSPEND, JERR_VIRTUAL_BUG, JERR_WIDTH_OVERFLOW, JERR_XMS_READ, JERR_XMS_WRITE,
+    JMSG_COPYRIGHT, JMSG_LASTMSGCODE, JMSG_NOMESSAGE, JMSG_VERSION, JTRC_16BIT_TABLES, JTRC_ADOBE,
+    JTRC_APP0, JTRC_APP14, JTRC_DAC, JTRC_DHT, JTRC_DQT, JTRC_DRI, JTRC_EMS_CLOSE, JTRC_EMS_OPEN,
+    JTRC_EOI, JTRC_HUFFBITS, JTRC_JFIF, JTRC_JFIF_BADTHUMBNAILSIZE, JTRC_JFIF_EXTENSION,
+    JTRC_JFIF_THUMBNAIL, JTRC_MISC_MARKER, JTRC_PARMLESS_MARKER, JTRC_QUANTVALS,
+    JTRC_QUANT_3_NCOLORS, JTRC_QUANT_NCOLORS, JTRC_QUANT_SELECTED, JTRC_RECOVERY_ACTION, JTRC_RST,
+    JTRC_SMOOTH_NOTIMPL, JTRC_SOF, JTRC_SOF_COMPONENT, JTRC_SOI, JTRC_SOS, JTRC_SOS_COMPONENT,
+    JTRC_SOS_PARAMS, JTRC_TFILE_CLOSE, JTRC_TFILE_OPEN, JTRC_THUMB_JPEG, JTRC_THUMB_PALETTE,
+    JTRC_THUMB_RGB, JTRC_UNKNOWN_IDS, JTRC_XMS_CLOSE, JTRC_XMS_OPEN, JWRN_ADOBE_XFORM,
+    JWRN_BOGUS_ICC, JWRN_BOGUS_PROGRESSION, JWRN_EXTRANEOUS_DATA, JWRN_HIT_MARKER,
+    JWRN_HUFF_BAD_CODE, JWRN_JFIF_MAJOR, JWRN_JPEG_EOF, JWRN_MUST_RESYNC, JWRN_NOT_SEQUENTIAL,
+    JWRN_TOO_MUCH_DATA,
+};
+pub use crate::jconfig_h::JPEG_LIB_VERSION;
+pub use crate::jmorecfg_h::{
+    boolean, FALSE, JCOEF, JDIMENSION, JOCTET, JSAMPLE, TRUE, UINT16, UINT8,
+};
+pub use crate::jpegint_h::{
+    inverse_DCT_method_ptr, jinit_input_controller, jinit_marker_reader, jinit_memory_mgr,
+    JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE,
+    J_BUF_MODE,
+};
+pub use crate::jpeglib_h::{
+    j_common_ptr, j_decompress_ptr, jpeg_abort, jpeg_color_deconverter, jpeg_color_quantizer,
+    jpeg_common_struct, jpeg_component_info, jpeg_d_coef_controller, jpeg_d_main_controller,
+    jpeg_d_post_controller, jpeg_decomp_master, jpeg_decompress_struct, jpeg_destroy,
+    jpeg_entropy_decoder, jpeg_error_mgr, jpeg_idct_method, jpeg_idct_method_selector,
+    jpeg_input_controller, jpeg_inverse_dct, jpeg_marker_parser_method, jpeg_marker_reader,
+    jpeg_marker_struct, jpeg_memory_mgr, jpeg_progress_mgr, jpeg_saved_marker_ptr, jpeg_source_mgr,
+    jpeg_upsampler, jvirt_barray_control, jvirt_barray_ptr, jvirt_sarray_control, jvirt_sarray_ptr,
+    C2RustUnnamed_2, JCS_YCbCr, JBLOCK, JBLOCKARRAY, JBLOCKROW, JCOEFPTR, JCS_CMYK, JCS_EXT_ABGR,
+    JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX,
+    JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK,
+    JDCT_DEFAULT, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JDITHER_FS, JDITHER_NONE, JDITHER_ORDERED,
+    JHUFF_TBL, JPEG_HEADER_OK, JPEG_HEADER_TABLES_ONLY, JPOOL_PERMANENT, JQUANT_TBL, JSAMPARRAY,
+    JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD, J_DITHER_MODE, NUM_HUFF_TBLS,
+    NUM_QUANT_TBLS,
+};
+pub use crate::stddef_h::{size_t, NULL};
+use crate::stdlib::memset;
+use libc::{self, c_int, c_ulong, c_void};
 /*
  * jdapimin.c
  *
@@ -343,7 +89,6 @@ pub unsafe extern "C" fn jpeg_CreateDecompress(
     mut version: c_int,
     mut structsize: size_t,
 ) {
-     
     /* Guard against version mismatches between library and caller. */
     (*cinfo).mem = NULL as *mut jpeg_memory_mgr; /* so jpeg_destroy knows mem mgr not called */
     if version != JPEG_LIB_VERSION {
@@ -357,13 +102,9 @@ pub unsafe extern "C" fn jpeg_CreateDecompress(
         )
         .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
-    if structsize
-        != ::std::mem::size_of::<jpeg_decompress_struct>() as c_ulong
-    {
+    if structsize != ::std::mem::size_of::<jpeg_decompress_struct>() as c_ulong {
         (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_STRUCT_SIZE as c_int;
-        (*(*cinfo).err).msg_parm.i[0] =  ::std::mem::size_of::<
-            jpeg_decompress_struct,
-        >() as c_int;
+        (*(*cinfo).err).msg_parm.i[0] = ::std::mem::size_of::<jpeg_decompress_struct>() as c_int;
         (*(*cinfo).err).msg_parm.i[1] = structsize as c_int;
         Some(
             (*(*cinfo).err)
@@ -393,18 +134,15 @@ pub unsafe extern "C" fn jpeg_CreateDecompress(
     /* Zero out pointers to permanent structures. */
     (*cinfo).progress = NULL as *mut jpeg_progress_mgr;
     (*cinfo).src = NULL as *mut jpeg_source_mgr;
-     let mut i:   c_int =  0i32;
+    let mut i: c_int = 0i32;
     while i < NUM_QUANT_TBLS {
-        (*cinfo).quant_tbl_ptrs[i as usize] =
-            NULL as *mut JQUANT_TBL;
+        (*cinfo).quant_tbl_ptrs[i as usize] = NULL as *mut JQUANT_TBL;
         i += 1
     }
     i = 0i32;
     while i < NUM_HUFF_TBLS {
-        (*cinfo).dc_huff_tbl_ptrs[i as usize] =
-            NULL as *mut JHUFF_TBL;
-        (*cinfo).ac_huff_tbl_ptrs[i as usize] =
-            NULL as *mut JHUFF_TBL;
+        (*cinfo).dc_huff_tbl_ptrs[i as usize] = NULL as *mut JHUFF_TBL;
+        (*cinfo).ac_huff_tbl_ptrs[i as usize] = NULL as *mut JHUFF_TBL;
         i += 1
     }
     /* Initialize marker processor so application can override methods
@@ -476,8 +214,7 @@ unsafe extern "C" fn default_decompress_parms(mut cinfo: j_decompress_ptr) {
                     0 => (*cinfo).jpeg_color_space = JCS_RGB,
                     1 => (*cinfo).jpeg_color_space = JCS_YCbCr,
                     _ => {
-                        (*(*cinfo).err).msg_code =
-                            super::jerror::JWRN_ADOBE_XFORM as c_int; /* assume it's YCbCr */
+                        (*(*cinfo).err).msg_code = super::jerror::JWRN_ADOBE_XFORM as c_int; /* assume it's YCbCr */
                         (*(*cinfo).err).msg_parm.i[0] = (*cinfo).Adobe_transform as c_int;
                         Some(
                             (*(*cinfo).err)
@@ -485,8 +222,7 @@ unsafe extern "C" fn default_decompress_parms(mut cinfo: j_decompress_ptr) {
                                 .expect("non-null function pointer"),
                         )
                         .expect("non-null function pointer")(
-                            cinfo as j_common_ptr,
-                            -1i32,
+                            cinfo as j_common_ptr, -1i32
                         );
                         (*cinfo).jpeg_color_space = JCS_YCbCr
                     }
@@ -512,8 +248,7 @@ unsafe extern "C" fn default_decompress_parms(mut cinfo: j_decompress_ptr) {
                             .expect("non-null function pointer"),
                     )
                     .expect("non-null function pointer")(
-                        cinfo as j_common_ptr,
-                        1i32,
+                        cinfo as j_common_ptr, 1i32
                     );
                     (*cinfo).jpeg_color_space = JCS_YCbCr
                     /* assume it's YCbCr */
@@ -528,8 +263,7 @@ unsafe extern "C" fn default_decompress_parms(mut cinfo: j_decompress_ptr) {
                     0 => (*cinfo).jpeg_color_space = JCS_CMYK,
                     2 => (*cinfo).jpeg_color_space = JCS_YCCK,
                     _ => {
-                        (*(*cinfo).err).msg_code =
-                            super::jerror::JWRN_ADOBE_XFORM as c_int; /* assume it's YCCK */
+                        (*(*cinfo).err).msg_code = super::jerror::JWRN_ADOBE_XFORM as c_int; /* assume it's YCCK */
                         (*(*cinfo).err).msg_parm.i[0] = (*cinfo).Adobe_transform as c_int;
                         Some(
                             (*(*cinfo).err)
@@ -537,8 +271,7 @@ unsafe extern "C" fn default_decompress_parms(mut cinfo: j_decompress_ptr) {
                                 .expect("non-null function pointer"),
                         )
                         .expect("non-null function pointer")(
-                            cinfo as j_common_ptr,
-                            -1i32,
+                            cinfo as j_common_ptr, -1i32
                         );
                         (*cinfo).jpeg_color_space = JCS_YCCK
                     }
@@ -606,7 +339,6 @@ pub unsafe extern "C" fn jpeg_read_header(
     mut cinfo: j_decompress_ptr,
     mut require_image: boolean,
 ) -> c_int {
-     
     if (*cinfo).global_state != 200i32 && (*cinfo).global_state != 201i32 {
         (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_STATE as c_int;
         (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
@@ -617,7 +349,7 @@ pub unsafe extern "C" fn jpeg_read_header(
         )
         .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
-     let mut retcode:   c_int =  jpeg_consume_input(cinfo);
+    let mut retcode: c_int = jpeg_consume_input(cinfo);
     match retcode {
         1 => retcode = JPEG_HEADER_OK,
         2 => {
@@ -629,9 +361,7 @@ pub unsafe extern "C" fn jpeg_read_header(
                         .error_exit
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
             }
             /* Reset to start state; it would be safer to require the application to
              * call jpeg_abort, but we can't change it now for compatibility reasons.
@@ -657,11 +387,9 @@ pub unsafe extern "C" fn jpeg_read_header(
  */
 #[no_mangle]
 
-pub unsafe extern "C" fn jpeg_consume_input(
-    mut cinfo: j_decompress_ptr,
-) -> c_int {
-    
-     let mut retcode:  c_int =  0i32; let mut current_block_10:  u64;
+pub unsafe extern "C" fn jpeg_consume_input(mut cinfo: j_decompress_ptr) -> c_int {
+    let mut retcode: c_int = 0i32;
+    let mut current_block_10: u64;
     /* NB: every possible DSTATE value should be listed in this switch */
     match (*cinfo).global_state {
         200 => {
@@ -707,9 +435,7 @@ pub unsafe extern "C" fn jpeg_consume_input(
                     .error_exit
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+            .expect("non-null function pointer")(cinfo as j_common_ptr);
             current_block_10 = 7149356873433890176;
         }
     }
@@ -740,9 +466,7 @@ pub unsafe extern "C" fn jpeg_consume_input(
  */
 #[no_mangle]
 
-pub unsafe extern "C" fn jpeg_input_complete(
-    cinfo: j_decompress_ptr,
-) -> boolean {
+pub unsafe extern "C" fn jpeg_input_complete(cinfo: j_decompress_ptr) -> boolean {
     /* Check for valid jpeg object */
     if (*cinfo).global_state < 200i32 || (*cinfo).global_state > 210i32 {
         (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_STATE as c_int;
@@ -761,9 +485,7 @@ pub unsafe extern "C" fn jpeg_input_complete(
  */
 #[no_mangle]
 
-pub unsafe extern "C" fn jpeg_has_multiple_scans(
-    cinfo: j_decompress_ptr,
-) -> boolean {
+pub unsafe extern "C" fn jpeg_has_multiple_scans(cinfo: j_decompress_ptr) -> boolean {
     /* Only valid after jpeg_read_header completes */
     if (*cinfo).global_state < 202i32 || (*cinfo).global_state > 210i32 {
         (*(*cinfo).err).msg_code = super::jerror::JERR_BAD_STATE as c_int;
@@ -787,9 +509,7 @@ pub unsafe extern "C" fn jpeg_has_multiple_scans(
  */
 #[no_mangle]
 
-pub unsafe extern "C" fn jpeg_finish_decompress(
-    mut cinfo: j_decompress_ptr,
-) -> boolean {
+pub unsafe extern "C" fn jpeg_finish_decompress(mut cinfo: j_decompress_ptr) -> boolean {
     if ((*cinfo).global_state == 205i32 || (*cinfo).global_state == 206i32)
         && (*cinfo).buffered_image == 0
     {
@@ -801,9 +521,7 @@ pub unsafe extern "C" fn jpeg_finish_decompress(
                     .error_exit
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+            .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
         Some(
             (*(*cinfo).master)

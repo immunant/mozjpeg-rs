@@ -1,15 +1,10 @@
-use libc::{c_ushort, c_ulong, c_char, c_int};extern "C" {
+use libc::{c_char, c_int, c_ulong, c_ushort};
+extern "C" {
     #[no_mangle]
-    pub fn set_sample_factors(
-        cinfo: j_compress_ptr,
-        arg: *mut c_char,
-    ) -> boolean;
+    pub fn set_sample_factors(cinfo: j_compress_ptr, arg: *mut c_char) -> boolean;
 
     #[no_mangle]
-    pub fn set_quant_slots(
-        cinfo: j_compress_ptr,
-        arg: *mut c_char,
-    ) -> boolean;
+    pub fn set_quant_slots(cinfo: j_compress_ptr, arg: *mut c_char) -> boolean;
 
     #[no_mangle]
     pub fn set_quality_ratings(
@@ -19,10 +14,7 @@ use libc::{c_ushort, c_ulong, c_char, c_int};extern "C" {
     ) -> boolean;
 
     #[no_mangle]
-    pub fn read_scan_script(
-        cinfo: j_compress_ptr,
-        filename: *mut c_char,
-    ) -> boolean;
+    pub fn read_scan_script(cinfo: j_compress_ptr, filename: *mut c_char) -> boolean;
 
     #[no_mangle]
     pub fn read_quant_tables(
@@ -32,30 +24,19 @@ use libc::{c_ushort, c_ulong, c_char, c_int};extern "C" {
     ) -> boolean;
 
     #[no_mangle]
-    pub fn jinit_read_targa(
-        cinfo: j_compress_ptr,
-    ) -> cjpeg_source_ptr;
+    pub fn jinit_read_targa(cinfo: j_compress_ptr) -> cjpeg_source_ptr;
 
     #[no_mangle]
-    pub fn jinit_read_jpeg(
-        cinfo: j_compress_ptr,
-    ) -> cjpeg_source_ptr;
+    pub fn jinit_read_jpeg(cinfo: j_compress_ptr) -> cjpeg_source_ptr;
 
     #[no_mangle]
-    pub fn jinit_read_bmp(
-        cinfo: j_compress_ptr,
-        use_inversion_array: boolean,
-    ) -> cjpeg_source_ptr;
+    pub fn jinit_read_bmp(cinfo: j_compress_ptr, use_inversion_array: boolean) -> cjpeg_source_ptr;
 
     #[no_mangle]
-    pub fn jinit_read_gif(
-        cinfo: j_compress_ptr,
-    ) -> cjpeg_source_ptr;
+    pub fn jinit_read_gif(cinfo: j_compress_ptr) -> cjpeg_source_ptr;
 
     #[no_mangle]
-    pub fn jinit_read_ppm(
-        cinfo: j_compress_ptr,
-    ) -> cjpeg_source_ptr;
+    pub fn jinit_read_ppm(cinfo: j_compress_ptr) -> cjpeg_source_ptr;
 
     #[no_mangle]
     pub fn jinit_write_bmp(
@@ -65,30 +46,21 @@ use libc::{c_ushort, c_ulong, c_char, c_int};extern "C" {
     ) -> djpeg_dest_ptr;
 
     #[no_mangle]
-    pub fn jinit_write_gif(
-        cinfo: j_decompress_ptr,
-    ) -> djpeg_dest_ptr;
+    pub fn jinit_write_gif(cinfo: j_decompress_ptr) -> djpeg_dest_ptr;
 
     #[no_mangle]
-    pub fn jinit_write_ppm(
-        cinfo: j_decompress_ptr,
-    ) -> djpeg_dest_ptr;
+    pub fn jinit_write_ppm(cinfo: j_decompress_ptr) -> djpeg_dest_ptr;
 
     #[no_mangle]
-    pub fn jinit_write_targa(
-        cinfo: j_decompress_ptr,
-    ) -> djpeg_dest_ptr;
+    pub fn jinit_write_targa(cinfo: j_decompress_ptr) -> djpeg_dest_ptr;
 
     #[no_mangle]
-    pub fn read_color_map(
-        cinfo: j_decompress_ptr,
-        infile: *mut FILE,
-    );
+    pub fn read_color_map(cinfo: j_decompress_ptr, infile: *mut FILE);
 }
 
-
-
-use crate::jmorecfg_h::JDIMENSION;use crate::jpeglib_h::{jpeg_progress_mgr, JSAMPARRAY};pub use crate::stdlib::C2RustUnnamed_0;
+use crate::jmorecfg_h::JDIMENSION;
+use crate::jpeglib_h::{jpeg_progress_mgr, JSAMPARRAY};
+pub use crate::stdlib::C2RustUnnamed_0;
 /*
  * cjpeg/djpeg may need to perform extra passes to convert to or from
  * the source/destination file format.  The JPEG library does not know
@@ -111,24 +83,10 @@ pub type cd_progress_ptr = *mut cdjpeg_progress_mgr;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct cjpeg_source_struct {
-    pub start_input: Option<
-        unsafe extern "C" fn(
-            _: j_compress_ptr,
-            _: cjpeg_source_ptr,
-        ) -> (),
-    >,
-    pub get_pixel_rows: Option<
-        unsafe extern "C" fn(
-            _: j_compress_ptr,
-            _: cjpeg_source_ptr,
-        ) -> JDIMENSION,
-    >,
-    pub finish_input: Option<
-        unsafe extern "C" fn(
-            _: j_compress_ptr,
-            _: cjpeg_source_ptr,
-        ) -> (),
-    >,
+    pub start_input: Option<unsafe extern "C" fn(_: j_compress_ptr, _: cjpeg_source_ptr) -> ()>,
+    pub get_pixel_rows:
+        Option<unsafe extern "C" fn(_: j_compress_ptr, _: cjpeg_source_ptr) -> JDIMENSION>,
+    pub finish_input: Option<unsafe extern "C" fn(_: j_compress_ptr, _: cjpeg_source_ptr) -> ()>,
     pub input_file: *mut FILE,
     pub buffer: JSAMPARRAY,
     pub buffer_height: JDIMENSION,
@@ -137,41 +95,19 @@ pub struct cjpeg_source_struct {
 
 pub type cjpeg_source_ptr = *mut cjpeg_source_struct;
 
-
-
-
-
-use crate::jpeglib_h::{j_compress_ptr, j_decompress_ptr,
-                       jpeg_saved_marker_ptr};pub use crate::jmorecfg_h::boolean;pub use crate::stdlib::FILE;
+pub use crate::jmorecfg_h::boolean;
+use crate::jpeglib_h::{j_compress_ptr, j_decompress_ptr, jpeg_saved_marker_ptr};
+pub use crate::stdlib::FILE;
 
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct djpeg_dest_struct {
-    pub start_output: Option<
-        unsafe extern "C" fn(
-            _: j_decompress_ptr,
-            _: djpeg_dest_ptr,
-        ) -> (),
-    >,
-    pub put_pixel_rows: Option<
-        unsafe extern "C" fn(
-            _: j_decompress_ptr,
-            _: djpeg_dest_ptr,
-            _: JDIMENSION,
-        ) -> (),
-    >,
-    pub finish_output: Option<
-        unsafe extern "C" fn(
-            _: j_decompress_ptr,
-            _: djpeg_dest_ptr,
-        ) -> (),
-    >,
-    pub calc_buffer_dimensions: Option<
-        unsafe extern "C" fn(
-            _: j_decompress_ptr,
-            _: djpeg_dest_ptr,
-        ) -> (),
-    >,
+    pub start_output: Option<unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> ()>,
+    pub put_pixel_rows:
+        Option<unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr, _: JDIMENSION) -> ()>,
+    pub finish_output: Option<unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> ()>,
+    pub calc_buffer_dimensions:
+        Option<unsafe extern "C" fn(_: j_decompress_ptr, _: djpeg_dest_ptr) -> ()>,
     pub output_file: *mut FILE,
     pub buffer: JSAMPARRAY,
     pub buffer_height: JDIMENSION,
@@ -179,19 +115,11 @@ pub struct djpeg_dest_struct {
 
 pub type djpeg_dest_ptr = *mut djpeg_dest_struct;
 
-
-
-
-
-
-
-
-
-
-
-
-use libc;pub use crate::stdlib::{__int32_t, __off64_t, __off_t, _IO_FILE, _IO_codecvt,
-                        _IO_lock_t, _IO_marker, _IO_wide_data};pub use crate::stddef_h::size_t;
+pub use crate::stddef_h::size_t;
+pub use crate::stdlib::{
+    _IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data, __int32_t, __off64_t, __off_t, _IO_FILE,
+};
+use libc;
 /*
  * cdjpeg.h
  *
@@ -276,27 +204,12 @@ pub const READ_BINARY: [c_char; 3] =
 
 pub const EXIT_WARNING: c_int = 2i32;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-use crate::stdlib::{stdin, stdout};pub use crate::jmorecfg_h::{FALSE, TRUE};pub use crate::stdlib::{_ISalnum, _ISalpha, _ISblank, _IScntrl, _ISdigit,
-                        _ISgraph, _ISlower, _ISprint, _ISpunct, _ISspace,
-                        _ISupper, _ISxdigit, __ctype_b_loc,
-                        __ctype_tolower_loc, tolower};
+pub use crate::jmorecfg_h::{FALSE, TRUE};
+pub use crate::stdlib::{
+    _ISalnum, _ISalpha, _ISblank, _IScntrl, _ISdigit, _ISgraph, _ISlower, _ISprint, _ISpunct,
+    _ISspace, _ISupper, _ISxdigit, __ctype_b_loc, __ctype_tolower_loc, tolower,
+};
+use crate::stdlib::{stdin, stdout};
 /*
  * cdjpeg.c
  *
@@ -326,30 +239,27 @@ pub unsafe extern "C" fn keymatch(
     mut keyword: *const c_char,
     mut minchars: c_int,
 ) -> boolean {
-     /* arg longer than keyword, no good */
-    
-     let mut nmatched:  c_int =  0i32;
+    /* arg longer than keyword, no good */
+
+    let mut nmatched: c_int = 0i32;
     loop {
-          let fresh0 = arg;
+        let fresh0 = arg;
         arg = arg.offset(1);
-         let mut ca:   c_int =  *fresh0 as c_int;
+        let mut ca: c_int = *fresh0 as c_int;
         if !(ca != '\u{0}' as i32) {
             break;
         }
         let fresh1 = keyword;
         keyword = keyword.offset(1);
-         let mut ck:   c_int =  *fresh1 as c_int;
+        let mut ck: c_int = *fresh1 as c_int;
         if ck == '\u{0}' as i32 {
             return FALSE;
         }
-        if *(*__ctype_b_loc()).offset(ca as isize) as c_int
-            &  _ISupper as c_ushort as c_int
-            != 0
-        {
+        if *(*__ctype_b_loc()).offset(ca as isize) as c_int & _ISupper as c_ushort as c_int != 0 {
             /* count matched characters */
             /* force arg to lcase (assume ck is already) */
             ca = {
-                 let mut __res:  c_int =  0; /* no good */
+                let mut __res: c_int = 0; /* no good */
                 if ::std::mem::size_of::<c_int>() as c_ulong > 1u64 {
                     if 0 != 0 {
                         let mut __c: c_int = ca;

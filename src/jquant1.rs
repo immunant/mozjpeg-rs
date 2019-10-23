@@ -1,333 +1,61 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-use libc::{c_uint, c_ulong, c_int, c_long, c_void, self};pub use crate::jmorecfg_h::{boolean, rgb_blue, rgb_green, rgb_red,
-                            EXT_BGRX_BLUE, EXT_BGRX_GREEN, EXT_BGRX_RED,
-                            EXT_BGR_BLUE, EXT_BGR_GREEN, EXT_BGR_RED,
-                            EXT_RGBX_BLUE, EXT_RGBX_GREEN, EXT_RGBX_RED,
-                            EXT_RGB_BLUE, EXT_RGB_GREEN, EXT_RGB_RED,
-                            EXT_XBGR_BLUE, EXT_XBGR_GREEN, EXT_XBGR_RED,
-                            EXT_XRGB_BLUE, EXT_XRGB_GREEN, EXT_XRGB_RED,
-                            FALSE, INT16, JCOEF, JDIMENSION, JOCTET, JSAMPLE,
-                            MAXJSAMPLE, RGB_BLUE, RGB_GREEN, RGB_RED, TRUE,
-                            UINT16, UINT8};pub use crate::jpegint_h::{inverse_DCT_method_ptr, jzero_far, JBUF_CRANK_DEST,
-                           JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS,
-                           JBUF_SAVE_SOURCE, JLONG, J_BUF_MODE};pub use crate::stddef_h::{size_t, NULL};pub use crate::jpeglib_h::{j_common_ptr, j_decompress_ptr,
-                           jpeg_color_deconverter, jpeg_color_quantizer,
-                           jpeg_common_struct, jpeg_component_info,
-                           jpeg_d_coef_controller, jpeg_d_main_controller,
-                           jpeg_d_post_controller, jpeg_decomp_master,
-                           jpeg_decompress_struct, jpeg_entropy_decoder,
-                           jpeg_error_mgr, jpeg_input_controller,
-                           jpeg_inverse_dct, jpeg_marker_parser_method,
-                           jpeg_marker_reader, jpeg_marker_struct,
-                           jpeg_memory_mgr, jpeg_progress_mgr,
-                           jpeg_saved_marker_ptr, jpeg_source_mgr,
-                           jpeg_upsampler, jvirt_barray_control,
-                           jvirt_barray_ptr, jvirt_sarray_control,
-                           jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr,
-                           JBLOCK, JBLOCKARRAY, JBLOCKROW, JCOEFPTR, JCS_CMYK,
-                           JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR,
-                           JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB,
-                           JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR,
-                           JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565,
-                           JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST,
-                           JDCT_ISLOW, JDITHER_FS, JDITHER_NONE,
-                           JDITHER_ORDERED, JHUFF_TBL, JPOOL_IMAGE,
-                           JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE, JSAMPROW,
-                           J_COLOR_SPACE, J_DCT_METHOD, J_DITHER_MODE};pub use super::jerror::{C2RustUnnamed_3, JERR_ARITH_NOTIMPL,
-                        JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
-                        JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID,
-                        JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
-                        JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE,
-                        JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
-                        JERR_BAD_LENGTH, JERR_BAD_LIB_VERSION,
-                        JERR_BAD_MCU_SIZE, JERR_BAD_PARAM,
-                        JERR_BAD_PARAM_VALUE, JERR_BAD_POOL_ID,
-                        JERR_BAD_PRECISION, JERR_BAD_PROGRESSION,
-                        JERR_BAD_PROG_SCRIPT, JERR_BAD_SAMPLING,
-                        JERR_BAD_SCAN_SCRIPT, JERR_BAD_STATE,
-                        JERR_BAD_STRUCT_SIZE, JERR_BAD_VIRTUAL_ACCESS,
-                        JERR_BUFFER_SIZE, JERR_CANT_SUSPEND,
-                        JERR_CCIR601_NOTIMPL, JERR_COMPONENT_COUNT,
-                        JERR_CONVERSION_NOTIMPL, JERR_DAC_INDEX,
-                        JERR_DAC_VALUE, JERR_DHT_INDEX, JERR_DQT_INDEX,
-                        JERR_EMPTY_IMAGE, JERR_EMS_READ, JERR_EMS_WRITE,
-                        JERR_EOI_EXPECTED, JERR_FILE_READ, JERR_FILE_WRITE,
-                        JERR_FRACT_SAMPLE_NOTIMPL, JERR_HUFF_CLEN_OVERFLOW,
-                        JERR_HUFF_MISSING_CODE, JERR_IMAGE_TOO_BIG,
-                        JERR_INPUT_EMPTY, JERR_INPUT_EOF,
-                        JERR_MISMATCHED_QUANT_TABLE, JERR_MISSING_DATA,
-                        JERR_MODE_CHANGE, JERR_NOTIMPL, JERR_NOT_COMPILED,
-                        JERR_NO_BACKING_STORE, JERR_NO_HUFF_TABLE,
-                        JERR_NO_IMAGE, JERR_NO_QUANT_TABLE, JERR_NO_SOI,
-                        JERR_OUT_OF_MEMORY, JERR_QUANT_COMPONENTS,
-                        JERR_QUANT_FEW_COLORS, JERR_QUANT_MANY_COLORS,
-                        JERR_SOF_DUPLICATE, JERR_SOF_NO_SOS,
-                        JERR_SOF_UNSUPPORTED, JERR_SOI_DUPLICATE,
-                        JERR_SOS_NO_SOF, JERR_TFILE_CREATE, JERR_TFILE_READ,
-                        JERR_TFILE_SEEK, JERR_TFILE_WRITE,
-                        JERR_TOO_LITTLE_DATA, JERR_UNKNOWN_MARKER,
-                        JERR_UNSUPPORTED_SUSPEND, JERR_VIRTUAL_BUG,
-                        JERR_WIDTH_OVERFLOW, JERR_XMS_READ, JERR_XMS_WRITE,
-                        JMSG_COPYRIGHT, JMSG_LASTMSGCODE, JMSG_NOMESSAGE,
-                        JMSG_VERSION, JTRC_16BIT_TABLES, JTRC_ADOBE,
-                        JTRC_APP0, JTRC_APP14, JTRC_DAC, JTRC_DHT, JTRC_DQT,
-                        JTRC_DRI, JTRC_EMS_CLOSE, JTRC_EMS_OPEN, JTRC_EOI,
-                        JTRC_HUFFBITS, JTRC_JFIF, JTRC_JFIF_BADTHUMBNAILSIZE,
-                        JTRC_JFIF_EXTENSION, JTRC_JFIF_THUMBNAIL,
-                        JTRC_MISC_MARKER, JTRC_PARMLESS_MARKER,
-                        JTRC_QUANTVALS, JTRC_QUANT_3_NCOLORS,
-                        JTRC_QUANT_NCOLORS, JTRC_QUANT_SELECTED,
-                        JTRC_RECOVERY_ACTION, JTRC_RST, JTRC_SMOOTH_NOTIMPL,
-                        JTRC_SOF, JTRC_SOF_COMPONENT, JTRC_SOI, JTRC_SOS,
-                        JTRC_SOS_COMPONENT, JTRC_SOS_PARAMS, JTRC_TFILE_CLOSE,
-                        JTRC_TFILE_OPEN, JTRC_THUMB_JPEG, JTRC_THUMB_PALETTE,
-                        JTRC_THUMB_RGB, JTRC_UNKNOWN_IDS, JTRC_XMS_CLOSE,
-                        JTRC_XMS_OPEN, JWRN_ADOBE_XFORM, JWRN_BOGUS_ICC,
-                        JWRN_BOGUS_PROGRESSION, JWRN_EXTRANEOUS_DATA,
-                        JWRN_HIT_MARKER, JWRN_HUFF_BAD_CODE, JWRN_JFIF_MAJOR,
-                        JWRN_JPEG_EOF, JWRN_MUST_RESYNC, JWRN_NOT_SEQUENTIAL,
-                        JWRN_TOO_MUCH_DATA};
+pub use super::jerror::{
+    C2RustUnnamed_3, JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
+    JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID, JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
+    JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE, JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
+    JERR_BAD_LENGTH, JERR_BAD_LIB_VERSION, JERR_BAD_MCU_SIZE, JERR_BAD_PARAM, JERR_BAD_PARAM_VALUE,
+    JERR_BAD_POOL_ID, JERR_BAD_PRECISION, JERR_BAD_PROGRESSION, JERR_BAD_PROG_SCRIPT,
+    JERR_BAD_SAMPLING, JERR_BAD_SCAN_SCRIPT, JERR_BAD_STATE, JERR_BAD_STRUCT_SIZE,
+    JERR_BAD_VIRTUAL_ACCESS, JERR_BUFFER_SIZE, JERR_CANT_SUSPEND, JERR_CCIR601_NOTIMPL,
+    JERR_COMPONENT_COUNT, JERR_CONVERSION_NOTIMPL, JERR_DAC_INDEX, JERR_DAC_VALUE, JERR_DHT_INDEX,
+    JERR_DQT_INDEX, JERR_EMPTY_IMAGE, JERR_EMS_READ, JERR_EMS_WRITE, JERR_EOI_EXPECTED,
+    JERR_FILE_READ, JERR_FILE_WRITE, JERR_FRACT_SAMPLE_NOTIMPL, JERR_HUFF_CLEN_OVERFLOW,
+    JERR_HUFF_MISSING_CODE, JERR_IMAGE_TOO_BIG, JERR_INPUT_EMPTY, JERR_INPUT_EOF,
+    JERR_MISMATCHED_QUANT_TABLE, JERR_MISSING_DATA, JERR_MODE_CHANGE, JERR_NOTIMPL,
+    JERR_NOT_COMPILED, JERR_NO_BACKING_STORE, JERR_NO_HUFF_TABLE, JERR_NO_IMAGE,
+    JERR_NO_QUANT_TABLE, JERR_NO_SOI, JERR_OUT_OF_MEMORY, JERR_QUANT_COMPONENTS,
+    JERR_QUANT_FEW_COLORS, JERR_QUANT_MANY_COLORS, JERR_SOF_DUPLICATE, JERR_SOF_NO_SOS,
+    JERR_SOF_UNSUPPORTED, JERR_SOI_DUPLICATE, JERR_SOS_NO_SOF, JERR_TFILE_CREATE, JERR_TFILE_READ,
+    JERR_TFILE_SEEK, JERR_TFILE_WRITE, JERR_TOO_LITTLE_DATA, JERR_UNKNOWN_MARKER,
+    JERR_UNSUPPORTED_SUSPEND, JERR_VIRTUAL_BUG, JERR_WIDTH_OVERFLOW, JERR_XMS_READ, JERR_XMS_WRITE,
+    JMSG_COPYRIGHT, JMSG_LASTMSGCODE, JMSG_NOMESSAGE, JMSG_VERSION, JTRC_16BIT_TABLES, JTRC_ADOBE,
+    JTRC_APP0, JTRC_APP14, JTRC_DAC, JTRC_DHT, JTRC_DQT, JTRC_DRI, JTRC_EMS_CLOSE, JTRC_EMS_OPEN,
+    JTRC_EOI, JTRC_HUFFBITS, JTRC_JFIF, JTRC_JFIF_BADTHUMBNAILSIZE, JTRC_JFIF_EXTENSION,
+    JTRC_JFIF_THUMBNAIL, JTRC_MISC_MARKER, JTRC_PARMLESS_MARKER, JTRC_QUANTVALS,
+    JTRC_QUANT_3_NCOLORS, JTRC_QUANT_NCOLORS, JTRC_QUANT_SELECTED, JTRC_RECOVERY_ACTION, JTRC_RST,
+    JTRC_SMOOTH_NOTIMPL, JTRC_SOF, JTRC_SOF_COMPONENT, JTRC_SOI, JTRC_SOS, JTRC_SOS_COMPONENT,
+    JTRC_SOS_PARAMS, JTRC_TFILE_CLOSE, JTRC_TFILE_OPEN, JTRC_THUMB_JPEG, JTRC_THUMB_PALETTE,
+    JTRC_THUMB_RGB, JTRC_UNKNOWN_IDS, JTRC_XMS_CLOSE, JTRC_XMS_OPEN, JWRN_ADOBE_XFORM,
+    JWRN_BOGUS_ICC, JWRN_BOGUS_PROGRESSION, JWRN_EXTRANEOUS_DATA, JWRN_HIT_MARKER,
+    JWRN_HUFF_BAD_CODE, JWRN_JFIF_MAJOR, JWRN_JPEG_EOF, JWRN_MUST_RESYNC, JWRN_NOT_SEQUENTIAL,
+    JWRN_TOO_MUCH_DATA,
+};
+pub use crate::jmorecfg_h::{
+    boolean, rgb_blue, rgb_green, rgb_red, EXT_BGRX_BLUE, EXT_BGRX_GREEN, EXT_BGRX_RED,
+    EXT_BGR_BLUE, EXT_BGR_GREEN, EXT_BGR_RED, EXT_RGBX_BLUE, EXT_RGBX_GREEN, EXT_RGBX_RED,
+    EXT_RGB_BLUE, EXT_RGB_GREEN, EXT_RGB_RED, EXT_XBGR_BLUE, EXT_XBGR_GREEN, EXT_XBGR_RED,
+    EXT_XRGB_BLUE, EXT_XRGB_GREEN, EXT_XRGB_RED, FALSE, INT16, JCOEF, JDIMENSION, JOCTET, JSAMPLE,
+    MAXJSAMPLE, RGB_BLUE, RGB_GREEN, RGB_RED, TRUE, UINT16, UINT8,
+};
+pub use crate::jpegint_h::{
+    inverse_DCT_method_ptr, jzero_far, JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT,
+    JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, JLONG, J_BUF_MODE,
+};
+pub use crate::jpeglib_h::{
+    j_common_ptr, j_decompress_ptr, jpeg_color_deconverter, jpeg_color_quantizer,
+    jpeg_common_struct, jpeg_component_info, jpeg_d_coef_controller, jpeg_d_main_controller,
+    jpeg_d_post_controller, jpeg_decomp_master, jpeg_decompress_struct, jpeg_entropy_decoder,
+    jpeg_error_mgr, jpeg_input_controller, jpeg_inverse_dct, jpeg_marker_parser_method,
+    jpeg_marker_reader, jpeg_marker_struct, jpeg_memory_mgr, jpeg_progress_mgr,
+    jpeg_saved_marker_ptr, jpeg_source_mgr, jpeg_upsampler, jvirt_barray_control, jvirt_barray_ptr,
+    jvirt_sarray_control, jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr, JBLOCK, JBLOCKARRAY,
+    JBLOCKROW, JCOEFPTR, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA,
+    JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB,
+    JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW,
+    JDITHER_FS, JDITHER_NONE, JDITHER_ORDERED, JHUFF_TBL, JPOOL_IMAGE, JQUANT_TBL, JSAMPARRAY,
+    JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD, J_DITHER_MODE,
+};
+pub use crate::stddef_h::{size_t, NULL};
+use libc::{self, c_int, c_long, c_uint, c_ulong, c_void};
 /* use 'int' for calculation temps */
 
 pub type FSERRPTR = *mut FSERROR;
@@ -453,292 +181,68 @@ pub const ODITHER_MASK: c_int = ODITHER_SIZE - 1i32;
 
 static mut base_dither_matrix: [[UINT8; 16]; 16] = [
     [
-        0u8,
-        192u8,
-        48u8,
-        240u8,
-        12u8,
-        204u8,
-        60u8,
-        252u8,
-        3u8,
-        195u8,
-        51u8,
-        243u8,
-        15u8,
-        207u8,
-        63u8,
-        255u8,
+        0u8, 192u8, 48u8, 240u8, 12u8, 204u8, 60u8, 252u8, 3u8, 195u8, 51u8, 243u8, 15u8, 207u8,
+        63u8, 255u8,
     ],
     [
-        128u8,
-        64u8,
-        176u8,
-        112u8,
-        140u8,
-        76u8,
-        188u8,
-        124u8,
-        131u8,
-        67u8,
-        179u8,
-        115u8,
-        143u8,
-        79u8,
-        191u8,
-        127u8,
+        128u8, 64u8, 176u8, 112u8, 140u8, 76u8, 188u8, 124u8, 131u8, 67u8, 179u8, 115u8, 143u8,
+        79u8, 191u8, 127u8,
     ],
     [
-        32u8,
-        224u8,
-        16u8,
-        208u8,
-        44u8,
-        236u8,
-        28u8,
-        220u8,
-        35u8,
-        227u8,
-        19u8,
-        211u8,
-        47u8,
-        239u8,
-        31u8,
-        223u8,
+        32u8, 224u8, 16u8, 208u8, 44u8, 236u8, 28u8, 220u8, 35u8, 227u8, 19u8, 211u8, 47u8, 239u8,
+        31u8, 223u8,
     ],
     [
-        160u8,
-        96u8,
-        144u8,
-        80u8,
-        172u8,
-        108u8,
-        156u8,
-        92u8,
-        163u8,
-        99u8,
-        147u8,
-        83u8,
-        175u8,
-        111u8,
-        159u8,
-        95u8,
+        160u8, 96u8, 144u8, 80u8, 172u8, 108u8, 156u8, 92u8, 163u8, 99u8, 147u8, 83u8, 175u8,
+        111u8, 159u8, 95u8,
     ],
     [
-        8u8,
-        200u8,
-        56u8,
-        248u8,
-        4u8,
-        196u8,
-        52u8,
-        244u8,
-        11u8,
-        203u8,
-        59u8,
-        251u8,
-        7u8,
-        199u8,
-        55u8,
-        247u8,
+        8u8, 200u8, 56u8, 248u8, 4u8, 196u8, 52u8, 244u8, 11u8, 203u8, 59u8, 251u8, 7u8, 199u8,
+        55u8, 247u8,
     ],
     [
-        136u8,
-        72u8,
-        184u8,
-        120u8,
-        132u8,
-        68u8,
-        180u8,
-        116u8,
-        139u8,
-        75u8,
-        187u8,
-        123u8,
-        135u8,
-        71u8,
-        183u8,
-        119u8,
+        136u8, 72u8, 184u8, 120u8, 132u8, 68u8, 180u8, 116u8, 139u8, 75u8, 187u8, 123u8, 135u8,
+        71u8, 183u8, 119u8,
     ],
     [
-        40u8,
-        232u8,
-        24u8,
-        216u8,
-        36u8,
-        228u8,
-        20u8,
-        212u8,
-        43u8,
-        235u8,
-        27u8,
-        219u8,
-        39u8,
-        231u8,
-        23u8,
-        215u8,
+        40u8, 232u8, 24u8, 216u8, 36u8, 228u8, 20u8, 212u8, 43u8, 235u8, 27u8, 219u8, 39u8, 231u8,
+        23u8, 215u8,
     ],
     [
-        168u8,
-        104u8,
-        152u8,
-        88u8,
-        164u8,
-        100u8,
-        148u8,
-        84u8,
-        171u8,
-        107u8,
-        155u8,
-        91u8,
-        167u8,
-        103u8,
-        151u8,
-        87u8,
+        168u8, 104u8, 152u8, 88u8, 164u8, 100u8, 148u8, 84u8, 171u8, 107u8, 155u8, 91u8, 167u8,
+        103u8, 151u8, 87u8,
     ],
     [
-        2u8,
-        194u8,
-        50u8,
-        242u8,
-        14u8,
-        206u8,
-        62u8,
-        254u8,
-        1u8,
-        193u8,
-        49u8,
-        241u8,
-        13u8,
-        205u8,
-        61u8,
-        253u8,
+        2u8, 194u8, 50u8, 242u8, 14u8, 206u8, 62u8, 254u8, 1u8, 193u8, 49u8, 241u8, 13u8, 205u8,
+        61u8, 253u8,
     ],
     [
-        130u8,
-        66u8,
-        178u8,
-        114u8,
-        142u8,
-        78u8,
-        190u8,
-        126u8,
-        129u8,
-        65u8,
-        177u8,
-        113u8,
-        141u8,
-        77u8,
-        189u8,
-        125u8,
+        130u8, 66u8, 178u8, 114u8, 142u8, 78u8, 190u8, 126u8, 129u8, 65u8, 177u8, 113u8, 141u8,
+        77u8, 189u8, 125u8,
     ],
     [
-        34u8,
-        226u8,
-        18u8,
-        210u8,
-        46u8,
-        238u8,
-        30u8,
-        222u8,
-        33u8,
-        225u8,
-        17u8,
-        209u8,
-        45u8,
-        237u8,
-        29u8,
-        221u8,
+        34u8, 226u8, 18u8, 210u8, 46u8, 238u8, 30u8, 222u8, 33u8, 225u8, 17u8, 209u8, 45u8, 237u8,
+        29u8, 221u8,
     ],
     [
-        162u8,
-        98u8,
-        146u8,
-        82u8,
-        174u8,
-        110u8,
-        158u8,
-        94u8,
-        161u8,
-        97u8,
-        145u8,
-        81u8,
-        173u8,
-        109u8,
-        157u8,
-        93u8,
+        162u8, 98u8, 146u8, 82u8, 174u8, 110u8, 158u8, 94u8, 161u8, 97u8, 145u8, 81u8, 173u8,
+        109u8, 157u8, 93u8,
     ],
     [
-        10u8,
-        202u8,
-        58u8,
-        250u8,
-        6u8,
-        198u8,
-        54u8,
-        246u8,
-        9u8,
-        201u8,
-        57u8,
-        249u8,
-        5u8,
-        197u8,
-        53u8,
-        245u8,
+        10u8, 202u8, 58u8, 250u8, 6u8, 198u8, 54u8, 246u8, 9u8, 201u8, 57u8, 249u8, 5u8, 197u8,
+        53u8, 245u8,
     ],
     [
-        138u8,
-        74u8,
-        186u8,
-        122u8,
-        134u8,
-        70u8,
-        182u8,
-        118u8,
-        137u8,
-        73u8,
-        185u8,
-        121u8,
-        133u8,
-        69u8,
-        181u8,
-        117u8,
+        138u8, 74u8, 186u8, 122u8, 134u8, 70u8, 182u8, 118u8, 137u8, 73u8, 185u8, 121u8, 133u8,
+        69u8, 181u8, 117u8,
     ],
     [
-        42u8,
-        234u8,
-        26u8,
-        218u8,
-        38u8,
-        230u8,
-        22u8,
-        214u8,
-        41u8,
-        233u8,
-        25u8,
-        217u8,
-        37u8,
-        229u8,
-        21u8,
-        213u8,
+        42u8, 234u8, 26u8, 218u8, 38u8, 230u8, 22u8, 214u8, 41u8, 233u8, 25u8, 217u8, 37u8, 229u8,
+        21u8, 213u8,
     ],
     [
-        170u8,
-        106u8,
-        154u8,
-        90u8,
-        166u8,
-        102u8,
-        150u8,
-        86u8,
-        169u8,
-        105u8,
-        153u8,
-        89u8,
-        165u8,
-        101u8,
-        149u8,
-        85u8,
+        170u8, 106u8, 154u8, 90u8, 166u8, 102u8, 150u8, 86u8, 169u8, 105u8, 153u8, 89u8, 165u8,
+        101u8, 149u8, 85u8,
     ],
 ];
 /* pointer to error array */
@@ -759,30 +263,20 @@ pub const MAX_Q_COMPS: c_int = 4i32;
  * different components, though this is not currently done.
  */
 
-unsafe extern "C" fn select_ncolors(
-    mut cinfo: j_decompress_ptr,
-    mut Ncolors: *mut c_int,
-) -> c_int
+unsafe extern "C" fn select_ncolors(mut cinfo: j_decompress_ptr, mut Ncolors: *mut c_int) -> c_int
 /* Determine allocation of desired colors to components, */
 /* and fill in Ncolors[] array to indicate choice. */
 /* Return value is total number of colors (product of Ncolors[] values). */ {
-       let mut i:  c_int =  0; let mut temp:  c_long =  0;let mut nc: c_int = (*cinfo).out_color_components; /* number of color components */
+    let mut i: c_int = 0;
+    let mut temp: c_long = 0;
+    let mut nc: c_int = (*cinfo).out_color_components; /* number of color components */
     let mut max_colors: c_int = (*cinfo).desired_number_of_colors;
-    
-    
-    
-    
-    
-    
-    let mut RGB_order: [c_int; 3] = [
-        RGB_GREEN,
-        RGB_RED,
-        RGB_BLUE,
-    ];
+
+    let mut RGB_order: [c_int; 3] = [RGB_GREEN, RGB_RED, RGB_BLUE];
     RGB_order[0] = rgb_green[(*cinfo).out_color_space as usize];
     RGB_order[1] = rgb_red[(*cinfo).out_color_space as usize];
     RGB_order[2] = rgb_blue[(*cinfo).out_color_space as usize];
-     let mut iroot:   c_int =  1i32; /* repeat till iroot exceeds root */
+    let mut iroot: c_int = 1i32; /* repeat till iroot exceeds root */
     loop {
         iroot += 1; /* set temp = iroot ** nc */
         temp = iroot as c_long; /* now iroot = floor(root) */
@@ -807,7 +301,7 @@ unsafe extern "C" fn select_ncolors(
         )
         .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
-     let mut total_colors:   c_int =  1i32;
+    let mut total_colors: c_int = 1i32;
     i = 0i32;
     while i < nc {
         *Ncolors.offset(i as isize) = iroot;
@@ -822,13 +316,10 @@ unsafe extern "C" fn select_ncolors(
      * In RGB colorspace, try to increment G first, then R, then B.
      */
     {
-          let mut changed:   boolean =  FALSE;
+        let mut changed: boolean = FALSE;
         i = 0i32;
         while i < nc {
-              let mut j:   c_int =
-     if  (*cinfo).out_color_space
-                ==  JCS_RGB
-            {
+            let mut j: c_int = if (*cinfo).out_color_space == JCS_RGB {
                 RGB_order[i as usize]
             } else {
                 i
@@ -865,9 +356,8 @@ unsafe extern "C" fn output_value(
      * (Forcing the upper and lower values to the limits ensures that
      * dithering can't produce a color outside the selected gamut.)
      */
-    return ((j as JLONG * MAXJSAMPLE as c_long
-        + (maxj / 2i32) as c_long)
-        / maxj as c_long) as c_int;
+    return ((j as JLONG * MAXJSAMPLE as c_long + (maxj / 2i32) as c_long) / maxj as c_long)
+        as c_int;
 }
 
 unsafe extern "C" fn largest_input_value(
@@ -879,9 +369,7 @@ unsafe extern "C" fn largest_input_value(
 /* Return largest input value that should map to j'th output value */
 /* Must have largest(j=0) >= 0, and largest(j=maxj) >= MAXJSAMPLE */ {
     /* Breakpoints are halfway between values returned by output_value */
-    return (((2i32 * j + 1i32) as JLONG
-        * MAXJSAMPLE as c_long
-        + maxj as c_long)
+    return (((2i32 * j + 1i32) as JLONG * MAXJSAMPLE as c_long + maxj as c_long)
         / (2i32 * maxj) as c_long) as c_int;
 }
 /*
@@ -889,9 +377,8 @@ unsafe extern "C" fn largest_input_value(
  */
 
 unsafe extern "C" fn create_colormap(mut cinfo: j_decompress_ptr) {
-        let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr; /* Created colormap */
-      let mut total_colors:   c_int =
-     select_ncolors(cinfo, (*cquantize).Ncolors.as_mut_ptr());
+    let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr; /* Created colormap */
+    let mut total_colors: c_int = select_ncolors(cinfo, (*cquantize).Ncolors.as_mut_ptr());
     /* Report selected color counts */
     if (*cinfo).out_color_components == 3i32 {
         let mut _mp: *mut c_int = (*(*cinfo).err).msg_parm.i.as_mut_ptr();
@@ -916,10 +403,8 @@ unsafe extern "C" fn create_colormap(mut cinfo: j_decompress_ptr) {
         )
         .expect("non-null function pointer")(cinfo as j_common_ptr, 1i32);
     }
-    
-    
-     let mut colormap:   JSAMPARRAY =
-     Some(
+
+    let mut colormap: JSAMPARRAY = Some(
         (*(*cinfo).mem)
             .alloc_sarray
             .expect("non-null function pointer"),
@@ -929,19 +414,20 @@ unsafe extern "C" fn create_colormap(mut cinfo: j_decompress_ptr) {
         JPOOL_IMAGE,
         total_colors as JDIMENSION,
         (*cinfo).out_color_components as JDIMENSION,
-    ); let mut blkdist:   c_int =  total_colors; let mut i:   c_int =  0i32;
+    );
+    let mut blkdist: c_int = total_colors;
+    let mut i: c_int = 0i32;
     while i < (*cinfo).out_color_components {
-          
-        
-         let mut nci:   c_int =  (*cquantize).Ncolors[i as usize]; let mut blksize:   c_int =  blkdist / nci; let mut j:   c_int =  0i32;
+        let mut nci: c_int = (*cquantize).Ncolors[i as usize];
+        let mut blksize: c_int = blkdist / nci;
+        let mut j: c_int = 0i32;
         while j < nci {
-             
-             let mut val:   c_int =  output_value(cinfo, i, j, nci - 1i32); let mut ptr:   c_int =  j * blksize;
+            let mut val: c_int = output_value(cinfo, i, j, nci - 1i32);
+            let mut ptr: c_int = j * blksize;
             while ptr < total_colors {
-                 let mut k:   c_int =  0i32;
+                let mut k: c_int = 0i32;
                 while k < blksize {
-                    *(*colormap.offset(i as isize)).offset((ptr + k) as isize) =
-                        val as JSAMPLE;
+                    *(*colormap.offset(i as isize)).offset((ptr + k) as isize) = val as JSAMPLE;
                     k += 1
                 }
                 ptr += blkdist
@@ -962,23 +448,15 @@ unsafe extern "C" fn create_colormap(mut cinfo: j_decompress_ptr) {
  */
 
 unsafe extern "C" fn create_colorindex(mut cinfo: j_decompress_ptr) {
-       let mut pad:  c_int =  0;let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr;
-    
-    
-    
-    
-    
-    
-    
-    
+    let mut pad: c_int = 0;
+    let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr;
+
     /* For ordered dither, we pad the color index tables by MAXJSAMPLE in
      * each direction (input index values can be -MAXJSAMPLE .. 2*MAXJSAMPLE).
      * This is not necessary in the other dithering modes.  However, we
      * flag whether it was done in case user changes dithering mode.
      */
-    if  (*cinfo).dither_mode
-        ==  JDITHER_ORDERED
-    {
+    if (*cinfo).dither_mode == JDITHER_ORDERED {
         pad = MAXJSAMPLE * 2i32;
         (*cquantize).is_padded = TRUE
     } else {
@@ -996,21 +474,22 @@ unsafe extern "C" fn create_colorindex(mut cinfo: j_decompress_ptr) {
         (MAXJSAMPLE + 1i32 + pad) as JDIMENSION,
         (*cinfo).out_color_components as JDIMENSION,
     );
-    
-     let mut blksize:   c_int =  (*cquantize).sv_actual; let mut i:   c_int =  0i32;
+
+    let mut blksize: c_int = (*cquantize).sv_actual;
+    let mut i: c_int = 0i32;
     while i < (*cinfo).out_color_components {
-             let mut nci:   c_int =  (*cquantize).Ncolors[i as usize]; /* # of distinct values for this color */
+        let mut nci: c_int = (*cquantize).Ncolors[i as usize]; /* # of distinct values for this color */
         blksize = blksize / nci;
         /* adjust colorindex pointers to provide padding at negative indexes. */
         if pad != 0 {
             let ref mut fresh1 = *(*cquantize).colorindex.offset(i as isize);
             *fresh1 = (*fresh1).offset(MAXJSAMPLE as isize)
         }
-        
-        
-        
-         let mut indexptr:   JSAMPROW =
-     *(*cquantize).colorindex.offset(i as isize); let mut val:   c_int =  0i32; let mut k:   c_int =  largest_input_value(cinfo, i, 0i32, nci - 1i32); let mut j:   c_int =  0i32;
+
+        let mut indexptr: JSAMPROW = *(*cquantize).colorindex.offset(i as isize);
+        let mut val: c_int = 0i32;
+        let mut k: c_int = largest_input_value(cinfo, i, 0i32, nci - 1i32);
+        let mut j: c_int = 0i32;
         while j <= MAXJSAMPLE {
             while j > k {
                 /* advance val if past boundary */
@@ -1026,8 +505,7 @@ unsafe extern "C" fn create_colorindex(mut cinfo: j_decompress_ptr) {
             j = 1i32;
             while j <= MAXJSAMPLE {
                 *indexptr.offset(-j as isize) = *indexptr.offset(0);
-                *indexptr.offset((MAXJSAMPLE + j) as isize) =
-                    *indexptr.offset(MAXJSAMPLE as isize);
+                *indexptr.offset((MAXJSAMPLE + j) as isize) = *indexptr.offset(MAXJSAMPLE as isize);
                 j += 1
             }
         }
@@ -1043,20 +521,13 @@ unsafe extern "C" fn make_odither_array(
     mut cinfo: j_decompress_ptr,
     mut ncolors: c_int,
 ) -> ODITHER_MATRIX_PTR {
-    
-    
-    
-    
-       
-    
     /* The inter-value distance for this color is MAXJSAMPLE/(ncolors-1).
      * Hence the dither value for the matrix cell with fill order f
      * (f=0..N-1) should be (N-1-2*f)/(2*N) * MAXJSAMPLE/(ncolors-1).
      * On 16-bit-int machine, be careful to avoid overflow.
      */
-    
-     let mut odither:   ODITHER_MATRIX_PTR =
-     Some(
+
+    let mut odither: ODITHER_MATRIX_PTR = Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),
@@ -1065,17 +536,16 @@ unsafe extern "C" fn make_odither_array(
         cinfo as j_common_ptr,
         JPOOL_IMAGE,
         ::std::mem::size_of::<ODITHER_MATRIX>() as c_ulong,
-    ) as ODITHER_MATRIX_PTR; let mut den:   JLONG =
-     (2i32 * ODITHER_CELLS) as c_long * (ncolors - 1i32) as JLONG; let mut j:   c_int =  0i32;
+    ) as ODITHER_MATRIX_PTR;
+    let mut den: JLONG = (2i32 * ODITHER_CELLS) as c_long * (ncolors - 1i32) as JLONG;
+    let mut j: c_int = 0i32;
     while j < ODITHER_SIZE {
-          let mut k:   c_int =  0i32;
+        let mut k: c_int = 0i32;
         while k < ODITHER_SIZE {
-              let mut num:   JLONG =
-     (ODITHER_CELLS
-                - 1i32
-                - 2i32 * base_dither_matrix[j as usize][k as usize] as c_int)
-                as JLONG
-                * MAXJSAMPLE as c_long;
+            let mut num: JLONG =
+                (ODITHER_CELLS - 1i32 - 2i32 * base_dither_matrix[j as usize][k as usize] as c_int)
+                    as JLONG
+                    * MAXJSAMPLE as c_long;
             /* Ensure round towards zero despite C's lack of consistency
              * about rounding negative values in integer division...
              */
@@ -1097,13 +567,12 @@ unsafe extern "C" fn make_odither_array(
  */
 
 unsafe extern "C" fn create_odither_tables(mut cinfo: j_decompress_ptr) {
-     let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr; /* # of distinct values for this color */
-      let mut i:   c_int =  0i32;
+    let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr; /* # of distinct values for this color */
+    let mut i: c_int = 0i32;
     while i < (*cinfo).out_color_components {
-           
-        
-         let mut nci:   c_int =  (*cquantize).Ncolors[i as usize]; let mut odither:   ODITHER_MATRIX_PTR =
-     NULL as ODITHER_MATRIX_PTR; let mut j:   c_int =  0i32;
+        let mut nci: c_int = (*cquantize).Ncolors[i as usize];
+        let mut odither: ODITHER_MATRIX_PTR = NULL as ODITHER_MATRIX_PTR;
+        let mut j: c_int = 0i32;
         while j < i {
             if nci == (*cquantize).Ncolors[j as usize] {
                 odither = (*cquantize).odither[j as usize];
@@ -1132,36 +601,30 @@ unsafe extern "C" fn color_quantize(
 )
 /* General case, no dithering */
 {
-     let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr;
+    let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr;
     let mut colorindex: JSAMPARRAY = (*cquantize).colorindex;
-    
-    
-    
-    
-    
-    
+
     let mut width: JDIMENSION = (*cinfo).output_width;
     let mut nc: c_int = (*cinfo).out_color_components;
-     let mut row:   c_int =  0i32;
+    let mut row: c_int = 0i32;
     while row < num_rows {
-           
-        
-         let mut ptrin:   JSAMPROW =  *input_buf.offset(row as isize); let mut ptrout:   JSAMPROW =  *output_buf.offset(row as isize); let mut col:   JDIMENSION =  width;
+        let mut ptrin: JSAMPROW = *input_buf.offset(row as isize);
+        let mut ptrout: JSAMPROW = *output_buf.offset(row as isize);
+        let mut col: JDIMENSION = width;
         while col > 0u32 {
-              
-             let mut pixcode:   c_int =  0i32; let mut ci:   c_int =  0i32;
+            let mut pixcode: c_int = 0i32;
+            let mut ci: c_int = 0i32;
             while ci < nc {
                 let fresh2 = ptrin;
                 ptrin = ptrin.offset(1);
-                pixcode += *(*colorindex.offset(ci as isize))
-                    .offset(*fresh2 as c_int as isize)
-                    as c_int;
+                pixcode +=
+                    *(*colorindex.offset(ci as isize)).offset(*fresh2 as c_int as isize) as c_int;
                 ci += 1
             }
             let fresh3 = ptrout;
             ptrout = ptrout.offset(1);
             *fresh3 = pixcode as JSAMPLE;
-            col -=  1
+            col -= 1
         }
         row += 1
     }
@@ -1175,26 +638,22 @@ unsafe extern "C" fn color_quantize3(
 )
 /* Fast path for out_color_components==3, no dithering */
 {
-     let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr;
-    
-    
-    
+    let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr;
+
     let mut colorindex0: JSAMPROW = *(*cquantize).colorindex.offset(0);
     let mut colorindex1: JSAMPROW = *(*cquantize).colorindex.offset(1);
     let mut colorindex2: JSAMPROW = *(*cquantize).colorindex.offset(2);
-    
-    
+
     let mut width: JDIMENSION = (*cinfo).output_width;
-     let mut row:   c_int =  0i32;
+    let mut row: c_int = 0i32;
     while row < num_rows {
-           
-        
-         let mut ptrin:   JSAMPROW =  *input_buf.offset(row as isize); let mut ptrout:   JSAMPROW =  *output_buf.offset(row as isize); let mut col:   JDIMENSION =  width;
+        let mut ptrin: JSAMPROW = *input_buf.offset(row as isize);
+        let mut ptrout: JSAMPROW = *output_buf.offset(row as isize);
+        let mut col: JDIMENSION = width;
         while col > 0u32 {
-             let fresh4 = ptrin;
+            let fresh4 = ptrin;
             ptrin = ptrin.offset(1);
-             let mut pixcode:   c_int =
-     *colorindex0.offset(*fresh4 as c_int as isize) as c_int;
+            let mut pixcode: c_int = *colorindex0.offset(*fresh4 as c_int as isize) as c_int;
             let fresh5 = ptrin;
             ptrin = ptrin.offset(1);
             pixcode += *colorindex1.offset(*fresh5 as c_int as isize) as c_int;
@@ -1204,7 +663,7 @@ unsafe extern "C" fn color_quantize3(
             let fresh7 = ptrout;
             ptrout = ptrout.offset(1);
             *fresh7 = pixcode as JSAMPLE;
-            col -=  1
+            col -= 1
         }
         row += 1
     }
@@ -1218,38 +677,29 @@ unsafe extern "C" fn quantize_ord_dither(
 )
 /* General case, with ordered dithering */
 {
-     let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr; /* points to active row of dither matrix */
-     /* current indexes into dither matrix */
-    
-    
-    
-    
-    
+    let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr; /* points to active row of dither matrix */
+    /* current indexes into dither matrix */
+
     let mut nc: c_int = (*cinfo).out_color_components;
-    
-    
-    
+
     let mut width: JDIMENSION = (*cinfo).output_width;
-     let mut row:   c_int =  0i32;
+    let mut row: c_int = 0i32;
     while row < num_rows {
-         jzero_far(
+        jzero_far(
             *output_buf.offset(row as isize) as *mut c_void,
-            width as c_ulong *
-    ::std::mem::size_of::<JSAMPLE>() as c_ulong,
+            width as c_ulong * ::std::mem::size_of::<JSAMPLE>() as c_ulong,
         );
-        
-         let mut row_index:   c_int =  (*cquantize).row_index; let mut ci:   c_int =  0i32;
+
+        let mut row_index: c_int = (*cquantize).row_index;
+        let mut ci: c_int = 0i32;
         while ci < nc {
-                  
-            
-            
-            
-            
-             let mut input_ptr:   JSAMPROW =
-     (*input_buf.offset(row as isize)).offset(ci as isize); let mut output_ptr:   JSAMPROW =
-     *output_buf.offset(row as isize); let mut colorindex_ci:   JSAMPROW =
-     *(*cquantize).colorindex.offset(ci as isize); let mut dither:   *mut c_int =
-     (*(*cquantize).odither[ci as usize].offset(row_index as isize)).as_mut_ptr(); let mut col_index:   c_int =  0i32; let mut col:   JDIMENSION =  width;
+            let mut input_ptr: JSAMPROW = (*input_buf.offset(row as isize)).offset(ci as isize);
+            let mut output_ptr: JSAMPROW = *output_buf.offset(row as isize);
+            let mut colorindex_ci: JSAMPROW = *(*cquantize).colorindex.offset(ci as isize);
+            let mut dither: *mut c_int =
+                (*(*cquantize).odither[ci as usize].offset(row_index as isize)).as_mut_ptr();
+            let mut col_index: c_int = 0i32;
+            let mut col: JDIMENSION = width;
             while col > 0u32 {
                 /* Form pixel value + dither, range-limit to 0..MAXJSAMPLE,
                  * select output value, accumulate into output code for this pixel.
@@ -1259,13 +709,13 @@ unsafe extern "C" fn quantize_ord_dither(
                  * required amount of padding.
                  */
                 *output_ptr = (*output_ptr as c_int
-                    + *colorindex_ci.offset(
-                        (*input_ptr as c_int + *dither.offset(col_index as isize)) as isize,
-                    ) as c_int) as JSAMPLE;
+                    + *colorindex_ci
+                        .offset((*input_ptr as c_int + *dither.offset(col_index as isize)) as isize)
+                        as c_int) as JSAMPLE;
                 input_ptr = input_ptr.offset(nc as isize);
                 output_ptr = output_ptr.offset(1);
                 col_index = col_index + 1i32 & ODITHER_MASK;
-                col -=  1
+                col -= 1
             }
             ci += 1
         }
@@ -1284,41 +734,31 @@ unsafe extern "C" fn quantize3_ord_dither(
 )
 /* Fast path for out_color_components==3, with ordered dithering */
 {
-     let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr; /* points to active row of dither matrix */
-     /* current indexes into dither matrix */
-    
-    
+    let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr; /* points to active row of dither matrix */
+    /* current indexes into dither matrix */
+
     let mut colorindex0: JSAMPROW = *(*cquantize).colorindex.offset(0);
     let mut colorindex1: JSAMPROW = *(*cquantize).colorindex.offset(1);
     let mut colorindex2: JSAMPROW = *(*cquantize).colorindex.offset(2);
-    
-    
-    
-    
-    
-    
-    
+
     let mut width: JDIMENSION = (*cinfo).output_width;
-     let mut row:   c_int =  0i32;
+    let mut row: c_int = 0i32;
     while row < num_rows {
-                
-        
-        
-        
-        
-        
-        
-         let mut row_index:   c_int =  (*cquantize).row_index; let mut input_ptr:   JSAMPROW =
-     *input_buf.offset(row as isize); let mut output_ptr:   JSAMPROW =
-     *output_buf.offset(row as isize); let mut dither0:   *mut c_int =
-     (*(*cquantize).odither[0].offset(row_index as isize)).as_mut_ptr(); let mut dither1:   *mut c_int =
-     (*(*cquantize).odither[1].offset(row_index as isize)).as_mut_ptr(); let mut dither2:   *mut c_int =
-     (*(*cquantize).odither[2].offset(row_index as isize)).as_mut_ptr(); let mut col_index:   c_int =  0i32; let mut col:   JDIMENSION =  width;
+        let mut row_index: c_int = (*cquantize).row_index;
+        let mut input_ptr: JSAMPROW = *input_buf.offset(row as isize);
+        let mut output_ptr: JSAMPROW = *output_buf.offset(row as isize);
+        let mut dither0: *mut c_int =
+            (*(*cquantize).odither[0].offset(row_index as isize)).as_mut_ptr();
+        let mut dither1: *mut c_int =
+            (*(*cquantize).odither[1].offset(row_index as isize)).as_mut_ptr();
+        let mut dither2: *mut c_int =
+            (*(*cquantize).odither[2].offset(row_index as isize)).as_mut_ptr();
+        let mut col_index: c_int = 0i32;
+        let mut col: JDIMENSION = width;
         while col > 0u32 {
-             let fresh8 = input_ptr;
+            let fresh8 = input_ptr;
             input_ptr = input_ptr.offset(1);
-             let mut pixcode:   c_int =
-     *colorindex0
+            let mut pixcode: c_int = *colorindex0
                 .offset((*fresh8 as c_int + *dither0.offset(col_index as isize)) as isize)
                 as c_int;
             let fresh9 = input_ptr;
@@ -1335,7 +775,7 @@ unsafe extern "C" fn quantize3_ord_dither(
             output_ptr = output_ptr.offset(1);
             *fresh11 = pixcode as JSAMPLE;
             col_index = col_index + 1i32 & ODITHER_MASK;
-            col -=  1
+            col -= 1
         }
         row_index = row_index + 1i32 & ODITHER_MASK;
         (*cquantize).row_index = row_index;
@@ -1351,51 +791,40 @@ unsafe extern "C" fn quantize_fs_dither(
 )
 /* General case, with Floyd-Steinberg dithering */
 {
-     let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr; /* current error or pixel value */
-     /* error for pixel below cur */
-     /* error for below/prev col */
-     /* error for below/next col */
-     /* => fserrors[] at column before current */
-     /* 1 for left-to-right, -1 for right-to-left */
-     /* dir * nc */
-    
-    
-    
-    
-    
+    let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr; /* current error or pixel value */
+    /* error for pixel below cur */
+    /* error for below/prev col */
+    /* error for below/next col */
+    /* => fserrors[] at column before current */
+    /* 1 for left-to-right, -1 for right-to-left */
+    /* dir * nc */
+
     let mut nc: c_int = (*cinfo).out_color_components;
-    
-    
-    
-    
-    
+
     let mut width: JDIMENSION = (*cinfo).output_width;
     let mut range_limit: *mut JSAMPLE = (*cinfo).sample_range_limit;
-     let mut row:   c_int =  0i32;
+    let mut row: c_int = 0i32;
     while row < num_rows {
         jzero_far(
             *output_buf.offset(row as isize) as *mut c_void,
-            width as c_ulong *
-    ::std::mem::size_of::<JSAMPLE>() as c_ulong,
+            width as c_ulong * ::std::mem::size_of::<JSAMPLE>() as c_ulong,
         );
-         let mut ci:   c_int =  0i32;
+        let mut ci: c_int = 0i32;
         while ci < nc {
-                let mut errorptr:  FSERRPTR =  ::std::ptr::null_mut::< FSERROR>();     let mut dir:  c_int =  0; let mut dirnc:  c_int =  0; 
-             let mut input_ptr:   JSAMPROW =
-     (*input_buf.offset(row as isize)).offset(ci as isize); let mut output_ptr:   JSAMPROW =
-     *output_buf.offset(row as isize);
+            let mut errorptr: FSERRPTR = ::std::ptr::null_mut::<FSERROR>();
+            let mut dir: c_int = 0;
+            let mut dirnc: c_int = 0;
+            let mut input_ptr: JSAMPROW = (*input_buf.offset(row as isize)).offset(ci as isize);
+            let mut output_ptr: JSAMPROW = *output_buf.offset(row as isize);
             if (*cquantize).on_odd_row != 0 {
                 /* unload prev err into array */
                 /* work right to left in this row */
-                input_ptr = input_ptr.offset(
-                    ((
-                    width - 1u32) * nc as c_uint) as isize,
-                );
+                input_ptr = input_ptr.offset(((width - 1u32) * nc as c_uint) as isize);
                 output_ptr = output_ptr.offset((width - 1u32) as isize);
                 dir = -1i32;
                 dirnc = -nc;
-                errorptr = (*cquantize).fserrors[ci as usize]
-                    .offset((width + 1u32) as isize) /* so point to rightmost pixel */
+                errorptr = (*cquantize).fserrors[ci as usize].offset((width + 1u32) as isize)
+            /* so point to rightmost pixel */
             /* => entry after last column */
             } else {
                 /* work left to right in this row */
@@ -1404,14 +833,13 @@ unsafe extern "C" fn quantize_fs_dither(
                 errorptr = (*cquantize).fserrors[ci as usize]
                 /* => entry before first column */
             }
-            
-            
-            
-            
-            
-             let mut colorindex_ci:   JSAMPROW =
-     *(*cquantize).colorindex.offset(ci as isize); let mut colormap_ci:   JSAMPROW =
-     *(*cquantize).sv_colormap.offset(ci as isize); let mut cur:   LOCFSERROR =  0i32; let mut bpreverr:   LOCFSERROR =  0i32; let mut belowerr:   LOCFSERROR =  bpreverr; let mut col:   JDIMENSION =  width;
+
+            let mut colorindex_ci: JSAMPROW = *(*cquantize).colorindex.offset(ci as isize);
+            let mut colormap_ci: JSAMPROW = *(*cquantize).sv_colormap.offset(ci as isize);
+            let mut cur: LOCFSERROR = 0i32;
+            let mut bpreverr: LOCFSERROR = 0i32;
+            let mut belowerr: LOCFSERROR = bpreverr;
+            let mut col: JDIMENSION = width;
             while col > 0u32 {
                 /* Preset error values: no error propagated to first pixel from left */
                 /* and no error propagated to row below yet */
@@ -1423,18 +851,16 @@ unsafe extern "C" fn quantize_fs_dither(
                  * for either sign of the error value.
                  * Note: errorptr points to *previous* column's array entry.
                  */
-                   cur = cur + *errorptr.offset(dir as isize) as c_int + 8i32 >> 4i32;
+                cur = cur + *errorptr.offset(dir as isize) as c_int + 8i32 >> 4i32;
                 /* advance errorptr to current column */
                 cur += *input_ptr as c_int;
                 cur = *range_limit.offset(cur as isize) as c_int;
-                 let mut pixcode:   c_int =
-     *colorindex_ci.offset(cur as isize) as c_int;
-                *output_ptr = (*output_ptr as c_int
-                    + pixcode as JSAMPLE as c_int)
-                    as JSAMPLE;
+                let mut pixcode: c_int = *colorindex_ci.offset(cur as isize) as c_int;
+                *output_ptr = (*output_ptr as c_int + pixcode as JSAMPLE as c_int) as JSAMPLE;
                 cur -= *colormap_ci.offset(pixcode as isize) as c_int;
-                
-                 let mut bnexterr:   LOCFSERROR =  cur; let mut delta:   LOCFSERROR =  cur * 2i32;
+
+                let mut bnexterr: LOCFSERROR = cur;
+                let mut delta: LOCFSERROR = cur * 2i32;
                 cur += delta;
                 *errorptr.offset(0) = (bpreverr + cur) as FSERROR;
                 cur += delta;
@@ -1444,7 +870,7 @@ unsafe extern "C" fn quantize_fs_dither(
                 input_ptr = input_ptr.offset(dirnc as isize);
                 output_ptr = output_ptr.offset(dir as isize);
                 errorptr = errorptr.offset(dir as isize);
-                col -=  1
+                col -= 1
             }
             *errorptr.offset(0) = bpreverr as FSERROR;
             ci += 1
@@ -1487,13 +913,11 @@ unsafe extern "C" fn quantize_fs_dither(
  */
 
 unsafe extern "C" fn alloc_fs_workspace(mut cinfo: j_decompress_ptr) {
-      let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr;
-    
-    
-    
-     let mut arraysize:   size_t =
-     ((*cinfo).output_width + 2u32) as c_ulong *
-    ::std::mem::size_of::<FSERROR>() as c_ulong; let mut i:   c_int =  0i32;
+    let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr;
+
+    let mut arraysize: size_t =
+        ((*cinfo).output_width + 2u32) as c_ulong * ::std::mem::size_of::<FSERROR>() as c_ulong;
+    let mut i: c_int = 0i32;
     while i < (*cinfo).out_color_components {
         (*cquantize).fserrors[i as usize] = Some(
             (*(*cinfo).mem)
@@ -1501,9 +925,7 @@ unsafe extern "C" fn alloc_fs_workspace(mut cinfo: j_decompress_ptr) {
                 .expect("non-null function pointer"),
         )
         .expect("non-null function pointer")(
-            cinfo as j_common_ptr,
-            JPOOL_IMAGE,
-            arraysize,
+            cinfo as j_common_ptr, JPOOL_IMAGE, arraysize
         ) as FSERRPTR;
         i += 1
     }
@@ -1512,18 +934,14 @@ unsafe extern "C" fn alloc_fs_workspace(mut cinfo: j_decompress_ptr) {
  * Initialize for one-pass color quantization.
  */
 
-unsafe extern "C" fn start_pass_1_quant(
-    mut cinfo: j_decompress_ptr,
-    mut _is_pre_scan: boolean,
-) {
+unsafe extern "C" fn start_pass_1_quant(mut cinfo: j_decompress_ptr, mut _is_pre_scan: boolean) {
     let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr;
-    
-    
+
     /* Install my colormap. */
     (*cinfo).colormap = (*cquantize).sv_colormap;
     (*cinfo).actual_number_of_colors = (*cquantize).sv_actual;
     /* Initialize for desired dithering mode. */
-    match  (*cinfo).dither_mode {
+    match (*cinfo).dither_mode {
         0 => {
             if (*cinfo).out_color_components == 3i32 {
                 (*cquantize).pub_0.color_quantize = Some(
@@ -1583,7 +1001,7 @@ unsafe extern "C" fn start_pass_1_quant(
             }
         }
         2 => {
-              (*cquantize).pub_0.color_quantize = Some(
+            (*cquantize).pub_0.color_quantize = Some(
                 quantize_fs_dither
                     as unsafe extern "C" fn(
                         _: j_decompress_ptr,
@@ -1597,15 +1015,12 @@ unsafe extern "C" fn start_pass_1_quant(
             if (*cquantize).fserrors[0].is_null() {
                 alloc_fs_workspace(cinfo);
             }
-            
-             let mut arraysize:   size_t =
-     ((*cinfo).output_width + 2u32) as c_ulong *
-    ::std::mem::size_of::<FSERROR>() as c_ulong; let mut i:   c_int =  0i32;
+
+            let mut arraysize: size_t = ((*cinfo).output_width + 2u32) as c_ulong
+                * ::std::mem::size_of::<FSERROR>() as c_ulong;
+            let mut i: c_int = 0i32;
             while i < (*cinfo).out_color_components {
-                jzero_far(
-                    (*cquantize).fserrors[i as usize] as *mut c_void,
-                    arraysize,
-                );
+                jzero_far((*cquantize).fserrors[i as usize] as *mut c_void, arraysize);
                 i += 1
             }
         }
@@ -1616,9 +1031,7 @@ unsafe extern "C" fn start_pass_1_quant(
                     .error_exit
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(
-                cinfo as j_common_ptr
-            );
+            .expect("non-null function pointer")(cinfo as j_common_ptr);
         }
     };
 }
@@ -1649,9 +1062,8 @@ unsafe extern "C" fn new_color_map_1_quant(mut cinfo: j_decompress_ptr) {
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_1pass_quantizer(mut cinfo: j_decompress_ptr) {
-      /* Flag FS workspace not allocated */
-     let mut cquantize:   my_cquantize_ptr =
-     Some(
+    /* Flag FS workspace not allocated */
+    let mut cquantize: my_cquantize_ptr = Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),
@@ -1662,19 +1074,12 @@ pub unsafe extern "C" fn jinit_1pass_quantizer(mut cinfo: j_decompress_ptr) {
         ::std::mem::size_of::<my_cquantizer>() as c_ulong,
     ) as my_cquantize_ptr; /* Also flag odither arrays not allocated */
     (*cinfo).cquantize = cquantize as *mut jpeg_color_quantizer;
-    (*cquantize).pub_0.start_pass = Some(
-        start_pass_1_quant
-            as unsafe extern "C" fn(
-                _: j_decompress_ptr,
-                _: boolean,
-            ) -> (),
-    );
-    (*cquantize).pub_0.finish_pass = Some(
-        finish_pass_1_quant as unsafe extern "C" fn(_: j_decompress_ptr) -> (),
-    );
-    (*cquantize).pub_0.new_color_map = Some(
-        new_color_map_1_quant as unsafe extern "C" fn(_: j_decompress_ptr) -> (),
-    );
+    (*cquantize).pub_0.start_pass =
+        Some(start_pass_1_quant as unsafe extern "C" fn(_: j_decompress_ptr, _: boolean) -> ());
+    (*cquantize).pub_0.finish_pass =
+        Some(finish_pass_1_quant as unsafe extern "C" fn(_: j_decompress_ptr) -> ());
+    (*cquantize).pub_0.new_color_map =
+        Some(new_color_map_1_quant as unsafe extern "C" fn(_: j_decompress_ptr) -> ());
     (*cquantize).fserrors[0] = NULL as FSERRPTR;
     (*cquantize).odither[0] = NULL as ODITHER_MATRIX_PTR;
     /* Make sure my internal arrays won't overflow */
@@ -1708,9 +1113,7 @@ pub unsafe extern "C" fn jinit_1pass_quantizer(mut cinfo: j_decompress_ptr) {
      * will allocate the space then, and will possibly overrun the
      * max_memory_to_use setting.
      */
-    if  (*cinfo).dither_mode
-        ==  JDITHER_FS
-    {
+    if (*cinfo).dither_mode == JDITHER_FS {
         alloc_fs_workspace(cinfo);
     };
 }

@@ -1,368 +1,68 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-use crate::stdlib::{ferror, fflush, fwrite, putc};use libc::{c_uint, c_ulong, c_char, c_long, c_int, c_void, self};pub use crate::cderror_h::{C2RustUnnamed_4, JERR_BAD_CMAP_FILE,
-                           JERR_BMP_BADCMAP, JERR_BMP_BADDEPTH,
-                           JERR_BMP_BADHEADER, JERR_BMP_BADPLANES,
-                           JERR_BMP_COLORSPACE, JERR_BMP_COMPRESSED,
-                           JERR_BMP_EMPTY, JERR_BMP_NOT, JERR_BMP_OUTOFRANGE,
-                           JERR_GIF_BUG, JERR_GIF_CODESIZE,
-                           JERR_GIF_COLORSPACE, JERR_GIF_IMAGENOTFOUND,
-                           JERR_GIF_NOT, JERR_PPM_COLORSPACE,
-                           JERR_PPM_NONNUMERIC, JERR_PPM_NOT,
-                           JERR_PPM_OUTOFRANGE, JERR_TGA_BADCMAP,
-                           JERR_TGA_BADPARMS, JERR_TGA_COLORSPACE,
-                           JERR_TOO_MANY_COLORS, JERR_UNGETC_FAILED,
-                           JERR_UNKNOWN_FORMAT, JERR_UNSUPPORTED_FORMAT,
-                           JMSG_FIRSTADDONCODE, JMSG_LASTADDONCODE, JTRC_BMP,
-                           JTRC_BMP_MAPPED, JTRC_BMP_OS2, JTRC_BMP_OS2_MAPPED,
-                           JTRC_GIF, JTRC_GIF_BADVERSION, JTRC_GIF_EXTENSION,
-                           JTRC_GIF_NONSQUARE, JTRC_PGM, JTRC_PGM_TEXT,
-                           JTRC_PPM, JTRC_PPM_TEXT, JTRC_TGA, JTRC_TGA_GRAY,
-                           JTRC_TGA_MAPPED, JWRN_GIF_BADDATA, JWRN_GIF_CHAR,
-                           JWRN_GIF_ENDCODE, JWRN_GIF_NOMOREDATA};pub use crate::stdlib::{_IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data,
-                        __off64_t, __off_t, FILE, _IO_FILE};pub use crate::jmorecfg_h::{boolean, JCOEF, JDIMENSION, JOCTET, JSAMPLE, TRUE,
-                            UINT16, UINT8};pub use crate::stddef_h::{size_t, NULL};pub use crate::jpeglib_h::{j_common_ptr, j_decompress_ptr,
-                           jpeg_calc_output_dimensions,
-                           jpeg_color_deconverter, jpeg_color_quantizer,
-                           jpeg_common_struct, jpeg_component_info,
-                           jpeg_d_coef_controller, jpeg_d_main_controller,
-                           jpeg_d_post_controller, jpeg_decomp_master,
-                           jpeg_decompress_struct, jpeg_entropy_decoder,
-                           jpeg_error_mgr, jpeg_input_controller,
-                           jpeg_inverse_dct, jpeg_marker_reader,
-                           jpeg_marker_struct, jpeg_memory_mgr,
-                           jpeg_progress_mgr, jpeg_saved_marker_ptr,
-                           jpeg_source_mgr, jpeg_upsampler,
-                           jvirt_barray_control, jvirt_barray_ptr,
-                           jvirt_sarray_control, jvirt_sarray_ptr,
-                           C2RustUnnamed_2, JCS_YCbCr, JBLOCK, JBLOCKARRAY,
-                           JBLOCKROW, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB,
-                           JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX,
-                           JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX,
-                           JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB,
-                           JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT,
-                           JDCT_IFAST, JDCT_ISLOW, JDITHER_FS, JDITHER_NONE,
-                           JDITHER_ORDERED, JHUFF_TBL, JPOOL_IMAGE,
-                           JQUANT_TBL, JSAMPARRAY, JSAMPROW, J_COLOR_SPACE,
-                           J_DCT_METHOD, J_DITHER_MODE};pub use super::jerror::{C2RustUnnamed_3, JERR_ARITH_NOTIMPL,
-                        JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
-                        JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID,
-                        JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
-                        JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE,
-                        JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
-                        JERR_BAD_LENGTH, JERR_BAD_LIB_VERSION,
-                        JERR_BAD_MCU_SIZE, JERR_BAD_PARAM,
-                        JERR_BAD_PARAM_VALUE, JERR_BAD_POOL_ID,
-                        JERR_BAD_PRECISION, JERR_BAD_PROGRESSION,
-                        JERR_BAD_PROG_SCRIPT, JERR_BAD_SAMPLING,
-                        JERR_BAD_SCAN_SCRIPT, JERR_BAD_STATE,
-                        JERR_BAD_STRUCT_SIZE, JERR_BAD_VIRTUAL_ACCESS,
-                        JERR_BUFFER_SIZE, JERR_CANT_SUSPEND,
-                        JERR_CCIR601_NOTIMPL, JERR_COMPONENT_COUNT,
-                        JERR_CONVERSION_NOTIMPL, JERR_DAC_INDEX,
-                        JERR_DAC_VALUE, JERR_DHT_INDEX, JERR_DQT_INDEX,
-                        JERR_EMPTY_IMAGE, JERR_EMS_READ, JERR_EMS_WRITE,
-                        JERR_EOI_EXPECTED, JERR_FILE_READ, JERR_FILE_WRITE,
-                        JERR_FRACT_SAMPLE_NOTIMPL, JERR_HUFF_CLEN_OVERFLOW,
-                        JERR_HUFF_MISSING_CODE, JERR_IMAGE_TOO_BIG,
-                        JERR_INPUT_EMPTY, JERR_INPUT_EOF,
-                        JERR_MISMATCHED_QUANT_TABLE, JERR_MISSING_DATA,
-                        JERR_MODE_CHANGE, JERR_NOTIMPL, JERR_NOT_COMPILED,
-                        JERR_NO_BACKING_STORE, JERR_NO_HUFF_TABLE,
-                        JERR_NO_IMAGE, JERR_NO_QUANT_TABLE, JERR_NO_SOI,
-                        JERR_OUT_OF_MEMORY, JERR_QUANT_COMPONENTS,
-                        JERR_QUANT_FEW_COLORS, JERR_QUANT_MANY_COLORS,
-                        JERR_SOF_DUPLICATE, JERR_SOF_NO_SOS,
-                        JERR_SOF_UNSUPPORTED, JERR_SOI_DUPLICATE,
-                        JERR_SOS_NO_SOF, JERR_TFILE_CREATE, JERR_TFILE_READ,
-                        JERR_TFILE_SEEK, JERR_TFILE_WRITE,
-                        JERR_TOO_LITTLE_DATA, JERR_UNKNOWN_MARKER,
-                        JERR_UNSUPPORTED_SUSPEND, JERR_VIRTUAL_BUG,
-                        JERR_WIDTH_OVERFLOW, JERR_XMS_READ, JERR_XMS_WRITE,
-                        JMSG_COPYRIGHT, JMSG_LASTMSGCODE, JMSG_NOMESSAGE,
-                        JMSG_VERSION, JTRC_16BIT_TABLES, JTRC_ADOBE,
-                        JTRC_APP0, JTRC_APP14, JTRC_DAC, JTRC_DHT, JTRC_DQT,
-                        JTRC_DRI, JTRC_EMS_CLOSE, JTRC_EMS_OPEN, JTRC_EOI,
-                        JTRC_HUFFBITS, JTRC_JFIF, JTRC_JFIF_BADTHUMBNAILSIZE,
-                        JTRC_JFIF_EXTENSION, JTRC_JFIF_THUMBNAIL,
-                        JTRC_MISC_MARKER, JTRC_PARMLESS_MARKER,
-                        JTRC_QUANTVALS, JTRC_QUANT_3_NCOLORS,
-                        JTRC_QUANT_NCOLORS, JTRC_QUANT_SELECTED,
-                        JTRC_RECOVERY_ACTION, JTRC_RST, JTRC_SMOOTH_NOTIMPL,
-                        JTRC_SOF, JTRC_SOF_COMPONENT, JTRC_SOI, JTRC_SOS,
-                        JTRC_SOS_COMPONENT, JTRC_SOS_PARAMS, JTRC_TFILE_CLOSE,
-                        JTRC_TFILE_OPEN, JTRC_THUMB_JPEG, JTRC_THUMB_PALETTE,
-                        JTRC_THUMB_RGB, JTRC_UNKNOWN_IDS, JTRC_XMS_CLOSE,
-                        JTRC_XMS_OPEN, JWRN_ADOBE_XFORM, JWRN_BOGUS_ICC,
-                        JWRN_BOGUS_PROGRESSION, JWRN_EXTRANEOUS_DATA,
-                        JWRN_HIT_MARKER, JWRN_HUFF_BAD_CODE, JWRN_JFIF_MAJOR,
-                        JWRN_JPEG_EOF, JWRN_MUST_RESYNC, JWRN_NOT_SEQUENTIAL,
-                        JWRN_TOO_MUCH_DATA};pub use super::cdjpeg::{djpeg_dest_ptr, djpeg_dest_struct};
+pub use super::cdjpeg::{djpeg_dest_ptr, djpeg_dest_struct};
+pub use super::jerror::{
+    C2RustUnnamed_3, JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
+    JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID, JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
+    JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE, JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
+    JERR_BAD_LENGTH, JERR_BAD_LIB_VERSION, JERR_BAD_MCU_SIZE, JERR_BAD_PARAM, JERR_BAD_PARAM_VALUE,
+    JERR_BAD_POOL_ID, JERR_BAD_PRECISION, JERR_BAD_PROGRESSION, JERR_BAD_PROG_SCRIPT,
+    JERR_BAD_SAMPLING, JERR_BAD_SCAN_SCRIPT, JERR_BAD_STATE, JERR_BAD_STRUCT_SIZE,
+    JERR_BAD_VIRTUAL_ACCESS, JERR_BUFFER_SIZE, JERR_CANT_SUSPEND, JERR_CCIR601_NOTIMPL,
+    JERR_COMPONENT_COUNT, JERR_CONVERSION_NOTIMPL, JERR_DAC_INDEX, JERR_DAC_VALUE, JERR_DHT_INDEX,
+    JERR_DQT_INDEX, JERR_EMPTY_IMAGE, JERR_EMS_READ, JERR_EMS_WRITE, JERR_EOI_EXPECTED,
+    JERR_FILE_READ, JERR_FILE_WRITE, JERR_FRACT_SAMPLE_NOTIMPL, JERR_HUFF_CLEN_OVERFLOW,
+    JERR_HUFF_MISSING_CODE, JERR_IMAGE_TOO_BIG, JERR_INPUT_EMPTY, JERR_INPUT_EOF,
+    JERR_MISMATCHED_QUANT_TABLE, JERR_MISSING_DATA, JERR_MODE_CHANGE, JERR_NOTIMPL,
+    JERR_NOT_COMPILED, JERR_NO_BACKING_STORE, JERR_NO_HUFF_TABLE, JERR_NO_IMAGE,
+    JERR_NO_QUANT_TABLE, JERR_NO_SOI, JERR_OUT_OF_MEMORY, JERR_QUANT_COMPONENTS,
+    JERR_QUANT_FEW_COLORS, JERR_QUANT_MANY_COLORS, JERR_SOF_DUPLICATE, JERR_SOF_NO_SOS,
+    JERR_SOF_UNSUPPORTED, JERR_SOI_DUPLICATE, JERR_SOS_NO_SOF, JERR_TFILE_CREATE, JERR_TFILE_READ,
+    JERR_TFILE_SEEK, JERR_TFILE_WRITE, JERR_TOO_LITTLE_DATA, JERR_UNKNOWN_MARKER,
+    JERR_UNSUPPORTED_SUSPEND, JERR_VIRTUAL_BUG, JERR_WIDTH_OVERFLOW, JERR_XMS_READ, JERR_XMS_WRITE,
+    JMSG_COPYRIGHT, JMSG_LASTMSGCODE, JMSG_NOMESSAGE, JMSG_VERSION, JTRC_16BIT_TABLES, JTRC_ADOBE,
+    JTRC_APP0, JTRC_APP14, JTRC_DAC, JTRC_DHT, JTRC_DQT, JTRC_DRI, JTRC_EMS_CLOSE, JTRC_EMS_OPEN,
+    JTRC_EOI, JTRC_HUFFBITS, JTRC_JFIF, JTRC_JFIF_BADTHUMBNAILSIZE, JTRC_JFIF_EXTENSION,
+    JTRC_JFIF_THUMBNAIL, JTRC_MISC_MARKER, JTRC_PARMLESS_MARKER, JTRC_QUANTVALS,
+    JTRC_QUANT_3_NCOLORS, JTRC_QUANT_NCOLORS, JTRC_QUANT_SELECTED, JTRC_RECOVERY_ACTION, JTRC_RST,
+    JTRC_SMOOTH_NOTIMPL, JTRC_SOF, JTRC_SOF_COMPONENT, JTRC_SOI, JTRC_SOS, JTRC_SOS_COMPONENT,
+    JTRC_SOS_PARAMS, JTRC_TFILE_CLOSE, JTRC_TFILE_OPEN, JTRC_THUMB_JPEG, JTRC_THUMB_PALETTE,
+    JTRC_THUMB_RGB, JTRC_UNKNOWN_IDS, JTRC_XMS_CLOSE, JTRC_XMS_OPEN, JWRN_ADOBE_XFORM,
+    JWRN_BOGUS_ICC, JWRN_BOGUS_PROGRESSION, JWRN_EXTRANEOUS_DATA, JWRN_HIT_MARKER,
+    JWRN_HUFF_BAD_CODE, JWRN_JFIF_MAJOR, JWRN_JPEG_EOF, JWRN_MUST_RESYNC, JWRN_NOT_SEQUENTIAL,
+    JWRN_TOO_MUCH_DATA,
+};
+pub use crate::cderror_h::{
+    C2RustUnnamed_4, JERR_BAD_CMAP_FILE, JERR_BMP_BADCMAP, JERR_BMP_BADDEPTH, JERR_BMP_BADHEADER,
+    JERR_BMP_BADPLANES, JERR_BMP_COLORSPACE, JERR_BMP_COMPRESSED, JERR_BMP_EMPTY, JERR_BMP_NOT,
+    JERR_BMP_OUTOFRANGE, JERR_GIF_BUG, JERR_GIF_CODESIZE, JERR_GIF_COLORSPACE,
+    JERR_GIF_IMAGENOTFOUND, JERR_GIF_NOT, JERR_PPM_COLORSPACE, JERR_PPM_NONNUMERIC, JERR_PPM_NOT,
+    JERR_PPM_OUTOFRANGE, JERR_TGA_BADCMAP, JERR_TGA_BADPARMS, JERR_TGA_COLORSPACE,
+    JERR_TOO_MANY_COLORS, JERR_UNGETC_FAILED, JERR_UNKNOWN_FORMAT, JERR_UNSUPPORTED_FORMAT,
+    JMSG_FIRSTADDONCODE, JMSG_LASTADDONCODE, JTRC_BMP, JTRC_BMP_MAPPED, JTRC_BMP_OS2,
+    JTRC_BMP_OS2_MAPPED, JTRC_GIF, JTRC_GIF_BADVERSION, JTRC_GIF_EXTENSION, JTRC_GIF_NONSQUARE,
+    JTRC_PGM, JTRC_PGM_TEXT, JTRC_PPM, JTRC_PPM_TEXT, JTRC_TGA, JTRC_TGA_GRAY, JTRC_TGA_MAPPED,
+    JWRN_GIF_BADDATA, JWRN_GIF_CHAR, JWRN_GIF_ENDCODE, JWRN_GIF_NOMOREDATA,
+};
+pub use crate::jmorecfg_h::{boolean, JCOEF, JDIMENSION, JOCTET, JSAMPLE, TRUE, UINT16, UINT8};
+pub use crate::jpeglib_h::{
+    j_common_ptr, j_decompress_ptr, jpeg_calc_output_dimensions, jpeg_color_deconverter,
+    jpeg_color_quantizer, jpeg_common_struct, jpeg_component_info, jpeg_d_coef_controller,
+    jpeg_d_main_controller, jpeg_d_post_controller, jpeg_decomp_master, jpeg_decompress_struct,
+    jpeg_entropy_decoder, jpeg_error_mgr, jpeg_input_controller, jpeg_inverse_dct,
+    jpeg_marker_reader, jpeg_marker_struct, jpeg_memory_mgr, jpeg_progress_mgr,
+    jpeg_saved_marker_ptr, jpeg_source_mgr, jpeg_upsampler, jvirt_barray_control, jvirt_barray_ptr,
+    jvirt_sarray_control, jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr, JBLOCK, JBLOCKARRAY,
+    JBLOCKROW, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX,
+    JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB,
+    JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JDITHER_FS,
+    JDITHER_NONE, JDITHER_ORDERED, JHUFF_TBL, JPOOL_IMAGE, JQUANT_TBL, JSAMPARRAY, JSAMPROW,
+    J_COLOR_SPACE, J_DCT_METHOD, J_DITHER_MODE,
+};
+pub use crate::stddef_h::{size_t, NULL};
+pub use crate::stdlib::{
+    _IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data, __off64_t, __off_t, FILE, _IO_FILE,
+};
+use crate::stdlib::{ferror, fflush, fwrite, putc};
+use libc::{self, c_char, c_int, c_long, c_uint, c_ulong, c_void};
 
 pub type gif_dest_ptr = *mut gif_dest_struct;
 
@@ -408,9 +108,7 @@ unsafe extern "C" fn flush_packet(mut dinfo: gif_dest_ptr)
                     .error_exit
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(
-                (*dinfo).cinfo as j_common_ptr
-            );
+            .expect("non-null function pointer")((*dinfo).cinfo as j_common_ptr);
         }
         (*dinfo).bytesinpkt = 0i32
     };
@@ -426,8 +124,7 @@ unsafe extern "C" fn output(mut dinfo: gif_dest_ptr, mut code: c_int)
     (*dinfo).cur_bits += (*dinfo).n_bits;
     while (*dinfo).cur_bits >= 8i32 {
         (*dinfo).bytesinpkt += 1;
-        (*dinfo).packetbuf[(*dinfo).bytesinpkt as usize] =
-            ((*dinfo).cur_accum & 0xffi64) as c_char;
+        (*dinfo).packetbuf[(*dinfo).bytesinpkt as usize] = ((*dinfo).cur_accum & 0xffi64) as c_char;
         if (*dinfo).bytesinpkt >= 255i32 {
             flush_packet(dinfo);
         }
@@ -501,8 +198,7 @@ unsafe extern "C" fn compress_term(mut dinfo: gif_dest_ptr)
     /* Flush the bit-packing buffer */
     if (*dinfo).cur_bits > 0i32 {
         (*dinfo).bytesinpkt += 1;
-        (*dinfo).packetbuf[(*dinfo).bytesinpkt as usize] =
-            ((*dinfo).cur_accum & 0xffi64) as c_char;
+        (*dinfo).packetbuf[(*dinfo).bytesinpkt as usize] = ((*dinfo).cur_accum & 0xffi64) as c_char;
         if (*dinfo).bytesinpkt >= 255i32 {
             flush_packet(dinfo);
         }
@@ -515,14 +211,8 @@ unsafe extern "C" fn compress_term(mut dinfo: gif_dest_ptr)
 unsafe extern "C" fn put_word(mut dinfo: gif_dest_ptr, mut w: c_uint)
 /* Emit a 16-bit word, LSB first */
 {
-    putc(
-        (w & 0xffu32) as c_int,
-        (*dinfo).pub_0.output_file,
-    );
-    putc(
-        (w >> 8i32 & 0xffu32) as c_int,
-        (*dinfo).pub_0.output_file,
-    );
+    putc((w & 0xffu32) as c_int, (*dinfo).pub_0.output_file);
+    putc((w >> 8i32 & 0xffu32) as c_int, (*dinfo).pub_0.output_file);
 }
 
 unsafe extern "C" fn put_3bytes(mut dinfo: gif_dest_ptr, mut val: c_int)
@@ -541,12 +231,9 @@ unsafe extern "C" fn emit_header(
 /* Output the GIF file header, including color map */
 /* If colormap==NULL, synthesize a grayscale colormap */
 {
-    
-    
-    
-       let mut InitCodeSize:  c_int =  0;  
+    let mut InitCodeSize: c_int = 0;
     let mut cshift: c_int = (*(*dinfo).cinfo).data_precision - 8i32;
-    
+
     if num_colors > 256i32 {
         (*(*(*dinfo).cinfo).err).msg_code = JERR_TOO_MANY_COLORS as c_int;
         (*(*(*dinfo).cinfo).err).msg_parm.i[0] = num_colors;
@@ -555,16 +242,14 @@ unsafe extern "C" fn emit_header(
                 .error_exit
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(
-            (*dinfo).cinfo as j_common_ptr
-        );
+        .expect("non-null function pointer")((*dinfo).cinfo as j_common_ptr);
     }
     /* Compute bits/pixel and related values */
-     let mut BitsPerPixel:   c_int =  1i32;
+    let mut BitsPerPixel: c_int = 1i32;
     while num_colors > 1i32 << BitsPerPixel {
         BitsPerPixel += 1
     }
-     let mut ColorMapSize:   c_int =  1i32 << BitsPerPixel;
+    let mut ColorMapSize: c_int = 1i32 << BitsPerPixel;
     if BitsPerPixel <= 1i32 {
         InitCodeSize = 2i32
     } else {
@@ -583,7 +268,7 @@ unsafe extern "C" fn emit_header(
     /* Write the Logical Screen Descriptor */
     put_word(dinfo, (*(*dinfo).cinfo).output_width); /* Yes, there is a global color table */
     put_word(dinfo, (*(*dinfo).cinfo).output_height); /* color resolution */
-     let mut FlagByte:   c_int =  0x80i32; /* size of global color table */
+    let mut FlagByte: c_int = 0x80i32; /* size of global color table */
     FlagByte |= BitsPerPixel - 1i32 << 4i32; /* Background color index */
     FlagByte |= BitsPerPixel - 1i32; /* Reserved (aspect ratio in GIF89) */
     putc(FlagByte, (*dinfo).pub_0.output_file);
@@ -592,13 +277,11 @@ unsafe extern "C" fn emit_header(
     /* Write the Global Color Map */
     /* If the color map is more than 8 bits precision, */
     /* we reduce it to 8 bits by shifting */
-     let mut i:   c_int =  0i32;
+    let mut i: c_int = 0i32;
     while i < ColorMapSize {
         if i < num_colors {
             if !colormap.is_null() {
-                if  (*(*dinfo).cinfo).out_color_space
-                    ==  JCS_RGB
-                {
+                if (*(*dinfo).cinfo).out_color_space == JCS_RGB {
                     /* Normal case: RGB color map */
                     putc(
                         *(*colormap.offset(0)).offset(i as isize) as c_int >> cshift,
@@ -657,12 +340,7 @@ unsafe extern "C" fn start_output_gif(
     if (*cinfo).quantize_colors != 0 {
         emit_header(dest, (*cinfo).actual_number_of_colors, (*cinfo).colormap);
     } else {
-        emit_header(
-            dest,
-            256i32,
-            
-            NULL as JSAMPARRAY,
-        );
+        emit_header(dest, 256i32, NULL as JSAMPARRAY);
     };
 }
 /*
@@ -675,16 +353,15 @@ unsafe extern "C" fn put_pixel_rows(
     mut dinfo: super::cdjpeg::djpeg_dest_ptr,
     mut _rows_supplied: JDIMENSION,
 ) {
-      let mut dest: gif_dest_ptr = dinfo as gif_dest_ptr;
-    
-    
-    
-     let mut ptr:   JSAMPROW =  *(*dest).pub_0.buffer.offset(0); let mut col:   JDIMENSION =  (*cinfo).output_width;
+    let mut dest: gif_dest_ptr = dinfo as gif_dest_ptr;
+
+    let mut ptr: JSAMPROW = *(*dest).pub_0.buffer.offset(0);
+    let mut col: JDIMENSION = (*cinfo).output_width;
     while col > 0u32 {
         let fresh1 = ptr;
         ptr = ptr.offset(1);
         compress_pixel(dest, *fresh1 as c_int);
-        col -=  1
+        col -= 1
     }
 }
 /*
@@ -780,10 +457,8 @@ to write the image in bottom-up order.) */
 pub unsafe extern "C" fn jinit_write_gif(
     mut cinfo: j_decompress_ptr,
 ) -> super::cdjpeg::djpeg_dest_ptr {
-     
     /* Create module interface object, fill in method pointers */
-     let mut dest:   gif_dest_ptr =
-     Some(
+    let mut dest: gif_dest_ptr = Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),
@@ -796,10 +471,7 @@ pub unsafe extern "C" fn jinit_write_gif(
     (*dest).cinfo = cinfo;
     (*dest).pub_0.start_output = Some(
         start_output_gif
-            as unsafe extern "C" fn(
-                _: j_decompress_ptr,
-                _: super::cdjpeg::djpeg_dest_ptr,
-            ) -> (),
+            as unsafe extern "C" fn(_: j_decompress_ptr, _: super::cdjpeg::djpeg_dest_ptr) -> (),
     );
     (*dest).pub_0.put_pixel_rows = Some(
         put_pixel_rows
@@ -811,23 +483,13 @@ pub unsafe extern "C" fn jinit_write_gif(
     );
     (*dest).pub_0.finish_output = Some(
         finish_output_gif
-            as unsafe extern "C" fn(
-                _: j_decompress_ptr,
-                _: super::cdjpeg::djpeg_dest_ptr,
-            ) -> (),
+            as unsafe extern "C" fn(_: j_decompress_ptr, _: super::cdjpeg::djpeg_dest_ptr) -> (),
     );
     (*dest).pub_0.calc_buffer_dimensions = Some(
         calc_buffer_dimensions_gif
-            as unsafe extern "C" fn(
-                _: j_decompress_ptr,
-                _: super::cdjpeg::djpeg_dest_ptr,
-            ) -> (),
+            as unsafe extern "C" fn(_: j_decompress_ptr, _: super::cdjpeg::djpeg_dest_ptr) -> (),
     );
-    if  (*cinfo).out_color_space
-        !=  JCS_GRAYSCALE
-        &&  (*cinfo).out_color_space
-            !=  JCS_RGB
-    {
+    if (*cinfo).out_color_space != JCS_GRAYSCALE && (*cinfo).out_color_space != JCS_RGB {
         (*(*cinfo).err).msg_code = JERR_GIF_COLORSPACE as c_int;
         Some(
             (*(*cinfo).err)
@@ -837,10 +499,7 @@ pub unsafe extern "C" fn jinit_write_gif(
         .expect("non-null function pointer")(cinfo as j_common_ptr);
     }
     /* Force quantization if color or if > 8 bits input */
-    if  (*cinfo).out_color_space
-        !=  JCS_GRAYSCALE
-        || (*cinfo).data_precision > 8i32
-    {
+    if (*cinfo).out_color_space != JCS_GRAYSCALE || (*cinfo).data_precision > 8i32 {
         /* Force quantization to at most 256 colors */
         (*cinfo).quantize_colors = TRUE;
         if (*cinfo).desired_number_of_colors > 256i32 {

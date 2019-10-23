@@ -12,27 +12,15 @@
 #![feature(ptr_wrapping_offset_from)]
 #![feature(main)]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-use std::prelude::v1::*;use mozjpeg::*;use crate::src::md5::md5::MD5File;use crate::stdlib::{fprintf, perror, stderr, strcasecmp, strlen};use libc::{c_int, c_char};pub use crate::stdlib::{_IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data,
-                        __off64_t, __off_t, FILE, _IO_FILE};pub use crate::stddef_h::{size_t, NULL};
+use crate::src::md5::md5::MD5File;
+pub use crate::stddef_h::{size_t, NULL};
+pub use crate::stdlib::{
+    _IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data, __off64_t, __off_t, FILE, _IO_FILE,
+};
+use crate::stdlib::{fprintf, perror, stderr, strcasecmp, strlen};
+use libc::{c_char, c_int};
+use mozjpeg::*;
+use std::prelude::v1::*;
 /*
  * Copyright (C)2013, 2016 D. R. Commander.  All Rights Reserved.
  *
@@ -62,12 +50,12 @@ use std::prelude::v1::*;use mozjpeg::*;use crate::src::md5::md5::MD5File;use cra
  */
 
 unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
-     let mut buf:  [c_char; 65] =  [0; 65];let mut md5sum: *mut c_char = NULL as *mut c_char;
-    
+    let mut buf: [c_char; 65] = [0; 65];
+    let mut md5sum: *mut c_char = NULL as *mut c_char;
+
     if argc < 3i32 {
         fprintf(
             stderr,
-            
             b"USAGE: %s <correct MD5 sum> <file>\n\x00".as_ptr() as *const c_char,
             *argv.offset(0),
         );
@@ -76,7 +64,6 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
     if strlen(*argv.offset(1)) != 32u64 {
         fprintf(
             stderr,
-            
             b"WARNING: MD5 hash size is wrong.\n\x00".as_ptr() as *const c_char,
         );
     }
@@ -88,7 +75,6 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
     if strcasecmp(md5sum, *argv.offset(1)) == 0 {
         fprintf(
             stderr,
-            
             b"%s: OK\n\x00".as_ptr() as *const c_char,
             *argv.offset(2),
         );
@@ -96,7 +82,6 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
     } else {
         fprintf(
             stderr,
-            
             b"%s: FAILED.  Checksum is %s\n\x00".as_ptr() as *const c_char,
             *argv.offset(2),
             md5sum,
@@ -106,7 +91,7 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
 }
 #[main]
 pub fn main() {
-     let mut args:  Vec<*mut c_char> =  Vec::new();
+    let mut args: Vec<*mut c_char> = Vec::new();
     for arg in ::std::env::args() {
         args.push(
             ::std::ffi::CString::new(arg)
@@ -115,11 +100,5 @@ pub fn main() {
         );
     }
     args.push(::std::ptr::null_mut());
-    unsafe {
-        ::std::process::exit(main_0(
-            (args.len() - 1) as c_int,
-            
-            args.as_mut_ptr(),
-        ))
-    }
+    unsafe { ::std::process::exit(main_0((args.len() - 1) as c_int, args.as_mut_ptr())) }
 }

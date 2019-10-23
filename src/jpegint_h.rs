@@ -1,4 +1,5 @@
-use libc::{c_uchar, c_ulong, c_int, c_long, c_uint, c_void};extern "C" {
+use libc::{c_int, c_long, c_uchar, c_uint, c_ulong, c_void};
+extern "C" {
     #[no_mangle]
     pub fn jzero_far(target: *mut c_void, bytestozero: size_t);
 
@@ -24,10 +25,7 @@ use libc::{c_uchar, c_ulong, c_int, c_long, c_uint, c_void};extern "C" {
     pub static jpeg_natural_order: [c_int; 0];
 
     #[no_mangle]
-    pub fn jinit_c_master_control(
-        cinfo: j_compress_ptr,
-        transcode_only: boolean,
-    );
+    pub fn jinit_c_master_control(cinfo: j_compress_ptr, transcode_only: boolean);
 
     #[no_mangle]
     pub fn jinit_color_converter(cinfo: j_compress_ptr);
@@ -36,10 +34,7 @@ use libc::{c_uchar, c_ulong, c_int, c_long, c_uint, c_void};extern "C" {
     pub fn jinit_downsampler(cinfo: j_compress_ptr);
 
     #[no_mangle]
-    pub fn jinit_c_prep_controller(
-        cinfo: j_compress_ptr,
-        need_full_buffer: boolean,
-    );
+    pub fn jinit_c_prep_controller(cinfo: j_compress_ptr, need_full_buffer: boolean);
 
     #[no_mangle]
     pub fn jinit_forward_dct(cinfo: j_compress_ptr);
@@ -51,16 +46,10 @@ use libc::{c_uchar, c_ulong, c_int, c_long, c_uint, c_void};extern "C" {
     pub fn jinit_huff_encoder(cinfo: j_compress_ptr);
 
     #[no_mangle]
-    pub fn jinit_c_coef_controller(
-        cinfo: j_compress_ptr,
-        need_full_buffer: boolean,
-    );
+    pub fn jinit_c_coef_controller(cinfo: j_compress_ptr, need_full_buffer: boolean);
 
     #[no_mangle]
-    pub fn jinit_c_main_controller(
-        cinfo: j_compress_ptr,
-        need_full_buffer: boolean,
-    );
+    pub fn jinit_c_main_controller(cinfo: j_compress_ptr, need_full_buffer: boolean);
 
     #[no_mangle]
     pub fn jcopy_sample_rows(
@@ -79,16 +68,10 @@ use libc::{c_uchar, c_ulong, c_int, c_long, c_uint, c_void};extern "C" {
     pub fn jinit_upsampler(cinfo: j_decompress_ptr);
 
     #[no_mangle]
-    pub fn jinit_d_main_controller(
-        cinfo: j_decompress_ptr,
-        need_full_buffer: boolean,
-    );
+    pub fn jinit_d_main_controller(cinfo: j_decompress_ptr, need_full_buffer: boolean);
 
     #[no_mangle]
-    pub fn jinit_d_coef_controller(
-        cinfo: j_decompress_ptr,
-        need_full_buffer: boolean,
-    );
+    pub fn jinit_d_coef_controller(cinfo: j_decompress_ptr, need_full_buffer: boolean);
 
     #[no_mangle]
     pub fn jinit_huff_decoder(cinfo: j_decompress_ptr);
@@ -100,10 +83,7 @@ use libc::{c_uchar, c_ulong, c_int, c_long, c_uint, c_void};extern "C" {
     pub fn jinit_inverse_dct(cinfo: j_decompress_ptr);
 
     #[no_mangle]
-    pub fn jinit_d_post_controller(
-        cinfo: j_decompress_ptr,
-        need_full_buffer: boolean,
-    );
+    pub fn jinit_d_post_controller(cinfo: j_decompress_ptr, need_full_buffer: boolean);
 
     #[no_mangle]
     pub fn jinit_color_deconverter(cinfo: j_decompress_ptr);
@@ -118,11 +98,7 @@ use libc::{c_uchar, c_ulong, c_int, c_long, c_uint, c_void};extern "C" {
     pub fn jinit_1pass_quantizer(cinfo: j_decompress_ptr);
 
     #[no_mangle]
-    pub fn jcopy_block_row(
-        input_row: JBLOCKROW,
-        output_row: JBLOCKROW,
-        num_blocks: JDIMENSION,
-    );
+    pub fn jcopy_block_row(input_row: JBLOCKROW, output_row: JBLOCKROW, num_blocks: JDIMENSION);
     /* It is useful to allow each component to have a separate IDCT method. */
     /* Upsampling (note that upsampler must also call color converter) */
     /* TRUE if need rows above & below */
@@ -168,11 +144,8 @@ pub type JLONG = c_long;
 pub const DSTATE_STOPPING: c_int = 210i32;
 pub const DSTATE_RDCOEFS: c_int = 209i32;
 
-
-
-
-use crate::jmorecfg_h::JDIMENSION;use crate::jpeglib_h::{j_decompress_ptr, jpeg_component_info, JCOEFPTR,
-                       JSAMPARRAY};
+use crate::jmorecfg_h::JDIMENSION;
+use crate::jpeglib_h::{j_decompress_ptr, jpeg_component_info, JCOEFPTR, JSAMPARRAY};
 pub const DSTATE_SCANNING: c_int = 205i32;
 pub const DSTATE_RAW_OK: c_int = 206i32;
 pub const DSTATE_PRESCAN: c_int = 204i32;
@@ -181,8 +154,6 @@ pub const DSTATE_BUFIMAGE: c_int = 207i32;
 pub const DSTATE_READY: c_int = 202i32;
 pub const DSTATE_BUFPOST: c_int = 208i32;
 pub type J_BUF_MODE = c_uint;
-
-
 
 use crate::jpeglib_h::{j_common_ptr, JBLOCKROW};
 pub const JBUF_REQUANT: J_BUF_MODE = 4;
@@ -199,8 +170,6 @@ pub const CSTATE_RAW_OK: c_int = 102i32;
 /* start_compress done, write_raw_data OK */
 pub const CSTATE_WRCOEFS: c_int = 103i32;
 
-
-
-
-
-use crate::jmorecfg_h::boolean;use crate::stddef_h::size_t;use crate::jpeglib_h::{j_compress_ptr};
+use crate::jmorecfg_h::boolean;
+use crate::jpeglib_h::j_compress_ptr;
+use crate::stddef_h::size_t;

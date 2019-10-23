@@ -15,8 +15,7 @@
 
 pub mod src {
     pub mod cdjpeg;
-    
-    
+
     pub mod jcapimin;
     pub mod jcapistd;
     pub mod jccoefct;
@@ -34,7 +33,7 @@ pub mod src {
     pub mod jcphuff;
     pub mod jcprepct;
     pub mod jcsample;
-    
+
     pub mod jctrans;
     pub mod jdapimin;
     pub mod jdapistd;
@@ -66,20 +65,20 @@ pub mod src {
     pub mod jidctred;
     pub mod jmemmgr;
     pub mod jmemnobs;
-    
+
     pub mod jquant1;
     pub mod jquant2;
     pub mod jutils;
     pub mod md5 {
         pub mod md5;
-        
+
         pub mod md5hl;
     } // mod md5
     pub mod rdbmp;
     pub mod rdcolmap;
     pub mod rdgif;
     pub mod rdjpeg;
-    
+
     pub mod rdppm;
     pub mod rdswitch;
     pub mod rdtarga;
@@ -88,15 +87,13 @@ pub mod src {
             pub mod jsimd;
         } // mod x86_64
     } // mod simd
-    
-    
-    
+
     pub mod tjutil;
     pub mod transupp;
     pub mod turbojpeg;
     pub mod wrbmp;
     pub mod wrgif;
-    
+
     pub mod wrppm;
     pub mod wrtarga;
 }

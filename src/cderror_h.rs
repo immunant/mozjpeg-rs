@@ -1,4 +1,5 @@
-use libc::c_uint;pub type C2RustUnnamed_4 = c_uint;
+use libc::c_uint;
+pub type C2RustUnnamed_4 = c_uint;
 pub const JMSG_LASTADDONCODE: C2RustUnnamed_4 = 1046;
 pub const JERR_UNSUPPORTED_FORMAT: C2RustUnnamed_4 = 1045;
 pub const JERR_UNKNOWN_FORMAT: C2RustUnnamed_4 = 1044;

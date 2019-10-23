@@ -12,61 +12,18 @@
 #![feature(ptr_wrapping_offset_from)]
 #![feature(main)]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-use std::prelude::v1::*;use libc::{c_uint, c_int, c_ushort, c_ulong, c_char, c_long};use crate::stdlib::{strcat, strcpy, strlen};use mozjpeg::*;pub use crate::stdlib::{_IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data,
-                        __int32_t, __off64_t, __off_t, FILE, _IO_FILE,
-                        C2RustUnnamed_0, _ISalnum, _ISalpha, _ISblank,
-                        _IScntrl, _ISdigit, _ISgraph, _ISlower, _ISprint,
-                        _ISpunct, _ISspace, _ISupper, _ISxdigit,
-                        __ctype_b_loc, __ctype_tolower_loc, exit, fclose,
-                        fopen, fprintf, getc, malloc, putc, stderr, stdin,
-                        stdout, tolower, EOF, EXIT_FAILURE, EXIT_SUCCESS};pub use crate::stddef_h::{size_t, NULL};
+pub use crate::stddef_h::{size_t, NULL};
+use crate::stdlib::{strcat, strcpy, strlen};
+pub use crate::stdlib::{
+    C2RustUnnamed_0, _IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data, _ISalnum, _ISalpha,
+    _ISblank, _IScntrl, _ISdigit, _ISgraph, _ISlower, _ISprint, _ISpunct, _ISspace, _ISupper,
+    _ISxdigit, __ctype_b_loc, __ctype_tolower_loc, __int32_t, __off64_t, __off_t, exit, fclose,
+    fopen, fprintf, getc, malloc, putc, stderr, stdin, stdout, tolower, EOF, EXIT_FAILURE,
+    EXIT_SUCCESS, FILE, _IO_FILE,
+};
+use libc::{c_char, c_int, c_long, c_uint, c_ulong, c_ushort};
+use mozjpeg::*;
+use std::prelude::v1::*;
 /*
  * wrjpgcom.c
  *
@@ -102,27 +59,22 @@ pub const MAX_COM_LENGTH: c_long = 65000i64;
  * To reuse this code in another application, you might need to change these.
  */
 
-static mut infile: *mut FILE =
-    ::std::ptr::null::< FILE>() as *mut FILE;
+static mut infile: *mut FILE = ::std::ptr::null::<FILE>() as *mut FILE;
 /* input JPEG file */
 /* Return next input byte, or EOF if no more */
 
-static mut outfile: *mut FILE =
-    ::std::ptr::null::< FILE>() as *mut FILE;
+static mut outfile: *mut FILE = ::std::ptr::null::<FILE>() as *mut FILE;
 /* output JPEG file */
 /* Emit an output byte */
 /* Error exit handler */
 /* Read one byte, testing for EOF */
 
 unsafe extern "C" fn read_1_byte() -> c_int {
-     
-     let mut c:   c_int =  getc(infile);
+    let mut c: c_int = getc(infile);
     if c == EOF {
         fprintf(
             stderr,
-            
             b"%s\n\x00".as_ptr() as *const c_char,
-            
             b"Premature EOF in JPEG file\x00".as_ptr() as *const c_char,
         );
         exit(EXIT_FAILURE);
@@ -133,31 +85,25 @@ unsafe extern "C" fn read_1_byte() -> c_int {
 /* All 2-byte quantities in JPEG markers are MSB first */
 
 unsafe extern "C" fn read_2_bytes() -> c_uint {
-    
-      
-     let mut c1:   c_int =  getc(infile);
+    let mut c1: c_int = getc(infile);
     if c1 == EOF {
         fprintf(
             stderr,
-            
             b"%s\n\x00".as_ptr() as *const c_char,
-            
             b"Premature EOF in JPEG file\x00".as_ptr() as *const c_char,
         );
         exit(EXIT_FAILURE);
     }
-     let mut c2:   c_int =  getc(infile);
+    let mut c2: c_int = getc(infile);
     if c2 == EOF {
         fprintf(
             stderr,
-            
             b"%s\n\x00".as_ptr() as *const c_char,
-            
             b"Premature EOF in JPEG file\x00".as_ptr() as *const c_char,
         );
         exit(EXIT_FAILURE);
     }
-    return ((((c1 as c_uint) << 8i32))) + c2 as c_uint;
+    return ((c1 as c_uint) << 8i32) + c2 as c_uint;
 }
 /* Routines to write data to output file */
 
@@ -166,10 +112,7 @@ unsafe extern "C" fn write_1_byte(mut c: c_int) {
 }
 
 unsafe extern "C" fn write_2_bytes(mut val: c_uint) {
-    putc(
-        (val >> 8i32 & 0xffu32) as c_int,
-        outfile,
-    );
+    putc((val >> 8i32 & 0xffu32) as c_int, outfile);
     putc((val & 0xffu32) as c_int, outfile);
 }
 
@@ -179,9 +122,8 @@ unsafe extern "C" fn write_marker(mut marker: c_int) {
 }
 
 unsafe extern "C" fn copy_rest_of_file() {
-    
     loop {
-          let mut c:   c_int =  getc(infile);
+        let mut c: c_int = getc(infile);
         if !(c != EOF) {
             break;
         }
@@ -202,9 +144,8 @@ pub const M_SOI: c_int = 0xd8i32;
  */
 
 unsafe extern "C" fn next_marker() -> c_int {
-    
-      let mut discarded_bytes:  c_int =  0i32;
-     let mut c:   c_int =  read_1_byte();
+    let mut discarded_bytes: c_int = 0i32;
+    let mut c: c_int = read_1_byte();
     while c != 0xffi32 {
         discarded_bytes += 1;
         c = read_1_byte()
@@ -222,7 +163,6 @@ unsafe extern "C" fn next_marker() -> c_int {
     if discarded_bytes != 0i32 {
         fprintf(
             stderr,
-            
             b"Warning: garbage data found in JPEG file\n\x00".as_ptr() as *const c_char,
         );
     }
@@ -237,16 +177,12 @@ unsafe extern "C" fn next_marker() -> c_int {
  */
 
 unsafe extern "C" fn first_marker() -> c_int {
-    
-      
-    
-     let mut c1:   c_int =  getc(infile); let mut c2:   c_int =  getc(infile);
+    let mut c1: c_int = getc(infile);
+    let mut c2: c_int = getc(infile);
     if c1 != 0xffi32 || c2 != M_SOI {
         fprintf(
             stderr,
-            
             b"%s\n\x00".as_ptr() as *const c_char,
-            
             b"Not a JPEG file\x00".as_ptr() as *const c_char,
         );
         exit(EXIT_FAILURE);
@@ -265,49 +201,43 @@ unsafe extern "C" fn first_marker() -> c_int {
 unsafe extern "C" fn copy_variable()
 /* Copy an unknown or uninteresting variable-length marker */
 {
-     
-     let mut length:   c_uint =  read_2_bytes();
+    let mut length: c_uint = read_2_bytes();
     write_2_bytes(length);
     /* Length includes itself, so must be at least 2 */
     if length < 2u32 {
         fprintf(
             stderr,
-            
             b"%s\n\x00".as_ptr() as *const c_char,
-            
             b"Erroneous JPEG marker length\x00".as_ptr() as *const c_char,
         );
         exit(EXIT_FAILURE);
     }
-    length -=  2u32;
+    length -= 2u32;
     /* Copy the remaining bytes */
     while length > 0u32 {
         write_1_byte(read_1_byte());
-        length -=  1
+        length -= 1
     }
 }
 
 unsafe extern "C" fn skip_variable()
 /* Skip over an unknown or uninteresting variable-length marker */
 {
-     
-     let mut length:   c_uint =  read_2_bytes();
+    let mut length: c_uint = read_2_bytes();
     /* Length includes itself, so must be at least 2 */
     if length < 2u32 {
         fprintf(
             stderr,
-            
             b"%s\n\x00".as_ptr() as *const c_char,
-            
             b"Erroneous JPEG marker length\x00".as_ptr() as *const c_char,
         );
         exit(EXIT_FAILURE);
     }
-    length -=  2u32;
+    length -= 2u32;
     /* Skip over the remaining bytes */
     while length > 0u32 {
         read_1_byte();
-        length -=  1
+        length -= 1
     }
 }
 /*
@@ -316,14 +246,11 @@ unsafe extern "C" fn skip_variable()
  */
 
 unsafe extern "C" fn scan_JPEG_header(mut keep_COM: c_int) -> c_int {
-    
     /* Expect SOI at start of file */
     if first_marker() != M_SOI {
         fprintf(
             stderr,
-            
             b"%s\n\x00".as_ptr() as *const c_char,
-            
             b"Expected SOI marker first\x00".as_ptr() as *const c_char,
         );
         exit(EXIT_FAILURE);
@@ -332,9 +259,9 @@ unsafe extern "C" fn scan_JPEG_header(mut keep_COM: c_int) -> c_int {
     loop
     /* Scan miscellaneous markers until we reach SOFn. */
     {
-          let mut marker:   c_int =  next_marker();
+        let mut marker: c_int = next_marker();
         's_105: {
-             let mut current_block_14:  u64;
+            let mut current_block_14: u64;
             match marker {
                 192 => {
                     /* Baseline */
@@ -380,9 +307,7 @@ unsafe extern "C" fn scan_JPEG_header(mut keep_COM: c_int) -> c_int {
                     /* should not see compressed data before SOF */
                     fprintf(
                         stderr,
-                        
                         b"%s\n\x00".as_ptr() as *const c_char,
-                        
                         b"SOS without prior SOFn\x00".as_ptr() as *const c_char,
                     );
                     exit(EXIT_FAILURE);
@@ -509,7 +434,7 @@ unsafe extern "C" fn scan_JPEG_header(mut keep_COM: c_int) -> c_int {
 }
 /* Command line parsing code */
 
-static mut progname: *const c_char = ::std::ptr::null::< c_char>();
+static mut progname: *const c_char = ::std::ptr::null::<c_char>();
 /* program name for error messages */
 
 unsafe extern "C" fn usage()
@@ -517,89 +442,62 @@ unsafe extern "C" fn usage()
 {
     fprintf(
         stderr,
-        
-        b"wrjpgcom inserts a textual comment in a JPEG file.\n\x00".as_ptr()
-            as *const c_char,
+        b"wrjpgcom inserts a textual comment in a JPEG file.\n\x00".as_ptr() as *const c_char,
     );
     fprintf(
         stderr,
-        
-        b"You can add to or replace any existing comment(s).\n\x00".as_ptr()
-            as *const c_char,
+        b"You can add to or replace any existing comment(s).\n\x00".as_ptr() as *const c_char,
     );
     fprintf(
         stderr,
-        
         b"Usage: %s [switches] \x00".as_ptr() as *const c_char,
         progname,
     );
+    fprintf(stderr, b"[inputfile]\n\x00".as_ptr() as *const c_char);
     fprintf(
         stderr,
-        
-        b"[inputfile]\n\x00".as_ptr() as *const c_char,
-    );
-    fprintf(
-        stderr,
-        
         b"Switches (names may be abbreviated):\n\x00".as_ptr() as *const c_char,
     );
     fprintf(
         stderr,
-        
-        b"  -replace         Delete any existing comments\n\x00".as_ptr()
-            as *const c_char,
+        b"  -replace         Delete any existing comments\n\x00".as_ptr() as *const c_char,
     );
     fprintf(
         stderr,
-        
-        b"  -comment \"text\"  Insert comment with given text\n\x00".as_ptr()
-            as *const c_char,
+        b"  -comment \"text\"  Insert comment with given text\n\x00".as_ptr() as *const c_char,
     );
     fprintf(
         stderr,
-        
-        b"  -cfile name      Read comment from named file\n\x00".as_ptr()
-            as *const c_char,
+        b"  -cfile name      Read comment from named file\n\x00".as_ptr() as *const c_char,
     );
     fprintf(
         stderr,
-        
-        b"Notice that you must put quotes around the comment text\n\x00".as_ptr()
-            as *const c_char,
+        b"Notice that you must put quotes around the comment text\n\x00".as_ptr() as *const c_char,
     );
     fprintf(
         stderr,
-        
         b"when you use -comment.\n\x00".as_ptr() as *const c_char,
     );
     fprintf(
         stderr,
-        
         b"If you do not give either -comment or -cfile on the command line,\n\x00".as_ptr()
             as *const c_char,
     );
     fprintf(
         stderr,
-        
-        b"then the comment text is read from standard input.\n\x00".as_ptr()
-            as *const c_char,
+        b"then the comment text is read from standard input.\n\x00".as_ptr() as *const c_char,
     );
     fprintf(
         stderr,
-        
-        b"It can be multiple lines, up to %u characters total.\n\x00".as_ptr()
-            as *const c_char,
+        b"It can be multiple lines, up to %u characters total.\n\x00".as_ptr() as *const c_char,
         MAX_COM_LENGTH as c_uint,
     );
     fprintf(
         stderr,
-        
-        b"You must specify an input JPEG file name when supplying\n\x00".as_ptr()
-            as *const c_char,
+        b"You must specify an input JPEG file name when supplying\n\x00".as_ptr() as *const c_char,
     );
     fprintf(
         stderr,
-        
         b"comment text from standard input.\n\x00".as_ptr() as *const c_char,
     );
     exit(EXIT_FAILURE);
@@ -613,30 +511,27 @@ unsafe extern "C" fn keymatch(
 /* Case-insensitive matching of (possibly abbreviated) keyword switches. */
 /* keyword is the constant keyword (must be lower case already), */
 /* minchars is length of minimum legal abbreviation. */ {
-     /* arg longer than keyword, no good */
-    
-     let mut nmatched:  c_int =  0i32;
+    /* arg longer than keyword, no good */
+
+    let mut nmatched: c_int = 0i32;
     loop {
-          let fresh0 = arg;
+        let fresh0 = arg;
         arg = arg.offset(1);
-         let mut ca:   c_int =  *fresh0 as c_int;
+        let mut ca: c_int = *fresh0 as c_int;
         if !(ca != '\u{0}' as i32) {
             break;
         }
         let fresh1 = keyword;
         keyword = keyword.offset(1);
-         let mut ck:   c_int =  *fresh1 as c_int;
+        let mut ck: c_int = *fresh1 as c_int;
         if ck == '\u{0}' as i32 {
             return 0i32;
         }
-        if *(*__ctype_b_loc()).offset(ca as isize) as c_int
-            &  _ISupper as c_ushort as c_int
-            != 0
-        {
+        if *(*__ctype_b_loc()).offset(ca as isize) as c_int & _ISupper as c_ushort as c_int != 0 {
             /* count matched characters */
             /* force arg to lcase (assume ck is already) */
             ca = {
-                 let mut __res:  c_int =  0; /* no good */
+                let mut __res: c_int = 0; /* no good */
                 if ::std::mem::size_of::<c_int>() as c_ulong > 1u64 {
                     if 0 != 0 {
                         let mut __c: c_int = ca;
@@ -671,22 +566,19 @@ unsafe extern "C" fn keymatch(
  */
 
 unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
-    
-    
-      let mut keep_COM:  c_int =  1i32; let mut comment_length:  c_uint =  0u32; 
+    let mut keep_COM: c_int = 1i32;
+    let mut comment_length: c_uint = 0u32;
     let mut comment_arg: *mut c_char = NULL as *mut c_char;
-    let mut comment_file: *mut FILE =
-        NULL as *mut FILE;
-    
-    
+    let mut comment_file: *mut FILE = NULL as *mut FILE;
+
     /* On Mac, fetch a command line. */
     progname = *argv.offset(0); /* in case C library doesn't provide it */
     if progname.is_null() || *progname.offset(0) as c_int == 0i32 {
-        progname =  b"wrjpgcom\x00".as_ptr() as *const c_char
+        progname = b"wrjpgcom\x00".as_ptr() as *const c_char
     }
-     let mut argn:   c_int =  1i32; /* not switch, must be file name */
+    let mut argn: c_int = 1i32; /* not switch, must be file name */
     while argn < argc {
-          let mut arg:   *mut c_char =  *argv.offset(argn as isize); /* advance over '-' */
+        let mut arg: *mut c_char = *argv.offset(argn as isize); /* advance over '-' */
         if *arg.offset(0) as c_int != '-' as i32 {
             break;
         }
@@ -812,7 +704,6 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
         if infile.is_null() {
             fprintf(
                 stderr,
-                
                 b"%s: can\'t open %s\n\x00".as_ptr() as *const c_char,
                 progname,
                 *argv.offset(argn as isize),
@@ -830,7 +721,6 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
     if argn < argc - 1i32 {
         fprintf(
             stderr,
-            
             b"%s: only one input file\n\x00".as_ptr() as *const c_char,
             progname,
         );
@@ -843,44 +733,36 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
     /* TWO_FILE_COMMANDLINE */
     /* Collect comment text from comment_file or stdin, if necessary */
     if comment_arg.is_null() {
-        
-         
-        comment_arg =
-            malloc(MAX_COM_LENGTH as size_t) as *mut c_char;
+        comment_arg = malloc(MAX_COM_LENGTH as size_t) as *mut c_char;
         if comment_arg.is_null() {
             fprintf(
                 stderr,
-                
                 b"%s\n\x00".as_ptr() as *const c_char,
-                
                 b"Insufficient memory\x00".as_ptr() as *const c_char,
             );
             exit(EXIT_FAILURE);
         }
         comment_length = 0u32;
-         let mut src_file:   *mut FILE =
-     if !comment_file.is_null() {
+        let mut src_file: *mut FILE = if !comment_file.is_null() {
             comment_file
         } else {
             stdin
         };
         loop {
-              let mut c:   c_int =  getc(src_file);
+            let mut c: c_int = getc(src_file);
             if !(c != EOF) {
                 break;
             }
             if comment_length >= MAX_COM_LENGTH as c_uint {
                 fprintf(
                     stderr,
-                    
-                    b"Comment text may not exceed %u bytes\n\x00".as_ptr()
-                        as *const c_char,
+                    b"Comment text may not exceed %u bytes\n\x00".as_ptr() as *const c_char,
                     MAX_COM_LENGTH as c_uint,
                 );
                 exit(EXIT_FAILURE);
             }
             let fresh2 = comment_length;
-            comment_length +=  1;
+            comment_length += 1;
             *comment_arg.offset(fresh2 as isize) = c as c_char
         }
         if !comment_file.is_null() {
@@ -893,7 +775,7 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
      * existing comments; and (b) ensures that comments come after any JFIF
      * or JFXX markers, as required by the JFIF specification.
      */
-     let mut marker:   c_int =  scan_JPEG_header(keep_COM);
+    let mut marker: c_int = scan_JPEG_header(keep_COM);
     /* Insert the new COM marker, but only if nonempty text has been supplied */
     if comment_length > 0u32 {
         write_marker(0xfei32);
@@ -902,7 +784,7 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
             let fresh3 = comment_arg;
             comment_arg = comment_arg.offset(1);
             write_1_byte(*fresh3 as c_int);
-            comment_length -=  1
+            comment_length -= 1
         }
     }
     /* Duplicate the remainder of the source file.
@@ -916,7 +798,7 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
 }
 #[main]
 pub fn main() {
-     let mut args:  Vec<*mut c_char> =  Vec::new();
+    let mut args: Vec<*mut c_char> = Vec::new();
     for arg in ::std::env::args() {
         args.push(
             ::std::ffi::CString::new(arg)
@@ -925,11 +807,5 @@ pub fn main() {
         );
     }
     args.push(::std::ptr::null_mut());
-    unsafe {
-        ::std::process::exit(main_0(
-            (args.len() - 1) as c_int,
-            
-            args.as_mut_ptr(),
-        ))
-    }
+    unsafe { ::std::process::exit(main_0((args.len() - 1) as c_int, args.as_mut_ptr())) }
 }

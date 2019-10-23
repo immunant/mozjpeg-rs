@@ -1,4 +1,5 @@
-use libc::{c_uchar, c_ulong, c_char, c_short, c_void, c_uint, c_int};extern "C" {
+use libc::{c_char, c_int, c_short, c_uchar, c_uint, c_ulong, c_void};
+extern "C" {
     /*
      * Copyright (C)2009-2018 D. R. Commander.  All Rights Reserved.
      * mozjpeg Modifications:
@@ -31,346 +32,79 @@ use libc::{c_uchar, c_ulong, c_char, c_short, c_void, c_uint, c_int};extern "C" 
     /* TurboJPEG/LJT:  this implements the TurboJPEG API using libjpeg or
     libjpeg-turbo */
     #[no_mangle]
-    pub fn jpeg_mem_dest_tj(
-        _: j_compress_ptr,
-        _: *mut *mut c_uchar,
-        _: *mut c_ulong,
-        _: boolean,
-    );
+    pub fn jpeg_mem_dest_tj(_: j_compress_ptr, _: *mut *mut c_uchar, _: *mut c_ulong, _: boolean);
 
     #[no_mangle]
-    pub fn jpeg_mem_src_tj(
-        _: j_decompress_ptr,
-        _: *const c_uchar,
-        _: c_ulong,
-    );
+    pub fn jpeg_mem_src_tj(_: j_decompress_ptr, _: *const c_uchar, _: c_ulong);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-use libc;use crate::stdlib::{__errno_location, abs, free, getenv, malloc, memcpy,
-                    memset, putenv, strcasecmp, strcmp, strerror, strlen,
-                    strrchr};pub use crate::cderror_h::{C2RustUnnamed_4, JERR_BAD_CMAP_FILE,
-                           JERR_BMP_BADCMAP, JERR_BMP_BADDEPTH,
-                           JERR_BMP_BADHEADER, JERR_BMP_BADPLANES,
-                           JERR_BMP_COLORSPACE, JERR_BMP_COMPRESSED,
-                           JERR_BMP_EMPTY, JERR_BMP_NOT, JERR_BMP_OUTOFRANGE,
-                           JERR_PPM_COLORSPACE, JERR_PPM_NONNUMERIC,
-                           JERR_PPM_NOT, JERR_PPM_OUTOFRANGE,
-                           JERR_TGA_NOTCOMP, JERR_TOO_MANY_COLORS,
-                           JERR_UNGETC_FAILED, JERR_UNKNOWN_FORMAT,
-                           JERR_UNSUPPORTED_FORMAT, JMSG_FIRSTADDONCODE,
-                           JMSG_LASTADDONCODE, JTRC_BMP, JTRC_BMP_MAPPED,
-                           JTRC_BMP_OS2, JTRC_BMP_OS2_MAPPED, JTRC_PGM,
-                           JTRC_PGM_TEXT, JTRC_PPM, JTRC_PPM_TEXT};pub use crate::jpegint_h::{inverse_DCT_method_ptr, J_BUF_MODE,
-                           jcopy_sample_rows, jinit_c_master_control,
-                           jinit_color_converter, jinit_downsampler,
-                           jinit_master_decompress, CSTATE_START,
-                           DSTATE_READY, DSTATE_START, JBUF_CRANK_DEST,
-                           JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS,
-                           JBUF_SAVE_SOURCE};pub use crate::jpeglib_h::{C2RustUnnamed_1, C2RustUnnamed_2, j_common_ptr,
-                           j_compress_ptr, j_decompress_ptr,
-                           jpeg_c_coef_controller, jpeg_c_main_controller,
-                           jpeg_c_prep_controller, jpeg_color_converter,
-                           jpeg_color_deconverter, jpeg_color_quantizer,
-                           jpeg_common_struct, jpeg_comp_master,
-                           jpeg_component_info, jpeg_compress_struct,
-                           jpeg_d_coef_controller, jpeg_d_main_controller,
-                           jpeg_d_post_controller, jpeg_decomp_master,
-                           jpeg_decompress_struct, jpeg_destination_mgr,
-                           jpeg_downsampler, jpeg_entropy_decoder,
-                           jpeg_entropy_encoder, jpeg_error_mgr,
-                           jpeg_forward_dct, jpeg_input_controller,
-                           jpeg_inverse_dct, jpeg_marker_parser_method,
-                           jpeg_marker_reader, jpeg_marker_struct,
-                           jpeg_marker_writer, jpeg_memory_mgr,
-                           jpeg_progress_mgr, jpeg_saved_marker_ptr,
-                           jpeg_scan_info, jpeg_source_mgr, jpeg_upsampler,
-                           jvirt_barray_control, jvirt_barray_ptr,
-                           jvirt_sarray_control, jvirt_sarray_ptr, JBLOCK,
-                           JBLOCKARRAY, JBLOCKROW, JCOEFPTR, JHUFF_TBL,
-                           JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE, JSAMPROW,
-                           J_COLOR_SPACE, J_DCT_METHOD, J_DITHER_MODE,
-                           jpeg_CreateCompress, jpeg_CreateDecompress,
-                           jpeg_abort_compress, jpeg_abort_decompress,
-                           jpeg_alloc_quant_table,
-                           jpeg_calc_output_dimensions,
-                           jpeg_copy_critical_parameters,
-                           jpeg_destroy_compress, jpeg_destroy_decompress,
-                           jpeg_finish_compress, jpeg_finish_decompress,
-                           jpeg_read_coefficients, jpeg_read_header,
-                           jpeg_read_raw_data, jpeg_read_scanlines,
-                           jpeg_set_colorspace, jpeg_set_defaults,
-                           jpeg_set_quality, jpeg_simple_progression,
-                           jpeg_start_compress, jpeg_start_decompress,
-                           jpeg_std_error, jpeg_write_coefficients,
-                           jpeg_write_raw_data, jpeg_write_scanlines,
-                           JCS_YCbCr, DCTSIZE, DCTSIZE2, JCP_FASTEST,
-                           JCP_MAX_COMPRESSION, JCS_CMYK, JCS_EXT_ABGR,
-                           JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA,
-                           JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA,
-                           JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB,
-                           JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN,
-                           JCS_YCCK, JDCT_FASTEST, JDCT_FLOAT, JDCT_IFAST,
-                           JDCT_ISLOW, JDITHER_FS, JDITHER_NONE,
-                           JDITHER_ORDERED, JMSG_LENGTH_MAX, JPEG_REACHED_SOS,
-                           JPOOL_IMAGE};pub use crate::jmorecfg_h::{boolean, JCOEF, JDIMENSION, JOCTET, JSAMPLE,
-                            UINT16, UINT8, FALSE, MAX_COMPONENTS, TRUE};pub use crate::stddef_h::{size_t, NULL};pub use crate::stdlib::{_IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data,
-                        __int32_t, __off64_t, __off_t, __sigset_t, FILE,
-                        _IO_FILE, __jmp_buf, __ctype_toupper_loc,
-                        __jmp_buf_tag, _setjmp, fclose, fopen, getc, jmp_buf,
-                        longjmp, snprintf, sscanf, toupper, ungetc, EOF};pub use crate::jconfig_h::JPEG_LIB_VERSION;pub use super::transupp::{jcopy_markers_execute, jcopy_markers_setup,
-                          jpeg_transform_info, jtransform_adjust_parameters,
-                          jtransform_execute_transform,
-                          jtransform_execute_transformation,
-                          jtransform_request_workspace, JCOPYOPT_ALL,
-                          JCOPYOPT_ALL_EXCEPT_ICC, JCOPYOPT_COMMENTS,
-                          JCOPYOPT_NONE, JCOPY_OPTION, JCROP_CODE,
-                          JCROP_FORCE, JCROP_NEG, JCROP_POS, JCROP_UNSET,
-                          JXFORM_CODE, JXFORM_FLIP_H, JXFORM_FLIP_V,
-                          JXFORM_NONE, JXFORM_ROT_180, JXFORM_ROT_270,
-                          JXFORM_ROT_90, JXFORM_TRANSPOSE, JXFORM_TRANSVERSE};pub use super::cdjpeg::{cjpeg_source_ptr, cjpeg_source_struct, djpeg_dest_ptr,
-                        djpeg_dest_struct, jinit_read_bmp, jinit_read_ppm,
-                        jinit_write_bmp, jinit_write_ppm};
+pub use super::cdjpeg::{
+    cjpeg_source_ptr, cjpeg_source_struct, djpeg_dest_ptr, djpeg_dest_struct, jinit_read_bmp,
+    jinit_read_ppm, jinit_write_bmp, jinit_write_ppm,
+};
+pub use super::transupp::{
+    jcopy_markers_execute, jcopy_markers_setup, jpeg_transform_info, jtransform_adjust_parameters,
+    jtransform_execute_transform, jtransform_execute_transformation, jtransform_request_workspace,
+    JCOPYOPT_ALL, JCOPYOPT_ALL_EXCEPT_ICC, JCOPYOPT_COMMENTS, JCOPYOPT_NONE, JCOPY_OPTION,
+    JCROP_CODE, JCROP_FORCE, JCROP_NEG, JCROP_POS, JCROP_UNSET, JXFORM_CODE, JXFORM_FLIP_H,
+    JXFORM_FLIP_V, JXFORM_NONE, JXFORM_ROT_180, JXFORM_ROT_270, JXFORM_ROT_90, JXFORM_TRANSPOSE,
+    JXFORM_TRANSVERSE,
+};
+pub use crate::cderror_h::{
+    C2RustUnnamed_4, JERR_BAD_CMAP_FILE, JERR_BMP_BADCMAP, JERR_BMP_BADDEPTH, JERR_BMP_BADHEADER,
+    JERR_BMP_BADPLANES, JERR_BMP_COLORSPACE, JERR_BMP_COMPRESSED, JERR_BMP_EMPTY, JERR_BMP_NOT,
+    JERR_BMP_OUTOFRANGE, JERR_PPM_COLORSPACE, JERR_PPM_NONNUMERIC, JERR_PPM_NOT,
+    JERR_PPM_OUTOFRANGE, JERR_TGA_NOTCOMP, JERR_TOO_MANY_COLORS, JERR_UNGETC_FAILED,
+    JERR_UNKNOWN_FORMAT, JERR_UNSUPPORTED_FORMAT, JMSG_FIRSTADDONCODE, JMSG_LASTADDONCODE,
+    JTRC_BMP, JTRC_BMP_MAPPED, JTRC_BMP_OS2, JTRC_BMP_OS2_MAPPED, JTRC_PGM, JTRC_PGM_TEXT,
+    JTRC_PPM, JTRC_PPM_TEXT,
+};
+pub use crate::jconfig_h::JPEG_LIB_VERSION;
+pub use crate::jmorecfg_h::{
+    boolean, FALSE, JCOEF, JDIMENSION, JOCTET, JSAMPLE, MAX_COMPONENTS, TRUE, UINT16, UINT8,
+};
+pub use crate::jpegint_h::{
+    inverse_DCT_method_ptr, jcopy_sample_rows, jinit_c_master_control, jinit_color_converter,
+    jinit_downsampler, jinit_master_decompress, CSTATE_START, DSTATE_READY, DSTATE_START,
+    JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE,
+    J_BUF_MODE,
+};
+pub use crate::jpeglib_h::{
+    j_common_ptr, j_compress_ptr, j_decompress_ptr, jpeg_CreateCompress, jpeg_CreateDecompress,
+    jpeg_abort_compress, jpeg_abort_decompress, jpeg_alloc_quant_table, jpeg_c_coef_controller,
+    jpeg_c_main_controller, jpeg_c_prep_controller, jpeg_calc_output_dimensions,
+    jpeg_color_converter, jpeg_color_deconverter, jpeg_color_quantizer, jpeg_common_struct,
+    jpeg_comp_master, jpeg_component_info, jpeg_compress_struct, jpeg_copy_critical_parameters,
+    jpeg_d_coef_controller, jpeg_d_main_controller, jpeg_d_post_controller, jpeg_decomp_master,
+    jpeg_decompress_struct, jpeg_destination_mgr, jpeg_destroy_compress, jpeg_destroy_decompress,
+    jpeg_downsampler, jpeg_entropy_decoder, jpeg_entropy_encoder, jpeg_error_mgr,
+    jpeg_finish_compress, jpeg_finish_decompress, jpeg_forward_dct, jpeg_input_controller,
+    jpeg_inverse_dct, jpeg_marker_parser_method, jpeg_marker_reader, jpeg_marker_struct,
+    jpeg_marker_writer, jpeg_memory_mgr, jpeg_progress_mgr, jpeg_read_coefficients,
+    jpeg_read_header, jpeg_read_raw_data, jpeg_read_scanlines, jpeg_saved_marker_ptr,
+    jpeg_scan_info, jpeg_set_colorspace, jpeg_set_defaults, jpeg_set_quality,
+    jpeg_simple_progression, jpeg_source_mgr, jpeg_start_compress, jpeg_start_decompress,
+    jpeg_std_error, jpeg_upsampler, jpeg_write_coefficients, jpeg_write_raw_data,
+    jpeg_write_scanlines, jvirt_barray_control, jvirt_barray_ptr, jvirt_sarray_control,
+    jvirt_sarray_ptr, C2RustUnnamed_1, C2RustUnnamed_2, JCS_YCbCr, DCTSIZE, DCTSIZE2, JBLOCK,
+    JBLOCKARRAY, JBLOCKROW, JCOEFPTR, JCP_FASTEST, JCP_MAX_COMPRESSION, JCS_CMYK, JCS_EXT_ABGR,
+    JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX,
+    JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK,
+    JDCT_FASTEST, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JDITHER_FS, JDITHER_NONE, JDITHER_ORDERED,
+    JHUFF_TBL, JMSG_LENGTH_MAX, JPEG_REACHED_SOS, JPOOL_IMAGE, JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE,
+    JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD, J_DITHER_MODE,
+};
+pub use crate::stddef_h::{size_t, NULL};
+pub use crate::stdlib::{
+    _IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data, __ctype_toupper_loc, __int32_t, __jmp_buf,
+    __jmp_buf_tag, __off64_t, __off_t, __sigset_t, _setjmp, fclose, fopen, getc, jmp_buf, longjmp,
+    snprintf, sscanf, toupper, ungetc, EOF, FILE, _IO_FILE,
+};
+use crate::stdlib::{
+    __errno_location, abs, free, getenv, malloc, memcpy, memset, putenv, strcasecmp, strcmp,
+    strerror, strlen, strrchr,
+};
+use libc;
 
 // =============== BEGIN turbojpeg_h ================
 
@@ -1040,8 +774,7 @@ static mut errStr: [c_char; 200] = [
 pub struct my_error_mgr {
     pub pub_0: jpeg_error_mgr,
     pub setjmp_buffer: jmp_buf,
-    pub emit_message:
-        Option<unsafe extern "C" fn(_: j_common_ptr, _: c_int) -> ()>,
+    pub emit_message: Option<unsafe extern "C" fn(_: j_common_ptr, _: c_int) -> ()>,
     pub warning: boolean,
     pub stopOnWarning: boolean,
 }
@@ -1049,61 +782,34 @@ pub struct my_error_mgr {
 pub type my_error_ptr = *mut my_error_mgr;
 
 static mut turbojpeg_message_table: [*const c_char; 29] = [
-    ::std::ptr::null::< c_char>(),
-    
+    ::std::ptr::null::<c_char>(),
     b"Unsupported BMP colormap format\x00".as_ptr() as *const c_char,
-    
     b"Only 8- and 24-bit BMP files are supported\x00".as_ptr() as *const c_char,
-    
     b"Invalid BMP file: bad header length\x00".as_ptr() as *const c_char,
-    
     b"Invalid BMP file: biPlanes not equal to 1\x00".as_ptr() as *const c_char,
-    
     b"BMP output must be grayscale or RGB\x00".as_ptr() as *const c_char,
-    
     b"Sorry, compressed BMPs not yet supported\x00".as_ptr() as *const c_char,
-    
     b"Empty BMP image\x00".as_ptr() as *const c_char,
-    
     b"Not a BMP file - does not start with BM\x00".as_ptr() as *const c_char,
-    
     b"Numeric value out of range in BMP file\x00".as_ptr() as *const c_char,
-    
     b"%ux%u 24-bit BMP image\x00".as_ptr() as *const c_char,
-    
     b"%ux%u 8-bit colormapped BMP image\x00".as_ptr() as *const c_char,
-    
     b"%ux%u 24-bit OS2 BMP image\x00".as_ptr() as *const c_char,
-    
     b"%ux%u 8-bit colormapped OS2 BMP image\x00".as_ptr() as *const c_char,
-    
     b"PPM output must be grayscale or RGB\x00".as_ptr() as *const c_char,
-    
     b"Nonnumeric data in PPM file\x00".as_ptr() as *const c_char,
-    
     b"Not a PPM/PGM file\x00".as_ptr() as *const c_char,
-    
     b"Numeric value out of range in PPM file\x00".as_ptr() as *const c_char,
-    
     b"%ux%u PGM image\x00".as_ptr() as *const c_char,
-    
     b"%ux%u text PGM image\x00".as_ptr() as *const c_char,
-    
     b"%ux%u PPM image\x00".as_ptr() as *const c_char,
-    
     b"%ux%u text PPM image\x00".as_ptr() as *const c_char,
-    
     b"Targa support was not compiled\x00".as_ptr() as *const c_char,
-    
     b"Color map file is invalid or of unsupported format\x00".as_ptr() as *const c_char,
-    
     b"Output file format cannot handle %d colormap entries\x00".as_ptr() as *const c_char,
-    
     b"ungetc failed\x00".as_ptr() as *const c_char,
-    
     b"MozJPEG can\'t read the image (PNG support is disabled in this build)\x00".as_ptr()
         as *const c_char,
-    
     b"Unsupported output file format\x00".as_ptr() as *const c_char,
     NULL as *const c_char,
 ];
@@ -1129,10 +835,7 @@ unsafe extern "C" fn my_output_message(mut cinfo: j_common_ptr) {
     .expect("non-null function pointer")(cinfo, errStr.as_mut_ptr());
 }
 
-unsafe extern "C" fn my_emit_message(
-    mut cinfo: j_common_ptr,
-    mut msg_level: c_int,
-) {
+unsafe extern "C" fn my_emit_message(mut cinfo: j_common_ptr, mut msg_level: c_int) {
     let mut myerr: my_error_ptr = (*cinfo).err as my_error_ptr;
     (*myerr).emit_message.expect("non-null function pointer")(cinfo, msg_level);
     if msg_level < 0i32 {
@@ -1181,83 +884,115 @@ pub const NUMSF: c_int = 16i32;
 
 static mut sf: [tjscalingfactor; 16] = [
     {
-         let mut init =
-     tjscalingfactor{num:  2i32, denom:  1i32,};
+        let mut init = tjscalingfactor {
+            num: 2i32,
+            denom: 1i32,
+        };
         init
     },
     {
-         let mut init =
-     tjscalingfactor{num:  15i32, denom:  8i32,};
+        let mut init = tjscalingfactor {
+            num: 15i32,
+            denom: 8i32,
+        };
         init
     },
     {
-         let mut init =
-     tjscalingfactor{num:  7i32, denom:  4i32,};
+        let mut init = tjscalingfactor {
+            num: 7i32,
+            denom: 4i32,
+        };
         init
     },
     {
-         let mut init =
-     tjscalingfactor{num:  13i32, denom:  8i32,};
+        let mut init = tjscalingfactor {
+            num: 13i32,
+            denom: 8i32,
+        };
         init
     },
     {
-         let mut init =
-     tjscalingfactor{num:  3i32, denom:  2i32,};
+        let mut init = tjscalingfactor {
+            num: 3i32,
+            denom: 2i32,
+        };
         init
     },
     {
-         let mut init =
-     tjscalingfactor{num:  11i32, denom:  8i32,};
+        let mut init = tjscalingfactor {
+            num: 11i32,
+            denom: 8i32,
+        };
         init
     },
     {
-         let mut init =
-     tjscalingfactor{num:  5i32, denom:  4i32,};
+        let mut init = tjscalingfactor {
+            num: 5i32,
+            denom: 4i32,
+        };
         init
     },
     {
-         let mut init =
-     tjscalingfactor{num:  9i32, denom:  8i32,};
+        let mut init = tjscalingfactor {
+            num: 9i32,
+            denom: 8i32,
+        };
         init
     },
     {
-         let mut init =
-     tjscalingfactor{num:  1i32, denom:  1i32,};
+        let mut init = tjscalingfactor {
+            num: 1i32,
+            denom: 1i32,
+        };
         init
     },
     {
-         let mut init =
-     tjscalingfactor{num:  7i32, denom:  8i32,};
+        let mut init = tjscalingfactor {
+            num: 7i32,
+            denom: 8i32,
+        };
         init
     },
     {
-         let mut init =
-     tjscalingfactor{num:  3i32, denom:  4i32,};
+        let mut init = tjscalingfactor {
+            num: 3i32,
+            denom: 4i32,
+        };
         init
     },
     {
-         let mut init =
-     tjscalingfactor{num:  5i32, denom:  8i32,};
+        let mut init = tjscalingfactor {
+            num: 5i32,
+            denom: 8i32,
+        };
         init
     },
     {
-         let mut init =
-     tjscalingfactor{num:  1i32, denom:  2i32,};
+        let mut init = tjscalingfactor {
+            num: 1i32,
+            denom: 2i32,
+        };
         init
     },
     {
-         let mut init =
-     tjscalingfactor{num:  3i32, denom:  8i32,};
+        let mut init = tjscalingfactor {
+            num: 3i32,
+            denom: 8i32,
+        };
         init
     },
     {
-         let mut init =
-     tjscalingfactor{num:  1i32, denom:  4i32,};
+        let mut init = tjscalingfactor {
+            num: 1i32,
+            denom: 4i32,
+        };
         init
     },
     {
-         let mut init =
-     tjscalingfactor{num:  1i32, denom:  8i32,};
+        let mut init = tjscalingfactor {
+            num: 1i32,
+            denom: 8i32,
+        };
         init
     },
 ];
@@ -1278,67 +1013,47 @@ static mut pf2cs: [J_COLOR_SPACE; 12] = [
 ];
 
 static mut cs2pf: [c_int; 17] = [
-    
     TJPF_UNKNOWN,
-    
     TJPF_GRAY,
-    
     TJPF_RGB,
-    
     TJPF_UNKNOWN,
-    
     TJPF_CMYK,
-    
     TJPF_UNKNOWN,
-    
     TJPF_RGB,
-    
     TJPF_RGBX,
-    
     TJPF_BGR,
-    
     TJPF_BGRX,
-    
     TJPF_XBGR,
-    
     TJPF_XRGB,
-    
     TJPF_RGBA,
-    
     TJPF_BGRA,
-    
     TJPF_ABGR,
-    
     TJPF_ARGB,
-    
     TJPF_UNKNOWN,
 ];
 
-unsafe extern "C" fn getPixelFormat(
-    mut pixelSize: c_int,
-    mut flags: c_int,
-) -> c_int {
+unsafe extern "C" fn getPixelFormat(mut pixelSize: c_int, mut flags: c_int) -> c_int {
     if pixelSize == 1i32 {
-        return  TJPF_GRAY;
+        return TJPF_GRAY;
     }
     if pixelSize == 3i32 {
         if flags & TJ_BGR != 0 {
-            return  TJPF_BGR;
+            return TJPF_BGR;
         } else {
-            return  TJPF_RGB;
+            return TJPF_RGB;
         }
     }
     if pixelSize == 4i32 {
         if flags & TJ_ALPHAFIRST != 0 {
             if flags & TJ_BGR != 0 {
-                return  TJPF_XBGR;
+                return TJPF_XBGR;
             } else {
-                return  TJPF_XRGB;
+                return TJPF_XRGB;
             }
         } else if flags & TJ_BGR != 0 {
-            return  TJPF_BGRX;
+            return TJPF_BGRX;
         } else {
-            return  TJPF_RGBX;
+            return TJPF_RGBX;
         }
     }
     return -1i32;
@@ -1351,39 +1066,33 @@ unsafe extern "C" fn setCompDefaults(
     mut jpegQual: c_int,
     mut flags: c_int,
 ) -> c_int {
-     let mut retval:  c_int =  0i32;
+    let mut retval: c_int = 0i32;
     let mut env: *mut c_char = NULL as *mut c_char;
     (*cinfo).in_color_space = pf2cs[pixelFormat as usize];
     (*cinfo).input_components = tjPixelSize[pixelFormat as usize];
     env = getenv(b"TJ_REVERT\x00".as_ptr() as *const c_char);
-    if !env.is_null()
-        && strlen(env) > 0u64
-        && strcmp(env,  b"1\x00".as_ptr() as *const c_char) == 0
+    if !env.is_null() && strlen(env) > 0u64 && strcmp(env, b"1\x00".as_ptr() as *const c_char) == 0
     {
         (*(*cinfo).master).compress_profile = JCP_FASTEST as c_int
     }
     jpeg_set_defaults(cinfo);
     env = getenv(b"TJ_OPTIMIZE\x00".as_ptr() as *const c_char);
-    if !env.is_null()
-        && strlen(env) > 0u64
-        && strcmp(env,  b"1\x00".as_ptr() as *const c_char) == 0
+    if !env.is_null() && strlen(env) > 0u64 && strcmp(env, b"1\x00".as_ptr() as *const c_char) == 0
     {
         (*cinfo).optimize_coding = TRUE
     }
     env = getenv(b"TJ_ARITHMETIC\x00".as_ptr() as *const c_char);
-    if !env.is_null()
-        && strlen(env) > 0u64
-        && strcmp(env,  b"1\x00".as_ptr() as *const c_char) == 0
+    if !env.is_null() && strlen(env) > 0u64 && strcmp(env, b"1\x00".as_ptr() as *const c_char) == 0
     {
         (*cinfo).arith_code = TRUE
     }
     env = getenv(b"TJ_RESTART\x00".as_ptr() as *const c_char);
     if !env.is_null() && strlen(env) > 0u64 {
-         let mut tempc:  c_char =  0i8;let mut temp: c_int = -1i32;
-        
+        let mut tempc: c_char = 0i8;
+        let mut temp: c_int = -1i32;
+
         if sscanf(
             env,
-            
             b"%d%c\x00".as_ptr() as *const c_char,
             &mut temp as *mut c_int,
             &mut tempc as *mut c_char,
@@ -1392,7 +1101,7 @@ unsafe extern "C" fn setCompDefaults(
             && temp <= 65535i32
         {
             if ({
-                 let mut __res:  c_int =  0;
+                let mut __res: c_int = 0;
                 if ::std::mem::size_of::<c_char>() as c_ulong > 1u64 {
                     if 0 != 0 {
                         let mut __c: c_int = tempc as c_int;
@@ -1405,8 +1114,7 @@ unsafe extern "C" fn setCompDefaults(
                         __res = toupper(tempc as c_int)
                     }
                 } else {
-                    __res = *(*__ctype_toupper_loc())
-                        .offset(tempc as c_int as isize)
+                    __res = *(*__ctype_toupper_loc()).offset(tempc as c_int as isize)
                 }
                 __res
             }) == 'B' as i32
@@ -1428,7 +1136,7 @@ unsafe extern "C" fn setCompDefaults(
     }
     if subsamp == TJSAMP_GRAY as c_int {
         jpeg_set_colorspace(cinfo, JCS_GRAYSCALE);
-    } else if pixelFormat ==  TJPF_CMYK {
+    } else if pixelFormat == TJPF_CMYK {
         jpeg_set_colorspace(cinfo, JCS_YCCK);
     } else {
         jpeg_set_colorspace(cinfo, JCS_YCbCr);
@@ -1439,7 +1147,7 @@ unsafe extern "C" fn setCompDefaults(
         env = getenv(b"TJ_PROGRESSIVE\x00".as_ptr() as *const c_char);
         if !env.is_null()
             && strlen(env) > 0u64
-            && strcmp(env,  b"1\x00".as_ptr() as *const c_char) == 0
+            && strcmp(env, b"1\x00".as_ptr() as *const c_char) == 0
         {
             jpeg_simple_progression(cinfo);
         }
@@ -1448,63 +1156,49 @@ unsafe extern "C" fn setCompDefaults(
     if (*(*cinfo).master).compress_profile == JCP_MAX_COMPRESSION as c_int {
         jpeg_simple_progression(cinfo);
     }
-    (*(*cinfo).comp_info.offset(0)).h_samp_factor =
-        tjMCUWidth[subsamp as usize] / 8i32;
+    (*(*cinfo).comp_info.offset(0)).h_samp_factor = tjMCUWidth[subsamp as usize] / 8i32;
     (*(*cinfo).comp_info.offset(1)).h_samp_factor = 1i32;
     (*(*cinfo).comp_info.offset(2)).h_samp_factor = 1i32;
     if (*cinfo).num_components > 3i32 {
-        (*(*cinfo).comp_info.offset(3)).h_samp_factor =
-            tjMCUWidth[subsamp as usize] / 8i32
+        (*(*cinfo).comp_info.offset(3)).h_samp_factor = tjMCUWidth[subsamp as usize] / 8i32
     }
-    (*(*cinfo).comp_info.offset(0)).v_samp_factor =
-        tjMCUHeight[subsamp as usize] / 8i32;
+    (*(*cinfo).comp_info.offset(0)).v_samp_factor = tjMCUHeight[subsamp as usize] / 8i32;
     (*(*cinfo).comp_info.offset(1)).v_samp_factor = 1i32;
     (*(*cinfo).comp_info.offset(2)).v_samp_factor = 1i32;
     if (*cinfo).num_components > 3i32 {
-        (*(*cinfo).comp_info.offset(3)).v_samp_factor =
-            tjMCUHeight[subsamp as usize] / 8i32
+        (*(*cinfo).comp_info.offset(3)).v_samp_factor = tjMCUHeight[subsamp as usize] / 8i32
     }
     return retval;
 }
 
 unsafe extern "C" fn getSubsamp(mut dinfo: j_decompress_ptr) -> c_int {
-     let mut retval: c_int = -1i32;
-    
-    
+    let mut retval: c_int = -1i32;
+
     /* The sampling factors actually have no meaning with grayscale JPEG files,
     and in fact it's possible to generate grayscale JPEGs with sampling
     factors > 1 (even though those sampling factors are ignored by the
     decompressor.)  Thus, we need to treat grayscale as a special case. */
-    if (*dinfo).num_components == 1i32
-        &&  (*dinfo).jpeg_color_space
-            ==  JCS_GRAYSCALE
-    {
+    if (*dinfo).num_components == 1i32 && (*dinfo).jpeg_color_space == JCS_GRAYSCALE {
         return TJSAMP_GRAY as c_int;
     }
-     let mut i:   c_int =  0i32;
+    let mut i: c_int = 0i32;
     while i < NUMSUBOPT {
         if (*dinfo).num_components == pixelsize[i as usize]
-            || ((*dinfo).jpeg_color_space
-                ==  JCS_YCCK
-                ||  (*dinfo).jpeg_color_space
-                    ==  JCS_CMYK)
+            || ((*dinfo).jpeg_color_space == JCS_YCCK || (*dinfo).jpeg_color_space == JCS_CMYK)
                 && pixelsize[i as usize] == 3i32
                 && (*dinfo).num_components == 4i32
         {
-             let mut k:  c_int =  0;if (*(*dinfo).comp_info.offset(0)).h_samp_factor
-                == tjMCUWidth[i as usize] / 8i32
-                && (*(*dinfo).comp_info.offset(0)).v_samp_factor
-                    == tjMCUHeight[i as usize] / 8i32
+            let mut k: c_int = 0;
+            if (*(*dinfo).comp_info.offset(0)).h_samp_factor == tjMCUWidth[i as usize] / 8i32
+                && (*(*dinfo).comp_info.offset(0)).v_samp_factor == tjMCUHeight[i as usize] / 8i32
             {
-                 let mut match_0:  c_int =  0i32;
+                let mut match_0: c_int = 0i32;
                 k = 1i32;
                 while k < (*dinfo).num_components {
-                    
-                     let mut href:  c_int =  1i32; let mut vref:  c_int =  1i32;
-                    if ((*dinfo).jpeg_color_space
-                        ==  JCS_YCCK
-                        ||  (*dinfo).jpeg_color_space
-                            ==  JCS_CMYK)
+                    let mut href: c_int = 1i32;
+                    let mut vref: c_int = 1i32;
+                    if ((*dinfo).jpeg_color_space == JCS_YCCK
+                        || (*dinfo).jpeg_color_space == JCS_CMYK)
                         && k == 3i32
                     {
                         href = tjMCUWidth[i as usize] / 8i32;
@@ -1526,20 +1220,15 @@ unsafe extern "C" fn getSubsamp(mut dinfo: j_decompress_ptr) -> c_int {
             in non-standard ways. */
             if (*(*dinfo).comp_info.offset(0)).h_samp_factor == 2i32
                 && (*(*dinfo).comp_info.offset(0)).v_samp_factor == 2i32
-                && (i == TJSAMP_422 as c_int
-                    || i == TJSAMP_440 as c_int)
+                && (i == TJSAMP_422 as c_int || i == TJSAMP_440 as c_int)
             {
-                 let mut match_1:  c_int =  0i32;
+                let mut match_1: c_int = 0i32;
                 k = 1i32;
                 while k < (*dinfo).num_components {
-                    let mut href_0: c_int =
-                        tjMCUHeight[i as usize] / 8i32;
-                    let mut vref_0: c_int =
-                        tjMCUWidth[i as usize] / 8i32;
-                    if ((*dinfo).jpeg_color_space
-                        ==  JCS_YCCK
-                        ||  (*dinfo).jpeg_color_space
-                            ==  JCS_CMYK)
+                    let mut href_0: c_int = tjMCUHeight[i as usize] / 8i32;
+                    let mut vref_0: c_int = tjMCUWidth[i as usize] / 8i32;
+                    if ((*dinfo).jpeg_color_space == JCS_YCCK
+                        || (*dinfo).jpeg_color_space == JCS_CMYK)
                         && k == 3i32
                     {
                         vref_0 = 2i32;
@@ -1575,9 +1264,7 @@ unsafe extern "C" fn getSubsamp(mut dinfo: j_decompress_ptr) -> c_int {
 /* General API functions */
 #[no_mangle]
 
-pub unsafe extern "C" fn tjGetErrorStr2(
-    mut handle: tjhandle,
-) -> *mut c_char {
+pub unsafe extern "C" fn tjGetErrorStr2(mut handle: tjhandle) -> *mut c_char {
     let mut this: *mut tjinstance = handle as *mut tjinstance;
     if !this.is_null() && (*this).isInstanceError != 0 {
         (*this).isInstanceError = FALSE;
@@ -1603,9 +1290,7 @@ pub unsafe extern "C" fn tjGetErrorStr() -> *mut c_char {
  */
 #[no_mangle]
 
-pub unsafe extern "C" fn tjGetErrorCode(
-    mut handle: tjhandle,
-) -> c_int {
+pub unsafe extern "C" fn tjGetErrorCode(mut handle: tjhandle) -> c_int {
     let mut this: *mut tjinstance = handle as *mut tjinstance;
     if !this.is_null() && (*this).jerr.warning != 0 {
         return TJERR_WARNING as c_int;
@@ -1625,15 +1310,12 @@ pub unsafe extern "C" fn tjGetErrorCode(
 
 pub unsafe extern "C" fn tjDestroy(mut handle: tjhandle) -> c_int {
     let mut this: *mut tjinstance = handle as *mut tjinstance;
-    let mut cinfo: j_compress_ptr =
-        NULL as j_compress_ptr;
-    let mut dinfo: j_decompress_ptr =
-        NULL as j_decompress_ptr;
+    let mut cinfo: j_compress_ptr = NULL as j_compress_ptr;
+    let mut dinfo: j_decompress_ptr = NULL as j_decompress_ptr;
     if this.is_null() {
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"Invalid handle\x00".as_ptr() as *const c_char,
         );
         return -1i32;
@@ -1696,9 +1378,10 @@ pub unsafe extern "C" fn tjAlloc(mut bytes: c_int) -> *mut c_uchar {
 /* Compressor  */
 
 unsafe extern "C" fn _tjInitCompress(mut this: *mut tjinstance) -> tjhandle {
-     let mut size:  c_ulong =  1u64;static mut buffer: [c_uchar; 1] = [0; 1];
+    let mut size: c_ulong = 1u64;
+    static mut buffer: [c_uchar; 1] = [0; 1];
     let mut buf: *mut c_uchar = buffer.as_mut_ptr();
-    
+
     /* This is also straight out of example.txt */
     (*this).cinfo.err = jpeg_std_error(&mut (*this).jerr.pub_0);
     (*this).jerr.pub_0.error_exit =
@@ -1706,10 +1389,8 @@ unsafe extern "C" fn _tjInitCompress(mut this: *mut tjinstance) -> tjhandle {
     (*this).jerr.pub_0.output_message =
         Some(my_output_message as unsafe extern "C" fn(_: j_common_ptr) -> ());
     (*this).jerr.emit_message = (*this).jerr.pub_0.emit_message;
-    (*this).jerr.pub_0.emit_message = Some(
-        my_emit_message
-            as unsafe extern "C" fn(_: j_common_ptr, _: c_int) -> (),
-    );
+    (*this).jerr.pub_0.emit_message =
+        Some(my_emit_message as unsafe extern "C" fn(_: j_common_ptr, _: c_int) -> ());
     (*this).jerr.pub_0.addon_message_table = turbojpeg_message_table.as_mut_ptr();
     (*this).jerr.pub_0.first_addon_message = JMSG_FIRSTADDONCODE as c_int;
     (*this).jerr.pub_0.last_addon_message = JMSG_LASTADDONCODE as c_int;
@@ -1748,13 +1429,11 @@ unsafe extern "C" fn _tjInitCompress(mut this: *mut tjinstance) -> tjhandle {
 
 pub unsafe extern "C" fn tjInitCompress() -> tjhandle {
     let mut this: *mut tjinstance = NULL as *mut tjinstance;
-    this = malloc(::std::mem::size_of::<tjinstance>() as c_ulong)
-        as *mut tjinstance;
+    this = malloc(::std::mem::size_of::<tjinstance>() as c_ulong) as *mut tjinstance;
     if this.is_null() {
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"tjInitCompress(): Memory allocation failure\x00".as_ptr() as *const c_char,
         );
         return NULL as *mut c_void;
@@ -1767,7 +1446,6 @@ pub unsafe extern "C" fn tjInitCompress() -> tjhandle {
     snprintf(
         (*this).errStr.as_mut_ptr(),
         JMSG_LENGTH_MAX as c_ulong,
-        
         b"No error\x00".as_ptr() as *const c_char,
     );
     return _tjInitCompress(this);
@@ -1801,21 +1479,12 @@ pub unsafe extern "C" fn tjBufSize(
     mut height: c_int,
     mut jpegSubsamp: c_int,
 ) -> c_ulong {
-    
-    
-    
-     let mut retval:  c_ulong =  0u64;
-    if width < 1i32
-        || height < 1i32
-        || jpegSubsamp < 0i32
-        || jpegSubsamp >= NUMSUBOPT
-    {
+    let mut retval: c_ulong = 0u64;
+    if width < 1i32 || height < 1i32 || jpegSubsamp < 0i32 || jpegSubsamp >= NUMSUBOPT {
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjBufSize(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         retval = -1i32 as c_ulong
@@ -1823,12 +1492,10 @@ pub unsafe extern "C" fn tjBufSize(
         /* This allows for rare corner cases in which a JPEG image can actually be
         larger than the uncompressed input (we wouldn't mention it if it hadn't
         happened before.) */
-           
-        
-         let mut mcuw:   c_int =
-     tjMCUWidth[jpegSubsamp as usize]; let mut mcuh:   c_int =
-     tjMCUHeight[jpegSubsamp as usize]; let mut chromasf:   c_int =
-     if jpegSubsamp == TJSAMP_GRAY as c_int {
+
+        let mut mcuw: c_int = tjMCUWidth[jpegSubsamp as usize];
+        let mut mcuh: c_int = tjMCUHeight[jpegSubsamp as usize];
+        let mut chromasf: c_int = if jpegSubsamp == TJSAMP_GRAY as c_int {
             0i32
         } else {
             (4i32 * 64i32) / (mcuw * mcuh)
@@ -1842,18 +1509,13 @@ pub unsafe extern "C" fn tjBufSize(
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn TJBUFSIZE(
-    mut width: c_int,
-    mut height: c_int,
-) -> c_ulong {
-     let mut retval:  c_ulong =  0u64;
+pub unsafe extern "C" fn TJBUFSIZE(mut width: c_int, mut height: c_int) -> c_ulong {
+    let mut retval: c_ulong = 0u64;
     if width < 1i32 || height < 1i32 {
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"TJBUFSIZE(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         retval = -1i32 as c_ulong
@@ -1893,27 +1555,22 @@ pub unsafe extern "C" fn tjBufSizeYUV2(
     mut height: c_int,
     mut subsamp: c_int,
 ) -> c_ulong {
-    
-    
-     let mut retval:  c_int =  0i32;
+    let mut retval: c_int = 0i32;
     if subsamp < 0i32 || subsamp >= NUMSUBOPT {
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjBufSizeYUV2(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         retval = -1i32
     } else {
-          
-         let mut nc:   c_int =
-     if subsamp == TJSAMP_GRAY as c_int {
+        let mut nc: c_int = if subsamp == TJSAMP_GRAY as c_int {
             1i32
         } else {
             3i32
-        }; let mut i:   c_int =  0i32;
+        };
+        let mut i: c_int = 0i32;
         while i < nc {
             let mut pw: c_int = tjPlaneWidth(i, width, subsamp);
             let mut stride: c_int = pw + pad - 1i32 & !(pad - 1i32);
@@ -1967,22 +1624,17 @@ pub unsafe extern "C" fn tjPlaneWidth(
     mut width: c_int,
     mut subsamp: c_int,
 ) -> c_int {
-    
-    
-     let mut retval:  c_int =  0i32;
+    let mut retval: c_int = 0i32;
     if width < 1i32 || subsamp < 0i32 || subsamp >= TJ_NUMSAMP {
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjPlaneWidth(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         retval = -1i32
     } else {
-          let mut nc:   c_int =
-     if subsamp == TJSAMP_GRAY as c_int {
+        let mut nc: c_int = if subsamp == TJSAMP_GRAY as c_int {
             1i32
         } else {
             3i32
@@ -1991,15 +1643,12 @@ pub unsafe extern "C" fn tjPlaneWidth(
             snprintf(
                 errStr.as_mut_ptr(),
                 JMSG_LENGTH_MAX as c_ulong,
-                
                 b"%s\x00".as_ptr() as *const c_char,
-                
                 b"tjPlaneWidth(): Invalid argument\x00".as_ptr() as *const c_char,
             );
             retval = -1i32
         } else {
-              let mut pw:   c_int =
-     width + tjMCUWidth[subsamp as usize] / 8i32 - 1i32
+            let mut pw: c_int = width + tjMCUWidth[subsamp as usize] / 8i32 - 1i32
                 & !(tjMCUWidth[subsamp as usize] / 8i32 - 1i32);
             if componentID == 0i32 {
                 retval = pw
@@ -2031,22 +1680,17 @@ pub unsafe extern "C" fn tjPlaneHeight(
     mut height: c_int,
     mut subsamp: c_int,
 ) -> c_int {
-    
-    
-     let mut retval:  c_int =  0i32;
+    let mut retval: c_int = 0i32;
     if height < 1i32 || subsamp < 0i32 || subsamp >= TJ_NUMSAMP {
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjPlaneHeight(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         retval = -1i32
     } else {
-          let mut nc:   c_int =
-     if subsamp == TJSAMP_GRAY as c_int {
+        let mut nc: c_int = if subsamp == TJSAMP_GRAY as c_int {
             1i32
         } else {
             3i32
@@ -2055,15 +1699,12 @@ pub unsafe extern "C" fn tjPlaneHeight(
             snprintf(
                 errStr.as_mut_ptr(),
                 JMSG_LENGTH_MAX as c_ulong,
-                
                 b"%s\x00".as_ptr() as *const c_char,
-                
                 b"tjPlaneHeight(): Invalid argument\x00".as_ptr() as *const c_char,
             );
             retval = -1i32
         } else {
-              let mut ph:   c_int =
-     height + tjMCUHeight[subsamp as usize] / 8i32 - 1i32
+            let mut ph: c_int = height + tjMCUHeight[subsamp as usize] / 8i32 - 1i32
                 & !(tjMCUHeight[subsamp as usize] / 8i32 - 1i32);
             if componentID == 0i32 {
                 retval = ph
@@ -2104,26 +1745,18 @@ pub unsafe extern "C" fn tjPlaneSizeYUV(
     mut height: c_int,
     mut subsamp: c_int,
 ) -> c_ulong {
-    
-    
-     let mut retval:  c_ulong =  0u64;
-    if width < 1i32
-        || height < 1i32
-        || subsamp < 0i32
-        || subsamp >= NUMSUBOPT
-    {
+    let mut retval: c_ulong = 0u64;
+    if width < 1i32 || height < 1i32 || subsamp < 0i32 || subsamp >= NUMSUBOPT {
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjPlaneSizeYUV(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         retval = -1i32 as c_ulong
     } else {
-          
-         let mut pw:   c_int =  tjPlaneWidth(componentID, width, subsamp); let mut ph:   c_int =  tjPlaneHeight(componentID, height, subsamp);
+        let mut pw: c_int = tjPlaneWidth(componentID, width, subsamp);
+        let mut ph: c_int = tjPlaneHeight(componentID, height, subsamp);
         if pw < 0i32 || ph < 0i32 {
             return -1i32 as c_ulong;
         }
@@ -2211,19 +1844,14 @@ pub unsafe extern "C" fn tjCompress2(
     mut jpegQual: c_int,
     mut flags: c_int,
 ) -> c_int {
-    
-    
-     let mut retval:  c_int =  0i32;
-    let mut row_pointer: *mut JSAMPROW =
-        NULL as *mut JSAMPROW;
+    let mut retval: c_int = 0i32;
+    let mut row_pointer: *mut JSAMPROW = NULL as *mut JSAMPROW;
     let mut this: *mut tjinstance = handle as *mut tjinstance;
-    let mut cinfo: j_compress_ptr =
-        NULL as j_compress_ptr;
+    let mut cinfo: j_compress_ptr = NULL as j_compress_ptr;
     if this.is_null() {
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"Invalid handle\x00".as_ptr() as *const c_char,
         );
         return -1i32;
@@ -2240,9 +1868,7 @@ pub unsafe extern "C" fn tjCompress2(
         snprintf(
             (*this).errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjCompress2(): Instance has not been initialized for compression\x00".as_ptr()
                 as *const c_char,
         );
@@ -2250,9 +1876,7 @@ pub unsafe extern "C" fn tjCompress2(
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjCompress2(): Instance has not been initialized for compression\x00".as_ptr()
                 as *const c_char,
         );
@@ -2273,18 +1897,14 @@ pub unsafe extern "C" fn tjCompress2(
         snprintf(
             (*this).errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjCompress2(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         (*this).isInstanceError = TRUE;
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjCompress2(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         retval = -1i32
@@ -2292,26 +1912,20 @@ pub unsafe extern "C" fn tjCompress2(
         if pitch == 0i32 {
             pitch = width * tjPixelSize[pixelFormat as usize]
         }
-        row_pointer = malloc(
-            ::std::mem::size_of::<JSAMPROW>() as c_ulong *
-    height as c_ulong,
-        ) as *mut JSAMPROW;
+        row_pointer = malloc(::std::mem::size_of::<JSAMPROW>() as c_ulong * height as c_ulong)
+            as *mut JSAMPROW;
         if row_pointer.is_null() {
             snprintf(
                 (*this).errStr.as_mut_ptr(),
                 JMSG_LENGTH_MAX as c_ulong,
-                
                 b"%s\x00".as_ptr() as *const c_char,
-                
                 b"tjCompress2(): Memory allocation failure\x00".as_ptr() as *const c_char,
             );
             (*this).isInstanceError = TRUE;
             snprintf(
                 errStr.as_mut_ptr(),
                 JMSG_LENGTH_MAX as c_ulong,
-                
                 b"%s\x00".as_ptr() as *const c_char,
-                
                 b"tjCompress2(): Memory allocation failure\x00".as_ptr() as *const c_char,
             );
             retval = -1i32
@@ -2319,32 +1933,15 @@ pub unsafe extern "C" fn tjCompress2(
             /* If we get here, the JPEG code has signaled an error. */
             retval = -1i32
         } else {
-              let mut alloc:  c_int =  1i32;(*cinfo).image_width = width as JDIMENSION;
+            let mut alloc: c_int = 1i32;
+            (*cinfo).image_width = width as JDIMENSION;
             (*cinfo).image_height = height as JDIMENSION;
             if flags & TJFLAG_FORCEMMX != 0 {
-                putenv(
-                    
-                    
-                    
-                    b"JSIMD_FORCEMMX=1\x00".as_ptr()
-                        as *mut c_char,
-                );
+                putenv(b"JSIMD_FORCEMMX=1\x00".as_ptr() as *mut c_char);
             } else if flags & TJFLAG_FORCESSE != 0 {
-                putenv(
-                    
-                    
-                    
-                    b"JSIMD_FORCESSE=1\x00".as_ptr()
-                        as *mut c_char,
-                );
+                putenv(b"JSIMD_FORCESSE=1\x00".as_ptr() as *mut c_char);
             } else if flags & TJFLAG_FORCESSE2 != 0 {
-                putenv(
-                    
-                    
-                    
-                    b"JSIMD_FORCESSE2=1\x00".as_ptr()
-                        as *mut c_char,
-                );
+                putenv(b"JSIMD_FORCESSE2=1\x00".as_ptr() as *mut c_char);
             }
             if flags & TJFLAG_NOREALLOC != 0 {
                 alloc = 0i32;
@@ -2355,17 +1952,15 @@ pub unsafe extern "C" fn tjCompress2(
                 return -1i32;
             }
             jpeg_start_compress(cinfo, TRUE);
-             let mut i:   c_int =  0i32;
+            let mut i: c_int = 0i32;
             while i < height {
                 if flags & TJFLAG_BOTTOMUP != 0 {
                     let ref mut fresh0 = *row_pointer.offset(i as isize);
                     *fresh0 = &*srcBuf.offset(((height - i - 1i32) * pitch) as isize)
-                        as *const c_uchar
-                        as JSAMPROW
+                        as *const c_uchar as JSAMPROW
                 } else {
                     let ref mut fresh1 = *row_pointer.offset(i as isize);
-                    *fresh1 = &*srcBuf.offset((i * pitch) as isize) as *const c_uchar
-                        as JSAMPROW
+                    *fresh1 = &*srcBuf.offset((i * pitch) as isize) as *const c_uchar as JSAMPROW
                 }
                 i += 1
             }
@@ -2373,7 +1968,6 @@ pub unsafe extern "C" fn tjCompress2(
                 jpeg_write_scanlines(
                     cinfo,
                     &mut *row_pointer.offset((*cinfo).next_scanline as isize),
-                    
                     (*cinfo).image_height - (*cinfo).next_scanline,
                 );
             }
@@ -2407,8 +2001,8 @@ pub unsafe extern "C" fn tjCompress(
     mut jpegQual: c_int,
     mut flags: c_int,
 ) -> c_int {
-    
-     let mut retval:  c_int =  0i32; let mut size:  c_ulong =  0;
+    let mut retval: c_int = 0i32;
+    let mut size: c_ulong = 0;
     if flags & TJ_YUV != 0 {
         size = tjBufSizeYUV(width, height, jpegSubsamp);
         retval = tjEncodeYUV2(
@@ -2508,41 +2102,20 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
     mut subsamp: c_int,
     mut flags: c_int,
 ) -> c_int {
-     let mut _tmpbuf:  [*mut JSAMPLE; 10] =
-    
-        [::std::ptr::null_mut::< JSAMPLE>(); 10]; let mut _tmpbuf2:  [*mut JSAMPLE; 10] =
-    
-        [::std::ptr::null_mut::< JSAMPLE>(); 10]; let mut tmpbuf:  [*mut JSAMPROW; 10] =
-    
-        [::std::ptr::null_mut::< JSAMPROW>(); 10]; let mut tmpbuf2:  [*mut JSAMPROW; 10] =
-    
-        [::std::ptr::null_mut::< JSAMPROW>(); 10]; let mut outbuf:  [*mut JSAMPROW; 10] =
-    
-        [::std::ptr::null_mut::< JSAMPROW>(); 10];  let mut retval:  c_int =  0i32;
-    let mut row_pointer: *mut JSAMPROW =
-        NULL as *mut JSAMPROW;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    let mut _tmpbuf: [*mut JSAMPLE; 10] = [::std::ptr::null_mut::<JSAMPLE>(); 10];
+    let mut _tmpbuf2: [*mut JSAMPLE; 10] = [::std::ptr::null_mut::<JSAMPLE>(); 10];
+    let mut tmpbuf: [*mut JSAMPROW; 10] = [::std::ptr::null_mut::<JSAMPROW>(); 10];
+    let mut tmpbuf2: [*mut JSAMPROW; 10] = [::std::ptr::null_mut::<JSAMPROW>(); 10];
+    let mut outbuf: [*mut JSAMPROW; 10] = [::std::ptr::null_mut::<JSAMPROW>(); 10];
+    let mut retval: c_int = 0i32;
+    let mut row_pointer: *mut JSAMPROW = NULL as *mut JSAMPROW;
+
     let mut this: *mut tjinstance = handle as *mut tjinstance;
-    let mut cinfo: j_compress_ptr =
-        NULL as j_compress_ptr;
+    let mut cinfo: j_compress_ptr = NULL as j_compress_ptr;
     if this.is_null() {
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"Invalid handle\x00".as_ptr() as *const c_char,
         );
         return -1i32;
@@ -2555,7 +2128,7 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
     } else {
         FALSE
     };
-     let mut i:   c_int =  0i32;
+    let mut i: c_int = 0i32;
     while i < MAX_COMPONENTS {
         tmpbuf[i as usize] = NULL as *mut JSAMPROW;
         _tmpbuf[i as usize] = NULL as *mut JSAMPLE;
@@ -2568,19 +2141,17 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
         snprintf(
             (*this).errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
-            b"tjEncodeYUVPlanes(): Instance has not been initialized for compression\x00".as_ptr() as *const c_char,
+            b"tjEncodeYUVPlanes(): Instance has not been initialized for compression\x00".as_ptr()
+                as *const c_char,
         );
         (*this).isInstanceError = TRUE;
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
-            b"tjEncodeYUVPlanes(): Instance has not been initialized for compression\x00".as_ptr() as *const c_char,
+            b"tjEncodeYUVPlanes(): Instance has not been initialized for compression\x00".as_ptr()
+                as *const c_char,
         );
         retval = -1i32
     } else if srcBuf.is_null()
@@ -2597,18 +2168,14 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
         snprintf(
             (*this).errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjEncodeYUVPlanes(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         (*this).isInstanceError = TRUE;
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjEncodeYUVPlanes(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         retval = -1i32
@@ -2618,28 +2185,22 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
         snprintf(
             (*this).errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjEncodeYUVPlanes(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         (*this).isInstanceError = TRUE;
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjEncodeYUVPlanes(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         retval = -1i32
-    } else if pixelFormat ==  TJPF_CMYK {
+    } else if pixelFormat == TJPF_CMYK {
         snprintf(
             (*this).errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjEncodeYUVPlanes(): Cannot generate YUV images from CMYK pixels\x00".as_ptr()
                 as *const c_char,
         );
@@ -2647,9 +2208,7 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjEncodeYUVPlanes(): Cannot generate YUV images from CMYK pixels\x00".as_ptr()
                 as *const c_char,
         );
@@ -2665,29 +2224,11 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
             (*cinfo).image_width = width as JDIMENSION;
             (*cinfo).image_height = height as JDIMENSION;
             if flags & TJFLAG_FORCEMMX != 0 {
-                putenv(
-                    
-                    
-                    
-                    b"JSIMD_FORCEMMX=1\x00".as_ptr()
-                        as *mut c_char,
-                );
+                putenv(b"JSIMD_FORCEMMX=1\x00".as_ptr() as *mut c_char);
             } else if flags & TJFLAG_FORCESSE != 0 {
-                putenv(
-                    
-                    
-                    
-                    b"JSIMD_FORCESSE=1\x00".as_ptr()
-                        as *mut c_char,
-                );
+                putenv(b"JSIMD_FORCESSE=1\x00".as_ptr() as *mut c_char);
             } else if flags & TJFLAG_FORCESSE2 != 0 {
-                putenv(
-                    
-                    
-                    
-                    b"JSIMD_FORCESSE2=1\x00".as_ptr()
-                        as *mut c_char,
-                );
+                putenv(b"JSIMD_FORCESSE2=1\x00".as_ptr() as *mut c_char);
             }
             if setCompDefaults(cinfo, pixelFormat, subsamp, -1i32, flags) == -1i32 {
                 return -1i32;
@@ -2700,9 +2241,7 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                 snprintf(
                     (*this).errStr.as_mut_ptr(),
                     JMSG_LENGTH_MAX as c_ulong,
-                    
                     b"%s\x00".as_ptr() as *const c_char,
-                    
                     b"tjEncodeYUVPlanes(): libjpeg API is in the wrong state\x00".as_ptr()
                         as *const c_char,
                 );
@@ -2710,22 +2249,18 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                 snprintf(
                     errStr.as_mut_ptr(),
                     JMSG_LENGTH_MAX as c_ulong,
-                    
                     b"%s\x00".as_ptr() as *const c_char,
-                    
                     b"tjEncodeYUVPlanes(): libjpeg API is in the wrong state\x00".as_ptr()
                         as *const c_char,
                 );
                 retval = -1i32
             } else {
-                  Some(
+                Some(
                     (*(*cinfo).err)
                         .reset_error_mgr
                         .expect("non-null function pointer"),
                 )
-                .expect("non-null function pointer")(
-                    cinfo as j_common_ptr
-                );
+                .expect("non-null function pointer")(cinfo as j_common_ptr);
                 jinit_c_master_control(cinfo, FALSE);
                 jinit_color_converter(cinfo);
                 jinit_downsampler(cinfo);
@@ -2735,23 +2270,18 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                         .expect("non-null function pointer"),
                 )
                 .expect("non-null function pointer")(cinfo);
-                
-                 let mut pw0:   c_int =
-     width + (*cinfo).max_h_samp_factor - 1i32
-                    & !((*cinfo).max_h_samp_factor - 1i32); let mut ph0:   c_int =
-     height + (*cinfo).max_v_samp_factor - 1i32
+
+                let mut pw0: c_int = width + (*cinfo).max_h_samp_factor - 1i32
+                    & !((*cinfo).max_h_samp_factor - 1i32);
+                let mut ph0: c_int = height + (*cinfo).max_v_samp_factor - 1i32
                     & !((*cinfo).max_v_samp_factor - 1i32);
-                row_pointer = malloc(
-                    ::std::mem::size_of::<JSAMPROW>() as c_ulong *
-    ph0 as c_ulong,
-                ) as *mut JSAMPROW;
+                row_pointer = malloc(::std::mem::size_of::<JSAMPROW>() as c_ulong * ph0 as c_ulong)
+                    as *mut JSAMPROW;
                 if row_pointer.is_null() {
                     snprintf(
                         (*this).errStr.as_mut_ptr(),
                         JMSG_LENGTH_MAX as c_ulong,
-                        
                         b"%s\x00".as_ptr() as *const c_char,
-                        
                         b"tjEncodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                             as *const c_char,
                     );
@@ -2759,27 +2289,27 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                     snprintf(
                         errStr.as_mut_ptr(),
                         JMSG_LENGTH_MAX as c_ulong,
-                        
                         b"%s\x00".as_ptr() as *const c_char,
-                        
                         b"tjEncodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                             as *const c_char,
                     );
                     retval = -1i32
                 } else {
-                     let mut current_block:  u64; let mut row:  c_int =  0; let mut pw:  [c_int; 10] =  [0; 10]; let mut compptr:  *mut jpeg_component_info =
-    
-        ::std::ptr::null_mut::< jpeg_component_info>();i = 0i32;
+                    let mut current_block: u64;
+                    let mut row: c_int = 0;
+                    let mut pw: [c_int; 10] = [0; 10];
+                    let mut compptr: *mut jpeg_component_info =
+                        ::std::ptr::null_mut::<jpeg_component_info>();
+                    i = 0i32;
                     while i < height {
                         if flags & TJFLAG_BOTTOMUP != 0 {
                             let ref mut fresh2 = *row_pointer.offset(i as isize);
                             *fresh2 = &*srcBuf.offset(((height - i - 1i32) * pitch) as isize)
-                                as *const c_uchar
-                                as JSAMPROW
+                                as *const c_uchar as JSAMPROW
                         } else {
                             let ref mut fresh3 = *row_pointer.offset(i as isize);
-                            *fresh3 = &*srcBuf.offset((i * pitch) as isize) as *const c_uchar
-                                as JSAMPROW
+                            *fresh3 =
+                                &*srcBuf.offset((i * pitch) as isize) as *const c_uchar as JSAMPROW
                         }
                         i += 1
                     }
@@ -2797,25 +2327,24 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                             current_block = 939350892795860671;
                             break;
                         }
-                        compptr = &mut *(*cinfo).comp_info.offset(i as isize)
-                            as *mut jpeg_component_info;
+                        compptr =
+                            &mut *(*cinfo).comp_info.offset(i as isize) as *mut jpeg_component_info;
                         _tmpbuf[i as usize] = malloc(
-                            (((((*compptr)
-                                .width_in_blocks * (*cinfo).max_h_samp_factor as c_uint *
-    8u32 / (*compptr).h_samp_factor as c_uint +
-    32u32 - 1u32
-                                & !(32i32 - 1i32) as c_uint))) *
-    (*cinfo).max_v_samp_factor as c_uint + 32u32)
-                                as c_ulong,
-                        )
-                            as *mut JSAMPLE;
+                            (((*compptr).width_in_blocks
+                                * (*cinfo).max_h_samp_factor as c_uint
+                                * 8u32
+                                / (*compptr).h_samp_factor as c_uint
+                                + 32u32
+                                - 1u32
+                                & !(32i32 - 1i32) as c_uint)
+                                * (*cinfo).max_v_samp_factor as c_uint
+                                + 32u32) as c_ulong,
+                        ) as *mut JSAMPLE;
                         if _tmpbuf[i as usize].is_null() {
                             snprintf(
                                 (*this).errStr.as_mut_ptr(),
                                 JMSG_LENGTH_MAX as c_ulong,
-                                
                                 b"%s\x00".as_ptr() as *const c_char,
-                                
                                 b"tjEncodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                     as *const c_char,
                             );
@@ -2823,9 +2352,7 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                             snprintf(
                                 errStr.as_mut_ptr(),
                                 JMSG_LENGTH_MAX as c_ulong,
-                                
                                 b"%s\x00".as_ptr() as *const c_char,
-                                
                                 b"tjEncodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                     as *const c_char,
                             );
@@ -2834,18 +2361,14 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                             break;
                         } else {
                             tmpbuf[i as usize] = malloc(
-                                ::std::mem::size_of::<JSAMPROW>()
-                                    as c_ulong *
-    (*cinfo).max_v_samp_factor as c_ulong,
-                            )
-                                as *mut JSAMPROW;
+                                ::std::mem::size_of::<JSAMPROW>() as c_ulong
+                                    * (*cinfo).max_v_samp_factor as c_ulong,
+                            ) as *mut JSAMPROW;
                             if tmpbuf[i as usize].is_null() {
                                 snprintf(
                                     (*this).errStr.as_mut_ptr(),
                                     JMSG_LENGTH_MAX as c_ulong,
-                                    
                                     b"%s\x00".as_ptr() as *const c_char,
-                                    
                                     b"tjEncodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                         as *const c_char,
                                 );
@@ -2853,9 +2376,7 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                                 snprintf(
                                     errStr.as_mut_ptr(),
                                     JMSG_LENGTH_MAX as c_ulong,
-                                    
                                     b"%s\x00".as_ptr() as *const c_char,
-                                    
                                     b"tjEncodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                         as *const c_char,
                                 );
@@ -2866,50 +2387,46 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                                 row = 0i32;
                                 while row < (*cinfo).max_v_samp_factor {
                                     let mut _tmpbuf_aligned: *mut c_uchar =
-                                        (_tmpbuf[i as usize] as size_t + 32u64 -
-    1u64
+                                        (_tmpbuf[i as usize] as size_t + 32u64 - 1u64
                                             & !(32i32 - 1i32) as c_ulong)
                                             as *mut c_uchar;
                                     let ref mut fresh5 = *tmpbuf[i as usize].offset(row as isize);
                                     *fresh5 = &mut *_tmpbuf_aligned.offset(
-                                        (((((*compptr)
-                                            .width_in_blocks * 
-                                                (*cinfo).max_h_samp_factor as c_uint *
-    8u32 / (*compptr).h_samp_factor as c_uint +
-    32u32 - 1u32
-                                            & !(32i32 - 1i32) as c_uint))) * row as c_uint)
+                                        (((*compptr).width_in_blocks
+                                            * (*cinfo).max_h_samp_factor as c_uint
+                                            * 8u32
+                                            / (*compptr).h_samp_factor as c_uint
+                                            + 32u32
+                                            - 1u32
+                                            & !(32i32 - 1i32) as c_uint)
+                                            * row as c_uint)
                                             as isize,
-                                    )
-                                        as *mut c_uchar;
+                                    ) as *mut c_uchar;
                                     row += 1
                                 }
                                 _tmpbuf2[i as usize] = malloc(
-                                    (((((*compptr)
-                                        .width_in_blocks * 8u32 + 32u32 -
-    1u32
-                                        & !(32i32 - 1i32) as c_uint))) *
-    (*compptr).v_samp_factor as c_uint + 32u32)
-                                        as c_ulong,
+                                    (((*compptr).width_in_blocks * 8u32 + 32u32 - 1u32
+                                        & !(32i32 - 1i32) as c_uint)
+                                        * (*compptr).v_samp_factor as c_uint
+                                        + 32u32) as c_ulong,
                                 )
                                     as *mut JSAMPLE;
                                 if _tmpbuf2[i as usize].is_null() {
                                     snprintf(
                                         (*this).errStr.as_mut_ptr(),
                                         JMSG_LENGTH_MAX as c_ulong,
-                                        
                                         b"%s\x00".as_ptr() as *const c_char,
-                                        
-                                        b"tjEncodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
+                                        b"tjEncodeYUVPlanes(): Memory allocation failure\x00"
+                                            .as_ptr()
                                             as *const c_char,
                                     );
                                     (*this).isInstanceError = TRUE;
                                     snprintf(
                                         errStr.as_mut_ptr(),
                                         JMSG_LENGTH_MAX as c_ulong,
-                                        
                                         b"%s\x00".as_ptr() as *const c_char,
-                                        
-                                        b"tjEncodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
+                                        b"tjEncodeYUVPlanes(): Memory allocation failure\x00"
+                                            .as_ptr()
                                             as *const c_char,
                                     );
                                     retval = -1i32;
@@ -2917,51 +2434,45 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                                     break;
                                 } else {
                                     tmpbuf2[i as usize] = malloc(
-                                        ::std::mem::size_of::<JSAMPROW>()
-                                            as c_ulong *
-    
-                                                (*compptr).v_samp_factor as c_ulong,
+                                        ::std::mem::size_of::<JSAMPROW>() as c_ulong
+                                            * (*compptr).v_samp_factor as c_ulong,
                                     )
                                         as *mut JSAMPROW;
                                     if tmpbuf2[i as usize].is_null() {
                                         snprintf(
                                             (*this).errStr.as_mut_ptr(),
                                             JMSG_LENGTH_MAX as c_ulong,
-                                            
                                             b"%s\x00".as_ptr() as *const c_char,
-                                            
-                                            b"tjEncodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
+                                            b"tjEncodeYUVPlanes(): Memory allocation failure\x00"
+                                                .as_ptr()
                                                 as *const c_char,
                                         );
                                         (*this).isInstanceError = TRUE;
                                         snprintf(
                                             errStr.as_mut_ptr(),
                                             JMSG_LENGTH_MAX as c_ulong,
-                                            
                                             b"%s\x00".as_ptr() as *const c_char,
-                                            
-                                            b"tjEncodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
+                                            b"tjEncodeYUVPlanes(): Memory allocation failure\x00"
+                                                .as_ptr()
                                                 as *const c_char,
                                         );
                                         retval = -1i32;
                                         current_block = 11274834565634332203;
                                         break;
                                     } else {
-                                         let mut ph:  [c_int; 10] =  [0; 10];row = 0i32;
+                                        let mut ph: [c_int; 10] = [0; 10];
+                                        row = 0i32;
                                         while row < (*compptr).v_samp_factor {
                                             let mut _tmpbuf2_aligned: *mut c_uchar =
-                                                (_tmpbuf2[i as usize] as size_t + 32u64 -
-    1u64
+                                                (_tmpbuf2[i as usize] as size_t + 32u64 - 1u64
                                                     & !(32i32 - 1i32) as c_ulong)
                                                     as *mut c_uchar;
                                             let ref mut fresh6 =
                                                 *tmpbuf2[i as usize].offset(row as isize);
                                             *fresh6 = &mut *_tmpbuf2_aligned.offset(
-                                                (((((*compptr)
-                                                    .width_in_blocks * 8u32 + 32u32 -
-    1u32
-                                                    & !(32i32 - 1i32) as c_uint))) *
-    row as c_uint)
+                                                (((*compptr).width_in_blocks * 8u32 + 32u32 - 1u32
+                                                    & !(32i32 - 1i32) as c_uint)
+                                                    * row as c_uint)
                                                     as isize,
                                             )
                                                 as *mut c_uchar;
@@ -2972,9 +2483,8 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                                         ph[i as usize] = ph0 * (*compptr).v_samp_factor
                                             / (*cinfo).max_v_samp_factor;
                                         outbuf[i as usize] = malloc(
-                                            ::std::mem::size_of::<JSAMPROW>()
-                                                as c_ulong *
-    ph[i as usize] as c_ulong,
+                                            ::std::mem::size_of::<JSAMPROW>() as c_ulong
+                                                * ph[i as usize] as c_ulong,
                                         )
                                             as *mut JSAMPROW;
                                         if outbuf[i as usize].is_null() {
@@ -3001,7 +2511,8 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                                             current_block = 11274834565634332203;
                                             break;
                                         } else {
-                                              let mut ptr:   *mut JSAMPLE =  *dstPlanes.offset(i as isize);
+                                            let mut ptr: *mut JSAMPLE =
+                                                *dstPlanes.offset(i as isize);
                                             row = 0i32;
                                             while row < ph[i as usize] {
                                                 let ref mut fresh7 =
@@ -3027,8 +2538,7 @@ pub unsafe extern "C" fn tjEncodeYUVPlanes(
                     match current_block {
                         11274834565634332203 => {}
                         _ => {
-                            if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0
-                            {
+                            if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
                                 /* If we get here, the JPEG code has signaled an error. */
                                 retval = -1i32
                             } else {
@@ -3175,19 +2685,13 @@ pub unsafe extern "C" fn tjEncodeYUV3(
     mut subsamp: c_int,
     mut flags: c_int,
 ) -> c_int {
-    
-    
-    
-    
     let mut retval: c_int = -1i32;
     let mut this: *mut tjinstance = handle as *mut tjinstance;
     if this.is_null() {
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjEncodeYUV3(): Invalid handle\x00".as_ptr() as *const c_char,
         );
         retval = -1i32
@@ -3204,25 +2708,22 @@ pub unsafe extern "C" fn tjEncodeYUV3(
             snprintf(
                 (*this).errStr.as_mut_ptr(),
                 JMSG_LENGTH_MAX as c_ulong,
-                
                 b"%s\x00".as_ptr() as *const c_char,
-                
                 b"tjEncodeYUV3(): Invalid argument\x00".as_ptr() as *const c_char,
             );
             (*this).isInstanceError = TRUE;
             snprintf(
                 errStr.as_mut_ptr(),
                 JMSG_LENGTH_MAX as c_ulong,
-                
                 b"%s\x00".as_ptr() as *const c_char,
-                
                 b"tjEncodeYUV3(): Invalid argument\x00".as_ptr() as *const c_char,
             );
             retval = -1i32
         } else {
-             let mut dstPlanes:  [*mut c_uchar; 3] =
-     [::std::ptr::null_mut::< c_uchar>(); 3];   let mut strides:  [c_int; 3] =  [0; 3];
-             let mut pw0:   c_int =  tjPlaneWidth(0i32, width, subsamp); let mut ph0:   c_int =  tjPlaneHeight(0i32, height, subsamp);
+            let mut dstPlanes: [*mut c_uchar; 3] = [::std::ptr::null_mut::<c_uchar>(); 3];
+            let mut strides: [c_int; 3] = [0; 3];
+            let mut pw0: c_int = tjPlaneWidth(0i32, width, subsamp);
+            let mut ph0: c_int = tjPlaneHeight(0i32, height, subsamp);
             dstPlanes[0] = dstBuf;
             strides[0] = pw0 + pad - 1i32 & !(pad - 1i32);
             if subsamp == TJSAMP_GRAY as c_int {
@@ -3385,34 +2886,17 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
     mut jpegQual: c_int,
     mut flags: c_int,
 ) -> c_int {
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-      let mut retval:  c_int =  0i32; let mut inbuf:  [*mut JSAMPROW; 10] =
-    
-        [::std::ptr::null_mut::< JSAMPROW>(); 10]; let mut tmpbuf:  [*mut JSAMPROW; 10] =
-    
-        [::std::ptr::null_mut::< JSAMPROW>(); 10];
-    let mut _tmpbuf: *mut JSAMPLE =
-        NULL as *mut JSAMPLE;
-    
-    
-    
+    let mut retval: c_int = 0i32;
+    let mut inbuf: [*mut JSAMPROW; 10] = [::std::ptr::null_mut::<JSAMPROW>(); 10];
+    let mut tmpbuf: [*mut JSAMPROW; 10] = [::std::ptr::null_mut::<JSAMPROW>(); 10];
+    let mut _tmpbuf: *mut JSAMPLE = NULL as *mut JSAMPLE;
+
     let mut this: *mut tjinstance = handle as *mut tjinstance;
-    let mut cinfo: j_compress_ptr =
-        NULL as j_compress_ptr;
+    let mut cinfo: j_compress_ptr = NULL as j_compress_ptr;
     if this.is_null() {
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"Invalid handle\x00".as_ptr() as *const c_char,
         );
         return -1i32;
@@ -3425,7 +2909,7 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
     } else {
         FALSE
     };
-     let mut i:   c_int =  0i32;
+    let mut i: c_int = 0i32;
     while i < MAX_COMPONENTS {
         tmpbuf[i as usize] = NULL as *mut JSAMPROW;
         inbuf[i as usize] = NULL as *mut JSAMPROW;
@@ -3435,19 +2919,17 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
         snprintf(
             (*this).errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
-            b"tjCompressFromYUVPlanes(): Instance has not been initialized for compression\x00".as_ptr() as *const c_char,
+            b"tjCompressFromYUVPlanes(): Instance has not been initialized for compression\x00"
+                .as_ptr() as *const c_char,
         );
         (*this).isInstanceError = TRUE;
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
-            b"tjCompressFromYUVPlanes(): Instance has not been initialized for compression\x00".as_ptr() as *const c_char,
+            b"tjCompressFromYUVPlanes(): Instance has not been initialized for compression\x00"
+                .as_ptr() as *const c_char,
         );
         retval = -1i32
     } else if srcPlanes.is_null()
@@ -3464,18 +2946,14 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
         snprintf(
             (*this).errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjCompressFromYUVPlanes(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         (*this).isInstanceError = TRUE;
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjCompressFromYUVPlanes(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         retval = -1i32
@@ -3485,18 +2963,14 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
         snprintf(
             (*this).errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjCompressFromYUVPlanes(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         (*this).isInstanceError = TRUE;
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjCompressFromYUVPlanes(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         retval = -1i32
@@ -3504,96 +2978,67 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
         /* If we get here, the JPEG code has signaled an error. */
         retval = -1i32
     } else {
-         let mut current_block:  u64; let mut row:  c_int =  0; let mut alloc:  c_int =  1i32; let mut pw:  [c_int; 10] =  [0; 10]; let mut ph:  [c_int; 10] =  [0; 10]; let mut iw:  [c_int; 10] =  [0; 10]; let mut tmpbufsize:  c_int =  0i32; let mut usetmpbuf:  c_int =  0i32; let mut th:  [c_int; 10] =  [0; 10]; let mut ptr:  *mut JSAMPLE =
-     ::std::ptr::null_mut::< JSAMPLE>();(*cinfo).image_width = width as JDIMENSION;
+        let mut current_block: u64;
+        let mut row: c_int = 0;
+        let mut alloc: c_int = 1i32;
+        let mut pw: [c_int; 10] = [0; 10];
+        let mut ph: [c_int; 10] = [0; 10];
+        let mut iw: [c_int; 10] = [0; 10];
+        let mut tmpbufsize: c_int = 0i32;
+        let mut usetmpbuf: c_int = 0i32;
+        let mut th: [c_int; 10] = [0; 10];
+        let mut ptr: *mut JSAMPLE = ::std::ptr::null_mut::<JSAMPLE>();
+        (*cinfo).image_width = width as JDIMENSION;
         (*cinfo).image_height = height as JDIMENSION;
         if flags & TJFLAG_FORCEMMX != 0 {
-            putenv(
-                
-                
-                
-                b"JSIMD_FORCEMMX=1\x00".as_ptr() as *mut c_char,
-            );
+            putenv(b"JSIMD_FORCEMMX=1\x00".as_ptr() as *mut c_char);
         } else if flags & TJFLAG_FORCESSE != 0 {
-            putenv(
-                
-                
-                
-                b"JSIMD_FORCESSE=1\x00".as_ptr() as *mut c_char,
-            );
+            putenv(b"JSIMD_FORCESSE=1\x00".as_ptr() as *mut c_char);
         } else if flags & TJFLAG_FORCESSE2 != 0 {
-            putenv(
-                
-                
-                
-                b"JSIMD_FORCESSE2=1\x00".as_ptr() as *mut c_char,
-            );
+            putenv(b"JSIMD_FORCESSE2=1\x00".as_ptr() as *mut c_char);
         }
         if flags & TJFLAG_NOREALLOC != 0 {
             alloc = 0i32;
             *jpegSize = tjBufSize(width, height, subsamp)
         }
         jpeg_mem_dest_tj(cinfo, jpegBuf, jpegSize, alloc);
-        if setCompDefaults(
-            cinfo,
-            
-            TJPF_RGB,
-            subsamp,
-            jpegQual,
-            flags,
-        ) == -1i32
-        {
+        if setCompDefaults(cinfo, TJPF_RGB, subsamp, jpegQual, flags) == -1i32 {
             return -1i32;
         }
         (*cinfo).raw_data_in = TRUE;
         jpeg_start_compress(cinfo, TRUE);
         i = 0i32;
         loop {
-             if !(i < (*cinfo).num_components) {
+            if !(i < (*cinfo).num_components) {
                 current_block = 7385833325316299293;
                 break;
             }
             let mut compptr: *mut jpeg_component_info =
-                &mut *(*cinfo).comp_info.offset(i as isize)
-                    as *mut jpeg_component_info;
-            
-            iw[i as usize] = ( (*compptr)
-                .width_in_blocks * DCTSIZE as c_uint)
-                as c_int;
-             let mut ih:   c_int =
-     ( (*compptr)
-                .height_in_blocks * DCTSIZE as c_uint)
-                as c_int;
-            pw[i as usize] = (((((*cinfo)
-                .image_width + (*cinfo).max_h_samp_factor as c_uint -
-    1u32
-                & !((*cinfo).max_h_samp_factor - 1i32) as c_uint))) *
-    (*compptr).h_samp_factor as c_uint /
-    (*cinfo).max_h_samp_factor as c_uint)
-                as c_int;
-            ph[i as usize] = (((((*cinfo)
-                .image_height + (*cinfo).max_v_samp_factor as c_uint -
-    1u32
-                & !((*cinfo).max_v_samp_factor - 1i32) as c_uint))) *
-    (*compptr).v_samp_factor as c_uint /
-    (*cinfo).max_v_samp_factor as c_uint)
-                as c_int;
+                &mut *(*cinfo).comp_info.offset(i as isize) as *mut jpeg_component_info;
+
+            iw[i as usize] = ((*compptr).width_in_blocks * DCTSIZE as c_uint) as c_int;
+            let mut ih: c_int = ((*compptr).height_in_blocks * DCTSIZE as c_uint) as c_int;
+            pw[i as usize] = (((*cinfo).image_width + (*cinfo).max_h_samp_factor as c_uint - 1u32
+                & !((*cinfo).max_h_samp_factor - 1i32) as c_uint)
+                * (*compptr).h_samp_factor as c_uint
+                / (*cinfo).max_h_samp_factor as c_uint) as c_int;
+            ph[i as usize] = (((*cinfo).image_height + (*cinfo).max_v_samp_factor as c_uint - 1u32
+                & !((*cinfo).max_v_samp_factor - 1i32) as c_uint)
+                * (*compptr).v_samp_factor as c_uint
+                / (*cinfo).max_v_samp_factor as c_uint) as c_int;
             if iw[i as usize] != pw[i as usize] || ih != ph[i as usize] {
                 usetmpbuf = 1i32
             }
             th[i as usize] = (*compptr).v_samp_factor * DCTSIZE;
             tmpbufsize += iw[i as usize] * th[i as usize];
-            inbuf[i as usize] = malloc(
-                ::std::mem::size_of::<JSAMPROW>() as c_ulong *
-    ph[i as usize] as c_ulong,
-            ) as *mut JSAMPROW;
+            inbuf[i as usize] =
+                malloc(::std::mem::size_of::<JSAMPROW>() as c_ulong * ph[i as usize] as c_ulong)
+                    as *mut JSAMPROW;
             if inbuf[i as usize].is_null() {
                 snprintf(
                     (*this).errStr.as_mut_ptr(),
                     JMSG_LENGTH_MAX as c_ulong,
-                    
                     b"%s\x00".as_ptr() as *const c_char,
-                    
                     b"tjCompressFromYUVPlanes(): Memory allocation failure\x00".as_ptr()
                         as *const c_char,
                 );
@@ -3601,9 +3046,7 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
                 snprintf(
                     errStr.as_mut_ptr(),
                     JMSG_LENGTH_MAX as c_ulong,
-                    
                     b"%s\x00".as_ptr() as *const c_char,
-                    
                     b"tjCompressFromYUVPlanes(): Memory allocation failure\x00".as_ptr()
                         as *const c_char,
                 );
@@ -3632,17 +3075,14 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
             4995605523671280494 => {}
             _ => {
                 if usetmpbuf != 0 {
-                    _tmpbuf = malloc(
-                        ::std::mem::size_of::<JSAMPLE>() as c_ulong *
-    tmpbufsize as c_ulong,
-                    ) as *mut JSAMPLE;
+                    _tmpbuf =
+                        malloc(::std::mem::size_of::<JSAMPLE>() as c_ulong * tmpbufsize as c_ulong)
+                            as *mut JSAMPLE;
                     if _tmpbuf.is_null() {
                         snprintf(
                             (*this).errStr.as_mut_ptr(),
                             JMSG_LENGTH_MAX as c_ulong,
-                            
                             b"%s\x00".as_ptr() as *const c_char,
-                            
                             b"tjCompressFromYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                 as *const c_char,
                         );
@@ -3650,9 +3090,7 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
                         snprintf(
                             errStr.as_mut_ptr(),
                             JMSG_LENGTH_MAX as c_ulong,
-                            
                             b"%s\x00".as_ptr() as *const c_char,
-                            
                             b"tjCompressFromYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                 as *const c_char,
                         );
@@ -3667,29 +3105,25 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
                                 break;
                             }
                             tmpbuf[i as usize] = malloc(
-                                ::std::mem::size_of::<JSAMPROW>()
-                                    as c_ulong *
-    th[i as usize] as c_ulong,
-                            )
-                                as *mut JSAMPROW;
+                                ::std::mem::size_of::<JSAMPROW>() as c_ulong
+                                    * th[i as usize] as c_ulong,
+                            ) as *mut JSAMPROW;
                             if tmpbuf[i as usize].is_null() {
                                 snprintf(
                                     (*this).errStr.as_mut_ptr(),
                                     JMSG_LENGTH_MAX as c_ulong,
-                                    
                                     b"%s\x00".as_ptr() as *const c_char,
-                                    
-                                    b"tjCompressFromYUVPlanes(): Memory allocation failure\x00".as_ptr()
+                                    b"tjCompressFromYUVPlanes(): Memory allocation failure\x00"
+                                        .as_ptr()
                                         as *const c_char,
                                 );
                                 (*this).isInstanceError = TRUE;
                                 snprintf(
                                     errStr.as_mut_ptr(),
                                     JMSG_LENGTH_MAX as c_ulong,
-                                    
                                     b"%s\x00".as_ptr() as *const c_char,
-                                    
-                                    b"tjCompressFromYUVPlanes(): Memory allocation failure\x00".as_ptr()
+                                    b"tjCompressFromYUVPlanes(): Memory allocation failure\x00"
+                                        .as_ptr()
                                         as *const c_char,
                                 );
                                 retval = -1i32;
@@ -3719,21 +3153,18 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
                         } else {
                             row = 0i32;
                             while row < (*cinfo).image_height as c_int {
-                                
-                                 let mut yuvptr:  [JSAMPARRAY; 10] =
-    
-                                    [::std::ptr::null_mut::< JSAMPROW>(); 10];
+                                let mut yuvptr: [JSAMPARRAY; 10] =
+                                    [::std::ptr::null_mut::<JSAMPROW>(); 10];
                                 i = 0i32;
                                 while i < (*cinfo).num_components {
-                                     let mut crow:  [c_int; 10] =  [0; 10];let mut compptr_0: *mut jpeg_component_info =
+                                    let mut crow: [c_int; 10] = [0; 10];
+                                    let mut compptr_0: *mut jpeg_component_info =
                                         &mut *(*cinfo).comp_info.offset(i as isize)
                                             as *mut jpeg_component_info;
                                     crow[i as usize] = row * (*compptr_0).v_samp_factor
                                         / (*cinfo).max_v_samp_factor;
                                     if usetmpbuf != 0 {
-                                        
-                                         
-                                         let mut j:   c_int =  0i32;
+                                        let mut j: c_int = 0i32;
                                         while j
                                             < (if th[i as usize] < ph[i as usize] - crow[i as usize]
                                             {
@@ -3742,7 +3173,7 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
                                                 (ph[i as usize]) - crow[i as usize]
                                             })
                                         {
-                                             memcpy(
+                                            memcpy(
                                                 *tmpbuf[i as usize].offset(j as isize)
                                                     as *mut c_void,
                                                 *inbuf[i as usize]
@@ -3750,7 +3181,7 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
                                                     as *const c_void,
                                                 pw[i as usize] as c_ulong,
                                             );
-                                             let mut k:   c_int =  pw[i as usize];
+                                            let mut k: c_int = pw[i as usize];
                                             while k < iw[i as usize] {
                                                 *(*tmpbuf[i as usize].offset(j as isize))
                                                     .offset(k as isize) = *(*tmpbuf[i as usize]
@@ -3788,8 +3219,7 @@ pub unsafe extern "C" fn tjCompressFromYUVPlanes(
                                 jpeg_write_raw_data(
                                     cinfo,
                                     yuvptr.as_mut_ptr(),
-                                    ((*cinfo).max_v_samp_factor * DCTSIZE)
-                                        as JDIMENSION,
+                                    ((*cinfo).max_v_samp_factor * DCTSIZE) as JDIMENSION,
                                 );
                                 row += (*cinfo).max_v_samp_factor * DCTSIZE
                             }
@@ -3896,19 +3326,13 @@ pub unsafe extern "C" fn tjCompressFromYUV(
     mut jpegQual: c_int,
     mut flags: c_int,
 ) -> c_int {
-    
-    
-    
-    
     let mut retval: c_int = -1i32;
     let mut this: *mut tjinstance = handle as *mut tjinstance;
     if this.is_null() {
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjCompressFromYUV(): Invalid handle\x00".as_ptr() as *const c_char,
         );
         retval = -1i32
@@ -3924,25 +3348,22 @@ pub unsafe extern "C" fn tjCompressFromYUV(
             snprintf(
                 (*this).errStr.as_mut_ptr(),
                 JMSG_LENGTH_MAX as c_ulong,
-                
                 b"%s\x00".as_ptr() as *const c_char,
-                
                 b"tjCompressFromYUV(): Invalid argument\x00".as_ptr() as *const c_char,
             );
             (*this).isInstanceError = TRUE;
             snprintf(
                 errStr.as_mut_ptr(),
                 JMSG_LENGTH_MAX as c_ulong,
-                
                 b"%s\x00".as_ptr() as *const c_char,
-                
                 b"tjCompressFromYUV(): Invalid argument\x00".as_ptr() as *const c_char,
             );
             retval = -1i32
         } else {
-             let mut srcPlanes:  [*const c_uchar; 3] =
-     [::std::ptr::null::< c_uchar>(); 3];   let mut strides:  [c_int; 3] =  [0; 3];
-             let mut pw0:   c_int =  tjPlaneWidth(0i32, width, subsamp); let mut ph0:   c_int =  tjPlaneHeight(0i32, height, subsamp);
+            let mut srcPlanes: [*const c_uchar; 3] = [::std::ptr::null::<c_uchar>(); 3];
+            let mut strides: [c_int; 3] = [0; 3];
+            let mut pw0: c_int = tjPlaneWidth(0i32, width, subsamp);
+            let mut ph0: c_int = tjPlaneHeight(0i32, height, subsamp);
             srcPlanes[0] = srcBuf;
             strides[0] = pw0 + pad - 1i32 & !(pad - 1i32);
             if subsamp == TJSAMP_GRAY as c_int {
@@ -3976,9 +3397,7 @@ pub unsafe extern "C" fn tjCompressFromYUV(
 }
 /* Decompressor */
 
-unsafe extern "C" fn _tjInitDecompress(
-    mut this: *mut tjinstance,
-) -> tjhandle {
+unsafe extern "C" fn _tjInitDecompress(mut this: *mut tjinstance) -> tjhandle {
     static mut buffer: [c_uchar; 1] = [0; 1];
     /* This is also straight out of example.txt */
     (*this).dinfo.err = jpeg_std_error(&mut (*this).jerr.pub_0);
@@ -3987,10 +3406,8 @@ unsafe extern "C" fn _tjInitDecompress(
     (*this).jerr.pub_0.output_message =
         Some(my_output_message as unsafe extern "C" fn(_: j_common_ptr) -> ());
     (*this).jerr.emit_message = (*this).jerr.pub_0.emit_message;
-    (*this).jerr.pub_0.emit_message = Some(
-        my_emit_message
-            as unsafe extern "C" fn(_: j_common_ptr, _: c_int) -> (),
-    );
+    (*this).jerr.pub_0.emit_message =
+        Some(my_emit_message as unsafe extern "C" fn(_: j_common_ptr, _: c_int) -> ());
     (*this).jerr.pub_0.addon_message_table = turbojpeg_message_table.as_mut_ptr();
     (*this).jerr.pub_0.first_addon_message = JMSG_FIRSTADDONCODE as c_int;
     (*this).jerr.pub_0.last_addon_message = JMSG_LASTADDONCODE as c_int;
@@ -4007,11 +3424,7 @@ unsafe extern "C" fn _tjInitDecompress(
         ::std::mem::size_of::<jpeg_decompress_struct>() as c_ulong,
     );
     /* Make an initial call so it will create the source manager */
-    jpeg_mem_src_tj(
-        &mut (*this).dinfo,
-        buffer.as_mut_ptr(),
-        1u64,
-    );
+    jpeg_mem_src_tj(&mut (*this).dinfo, buffer.as_mut_ptr(), 1u64);
     (*this).init |= DECOMPRESS as c_int;
     return this as tjhandle;
 }
@@ -4024,17 +3437,13 @@ unsafe extern "C" fn _tjInitDecompress(
 #[no_mangle]
 
 pub unsafe extern "C" fn tjInitDecompress() -> tjhandle {
-     
-     let mut this:   *mut tjinstance =
-     malloc(::std::mem::size_of::<tjinstance>() as c_ulong)
-        as *mut tjinstance;
+    let mut this: *mut tjinstance =
+        malloc(::std::mem::size_of::<tjinstance>() as c_ulong) as *mut tjinstance;
     if this.is_null() {
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
-            b"tjInitDecompress(): Memory allocation failure\x00".as_ptr()
-                as *const c_char,
+            b"tjInitDecompress(): Memory allocation failure\x00".as_ptr() as *const c_char,
         );
         return NULL as *mut c_void;
     }
@@ -4046,7 +3455,6 @@ pub unsafe extern "C" fn tjInitDecompress() -> tjhandle {
     snprintf(
         (*this).errStr.as_mut_ptr(),
         JMSG_LENGTH_MAX as c_ulong,
-        
         b"No error\x00".as_ptr() as *const c_char,
     );
     return _tjInitDecompress(this);
@@ -4088,15 +3496,13 @@ pub unsafe extern "C" fn tjDecompressHeader3(
     mut jpegSubsamp: *mut c_int,
     mut jpegColorspace: *mut c_int,
 ) -> c_int {
-     let mut retval:  c_int =  0i32;
+    let mut retval: c_int = 0i32;
     let mut this: *mut tjinstance = handle as *mut tjinstance;
-    let mut dinfo: j_decompress_ptr =
-        NULL as j_decompress_ptr;
+    let mut dinfo: j_decompress_ptr = NULL as j_decompress_ptr;
     if this.is_null() {
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"Invalid handle\x00".as_ptr() as *const c_char,
         );
         return -1i32;
@@ -4108,19 +3514,17 @@ pub unsafe extern "C" fn tjDecompressHeader3(
         snprintf(
             (*this).errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
-            b"tjDecompressHeader3(): Instance has not been initialized for decompression\x00".as_ptr() as *const c_char,
+            b"tjDecompressHeader3(): Instance has not been initialized for decompression\x00"
+                .as_ptr() as *const c_char,
         );
         (*this).isInstanceError = TRUE;
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
-            b"tjDecompressHeader3(): Instance has not been initialized for decompression\x00".as_ptr() as *const c_char,
+            b"tjDecompressHeader3(): Instance has not been initialized for decompression\x00"
+                .as_ptr() as *const c_char,
         );
         retval = -1i32
     } else if jpegBuf.is_null()
@@ -4133,18 +3537,14 @@ pub unsafe extern "C" fn tjDecompressHeader3(
         snprintf(
             (*this).errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjDecompressHeader3(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         (*this).isInstanceError = TRUE;
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjDecompressHeader3(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         retval = -1i32
@@ -4158,7 +3558,7 @@ pub unsafe extern "C" fn tjDecompressHeader3(
         *width = (*dinfo).image_width as c_int;
         *height = (*dinfo).image_height as c_int;
         *jpegSubsamp = getSubsamp(dinfo);
-        match  (*dinfo).jpeg_color_space {
+        match (*dinfo).jpeg_color_space {
             1 => *jpegColorspace = TJCS_GRAY as c_int,
             2 => *jpegColorspace = TJCS_RGB as c_int,
             3 => *jpegColorspace = TJCS_YCbCr as c_int,
@@ -4171,47 +3571,41 @@ pub unsafe extern "C" fn tjDecompressHeader3(
             snprintf(
                 (*this).errStr.as_mut_ptr(),
                 JMSG_LENGTH_MAX as c_ulong,
-                
                 b"%s\x00".as_ptr() as *const c_char,
-                
-                b"tjDecompressHeader3(): Could not determine subsampling type for JPEG image\x00".as_ptr() as *const c_char,
+                b"tjDecompressHeader3(): Could not determine subsampling type for JPEG image\x00"
+                    .as_ptr() as *const c_char,
             );
             (*this).isInstanceError = TRUE;
             snprintf(
                 errStr.as_mut_ptr(),
                 JMSG_LENGTH_MAX as c_ulong,
-                
                 b"%s\x00".as_ptr() as *const c_char,
-                
-                b"tjDecompressHeader3(): Could not determine subsampling type for JPEG image\x00".as_ptr() as *const c_char,
+                b"tjDecompressHeader3(): Could not determine subsampling type for JPEG image\x00"
+                    .as_ptr() as *const c_char,
             );
             retval = -1i32
         } else if *jpegColorspace < 0i32 {
             snprintf(
                 (*this).errStr.as_mut_ptr(),
                 JMSG_LENGTH_MAX as c_ulong,
-                
                 b"%s\x00".as_ptr() as *const c_char,
-                
-                b"tjDecompressHeader3(): Could not determine colorspace of JPEG image\x00".as_ptr() as *const c_char,
+                b"tjDecompressHeader3(): Could not determine colorspace of JPEG image\x00".as_ptr()
+                    as *const c_char,
             );
             (*this).isInstanceError = TRUE;
             snprintf(
                 errStr.as_mut_ptr(),
                 JMSG_LENGTH_MAX as c_ulong,
-                
                 b"%s\x00".as_ptr() as *const c_char,
-                
-                b"tjDecompressHeader3(): Could not determine colorspace of JPEG image\x00".as_ptr() as *const c_char,
+                b"tjDecompressHeader3(): Could not determine colorspace of JPEG image\x00".as_ptr()
+                    as *const c_char,
             );
             retval = -1i32
         } else if *width < 1i32 || *height < 1i32 {
             snprintf(
                 (*this).errStr.as_mut_ptr(),
                 JMSG_LENGTH_MAX as c_ulong,
-                
                 b"%s\x00".as_ptr() as *const c_char,
-                
                 b"tjDecompressHeader3(): Invalid data returned in header\x00".as_ptr()
                     as *const c_char,
             );
@@ -4219,9 +3613,7 @@ pub unsafe extern "C" fn tjDecompressHeader3(
             snprintf(
                 errStr.as_mut_ptr(),
                 JMSG_LENGTH_MAX as c_ulong,
-                
                 b"%s\x00".as_ptr() as *const c_char,
-                
                 b"tjDecompressHeader3(): Invalid data returned in header\x00".as_ptr()
                     as *const c_char,
             );
@@ -4243,7 +3635,7 @@ pub unsafe extern "C" fn tjDecompressHeader2(
     mut height: *mut c_int,
     mut jpegSubsamp: *mut c_int,
 ) -> c_int {
-     let mut jpegColorspace:  c_int =  0;
+    let mut jpegColorspace: c_int = 0;
     return tjDecompressHeader3(
         handle,
         jpegBuf,
@@ -4263,7 +3655,7 @@ pub unsafe extern "C" fn tjDecompressHeader(
     mut width: *mut c_int,
     mut height: *mut c_int,
 ) -> c_int {
-     let mut jpegSubsamp:  c_int =  0;
+    let mut jpegSubsamp: c_int = 0;
     return tjDecompressHeader2(handle, jpegBuf, jpegSize, width, height, &mut jpegSubsamp);
 }
 /* *
@@ -4285,7 +3677,6 @@ pub unsafe extern "C" fn tjGetScalingFactors(
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"tjGetScalingFactors(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         return NULL as *mut tjscalingfactor;
@@ -4356,22 +3747,15 @@ pub unsafe extern "C" fn tjDecompress2(
     mut pixelFormat: c_int,
     mut flags: c_int,
 ) -> c_int {
-     let mut retval:  c_int =  0i32;let mut row_pointer: *mut JSAMPROW =
-        NULL as *mut JSAMPROW;
-    
-    
-    
-    
-    
-    
+    let mut retval: c_int = 0i32;
+    let mut row_pointer: *mut JSAMPROW = NULL as *mut JSAMPROW;
+
     let mut this: *mut tjinstance = handle as *mut tjinstance;
-    let mut dinfo: j_decompress_ptr =
-        NULL as j_decompress_ptr;
+    let mut dinfo: j_decompress_ptr = NULL as j_decompress_ptr;
     if this.is_null() {
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"Invalid handle\x00".as_ptr() as *const c_char,
         );
         return -1i32;
@@ -4388,9 +3772,7 @@ pub unsafe extern "C" fn tjDecompress2(
         snprintf(
             (*this).errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjDecompress2(): Instance has not been initialized for decompression\x00".as_ptr()
                 as *const c_char,
         );
@@ -4398,9 +3780,7 @@ pub unsafe extern "C" fn tjDecompress2(
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjDecompress2(): Instance has not been initialized for decompression\x00".as_ptr()
                 as *const c_char,
         );
@@ -4417,67 +3797,50 @@ pub unsafe extern "C" fn tjDecompress2(
         snprintf(
             (*this).errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjDecompress2(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         (*this).isInstanceError = TRUE;
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjDecompress2(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         retval = -1i32
     } else {
         if flags & TJFLAG_FORCEMMX != 0 {
-            putenv(
-                
-                
-                
-                b"JSIMD_FORCEMMX=1\x00".as_ptr() as *mut c_char,
-            );
+            putenv(b"JSIMD_FORCEMMX=1\x00".as_ptr() as *mut c_char);
         } else if flags & TJFLAG_FORCESSE != 0 {
-            putenv(
-                
-                
-                
-                b"JSIMD_FORCESSE=1\x00".as_ptr() as *mut c_char,
-            );
+            putenv(b"JSIMD_FORCESSE=1\x00".as_ptr() as *mut c_char);
         } else if flags & TJFLAG_FORCESSE2 != 0 {
-            putenv(
-                
-                
-                
-                b"JSIMD_FORCESSE2=1\x00".as_ptr() as *mut c_char,
-            );
+            putenv(b"JSIMD_FORCESSE2=1\x00".as_ptr() as *mut c_char);
         }
         if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
             /* If we get here, the JPEG code has signaled an error. */
             retval = -1i32
         } else {
-                let mut scaledw:  c_int =  0; let mut scaledh:  c_int =  0;jpeg_mem_src_tj(dinfo, jpegBuf, jpegSize);
+            let mut scaledw: c_int = 0;
+            let mut scaledh: c_int = 0;
+            jpeg_mem_src_tj(dinfo, jpegBuf, jpegSize);
             jpeg_read_header(dinfo, TRUE);
             (*this).dinfo.out_color_space = pf2cs[pixelFormat as usize];
             if flags & TJFLAG_FASTDCT != 0 {
-                (*this).dinfo.dct_method =
-                    JDCT_FASTEST as J_DCT_METHOD
+                (*this).dinfo.dct_method = JDCT_FASTEST as J_DCT_METHOD
             }
             if flags & TJFLAG_FASTUPSAMPLE != 0 {
                 (*dinfo).do_fancy_upsampling = FALSE
             }
-            
-             let mut jpegwidth:   c_int =  (*dinfo).image_width as c_int; let mut jpegheight:   c_int =  (*dinfo).image_height as c_int;
+
+            let mut jpegwidth: c_int = (*dinfo).image_width as c_int;
+            let mut jpegheight: c_int = (*dinfo).image_height as c_int;
             if width == 0i32 {
                 width = jpegwidth
             }
             if height == 0i32 {
                 height = jpegheight
             }
-             let mut i:   c_int =  0i32;
+            let mut i: c_int = 0i32;
             while i < NUMSF {
                 scaledw = (jpegwidth * sf[i as usize].num + sf[i as usize].denom - 1i32)
                     / sf[i as usize].denom;
@@ -4492,19 +3855,17 @@ pub unsafe extern "C" fn tjDecompress2(
                 snprintf(
                     (*this).errStr.as_mut_ptr(),
                     JMSG_LENGTH_MAX as c_ulong,
-                    
                     b"%s\x00".as_ptr() as *const c_char,
-                    
-                    b"tjDecompress2(): Could not scale down to desired image dimensions\x00".as_ptr() as *const c_char,
+                    b"tjDecompress2(): Could not scale down to desired image dimensions\x00"
+                        .as_ptr() as *const c_char,
                 );
                 (*this).isInstanceError = TRUE;
                 snprintf(
                     errStr.as_mut_ptr(),
                     JMSG_LENGTH_MAX as c_ulong,
-                    
                     b"%s\x00".as_ptr() as *const c_char,
-                    
-                    b"tjDecompress2(): Could not scale down to desired image dimensions\x00".as_ptr() as *const c_char,
+                    b"tjDecompress2(): Could not scale down to desired image dimensions\x00"
+                        .as_ptr() as *const c_char,
                 );
                 retval = -1i32
             } else {
@@ -4514,33 +3875,26 @@ pub unsafe extern "C" fn tjDecompress2(
                 (*dinfo).scale_denom = sf[i as usize].denom as c_uint;
                 jpeg_start_decompress(dinfo);
                 if pitch == 0i32 {
-                    pitch = ( (*dinfo).output_width *
-    
-                        tjPixelSize[pixelFormat as usize] as c_uint) as c_int
+                    pitch = ((*dinfo).output_width * tjPixelSize[pixelFormat as usize] as c_uint)
+                        as c_int
                 }
                 row_pointer = malloc(
-                    ::std::mem::size_of::<JSAMPROW>() as c_ulong *
-    (*dinfo).output_height as c_ulong,
+                    ::std::mem::size_of::<JSAMPROW>() as c_ulong
+                        * (*dinfo).output_height as c_ulong,
                 ) as *mut JSAMPROW;
                 if row_pointer.is_null() {
                     snprintf(
                         (*this).errStr.as_mut_ptr(),
                         JMSG_LENGTH_MAX as c_ulong,
-                        
                         b"%s\x00".as_ptr() as *const c_char,
-                        
-                        b"tjDecompress2(): Memory allocation failure\x00".as_ptr()
-                            as *const c_char,
+                        b"tjDecompress2(): Memory allocation failure\x00".as_ptr() as *const c_char,
                     );
                     (*this).isInstanceError = TRUE;
                     snprintf(
                         errStr.as_mut_ptr(),
                         JMSG_LENGTH_MAX as c_ulong,
-                        
                         b"%s\x00".as_ptr() as *const c_char,
-                        
-                        b"tjDecompress2(): Memory allocation failure\x00".as_ptr()
-                            as *const c_char,
+                        b"tjDecompress2(): Memory allocation failure\x00".as_ptr() as *const c_char,
                     );
                     retval = -1i32
                 } else if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
@@ -4552,16 +3906,12 @@ pub unsafe extern "C" fn tjDecompress2(
                         if flags & TJFLAG_BOTTOMUP != 0 {
                             let ref mut fresh10 = *row_pointer.offset(i as isize);
                             *fresh10 = &mut *dstBuf.offset(
-                                ((
-                                (*dinfo)
-                                    .output_height - i as c_uint - 1u32) *
-    pitch as c_uint)
+                                (((*dinfo).output_height - i as c_uint - 1u32) * pitch as c_uint)
                                     as isize,
                             ) as *mut c_uchar
                         } else {
                             let ref mut fresh11 = *row_pointer.offset(i as isize);
-                            *fresh11 =
-                                &mut *dstBuf.offset((i * pitch) as isize) as *mut c_uchar
+                            *fresh11 = &mut *dstBuf.offset((i * pitch) as isize) as *mut c_uchar
                         }
                         i += 1
                     }
@@ -4569,9 +3919,7 @@ pub unsafe extern "C" fn tjDecompress2(
                         jpeg_read_scanlines(
                             dinfo,
                             &mut *row_pointer.offset((*dinfo).output_scanline as isize),
-                            
-                            (*dinfo)
-                                .output_height - (*dinfo).output_scanline,
+                            (*dinfo).output_height - (*dinfo).output_scanline,
                         );
                     }
                     jpeg_finish_decompress(dinfo);
@@ -4627,7 +3975,6 @@ unsafe extern "C" fn setDecodeDefaults(
     mut subsamp: c_int,
     mut _flags: c_int,
 ) -> c_int {
-     
     (*dinfo).scale_denom = 1u32;
     (*dinfo).scale_num = (*dinfo).scale_denom;
     if subsamp == TJSAMP_GRAY as c_int {
@@ -4647,16 +3994,13 @@ unsafe extern "C" fn setDecodeDefaults(
     .expect("non-null function pointer")(
         dinfo as j_common_ptr,
         JPOOL_IMAGE,
-        (*dinfo).num_components as c_ulong *
-    ::std::mem::size_of::<
-            jpeg_component_info,
-        >() as c_ulong,
+        (*dinfo).num_components as c_ulong
+            * ::std::mem::size_of::<jpeg_component_info>() as c_ulong,
     ) as *mut jpeg_component_info;
-     let mut i:   c_int =  0i32;
+    let mut i: c_int = 0i32;
     while i < (*dinfo).num_components {
         let mut compptr: *mut jpeg_component_info =
-            &mut *(*dinfo).comp_info.offset(i as isize)
-                as *mut jpeg_component_info;
+            &mut *(*dinfo).comp_info.offset(i as isize) as *mut jpeg_component_info;
         (*compptr).h_samp_factor = if i == 0i32 {
             (tjMCUWidth[subsamp as usize]) / 8i32
         } else {
@@ -4679,8 +4023,7 @@ unsafe extern "C" fn setDecodeDefaults(
     i = 0i32;
     while i < 2i32 {
         if (*dinfo).quant_tbl_ptrs[i as usize].is_null() {
-            (*dinfo).quant_tbl_ptrs[i as usize] =
-                jpeg_alloc_quant_table(dinfo as j_common_ptr)
+            (*dinfo).quant_tbl_ptrs[i as usize] = jpeg_alloc_quant_table(dinfo as j_common_ptr)
         }
         i += 1
     }
@@ -4688,9 +4031,7 @@ unsafe extern "C" fn setDecodeDefaults(
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn my_read_markers(
-    mut _dinfo: j_decompress_ptr,
-) -> c_int {
+pub unsafe extern "C" fn my_read_markers(mut _dinfo: j_decompress_ptr) -> c_int {
     return JPEG_REACHED_SOS;
 }
 #[no_mangle]
@@ -4763,41 +4104,20 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
     mut pixelFormat: c_int,
     mut flags: c_int,
 ) -> c_int {
-     let mut _tmpbuf:  [*mut JSAMPLE; 10] =
-    
-        [::std::ptr::null_mut::< JSAMPLE>(); 10]; let mut tmpbuf:  [*mut JSAMPROW; 10] =
-    
-        [::std::ptr::null_mut::< JSAMPROW>(); 10]; let mut inbuf:  [*mut JSAMPROW; 10] =
-    
-        [::std::ptr::null_mut::< JSAMPROW>(); 10];  let mut retval:  c_int =  0i32;
-    let mut row_pointer: *mut JSAMPROW =
-        NULL as *mut JSAMPROW;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    let mut old_read_markers: Option<
-        unsafe extern "C" fn(_: j_decompress_ptr) -> c_int,
-    > = None;
-    let mut old_reset_marker_reader: Option<
-        unsafe extern "C" fn(_: j_decompress_ptr) -> (),
-    > = None;
+    let mut _tmpbuf: [*mut JSAMPLE; 10] = [::std::ptr::null_mut::<JSAMPLE>(); 10];
+    let mut tmpbuf: [*mut JSAMPROW; 10] = [::std::ptr::null_mut::<JSAMPROW>(); 10];
+    let mut inbuf: [*mut JSAMPROW; 10] = [::std::ptr::null_mut::<JSAMPROW>(); 10];
+    let mut retval: c_int = 0i32;
+    let mut row_pointer: *mut JSAMPROW = NULL as *mut JSAMPROW;
+
+    let mut old_read_markers: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> c_int> = None;
+    let mut old_reset_marker_reader: Option<unsafe extern "C" fn(_: j_decompress_ptr) -> ()> = None;
     let mut this: *mut tjinstance = handle as *mut tjinstance;
-    let mut dinfo: j_decompress_ptr =
-        NULL as j_decompress_ptr;
+    let mut dinfo: j_decompress_ptr = NULL as j_decompress_ptr;
     if this.is_null() {
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"Invalid handle\x00".as_ptr() as *const c_char,
         );
         return -1i32;
@@ -4810,7 +4130,7 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
     } else {
         FALSE
     };
-     let mut i:   c_int =  0i32;
+    let mut i: c_int = 0i32;
     while i < MAX_COMPONENTS {
         tmpbuf[i as usize] = NULL as *mut JSAMPROW;
         _tmpbuf[i as usize] = NULL as *mut JSAMPLE;
@@ -4821,19 +4141,17 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
         snprintf(
             (*this).errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
-            b"tjDecodeYUVPlanes(): Instance has not been initialized for decompression\x00".as_ptr() as *const c_char,
+            b"tjDecodeYUVPlanes(): Instance has not been initialized for decompression\x00".as_ptr()
+                as *const c_char,
         );
         (*this).isInstanceError = TRUE;
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
-            b"tjDecodeYUVPlanes(): Instance has not been initialized for decompression\x00".as_ptr() as *const c_char,
+            b"tjDecodeYUVPlanes(): Instance has not been initialized for decompression\x00".as_ptr()
+                as *const c_char,
         );
         retval = -1i32
     } else if srcPlanes.is_null()
@@ -4850,18 +4168,14 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
         snprintf(
             (*this).errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjDecodeYUVPlanes(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         (*this).isInstanceError = TRUE;
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjDecodeYUVPlanes(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         retval = -1i32
@@ -4871,31 +4185,25 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
         snprintf(
             (*this).errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjDecodeYUVPlanes(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         (*this).isInstanceError = TRUE;
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjDecodeYUVPlanes(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         retval = -1i32
     } else if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
         /* If we get here, the JPEG code has signaled an error. */
         retval = -1i32
-    } else if pixelFormat ==  TJPF_CMYK {
+    } else if pixelFormat == TJPF_CMYK {
         snprintf(
             (*this).errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjDecodeYUVPlanes(): Cannot decode YUV images into CMYK pixels.\x00".as_ptr()
                 as *const c_char,
         );
@@ -4903,9 +4211,7 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjDecodeYUVPlanes(): Cannot decode YUV images into CMYK pixels.\x00".as_ptr()
                 as *const c_char,
         );
@@ -4917,47 +4223,27 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
         (*dinfo).image_width = width as JDIMENSION;
         (*dinfo).image_height = height as JDIMENSION;
         if flags & TJFLAG_FORCEMMX != 0 {
-            putenv(
-                
-                
-                
-                b"JSIMD_FORCEMMX=1\x00".as_ptr() as *mut c_char,
-            );
+            putenv(b"JSIMD_FORCEMMX=1\x00".as_ptr() as *mut c_char);
         } else if flags & TJFLAG_FORCESSE != 0 {
-            putenv(
-                
-                
-                
-                b"JSIMD_FORCESSE=1\x00".as_ptr() as *mut c_char,
-            );
+            putenv(b"JSIMD_FORCESSE=1\x00".as_ptr() as *mut c_char);
         } else if flags & TJFLAG_FORCESSE2 != 0 {
-            putenv(
-                
-                
-                
-                b"JSIMD_FORCESSE2=1\x00".as_ptr() as *mut c_char,
-            );
+            putenv(b"JSIMD_FORCESSE2=1\x00".as_ptr() as *mut c_char);
         }
         if setDecodeDefaults(dinfo, pixelFormat, subsamp, flags) == -1i32 {
             retval = -1i32
         } else {
-              old_read_markers = (*(*dinfo).marker).read_markers;
-            (*(*dinfo).marker).read_markers = Some(
-                my_read_markers
-                    as unsafe extern "C" fn(_: j_decompress_ptr) -> c_int,
-            );
+            old_read_markers = (*(*dinfo).marker).read_markers;
+            (*(*dinfo).marker).read_markers =
+                Some(my_read_markers as unsafe extern "C" fn(_: j_decompress_ptr) -> c_int);
             old_reset_marker_reader = (*(*dinfo).marker).reset_marker_reader;
-            (*(*dinfo).marker).reset_marker_reader = Some(
-                my_reset_marker_reader
-                    as unsafe extern "C" fn(_: j_decompress_ptr) -> (),
-            );
+            (*(*dinfo).marker).reset_marker_reader =
+                Some(my_reset_marker_reader as unsafe extern "C" fn(_: j_decompress_ptr) -> ());
             jpeg_read_header(dinfo, TRUE);
             (*(*dinfo).marker).read_markers = old_read_markers;
             (*(*dinfo).marker).reset_marker_reader = old_reset_marker_reader;
             (*this).dinfo.out_color_space = pf2cs[pixelFormat as usize];
             if flags & TJFLAG_FASTDCT != 0 {
-                (*this).dinfo.dct_method =
-                    JDCT_FASTEST as J_DCT_METHOD
+                (*this).dinfo.dct_method = JDCT_FASTEST as J_DCT_METHOD
             }
             (*dinfo).do_fancy_upsampling = FALSE;
             (*dinfo).Se = DCTSIZE2 - 1i32;
@@ -4968,44 +4254,39 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(dinfo);
-            
-             let mut pw0:   c_int =
-     width + (*dinfo).max_h_samp_factor - 1i32 & !((*dinfo).max_h_samp_factor - 1i32); let mut ph0:   c_int =
-     height + (*dinfo).max_v_samp_factor - 1i32 & !((*dinfo).max_v_samp_factor - 1i32);
+
+            let mut pw0: c_int =
+                width + (*dinfo).max_h_samp_factor - 1i32 & !((*dinfo).max_h_samp_factor - 1i32);
+            let mut ph0: c_int =
+                height + (*dinfo).max_v_samp_factor - 1i32 & !((*dinfo).max_v_samp_factor - 1i32);
             if pitch == 0i32 {
-                pitch = ( (*dinfo).output_width *
-    
-                    tjPixelSize[pixelFormat as usize] as c_uint) as c_int
+                pitch =
+                    ((*dinfo).output_width * tjPixelSize[pixelFormat as usize] as c_uint) as c_int
             }
-            row_pointer = malloc(
-                ::std::mem::size_of::<JSAMPROW>() as c_ulong *
-    ph0 as c_ulong,
-            ) as *mut JSAMPROW;
+            row_pointer = malloc(::std::mem::size_of::<JSAMPROW>() as c_ulong * ph0 as c_ulong)
+                as *mut JSAMPROW;
             if row_pointer.is_null() {
                 snprintf(
                     (*this).errStr.as_mut_ptr(),
                     JMSG_LENGTH_MAX as c_ulong,
-                    
                     b"%s\x00".as_ptr() as *const c_char,
-                    
-                    b"tjDecodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
-                        as *const c_char,
+                    b"tjDecodeYUVPlanes(): Memory allocation failure\x00".as_ptr() as *const c_char,
                 );
                 (*this).isInstanceError = TRUE;
                 snprintf(
                     errStr.as_mut_ptr(),
                     JMSG_LENGTH_MAX as c_ulong,
-                    
                     b"%s\x00".as_ptr() as *const c_char,
-                    
-                    b"tjDecodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
-                        as *const c_char,
+                    b"tjDecodeYUVPlanes(): Memory allocation failure\x00".as_ptr() as *const c_char,
                 );
                 retval = -1i32
             } else {
-                 let mut current_block:  u64; let mut row:  c_int =  0; let mut pw:  [c_int; 10] =  [0; 10]; let mut compptr:  *mut jpeg_component_info =
-    
-        ::std::ptr::null_mut::< jpeg_component_info>();i = 0i32;
+                let mut current_block: u64;
+                let mut row: c_int = 0;
+                let mut pw: [c_int; 10] = [0; 10];
+                let mut compptr: *mut jpeg_component_info =
+                    ::std::ptr::null_mut::<jpeg_component_info>();
+                i = 0i32;
                 while i < height {
                     if flags & TJFLAG_BOTTOMUP != 0 {
                         let ref mut fresh12 = *row_pointer.offset(i as isize);
@@ -5031,23 +4312,19 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
                         current_block = 228501038991332163;
                         break;
                     }
-                    compptr = &mut *(*dinfo).comp_info.offset(i as isize)
-                        as *mut jpeg_component_info;
+                    compptr =
+                        &mut *(*dinfo).comp_info.offset(i as isize) as *mut jpeg_component_info;
                     _tmpbuf[i as usize] = malloc(
-                        (((((*compptr)
-                            .width_in_blocks * 8u32 + 32u32 -
-    1u32
-                            & !(32i32 - 1i32) as c_uint))) *
-    (*compptr).v_samp_factor as c_uint + 32u32)
-                            as c_ulong,
+                        (((*compptr).width_in_blocks * 8u32 + 32u32 - 1u32
+                            & !(32i32 - 1i32) as c_uint)
+                            * (*compptr).v_samp_factor as c_uint
+                            + 32u32) as c_ulong,
                     ) as *mut JSAMPLE;
                     if _tmpbuf[i as usize].is_null() {
                         snprintf(
                             (*this).errStr.as_mut_ptr(),
                             JMSG_LENGTH_MAX as c_ulong,
-                            
                             b"%s\x00".as_ptr() as *const c_char,
-                            
                             b"tjDecodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                 as *const c_char,
                         );
@@ -5055,9 +4332,7 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
                         snprintf(
                             errStr.as_mut_ptr(),
                             JMSG_LENGTH_MAX as c_ulong,
-                            
                             b"%s\x00".as_ptr() as *const c_char,
-                            
                             b"tjDecodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                 as *const c_char,
                         );
@@ -5066,17 +4341,14 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
                         break;
                     } else {
                         tmpbuf[i as usize] = malloc(
-                            ::std::mem::size_of::<JSAMPROW>() as c_ulong *
-    (*compptr).v_samp_factor as c_ulong,
-                        )
-                            as *mut JSAMPROW;
+                            ::std::mem::size_of::<JSAMPROW>() as c_ulong
+                                * (*compptr).v_samp_factor as c_ulong,
+                        ) as *mut JSAMPROW;
                         if tmpbuf[i as usize].is_null() {
                             snprintf(
                                 (*this).errStr.as_mut_ptr(),
                                 JMSG_LENGTH_MAX as c_ulong,
-                                
                                 b"%s\x00".as_ptr() as *const c_char,
-                                
                                 b"tjDecodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                     as *const c_char,
                             );
@@ -5084,9 +4356,7 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
                             snprintf(
                                 errStr.as_mut_ptr(),
                                 JMSG_LENGTH_MAX as c_ulong,
-                                
                                 b"%s\x00".as_ptr() as *const c_char,
-                                
                                 b"tjDecodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                     as *const c_char,
                             );
@@ -5094,20 +4364,18 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
                             current_block = 5377760937109324610;
                             break;
                         } else {
-                             let mut ph:  [c_int; 10] =  [0; 10];row = 0i32;
+                            let mut ph: [c_int; 10] = [0; 10];
+                            row = 0i32;
                             while row < (*compptr).v_samp_factor {
-                                let mut _tmpbuf_aligned: *mut c_uchar = (_tmpbuf[i as usize]
-                                    as size_t + 32u64 -
-    1u64
-                                    & !(32i32 - 1i32) as c_ulong)
-                                    as *mut c_uchar;
+                                let mut _tmpbuf_aligned: *mut c_uchar =
+                                    (_tmpbuf[i as usize] as size_t + 32u64 - 1u64
+                                        & !(32i32 - 1i32) as c_ulong)
+                                        as *mut c_uchar;
                                 let ref mut fresh15 = *tmpbuf[i as usize].offset(row as isize);
                                 *fresh15 = &mut *_tmpbuf_aligned.offset(
-                                    (((((*compptr)
-                                        .width_in_blocks * 8u32 + 32u32 -
-    1u32
-                                        & !(32i32 - 1i32) as c_uint))) *
-    row as c_uint)
+                                    (((*compptr).width_in_blocks * 8u32 + 32u32 - 1u32
+                                        & !(32i32 - 1i32) as c_uint)
+                                        * row as c_uint)
                                         as isize,
                                 ) as *mut c_uchar;
                                 row += 1
@@ -5117,18 +4385,14 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
                             ph[i as usize] =
                                 ph0 * (*compptr).v_samp_factor / (*dinfo).max_v_samp_factor;
                             inbuf[i as usize] = malloc(
-                                ::std::mem::size_of::<JSAMPROW>()
-                                    as c_ulong *
-    ph[i as usize] as c_ulong,
-                            )
-                                as *mut JSAMPROW;
+                                ::std::mem::size_of::<JSAMPROW>() as c_ulong
+                                    * ph[i as usize] as c_ulong,
+                            ) as *mut JSAMPROW;
                             if inbuf[i as usize].is_null() {
                                 snprintf(
                                     (*this).errStr.as_mut_ptr(),
                                     JMSG_LENGTH_MAX as c_ulong,
-                                    
                                     b"%s\x00".as_ptr() as *const c_char,
-                                    
                                     b"tjDecodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                         as *const c_char,
                                 );
@@ -5136,9 +4400,7 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
                                 snprintf(
                                     errStr.as_mut_ptr(),
                                     JMSG_LENGTH_MAX as c_ulong,
-                                    
                                     b"%s\x00".as_ptr() as *const c_char,
-                                    
                                     b"tjDecodeYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                         as *const c_char,
                                 );
@@ -5146,9 +4408,8 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
                                 current_block = 5377760937109324610;
                                 break;
                             } else {
-                                  let mut ptr:   *mut JSAMPLE =
-     *srcPlanes.offset(i as isize)
-                                    as *mut JSAMPLE;
+                                let mut ptr: *mut JSAMPLE =
+                                    *srcPlanes.offset(i as isize) as *mut JSAMPLE;
                                 row = 0i32;
                                 while row < ph[i as usize] {
                                     let ref mut fresh16 = *inbuf[i as usize].offset(row as isize);
@@ -5177,10 +4438,8 @@ pub unsafe extern "C" fn tjDecodeYUVPlanes(
                         } else {
                             row = 0i32;
                             while row < ph0 {
-                                
-                                 let mut inrow:  JDIMENSION = 
-                                    0u32; let mut outrow:  JDIMENSION = 
-                                    0u32;
+                                let mut inrow: JDIMENSION = 0u32;
+                                let mut outrow: JDIMENSION = 0u32;
                                 i = 0i32;
                                 compptr = (*dinfo).comp_info;
                                 while i < (*dinfo).num_components {
@@ -5302,19 +4561,13 @@ pub unsafe extern "C" fn tjDecodeYUV(
     mut pixelFormat: c_int,
     mut flags: c_int,
 ) -> c_int {
-    
-    
-    
-    
     let mut retval: c_int = -1i32;
     let mut this: *mut tjinstance = handle as *mut tjinstance;
     if this.is_null() {
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjDecodeYUV(): Invalid handle\x00".as_ptr() as *const c_char,
         );
         retval = -1i32
@@ -5331,25 +4584,22 @@ pub unsafe extern "C" fn tjDecodeYUV(
             snprintf(
                 (*this).errStr.as_mut_ptr(),
                 JMSG_LENGTH_MAX as c_ulong,
-                
                 b"%s\x00".as_ptr() as *const c_char,
-                
                 b"tjDecodeYUV(): Invalid argument\x00".as_ptr() as *const c_char,
             );
             (*this).isInstanceError = TRUE;
             snprintf(
                 errStr.as_mut_ptr(),
                 JMSG_LENGTH_MAX as c_ulong,
-                
                 b"%s\x00".as_ptr() as *const c_char,
-                
                 b"tjDecodeYUV(): Invalid argument\x00".as_ptr() as *const c_char,
             );
             retval = -1i32
         } else {
-             let mut srcPlanes:  [*const c_uchar; 3] =
-     [::std::ptr::null::< c_uchar>(); 3];   let mut strides:  [c_int; 3] =  [0; 3];
-             let mut pw0:   c_int =  tjPlaneWidth(0i32, width, subsamp); let mut ph0:   c_int =  tjPlaneHeight(0i32, height, subsamp);
+            let mut srcPlanes: [*const c_uchar; 3] = [::std::ptr::null::<c_uchar>(); 3];
+            let mut strides: [c_int; 3] = [0; 3];
+            let mut pw0: c_int = tjPlaneWidth(0i32, width, subsamp);
+            let mut ph0: c_int = tjPlaneHeight(0i32, height, subsamp);
             srcPlanes[0] = srcBuf;
             strides[0] = pw0 + pad - 1i32 & !(pad - 1i32);
             if subsamp == TJSAMP_GRAY as c_int {
@@ -5445,40 +4695,17 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
     mut height: c_int,
     mut flags: c_int,
 ) -> c_int {
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-      let mut retval:  c_int =  0i32; let mut outbuf:  [*mut JSAMPROW; 10] =
-    
-        [::std::ptr::null_mut::< JSAMPROW>(); 10]; let mut tmpbuf:  [*mut JSAMPROW; 10] =
-    
-        [::std::ptr::null_mut::< JSAMPROW>(); 10];
-    let mut _tmpbuf: *mut JSAMPLE =
-        NULL as *mut JSAMPLE;
-    
-    
-    
-    
+    let mut retval: c_int = 0i32;
+    let mut outbuf: [*mut JSAMPROW; 10] = [::std::ptr::null_mut::<JSAMPROW>(); 10];
+    let mut tmpbuf: [*mut JSAMPROW; 10] = [::std::ptr::null_mut::<JSAMPROW>(); 10];
+    let mut _tmpbuf: *mut JSAMPLE = NULL as *mut JSAMPLE;
+
     let mut this: *mut tjinstance = handle as *mut tjinstance;
-    let mut dinfo: j_decompress_ptr =
-        NULL as j_decompress_ptr;
+    let mut dinfo: j_decompress_ptr = NULL as j_decompress_ptr;
     if this.is_null() {
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"Invalid handle\x00".as_ptr() as *const c_char,
         );
         return -1i32;
@@ -5491,7 +4718,7 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
     } else {
         FALSE
     };
-     let mut i:   c_int =  0i32;
+    let mut i: c_int = 0i32;
     while i < MAX_COMPONENTS {
         tmpbuf[i as usize] = NULL as *mut JSAMPROW;
         outbuf[i as usize] = NULL as *mut JSAMPROW;
@@ -5501,19 +4728,17 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
         snprintf(
             (*this).errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
-            b"tjDecompressToYUVPlanes(): Instance has not been initialized for decompression\x00".as_ptr() as *const c_char,
+            b"tjDecompressToYUVPlanes(): Instance has not been initialized for decompression\x00"
+                .as_ptr() as *const c_char,
         );
         (*this).isInstanceError = TRUE;
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
-            b"tjDecompressToYUVPlanes(): Instance has not been initialized for decompression\x00".as_ptr() as *const c_char,
+            b"tjDecompressToYUVPlanes(): Instance has not been initialized for decompression\x00"
+                .as_ptr() as *const c_char,
         );
         retval = -1i32
     } else if jpegBuf.is_null()
@@ -5526,54 +4751,35 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
         snprintf(
             (*this).errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjDecompressToYUVPlanes(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         (*this).isInstanceError = TRUE;
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjDecompressToYUVPlanes(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         retval = -1i32
     } else {
         if flags & TJFLAG_FORCEMMX != 0 {
-            putenv(
-                
-                
-                
-                b"JSIMD_FORCEMMX=1\x00".as_ptr() as *mut c_char,
-            );
+            putenv(b"JSIMD_FORCEMMX=1\x00".as_ptr() as *mut c_char);
         } else if flags & TJFLAG_FORCESSE != 0 {
-            putenv(
-                
-                
-                
-                b"JSIMD_FORCESSE=1\x00".as_ptr() as *mut c_char,
-            );
+            putenv(b"JSIMD_FORCESSE=1\x00".as_ptr() as *mut c_char);
         } else if flags & TJFLAG_FORCESSE2 != 0 {
-            putenv(
-                
-                
-                
-                b"JSIMD_FORCESSE2=1\x00".as_ptr() as *mut c_char,
-            );
+            putenv(b"JSIMD_FORCESSE2=1\x00".as_ptr() as *mut c_char);
         }
         if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
             /* If we get here, the JPEG code has signaled an error. */
             retval = -1i32
         } else {
-             if (*this).headerRead == 0 {
+            if (*this).headerRead == 0 {
                 jpeg_mem_src_tj(dinfo, jpegBuf, jpegSize);
                 jpeg_read_header(dinfo, TRUE);
             }
             (*this).headerRead = 0i32;
-             let mut jpegSubsamp:   c_int =  getSubsamp(dinfo);
+            let mut jpegSubsamp: c_int = getSubsamp(dinfo);
             if jpegSubsamp < 0i32 {
                 snprintf((*this).errStr.as_mut_ptr(),
                          JMSG_LENGTH_MAX as c_ulong,
@@ -5595,26 +4801,22 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                 snprintf(
                     (*this).errStr.as_mut_ptr(),
                     JMSG_LENGTH_MAX as c_ulong,
-                    
                     b"%s\x00".as_ptr() as *const c_char,
-                    
-                    b"tjDecompressToYUVPlanes(): Invalid argument\x00".as_ptr()
-                        as *const c_char,
+                    b"tjDecompressToYUVPlanes(): Invalid argument\x00".as_ptr() as *const c_char,
                 );
                 (*this).isInstanceError = TRUE;
                 snprintf(
                     errStr.as_mut_ptr(),
                     JMSG_LENGTH_MAX as c_ulong,
-                    
                     b"%s\x00".as_ptr() as *const c_char,
-                    
-                    b"tjDecompressToYUVPlanes(): Invalid argument\x00".as_ptr()
-                        as *const c_char,
+                    b"tjDecompressToYUVPlanes(): Invalid argument\x00".as_ptr() as *const c_char,
                 );
                 retval = -1i32
             } else {
-                   let mut scaledw:  c_int =  0; let mut scaledh:  c_int =  0;
-                 let mut jpegwidth:   c_int =  (*dinfo).image_width as c_int; let mut jpegheight:   c_int =  (*dinfo).image_height as c_int;
+                let mut scaledw: c_int = 0;
+                let mut scaledh: c_int = 0;
+                let mut jpegwidth: c_int = (*dinfo).image_width as c_int;
+                let mut jpegheight: c_int = (*dinfo).image_height as c_int;
                 if width == 0i32 {
                     width = jpegwidth
                 }
@@ -5651,80 +4853,75 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                     snprintf(
                         (*this).errStr.as_mut_ptr(),
                         JMSG_LENGTH_MAX as c_ulong,
-                        
                         b"%s\x00".as_ptr() as *const c_char,
-                        
-                        b"tjDecompressToYUVPlanes(): JPEG image must have 3 or fewer components\x00".as_ptr() as *const c_char,
+                        b"tjDecompressToYUVPlanes(): JPEG image must have 3 or fewer components\x00"
+                            .as_ptr() as *const c_char,
                     );
                     (*this).isInstanceError = TRUE;
                     snprintf(
                         errStr.as_mut_ptr(),
                         JMSG_LENGTH_MAX as c_ulong,
-                        
                         b"%s\x00".as_ptr() as *const c_char,
-                        
-                        b"tjDecompressToYUVPlanes(): JPEG image must have 3 or fewer components\x00".as_ptr() as *const c_char,
+                        b"tjDecompressToYUVPlanes(): JPEG image must have 3 or fewer components\x00"
+                            .as_ptr() as *const c_char,
                     );
                     retval = -1i32
                 } else {
-                     let mut current_block:  u64;  let mut row:  c_int =  0; let mut pw:  [c_int; 10] =  [0; 10]; let mut ph:  [c_int; 10] =  [0; 10]; let mut iw:  [c_int; 10] =  [0; 10]; let mut tmpbufsize:  c_int =  0i32; let mut usetmpbuf:  c_int =  0i32; let mut th:  [c_int; 10] =  [0; 10]; let mut ptr:  *mut JSAMPLE =
-     ::std::ptr::null_mut::< JSAMPLE>(); width = scaledw;
+                    let mut current_block: u64;
+                    let mut row: c_int = 0;
+                    let mut pw: [c_int; 10] = [0; 10];
+                    let mut ph: [c_int; 10] = [0; 10];
+                    let mut iw: [c_int; 10] = [0; 10];
+                    let mut tmpbufsize: c_int = 0i32;
+                    let mut usetmpbuf: c_int = 0i32;
+                    let mut th: [c_int; 10] = [0; 10];
+                    let mut ptr: *mut JSAMPLE = ::std::ptr::null_mut::<JSAMPLE>();
+                    width = scaledw;
                     height = scaledh;
                     (*dinfo).scale_num = sf[i as usize].num as c_uint;
                     (*dinfo).scale_denom = sf[i as usize].denom as c_uint;
-                     let mut sfi:   c_int =  i;
+                    let mut sfi: c_int = i;
                     jpeg_calc_output_dimensions(dinfo);
-                     let mut dctsize:   c_int =
-    
+                    let mut dctsize: c_int =
                         DCTSIZE * sf[sfi as usize].num / sf[sfi as usize].denom;
                     i = 0i32;
                     loop {
-                         if !(i < (*dinfo).num_components) {
+                        if !(i < (*dinfo).num_components) {
                             current_block = 11064061988481400464;
                             break;
                         }
                         let mut compptr: *mut jpeg_component_info =
-                            &mut *(*dinfo).comp_info.offset(i as isize)
-                                as *mut jpeg_component_info;
-                        
-                        iw[i as usize] = ( (*compptr)
-                            .width_in_blocks * dctsize as c_uint)
-                            as c_int;
-                         let mut ih:   c_int =
-     ( (*compptr)
-                            .height_in_blocks * dctsize as c_uint)
-                            as c_int;
-                        pw[i as usize] = (((((*dinfo)
-                            .output_width + (*dinfo).max_h_samp_factor as c_uint -
-    1u32
-                            & !((*dinfo).max_h_samp_factor - 1i32) as c_uint))) *
-    (*compptr).h_samp_factor as c_uint /
-    (*dinfo).max_h_samp_factor as c_uint)
-                            as c_int;
-                        ph[i as usize] = (((((*dinfo)
-                            .output_height + (*dinfo).max_v_samp_factor as c_uint -
-    1u32
-                            & !((*dinfo).max_v_samp_factor - 1i32) as c_uint))) *
-    (*compptr).v_samp_factor as c_uint /
-    (*dinfo).max_v_samp_factor as c_uint)
-                            as c_int;
+                            &mut *(*dinfo).comp_info.offset(i as isize) as *mut jpeg_component_info;
+
+                        iw[i as usize] = ((*compptr).width_in_blocks * dctsize as c_uint) as c_int;
+                        let mut ih: c_int =
+                            ((*compptr).height_in_blocks * dctsize as c_uint) as c_int;
+                        pw[i as usize] =
+                            (((*dinfo).output_width + (*dinfo).max_h_samp_factor as c_uint - 1u32
+                                & !((*dinfo).max_h_samp_factor - 1i32) as c_uint)
+                                * (*compptr).h_samp_factor as c_uint
+                                / (*dinfo).max_h_samp_factor as c_uint)
+                                as c_int;
+                        ph[i as usize] =
+                            (((*dinfo).output_height + (*dinfo).max_v_samp_factor as c_uint - 1u32
+                                & !((*dinfo).max_v_samp_factor - 1i32) as c_uint)
+                                * (*compptr).v_samp_factor as c_uint
+                                / (*dinfo).max_v_samp_factor as c_uint)
+                                as c_int;
                         if iw[i as usize] != pw[i as usize] || ih != ph[i as usize] {
                             usetmpbuf = 1i32
                         }
                         th[i as usize] = (*compptr).v_samp_factor * dctsize;
                         tmpbufsize += iw[i as usize] * th[i as usize];
                         outbuf[i as usize] = malloc(
-                            ::std::mem::size_of::<JSAMPROW>() as c_ulong *
-    ph[i as usize] as c_ulong,
-                        )
-                            as *mut JSAMPROW;
+                            ::std::mem::size_of::<JSAMPROW>() as c_ulong
+                                * ph[i as usize] as c_ulong,
+                        ) as *mut JSAMPROW;
                         if outbuf[i as usize].is_null() {
                             snprintf(
                                 (*this).errStr.as_mut_ptr(),
                                 JMSG_LENGTH_MAX as c_ulong,
-                                
                                 b"%s\x00".as_ptr() as *const c_char,
-                                
                                 b"tjDecompressToYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                     as *const c_char,
                             );
@@ -5732,9 +4929,7 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                             snprintf(
                                 errStr.as_mut_ptr(),
                                 JMSG_LENGTH_MAX as c_ulong,
-                                
                                 b"%s\x00".as_ptr() as *const c_char,
-                                
                                 b"tjDecompressToYUVPlanes(): Memory allocation failure\x00".as_ptr()
                                     as *const c_char,
                             );
@@ -5764,29 +4959,25 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                         _ => {
                             if usetmpbuf != 0 {
                                 _tmpbuf = malloc(
-                                    ::std::mem::size_of::<JSAMPLE>()
-                                        as c_ulong *
-    tmpbufsize as c_ulong,
-                                )
-                                    as *mut JSAMPLE;
+                                    ::std::mem::size_of::<JSAMPLE>() as c_ulong
+                                        * tmpbufsize as c_ulong,
+                                ) as *mut JSAMPLE;
                                 if _tmpbuf.is_null() {
                                     snprintf(
                                         (*this).errStr.as_mut_ptr(),
                                         JMSG_LENGTH_MAX as c_ulong,
-                                        
                                         b"%s\x00".as_ptr() as *const c_char,
-                                        
-                                        b"tjDecompressToYUVPlanes(): Memory allocation failure\x00".as_ptr()
+                                        b"tjDecompressToYUVPlanes(): Memory allocation failure\x00"
+                                            .as_ptr()
                                             as *const c_char,
                                     );
                                     (*this).isInstanceError = TRUE;
                                     snprintf(
                                         errStr.as_mut_ptr(),
                                         JMSG_LENGTH_MAX as c_ulong,
-                                        
                                         b"%s\x00".as_ptr() as *const c_char,
-                                        
-                                        b"tjDecompressToYUVPlanes(): Memory allocation failure\x00".as_ptr()
+                                        b"tjDecompressToYUVPlanes(): Memory allocation failure\x00"
+                                            .as_ptr()
                                             as *const c_char,
                                     );
                                     retval = -1i32;
@@ -5800,9 +4991,8 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                                             break;
                                         }
                                         tmpbuf[i as usize] = malloc(
-                                            ::std::mem::size_of::<JSAMPROW>()
-                                                as c_ulong *
-    th[i as usize] as c_ulong,
+                                            ::std::mem::size_of::<JSAMPROW>() as c_ulong
+                                                * th[i as usize] as c_ulong,
                                         )
                                             as *mut JSAMPROW;
                                         if tmpbuf[i as usize].is_null() {
@@ -5847,10 +5037,7 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                             match current_block {
                                 12580004273960699447 => {}
                                 _ => {
-                                    if _setjmp(
-                                        (*this).jerr.setjmp_buffer.as_mut_ptr(),
-                                    ) != 0
-                                    {
+                                    if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
                                         /* If we get here, the JPEG code has signaled an error. */
                                         retval = -1i32
                                     } else {
@@ -5858,26 +5045,20 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                                             (*dinfo).do_fancy_upsampling = FALSE
                                         }
                                         if flags & TJFLAG_FASTDCT != 0 {
-                                            (*dinfo).dct_method = JDCT_FASTEST
-                                                as J_DCT_METHOD
+                                            (*dinfo).dct_method = JDCT_FASTEST as J_DCT_METHOD
                                         }
                                         (*dinfo).raw_data_out = TRUE;
                                         jpeg_start_decompress(dinfo);
                                         row = 0i32;
                                         while row < (*dinfo).output_height as c_int {
-                                            
-                                             let mut yuvptr:  [JSAMPARRAY; 10] =
-    
-                                                [::std::ptr::null_mut::< JSAMPROW>(); 10]; let mut crow:  [c_int; 10] =  [0; 10];
+                                            let mut yuvptr: [JSAMPARRAY; 10] =
+                                                [::std::ptr::null_mut::<JSAMPROW>(); 10];
+                                            let mut crow: [c_int; 10] = [0; 10];
                                             i = 0i32;
                                             while i < (*dinfo).num_components {
-                                                let mut compptr_0:
-                                                        *mut jpeg_component_info =
-                                                    &mut *(*dinfo).comp_info.offset(i
-                                                                                        as
-                                                                                        isize)
-                                                        as
-                                                        *mut jpeg_component_info;
+                                                let mut compptr_0: *mut jpeg_component_info =
+                                                    &mut *(*dinfo).comp_info.offset(i as isize)
+                                                        as *mut jpeg_component_info;
                                                 if jpegSubsamp == TJ_420 {
                                                     /* When 4:2:0 subsampling is used with IDCT scaling, libjpeg will try
                                                     to be clever and use the IDCT to perform upsampling on the U and V
@@ -5890,13 +5071,12 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                                                     internal libjpeg parameters to force it to use the "scaled" IDCT
                                                     functions on the U and V planes. */
                                                     (*compptr_0).DCT_scaled_size = dctsize;
-                                                    (*compptr_0).MCU_sample_width =
-                                                        tjMCUWidth
-                                                            [jpegSubsamp as usize]
-                                                            * sf[sfi as usize].num
-                                                            / sf[sfi as usize].denom
-                                                            * (*compptr_0).v_samp_factor
-                                                            / (*dinfo).max_v_samp_factor;
+                                                    (*compptr_0).MCU_sample_width = tjMCUWidth
+                                                        [jpegSubsamp as usize]
+                                                        * sf[sfi as usize].num
+                                                        / sf[sfi as usize].denom
+                                                        * (*compptr_0).v_samp_factor
+                                                        / (*dinfo).max_v_samp_factor;
                                                     (*(*dinfo).idct).inverse_DCT[i as usize] =
                                                         (*(*dinfo).idct).inverse_DCT[0]
                                                 }
@@ -5922,10 +5102,9 @@ pub unsafe extern "C" fn tjDecompressToYUVPlanes(
                                                     as JDIMENSION,
                                             );
                                             if usetmpbuf != 0 {
-                                                
                                                 i = 0i32;
                                                 while i < (*dinfo).num_components {
-                                                      let mut j:   c_int =  0i32;
+                                                    let mut j: c_int = 0i32;
                                                     while j
                                                         < (if th[i as usize]
                                                             < ph[i as usize] - crow[i as usize]
@@ -6042,25 +5221,15 @@ pub unsafe extern "C" fn tjDecompressToYUV2(
     mut height: c_int,
     mut flags: c_int,
 ) -> c_int {
-    
-    
-    
-    
     let mut retval: c_int = -1i32;
     let mut jpegSubsamp: c_int = -1i32;
-    
-    
-    
-    
-    
+
     let mut this: *mut tjinstance = handle as *mut tjinstance;
-    let mut dinfo: j_decompress_ptr =
-        NULL as j_decompress_ptr;
+    let mut dinfo: j_decompress_ptr = NULL as j_decompress_ptr;
     if this.is_null() {
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"Invalid handle\x00".as_ptr() as *const c_char,
         );
         return -1i32;
@@ -6084,18 +5253,14 @@ pub unsafe extern "C" fn tjDecompressToYUV2(
         snprintf(
             (*this).errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjDecompressToYUV2(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         (*this).isInstanceError = TRUE;
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjDecompressToYUV2(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         retval = -1i32
@@ -6111,37 +5276,35 @@ pub unsafe extern "C" fn tjDecompressToYUV2(
             snprintf(
                 (*this).errStr.as_mut_ptr(),
                 JMSG_LENGTH_MAX as c_ulong,
-                
                 b"%s\x00".as_ptr() as *const c_char,
-                
-                b"tjDecompressToYUV2(): Could not determine subsampling type for JPEG image\x00".as_ptr() as *const c_char,
+                b"tjDecompressToYUV2(): Could not determine subsampling type for JPEG image\x00"
+                    .as_ptr() as *const c_char,
             );
             (*this).isInstanceError = TRUE;
             snprintf(
                 errStr.as_mut_ptr(),
                 JMSG_LENGTH_MAX as c_ulong,
-                
                 b"%s\x00".as_ptr() as *const c_char,
-                
-                b"tjDecompressToYUV2(): Could not determine subsampling type for JPEG image\x00".as_ptr() as *const c_char,
+                b"tjDecompressToYUV2(): Could not determine subsampling type for JPEG image\x00"
+                    .as_ptr() as *const c_char,
             );
             retval = -1i32
         } else {
-               
-             let mut jpegwidth:   c_int =  (*dinfo).image_width as c_int; let mut jpegheight:   c_int =  (*dinfo).image_height as c_int;
+            let mut jpegwidth: c_int = (*dinfo).image_width as c_int;
+            let mut jpegheight: c_int = (*dinfo).image_height as c_int;
             if width == 0i32 {
                 width = jpegwidth
             }
             if height == 0i32 {
                 height = jpegheight
             }
-             let mut i:   c_int =  0i32;
+            let mut i: c_int = 0i32;
             while i < NUMSF {
-                  
-                 let mut scaledw:   c_int =
-     (jpegwidth * sf[i as usize].num + sf[i as usize].denom - 1i32)
-                    / sf[i as usize].denom; let mut scaledh:   c_int =
-     (jpegheight * sf[i as usize].num + sf[i as usize].denom - 1i32)
+                let mut scaledw: c_int = (jpegwidth * sf[i as usize].num + sf[i as usize].denom
+                    - 1i32)
+                    / sf[i as usize].denom;
+                let mut scaledh: c_int = (jpegheight * sf[i as usize].num + sf[i as usize].denom
+                    - 1i32)
                     / sf[i as usize].denom;
                 if scaledw <= width && scaledh <= height {
                     break;
@@ -6152,25 +5315,24 @@ pub unsafe extern "C" fn tjDecompressToYUV2(
                 snprintf(
                     (*this).errStr.as_mut_ptr(),
                     JMSG_LENGTH_MAX as c_ulong,
-                    
                     b"%s\x00".as_ptr() as *const c_char,
-                    
-                    b"tjDecompressToYUV2(): Could not scale down to desired image dimensions\x00".as_ptr() as *const c_char,
+                    b"tjDecompressToYUV2(): Could not scale down to desired image dimensions\x00"
+                        .as_ptr() as *const c_char,
                 );
                 (*this).isInstanceError = TRUE;
                 snprintf(
                     errStr.as_mut_ptr(),
                     JMSG_LENGTH_MAX as c_ulong,
-                    
                     b"%s\x00".as_ptr() as *const c_char,
-                    
-                    b"tjDecompressToYUV2(): Could not scale down to desired image dimensions\x00".as_ptr() as *const c_char,
+                    b"tjDecompressToYUV2(): Could not scale down to desired image dimensions\x00"
+                        .as_ptr() as *const c_char,
                 );
                 retval = -1i32
             } else {
-                 let mut dstPlanes:  [*mut c_uchar; 3] =
-     [::std::ptr::null_mut::< c_uchar>(); 3];   let mut strides:  [c_int; 3] =  [0; 3];
-                 let mut pw0:   c_int =  tjPlaneWidth(0i32, width, jpegSubsamp); let mut ph0:   c_int =  tjPlaneHeight(0i32, height, jpegSubsamp);
+                let mut dstPlanes: [*mut c_uchar; 3] = [::std::ptr::null_mut::<c_uchar>(); 3];
+                let mut strides: [c_int; 3] = [0; 3];
+                let mut pw0: c_int = tjPlaneWidth(0i32, width, jpegSubsamp);
+                let mut ph0: c_int = tjPlaneHeight(0i32, height, jpegSubsamp);
                 dstPlanes[0] = dstBuf;
                 strides[0] = pw0 + pad - 1i32 & !(pad - 1i32);
                 if jpegSubsamp == TJSAMP_GRAY as c_int {
@@ -6226,13 +5388,11 @@ pub unsafe extern "C" fn tjDecompressToYUV(
 pub unsafe extern "C" fn tjInitTransform() -> tjhandle {
     let mut this: *mut tjinstance = NULL as *mut tjinstance;
     let mut handle: tjhandle = NULL as *mut c_void;
-    this = malloc(::std::mem::size_of::<tjinstance>() as c_ulong)
-        as *mut tjinstance;
+    this = malloc(::std::mem::size_of::<tjinstance>() as c_ulong) as *mut tjinstance;
     if this.is_null() {
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"tjInitTransform(): Memory allocation failure\x00".as_ptr() as *const c_char,
         );
         return NULL as *mut c_void;
@@ -6245,7 +5405,6 @@ pub unsafe extern "C" fn tjInitTransform() -> tjhandle {
     snprintf(
         (*this).errStr.as_mut_ptr(),
         JMSG_LENGTH_MAX as c_ulong,
-        
         b"No error\x00".as_ptr() as *const c_char,
     );
     handle = _tjInitCompress(this);
@@ -6327,25 +5486,17 @@ pub unsafe extern "C" fn tjTransform(
     mut t: *mut tjtransform,
     mut flags: c_int,
 ) -> c_int {
-     let mut retval:  c_int =  0i32;
+    let mut retval: c_int = 0i32;
     let mut xinfo: *mut super::transupp::jpeg_transform_info =
         NULL as *mut super::transupp::jpeg_transform_info;
-    
-    
-    
-    
-    
-    
+
     let mut this: *mut tjinstance = handle as *mut tjinstance;
-    let mut cinfo: j_compress_ptr =
-        NULL as j_compress_ptr;
-    let mut dinfo: j_decompress_ptr =
-        NULL as j_decompress_ptr;
+    let mut cinfo: j_compress_ptr = NULL as j_compress_ptr;
+    let mut dinfo: j_decompress_ptr = NULL as j_decompress_ptr;
     if this.is_null() {
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"Invalid handle\x00".as_ptr() as *const c_char,
         );
         return -1i32;
@@ -6359,15 +5510,11 @@ pub unsafe extern "C" fn tjTransform(
     } else {
         FALSE
     };
-    if (*this).init & COMPRESS as c_int == 0i32
-        || (*this).init & DECOMPRESS as c_int == 0i32
-    {
+    if (*this).init & COMPRESS as c_int == 0i32 || (*this).init & DECOMPRESS as c_int == 0i32 {
         snprintf(
             (*this).errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjTransform(): Instance has not been initialized for transformation\x00".as_ptr()
                 as *const c_char,
         );
@@ -6375,9 +5522,7 @@ pub unsafe extern "C" fn tjTransform(
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjTransform(): Instance has not been initialized for transformation\x00".as_ptr()
                 as *const c_char,
         );
@@ -6393,43 +5538,24 @@ pub unsafe extern "C" fn tjTransform(
         snprintf(
             (*this).errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjTransform(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         (*this).isInstanceError = TRUE;
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjTransform(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         retval = -1i32
     } else {
         if flags & TJFLAG_FORCEMMX != 0 {
-            putenv(
-                
-                
-                
-                b"JSIMD_FORCEMMX=1\x00".as_ptr() as *mut c_char,
-            );
+            putenv(b"JSIMD_FORCEMMX=1\x00".as_ptr() as *mut c_char);
         } else if flags & TJFLAG_FORCESSE != 0 {
-            putenv(
-                
-                
-                
-                b"JSIMD_FORCESSE=1\x00".as_ptr() as *mut c_char,
-            );
+            putenv(b"JSIMD_FORCESSE=1\x00".as_ptr() as *mut c_char);
         } else if flags & TJFLAG_FORCESSE2 != 0 {
-            putenv(
-                
-                
-                
-                b"JSIMD_FORCESSE2=1\x00".as_ptr() as *mut c_char,
-            );
+            putenv(b"JSIMD_FORCESSE2=1\x00".as_ptr() as *mut c_char);
         }
         xinfo = malloc(
             ::std::mem::size_of::<super::transupp::jpeg_transform_info>() as c_ulong * n as c_ulong,
@@ -6438,18 +5564,14 @@ pub unsafe extern "C" fn tjTransform(
             snprintf(
                 (*this).errStr.as_mut_ptr(),
                 JMSG_LENGTH_MAX as c_ulong,
-                
                 b"%s\x00".as_ptr() as *const c_char,
-                
                 b"tjTransform(): Memory allocation failure\x00".as_ptr() as *const c_char,
             );
             (*this).isInstanceError = TRUE;
             snprintf(
                 errStr.as_mut_ptr(),
                 JMSG_LENGTH_MAX as c_ulong,
-                
                 b"%s\x00".as_ptr() as *const c_char,
-                
                 b"tjTransform(): Memory allocation failure\x00".as_ptr() as *const c_char,
             );
             retval = -1i32
@@ -6457,54 +5579,44 @@ pub unsafe extern "C" fn tjTransform(
             memset(
                 xinfo as *mut c_void,
                 0i32,
-                ::std::mem::size_of::<super::transupp::jpeg_transform_info>()
-                    as c_ulong * n as c_ulong,
+                ::std::mem::size_of::<super::transupp::jpeg_transform_info>() as c_ulong
+                    * n as c_ulong,
             );
             if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
                 /* If we get here, the JPEG code has signaled an error. */
                 retval = -1i32
             } else {
-                   let mut saveMarkers:  c_int =  0i32;jpeg_mem_src_tj(dinfo, jpegBuf, jpegSize);
-                 let mut i:   c_int =  0i32;
+                let mut saveMarkers: c_int = 0i32;
+                jpeg_mem_src_tj(dinfo, jpegBuf, jpegSize);
+                let mut i: c_int = 0i32;
                 while i < n {
                     (*xinfo.offset(i as isize)).transform =
                         xformtypes[(*t.offset(i as isize)).op as usize];
-                    (*xinfo.offset(i as isize)).perfect = if (*t.offset(i as isize)).options
-                        & TJXOPT_PERFECT
-                        != 0
-                    {
-                        1i32
-                    } else {
-                        0i32
-                    };
-                    (*xinfo.offset(i as isize)).trim = if (*t.offset(i as isize)).options
-                        & TJXOPT_TRIM
-                        != 0
-                    {
-                        1i32
-                    } else {
-                        0i32
-                    };
-                    (*xinfo.offset(i as isize)).force_grayscale = if (*t.offset(i as isize)).options
-                        & TJXOPT_GRAY
-                        != 0
-                    {
-                        1i32
-                    } else {
-                        0i32
-                    };
-                    (*xinfo.offset(i as isize)).crop = if (*t.offset(i as isize)).options
-                        & TJXOPT_CROP
-                        != 0
-                    {
-                        1i32
-                    } else {
-                        0i32
-                    };
-                    if n != 1i32
-                        && (*t.offset(i as isize)).op
-                            == TJXOP_HFLIP as c_int
-                    {
+                    (*xinfo.offset(i as isize)).perfect =
+                        if (*t.offset(i as isize)).options & TJXOPT_PERFECT != 0 {
+                            1i32
+                        } else {
+                            0i32
+                        };
+                    (*xinfo.offset(i as isize)).trim =
+                        if (*t.offset(i as isize)).options & TJXOPT_TRIM != 0 {
+                            1i32
+                        } else {
+                            0i32
+                        };
+                    (*xinfo.offset(i as isize)).force_grayscale =
+                        if (*t.offset(i as isize)).options & TJXOPT_GRAY != 0 {
+                            1i32
+                        } else {
+                            0i32
+                        };
+                    (*xinfo.offset(i as isize)).crop =
+                        if (*t.offset(i as isize)).options & TJXOPT_CROP != 0 {
+                            1i32
+                        } else {
+                            0i32
+                        };
+                    if n != 1i32 && (*t.offset(i as isize)).op == TJXOP_HFLIP as c_int {
                         (*xinfo.offset(i as isize)).slow_hflip = 1i32
                     } else {
                         (*xinfo.offset(i as isize)).slow_hflip = 0i32
@@ -6512,35 +5624,26 @@ pub unsafe extern "C" fn tjTransform(
                     if (*xinfo.offset(i as isize)).crop != 0 {
                         (*xinfo.offset(i as isize)).crop_xoffset =
                             (*t.offset(i as isize)).r.x as JDIMENSION;
-                        (*xinfo.offset(i as isize)).crop_xoffset_set =
-                            super::transupp::JCROP_POS;
+                        (*xinfo.offset(i as isize)).crop_xoffset_set = super::transupp::JCROP_POS;
                         (*xinfo.offset(i as isize)).crop_yoffset =
                             (*t.offset(i as isize)).r.y as JDIMENSION;
-                        (*xinfo.offset(i as isize)).crop_yoffset_set =
-                            super::transupp::JCROP_POS;
+                        (*xinfo.offset(i as isize)).crop_yoffset_set = super::transupp::JCROP_POS;
                         if (*t.offset(i as isize)).r.w != 0i32 {
                             (*xinfo.offset(i as isize)).crop_width =
                                 (*t.offset(i as isize)).r.w as JDIMENSION;
-                            (*xinfo.offset(i as isize)).crop_width_set =
-                                super::transupp::JCROP_POS
+                            (*xinfo.offset(i as isize)).crop_width_set = super::transupp::JCROP_POS
                         } else {
-                            (*xinfo.offset(i as isize)).crop_width =
-                                
-                                super::transupp::JCROP_UNSET
+                            (*xinfo.offset(i as isize)).crop_width = super::transupp::JCROP_UNSET
                         }
                         if (*t.offset(i as isize)).r.h != 0i32 {
                             (*xinfo.offset(i as isize)).crop_height =
                                 (*t.offset(i as isize)).r.h as JDIMENSION;
-                            (*xinfo.offset(i as isize)).crop_height_set =
-                                super::transupp::JCROP_POS
+                            (*xinfo.offset(i as isize)).crop_height_set = super::transupp::JCROP_POS
                         } else {
-                            (*xinfo.offset(i as isize)).crop_height =
-                                
-                                super::transupp::JCROP_UNSET
+                            (*xinfo.offset(i as isize)).crop_height = super::transupp::JCROP_UNSET
                         }
                     }
-                    if (*t.offset(i as isize)).options & TJXOPT_COPYNONE == 0
-                    {
+                    if (*t.offset(i as isize)).options & TJXOPT_COPYNONE == 0 {
                         saveMarkers = 1i32
                     }
                     i += 1
@@ -6554,28 +5657,27 @@ pub unsafe extern "C" fn tjTransform(
                     } as super::transupp::JCOPY_OPTION,
                 );
                 jpeg_read_header(dinfo, TRUE);
-                 let mut jpegSubsamp:   c_int =  getSubsamp(dinfo);
+                let mut jpegSubsamp: c_int = getSubsamp(dinfo);
                 if jpegSubsamp < 0i32 {
                     snprintf(
                         (*this).errStr.as_mut_ptr(),
                         JMSG_LENGTH_MAX as c_ulong,
-                        
                         b"%s\x00".as_ptr() as *const c_char,
-                        
-                        b"tjTransform(): Could not determine subsampling type for JPEG image\x00".as_ptr() as *const c_char,
+                        b"tjTransform(): Could not determine subsampling type for JPEG image\x00"
+                            .as_ptr() as *const c_char,
                     );
                     (*this).isInstanceError = TRUE;
                     snprintf(
                         errStr.as_mut_ptr(),
                         JMSG_LENGTH_MAX as c_ulong,
-                        
                         b"%s\x00".as_ptr() as *const c_char,
-                        
-                        b"tjTransform(): Could not determine subsampling type for JPEG image\x00".as_ptr() as *const c_char,
+                        b"tjTransform(): Could not determine subsampling type for JPEG image\x00"
+                            .as_ptr() as *const c_char,
                     );
                     retval = -1i32
                 } else {
-                     let mut current_block:  u64;i = 0i32;
+                    let mut current_block: u64;
+                    i = 0i32;
                     loop {
                         if !(i < n) {
                             current_block = 1852451392920375136;
@@ -6589,9 +5691,7 @@ pub unsafe extern "C" fn tjTransform(
                             snprintf(
                                 (*this).errStr.as_mut_ptr(),
                                 JMSG_LENGTH_MAX as c_ulong,
-                                
                                 b"%s\x00".as_ptr() as *const c_char,
-                                
                                 b"tjTransform(): Transform is not perfect\x00".as_ptr()
                                     as *const c_char,
                             );
@@ -6599,9 +5699,7 @@ pub unsafe extern "C" fn tjTransform(
                             snprintf(
                                 errStr.as_mut_ptr(),
                                 JMSG_LENGTH_MAX as c_ulong,
-                                
                                 b"%s\x00".as_ptr() as *const c_char,
-                                
                                 b"tjTransform(): Transform is not perfect\x00".as_ptr()
                                     as *const c_char,
                             );
@@ -6637,17 +5735,17 @@ pub unsafe extern "C" fn tjTransform(
                     match current_block {
                         1538248363559331145 => {}
                         _ => {
-                              let mut srccoefs:   *mut jvirt_barray_ptr =
-     jpeg_read_coefficients(dinfo);
+                            let mut srccoefs: *mut jvirt_barray_ptr = jpeg_read_coefficients(dinfo);
                             i = 0i32;
                             's_452: loop {
-                                  let mut w:  c_int =  0; let mut h:  c_int =  0; let mut alloc:  c_int =  1i32;if !(i < n) {
+                                let mut w: c_int = 0;
+                                let mut h: c_int = 0;
+                                let mut alloc: c_int = 1i32;
+                                if !(i < n) {
                                     current_block = 7761909515536616543;
                                     break;
                                 }
-                                
-                                
-                                
+
                                 if (*xinfo.offset(i as isize)).crop == 0 {
                                     w = (*dinfo).image_width as c_int;
                                     h = (*dinfo).image_height as c_int
@@ -6659,10 +5757,7 @@ pub unsafe extern "C" fn tjTransform(
                                     alloc = 0i32;
                                     *dstSizes.offset(i as isize) = tjBufSize(w, h, jpegSubsamp)
                                 }
-                                if (*t.offset(i as isize)).options
-                                    & TJXOPT_NOOUTPUT
-                                    == 0
-                                {
+                                if (*t.offset(i as isize)).options & TJXOPT_NOOUTPUT == 0 {
                                     jpeg_mem_dest_tj(
                                         cinfo,
                                         &mut *dstBufs.offset(i as isize),
@@ -6671,32 +5766,24 @@ pub unsafe extern "C" fn tjTransform(
                                     );
                                 }
                                 jpeg_copy_critical_parameters(dinfo, cinfo);
-                                 let mut dstcoefs:   *mut jvirt_barray_ptr =
-     super::transupp::jtransform_adjust_parameters(
-                                    dinfo,
-                                    cinfo,
-                                    srccoefs,
-                                    &mut *xinfo.offset(i as isize),
-                                );
+                                let mut dstcoefs: *mut jvirt_barray_ptr =
+                                    super::transupp::jtransform_adjust_parameters(
+                                        dinfo,
+                                        cinfo,
+                                        srccoefs,
+                                        &mut *xinfo.offset(i as isize),
+                                    );
                                 if flags & TJFLAG_PROGRESSIVE != 0
-                                    || (*t.offset(i as isize)).options
-                                        & TJXOPT_PROGRESSIVE
-                                        != 0
+                                    || (*t.offset(i as isize)).options & TJXOPT_PROGRESSIVE != 0
                                 {
                                     jpeg_simple_progression(cinfo);
                                 }
-                                if (*t.offset(i as isize)).options
-                                    & TJXOPT_NOOUTPUT
-                                    == 0
-                                {
+                                if (*t.offset(i as isize)).options & TJXOPT_NOOUTPUT == 0 {
                                     jpeg_write_coefficients(cinfo, dstcoefs);
                                     super::transupp::jcopy_markers_execute(
                                         dinfo,
                                         cinfo,
-                                        if (*t.offset(i as isize)).options
-                                            & TJXOPT_COPYNONE
-                                            != 0
-                                        {
+                                        if (*t.offset(i as isize)).options & TJXOPT_COPYNONE != 0 {
                                             super::transupp::JCOPYOPT_NONE as c_int
                                         } else {
                                             super::transupp::JCOPYOPT_ALL as c_int
@@ -6704,10 +5791,7 @@ pub unsafe extern "C" fn tjTransform(
                                             as super::transupp::JCOPY_OPTION,
                                     );
                                 } else {
-                                    jinit_c_master_control(
-                                        cinfo,
-                                        TRUE,
-                                    );
+                                    jinit_c_master_control(cinfo, TRUE);
                                 }
                                 super::transupp::jtransform_execute_transform(
                                     dinfo,
@@ -6716,52 +5800,44 @@ pub unsafe extern "C" fn tjTransform(
                                     &mut *xinfo.offset(i as isize),
                                 );
                                 if (*t.offset(i as isize)).customFilter.is_some() {
-                                    
-                                    
-                                     
-                                     let mut ci:   c_int =  0i32;
+                                    let mut ci: c_int = 0i32;
                                     while ci < (*cinfo).num_components {
-                                         let mut compptr:
-                                                    *mut jpeg_component_info =
-                                                &mut *(*cinfo).comp_info.offset(ci
-                                                                                    as
-                                                                                    isize)
-                                                    as
-                                                    *mut jpeg_component_info;
+                                        let mut compptr: *mut jpeg_component_info =
+                                            &mut *(*cinfo).comp_info.offset(ci as isize)
+                                                as *mut jpeg_component_info;
                                         let mut arrayRegion: tjregion = {
-                                            let mut init = tjregion{x:  0i32,
-         y:  0i32,
-         w:  ( (*compptr).width_in_blocks * 
-                                                    DCTSIZE as c_uint)
+                                            let mut init = tjregion {
+                                                x: 0i32,
+                                                y: 0i32,
+                                                w: ((*compptr).width_in_blocks * DCTSIZE as c_uint)
                                                     as c_int,
-         h:  DCTSIZE,};
+                                                h: DCTSIZE,
+                                            };
                                             init
                                         };
                                         let mut planeRegion: tjregion = {
-                                            let mut init = tjregion{x:  0i32,
-         y:  0i32,
-         w:  ( (*compptr).width_in_blocks * 
-                                                    DCTSIZE as c_uint)
+                                            let mut init = tjregion {
+                                                x: 0i32,
+                                                y: 0i32,
+                                                w: ((*compptr).width_in_blocks * DCTSIZE as c_uint)
                                                     as c_int,
-         h:  ( (*compptr).height_in_blocks * 
-                                                    DCTSIZE as c_uint)
-                                                    as c_int,};
+                                                h: ((*compptr).height_in_blocks * DCTSIZE as c_uint)
+                                                    as c_int,
+                                            };
                                             init
                                         };
-                                         let mut by:   JDIMENSION =  0u32;
+                                        let mut by: JDIMENSION = 0u32;
                                         while by < (*compptr).height_in_blocks {
-                                             let mut barray: JBLOCKARRAY =
-                                                (*(*dinfo).mem)
-                                                    .access_virt_barray
-                                                    .expect("non-null function pointer")(
-                                                    dinfo as j_common_ptr,
-                                                    *dstcoefs.offset(ci as isize),
-                                                    by,
-                                                    (*compptr).v_samp_factor
-                                                        as JDIMENSION,
-                                                    TRUE,
-                                                );
-                                             let mut y:   c_int =  0i32;
+                                            let mut barray: JBLOCKARRAY = (*(*dinfo).mem)
+                                                .access_virt_barray
+                                                .expect("non-null function pointer")(
+                                                dinfo as j_common_ptr,
+                                                *dstcoefs.offset(ci as isize),
+                                                by,
+                                                (*compptr).v_samp_factor as JDIMENSION,
+                                                TRUE,
+                                            );
+                                            let mut y: c_int = 0i32;
                                             while y < (*compptr).v_samp_factor {
                                                 if (*t.offset(i as isize))
                                                     .customFilter
@@ -6777,26 +5853,19 @@ pub unsafe extern "C" fn tjTransform(
                                                 {
                                                     snprintf(
                                                         (*this).errStr.as_mut_ptr(),
-                                                        JMSG_LENGTH_MAX
-                                                            as c_ulong,
-                                                        
-                                                        b"%s\x00".as_ptr()
-                                                            as *const c_char,
-                                                        
-                                                        b"tjTransform(): Error in custom filter\x00".as_ptr()
+                                                        JMSG_LENGTH_MAX as c_ulong,
+                                                        b"%s\x00".as_ptr() as *const c_char,
+                                                        b"tjTransform(): Error in custom filter\x00"
+                                                            .as_ptr()
                                                             as *const c_char,
                                                     );
-                                                    (*this).isInstanceError =
-                                                        TRUE;
+                                                    (*this).isInstanceError = TRUE;
                                                     snprintf(
                                                         errStr.as_mut_ptr(),
-                                                        JMSG_LENGTH_MAX
-                                                            as c_ulong,
-                                                        
-                                                        b"%s\x00".as_ptr()
-                                                            as *const c_char,
-                                                        
-                                                        b"tjTransform(): Error in custom filter\x00".as_ptr()
+                                                        JMSG_LENGTH_MAX as c_ulong,
+                                                        b"%s\x00".as_ptr() as *const c_char,
+                                                        b"tjTransform(): Error in custom filter\x00"
+                                                            .as_ptr()
                                                             as *const c_char,
                                                     );
                                                     retval = -1i32;
@@ -6807,16 +5876,12 @@ pub unsafe extern "C" fn tjTransform(
                                                     y += 1
                                                 }
                                             }
-                                            by +=  
-                                                (*compptr).v_samp_factor as c_uint
+                                            by += (*compptr).v_samp_factor as c_uint
                                         }
                                         ci += 1
                                     }
                                 }
-                                if (*t.offset(i as isize)).options
-                                    & TJXOPT_NOOUTPUT
-                                    == 0
-                                {
+                                if (*t.offset(i as isize)).options & TJXOPT_NOOUTPUT == 0 {
                                     jpeg_finish_compress(cinfo);
                                 }
                                 i += 1
@@ -6901,32 +5966,26 @@ pub unsafe extern "C" fn tjLoadImage(
     mut pixelFormat: *mut c_int,
     mut flags: c_int,
 ) -> *mut c_uchar {
-    
-    
-    
-     let mut retval:  c_int =  0i32;
+    let mut retval: c_int = 0i32;
     let mut handle: tjhandle = NULL as *mut c_void;
-    
-    let mut cinfo: j_compress_ptr =
-        NULL as j_compress_ptr;
-    
+
+    let mut cinfo: j_compress_ptr = NULL as j_compress_ptr;
+
     let mut dstBuf: *mut c_uchar = NULL as *mut c_uchar;
     let mut file: *mut FILE = NULL as *mut FILE;
-    
+
     if filename.is_null()
         || width.is_null()
         || align < 1i32
         || height.is_null()
         || pixelFormat.is_null()
-        || *pixelFormat <  TJPF_UNKNOWN
+        || *pixelFormat < TJPF_UNKNOWN
         || *pixelFormat >= TJ_NUMPF
     {
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjLoadImage(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         retval = -1i32
@@ -6934,43 +5993,35 @@ pub unsafe extern "C" fn tjLoadImage(
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
-            b"tjLoadImage(): Alignment must be a power of 2\x00".as_ptr()
-                as *const c_char,
+            b"tjLoadImage(): Alignment must be a power of 2\x00".as_ptr() as *const c_char,
         );
         retval = -1i32
     } else {
-         handle = tjInitCompress();
+        handle = tjInitCompress();
         if handle.is_null() {
             return NULL as *mut c_uchar;
         }
-         let mut this:   *mut tjinstance =  handle as *mut tjinstance;
+        let mut this: *mut tjinstance = handle as *mut tjinstance;
         cinfo = &mut (*this).cinfo;
-        file = fopen(filename,  b"rb\x00".as_ptr() as *const c_char);
+        file = fopen(filename, b"rb\x00".as_ptr() as *const c_char);
         if file.is_null() {
             snprintf(
                 errStr.as_mut_ptr(),
                 JMSG_LENGTH_MAX as c_ulong,
-                
                 b"%s\n%s\x00".as_ptr() as *const c_char,
-                
                 b"tjLoadImage(): Cannot open input file\x00".as_ptr() as *const c_char,
                 strerror(*__errno_location()),
             );
             retval = -1i32
         } else {
-              let mut tempc:   c_int =  getc(file);
+            let mut tempc: c_int = getc(file);
             if tempc < 0i32 || ungetc(tempc, file) == EOF {
                 snprintf(
                     errStr.as_mut_ptr(),
                     JMSG_LENGTH_MAX as c_ulong,
-                    
                     b"%s\n%s\x00".as_ptr() as *const c_char,
-                    
-                    b"tjLoadImage(): Could not read input file\x00".as_ptr()
-                        as *const c_char,
+                    b"tjLoadImage(): Could not read input file\x00".as_ptr() as *const c_char,
                     strerror(*__errno_location()),
                 );
                 retval = -1i32
@@ -6978,20 +6029,19 @@ pub unsafe extern "C" fn tjLoadImage(
                 snprintf(
                     errStr.as_mut_ptr(),
                     JMSG_LENGTH_MAX as c_ulong,
-                    
                     b"%s\x00".as_ptr() as *const c_char,
-                    
-                    b"tjLoadImage(): Input file contains no data\x00".as_ptr()
-                        as *const c_char,
+                    b"tjLoadImage(): Input file contains no data\x00".as_ptr() as *const c_char,
                 );
                 retval = -1i32
             } else if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
                 /* If we get here, the JPEG code has signaled an error. */
                 retval = -1i32
             } else {
-                 let mut current_block:  u64; let mut src:  super::cdjpeg::cjpeg_source_ptr =
-    
-        ::std::ptr::null_mut::< super::cdjpeg::cjpeg_source_struct>(); let mut invert:  boolean =  0;if *pixelFormat ==  TJPF_UNKNOWN {
+                let mut current_block: u64;
+                let mut src: super::cdjpeg::cjpeg_source_ptr =
+                    ::std::ptr::null_mut::<super::cdjpeg::cjpeg_source_struct>();
+                let mut invert: boolean = 0;
+                if *pixelFormat == TJPF_UNKNOWN {
                     (*cinfo).in_color_space = JCS_UNKNOWN
                 } else {
                     (*cinfo).in_color_space = pf2cs[*pixelFormat as usize]
@@ -7002,17 +6052,14 @@ pub unsafe extern "C" fn tjLoadImage(
                         snprintf(
                             errStr.as_mut_ptr(),
                             JMSG_LENGTH_MAX as c_ulong,
-                            
                             b"%s\x00".as_ptr() as *const c_char,
-                            
                             b"tjLoadImage(): Could not initialize bitmap loader\x00".as_ptr()
                                 as *const c_char,
                         );
                         retval = -1i32;
                         current_block = 7323915231371106940;
                     } else {
-                        invert =
-                            (flags & TJFLAG_BOTTOMUP == 0i32) as c_int;
+                        invert = (flags & TJFLAG_BOTTOMUP == 0i32) as c_int;
                         current_block = 3689906465960840878;
                     }
                 } else if tempc == 'P' as i32 {
@@ -7021,28 +6068,22 @@ pub unsafe extern "C" fn tjLoadImage(
                         snprintf(
                             errStr.as_mut_ptr(),
                             JMSG_LENGTH_MAX as c_ulong,
-                            
                             b"%s\x00".as_ptr() as *const c_char,
-                            
                             b"tjLoadImage(): Could not initialize bitmap loader\x00".as_ptr()
                                 as *const c_char,
                         );
                         retval = -1i32;
                         current_block = 7323915231371106940;
                     } else {
-                        invert =
-                            (flags & TJFLAG_BOTTOMUP != 0i32) as c_int;
+                        invert = (flags & TJFLAG_BOTTOMUP != 0i32) as c_int;
                         current_block = 3689906465960840878;
                     }
                 } else {
                     snprintf(
                         errStr.as_mut_ptr(),
                         JMSG_LENGTH_MAX as c_ulong,
-                        
                         b"%s\x00".as_ptr() as *const c_char,
-                        
-                        b"tjLoadImage(): Unsupported file type\x00".as_ptr()
-                            as *const c_char,
+                        b"tjLoadImage(): Unsupported file type\x00".as_ptr() as *const c_char,
                     );
                     retval = -1i32;
                     current_block = 7323915231371106940;
@@ -7050,7 +6091,7 @@ pub unsafe extern "C" fn tjLoadImage(
                 match current_block {
                     7323915231371106940 => {}
                     _ => {
-                         (*src).input_file = file;
+                        (*src).input_file = file;
                         Some((*src).start_input.expect("non-null function pointer"))
                             .expect("non-null function pointer")(cinfo, src);
                         Some(
@@ -7059,49 +6100,40 @@ pub unsafe extern "C" fn tjLoadImage(
                                 .expect("non-null function pointer"),
                         )
                         .expect("non-null function pointer")(
-                            cinfo as j_common_ptr,
+                            cinfo as j_common_ptr
                         );
                         *width = (*cinfo).image_width as c_int;
                         *height = (*cinfo).image_height as c_int;
                         *pixelFormat = cs2pf[(*cinfo).in_color_space as usize];
-                         let mut pitch:   c_int =
-     *width * tjPixelSize[*pixelFormat as usize]
-                            + align
+                        let mut pitch: c_int = *width * tjPixelSize[*pixelFormat as usize] + align
                             - 1i32
                             & !(align - 1i32);
-                        dstBuf = malloc((pitch * *height) as c_ulong)
-                            as *mut c_uchar;
+                        dstBuf = malloc((pitch * *height) as c_ulong) as *mut c_uchar;
                         if dstBuf.is_null() {
                             snprintf(
                                 errStr.as_mut_ptr(),
                                 JMSG_LENGTH_MAX as c_ulong,
-                                
                                 b"%s\x00".as_ptr() as *const c_char,
-                                
                                 b"tjLoadImage(): Memory allocation failure\x00".as_ptr()
                                     as *const c_char,
                             );
                             retval = -1i32
-                        } else if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr())
-                            != 0
-                        {
+                        } else if _setjmp((*this).jerr.setjmp_buffer.as_mut_ptr()) != 0 {
                             /* If we get here, the JPEG code has signaled an error. */
                             retval = -1i32
                         } else {
                             while (*cinfo).next_scanline < (*cinfo).image_height {
-                                 
                                 let mut nlines: c_int =
                                     Some((*src).get_pixel_rows.expect("non-null function pointer"))
                                         .expect("non-null function pointer")(
                                         cinfo, src
                                     ) as c_int;
-                                 let mut i:   c_int =  0i32;
+                                let mut i: c_int = 0i32;
                                 while i < nlines {
-                                    
-                                     let mut dstptr:  *mut c_uchar =  ::std::ptr::null_mut::< c_uchar>(); 
-                                     let mut row:   c_int =
-     ( (*cinfo).next_scanline + i as c_uint)
-                                        as c_int;
+                                    let mut dstptr: *mut c_uchar =
+                                        ::std::ptr::null_mut::<c_uchar>();
+                                    let mut row: c_int =
+                                        ((*cinfo).next_scanline + i as c_uint) as c_int;
                                     if invert != 0 {
                                         dstptr = &mut *dstBuf
                                             .offset(((*height - row - 1i32) * pitch) as isize)
@@ -7113,10 +6145,7 @@ pub unsafe extern "C" fn tjLoadImage(
                                     memcpy(
                                         dstptr as *mut c_void,
                                         *(*src).buffer.offset(i as isize) as *const c_void,
-                                        (*width
-                                            * tjPixelSize
-                                                [*pixelFormat as usize])
-                                            as c_ulong,
+                                        (*width * tjPixelSize[*pixelFormat as usize]) as c_ulong,
                                     );
                                     i += 1
                                 }
@@ -7187,16 +6216,14 @@ pub unsafe extern "C" fn tjSaveImage(
     mut pixelFormat: c_int,
     mut flags: c_int,
 ) -> c_int {
-    
-     let mut retval:  c_int =  0i32;
+    let mut retval: c_int = 0i32;
     let mut handle: tjhandle = NULL as *mut c_void;
-    
-    let mut dinfo: j_decompress_ptr =
-        NULL as j_decompress_ptr;
-    
+
+    let mut dinfo: j_decompress_ptr = NULL as j_decompress_ptr;
+
     let mut file: *mut FILE = NULL as *mut FILE;
     let mut ptr: *mut c_char = NULL as *mut c_char;
-    
+
     if filename.is_null()
         || buffer.is_null()
         || width < 1i32
@@ -7208,27 +6235,23 @@ pub unsafe extern "C" fn tjSaveImage(
         snprintf(
             errStr.as_mut_ptr(),
             JMSG_LENGTH_MAX as c_ulong,
-            
             b"%s\x00".as_ptr() as *const c_char,
-            
             b"tjSaveImage(): Invalid argument\x00".as_ptr() as *const c_char,
         );
         retval = -1i32
     } else {
-         handle = tjInitDecompress();
+        handle = tjInitDecompress();
         if handle.is_null() {
             return -1i32;
         }
-         let mut this:   *mut tjinstance =  handle as *mut tjinstance;
+        let mut this: *mut tjinstance = handle as *mut tjinstance;
         dinfo = &mut (*this).dinfo;
-        file = fopen(filename,  b"wb\x00".as_ptr() as *const c_char);
+        file = fopen(filename, b"wb\x00".as_ptr() as *const c_char);
         if file.is_null() {
             snprintf(
                 errStr.as_mut_ptr(),
                 JMSG_LENGTH_MAX as c_ulong,
-                
                 b"%s\n%s\x00".as_ptr() as *const c_char,
-                
                 b"tjSaveImage(): Cannot open output file\x00".as_ptr() as *const c_char,
                 strerror(*__errno_location()),
             );
@@ -7237,39 +6260,31 @@ pub unsafe extern "C" fn tjSaveImage(
             /* If we get here, the JPEG code has signaled an error. */
             retval = -1i32
         } else {
-             let mut current_block:  u64; let mut dst:  super::cdjpeg::djpeg_dest_ptr =
-    
-        ::std::ptr::null_mut::< super::cdjpeg::djpeg_dest_struct>(); let mut invert:  boolean =  0;(*this).dinfo.out_color_space = pf2cs[pixelFormat as usize];
+            let mut current_block: u64;
+            let mut dst: super::cdjpeg::djpeg_dest_ptr =
+                ::std::ptr::null_mut::<super::cdjpeg::djpeg_dest_struct>();
+            let mut invert: boolean = 0;
+            (*this).dinfo.out_color_space = pf2cs[pixelFormat as usize];
             (*dinfo).image_width = width as JDIMENSION;
             (*dinfo).image_height = height as JDIMENSION;
             (*dinfo).global_state = DSTATE_READY;
             (*dinfo).scale_denom = 1u32;
             (*dinfo).scale_num = (*dinfo).scale_denom;
             ptr = strrchr(filename, '.' as i32);
-            if !ptr.is_null()
-                && strcasecmp(ptr,  b".bmp\x00".as_ptr() as *const c_char)
-                    == 0
-            {
-                dst = super::cdjpeg::jinit_write_bmp(
-                    dinfo,
-                    FALSE,
-                    FALSE,
-                );
+            if !ptr.is_null() && strcasecmp(ptr, b".bmp\x00".as_ptr() as *const c_char) == 0 {
+                dst = super::cdjpeg::jinit_write_bmp(dinfo, FALSE, FALSE);
                 if dst.is_null() {
                     snprintf(
                         errStr.as_mut_ptr(),
                         JMSG_LENGTH_MAX as c_ulong,
-                        
                         b"%s\x00".as_ptr() as *const c_char,
-                        
                         b"tjSaveImage(): Could not initialize bitmap writer\x00".as_ptr()
                             as *const c_char,
                     );
                     retval = -1i32;
                     current_block = 4226535191933510688;
                 } else {
-                    invert =
-                        (flags & TJFLAG_BOTTOMUP == 0i32) as c_int;
+                    invert = (flags & TJFLAG_BOTTOMUP == 0i32) as c_int;
                     current_block = 2604890879466389055;
                 }
             } else {
@@ -7278,17 +6293,14 @@ pub unsafe extern "C" fn tjSaveImage(
                     snprintf(
                         errStr.as_mut_ptr(),
                         JMSG_LENGTH_MAX as c_ulong,
-                        
                         b"%s\x00".as_ptr() as *const c_char,
-                        
                         b"tjSaveImage(): Could not initialize PPM writer\x00".as_ptr()
                             as *const c_char,
                     );
                     retval = -1i32;
                     current_block = 4226535191933510688;
                 } else {
-                    invert =
-                        (flags & TJFLAG_BOTTOMUP != 0i32) as c_int;
+                    invert = (flags & TJFLAG_BOTTOMUP != 0i32) as c_int;
                     current_block = 2604890879466389055;
                 }
             }
@@ -7303,40 +6315,32 @@ pub unsafe extern "C" fn tjSaveImage(
                             .realize_virt_arrays
                             .expect("non-null function pointer"),
                     )
-                    .expect("non-null function pointer")(
-                        dinfo as j_common_ptr
-                    );
+                    .expect("non-null function pointer")(dinfo as j_common_ptr);
                     if pitch == 0i32 {
                         pitch = width * tjPixelSize[pixelFormat as usize]
                     }
                     while (*dinfo).output_scanline < (*dinfo).output_height {
-                         let mut rowptr:  *mut c_uchar =  ::std::ptr::null_mut::< c_uchar>();
+                        let mut rowptr: *mut c_uchar = ::std::ptr::null_mut::<c_uchar>();
                         if invert != 0 {
                             rowptr = &mut *buffer.offset(
-                                ((height as c_uint - (*dinfo).output_scanline - 1u32) *
-    pitch as c_uint)
-                                    as isize,
+                                ((height as c_uint - (*dinfo).output_scanline - 1u32)
+                                    * pitch as c_uint) as isize,
                             ) as *mut c_uchar
                         } else {
-                            rowptr = &mut *buffer.offset(
-                                (
-                                (*dinfo).output_scanline * pitch as c_uint)
-                                    as isize,
-                            ) as *mut c_uchar
+                            rowptr = &mut *buffer
+                                .offset(((*dinfo).output_scanline * pitch as c_uint) as isize)
+                                as *mut c_uchar
                         }
                         memcpy(
                             *(*dst).buffer.offset(0) as *mut c_void,
                             rowptr as *const c_void,
-                            (width * tjPixelSize[pixelFormat as usize])
-                                as c_ulong,
+                            (width * tjPixelSize[pixelFormat as usize]) as c_ulong,
                         );
                         Some((*dst).put_pixel_rows.expect("non-null function pointer"))
                             .expect("non-null function pointer")(
-                            dinfo,
-                            dst,
-                            1u32,
+                            dinfo, dst, 1u32
                         );
-                        (*dinfo).output_scanline =  (*dinfo).output_scanline + 1
+                        (*dinfo).output_scanline = (*dinfo).output_scanline + 1
                     }
                     Some((*dst).finish_output.expect("non-null function pointer"))
                         .expect("non-null function pointer")(dinfo, dst);

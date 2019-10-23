@@ -1,46 +1,12 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-use crate::stdlib::{__errno_location, close, lseek, malloc, open, read};use libc::{c_uchar, c_ulong, c_char, c_long, c_uint, c_void, c_int, self};pub use crate::stdlib::{__blkcnt_t, __blksize_t, __dev_t, __gid_t, __ino_t,
-                        __mode_t, __nlink_t, __off_t, __ssize_t,
-                        __syscall_slong_t, __time_t, __uid_t, off_t, ssize_t,
-                        timespec, __fxstat, fstat, stat, O_RDONLY, SEEK_SET,
-                        _STAT_VER, _STAT_VER_LINUX};pub use crate::stddef_h::size_t;pub use super::md5::{uint32, MD5Context, MD5Final, MD5Init, MD5Update,
-                     MD5_CTX};
+pub use super::md5::{uint32, MD5Context, MD5Final, MD5Init, MD5Update, MD5_CTX};
+pub use crate::stddef_h::size_t;
+pub use crate::stdlib::{
+    __blkcnt_t, __blksize_t, __dev_t, __fxstat, __gid_t, __ino_t, __mode_t, __nlink_t, __off_t,
+    __ssize_t, __syscall_slong_t, __time_t, __uid_t, fstat, off_t, ssize_t, stat, timespec,
+    O_RDONLY, SEEK_SET, _STAT_VER, _STAT_VER_LINUX,
+};
+use crate::stdlib::{__errno_location, close, lseek, malloc, open, read};
+use libc::{self, c_char, c_int, c_long, c_uchar, c_uint, c_ulong, c_void};
 /* mdXhl.c
  * ----------------------------------------------------------------------------
  * "THE BEER-WARE LICENSE" (Revision 42):
@@ -84,8 +50,7 @@ pub unsafe extern "C" fn MD5End(
     mut ctx: *mut super::md5::MD5_CTX,
     mut buf: *mut c_char,
 ) -> *mut c_char {
-    
-      let mut digest:  [c_uchar; 16] =  [0; 16];
+    let mut digest: [c_uchar; 16] = [0; 16];
     static mut hex: [c_char; 17] = [
         48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 97, 98, 99, 100, 101, 102, 0,
     ];
@@ -93,31 +58,22 @@ pub unsafe extern "C" fn MD5End(
         buf = malloc((2i32 * LENGTH + 1i32) as c_ulong) as *mut c_char
     }
     if buf.is_null() {
-        return ::std::ptr::null_mut::< c_char>();
+        return ::std::ptr::null_mut::<c_char>();
     }
     super::md5::MD5Final(digest.as_mut_ptr(), ctx);
-     let mut i:   c_int =  0i32;
+    let mut i: c_int = 0i32;
     while i < LENGTH {
         *buf.offset((i + i) as isize) = hex[(digest[i as usize] as c_int >> 4i32) as usize];
-        *buf.offset((i + i + 1i32) as isize) =
-            hex[(digest[i as usize] as c_int & 0xfi32) as usize];
+        *buf.offset((i + i + 1i32) as isize) = hex[(digest[i as usize] as c_int & 0xfi32) as usize];
         i += 1
     }
-    *buf.offset((i + i) as isize) =  '\u{0}' as c_char;
+    *buf.offset((i + i) as isize) = '\u{0}' as c_char;
     return buf;
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn MD5File(
-    mut filename: *const c_char,
-    mut buf: *mut c_char,
-) -> *mut c_char {
-    return MD5FileChunk(
-        filename,
-        buf,
-        0i64,
-        0i64,
-    );
+pub unsafe extern "C" fn MD5File(mut filename: *const c_char, mut buf: *mut c_char) -> *mut c_char {
+    return MD5FileChunk(filename, buf, 0i64, 0i64);
 }
 #[no_mangle]
 
@@ -127,37 +83,44 @@ pub unsafe extern "C" fn MD5FileChunk(
     mut ofs: off_t,
     mut len: off_t,
 ) -> *mut c_char {
-    
-    
-    
-    
-    
-    
-     let mut ctx:  super::md5::MD5_CTX =
-     super::md5::MD5_CTX{buf:  [0; 4], bits:  [0; 2], in_0:  [0; 64],}; let mut stbuf:  stat =
-     stat{st_dev:  0,
-     st_ino:  0,
-     st_nlink:  0,
-     st_mode:  0,
-     st_uid:  0,
-     st_gid:  0,
-     __pad0:  0,
-     st_rdev:  0,
-     st_size:  0,
-     st_blksize:  0,
-     st_blocks:  0,
-     st_atim:  timespec{tv_sec:  0, tv_nsec:  0,},
-     st_mtim:  timespec{tv_sec:  0, tv_nsec:  0,},
-     st_ctim:  timespec{tv_sec:  0, tv_nsec:  0,},
-     __glibc_reserved:  [0; 3],};    
+    let mut ctx: super::md5::MD5_CTX = super::md5::MD5_CTX {
+        buf: [0; 4],
+        bits: [0; 2],
+        in_0: [0; 64],
+    };
+    let mut stbuf: stat = stat {
+        st_dev: 0,
+        st_ino: 0,
+        st_nlink: 0,
+        st_mode: 0,
+        st_uid: 0,
+        st_gid: 0,
+        __pad0: 0,
+        st_rdev: 0,
+        st_size: 0,
+        st_blksize: 0,
+        st_blocks: 0,
+        st_atim: timespec {
+            tv_sec: 0,
+            tv_nsec: 0,
+        },
+        st_mtim: timespec {
+            tv_sec: 0,
+            tv_nsec: 0,
+        },
+        st_ctim: timespec {
+            tv_sec: 0,
+            tv_nsec: 0,
+        },
+        __glibc_reserved: [0; 3],
+    };
     super::md5::MD5Init(&mut ctx);
-     let mut f:   c_int =
-     open(filename, O_RDONLY);
+    let mut f: c_int = open(filename, O_RDONLY);
     if f < 0i32 {
-        return ::std::ptr::null_mut::< c_char>();
+        return ::std::ptr::null_mut::<c_char>();
     }
     if fstat(f, &mut stbuf) < 0i32 {
-        return ::std::ptr::null_mut::< c_char>();
+        return ::std::ptr::null_mut::<c_char>();
     }
     if ofs > stbuf.st_size {
         ofs = stbuf.st_size
@@ -166,23 +129,21 @@ pub unsafe extern "C" fn MD5FileChunk(
         len = stbuf.st_size - ofs
     }
     if lseek(f, ofs, SEEK_SET) < 0i64 {
-        return ::std::ptr::null_mut::< c_char>();
+        return ::std::ptr::null_mut::<c_char>();
     }
-    
-     let mut n:   off_t =  len; let mut i:   c_int =  0i32;
+
+    let mut n: off_t = len;
+    let mut i: c_int = 0i32;
     while n > 0i64 {
-         let mut buffer:  [c_uchar; 8192] =  [0; 8192];if n as c_ulong > ::std::mem::size_of::<[c_uchar; 8192]>() as c_ulong {
+        let mut buffer: [c_uchar; 8192] = [0; 8192];
+        if n as c_ulong > ::std::mem::size_of::<[c_uchar; 8192]>() as c_ulong {
             i = read(
                 f,
                 buffer.as_mut_ptr() as *mut c_void,
                 ::std::mem::size_of::<[c_uchar; 8192]>() as c_ulong,
             ) as c_int
         } else {
-            i = read(
-                f,
-                buffer.as_mut_ptr() as *mut c_void,
-                n as size_t,
-            ) as c_int
+            i = read(f, buffer.as_mut_ptr() as *mut c_void, n as size_t) as c_int
         }
         if i < 0i32 {
             break;
@@ -190,11 +151,11 @@ pub unsafe extern "C" fn MD5FileChunk(
         super::md5::MD5Update(&mut ctx, buffer.as_mut_ptr(), i as c_uint);
         n -= i as c_long
     }
-     let mut e:   c_int =  *__errno_location();
+    let mut e: c_int = *__errno_location();
     close(f);
     *__errno_location() = e;
     if i < 0i32 {
-        return ::std::ptr::null_mut::< c_char>();
+        return ::std::ptr::null_mut::<c_char>();
     }
     return MD5End(&mut ctx, buf);
 }
@@ -205,8 +166,11 @@ pub unsafe extern "C" fn MD5Data(
     mut len: c_uint,
     mut buf: *mut c_char,
 ) -> *mut c_char {
-     let mut ctx:  super::md5::MD5_CTX =
-     super::md5::MD5_CTX{buf:  [0; 4], bits:  [0; 2], in_0:  [0; 64],};
+    let mut ctx: super::md5::MD5_CTX = super::md5::MD5_CTX {
+        buf: [0; 4],
+        bits: [0; 2],
+        in_0: [0; 64],
+    };
     super::md5::MD5Init(&mut ctx);
     super::md5::MD5Update(&mut ctx, data as *mut c_uchar, len);
     return MD5End(&mut ctx, buf);

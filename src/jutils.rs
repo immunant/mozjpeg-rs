@@ -1,16 +1,8 @@
-
-
-
-
-
-
-
-
-
-
-
-
-use crate::stdlib::{memcpy, memset};use libc::{c_void, c_ulong, c_int, c_long, self};pub use crate::jmorecfg_h::{JCOEF, JDIMENSION, JSAMPLE};pub use crate::stddef_h::size_t;pub use crate::jpeglib_h::{JBLOCK, JBLOCKROW, JSAMPARRAY, JSAMPROW};
+pub use crate::jmorecfg_h::{JCOEF, JDIMENSION, JSAMPLE};
+pub use crate::jpeglib_h::{JBLOCK, JBLOCKROW, JSAMPARRAY, JSAMPROW};
+pub use crate::stddef_h::size_t;
+use crate::stdlib::{memcpy, memset};
+use libc::{self, c_int, c_long, c_ulong, c_void};
 /*
  * jutils.c
  *
@@ -88,26 +80,19 @@ pub unsafe extern "C" fn jcopy_sample_rows(
  * The source and destination arrays must be at least as wide as num_cols.
  */
 {
-    
-     
-    let mut count: size_t = num_cols as c_ulong *
-    ::std::mem::size_of::<JSAMPLE>() as c_ulong;
-    
+    let mut count: size_t = num_cols as c_ulong * ::std::mem::size_of::<JSAMPLE>() as c_ulong;
+
     input_array = input_array.offset(source_row as isize);
     output_array = output_array.offset(dest_row as isize);
-     let mut row:   c_int =  num_rows;
+    let mut row: c_int = num_rows;
     while row > 0i32 {
-          let fresh0 = input_array;
+        let fresh0 = input_array;
         input_array = input_array.offset(1);
-         let mut inptr:   JSAMPROW =  *fresh0;
+        let mut inptr: JSAMPROW = *fresh0;
         let fresh1 = output_array;
         output_array = output_array.offset(1);
-         let mut outptr:   JSAMPROW =  *fresh1;
-        memcpy(
-            outptr as *mut c_void,
-            inptr as *const c_void,
-            count,
-        );
+        let mut outptr: JSAMPROW = *fresh1;
+        memcpy(outptr as *mut c_void, inptr as *const c_void, count);
         row -= 1
     }
 }
@@ -123,9 +108,7 @@ pub unsafe extern "C" fn jcopy_block_row(
     memcpy(
         output_row as *mut c_void,
         input_row as *const c_void,
-        num_blocks as c_ulong *
-    (64u64 *
-         ::std::mem::size_of::<JCOEF>() as c_ulong),
+        num_blocks as c_ulong * (64u64 * ::std::mem::size_of::<JCOEF>() as c_ulong),
     );
 }
 /* It is useful to allow each component to have a separate IDCT method. */
@@ -149,10 +132,7 @@ pub unsafe extern "C" fn jcopy_block_row(
 /* Utility routines in jutils.c */
 #[no_mangle]
 
-pub unsafe extern "C" fn jzero_far(
-    mut target: *mut c_void,
-    mut bytestozero: size_t,
-)
+pub unsafe extern "C" fn jzero_far(mut target: *mut c_void, mut bytestozero: size_t)
 /* Zero out a chunk of memory. */
 /* This might be sample-array data, block-array data, or alloc_large data. */
 {

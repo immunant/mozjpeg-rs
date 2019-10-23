@@ -1,4 +1,5 @@
-use libc::c_char;pub const JVERSION: [c_char; 16] =
+use libc::c_char;
+pub const JVERSION: [c_char; 16] =
     unsafe { *::std::mem::transmute::<&[u8; 16], &[c_char; 16]>(b"6b  27-Mar-1998\x00") };
 /*
  * NOTE: It is our convention to place the authors in the following order:

@@ -1,146 +1,32 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-use libc::{c_uint, c_ulong, c_int, self};pub use crate::stdlib::{_IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data,
-                        __off64_t, __off_t, FILE, _IO_FILE};pub use crate::jmorecfg_h::{boolean, FALSE, JCOEF, JDIMENSION, JOCTET,
-                            JSAMPLE, TRUE, UINT16, UINT8};pub use crate::stddef_h::size_t;pub use crate::jpeglib_h::{j_common_ptr, j_compress_ptr, j_decompress_ptr,
-                           jpeg_CreateDecompress, jpeg_c_coef_controller,
-                           jpeg_c_main_controller, jpeg_c_prep_controller,
-                           jpeg_color_converter, jpeg_color_deconverter,
-                           jpeg_color_quantizer, jpeg_common_struct,
-                           jpeg_comp_master, jpeg_component_info,
-                           jpeg_compress_struct, jpeg_d_coef_controller,
-                           jpeg_d_main_controller, jpeg_d_post_controller,
-                           jpeg_decomp_master, jpeg_decompress_struct,
-                           jpeg_destination_mgr, jpeg_destroy_decompress,
-                           jpeg_downsampler, jpeg_entropy_decoder,
-                           jpeg_entropy_encoder, jpeg_error_mgr,
-                           jpeg_finish_decompress, jpeg_forward_dct,
-                           jpeg_input_controller, jpeg_inverse_dct,
-                           jpeg_marker_reader, jpeg_marker_struct,
-                           jpeg_marker_writer, jpeg_memory_mgr,
-                           jpeg_progress_mgr, jpeg_read_header,
-                           jpeg_read_scanlines, jpeg_save_markers,
-                           jpeg_saved_marker_ptr, jpeg_scan_info,
-                           jpeg_source_mgr, jpeg_start_decompress,
-                           jpeg_std_error, jpeg_stdio_src, jpeg_upsampler,
-                           jvirt_barray_control, jvirt_barray_ptr,
-                           jvirt_sarray_control, jvirt_sarray_ptr,
-                           C2RustUnnamed_2, JCS_YCbCr, JBLOCK, JBLOCKARRAY,
-                           JBLOCKROW, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB,
-                           JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX,
-                           JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX,
-                           JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB,
-                           JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT,
-                           JDCT_IFAST, JDCT_ISLOW, JDITHER_FS, JDITHER_NONE,
-                           JDITHER_ORDERED, JHUFF_TBL, JPEG_APP0, JPEG_COM,
-                           JPOOL_IMAGE, JQUANT_TBL, JSAMPARRAY, JSAMPROW,
-                           J_COLOR_SPACE, J_DCT_METHOD, J_DITHER_MODE};pub use crate::jconfig_h::JPEG_LIB_VERSION;pub use super::cdjpeg::{cjpeg_source_ptr, cjpeg_source_struct};
+pub use super::cdjpeg::{cjpeg_source_ptr, cjpeg_source_struct};
+pub use crate::jconfig_h::JPEG_LIB_VERSION;
+pub use crate::jmorecfg_h::{
+    boolean, FALSE, JCOEF, JDIMENSION, JOCTET, JSAMPLE, TRUE, UINT16, UINT8,
+};
+pub use crate::jpeglib_h::{
+    j_common_ptr, j_compress_ptr, j_decompress_ptr, jpeg_CreateDecompress, jpeg_c_coef_controller,
+    jpeg_c_main_controller, jpeg_c_prep_controller, jpeg_color_converter, jpeg_color_deconverter,
+    jpeg_color_quantizer, jpeg_common_struct, jpeg_comp_master, jpeg_component_info,
+    jpeg_compress_struct, jpeg_d_coef_controller, jpeg_d_main_controller, jpeg_d_post_controller,
+    jpeg_decomp_master, jpeg_decompress_struct, jpeg_destination_mgr, jpeg_destroy_decompress,
+    jpeg_downsampler, jpeg_entropy_decoder, jpeg_entropy_encoder, jpeg_error_mgr,
+    jpeg_finish_decompress, jpeg_forward_dct, jpeg_input_controller, jpeg_inverse_dct,
+    jpeg_marker_reader, jpeg_marker_struct, jpeg_marker_writer, jpeg_memory_mgr, jpeg_progress_mgr,
+    jpeg_read_header, jpeg_read_scanlines, jpeg_save_markers, jpeg_saved_marker_ptr,
+    jpeg_scan_info, jpeg_source_mgr, jpeg_start_decompress, jpeg_std_error, jpeg_stdio_src,
+    jpeg_upsampler, jvirt_barray_control, jvirt_barray_ptr, jvirt_sarray_control, jvirt_sarray_ptr,
+    C2RustUnnamed_2, JCS_YCbCr, JBLOCK, JBLOCKARRAY, JBLOCKROW, JCS_CMYK, JCS_EXT_ABGR,
+    JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX,
+    JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK,
+    JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JDITHER_FS, JDITHER_NONE, JDITHER_ORDERED, JHUFF_TBL,
+    JPEG_APP0, JPEG_COM, JPOOL_IMAGE, JQUANT_TBL, JSAMPARRAY, JSAMPROW, J_COLOR_SPACE,
+    J_DCT_METHOD, J_DITHER_MODE,
+};
+pub use crate::stddef_h::size_t;
+pub use crate::stdlib::{
+    _IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data, __off64_t, __off_t, FILE, _IO_FILE,
+};
+use libc::{self, c_int, c_uint, c_ulong};
 /*
  * rdjpeg.c
  *
@@ -185,7 +71,6 @@ unsafe extern "C" fn start_input_jpeg(
     mut cinfo: j_compress_ptr,
     mut sinfo: super::cdjpeg::cjpeg_source_ptr,
 ) {
-     
     let mut source: jpeg_source_ptr = sinfo as jpeg_source_ptr;
     (*source).dinfo.err = jpeg_std_error(&mut (*source).jerr);
     jpeg_CreateDecompress(
@@ -194,18 +79,10 @@ unsafe extern "C" fn start_input_jpeg(
         ::std::mem::size_of::<jpeg_decompress_struct>() as c_ulong,
     );
     jpeg_stdio_src(&mut (*source).dinfo, (*source).pub_0.input_file);
-    jpeg_save_markers(
-        &mut (*source).dinfo,
-        JPEG_COM,
-        0xffffu32,
-    );
-     let mut m:   c_int =  0i32;
+    jpeg_save_markers(&mut (*source).dinfo, JPEG_COM, 0xffffu32);
+    let mut m: c_int = 0i32;
     while m < 16i32 {
-        jpeg_save_markers(
-            &mut (*source).dinfo,
-            JPEG_APP0 + m,
-            0xffffu32,
-        );
+        jpeg_save_markers(&mut (*source).dinfo, JPEG_APP0 + m, 0xffffu32);
         m += 1
     }
     jpeg_read_header(&mut (*source).dinfo, TRUE);
@@ -226,9 +103,7 @@ unsafe extern "C" fn start_input_jpeg(
     .expect("non-null function pointer")(
         cinfo as j_common_ptr,
         JPOOL_IMAGE,
-        
-        (*cinfo)
-            .image_width * (*cinfo).input_components as c_uint,
+        (*cinfo).image_width * (*cinfo).input_components as c_uint,
         1u32,
     );
     (*source).pub_0.buffer_height = 1u32;
@@ -309,9 +184,7 @@ to write the image in bottom-up order.) */
 pub unsafe extern "C" fn jinit_read_jpeg(
     mut cinfo: j_compress_ptr,
 ) -> super::cdjpeg::cjpeg_source_ptr {
-     
-     let mut source:   jpeg_source_ptr =
-     Some(
+    let mut source: jpeg_source_ptr = Some(
         (*(*cinfo).mem)
             .alloc_small
             .expect("non-null function pointer"),
@@ -325,17 +198,11 @@ pub unsafe extern "C" fn jinit_read_jpeg(
     /* Fill in method ptrs, except get_pixel_rows which start_input sets */
     (*source).pub_0.start_input = Some(
         start_input_jpeg
-            as unsafe extern "C" fn(
-                _: j_compress_ptr,
-                _: super::cdjpeg::cjpeg_source_ptr,
-            ) -> (),
+            as unsafe extern "C" fn(_: j_compress_ptr, _: super::cdjpeg::cjpeg_source_ptr) -> (),
     );
     (*source).pub_0.finish_input = Some(
         finish_input_jpeg
-            as unsafe extern "C" fn(
-                _: j_compress_ptr,
-                _: super::cdjpeg::cjpeg_source_ptr,
-            ) -> (),
+            as unsafe extern "C" fn(_: j_compress_ptr, _: super::cdjpeg::cjpeg_source_ptr) -> (),
     );
     return source as super::cdjpeg::cjpeg_source_ptr;
 }

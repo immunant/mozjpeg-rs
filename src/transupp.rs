@@ -1,347 +1,66 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-use libc::{c_uint, c_ulong, c_char, c_long, c_ushort, c_int, self};pub use crate::jpegint_h::{inverse_DCT_method_ptr, jcopy_block_row,
-                           jdiv_round_up, JBUF_CRANK_DEST, JBUF_PASS_THRU,
-                           JBUF_REQUANT, JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE,
-                           J_BUF_MODE};pub use crate::jpeglib_h::{j_compress_ptr, j_decompress_ptr,
-                           jpeg_compress_struct, jpeg_decompress_struct,
-                           jvirt_barray_ptr, C2RustUnnamed_2, j_common_ptr,
-                           jpeg_c_coef_controller, jpeg_c_main_controller,
-                           jpeg_c_prep_controller, jpeg_color_converter,
-                           jpeg_color_deconverter, jpeg_color_quantizer,
-                           jpeg_common_struct, jpeg_comp_master,
-                           jpeg_component_info, jpeg_d_coef_controller,
-                           jpeg_d_main_controller, jpeg_d_post_controller,
-                           jpeg_decomp_master, jpeg_destination_mgr,
-                           jpeg_downsampler, jpeg_entropy_decoder,
-                           jpeg_entropy_encoder, jpeg_error_mgr,
-                           jpeg_forward_dct, jpeg_input_controller,
-                           jpeg_inverse_dct, jpeg_marker_parser_method,
-                           jpeg_marker_reader, jpeg_marker_struct,
-                           jpeg_marker_writer, jpeg_memory_mgr,
-                           jpeg_progress_mgr, jpeg_save_markers,
-                           jpeg_saved_marker_ptr, jpeg_scan_info,
-                           jpeg_set_colorspace, jpeg_source_mgr,
-                           jpeg_upsampler, jpeg_write_marker,
-                           jvirt_barray_control, jvirt_sarray_control,
-                           jvirt_sarray_ptr, JCS_YCbCr, DCTSIZE, DCTSIZE2,
-                           JBLOCK, JBLOCKARRAY, JBLOCKROW, JCOEFPTR, JCS_CMYK,
-                           JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR,
-                           JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB,
-                           JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR,
-                           JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565,
-                           JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST,
-                           JDCT_ISLOW, JDITHER_FS, JDITHER_NONE,
-                           JDITHER_ORDERED, JHUFF_TBL, JPEG_APP0, JPEG_COM,
-                           JPOOL_IMAGE, JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE,
-                           JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD,
-                           J_DITHER_MODE, NUM_QUANT_TBLS};pub use crate::jmorecfg_h::{boolean, JDIMENSION, FALSE, JCOEF, JOCTET,
-                            JSAMPLE, TRUE, UINT16, UINT8};pub use crate::stddef_h::{size_t, NULL};pub use crate::stdlib::{C2RustUnnamed_0, _ISalnum, _ISalpha, _ISblank,
-                        _IScntrl, _ISdigit, _ISgraph, _ISlower, _ISprint,
-                        _ISpunct, _ISspace, _ISupper, _ISxdigit,
-                        __ctype_b_loc};pub use super::jerror::{C2RustUnnamed_3, JERR_ARITH_NOTIMPL,
-                        JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
-                        JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID,
-                        JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
-                        JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE,
-                        JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
-                        JERR_BAD_LENGTH, JERR_BAD_LIB_VERSION,
-                        JERR_BAD_MCU_SIZE, JERR_BAD_PARAM,
-                        JERR_BAD_PARAM_VALUE, JERR_BAD_POOL_ID,
-                        JERR_BAD_PRECISION, JERR_BAD_PROGRESSION,
-                        JERR_BAD_PROG_SCRIPT, JERR_BAD_SAMPLING,
-                        JERR_BAD_SCAN_SCRIPT, JERR_BAD_STATE,
-                        JERR_BAD_STRUCT_SIZE, JERR_BAD_VIRTUAL_ACCESS,
-                        JERR_BUFFER_SIZE, JERR_CANT_SUSPEND,
-                        JERR_CCIR601_NOTIMPL, JERR_COMPONENT_COUNT,
-                        JERR_CONVERSION_NOTIMPL, JERR_DAC_INDEX,
-                        JERR_DAC_VALUE, JERR_DHT_INDEX, JERR_DQT_INDEX,
-                        JERR_EMPTY_IMAGE, JERR_EMS_READ, JERR_EMS_WRITE,
-                        JERR_EOI_EXPECTED, JERR_FILE_READ, JERR_FILE_WRITE,
-                        JERR_FRACT_SAMPLE_NOTIMPL, JERR_HUFF_CLEN_OVERFLOW,
-                        JERR_HUFF_MISSING_CODE, JERR_IMAGE_TOO_BIG,
-                        JERR_INPUT_EMPTY, JERR_INPUT_EOF,
-                        JERR_MISMATCHED_QUANT_TABLE, JERR_MISSING_DATA,
-                        JERR_MODE_CHANGE, JERR_NOTIMPL, JERR_NOT_COMPILED,
-                        JERR_NO_BACKING_STORE, JERR_NO_HUFF_TABLE,
-                        JERR_NO_IMAGE, JERR_NO_QUANT_TABLE, JERR_NO_SOI,
-                        JERR_OUT_OF_MEMORY, JERR_QUANT_COMPONENTS,
-                        JERR_QUANT_FEW_COLORS, JERR_QUANT_MANY_COLORS,
-                        JERR_SOF_DUPLICATE, JERR_SOF_NO_SOS,
-                        JERR_SOF_UNSUPPORTED, JERR_SOI_DUPLICATE,
-                        JERR_SOS_NO_SOF, JERR_TFILE_CREATE, JERR_TFILE_READ,
-                        JERR_TFILE_SEEK, JERR_TFILE_WRITE,
-                        JERR_TOO_LITTLE_DATA, JERR_UNKNOWN_MARKER,
-                        JERR_UNSUPPORTED_SUSPEND, JERR_VIRTUAL_BUG,
-                        JERR_WIDTH_OVERFLOW, JERR_XMS_READ, JERR_XMS_WRITE,
-                        JMSG_COPYRIGHT, JMSG_LASTMSGCODE, JMSG_NOMESSAGE,
-                        JMSG_VERSION, JTRC_16BIT_TABLES, JTRC_ADOBE,
-                        JTRC_APP0, JTRC_APP14, JTRC_DAC, JTRC_DHT, JTRC_DQT,
-                        JTRC_DRI, JTRC_EMS_CLOSE, JTRC_EMS_OPEN, JTRC_EOI,
-                        JTRC_HUFFBITS, JTRC_JFIF, JTRC_JFIF_BADTHUMBNAILSIZE,
-                        JTRC_JFIF_EXTENSION, JTRC_JFIF_THUMBNAIL,
-                        JTRC_MISC_MARKER, JTRC_PARMLESS_MARKER,
-                        JTRC_QUANTVALS, JTRC_QUANT_3_NCOLORS,
-                        JTRC_QUANT_NCOLORS, JTRC_QUANT_SELECTED,
-                        JTRC_RECOVERY_ACTION, JTRC_RST, JTRC_SMOOTH_NOTIMPL,
-                        JTRC_SOF, JTRC_SOF_COMPONENT, JTRC_SOI, JTRC_SOS,
-                        JTRC_SOS_COMPONENT, JTRC_SOS_PARAMS, JTRC_TFILE_CLOSE,
-                        JTRC_TFILE_OPEN, JTRC_THUMB_JPEG, JTRC_THUMB_PALETTE,
-                        JTRC_THUMB_RGB, JTRC_UNKNOWN_IDS, JTRC_XMS_CLOSE,
-                        JTRC_XMS_OPEN, JWRN_ADOBE_XFORM, JWRN_BOGUS_ICC,
-                        JWRN_BOGUS_PROGRESSION, JWRN_EXTRANEOUS_DATA,
-                        JWRN_HIT_MARKER, JWRN_HUFF_BAD_CODE, JWRN_JFIF_MAJOR,
-                        JWRN_JPEG_EOF, JWRN_MUST_RESYNC, JWRN_NOT_SEQUENTIAL,
-                        JWRN_TOO_MUCH_DATA};
+pub use super::jerror::{
+    C2RustUnnamed_3, JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
+    JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID, JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
+    JERR_BAD_DCT_COEF, JERR_BAD_HUFF_TABLE, JERR_BAD_IN_COLORSPACE, JERR_BAD_J_COLORSPACE,
+    JERR_BAD_LENGTH, JERR_BAD_LIB_VERSION, JERR_BAD_MCU_SIZE, JERR_BAD_PARAM, JERR_BAD_PARAM_VALUE,
+    JERR_BAD_POOL_ID, JERR_BAD_PRECISION, JERR_BAD_PROGRESSION, JERR_BAD_PROG_SCRIPT,
+    JERR_BAD_SAMPLING, JERR_BAD_SCAN_SCRIPT, JERR_BAD_STATE, JERR_BAD_STRUCT_SIZE,
+    JERR_BAD_VIRTUAL_ACCESS, JERR_BUFFER_SIZE, JERR_CANT_SUSPEND, JERR_CCIR601_NOTIMPL,
+    JERR_COMPONENT_COUNT, JERR_CONVERSION_NOTIMPL, JERR_DAC_INDEX, JERR_DAC_VALUE, JERR_DHT_INDEX,
+    JERR_DQT_INDEX, JERR_EMPTY_IMAGE, JERR_EMS_READ, JERR_EMS_WRITE, JERR_EOI_EXPECTED,
+    JERR_FILE_READ, JERR_FILE_WRITE, JERR_FRACT_SAMPLE_NOTIMPL, JERR_HUFF_CLEN_OVERFLOW,
+    JERR_HUFF_MISSING_CODE, JERR_IMAGE_TOO_BIG, JERR_INPUT_EMPTY, JERR_INPUT_EOF,
+    JERR_MISMATCHED_QUANT_TABLE, JERR_MISSING_DATA, JERR_MODE_CHANGE, JERR_NOTIMPL,
+    JERR_NOT_COMPILED, JERR_NO_BACKING_STORE, JERR_NO_HUFF_TABLE, JERR_NO_IMAGE,
+    JERR_NO_QUANT_TABLE, JERR_NO_SOI, JERR_OUT_OF_MEMORY, JERR_QUANT_COMPONENTS,
+    JERR_QUANT_FEW_COLORS, JERR_QUANT_MANY_COLORS, JERR_SOF_DUPLICATE, JERR_SOF_NO_SOS,
+    JERR_SOF_UNSUPPORTED, JERR_SOI_DUPLICATE, JERR_SOS_NO_SOF, JERR_TFILE_CREATE, JERR_TFILE_READ,
+    JERR_TFILE_SEEK, JERR_TFILE_WRITE, JERR_TOO_LITTLE_DATA, JERR_UNKNOWN_MARKER,
+    JERR_UNSUPPORTED_SUSPEND, JERR_VIRTUAL_BUG, JERR_WIDTH_OVERFLOW, JERR_XMS_READ, JERR_XMS_WRITE,
+    JMSG_COPYRIGHT, JMSG_LASTMSGCODE, JMSG_NOMESSAGE, JMSG_VERSION, JTRC_16BIT_TABLES, JTRC_ADOBE,
+    JTRC_APP0, JTRC_APP14, JTRC_DAC, JTRC_DHT, JTRC_DQT, JTRC_DRI, JTRC_EMS_CLOSE, JTRC_EMS_OPEN,
+    JTRC_EOI, JTRC_HUFFBITS, JTRC_JFIF, JTRC_JFIF_BADTHUMBNAILSIZE, JTRC_JFIF_EXTENSION,
+    JTRC_JFIF_THUMBNAIL, JTRC_MISC_MARKER, JTRC_PARMLESS_MARKER, JTRC_QUANTVALS,
+    JTRC_QUANT_3_NCOLORS, JTRC_QUANT_NCOLORS, JTRC_QUANT_SELECTED, JTRC_RECOVERY_ACTION, JTRC_RST,
+    JTRC_SMOOTH_NOTIMPL, JTRC_SOF, JTRC_SOF_COMPONENT, JTRC_SOI, JTRC_SOS, JTRC_SOS_COMPONENT,
+    JTRC_SOS_PARAMS, JTRC_TFILE_CLOSE, JTRC_TFILE_OPEN, JTRC_THUMB_JPEG, JTRC_THUMB_PALETTE,
+    JTRC_THUMB_RGB, JTRC_UNKNOWN_IDS, JTRC_XMS_CLOSE, JTRC_XMS_OPEN, JWRN_ADOBE_XFORM,
+    JWRN_BOGUS_ICC, JWRN_BOGUS_PROGRESSION, JWRN_EXTRANEOUS_DATA, JWRN_HIT_MARKER,
+    JWRN_HUFF_BAD_CODE, JWRN_JFIF_MAJOR, JWRN_JPEG_EOF, JWRN_MUST_RESYNC, JWRN_NOT_SEQUENTIAL,
+    JWRN_TOO_MUCH_DATA,
+};
+pub use crate::jmorecfg_h::{
+    boolean, FALSE, JCOEF, JDIMENSION, JOCTET, JSAMPLE, TRUE, UINT16, UINT8,
+};
+pub use crate::jpegint_h::{
+    inverse_DCT_method_ptr, jcopy_block_row, jdiv_round_up, JBUF_CRANK_DEST, JBUF_PASS_THRU,
+    JBUF_REQUANT, JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, J_BUF_MODE,
+};
+pub use crate::jpeglib_h::{
+    j_common_ptr, j_compress_ptr, j_decompress_ptr, jpeg_c_coef_controller, jpeg_c_main_controller,
+    jpeg_c_prep_controller, jpeg_color_converter, jpeg_color_deconverter, jpeg_color_quantizer,
+    jpeg_common_struct, jpeg_comp_master, jpeg_component_info, jpeg_compress_struct,
+    jpeg_d_coef_controller, jpeg_d_main_controller, jpeg_d_post_controller, jpeg_decomp_master,
+    jpeg_decompress_struct, jpeg_destination_mgr, jpeg_downsampler, jpeg_entropy_decoder,
+    jpeg_entropy_encoder, jpeg_error_mgr, jpeg_forward_dct, jpeg_input_controller,
+    jpeg_inverse_dct, jpeg_marker_parser_method, jpeg_marker_reader, jpeg_marker_struct,
+    jpeg_marker_writer, jpeg_memory_mgr, jpeg_progress_mgr, jpeg_save_markers,
+    jpeg_saved_marker_ptr, jpeg_scan_info, jpeg_set_colorspace, jpeg_source_mgr, jpeg_upsampler,
+    jpeg_write_marker, jvirt_barray_control, jvirt_barray_ptr, jvirt_sarray_control,
+    jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr, DCTSIZE, DCTSIZE2, JBLOCK, JBLOCKARRAY,
+    JBLOCKROW, JCOEFPTR, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA,
+    JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB,
+    JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW,
+    JDITHER_FS, JDITHER_NONE, JDITHER_ORDERED, JHUFF_TBL, JPEG_APP0, JPEG_COM, JPOOL_IMAGE,
+    JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD, J_DITHER_MODE,
+    NUM_QUANT_TBLS,
+};
+pub use crate::stddef_h::{size_t, NULL};
+pub use crate::stdlib::{
+    C2RustUnnamed_0, _ISalnum, _ISalpha, _ISblank, _IScntrl, _ISdigit, _ISgraph, _ISlower,
+    _ISprint, _ISpunct, _ISspace, _ISupper, _ISxdigit, __ctype_b_loc,
+};
+use libc::{self, c_char, c_int, c_long, c_uint, c_ulong, c_ushort};
 // =============== BEGIN transupp_h ================
 pub type JXFORM_CODE = c_uint;
 
@@ -504,31 +223,17 @@ unsafe extern "C" fn do_crop(
 )
 /* Crop.  This is only used when no rotate/flip is requested with the crop. */
 {
-    
-    
-    
-    
-    
-    
-    
-     
     /* We simply have to copy the right amount of data (the destination's
      * image size) starting at the given X and Y offsets in the source.
      */
-     let mut ci:   c_int =  0i32;
+    let mut ci: c_int = 0i32;
     while ci < (*dstinfo).num_components {
-            
-        
-        
-         let mut compptr:   *mut jpeg_component_info =
-     (*dstinfo).comp_info.offset(ci as isize); let mut x_crop_blocks:   JDIMENSION =
-      x_crop_offset * (*compptr).h_samp_factor as c_uint; let mut y_crop_blocks:   JDIMENSION =
-      y_crop_offset * (*compptr).v_samp_factor as c_uint; let mut dst_blk_y:   JDIMENSION =  0u32;
+        let mut compptr: *mut jpeg_component_info = (*dstinfo).comp_info.offset(ci as isize);
+        let mut x_crop_blocks: JDIMENSION = x_crop_offset * (*compptr).h_samp_factor as c_uint;
+        let mut y_crop_blocks: JDIMENSION = y_crop_offset * (*compptr).v_samp_factor as c_uint;
+        let mut dst_blk_y: JDIMENSION = 0u32;
         while dst_blk_y < (*compptr).height_in_blocks {
-               
-            
-             let mut dst_buffer:   JBLOCKARRAY =
-     Some(
+            let mut dst_buffer: JBLOCKARRAY = Some(
                 (*(*srcinfo).mem)
                     .access_virt_barray
                     .expect("non-null function pointer"),
@@ -539,8 +244,8 @@ unsafe extern "C" fn do_crop(
                 dst_blk_y,
                 (*compptr).v_samp_factor as JDIMENSION,
                 TRUE,
-            ); let mut src_buffer:   JBLOCKARRAY =
-     Some(
+            );
+            let mut src_buffer: JBLOCKARRAY = Some(
                 (*(*srcinfo).mem)
                     .access_virt_barray
                     .expect("non-null function pointer"),
@@ -548,11 +253,11 @@ unsafe extern "C" fn do_crop(
             .expect("non-null function pointer")(
                 srcinfo as j_common_ptr,
                 *src_coef_arrays.offset(ci as isize),
-                
                 dst_blk_y + y_crop_blocks,
                 (*compptr).v_samp_factor as JDIMENSION,
                 FALSE,
-            ); let mut offset_y:   c_int =  0i32;
+            );
+            let mut offset_y: c_int = 0i32;
             while offset_y < (*compptr).v_samp_factor {
                 jcopy_block_row(
                     (*src_buffer.offset(offset_y as isize)).offset(x_crop_blocks as isize),
@@ -561,7 +266,7 @@ unsafe extern "C" fn do_crop(
                 );
                 offset_y += 1
             }
-            dst_blk_y +=  (*compptr).v_samp_factor as c_uint
+            dst_blk_y += (*compptr).v_samp_factor as c_uint
         }
         ci += 1
     }
@@ -577,42 +282,22 @@ unsafe extern "C" fn do_flip_h_no_crop(
  * NB: this only works when y_crop_offset is zero.
  */
 {
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-      
     /* Horizontal mirroring of DCT blocks is accomplished by swapping
      * pairs of blocks in-place.  Within a DCT block, we perform horizontal
      * mirroring by changing the signs of odd-numbered columns.
      * Partial iMCUs at the right edge are left untouched.
      */
-    
-     let mut MCU_cols:   JDIMENSION =
-      (*srcinfo).output_width /
-    
-        ((*dstinfo).max_h_samp_factor * dstinfo_min_DCT_h_scaled_size) as c_uint; let mut ci:   c_int =  0i32;
+
+    let mut MCU_cols: JDIMENSION = (*srcinfo).output_width
+        / ((*dstinfo).max_h_samp_factor * dstinfo_min_DCT_h_scaled_size) as c_uint;
+    let mut ci: c_int = 0i32;
     while ci < (*dstinfo).num_components {
-            
-        
-        
-         let mut compptr:   *mut jpeg_component_info =
-     (*dstinfo).comp_info.offset(ci as isize); let mut comp_width:   JDIMENSION =
-      MCU_cols * (*compptr).h_samp_factor as c_uint; let mut x_crop_blocks:   JDIMENSION =
-      x_crop_offset * (*compptr).h_samp_factor as c_uint; let mut blk_y:   JDIMENSION =  0u32;
+        let mut compptr: *mut jpeg_component_info = (*dstinfo).comp_info.offset(ci as isize);
+        let mut comp_width: JDIMENSION = MCU_cols * (*compptr).h_samp_factor as c_uint;
+        let mut x_crop_blocks: JDIMENSION = x_crop_offset * (*compptr).h_samp_factor as c_uint;
+        let mut blk_y: JDIMENSION = 0u32;
         while blk_y < (*compptr).height_in_blocks {
-              
-             let mut buffer:   JBLOCKARRAY =
-     Some(
+            let mut buffer: JBLOCKARRAY = Some(
                 (*(*srcinfo).mem)
                     .access_virt_barray
                     .expect("non-null function pointer"),
@@ -623,23 +308,21 @@ unsafe extern "C" fn do_flip_h_no_crop(
                 blk_y,
                 (*compptr).v_samp_factor as JDIMENSION,
                 TRUE,
-            ); let mut offset_y:   c_int =  0i32;
+            );
+            let mut offset_y: c_int = 0i32;
             while offset_y < (*compptr).v_samp_factor {
-                 let mut blk_x:   JDIMENSION =  0u32;
-                while  blk_x * 2u32 < comp_width {
-                       
-                    
-                     let mut ptr1:   JCOEFPTR =
-    
-                        (*(*buffer.offset(offset_y as isize)).offset(blk_x as isize)).as_mut_ptr(); let mut ptr2:   JCOEFPTR =
-     (*(*buffer.offset(offset_y as isize)).offset(
-                        (
-                        comp_width - blk_x - 1u32) as isize,
-                    ))
-                    .as_mut_ptr(); let mut k:   c_int =  0i32; /* swap even column */
+                let mut blk_x: JDIMENSION = 0u32;
+                while blk_x * 2u32 < comp_width {
+                    let mut ptr1: JCOEFPTR =
+                        (*(*buffer.offset(offset_y as isize)).offset(blk_x as isize)).as_mut_ptr();
+                    let mut ptr2: JCOEFPTR = (*(*buffer.offset(offset_y as isize))
+                        .offset((comp_width - blk_x - 1u32) as isize))
+                    .as_mut_ptr();
+                    let mut k: c_int = 0i32; /* swap even column */
                     while k < DCTSIZE2 {
-                           /* swap odd column with sign change */
-                         let mut temp1:   JCOEF =  *ptr1; let mut temp2:   JCOEF =  *ptr2;
+                        /* swap odd column with sign change */
+                        let mut temp1: JCOEF = *ptr1;
+                        let mut temp2: JCOEF = *ptr2;
                         let fresh0 = ptr1;
                         ptr1 = ptr1.offset(1);
                         *fresh0 = temp2;
@@ -656,7 +339,7 @@ unsafe extern "C" fn do_flip_h_no_crop(
                         *fresh3 = -(temp1 as c_int) as JCOEF;
                         k += 2i32
                     }
-                    blk_x +=  1
+                    blk_x += 1
                 }
                 if x_crop_blocks > 0u32 {
                     /* Now left-justify the portion of the data to be kept.
@@ -673,12 +356,12 @@ unsafe extern "C" fn do_flip_h_no_crop(
                             (*buffer.offset(offset_y as isize)).offset(blk_x as isize),
                             1u32,
                         );
-                        blk_x +=  1
+                        blk_x += 1
                     }
                 }
                 offset_y += 1
             }
-            blk_y +=  (*compptr).v_samp_factor as c_uint
+            blk_y += (*compptr).v_samp_factor as c_uint
         }
         ci += 1
     }
@@ -694,46 +377,22 @@ unsafe extern "C" fn do_flip_h(
 )
 /* Horizontal flip in general cropping case */
 {
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-      
     /* Here we must output into a separate array because we can't touch
      * different rows of a single virtual array simultaneously.  Otherwise,
      * this is essentially the same as the routine above.
      */
-    
-     let mut MCU_cols:   JDIMENSION =
-      (*srcinfo).output_width /
-    
-        ((*dstinfo).max_h_samp_factor * dstinfo_min_DCT_h_scaled_size) as c_uint; let mut ci:   c_int =  0i32;
+
+    let mut MCU_cols: JDIMENSION = (*srcinfo).output_width
+        / ((*dstinfo).max_h_samp_factor * dstinfo_min_DCT_h_scaled_size) as c_uint;
+    let mut ci: c_int = 0i32;
     while ci < (*dstinfo).num_components {
-             
-        
-        
-        
-         let mut compptr:   *mut jpeg_component_info =
-     (*dstinfo).comp_info.offset(ci as isize); let mut comp_width:   JDIMENSION =
-      MCU_cols * (*compptr).h_samp_factor as c_uint; let mut x_crop_blocks:   JDIMENSION =
-      x_crop_offset * (*compptr).h_samp_factor as c_uint; let mut y_crop_blocks:   JDIMENSION =
-      y_crop_offset * (*compptr).v_samp_factor as c_uint; let mut dst_blk_y:   JDIMENSION =  0u32;
+        let mut compptr: *mut jpeg_component_info = (*dstinfo).comp_info.offset(ci as isize);
+        let mut comp_width: JDIMENSION = MCU_cols * (*compptr).h_samp_factor as c_uint;
+        let mut x_crop_blocks: JDIMENSION = x_crop_offset * (*compptr).h_samp_factor as c_uint;
+        let mut y_crop_blocks: JDIMENSION = y_crop_offset * (*compptr).v_samp_factor as c_uint;
+        let mut dst_blk_y: JDIMENSION = 0u32;
         while dst_blk_y < (*compptr).height_in_blocks {
-               
-            
-             let mut dst_buffer:   JBLOCKARRAY =
-     Some(
+            let mut dst_buffer: JBLOCKARRAY = Some(
                 (*(*srcinfo).mem)
                     .access_virt_barray
                     .expect("non-null function pointer"),
@@ -744,8 +403,8 @@ unsafe extern "C" fn do_flip_h(
                 dst_blk_y,
                 (*compptr).v_samp_factor as JDIMENSION,
                 TRUE,
-            ); let mut src_buffer:   JBLOCKARRAY =
-     Some(
+            );
+            let mut src_buffer: JBLOCKARRAY = Some(
                 (*(*srcinfo).mem)
                     .access_virt_barray
                     .expect("non-null function pointer"),
@@ -753,29 +412,23 @@ unsafe extern "C" fn do_flip_h(
             .expect("non-null function pointer")(
                 srcinfo as j_common_ptr,
                 *src_coef_arrays.offset(ci as isize),
-                
                 dst_blk_y + y_crop_blocks,
                 (*compptr).v_samp_factor as JDIMENSION,
                 FALSE,
-            ); let mut offset_y:   c_int =  0i32;
+            );
+            let mut offset_y: c_int = 0i32;
             while offset_y < (*compptr).v_samp_factor {
-                   
-                
-                 let mut dst_row_ptr:   JBLOCKROW =
-     *dst_buffer.offset(offset_y as isize); let mut src_row_ptr:   JBLOCKROW =
-     *src_buffer.offset(offset_y as isize); let mut dst_blk_x:   JDIMENSION =  0u32;
+                let mut dst_row_ptr: JBLOCKROW = *dst_buffer.offset(offset_y as isize);
+                let mut src_row_ptr: JBLOCKROW = *src_buffer.offset(offset_y as isize);
+                let mut dst_blk_x: JDIMENSION = 0u32;
                 while dst_blk_x < (*compptr).width_in_blocks {
-                    if  x_crop_blocks + dst_blk_x < comp_width {
-                          
-                        
-                         let mut dst_ptr:   JCOEFPTR =
-     (*dst_row_ptr.offset(dst_blk_x as isize)).as_mut_ptr(); let mut src_ptr:   JCOEFPTR =
-     (*src_row_ptr.offset(
-                            (
-                            comp_width - x_crop_blocks - dst_blk_x - 1u32)
-                                as isize,
-                        ))
-                        .as_mut_ptr(); let mut k:   c_int =  0i32; /* copy even column */
+                    if x_crop_blocks + dst_blk_x < comp_width {
+                        let mut dst_ptr: JCOEFPTR =
+                            (*dst_row_ptr.offset(dst_blk_x as isize)).as_mut_ptr();
+                        let mut src_ptr: JCOEFPTR = (*src_row_ptr
+                            .offset((comp_width - x_crop_blocks - dst_blk_x - 1u32) as isize))
+                        .as_mut_ptr();
+                        let mut k: c_int = 0i32; /* copy even column */
                         while k < DCTSIZE2 {
                             let fresh4 = src_ptr;
                             src_ptr = src_ptr.offset(1);
@@ -800,11 +453,11 @@ unsafe extern "C" fn do_flip_h(
                             1u32,
                         );
                     }
-                    dst_blk_x +=  1
+                    dst_blk_x += 1
                 }
                 offset_y += 1
             }
-            dst_blk_y +=  (*compptr).v_samp_factor as c_uint
+            dst_blk_y += (*compptr).v_samp_factor as c_uint
         }
         ci += 1
     }
@@ -820,23 +473,6 @@ unsafe extern "C" fn do_flip_v(
 )
 /* Vertical flip */
 {
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-      
     /* We output into a separate array because we can't touch different
      * rows of the source virtual array simultaneously.  Otherwise, this
      * is a pretty straightforward analog of horizontal flip.
@@ -844,25 +480,19 @@ unsafe extern "C" fn do_flip_v(
      * of odd-numbered rows.
      * Partial iMCUs at the bottom edge are copied verbatim.
      */
-    
-     let mut MCU_rows:   JDIMENSION =
-      (*srcinfo).output_height /
-    
-        ((*dstinfo).max_v_samp_factor * dstinfo_min_DCT_v_scaled_size) as c_uint; let mut ci:   c_int =  0i32;
+
+    let mut MCU_rows: JDIMENSION = (*srcinfo).output_height
+        / ((*dstinfo).max_v_samp_factor * dstinfo_min_DCT_v_scaled_size) as c_uint;
+    let mut ci: c_int = 0i32;
     while ci < (*dstinfo).num_components {
-             
-        
-        
-        
-         let mut compptr:   *mut jpeg_component_info =
-     (*dstinfo).comp_info.offset(ci as isize); let mut comp_height:   JDIMENSION =
-      MCU_rows * (*compptr).v_samp_factor as c_uint; let mut x_crop_blocks:   JDIMENSION =
-      x_crop_offset * (*compptr).h_samp_factor as c_uint; let mut y_crop_blocks:   JDIMENSION =
-      y_crop_offset * (*compptr).v_samp_factor as c_uint; let mut dst_blk_y:   JDIMENSION =  0u32;
+        let mut compptr: *mut jpeg_component_info = (*dstinfo).comp_info.offset(ci as isize);
+        let mut comp_height: JDIMENSION = MCU_rows * (*compptr).v_samp_factor as c_uint;
+        let mut x_crop_blocks: JDIMENSION = x_crop_offset * (*compptr).h_samp_factor as c_uint;
+        let mut y_crop_blocks: JDIMENSION = y_crop_offset * (*compptr).v_samp_factor as c_uint;
+        let mut dst_blk_y: JDIMENSION = 0u32;
         while dst_blk_y < (*compptr).height_in_blocks {
-              let mut src_buffer:  JBLOCKARRAY =
-     ::std::ptr::null_mut::< JBLOCKROW>();  let mut dst_buffer:   JBLOCKARRAY =
-     Some(
+            let mut src_buffer: JBLOCKARRAY = ::std::ptr::null_mut::<JBLOCKROW>();
+            let mut dst_buffer: JBLOCKARRAY = Some(
                 (*(*srcinfo).mem)
                     .access_virt_barray
                     .expect("non-null function pointer"),
@@ -874,7 +504,7 @@ unsafe extern "C" fn do_flip_v(
                 (*compptr).v_samp_factor as JDIMENSION,
                 TRUE,
             );
-            if  y_crop_blocks + dst_blk_y < comp_height {
+            if y_crop_blocks + dst_blk_y < comp_height {
                 /* Row is within the mirrorable area. */
                 src_buffer = Some(
                     (*(*srcinfo).mem)
@@ -884,9 +514,10 @@ unsafe extern "C" fn do_flip_v(
                 .expect("non-null function pointer")(
                     srcinfo as j_common_ptr,
                     *src_coef_arrays.offset(ci as isize),
-                    
-                    comp_height - y_crop_blocks - dst_blk_y -
-    (*compptr).v_samp_factor as JDIMENSION,
+                    comp_height
+                        - y_crop_blocks
+                        - dst_blk_y
+                        - (*compptr).v_samp_factor as JDIMENSION,
                     (*compptr).v_samp_factor as JDIMENSION,
                     FALSE,
                 )
@@ -900,30 +531,27 @@ unsafe extern "C" fn do_flip_v(
                 .expect("non-null function pointer")(
                     srcinfo as j_common_ptr,
                     *src_coef_arrays.offset(ci as isize),
-                    
                     dst_blk_y + y_crop_blocks,
                     (*compptr).v_samp_factor as JDIMENSION,
                     FALSE,
                 )
             }
-             let mut offset_y:   c_int =  0i32;
+            let mut offset_y: c_int = 0i32;
             while offset_y < (*compptr).v_samp_factor {
-                if  y_crop_blocks + dst_blk_y < comp_height {
-                      
-                     let mut dst_row_ptr:   JBLOCKROW =
-     *dst_buffer.offset(offset_y as isize); let mut src_row_ptr:   JBLOCKROW =
-    
+                if y_crop_blocks + dst_blk_y < comp_height {
+                    let mut dst_row_ptr: JBLOCKROW = *dst_buffer.offset(offset_y as isize);
+                    let mut src_row_ptr: JBLOCKROW =
                         *src_buffer.offset(((*compptr).v_samp_factor - offset_y - 1i32) as isize);
                     src_row_ptr = src_row_ptr.offset(x_crop_blocks as isize);
-                     let mut dst_blk_x:   JDIMENSION =  0u32;
+                    let mut dst_blk_x: JDIMENSION = 0u32;
                     while dst_blk_x < (*compptr).width_in_blocks {
-                           
-                        
-                         let mut dst_ptr:   JCOEFPTR =
-     (*dst_row_ptr.offset(dst_blk_x as isize)).as_mut_ptr(); let mut src_ptr:   JCOEFPTR =
-     (*src_row_ptr.offset(dst_blk_x as isize)).as_mut_ptr(); let mut i:   c_int =  0i32;
+                        let mut dst_ptr: JCOEFPTR =
+                            (*dst_row_ptr.offset(dst_blk_x as isize)).as_mut_ptr();
+                        let mut src_ptr: JCOEFPTR =
+                            (*src_row_ptr.offset(dst_blk_x as isize)).as_mut_ptr();
+                        let mut i: c_int = 0i32;
                         while i < DCTSIZE {
-                             let mut j:   c_int =  0i32;
+                            let mut j: c_int = 0i32;
                             while j < DCTSIZE {
                                 let fresh8 = src_ptr;
                                 src_ptr = src_ptr.offset(1);
@@ -944,7 +572,7 @@ unsafe extern "C" fn do_flip_v(
                             }
                             i += 2i32
                         }
-                        dst_blk_x +=  1
+                        dst_blk_x += 1
                     }
                 } else {
                     /* Just copy row verbatim. */
@@ -956,7 +584,7 @@ unsafe extern "C" fn do_flip_v(
                 }
                 offset_y += 1
             }
-            dst_blk_y +=  (*compptr).v_samp_factor as c_uint
+            dst_blk_y += (*compptr).v_samp_factor as c_uint
         }
         ci += 1
     }
@@ -972,38 +600,19 @@ unsafe extern "C" fn do_transpose(
 )
 /* Transpose source into destination */
 {
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-     
     /* Transposing pixels within a block just requires transposing the
      * DCT coefficients.
      * Partial iMCUs at the edges require no special treatment; we simply
      * process all the available DCT blocks for every component.
      */
-     let mut ci:   c_int =  0i32;
+    let mut ci: c_int = 0i32;
     while ci < (*dstinfo).num_components {
-            
-        
-        
-         let mut compptr:   *mut jpeg_component_info =
-     (*dstinfo).comp_info.offset(ci as isize); let mut x_crop_blocks:   JDIMENSION =
-      x_crop_offset * (*compptr).h_samp_factor as c_uint; let mut y_crop_blocks:   JDIMENSION =
-      y_crop_offset * (*compptr).v_samp_factor as c_uint; let mut dst_blk_y:   JDIMENSION =  0u32;
+        let mut compptr: *mut jpeg_component_info = (*dstinfo).comp_info.offset(ci as isize);
+        let mut x_crop_blocks: JDIMENSION = x_crop_offset * (*compptr).h_samp_factor as c_uint;
+        let mut y_crop_blocks: JDIMENSION = y_crop_offset * (*compptr).v_samp_factor as c_uint;
+        let mut dst_blk_y: JDIMENSION = 0u32;
         while dst_blk_y < (*compptr).height_in_blocks {
-              
-             let mut dst_buffer:   JBLOCKARRAY =
-     Some(
+            let mut dst_buffer: JBLOCKARRAY = Some(
                 (*(*srcinfo).mem)
                     .access_virt_barray
                     .expect("non-null function pointer"),
@@ -1014,13 +623,12 @@ unsafe extern "C" fn do_transpose(
                 dst_blk_y,
                 (*compptr).v_samp_factor as JDIMENSION,
                 TRUE,
-            ); let mut offset_y:   c_int =  0i32;
+            );
+            let mut offset_y: c_int = 0i32;
             while offset_y < (*compptr).v_samp_factor {
-                  let mut dst_blk_x:   JDIMENSION =  0u32;
+                let mut dst_blk_x: JDIMENSION = 0u32;
                 while dst_blk_x < (*compptr).width_in_blocks {
-                      
-                     let mut src_buffer:   JBLOCKARRAY =
-     Some(
+                    let mut src_buffer: JBLOCKARRAY = Some(
                         (*(*srcinfo).mem)
                             .access_virt_barray
                             .expect("non-null function pointer"),
@@ -1028,25 +636,21 @@ unsafe extern "C" fn do_transpose(
                     .expect("non-null function pointer")(
                         srcinfo as j_common_ptr,
                         *src_coef_arrays.offset(ci as isize),
-                        
                         dst_blk_x + x_crop_blocks,
                         (*compptr).h_samp_factor as JDIMENSION,
                         FALSE,
-                    ); let mut offset_x:   c_int =  0i32;
+                    );
+                    let mut offset_x: c_int = 0i32;
                     while offset_x < (*compptr).h_samp_factor {
-                           
-                        
-                         let mut dst_ptr:   JCOEFPTR =
-     (*(*dst_buffer.offset(offset_y as isize))
+                        let mut dst_ptr: JCOEFPTR = (*(*dst_buffer.offset(offset_y as isize))
                             .offset((dst_blk_x + offset_x as c_uint) as isize))
-                        .as_mut_ptr(); let mut src_ptr:   JCOEFPTR =
-     (*(*src_buffer.offset(offset_x as isize)).offset(
-                            (
-                            dst_blk_y + offset_y as c_uint + y_crop_blocks) as isize,
-                        ))
-                        .as_mut_ptr(); let mut i:   c_int =  0i32;
+                        .as_mut_ptr();
+                        let mut src_ptr: JCOEFPTR = (*(*src_buffer.offset(offset_x as isize))
+                            .offset((dst_blk_y + offset_y as c_uint + y_crop_blocks) as isize))
+                        .as_mut_ptr();
+                        let mut i: c_int = 0i32;
                         while i < DCTSIZE {
-                              let mut j:   c_int =  0i32;
+                            let mut j: c_int = 0i32;
                             while j < DCTSIZE {
                                 *dst_ptr.offset((j * DCTSIZE + i) as isize) =
                                     *src_ptr.offset((i * DCTSIZE + j) as isize);
@@ -1056,11 +660,11 @@ unsafe extern "C" fn do_transpose(
                         }
                         offset_x += 1
                     }
-                    dst_blk_x +=  (*compptr).h_samp_factor as c_uint
+                    dst_blk_x += (*compptr).h_samp_factor as c_uint
                 }
                 offset_y += 1
             }
-            dst_blk_y +=  (*compptr).v_samp_factor as c_uint
+            dst_blk_y += (*compptr).v_samp_factor as c_uint
         }
         ci += 1
     }
@@ -1080,45 +684,22 @@ unsafe extern "C" fn do_rot_90(
  * These two steps are merged into a single processing routine.
  */
 {
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-      
     /* Because of the horizontal mirror step, we can't process partial iMCUs
      * at the (output) right edge properly.  They just get transposed and
      * not mirrored.
      */
-    
-     let mut MCU_cols:   JDIMENSION =
-      (*srcinfo).output_height /
-    
-        ((*dstinfo).max_h_samp_factor * dstinfo_min_DCT_h_scaled_size) as c_uint; let mut ci:   c_int =  0i32;
+
+    let mut MCU_cols: JDIMENSION = (*srcinfo).output_height
+        / ((*dstinfo).max_h_samp_factor * dstinfo_min_DCT_h_scaled_size) as c_uint;
+    let mut ci: c_int = 0i32;
     while ci < (*dstinfo).num_components {
-             
-        
-        
-        
-         let mut compptr:   *mut jpeg_component_info =
-     (*dstinfo).comp_info.offset(ci as isize); let mut comp_width:   JDIMENSION =
-      MCU_cols * (*compptr).h_samp_factor as c_uint; let mut x_crop_blocks:   JDIMENSION =
-      x_crop_offset * (*compptr).h_samp_factor as c_uint; let mut y_crop_blocks:   JDIMENSION =
-      y_crop_offset * (*compptr).v_samp_factor as c_uint; let mut dst_blk_y:   JDIMENSION =  0u32;
+        let mut compptr: *mut jpeg_component_info = (*dstinfo).comp_info.offset(ci as isize);
+        let mut comp_width: JDIMENSION = MCU_cols * (*compptr).h_samp_factor as c_uint;
+        let mut x_crop_blocks: JDIMENSION = x_crop_offset * (*compptr).h_samp_factor as c_uint;
+        let mut y_crop_blocks: JDIMENSION = y_crop_offset * (*compptr).v_samp_factor as c_uint;
+        let mut dst_blk_y: JDIMENSION = 0u32;
         while dst_blk_y < (*compptr).height_in_blocks {
-              
-             let mut dst_buffer:   JBLOCKARRAY =
-     Some(
+            let mut dst_buffer: JBLOCKARRAY = Some(
                 (*(*srcinfo).mem)
                     .access_virt_barray
                     .expect("non-null function pointer"),
@@ -1129,12 +710,13 @@ unsafe extern "C" fn do_rot_90(
                 dst_blk_y,
                 (*compptr).v_samp_factor as JDIMENSION,
                 TRUE,
-            ); let mut offset_y:   c_int =  0i32;
+            );
+            let mut offset_y: c_int = 0i32;
             while offset_y < (*compptr).v_samp_factor {
-                  let mut dst_blk_x:   JDIMENSION =  0u32;
+                let mut dst_blk_x: JDIMENSION = 0u32;
                 while dst_blk_x < (*compptr).width_in_blocks {
-                      let mut src_buffer:  JBLOCKARRAY =
-     ::std::ptr::null_mut::< JBLOCKROW>();if  x_crop_blocks + dst_blk_x < comp_width {
+                    let mut src_buffer: JBLOCKARRAY = ::std::ptr::null_mut::<JBLOCKROW>();
+                    if x_crop_blocks + dst_blk_x < comp_width {
                         /* Block is within the mirrorable area. */
                         src_buffer = Some(
                             (*(*srcinfo).mem)
@@ -1144,10 +726,10 @@ unsafe extern "C" fn do_rot_90(
                         .expect("non-null function pointer")(
                             srcinfo as j_common_ptr,
                             *src_coef_arrays.offset(ci as isize),
-                            
-                            comp_width - x_crop_blocks - dst_blk_x -
-    
-                                    (*compptr).h_samp_factor as JDIMENSION,
+                            comp_width
+                                - x_crop_blocks
+                                - dst_blk_x
+                                - (*compptr).h_samp_factor as JDIMENSION,
                             (*compptr).h_samp_factor as JDIMENSION,
                             FALSE,
                         )
@@ -1161,45 +743,38 @@ unsafe extern "C" fn do_rot_90(
                         .expect("non-null function pointer")(
                             srcinfo as j_common_ptr,
                             *src_coef_arrays.offset(ci as isize),
-                            
                             dst_blk_x + x_crop_blocks,
                             (*compptr).h_samp_factor as JDIMENSION,
                             FALSE,
                         )
                     }
-                     let mut offset_x:   c_int =  0i32;
+                    let mut offset_x: c_int = 0i32;
                     while offset_x < (*compptr).h_samp_factor {
-                         let mut i:  c_int =  0; let mut j:  c_int =  0; let mut src_ptr:  JCOEFPTR =
-     ::std::ptr::null_mut::< JCOEF>();  let mut dst_ptr:   JCOEFPTR =
-     (*(*dst_buffer.offset(offset_y as isize))
+                        let mut i: c_int = 0;
+                        let mut j: c_int = 0;
+                        let mut src_ptr: JCOEFPTR = ::std::ptr::null_mut::<JCOEF>();
+                        let mut dst_ptr: JCOEFPTR = (*(*dst_buffer.offset(offset_y as isize))
                             .offset((dst_blk_x + offset_x as c_uint) as isize))
                         .as_mut_ptr();
-                        if  x_crop_blocks + dst_blk_x < comp_width {
+                        if x_crop_blocks + dst_blk_x < comp_width {
                             /* Block is within the mirrorable area. */
                             src_ptr = (*(*src_buffer
                                 .offset(((*compptr).h_samp_factor - offset_x - 1i32) as isize))
-                            .offset(
-                                (
-                                dst_blk_y + offset_y as c_uint + y_crop_blocks)
-                                    as isize,
-                            ))
+                            .offset((dst_blk_y + offset_y as c_uint + y_crop_blocks) as isize))
                             .as_mut_ptr();
                             i = 0i32;
                             while i < DCTSIZE {
                                 j = 0i32;
                                 while j < DCTSIZE {
                                     *dst_ptr.offset((j * DCTSIZE + i) as isize) =
-                                        *src_ptr
-                                            .offset((i * DCTSIZE + j) as isize);
+                                        *src_ptr.offset((i * DCTSIZE + j) as isize);
                                     j += 1
                                 }
                                 i += 1;
                                 j = 0i32;
                                 while j < DCTSIZE {
                                     *dst_ptr.offset((j * DCTSIZE + i) as isize) =
-                                        -(*src_ptr
-                                            .offset((i * DCTSIZE + j) as isize)
-                                            as c_int)
+                                        -(*src_ptr.offset((i * DCTSIZE + j) as isize) as c_int)
                                             as JCOEF;
                                     j += 1
                                 }
@@ -1207,19 +782,15 @@ unsafe extern "C" fn do_rot_90(
                             }
                         } else {
                             /* Edge blocks are transposed but not mirrored. */
-                            src_ptr = (*(*src_buffer.offset(offset_x as isize)).offset(
-                                (
-                                dst_blk_y + offset_y as c_uint + y_crop_blocks)
-                                    as isize,
-                            ))
+                            src_ptr = (*(*src_buffer.offset(offset_x as isize))
+                                .offset((dst_blk_y + offset_y as c_uint + y_crop_blocks) as isize))
                             .as_mut_ptr();
                             i = 0i32;
                             while i < DCTSIZE {
                                 j = 0i32;
                                 while j < DCTSIZE {
                                     *dst_ptr.offset((j * DCTSIZE + i) as isize) =
-                                        *src_ptr
-                                            .offset((i * DCTSIZE + j) as isize);
+                                        *src_ptr.offset((i * DCTSIZE + j) as isize);
                                     j += 1
                                 }
                                 i += 1
@@ -1227,11 +798,11 @@ unsafe extern "C" fn do_rot_90(
                         }
                         offset_x += 1
                     }
-                    dst_blk_x +=  (*compptr).h_samp_factor as c_uint
+                    dst_blk_x += (*compptr).h_samp_factor as c_uint
                 }
                 offset_y += 1
             }
-            dst_blk_y +=  (*compptr).v_samp_factor as c_uint
+            dst_blk_y += (*compptr).v_samp_factor as c_uint
         }
         ci += 1
     }
@@ -1251,45 +822,22 @@ unsafe extern "C" fn do_rot_270(
  * These two steps are merged into a single processing routine.
  */
 {
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-      
     /* Because of the horizontal mirror step, we can't process partial iMCUs
      * at the (output) bottom edge properly.  They just get transposed and
      * not mirrored.
      */
-    
-     let mut MCU_rows:   JDIMENSION =
-      (*srcinfo).output_width /
-    
-        ((*dstinfo).max_v_samp_factor * dstinfo_min_DCT_v_scaled_size) as c_uint; let mut ci:   c_int =  0i32;
+
+    let mut MCU_rows: JDIMENSION = (*srcinfo).output_width
+        / ((*dstinfo).max_v_samp_factor * dstinfo_min_DCT_v_scaled_size) as c_uint;
+    let mut ci: c_int = 0i32;
     while ci < (*dstinfo).num_components {
-             
-        
-        
-        
-         let mut compptr:   *mut jpeg_component_info =
-     (*dstinfo).comp_info.offset(ci as isize); let mut comp_height:   JDIMENSION =
-      MCU_rows * (*compptr).v_samp_factor as c_uint; let mut x_crop_blocks:   JDIMENSION =
-      x_crop_offset * (*compptr).h_samp_factor as c_uint; let mut y_crop_blocks:   JDIMENSION =
-      y_crop_offset * (*compptr).v_samp_factor as c_uint; let mut dst_blk_y:   JDIMENSION =  0u32;
+        let mut compptr: *mut jpeg_component_info = (*dstinfo).comp_info.offset(ci as isize);
+        let mut comp_height: JDIMENSION = MCU_rows * (*compptr).v_samp_factor as c_uint;
+        let mut x_crop_blocks: JDIMENSION = x_crop_offset * (*compptr).h_samp_factor as c_uint;
+        let mut y_crop_blocks: JDIMENSION = y_crop_offset * (*compptr).v_samp_factor as c_uint;
+        let mut dst_blk_y: JDIMENSION = 0u32;
         while dst_blk_y < (*compptr).height_in_blocks {
-              
-             let mut dst_buffer:   JBLOCKARRAY =
-     Some(
+            let mut dst_buffer: JBLOCKARRAY = Some(
                 (*(*srcinfo).mem)
                     .access_virt_barray
                     .expect("non-null function pointer"),
@@ -1300,13 +848,12 @@ unsafe extern "C" fn do_rot_270(
                 dst_blk_y,
                 (*compptr).v_samp_factor as JDIMENSION,
                 TRUE,
-            ); let mut offset_y:   c_int =  0i32;
+            );
+            let mut offset_y: c_int = 0i32;
             while offset_y < (*compptr).v_samp_factor {
-                  let mut dst_blk_x:   JDIMENSION =  0u32;
+                let mut dst_blk_x: JDIMENSION = 0u32;
                 while dst_blk_x < (*compptr).width_in_blocks {
-                      
-                     let mut src_buffer:   JBLOCKARRAY =
-     Some(
+                    let mut src_buffer: JBLOCKARRAY = Some(
                         (*(*srcinfo).mem)
                             .access_virt_barray
                             .expect("non-null function pointer"),
@@ -1314,24 +861,26 @@ unsafe extern "C" fn do_rot_270(
                     .expect("non-null function pointer")(
                         srcinfo as j_common_ptr,
                         *src_coef_arrays.offset(ci as isize),
-                        
                         dst_blk_x + x_crop_blocks,
                         (*compptr).h_samp_factor as JDIMENSION,
                         FALSE,
-                    ); let mut offset_x:   c_int =  0i32;
+                    );
+                    let mut offset_x: c_int = 0i32;
                     while offset_x < (*compptr).h_samp_factor {
-                         let mut i:  c_int =  0; let mut j:  c_int =  0; let mut src_ptr:  JCOEFPTR =
-     ::std::ptr::null_mut::< JCOEF>();  let mut dst_ptr:   JCOEFPTR =
-     (*(*dst_buffer.offset(offset_y as isize))
+                        let mut i: c_int = 0;
+                        let mut j: c_int = 0;
+                        let mut src_ptr: JCOEFPTR = ::std::ptr::null_mut::<JCOEF>();
+                        let mut dst_ptr: JCOEFPTR = (*(*dst_buffer.offset(offset_y as isize))
                             .offset((dst_blk_x + offset_x as c_uint) as isize))
                         .as_mut_ptr();
-                        if  y_crop_blocks + dst_blk_y < comp_height {
+                        if y_crop_blocks + dst_blk_y < comp_height {
                             /* Block is within the mirrorable area. */
                             src_ptr = (*(*src_buffer.offset(offset_x as isize)).offset(
-                                (
-                                comp_height - y_crop_blocks - dst_blk_y - offset_y as c_uint -
-    1u32)
-                                    as isize,
+                                (comp_height
+                                    - y_crop_blocks
+                                    - dst_blk_y
+                                    - offset_y as c_uint
+                                    - 1u32) as isize,
                             ))
                             .as_mut_ptr();
                             i = 0i32;
@@ -1339,13 +888,10 @@ unsafe extern "C" fn do_rot_270(
                                 j = 0i32;
                                 while j < DCTSIZE {
                                     *dst_ptr.offset((j * DCTSIZE + i) as isize) =
-                                        *src_ptr
-                                            .offset((i * DCTSIZE + j) as isize);
+                                        *src_ptr.offset((i * DCTSIZE + j) as isize);
                                     j += 1;
                                     *dst_ptr.offset((j * DCTSIZE + i) as isize) =
-                                        -(*src_ptr
-                                            .offset((i * DCTSIZE + j) as isize)
-                                            as c_int)
+                                        -(*src_ptr.offset((i * DCTSIZE + j) as isize) as c_int)
                                             as JCOEF;
                                     j += 1
                                 }
@@ -1353,19 +899,15 @@ unsafe extern "C" fn do_rot_270(
                             }
                         } else {
                             /* Edge blocks are transposed but not mirrored. */
-                            src_ptr = (*(*src_buffer.offset(offset_x as isize)).offset(
-                                (
-                                dst_blk_y + offset_y as c_uint + y_crop_blocks)
-                                    as isize,
-                            ))
+                            src_ptr = (*(*src_buffer.offset(offset_x as isize))
+                                .offset((dst_blk_y + offset_y as c_uint + y_crop_blocks) as isize))
                             .as_mut_ptr();
                             i = 0i32;
                             while i < DCTSIZE {
                                 j = 0i32;
                                 while j < DCTSIZE {
                                     *dst_ptr.offset((j * DCTSIZE + i) as isize) =
-                                        *src_ptr
-                                            .offset((i * DCTSIZE + j) as isize);
+                                        *src_ptr.offset((i * DCTSIZE + j) as isize);
                                     j += 1
                                 }
                                 i += 1
@@ -1373,11 +915,11 @@ unsafe extern "C" fn do_rot_270(
                         }
                         offset_x += 1
                     }
-                    dst_blk_x +=  (*compptr).h_samp_factor as c_uint
+                    dst_blk_x += (*compptr).h_samp_factor as c_uint
                 }
                 offset_y += 1
             }
-            dst_blk_y +=  (*compptr).v_samp_factor as c_uint
+            dst_blk_y += (*compptr).v_samp_factor as c_uint
         }
         ci += 1
     }
@@ -1397,50 +939,21 @@ unsafe extern "C" fn do_rot_180(
  * These two steps are merged into a single processing routine.
  */
 {
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-       
-    
-    
-     let mut MCU_cols:   JDIMENSION =
-      (*srcinfo).output_width /
-    
-        ((*dstinfo).max_h_samp_factor * dstinfo_min_DCT_h_scaled_size) as c_uint; let mut MCU_rows:   JDIMENSION =
-      (*srcinfo).output_height /
-    
-        ((*dstinfo).max_v_samp_factor * dstinfo_min_DCT_v_scaled_size) as c_uint; let mut ci:   c_int =  0i32;
+    let mut MCU_cols: JDIMENSION = (*srcinfo).output_width
+        / ((*dstinfo).max_h_samp_factor * dstinfo_min_DCT_h_scaled_size) as c_uint;
+    let mut MCU_rows: JDIMENSION = (*srcinfo).output_height
+        / ((*dstinfo).max_v_samp_factor * dstinfo_min_DCT_v_scaled_size) as c_uint;
+    let mut ci: c_int = 0i32;
     while ci < (*dstinfo).num_components {
-              
-        
-        
-        
-        
-         let mut compptr:   *mut jpeg_component_info =
-     (*dstinfo).comp_info.offset(ci as isize); let mut comp_width:   JDIMENSION =
-      MCU_cols * (*compptr).h_samp_factor as c_uint; let mut comp_height:   JDIMENSION =
-      MCU_rows * (*compptr).v_samp_factor as c_uint; let mut x_crop_blocks:   JDIMENSION =
-      x_crop_offset * (*compptr).h_samp_factor as c_uint; let mut y_crop_blocks:   JDIMENSION =
-      y_crop_offset * (*compptr).v_samp_factor as c_uint; let mut dst_blk_y:   JDIMENSION =  0u32;
+        let mut compptr: *mut jpeg_component_info = (*dstinfo).comp_info.offset(ci as isize);
+        let mut comp_width: JDIMENSION = MCU_cols * (*compptr).h_samp_factor as c_uint;
+        let mut comp_height: JDIMENSION = MCU_rows * (*compptr).v_samp_factor as c_uint;
+        let mut x_crop_blocks: JDIMENSION = x_crop_offset * (*compptr).h_samp_factor as c_uint;
+        let mut y_crop_blocks: JDIMENSION = y_crop_offset * (*compptr).v_samp_factor as c_uint;
+        let mut dst_blk_y: JDIMENSION = 0u32;
         while dst_blk_y < (*compptr).height_in_blocks {
-              let mut src_buffer:  JBLOCKARRAY =
-     ::std::ptr::null_mut::< JBLOCKROW>();  let mut dst_buffer:   JBLOCKARRAY =
-     Some(
+            let mut src_buffer: JBLOCKARRAY = ::std::ptr::null_mut::<JBLOCKROW>();
+            let mut dst_buffer: JBLOCKARRAY = Some(
                 (*(*srcinfo).mem)
                     .access_virt_barray
                     .expect("non-null function pointer"),
@@ -1452,7 +965,7 @@ unsafe extern "C" fn do_rot_180(
                 (*compptr).v_samp_factor as JDIMENSION,
                 TRUE,
             );
-            if  y_crop_blocks + dst_blk_y < comp_height {
+            if y_crop_blocks + dst_blk_y < comp_height {
                 /* Row is within the vertically mirrorable area. */
                 src_buffer = Some(
                     (*(*srcinfo).mem)
@@ -1462,9 +975,10 @@ unsafe extern "C" fn do_rot_180(
                 .expect("non-null function pointer")(
                     srcinfo as j_common_ptr,
                     *src_coef_arrays.offset(ci as isize),
-                    
-                    comp_height - y_crop_blocks - dst_blk_y -
-    (*compptr).v_samp_factor as JDIMENSION,
+                    comp_height
+                        - y_crop_blocks
+                        - dst_blk_y
+                        - (*compptr).v_samp_factor as JDIMENSION,
                     (*compptr).v_samp_factor as JDIMENSION,
                     FALSE,
                 )
@@ -1478,33 +992,31 @@ unsafe extern "C" fn do_rot_180(
                 .expect("non-null function pointer")(
                     srcinfo as j_common_ptr,
                     *src_coef_arrays.offset(ci as isize),
-                    
                     dst_blk_y + y_crop_blocks,
                     (*compptr).v_samp_factor as JDIMENSION,
                     FALSE,
                 )
             }
-             let mut offset_y:   c_int =  0i32;
+            let mut offset_y: c_int = 0i32;
             while offset_y < (*compptr).v_samp_factor {
-                 let mut dst_blk_x:  JDIMENSION =  0; let mut i:  c_int =  0; let mut src_row_ptr:  JBLOCKROW =
-     ::std::ptr::null_mut::< JBLOCK>();  let mut src_ptr:  JCOEFPTR =
-     ::std::ptr::null_mut::< JCOEF>(); let mut dst_ptr:  JCOEFPTR =
-     ::std::ptr::null_mut::< JCOEF>(); let mut dst_row_ptr:   JBLOCKROW =
-     *dst_buffer.offset(offset_y as isize);
-                if  y_crop_blocks + dst_blk_y < comp_height {
+                let mut dst_blk_x: JDIMENSION = 0;
+                let mut i: c_int = 0;
+                let mut src_row_ptr: JBLOCKROW = ::std::ptr::null_mut::<JBLOCK>();
+                let mut src_ptr: JCOEFPTR = ::std::ptr::null_mut::<JCOEF>();
+                let mut dst_ptr: JCOEFPTR = ::std::ptr::null_mut::<JCOEF>();
+                let mut dst_row_ptr: JBLOCKROW = *dst_buffer.offset(offset_y as isize);
+                if y_crop_blocks + dst_blk_y < comp_height {
                     /* Row is within the mirrorable area. */
                     src_row_ptr =
                         *src_buffer.offset(((*compptr).v_samp_factor - offset_y - 1i32) as isize);
                     dst_blk_x = 0u32;
                     while dst_blk_x < (*compptr).width_in_blocks {
-                         let mut j:  c_int =  0;dst_ptr = (*dst_row_ptr.offset(dst_blk_x as isize)).as_mut_ptr();
-                        if  x_crop_blocks + dst_blk_x < comp_width {
+                        let mut j: c_int = 0;
+                        dst_ptr = (*dst_row_ptr.offset(dst_blk_x as isize)).as_mut_ptr();
+                        if x_crop_blocks + dst_blk_x < comp_width {
                             /* Process the blocks that can be mirrored both ways. */
-                            src_ptr = (*src_row_ptr.offset(
-                                (
-                                comp_width - x_crop_blocks - dst_blk_x - 1u32)
-                                    as isize,
-                            ))
+                            src_ptr = (*src_row_ptr
+                                .offset((comp_width - x_crop_blocks - dst_blk_x - 1u32) as isize))
                             .as_mut_ptr();
                             i = 0i32;
                             while i < DCTSIZE {
@@ -1520,8 +1032,7 @@ unsafe extern "C" fn do_rot_180(
                                     src_ptr = src_ptr.offset(1);
                                     let fresh15 = dst_ptr;
                                     dst_ptr = dst_ptr.offset(1);
-                                    *fresh15 =
-                                        -(*fresh14 as c_int) as JCOEF;
+                                    *fresh15 = -(*fresh14 as c_int) as JCOEF;
                                     j += 2i32
                                 }
                                 /* For odd row, negate every even column. */
@@ -1531,8 +1042,7 @@ unsafe extern "C" fn do_rot_180(
                                     src_ptr = src_ptr.offset(1);
                                     let fresh17 = dst_ptr;
                                     dst_ptr = dst_ptr.offset(1);
-                                    *fresh17 =
-                                        -(*fresh16 as c_int) as JCOEF;
+                                    *fresh17 = -(*fresh16 as c_int) as JCOEF;
                                     let fresh18 = src_ptr;
                                     src_ptr = src_ptr.offset(1);
                                     let fresh19 = dst_ptr;
@@ -1544,9 +1054,8 @@ unsafe extern "C" fn do_rot_180(
                             }
                         } else {
                             /* Any remaining right-edge blocks are only mirrored vertically. */
-                            src_ptr = (*src_row_ptr
-                                .offset((x_crop_blocks + dst_blk_x) as isize))
-                            .as_mut_ptr();
+                            src_ptr = (*src_row_ptr.offset((x_crop_blocks + dst_blk_x) as isize))
+                                .as_mut_ptr();
                             i = 0i32;
                             while i < DCTSIZE {
                                 j = 0i32;
@@ -1564,28 +1073,24 @@ unsafe extern "C" fn do_rot_180(
                                     src_ptr = src_ptr.offset(1);
                                     let fresh23 = dst_ptr;
                                     dst_ptr = dst_ptr.offset(1);
-                                    *fresh23 =
-                                        -(*fresh22 as c_int) as JCOEF;
+                                    *fresh23 = -(*fresh22 as c_int) as JCOEF;
                                     j += 1
                                 }
                                 i += 2i32
                             }
                         }
-                        dst_blk_x +=  1
+                        dst_blk_x += 1
                     }
                 } else {
                     /* Remaining rows are just mirrored horizontally. */
                     src_row_ptr = *src_buffer.offset(offset_y as isize);
                     dst_blk_x = 0u32;
                     while dst_blk_x < (*compptr).width_in_blocks {
-                        if  x_crop_blocks + dst_blk_x < comp_width {
+                        if x_crop_blocks + dst_blk_x < comp_width {
                             /* Process the blocks that can be mirrored. */
                             dst_ptr = (*dst_row_ptr.offset(dst_blk_x as isize)).as_mut_ptr();
-                            src_ptr = (*src_row_ptr.offset(
-                                (
-                                comp_width - x_crop_blocks - dst_blk_x - 1u32)
-                                    as isize,
-                            ))
+                            src_ptr = (*src_row_ptr
+                                .offset((comp_width - x_crop_blocks - dst_blk_x - 1u32) as isize))
                             .as_mut_ptr();
                             i = 0i32;
                             while i < DCTSIZE2 {
@@ -1611,12 +1116,12 @@ unsafe extern "C" fn do_rot_180(
                                 1u32,
                             );
                         }
-                        dst_blk_x +=  1
+                        dst_blk_x += 1
                     }
                 }
                 offset_y += 1
             }
-            dst_blk_y +=  (*compptr).v_samp_factor as c_uint
+            dst_blk_y += (*compptr).v_samp_factor as c_uint
         }
         ci += 1
     }
@@ -1640,49 +1145,20 @@ unsafe extern "C" fn do_transverse(
  * These steps are merged into a single processing routine.
  */
 {
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-       
-    
-    
-     let mut MCU_cols:   JDIMENSION =
-      (*srcinfo).output_height /
-    
-        ((*dstinfo).max_h_samp_factor * dstinfo_min_DCT_h_scaled_size) as c_uint; let mut MCU_rows:   JDIMENSION =
-      (*srcinfo).output_width /
-    
-        ((*dstinfo).max_v_samp_factor * dstinfo_min_DCT_v_scaled_size) as c_uint; let mut ci:   c_int =  0i32;
+    let mut MCU_cols: JDIMENSION = (*srcinfo).output_height
+        / ((*dstinfo).max_h_samp_factor * dstinfo_min_DCT_h_scaled_size) as c_uint;
+    let mut MCU_rows: JDIMENSION = (*srcinfo).output_width
+        / ((*dstinfo).max_v_samp_factor * dstinfo_min_DCT_v_scaled_size) as c_uint;
+    let mut ci: c_int = 0i32;
     while ci < (*dstinfo).num_components {
-              
-        
-        
-        
-        
-         let mut compptr:   *mut jpeg_component_info =
-     (*dstinfo).comp_info.offset(ci as isize); let mut comp_width:   JDIMENSION =
-      MCU_cols * (*compptr).h_samp_factor as c_uint; let mut comp_height:   JDIMENSION =
-      MCU_rows * (*compptr).v_samp_factor as c_uint; let mut x_crop_blocks:   JDIMENSION =
-      x_crop_offset * (*compptr).h_samp_factor as c_uint; let mut y_crop_blocks:   JDIMENSION =
-      y_crop_offset * (*compptr).v_samp_factor as c_uint; let mut dst_blk_y:   JDIMENSION =  0u32;
+        let mut compptr: *mut jpeg_component_info = (*dstinfo).comp_info.offset(ci as isize);
+        let mut comp_width: JDIMENSION = MCU_cols * (*compptr).h_samp_factor as c_uint;
+        let mut comp_height: JDIMENSION = MCU_rows * (*compptr).v_samp_factor as c_uint;
+        let mut x_crop_blocks: JDIMENSION = x_crop_offset * (*compptr).h_samp_factor as c_uint;
+        let mut y_crop_blocks: JDIMENSION = y_crop_offset * (*compptr).v_samp_factor as c_uint;
+        let mut dst_blk_y: JDIMENSION = 0u32;
         while dst_blk_y < (*compptr).height_in_blocks {
-              
-             let mut dst_buffer:   JBLOCKARRAY =
-     Some(
+            let mut dst_buffer: JBLOCKARRAY = Some(
                 (*(*srcinfo).mem)
                     .access_virt_barray
                     .expect("non-null function pointer"),
@@ -1693,12 +1169,13 @@ unsafe extern "C" fn do_transverse(
                 dst_blk_y,
                 (*compptr).v_samp_factor as JDIMENSION,
                 TRUE,
-            ); let mut offset_y:   c_int =  0i32;
+            );
+            let mut offset_y: c_int = 0i32;
             while offset_y < (*compptr).v_samp_factor {
-                  let mut dst_blk_x:   JDIMENSION =  0u32;
+                let mut dst_blk_x: JDIMENSION = 0u32;
                 while dst_blk_x < (*compptr).width_in_blocks {
-                      let mut src_buffer:  JBLOCKARRAY =
-     ::std::ptr::null_mut::< JBLOCKROW>();if  x_crop_blocks + dst_blk_x < comp_width {
+                    let mut src_buffer: JBLOCKARRAY = ::std::ptr::null_mut::<JBLOCKROW>();
+                    if x_crop_blocks + dst_blk_x < comp_width {
                         /* Block is within the mirrorable area. */
                         src_buffer = Some(
                             (*(*srcinfo).mem)
@@ -1708,10 +1185,10 @@ unsafe extern "C" fn do_transverse(
                         .expect("non-null function pointer")(
                             srcinfo as j_common_ptr,
                             *src_coef_arrays.offset(ci as isize),
-                            
-                            comp_width - x_crop_blocks - dst_blk_x -
-    
-                                    (*compptr).h_samp_factor as JDIMENSION,
+                            comp_width
+                                - x_crop_blocks
+                                - dst_blk_x
+                                - (*compptr).h_samp_factor as JDIMENSION,
                             (*compptr).h_samp_factor as JDIMENSION,
                             FALSE,
                         )
@@ -1724,67 +1201,54 @@ unsafe extern "C" fn do_transverse(
                         .expect("non-null function pointer")(
                             srcinfo as j_common_ptr,
                             *src_coef_arrays.offset(ci as isize),
-                            
                             dst_blk_x + x_crop_blocks,
                             (*compptr).h_samp_factor as JDIMENSION,
                             FALSE,
                         )
                     }
-                     let mut offset_x:   c_int =  0i32;
+                    let mut offset_x: c_int = 0i32;
                     while offset_x < (*compptr).h_samp_factor {
-                         let mut i:  c_int =  0; let mut j:  c_int =  0; let mut src_ptr:  JCOEFPTR =
-     ::std::ptr::null_mut::< JCOEF>();  let mut dst_ptr:   JCOEFPTR =
-     (*(*dst_buffer.offset(offset_y as isize))
+                        let mut i: c_int = 0;
+                        let mut j: c_int = 0;
+                        let mut src_ptr: JCOEFPTR = ::std::ptr::null_mut::<JCOEF>();
+                        let mut dst_ptr: JCOEFPTR = (*(*dst_buffer.offset(offset_y as isize))
                             .offset((dst_blk_x + offset_x as c_uint) as isize))
                         .as_mut_ptr();
-                        if  y_crop_blocks + dst_blk_y < comp_height {
-                            if  x_crop_blocks + dst_blk_x < comp_width {
+                        if y_crop_blocks + dst_blk_y < comp_height {
+                            if x_crop_blocks + dst_blk_x < comp_width {
                                 /* Block is within the mirrorable area. */
                                 src_ptr = (*(*src_buffer.offset(
                                     ((*compptr).h_samp_factor - offset_x - 1i32) as isize,
                                 ))
                                 .offset(
-                                    (
-                                    comp_height - y_crop_blocks - dst_blk_y - offset_y as c_uint -
-    1u32)
-                                        as isize,
+                                    (comp_height
+                                        - y_crop_blocks
+                                        - dst_blk_y
+                                        - offset_y as c_uint
+                                        - 1u32) as isize,
                                 ))
                                 .as_mut_ptr();
                                 i = 0i32;
                                 while i < DCTSIZE {
                                     j = 0i32;
                                     while j < DCTSIZE {
-                                        *dst_ptr
-                                            .offset((j * DCTSIZE + i) as isize) =
-                                            *src_ptr.offset(
-                                                (i * DCTSIZE + j) as isize,
-                                            );
+                                        *dst_ptr.offset((j * DCTSIZE + i) as isize) =
+                                            *src_ptr.offset((i * DCTSIZE + j) as isize);
                                         j += 1;
-                                        *dst_ptr
-                                            .offset((j * DCTSIZE + i) as isize) =
-                                            -(*src_ptr.offset(
-                                                (i * DCTSIZE + j) as isize,
-                                            )
-                                                as c_int)
+                                        *dst_ptr.offset((j * DCTSIZE + i) as isize) =
+                                            -(*src_ptr.offset((i * DCTSIZE + j) as isize) as c_int)
                                                 as JCOEF;
                                         j += 1
                                     }
                                     i += 1;
                                     j = 0i32;
                                     while j < DCTSIZE {
-                                        *dst_ptr
-                                            .offset((j * DCTSIZE + i) as isize) =
-                                            -(*src_ptr.offset(
-                                                (i * DCTSIZE + j) as isize,
-                                            )
-                                                as c_int)
+                                        *dst_ptr.offset((j * DCTSIZE + i) as isize) =
+                                            -(*src_ptr.offset((i * DCTSIZE + j) as isize) as c_int)
                                                 as JCOEF;
                                         j += 1;
-                                        *dst_ptr
-                                            .offset((j * DCTSIZE + i) as isize) =
-                                            *src_ptr.offset(
-                                                (i * DCTSIZE + j) as isize,
-                                            );
+                                        *dst_ptr.offset((j * DCTSIZE + i) as isize) =
+                                            *src_ptr.offset((i * DCTSIZE + j) as isize);
                                         j += 1
                                     }
                                     i += 1
@@ -1792,60 +1256,47 @@ unsafe extern "C" fn do_transverse(
                             } else {
                                 /* Right-edge blocks are mirrored in y only */
                                 src_ptr = (*(*src_buffer.offset(offset_x as isize)).offset(
-                                    (
-                                    comp_height - y_crop_blocks - dst_blk_y - offset_y as c_uint -
-    1u32)
-                                        as isize,
+                                    (comp_height
+                                        - y_crop_blocks
+                                        - dst_blk_y
+                                        - offset_y as c_uint
+                                        - 1u32) as isize,
                                 ))
                                 .as_mut_ptr();
                                 i = 0i32;
                                 while i < DCTSIZE {
                                     j = 0i32;
                                     while j < DCTSIZE {
-                                        *dst_ptr
-                                            .offset((j * DCTSIZE + i) as isize) =
-                                            *src_ptr.offset(
-                                                (i * DCTSIZE + j) as isize,
-                                            );
+                                        *dst_ptr.offset((j * DCTSIZE + i) as isize) =
+                                            *src_ptr.offset((i * DCTSIZE + j) as isize);
                                         j += 1;
-                                        *dst_ptr
-                                            .offset((j * DCTSIZE + i) as isize) =
-                                            -(*src_ptr.offset(
-                                                (i * DCTSIZE + j) as isize,
-                                            )
-                                                as c_int)
+                                        *dst_ptr.offset((j * DCTSIZE + i) as isize) =
+                                            -(*src_ptr.offset((i * DCTSIZE + j) as isize) as c_int)
                                                 as JCOEF;
                                         j += 1
                                     }
                                     i += 1
                                 }
                             }
-                        } else if  x_crop_blocks + dst_blk_x < comp_width {
+                        } else if x_crop_blocks + dst_blk_x < comp_width {
                             /* Bottom-edge blocks are mirrored in x only */
                             src_ptr = (*(*src_buffer
                                 .offset(((*compptr).h_samp_factor - offset_x - 1i32) as isize))
-                            .offset(
-                                (
-                                dst_blk_y + offset_y as c_uint + y_crop_blocks)
-                                    as isize,
-                            ))
+                            .offset((dst_blk_y + offset_y as c_uint + y_crop_blocks) as isize))
                             .as_mut_ptr();
                             i = 0i32;
                             while i < DCTSIZE {
                                 j = 0i32;
                                 while j < DCTSIZE {
                                     *dst_ptr.offset((j * DCTSIZE + i) as isize) =
-                                        *src_ptr
-                                            .offset((i * DCTSIZE + j) as isize);
+                                        *src_ptr.offset((i * DCTSIZE + j) as isize);
                                     j += 1
                                 }
                                 i += 1;
                                 j = 0i32;
                                 while j < DCTSIZE {
                                     *dst_ptr.offset((j * DCTSIZE + i) as isize) =
-                                        -(*src_ptr
-                                            .offset((i * DCTSIZE + j) as isize)
-                                            as c_int)
+                                        -(*src_ptr.offset((i * DCTSIZE + j) as isize) as c_int)
                                             as JCOEF;
                                     j += 1
                                 }
@@ -1853,19 +1304,15 @@ unsafe extern "C" fn do_transverse(
                             }
                         } else {
                             /* At lower right corner, just transpose, no mirroring */
-                            src_ptr = (*(*src_buffer.offset(offset_x as isize)).offset(
-                                (
-                                dst_blk_y + offset_y as c_uint + y_crop_blocks)
-                                    as isize,
-                            ))
+                            src_ptr = (*(*src_buffer.offset(offset_x as isize))
+                                .offset((dst_blk_y + offset_y as c_uint + y_crop_blocks) as isize))
                             .as_mut_ptr();
                             i = 0i32;
                             while i < DCTSIZE {
                                 j = 0i32;
                                 while j < DCTSIZE {
                                     *dst_ptr.offset((j * DCTSIZE + i) as isize) =
-                                        *src_ptr
-                                            .offset((i * DCTSIZE + j) as isize);
+                                        *src_ptr.offset((i * DCTSIZE + j) as isize);
                                     j += 1
                                 }
                                 i += 1
@@ -1873,11 +1320,11 @@ unsafe extern "C" fn do_transverse(
                         }
                         offset_x += 1
                     }
-                    dst_blk_x +=  (*compptr).h_samp_factor as c_uint
+                    dst_blk_x += (*compptr).h_samp_factor as c_uint
                 }
                 offset_y += 1
             }
-            dst_blk_y +=  (*compptr).v_samp_factor as c_uint
+            dst_blk_y += (*compptr).v_samp_factor as c_uint
         }
         ci += 1
     }
@@ -1891,14 +1338,14 @@ unsafe extern "C" fn jt_read_integer(
     mut strptr: *mut *const c_char,
     mut result: *mut JDIMENSION,
 ) -> boolean {
-     let mut val:  JDIMENSION =  0u32;let mut ptr: *const c_char = *strptr; /* oops, no digits */
-    
+    let mut val: JDIMENSION = 0u32;
+    let mut ptr: *const c_char = *strptr; /* oops, no digits */
+
     while *(*__ctype_b_loc()).offset(*ptr as c_int as isize) as c_int
-        &  _ISdigit as c_ushort as c_int
+        & _ISdigit as c_ushort as c_int
         != 0
     {
-        val =  val * 10u32 +
-    (*ptr as c_int - '0' as i32) as JDIMENSION;
+        val = val * 10u32 + (*ptr as c_int - '0' as i32) as JDIMENSION;
         ptr = ptr.offset(1)
     }
     *result = val;
@@ -1932,8 +1379,7 @@ pub unsafe extern "C" fn jtransform_parse_crop_spec(
     (*info).crop_height_set = JCROP_UNSET;
     (*info).crop_xoffset_set = JCROP_UNSET;
     (*info).crop_yoffset_set = JCROP_UNSET;
-    if *(*__ctype_b_loc()).offset(*spec as c_int as isize) as c_int
-        &  _ISdigit as c_ushort as c_int
+    if *(*__ctype_b_loc()).offset(*spec as c_int as isize) as c_int & _ISdigit as c_ushort as c_int
         != 0
     {
         /* fetch width */
@@ -1997,15 +1443,11 @@ unsafe extern "C" fn trim_right_edge(
     mut info: *mut jpeg_transform_info,
     mut full_width: JDIMENSION,
 ) {
-     
-     let mut MCU_cols:   JDIMENSION =
-      (*info)
-        .output_width / (*info).iMCU_sample_width as c_uint;
+    let mut MCU_cols: JDIMENSION = (*info).output_width / (*info).iMCU_sample_width as c_uint;
     if MCU_cols > 0u32
-        &&  (*info).x_crop_offset + MCU_cols
-            ==  full_width / (*info).iMCU_sample_width as c_uint
+        && (*info).x_crop_offset + MCU_cols == full_width / (*info).iMCU_sample_width as c_uint
     {
-        (*info).output_width =  MCU_cols * (*info).iMCU_sample_width as c_uint
+        (*info).output_width = MCU_cols * (*info).iMCU_sample_width as c_uint
     };
 }
 
@@ -2013,15 +1455,11 @@ unsafe extern "C" fn trim_bottom_edge(
     mut info: *mut jpeg_transform_info,
     mut full_height: JDIMENSION,
 ) {
-     
-     let mut MCU_rows:   JDIMENSION =
-      (*info)
-        .output_height / (*info).iMCU_sample_height as c_uint;
+    let mut MCU_rows: JDIMENSION = (*info).output_height / (*info).iMCU_sample_height as c_uint;
     if MCU_rows > 0u32
-        &&  (*info).y_crop_offset + MCU_rows
-            ==  full_height / (*info).iMCU_sample_height as c_uint
+        && (*info).y_crop_offset + MCU_rows == full_height / (*info).iMCU_sample_height as c_uint
     {
-        (*info).output_height =  MCU_rows * (*info).iMCU_sample_height as c_uint
+        (*info).output_height = MCU_rows * (*info).iMCU_sample_height as c_uint
     };
 }
 /* Request any required workspace */
@@ -2047,23 +1485,9 @@ pub unsafe extern "C" fn jtransform_request_workspace(
     mut srcinfo: j_decompress_ptr,
     mut info: *mut jpeg_transform_info,
 ) -> boolean {
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-      
     /* Determine number of components in output image */
     if (*info).force_grayscale != 0
-        &&  (*srcinfo).jpeg_color_space
-            ==  JCS_YCbCr
+        && (*srcinfo).jpeg_color_space == JCS_YCbCr
         && (*srcinfo).num_components == 3i32
     {
         /* We'll only process the first component */
@@ -2105,7 +1529,7 @@ pub unsafe extern "C" fn jtransform_request_workspace(
      * when reducing color to grayscale, and also provides a handy way of
      * cleaning up "funny" grayscale images whose sampling factors are not 1x1.)
      */
-    match  (*info).transform {
+    match (*info).transform {
         3 | 4 | 5 | 7 => {
             (*info).output_width = (*srcinfo).output_height;
             (*info).output_height = (*srcinfo).output_width;
@@ -2138,14 +1562,12 @@ pub unsafe extern "C" fn jtransform_request_workspace(
      */
     if (*info).crop != 0 {
         /* Insert default values for unset crop parameters */
-         let mut xoffset:  JDIMENSION =  0; let mut yoffset:  JDIMENSION =  0;if  (*info).crop_xoffset_set
-            ==  JCROP_UNSET
-        {
+        let mut xoffset: JDIMENSION = 0;
+        let mut yoffset: JDIMENSION = 0;
+        if (*info).crop_xoffset_set == JCROP_UNSET {
             (*info).crop_xoffset = 0u32
         } /* default to +0 */
-        if  (*info).crop_yoffset_set
-            ==  JCROP_UNSET
-        {
+        if (*info).crop_yoffset_set == JCROP_UNSET {
             (*info).crop_yoffset = 0u32
         } /* default to +0 */
         if (*info).crop_xoffset >= (*info).output_width
@@ -2157,27 +1579,21 @@ pub unsafe extern "C" fn jtransform_request_workspace(
                     .error_exit
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(
-                srcinfo as j_common_ptr
-            );
+            .expect("non-null function pointer")(srcinfo as j_common_ptr);
         }
-        if  (*info).crop_width_set
-            ==  JCROP_UNSET
-        {
-            (*info).crop_width =  (*info).output_width - (*info).crop_xoffset
+        if (*info).crop_width_set == JCROP_UNSET {
+            (*info).crop_width = (*info).output_width - (*info).crop_xoffset
         }
-        if  (*info).crop_height_set
-            ==  JCROP_UNSET
-        {
-            (*info).crop_height =  (*info).output_height - (*info).crop_yoffset
+        if (*info).crop_height_set == JCROP_UNSET {
+            (*info).crop_height = (*info).output_height - (*info).crop_yoffset
         }
         /* Ensure parameters are valid */
         if (*info).crop_width <= 0u32
             || (*info).crop_width > (*info).output_width
             || (*info).crop_height <= 0u32
             || (*info).crop_height > (*info).output_height
-            || (*info).crop_xoffset >  (*info).output_width - (*info).crop_width
-            || (*info).crop_yoffset >  (*info).output_height - (*info).crop_height
+            || (*info).crop_xoffset > (*info).output_width - (*info).crop_width
+            || (*info).crop_yoffset > (*info).output_height - (*info).crop_height
         {
             (*(*srcinfo).err).msg_code = super::jerror::JERR_BAD_CROP_SPEC as c_int;
             Some(
@@ -2185,47 +1601,35 @@ pub unsafe extern "C" fn jtransform_request_workspace(
                     .error_exit
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(
-                srcinfo as j_common_ptr
-            );
+            .expect("non-null function pointer")(srcinfo as j_common_ptr);
         }
         /* Convert negative crop offsets into regular offsets */
-        if  (*info).crop_xoffset_set
-            ==  JCROP_NEG
-        {
-            xoffset =  (*info)
-                .output_width - (*info).crop_width - (*info).crop_xoffset
+        if (*info).crop_xoffset_set == JCROP_NEG {
+            xoffset = (*info).output_width - (*info).crop_width - (*info).crop_xoffset
         } else {
             xoffset = (*info).crop_xoffset
         }
-        if  (*info).crop_yoffset_set
-            ==  JCROP_NEG
-        {
-            yoffset =  (*info)
-                .output_height - (*info).crop_height - (*info).crop_yoffset
+        if (*info).crop_yoffset_set == JCROP_NEG {
+            yoffset = (*info).output_height - (*info).crop_height - (*info).crop_yoffset
         } else {
             yoffset = (*info).crop_yoffset
         }
         /* Now adjust so that upper left corner falls at an iMCU boundary */
-        if  (*info).crop_width_set
-            ==  JCROP_FORCE
-        {
+        if (*info).crop_width_set == JCROP_FORCE {
             (*info).output_width = (*info).crop_width
         } else {
-            (*info).output_width =  (*info)
-                .crop_width + xoffset % (*info).iMCU_sample_width as c_uint
+            (*info).output_width =
+                (*info).crop_width + xoffset % (*info).iMCU_sample_width as c_uint
         }
-        if  (*info).crop_height_set
-            ==  JCROP_FORCE
-        {
+        if (*info).crop_height_set == JCROP_FORCE {
             (*info).output_height = (*info).crop_height
         } else {
-            (*info).output_height =  (*info)
-                .crop_height + yoffset % (*info).iMCU_sample_height as c_uint
+            (*info).output_height =
+                (*info).crop_height + yoffset % (*info).iMCU_sample_height as c_uint
         }
         /* Save x/y offsets measured in iMCUs */
-        (*info).x_crop_offset =  xoffset / (*info).iMCU_sample_width as c_uint;
-        (*info).y_crop_offset =  yoffset / (*info).iMCU_sample_height as c_uint
+        (*info).x_crop_offset = xoffset / (*info).iMCU_sample_width as c_uint;
+        (*info).y_crop_offset = yoffset / (*info).iMCU_sample_height as c_uint
     } else {
         (*info).x_crop_offset = 0u32;
         (*info).y_crop_offset = 0u32
@@ -2233,13 +1637,12 @@ pub unsafe extern "C" fn jtransform_request_workspace(
     /* Figure out whether we need workspace arrays,
      * and if so whether they are transposed relative to the source.
      */
-    
-     let mut need_workspace:   boolean =  FALSE; let mut transpose_it:   boolean =  FALSE;
-    match  (*info).transform {
+
+    let mut need_workspace: boolean = FALSE;
+    let mut transpose_it: boolean = FALSE;
+    match (*info).transform {
         0 => {
-            if (*info).x_crop_offset != 0u32
-                || (*info).y_crop_offset != 0u32
-            {
+            if (*info).x_crop_offset != 0u32 || (*info).y_crop_offset != 0u32 {
                 need_workspace = TRUE
             }
         }
@@ -2304,11 +1707,7 @@ pub unsafe extern "C" fn jtransform_request_workspace(
      * so that transform routines need not worry about missing edge blocks.
      */
     if need_workspace != 0 {
-            
-        
-        
-         let mut coef_arrays:   *mut jvirt_barray_ptr =
-     Some(
+        let mut coef_arrays: *mut jvirt_barray_ptr = Some(
             (*(*srcinfo).mem)
                 .alloc_small
                 .expect("non-null function pointer"),
@@ -2316,20 +1715,22 @@ pub unsafe extern "C" fn jtransform_request_workspace(
         .expect("non-null function pointer")(
             srcinfo as j_common_ptr,
             JPOOL_IMAGE,
-            ::std::mem::size_of::<jvirt_barray_ptr>() as c_ulong *
-    (*info).num_components as c_ulong,
-        ) as *mut jvirt_barray_ptr; let mut width_in_iMCUs:   JDIMENSION =
-     jdiv_round_up(
+            ::std::mem::size_of::<jvirt_barray_ptr>() as c_ulong
+                * (*info).num_components as c_ulong,
+        ) as *mut jvirt_barray_ptr;
+        let mut width_in_iMCUs: JDIMENSION = jdiv_round_up(
             (*info).output_width as c_long,
             (*info).iMCU_sample_width as c_long,
-        ) as JDIMENSION; let mut height_in_iMCUs:   JDIMENSION =
-     jdiv_round_up(
+        ) as JDIMENSION;
+        let mut height_in_iMCUs: JDIMENSION = jdiv_round_up(
             (*info).output_height as c_long,
             (*info).iMCU_sample_height as c_long,
-        ) as JDIMENSION; let mut ci:   c_int =  0i32;
+        ) as JDIMENSION;
+        let mut ci: c_int = 0i32;
         while ci < (*info).num_components {
-                let mut h_samp_factor:  c_int =  0; let mut v_samp_factor:  c_int =  0; let mut compptr:   *mut jpeg_component_info =
-     (*srcinfo).comp_info.offset(ci as isize);
+            let mut h_samp_factor: c_int = 0;
+            let mut v_samp_factor: c_int = 0;
+            let mut compptr: *mut jpeg_component_info = (*srcinfo).comp_info.offset(ci as isize);
             if (*info).num_components == 1i32 {
                 /* we're going to force samp factors to 1x1 in this case */
                 v_samp_factor = 1i32;
@@ -2341,10 +1742,9 @@ pub unsafe extern "C" fn jtransform_request_workspace(
                 h_samp_factor = (*compptr).h_samp_factor;
                 v_samp_factor = (*compptr).v_samp_factor
             }
-            
-             let mut width_in_blocks:   JDIMENSION =
-      width_in_iMCUs * h_samp_factor as c_uint; let mut height_in_blocks:   JDIMENSION =
-      height_in_iMCUs * v_samp_factor as c_uint;
+
+            let mut width_in_blocks: JDIMENSION = width_in_iMCUs * h_samp_factor as c_uint;
+            let mut height_in_blocks: JDIMENSION = height_in_iMCUs * v_samp_factor as c_uint;
             let ref mut fresh28 = *coef_arrays.offset(ci as isize);
             *fresh28 = Some(
                 (*(*srcinfo).mem)
@@ -2363,46 +1763,33 @@ pub unsafe extern "C" fn jtransform_request_workspace(
         }
         (*info).workspace_coef_arrays = coef_arrays
     } else {
-        (*info).workspace_coef_arrays =
-            NULL as *mut jvirt_barray_ptr
+        (*info).workspace_coef_arrays = NULL as *mut jvirt_barray_ptr
     }
     return TRUE;
 }
 /* Transpose destination image parameters */
 
 unsafe extern "C" fn transpose_critical_parameters(mut dstinfo: j_compress_ptr) {
-    
-    
-    
-    
-    
-    
-    
-    
-       
-     let mut jtemp:   JDIMENSION =  (*dstinfo).image_width;
+    let mut jtemp: JDIMENSION = (*dstinfo).image_width;
     (*dstinfo).image_width = (*dstinfo).image_height;
     (*dstinfo).image_height = jtemp;
-     let mut ci:   c_int =  0i32;
+    let mut ci: c_int = 0i32;
     while ci < (*dstinfo).num_components {
-          
-         let mut compptr:   *mut jpeg_component_info =
-     (*dstinfo).comp_info.offset(ci as isize); let mut itemp:   c_int =  (*compptr).h_samp_factor;
+        let mut compptr: *mut jpeg_component_info = (*dstinfo).comp_info.offset(ci as isize);
+        let mut itemp: c_int = (*compptr).h_samp_factor;
         (*compptr).h_samp_factor = (*compptr).v_samp_factor;
         (*compptr).v_samp_factor = itemp;
         ci += 1
     }
-     let mut tblno:   c_int =  0i32;
+    let mut tblno: c_int = 0i32;
     while tblno < NUM_QUANT_TBLS {
-          let mut qtblptr:   *mut JQUANT_TBL =
-     (*dstinfo).quant_tbl_ptrs[tblno as usize];
+        let mut qtblptr: *mut JQUANT_TBL = (*dstinfo).quant_tbl_ptrs[tblno as usize];
         if !qtblptr.is_null() {
-              let mut i:   c_int =  0i32;
+            let mut i: c_int = 0i32;
             while i < DCTSIZE {
-                  let mut j:   c_int =  0i32;
+                let mut j: c_int = 0i32;
                 while j < i {
-                      let mut qtemp:   UINT16 =
-     (*qtblptr).quantval[(i * DCTSIZE + j) as usize];
+                    let mut qtemp: UINT16 = (*qtblptr).quantval[(i * DCTSIZE + j) as usize];
                     (*qtblptr).quantval[(i * DCTSIZE + j) as usize] =
                         (*qtblptr).quantval[(j * DCTSIZE + i) as usize];
                     (*qtblptr).quantval[(j * DCTSIZE + i) as usize] = qtemp;
@@ -2425,20 +1812,21 @@ unsafe extern "C" fn adjust_exif_parameters(
     mut new_width: JDIMENSION,
     mut new_height: JDIMENSION,
 ) {
-     /* Flag for byte order */
-     /* Length of an IFD entry */
-    
-    
-    
-     let mut is_motorola:  boolean =  0; let mut number_of_tags:  c_uint =  0; let mut tagnum:  c_uint =  0; let mut firstoffset:  c_uint =  0; let mut offset:  c_uint =  0;
+    /* Flag for byte order */
+    /* Length of an IFD entry */
+
+    let mut is_motorola: boolean = 0;
+    let mut number_of_tags: c_uint = 0;
+    let mut tagnum: c_uint = 0;
+    let mut firstoffset: c_uint = 0;
+    let mut offset: c_uint = 0;
     if length < 12u32 {
         return;
     }
     /* Discover byte order */
     if *data.offset(0) as c_int == 0x49i32 && *data.offset(1) as c_int == 0x49i32 {
         is_motorola = FALSE
-    } else if *data.offset(0) as c_int == 0x4di32 && *data.offset(1) as c_int == 0x4di32
-    {
+    } else if *data.offset(0) as c_int == 0x4di32 && *data.offset(1) as c_int == 0x4di32 {
         is_motorola = TRUE
     } else {
         return;
@@ -2469,7 +1857,7 @@ unsafe extern "C" fn adjust_exif_parameters(
         }
         firstoffset = *data.offset(6) as c_uint;
         firstoffset <<= 8i32;
-        firstoffset +=  *data.offset(7) as c_uint
+        firstoffset += *data.offset(7) as c_uint
     } else {
         if *data.offset(7) as c_int != 0i32 {
             return;
@@ -2479,184 +1867,138 @@ unsafe extern "C" fn adjust_exif_parameters(
         }
         firstoffset = *data.offset(5) as c_uint;
         firstoffset <<= 8i32;
-        firstoffset +=  *data.offset(4) as c_uint
+        firstoffset += *data.offset(4) as c_uint
     }
-    if firstoffset >  length - 2u32 {
+    if firstoffset > length - 2u32 {
         return;
     }
     /* Get the number of directory entries contained in this IFD */
     if is_motorola != 0 {
         number_of_tags = *data.offset(firstoffset as isize) as c_uint;
         number_of_tags <<= 8i32;
-        number_of_tags += 
-    
-            *data.offset((firstoffset + 1u32) as isize) as c_uint
+        number_of_tags += *data.offset((firstoffset + 1u32) as isize) as c_uint
     } else {
-        number_of_tags =
-            *data.offset((firstoffset + 1u32) as isize) as c_uint;
+        number_of_tags = *data.offset((firstoffset + 1u32) as isize) as c_uint;
         number_of_tags <<= 8i32;
-        number_of_tags +=  *data.offset(firstoffset as isize) as c_uint
+        number_of_tags += *data.offset(firstoffset as isize) as c_uint
     }
     if number_of_tags == 0u32 {
         return;
     }
-    firstoffset +=  2u32;
+    firstoffset += 2u32;
     loop
     /* Search for ExifSubIFD offset Tag in IFD0 */
     {
-        if firstoffset >  length - 12u32 {
+        if firstoffset > length - 12u32 {
             return;
         } /* check end of data segment */
         /* Get Tag number */
         if is_motorola != 0 {
             tagnum = *data.offset(firstoffset as isize) as c_uint; /* found ExifSubIFD offset Tag */
             tagnum <<= 8i32;
-            tagnum += 
-    
-                *data.offset((firstoffset + 1u32) as isize)
-                    as c_uint
+            tagnum += *data.offset((firstoffset + 1u32) as isize) as c_uint
         } else {
-            tagnum = *data.offset((firstoffset + 1u32) as isize)
-                as c_uint;
+            tagnum = *data.offset((firstoffset + 1u32) as isize) as c_uint;
             tagnum <<= 8i32;
-            tagnum +=  *data.offset(firstoffset as isize) as c_uint
+            tagnum += *data.offset(firstoffset as isize) as c_uint
         }
         if tagnum == 0x8769u32 {
             break;
         }
-        number_of_tags -=  1;
+        number_of_tags -= 1;
         if number_of_tags == 0u32 {
             return;
         }
-        firstoffset +=  12u32
+        firstoffset += 12u32
     }
     /* Get the ExifSubIFD offset */
     if is_motorola != 0 {
-        if *data.offset((firstoffset + 8u32) as isize) as c_int
-            != 0i32
-        {
+        if *data.offset((firstoffset + 8u32) as isize) as c_int != 0i32 {
             return;
         } /* check end of data segment */
-        if *data.offset((firstoffset + 9u32) as isize) as c_int
-            != 0i32
-        {
+        if *data.offset((firstoffset + 9u32) as isize) as c_int != 0i32 {
             return;
         }
-        offset =
-            *data.offset((firstoffset + 10u32) as isize) as c_uint;
+        offset = *data.offset((firstoffset + 10u32) as isize) as c_uint;
         offset <<= 8i32;
-        offset += 
-    
-            *data.offset((firstoffset + 11u32) as isize) as c_uint
+        offset += *data.offset((firstoffset + 11u32) as isize) as c_uint
     } else {
-        if *data.offset((firstoffset + 11u32) as isize) as c_int
-            != 0i32
-        {
+        if *data.offset((firstoffset + 11u32) as isize) as c_int != 0i32 {
             return;
         }
-        if *data.offset((firstoffset + 10u32) as isize) as c_int
-            != 0i32
-        {
+        if *data.offset((firstoffset + 10u32) as isize) as c_int != 0i32 {
             return;
         }
-        offset =
-            *data.offset((firstoffset + 9u32) as isize) as c_uint;
+        offset = *data.offset((firstoffset + 9u32) as isize) as c_uint;
         offset <<= 8i32;
-        offset += 
-    
-            *data.offset((firstoffset + 8u32) as isize) as c_uint
+        offset += *data.offset((firstoffset + 8u32) as isize) as c_uint
     }
-    if offset >  length - 2u32 {
+    if offset > length - 2u32 {
         return;
     }
     /* Get the number of directory entries contained in this SubIFD */
     if is_motorola != 0 {
         number_of_tags = *data.offset(offset as isize) as c_uint;
         number_of_tags <<= 8i32;
-        number_of_tags += 
-    
-            *data.offset((offset + 1u32) as isize) as c_uint
+        number_of_tags += *data.offset((offset + 1u32) as isize) as c_uint
     } else {
-        number_of_tags =
-            *data.offset((offset + 1u32) as isize) as c_uint;
+        number_of_tags = *data.offset((offset + 1u32) as isize) as c_uint;
         number_of_tags <<= 8i32;
-        number_of_tags +=  *data.offset(offset as isize) as c_uint
+        number_of_tags += *data.offset(offset as isize) as c_uint
     }
     if number_of_tags < 2u32 {
         return;
     }
-    offset +=  2u32;
+    offset += 2u32;
     loop
     /* Search for ExifImageWidth and ExifImageHeight Tags in this SubIFD */
     {
-        if offset >  length - 12u32 {
+        if offset > length - 12u32 {
             return;
         } /* check end of data segment */
         /* Get Tag number */
         if is_motorola != 0 {
             tagnum = *data.offset(offset as isize) as c_uint; /* ExifImageHeight Tag */
             tagnum <<= 8i32; /* ExifImageWidth Tag */
-            tagnum += 
-    
-                *data.offset((offset + 1u32) as isize) as c_uint
+            tagnum += *data.offset((offset + 1u32) as isize) as c_uint
         } else {
-            tagnum =
-                *data.offset((offset + 1u32) as isize) as c_uint; /* Format = unsigned long (4 octets) */
+            tagnum = *data.offset((offset + 1u32) as isize) as c_uint; /* Format = unsigned long (4 octets) */
             tagnum <<= 8i32; /* Number Of Components = 1 */
-            tagnum +=  *data.offset(offset as isize) as c_uint
+            tagnum += *data.offset(offset as isize) as c_uint
         } /* Format = unsigned long (4 octets) */
         if tagnum == 0xa002u32 || tagnum == 0xa003u32 {
-             let mut new_value:  JDIMENSION =  0;if tagnum == 0xa002u32 {
+            let mut new_value: JDIMENSION = 0;
+            if tagnum == 0xa002u32 {
                 new_value = new_width
             } else {
                 new_value = new_height
             } /* Number Of Components = 1 */
             if is_motorola != 0 {
-                *data.offset((offset + 2u32) as isize) =
-                    0u8;
-                *data.offset((offset + 3u32) as isize) =
-                    4u8;
-                *data.offset((offset + 4u32) as isize) =
-                    0u8;
-                *data.offset((offset + 5u32) as isize) =
-                    0u8;
-                *data.offset((offset + 6u32) as isize) =
-                    0u8;
-                *data.offset((offset + 7u32) as isize) =
-                    1u8;
-                *data.offset((offset + 8u32) as isize) =
-                    0u8;
-                *data.offset((offset + 9u32) as isize) =
-                    0u8;
-                *data.offset((offset + 10u32) as isize) =
-                    (new_value >> 8i32 & 0xffu32) as JOCTET;
-                *data.offset((offset + 11u32) as isize) =
-                    (new_value & 0xffu32) as JOCTET
+                *data.offset((offset + 2u32) as isize) = 0u8;
+                *data.offset((offset + 3u32) as isize) = 4u8;
+                *data.offset((offset + 4u32) as isize) = 0u8;
+                *data.offset((offset + 5u32) as isize) = 0u8;
+                *data.offset((offset + 6u32) as isize) = 0u8;
+                *data.offset((offset + 7u32) as isize) = 1u8;
+                *data.offset((offset + 8u32) as isize) = 0u8;
+                *data.offset((offset + 9u32) as isize) = 0u8;
+                *data.offset((offset + 10u32) as isize) = (new_value >> 8i32 & 0xffu32) as JOCTET;
+                *data.offset((offset + 11u32) as isize) = (new_value & 0xffu32) as JOCTET
             } else {
-                *data.offset((offset + 2u32) as isize) =
-                    4u8;
-                *data.offset((offset + 3u32) as isize) =
-                    0u8;
-                *data.offset((offset + 4u32) as isize) =
-                    1u8;
-                *data.offset((offset + 5u32) as isize) =
-                    0u8;
-                *data.offset((offset + 6u32) as isize) =
-                    0u8;
-                *data.offset((offset + 7u32) as isize) =
-                    0u8;
-                *data.offset((offset + 8u32) as isize) =
-                    (new_value & 0xffu32) as JOCTET;
-                *data.offset((offset + 9u32) as isize) =
-                    (new_value >> 8i32 & 0xffu32) as JOCTET;
-                *data.offset((offset + 10u32) as isize) =
-                    0u8;
-                *data.offset((offset + 11u32) as isize) =
-                    0u8
+                *data.offset((offset + 2u32) as isize) = 4u8;
+                *data.offset((offset + 3u32) as isize) = 0u8;
+                *data.offset((offset + 4u32) as isize) = 1u8;
+                *data.offset((offset + 5u32) as isize) = 0u8;
+                *data.offset((offset + 6u32) as isize) = 0u8;
+                *data.offset((offset + 7u32) as isize) = 0u8;
+                *data.offset((offset + 8u32) as isize) = (new_value & 0xffu32) as JOCTET;
+                *data.offset((offset + 9u32) as isize) = (new_value >> 8i32 & 0xffu32) as JOCTET;
+                *data.offset((offset + 10u32) as isize) = 0u8;
+                *data.offset((offset + 11u32) as isize) = 0u8
             }
         }
-        offset +=  12u32;
-        number_of_tags -=  1;
+        offset += 12u32;
+        number_of_tags -= 1;
         if !(number_of_tags != 0) {
             break;
         }
@@ -2688,12 +2030,8 @@ pub unsafe extern "C" fn jtransform_adjust_parameters(
          * be less than full resolution, so actually coping with that case
          * isn't worth extra code space.  But we check it to avoid crashing.)
          */
-        if ((*dstinfo).jpeg_color_space
-            ==  JCS_YCbCr
-            && (*dstinfo).num_components == 3i32
-            ||  (*dstinfo).jpeg_color_space
-                ==  JCS_GRAYSCALE
-                && (*dstinfo).num_components == 1i32)
+        if ((*dstinfo).jpeg_color_space == JCS_YCbCr && (*dstinfo).num_components == 3i32
+            || (*dstinfo).jpeg_color_space == JCS_GRAYSCALE && (*dstinfo).num_components == 1i32)
             && (*(*srcinfo).comp_info.offset(0)).h_samp_factor == (*srcinfo).max_h_samp_factor
             && (*(*srcinfo).comp_info.offset(0)).v_samp_factor == (*srcinfo).max_v_samp_factor
         {
@@ -2713,9 +2051,7 @@ pub unsafe extern "C" fn jtransform_adjust_parameters(
                     .error_exit
                     .expect("non-null function pointer"),
             )
-            .expect("non-null function pointer")(
-                dstinfo as j_common_ptr
-            );
+            .expect("non-null function pointer")(dstinfo as j_common_ptr);
         }
     } else if (*info).num_components == 1i32 {
         /* For a single-component source, we force the destination sampling factors
@@ -2729,7 +2065,7 @@ pub unsafe extern "C" fn jtransform_adjust_parameters(
      * for rotate/flip, resize, and crop operations.
      */
     /* Transpose destination image parameters */
-    match  (*info).transform {
+    match (*info).transform {
         3 | 4 | 5 | 7 => {
             (*dstinfo).image_width = (*info).output_height;
             (*dstinfo).image_height = (*info).output_width;
@@ -2760,9 +2096,7 @@ pub unsafe extern "C" fn jtransform_adjust_parameters(
             /* Align data segment to start of TIFF structure for parsing */
             adjust_exif_parameters(
                 (*(*srcinfo).marker_list).data.offset(6),
-                
-                (*(*srcinfo).marker_list)
-                    .data_length - 6u32,
+                (*(*srcinfo).marker_list).data_length - 6u32,
                 (*dstinfo).image_width,
                 (*dstinfo).image_height,
             );
@@ -2791,16 +2125,13 @@ pub unsafe extern "C" fn jtransform_execute_transform(
     mut src_coef_arrays: *mut jvirt_barray_ptr,
     mut info: *mut jpeg_transform_info,
 ) {
-    let mut dst_coef_arrays: *mut jvirt_barray_ptr =
-        (*info).workspace_coef_arrays;
+    let mut dst_coef_arrays: *mut jvirt_barray_ptr = (*info).workspace_coef_arrays;
     /* Note: conditions tested here should match those in switch statement
      * in jtransform_request_workspace()
      */
-    match  (*info).transform {
+    match (*info).transform {
         0 => {
-            if (*info).x_crop_offset != 0u32
-                || (*info).y_crop_offset != 0u32
-            {
+            if (*info).x_crop_offset != 0u32 || (*info).y_crop_offset != 0u32 {
                 do_crop(
                     srcinfo,
                     dstinfo,
@@ -2921,22 +2252,22 @@ pub unsafe extern "C" fn jtransform_perfect_transform(
     mut transform: JXFORM_CODE,
 ) -> boolean {
     let mut result: boolean = TRUE; /* initialize TRUE */
-    match  transform {
+    match transform {
         1 | 7 => {
-            if  image_width % MCU_width as JDIMENSION != 0 {
+            if image_width % MCU_width as JDIMENSION != 0 {
                 result = FALSE
             }
         }
         2 | 5 => {
-            if  image_height % MCU_height as JDIMENSION != 0 {
+            if image_height % MCU_height as JDIMENSION != 0 {
                 result = FALSE
             }
         }
         4 | 6 => {
-            if  image_width % MCU_width as JDIMENSION != 0 {
+            if image_width % MCU_width as JDIMENSION != 0 {
                 result = FALSE
             }
-            if  image_height % MCU_height as JDIMENSION != 0 {
+            if image_height % MCU_height as JDIMENSION != 0 {
                 result = FALSE
             }
         }
@@ -2956,32 +2287,16 @@ pub unsafe extern "C" fn jcopy_markers_setup(
     mut srcinfo: j_decompress_ptr,
     mut option: JCOPY_OPTION,
 ) {
-    
     /* Save comments except under NONE option */
-    if  option !=  JCOPYOPT_NONE
-    {
-        jpeg_save_markers(
-            srcinfo,
-            JPEG_COM,
-            0xffffu32,
-        );
+    if option != JCOPYOPT_NONE {
+        jpeg_save_markers(srcinfo, JPEG_COM, 0xffffu32);
     }
     /* Save all types of APPn markers iff ALL option */
-    if  option ==  JCOPYOPT_ALL
-        ||  option
-            ==  JCOPYOPT_ALL_EXCEPT_ICC
-    {
-          let mut m:   c_int =  0i32;
+    if option == JCOPYOPT_ALL || option == JCOPYOPT_ALL_EXCEPT_ICC {
+        let mut m: c_int = 0i32;
         while m < 16i32 {
-            if !(option
-                ==  JCOPYOPT_ALL_EXCEPT_ICC
-                && m == 2i32)
-            {
-                jpeg_save_markers(
-                    srcinfo,
-                    JPEG_APP0 + m,
-                    0xffffu32,
-                );
+            if !(option == JCOPYOPT_ALL_EXCEPT_ICC && m == 2i32) {
+                jpeg_save_markers(srcinfo, JPEG_APP0 + m, 0xffffu32);
             }
             m += 1
         }
@@ -3002,14 +2317,12 @@ pub unsafe extern "C" fn jcopy_markers_execute(
     mut dstinfo: j_compress_ptr,
     mut _option: JCOPY_OPTION,
 ) {
-     
     /* In the current implementation, we don't actually need to examine the
      * option flag here; we just copy everything that got saved.
      * But to avoid confusion, we do not output JFIF and Adobe APP14 markers
      * if the encoder library already wrote one.
      */
-     let mut marker:   jpeg_saved_marker_ptr =
-     (*srcinfo).marker_list; /* reject duplicate JFIF */
+    let mut marker: jpeg_saved_marker_ptr = (*srcinfo).marker_list; /* reject duplicate JFIF */
     while !marker.is_null() {
         if !((*dstinfo).write_JFIF_header != 0
             && (*marker).marker as c_int == JPEG_APP0

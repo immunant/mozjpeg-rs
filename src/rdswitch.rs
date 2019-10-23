@@ -1,163 +1,34 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-use crate::stdlib::memcpy;use libc::{c_uint, c_ulong, c_long, c_void, c_float, c_int, c_ushort, c_char,
-           self};use std::ffi::CStr;pub use crate::jmorecfg_h::{boolean, FALSE, JCOEF, JDIMENSION, JOCTET,
-                            JSAMPLE, MAX_COMPONENTS, TRUE, UINT16, UINT8};pub use crate::stddef_h::{size_t, NULL};pub use crate::jpeglib_h::{j_common_ptr, j_compress_ptr, jpeg_add_quant_table,
-                           jpeg_c_coef_controller, jpeg_c_get_int_param,
-                           jpeg_c_int_param_supported, jpeg_c_main_controller,
-                           jpeg_c_prep_controller, jpeg_c_set_bool_param,
-                           jpeg_color_converter, jpeg_common_struct,
-                           jpeg_comp_master, jpeg_component_info,
-                           jpeg_compress_struct, jpeg_destination_mgr,
-                           jpeg_downsampler, jpeg_entropy_encoder,
-                           jpeg_error_mgr, jpeg_float_quality_scaling,
-                           jpeg_forward_dct, jpeg_marker_writer,
-                           jpeg_memory_mgr, jpeg_progress_mgr, jpeg_scan_info,
-                           jvirt_barray_control, jvirt_barray_ptr,
-                           jvirt_sarray_control, jvirt_sarray_ptr,
-                           C2RustUnnamed_2, JCS_YCbCr, DCTSIZE2, JBLOCK,
-                           JBLOCKARRAY, JBLOCKROW, JBOOLEAN_OPTIMIZE_SCANS,
-                           JBOOLEAN_OVERSHOOT_DERINGING,
-                           JBOOLEAN_TRELLIS_EOB_OPT, JBOOLEAN_TRELLIS_QUANT,
-                           JBOOLEAN_TRELLIS_QUANT_DC, JBOOLEAN_TRELLIS_Q_OPT,
-                           JBOOLEAN_USE_LAMBDA_WEIGHT_TBL,
-                           JBOOLEAN_USE_SCANS_IN_TRELLIS, JCS_CMYK,
-                           JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR,
-                           JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB,
-                           JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR,
-                           JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565,
-                           JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST,
-                           JDCT_ISLOW, JHUFF_TBL, JINT_BASE_QUANT_TBL_IDX,
-                           JINT_COMPRESS_PROFILE, JINT_DC_SCAN_OPT_MODE,
-                           JINT_TRELLIS_FREQ_SPLIT, JINT_TRELLIS_NUM_LOOPS,
-                           JPOOL_IMAGE, JQUANT_TBL, JSAMPARRAY, JSAMPROW,
-                           J_BOOLEAN_PARAM, J_COLOR_SPACE, J_DCT_METHOD,
-                           J_INT_PARAM, MAX_COMPS_IN_SCAN, NUM_QUANT_TBLS};pub use crate::stdlib::{_IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data,
-                        __off64_t, __off_t, FILE, _IO_FILE, C2RustUnnamed_0,
-                        _ISalnum, _ISalpha, _ISblank, _IScntrl, _ISdigit,
-                        _ISgraph, _ISlower, _ISprint, _ISpunct, _ISspace,
-                        _ISupper, _ISxdigit, __ctype_b_loc, fclose, fopen,
-                        fprintf, getc, sscanf, stderr, ungetc, EOF};
+pub use crate::jmorecfg_h::{
+    boolean, FALSE, JCOEF, JDIMENSION, JOCTET, JSAMPLE, MAX_COMPONENTS, TRUE, UINT16, UINT8,
+};
+pub use crate::jpeglib_h::{
+    j_common_ptr, j_compress_ptr, jpeg_add_quant_table, jpeg_c_coef_controller,
+    jpeg_c_get_int_param, jpeg_c_int_param_supported, jpeg_c_main_controller,
+    jpeg_c_prep_controller, jpeg_c_set_bool_param, jpeg_color_converter, jpeg_common_struct,
+    jpeg_comp_master, jpeg_component_info, jpeg_compress_struct, jpeg_destination_mgr,
+    jpeg_downsampler, jpeg_entropy_encoder, jpeg_error_mgr, jpeg_float_quality_scaling,
+    jpeg_forward_dct, jpeg_marker_writer, jpeg_memory_mgr, jpeg_progress_mgr, jpeg_scan_info,
+    jvirt_barray_control, jvirt_barray_ptr, jvirt_sarray_control, jvirt_sarray_ptr,
+    C2RustUnnamed_2, JCS_YCbCr, DCTSIZE2, JBLOCK, JBLOCKARRAY, JBLOCKROW, JBOOLEAN_OPTIMIZE_SCANS,
+    JBOOLEAN_OVERSHOOT_DERINGING, JBOOLEAN_TRELLIS_EOB_OPT, JBOOLEAN_TRELLIS_QUANT,
+    JBOOLEAN_TRELLIS_QUANT_DC, JBOOLEAN_TRELLIS_Q_OPT, JBOOLEAN_USE_LAMBDA_WEIGHT_TBL,
+    JBOOLEAN_USE_SCANS_IN_TRELLIS, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA,
+    JCS_EXT_BGRX, JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB,
+    JCS_GRAYSCALE, JCS_RGB, JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW,
+    JHUFF_TBL, JINT_BASE_QUANT_TBL_IDX, JINT_COMPRESS_PROFILE, JINT_DC_SCAN_OPT_MODE,
+    JINT_TRELLIS_FREQ_SPLIT, JINT_TRELLIS_NUM_LOOPS, JPOOL_IMAGE, JQUANT_TBL, JSAMPARRAY, JSAMPROW,
+    J_BOOLEAN_PARAM, J_COLOR_SPACE, J_DCT_METHOD, J_INT_PARAM, MAX_COMPS_IN_SCAN, NUM_QUANT_TBLS,
+};
+pub use crate::stddef_h::{size_t, NULL};
+use crate::stdlib::memcpy;
+pub use crate::stdlib::{
+    C2RustUnnamed_0, _IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data, _ISalnum, _ISalpha,
+    _ISblank, _IScntrl, _ISdigit, _ISgraph, _ISlower, _ISprint, _ISpunct, _ISspace, _ISupper,
+    _ISxdigit, __ctype_b_loc, __off64_t, __off_t, fclose, fopen, fprintf, getc, sscanf, stderr,
+    ungetc, EOF, FILE, _IO_FILE,
+};
+use libc::{self, c_char, c_float, c_int, c_long, c_uint, c_ulong, c_ushort, c_void};
+use std::ffi::CStr;
 /*
  * rdswitch.c
  *
@@ -181,8 +52,7 @@ use crate::stdlib::memcpy;use libc::{c_uint, c_ulong, c_long, c_void, c_float, c
 unsafe extern "C" fn text_getc(mut file: *mut FILE) -> c_int
 /* Read next char, skipping over any comments (# to end of line) */
 /* A comment/newline sequence is returned as a newline */ {
-     
-     let mut ch:   c_int =  getc(file);
+    let mut ch: c_int = getc(file);
     if ch == '#' as i32 {
         loop {
             ch = getc(file);
@@ -201,8 +71,7 @@ unsafe extern "C" fn read_text_integer(
 ) -> boolean
 /* Read an unsigned decimal integer from a file, store it in result */
 /* Reads one trailing character after the integer; returns it in termchar */ {
-    
-     let mut ch:  c_int =  0; 
+    let mut ch: c_int = 0;
     loop
     /* Skip any leading whitespace, detect EOF */
     {
@@ -211,30 +80,22 @@ unsafe extern "C" fn read_text_integer(
             *termchar = ch;
             return FALSE;
         }
-        if !(*(*__ctype_b_loc()).offset(ch as isize) as c_int
-            &  _ISspace as c_ushort as c_int
-            != 0)
+        if !(*(*__ctype_b_loc()).offset(ch as isize) as c_int & _ISspace as c_ushort as c_int != 0)
         {
             break;
         }
     }
-    if *(*__ctype_b_loc()).offset(ch as isize) as c_int
-        &  _ISdigit as c_ushort as c_int
-        == 0
-    {
+    if *(*__ctype_b_loc()).offset(ch as isize) as c_int & _ISdigit as c_ushort as c_int == 0 {
         *termchar = ch;
         return FALSE;
     }
-     let mut val:   c_long =  (ch - '0' as i32) as c_long;
+    let mut val: c_long = (ch - '0' as i32) as c_long;
     loop {
         ch = text_getc(file);
         if !(ch != EOF) {
             break;
         }
-        if *(*__ctype_b_loc()).offset(ch as isize) as c_int
-            &  _ISdigit as c_ushort as c_int
-            == 0
-        {
+        if *(*__ctype_b_loc()).offset(ch as isize) as c_int & _ISdigit as c_ushort as c_int == 0 {
             break;
         }
         val *= 10i64;
@@ -262,33 +123,32 @@ pub unsafe extern "C" fn read_quant_tables(
  * table 0 for luminance (or primary) components, 1 for chrominance components.
  * You must use -qslots if you want a different component->table mapping.
  */ {
-    
-    
-    
-    
-    
-       let mut termchar:  c_int =  0; let mut val:  c_long =  0;
-     let mut fp:   *mut FILE =
-     fopen(filename,  b"r\x00".as_ptr() as *const c_char);
+    let mut termchar: c_int = 0;
+    let mut val: c_long = 0;
+    let mut fp: *mut FILE = fopen(filename, b"r\x00".as_ptr() as *const c_char);
     if fp.is_null() {
-                 eprintln!("Can\'t open table file {:}",
-          { CStr::from_ptr(filename as *const c_char).to_str().unwrap() });
+        eprintln!("Can\'t open table file {:}", {
+            CStr::from_ptr(filename as *const c_char).to_str().unwrap()
+        });
         return FALSE;
     }
-     let mut tblno:   c_int =  0i32;
+    let mut tblno: c_int = 0i32;
     while read_text_integer(fp, &mut val, &mut termchar) != 0 {
-         let mut table:  [c_uint; 64] =  [0; 64];if tblno >= NUM_QUANT_TBLS {
-                     eprintln!("Too many tables in file {:}",
-          { CStr::from_ptr(filename as *const c_char).to_str().unwrap() });
+        let mut table: [c_uint; 64] = [0; 64];
+        if tblno >= NUM_QUANT_TBLS {
+            eprintln!("Too many tables in file {:}", {
+                CStr::from_ptr(filename as *const c_char).to_str().unwrap()
+            });
             fclose(fp);
             return FALSE;
         }
         table[0] = val as c_uint;
-         let mut i:   c_int =  1i32;
+        let mut i: c_int = 1i32;
         while i < DCTSIZE2 {
             if read_text_integer(fp, &mut val, &mut termchar) == 0 {
-                         eprintln!("Invalid table data in file {:}",
-          { CStr::from_ptr(filename as *const c_char).to_str().unwrap() });
+                eprintln!("Invalid table data in file {:}", {
+                    CStr::from_ptr(filename as *const c_char).to_str().unwrap()
+                });
                 fclose(fp);
                 return FALSE;
             }
@@ -305,8 +165,9 @@ pub unsafe extern "C" fn read_quant_tables(
         tblno += 1
     }
     if termchar != EOF {
-                 eprintln!("Non-numeric data in file {:}",
-          { CStr::from_ptr(filename as *const c_char).to_str().unwrap() });
+        eprintln!("Non-numeric data in file {:}", {
+            CStr::from_ptr(filename as *const c_char).to_str().unwrap()
+        });
         fclose(fp);
         return FALSE;
     }
@@ -322,22 +183,16 @@ unsafe extern "C" fn read_scan_integer(
 /* Variant of read_text_integer that always looks for a non-space termchar;
  * this simplifies parsing of punctuation in scan scripts.
  */ {
-     
     if read_text_integer(file, result, termchar) == 0 {
         return FALSE;
     }
-     let mut ch:   c_int =  *termchar;
+    let mut ch: c_int = *termchar;
     while ch != EOF
-        && *(*__ctype_b_loc()).offset(ch as isize) as c_int
-            &  _ISspace as c_ushort as c_int
-            != 0
+        && *(*__ctype_b_loc()).offset(ch as isize) as c_int & _ISspace as c_ushort as c_int != 0
     {
         ch = text_getc(file)
     }
-    if *(*__ctype_b_loc()).offset(ch as isize) as c_int
-        &  _ISdigit as c_ushort as c_int
-        != 0
-    {
+    if *(*__ctype_b_loc()).offset(ch as isize) as c_int & _ISdigit as c_ushort as c_int != 0 {
         /* oops, put it back */
         if ungetc(ch, file) == EOF {
             return FALSE;
@@ -373,46 +228,46 @@ pub unsafe extern "C" fn read_scan_script(
  * Note: we do very little validity checking here;
  * jcmaster.c will validate the script parameters.
  */ {
-    
-    
-    
-    
-    
-    
-    
-       let mut termchar:  c_int =  0; let mut val:  c_long =  0;  let mut scans:  [jpeg_scan_info; 100] =
-     [jpeg_scan_info{comps_in_scan:  0,
-               component_index:  [0; 4],
-               Ss:  0,
-               Se:  0,
-               Ah:  0,
-               Al:  0,}; 100];
-     let mut fp:   *mut FILE =
-     fopen(filename,  b"r\x00".as_ptr() as *const c_char);
+    let mut termchar: c_int = 0;
+    let mut val: c_long = 0;
+    let mut scans: [jpeg_scan_info; 100] = [jpeg_scan_info {
+        comps_in_scan: 0,
+        component_index: [0; 4],
+        Ss: 0,
+        Se: 0,
+        Ah: 0,
+        Al: 0,
+    }; 100];
+    let mut fp: *mut FILE = fopen(filename, b"r\x00".as_ptr() as *const c_char);
     if fp.is_null() {
-                 eprintln!("Can\'t open scan definition file {:}",
-          { CStr::from_ptr(filename as *const c_char).to_str().unwrap() });
+        eprintln!("Can\'t open scan definition file {:}", {
+            CStr::from_ptr(filename as *const c_char).to_str().unwrap()
+        });
         return FALSE;
     }
-    
-     let mut scanptr:   *mut jpeg_scan_info =  scans.as_mut_ptr(); let mut scanno:   c_int =  0i32;
+
+    let mut scanptr: *mut jpeg_scan_info = scans.as_mut_ptr();
+    let mut scanno: c_int = 0i32;
     while read_scan_integer(fp, &mut val, &mut termchar) != 0 {
-         let mut current_block:  u64; if scanno >= MAX_SCANS {
-                     eprintln!("Too many scans defined in file {:}",
-          { CStr::from_ptr(filename as *const c_char).to_str().unwrap() });
+        let mut current_block: u64;
+        if scanno >= MAX_SCANS {
+            eprintln!("Too many scans defined in file {:}", {
+                CStr::from_ptr(filename as *const c_char).to_str().unwrap()
+            });
             fclose(fp);
             return FALSE;
         }
         (*scanptr).component_index[0] = val as c_int;
-         let mut ncomps:   c_int =  1i32;
+        let mut ncomps: c_int = 1i32;
         loop {
             if !(termchar == ' ' as i32) {
                 current_block = 1109700713171191020;
                 break;
             }
             if ncomps >= MAX_COMPS_IN_SCAN {
-                         eprintln!("Too many components in one scan in file {:}",
-          { CStr::from_ptr(filename as *const c_char).to_str().unwrap() });
+                eprintln!("Too many components in one scan in file {:}", {
+                    CStr::from_ptr(filename as *const c_char).to_str().unwrap()
+                });
                 fclose(fp);
                 return FALSE;
             }
@@ -474,14 +329,16 @@ pub unsafe extern "C" fn read_scan_script(
             }
             _ => {}
         }
-                 eprintln!("Invalid scan entry format in file {:}",
-          { CStr::from_ptr(filename as *const c_char).to_str().unwrap() });
+        eprintln!("Invalid scan entry format in file {:}", {
+            CStr::from_ptr(filename as *const c_char).to_str().unwrap()
+        });
         fclose(fp);
         return FALSE;
     }
     if termchar != EOF {
-                 eprintln!("Non-numeric data in file {:}",
-          { CStr::from_ptr(filename as *const c_char).to_str().unwrap() });
+        eprintln!("Non-numeric data in file {:}", {
+            CStr::from_ptr(filename as *const c_char).to_str().unwrap()
+        });
         fclose(fp);
         return FALSE;
     }
@@ -498,27 +355,17 @@ pub unsafe extern "C" fn read_scan_script(
         .expect("non-null function pointer")(
             cinfo as j_common_ptr,
             JPOOL_IMAGE,
-            scanno as c_ulong *
-    ::std::mem::size_of::<
-                jpeg_scan_info,
-            >() as c_ulong,
+            scanno as c_ulong * ::std::mem::size_of::<jpeg_scan_info>() as c_ulong,
         ) as *mut jpeg_scan_info;
         memcpy(
             scanptr as *mut c_void,
             scans.as_mut_ptr() as *const c_void,
-            scanno as c_ulong *
-    ::std::mem::size_of::<
-                jpeg_scan_info,
-            >() as c_ulong,
+            scanno as c_ulong * ::std::mem::size_of::<jpeg_scan_info>() as c_ulong,
         );
         (*cinfo).scan_info = scanptr;
         (*cinfo).num_scans = scanno;
         /* Disable scan optimization if using custom scan */
-        jpeg_c_set_bool_param(
-            cinfo,
-            JBOOLEAN_OPTIMIZE_SCANS,
-            FALSE,
-        );
+        jpeg_c_set_bool_param(cinfo, JBOOLEAN_OPTIMIZE_SCANS, FALSE);
     }
     fclose(fp);
     return TRUE;
@@ -534,1210 +381,149 @@ pub const MAX_SCANS: c_int = 100i32;
 
 static mut std_luminance_quant_tbl: [[c_uint; 64]; 9] = [
     [
-        16u32,
-        11u32,
-        10u32,
-        16u32,
-        24u32,
-        40u32,
-        51u32,
-        61u32,
-        12u32,
-        12u32,
-        14u32,
-        19u32,
-        26u32,
-        58u32,
-        60u32,
-        55u32,
-        14u32,
-        13u32,
-        16u32,
-        24u32,
-        40u32,
-        57u32,
-        69u32,
-        56u32,
-        14u32,
-        17u32,
-        22u32,
-        29u32,
-        51u32,
-        87u32,
-        80u32,
-        62u32,
-        18u32,
-        22u32,
-        37u32,
-        56u32,
-        68u32,
-        109u32,
-        103u32,
-        77u32,
-        24u32,
-        35u32,
-        55u32,
-        64u32,
-        81u32,
-        104u32,
-        113u32,
-        92u32,
-        49u32,
-        64u32,
-        78u32,
-        87u32,
-        103u32,
-        121u32,
-        120u32,
-        101u32,
-        72u32,
-        92u32,
-        95u32,
-        98u32,
-        112u32,
-        100u32,
-        103u32,
-        99u32,
+        16u32, 11u32, 10u32, 16u32, 24u32, 40u32, 51u32, 61u32, 12u32, 12u32, 14u32, 19u32, 26u32,
+        58u32, 60u32, 55u32, 14u32, 13u32, 16u32, 24u32, 40u32, 57u32, 69u32, 56u32, 14u32, 17u32,
+        22u32, 29u32, 51u32, 87u32, 80u32, 62u32, 18u32, 22u32, 37u32, 56u32, 68u32, 109u32,
+        103u32, 77u32, 24u32, 35u32, 55u32, 64u32, 81u32, 104u32, 113u32, 92u32, 49u32, 64u32,
+        78u32, 87u32, 103u32, 121u32, 120u32, 101u32, 72u32, 92u32, 95u32, 98u32, 112u32, 100u32,
+        103u32, 99u32,
     ],
     [
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
+        16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32,
+        16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32,
+        16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32,
+        16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32,
+        16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32,
     ],
     [
-        12u32,
-        17u32,
-        20u32,
-        21u32,
-        30u32,
-        34u32,
-        56u32,
-        63u32,
-        18u32,
-        20u32,
-        20u32,
-        26u32,
-        28u32,
-        51u32,
-        61u32,
-        55u32,
-        19u32,
-        20u32,
-        21u32,
-        26u32,
-        33u32,
-        58u32,
-        69u32,
-        55u32,
-        26u32,
-        26u32,
-        26u32,
-        30u32,
-        46u32,
-        87u32,
-        86u32,
-        66u32,
-        31u32,
-        33u32,
-        36u32,
-        40u32,
-        46u32,
-        96u32,
-        100u32,
-        73u32,
-        40u32,
-        35u32,
-        46u32,
-        62u32,
-        81u32,
-        100u32,
-        111u32,
-        91u32,
-        46u32,
-        66u32,
-        76u32,
-        86u32,
-        102u32,
-        121u32,
-        120u32,
-        101u32,
-        68u32,
-        90u32,
-        90u32,
-        96u32,
-        113u32,
-        102u32,
-        105u32,
+        12u32, 17u32, 20u32, 21u32, 30u32, 34u32, 56u32, 63u32, 18u32, 20u32, 20u32, 26u32, 28u32,
+        51u32, 61u32, 55u32, 19u32, 20u32, 21u32, 26u32, 33u32, 58u32, 69u32, 55u32, 26u32, 26u32,
+        26u32, 30u32, 46u32, 87u32, 86u32, 66u32, 31u32, 33u32, 36u32, 40u32, 46u32, 96u32, 100u32,
+        73u32, 40u32, 35u32, 46u32, 62u32, 81u32, 100u32, 111u32, 91u32, 46u32, 66u32, 76u32,
+        86u32, 102u32, 121u32, 120u32, 101u32, 68u32, 90u32, 90u32, 96u32, 113u32, 102u32, 105u32,
         103u32,
     ],
     [
-        16u32,
-        16u32,
-        16u32,
-        18u32,
-        25u32,
-        37u32,
-        56u32,
-        85u32,
-        16u32,
-        17u32,
-        20u32,
-        27u32,
-        34u32,
-        40u32,
-        53u32,
-        75u32,
-        16u32,
-        20u32,
-        24u32,
-        31u32,
-        43u32,
-        62u32,
-        91u32,
-        135u32,
-        18u32,
-        27u32,
-        31u32,
-        40u32,
-        53u32,
-        74u32,
-        106u32,
-        156u32,
-        25u32,
-        34u32,
-        43u32,
-        53u32,
-        69u32,
-        94u32,
-        131u32,
-        189u32,
-        37u32,
-        40u32,
-        62u32,
-        74u32,
-        94u32,
-        124u32,
-        169u32,
-        238u32,
-        56u32,
-        53u32,
-        91u32,
-        106u32,
-        131u32,
-        169u32,
-        226u32,
-        311u32,
-        85u32,
-        75u32,
-        135u32,
-        156u32,
-        189u32,
-        238u32,
-        311u32,
-        418u32,
+        16u32, 16u32, 16u32, 18u32, 25u32, 37u32, 56u32, 85u32, 16u32, 17u32, 20u32, 27u32, 34u32,
+        40u32, 53u32, 75u32, 16u32, 20u32, 24u32, 31u32, 43u32, 62u32, 91u32, 135u32, 18u32, 27u32,
+        31u32, 40u32, 53u32, 74u32, 106u32, 156u32, 25u32, 34u32, 43u32, 53u32, 69u32, 94u32,
+        131u32, 189u32, 37u32, 40u32, 62u32, 74u32, 94u32, 124u32, 169u32, 238u32, 56u32, 53u32,
+        91u32, 106u32, 131u32, 169u32, 226u32, 311u32, 85u32, 75u32, 135u32, 156u32, 189u32,
+        238u32, 311u32, 418u32,
     ],
     [
-        9u32,
-        10u32,
-        12u32,
-        14u32,
-        27u32,
-        32u32,
-        51u32,
-        62u32,
-        11u32,
-        12u32,
-        14u32,
-        19u32,
-        27u32,
-        44u32,
-        59u32,
-        73u32,
-        12u32,
-        14u32,
-        18u32,
-        25u32,
-        42u32,
-        59u32,
-        79u32,
-        78u32,
-        17u32,
-        18u32,
-        25u32,
-        42u32,
-        61u32,
-        92u32,
-        87u32,
-        92u32,
-        23u32,
-        28u32,
-        42u32,
-        75u32,
-        79u32,
-        112u32,
-        112u32,
-        99u32,
-        40u32,
-        42u32,
-        59u32,
-        84u32,
-        88u32,
-        124u32,
-        132u32,
-        111u32,
-        42u32,
-        64u32,
-        78u32,
-        95u32,
-        105u32,
-        126u32,
-        125u32,
-        99u32,
-        70u32,
-        75u32,
-        100u32,
-        102u32,
-        116u32,
-        100u32,
-        107u32,
-        98u32,
+        9u32, 10u32, 12u32, 14u32, 27u32, 32u32, 51u32, 62u32, 11u32, 12u32, 14u32, 19u32, 27u32,
+        44u32, 59u32, 73u32, 12u32, 14u32, 18u32, 25u32, 42u32, 59u32, 79u32, 78u32, 17u32, 18u32,
+        25u32, 42u32, 61u32, 92u32, 87u32, 92u32, 23u32, 28u32, 42u32, 75u32, 79u32, 112u32,
+        112u32, 99u32, 40u32, 42u32, 59u32, 84u32, 88u32, 124u32, 132u32, 111u32, 42u32, 64u32,
+        78u32, 95u32, 105u32, 126u32, 125u32, 99u32, 70u32, 75u32, 100u32, 102u32, 116u32, 100u32,
+        107u32, 98u32,
     ],
     [
-        10u32,
-        12u32,
-        14u32,
-        19u32,
-        26u32,
-        38u32,
-        57u32,
-        86u32,
-        12u32,
-        18u32,
-        21u32,
-        28u32,
-        35u32,
-        41u32,
-        54u32,
-        76u32,
-        14u32,
-        21u32,
-        25u32,
-        32u32,
-        44u32,
-        63u32,
-        92u32,
-        136u32,
-        19u32,
-        28u32,
-        32u32,
-        41u32,
-        54u32,
-        75u32,
-        107u32,
-        157u32,
-        26u32,
-        35u32,
-        44u32,
-        54u32,
-        70u32,
-        95u32,
-        132u32,
-        190u32,
-        38u32,
-        41u32,
-        63u32,
-        75u32,
-        95u32,
-        125u32,
-        170u32,
-        239u32,
-        57u32,
-        54u32,
-        92u32,
-        107u32,
-        132u32,
-        170u32,
-        227u32,
-        312u32,
-        86u32,
-        76u32,
-        136u32,
-        157u32,
-        190u32,
-        239u32,
-        312u32,
-        419u32,
+        10u32, 12u32, 14u32, 19u32, 26u32, 38u32, 57u32, 86u32, 12u32, 18u32, 21u32, 28u32, 35u32,
+        41u32, 54u32, 76u32, 14u32, 21u32, 25u32, 32u32, 44u32, 63u32, 92u32, 136u32, 19u32, 28u32,
+        32u32, 41u32, 54u32, 75u32, 107u32, 157u32, 26u32, 35u32, 44u32, 54u32, 70u32, 95u32,
+        132u32, 190u32, 38u32, 41u32, 63u32, 75u32, 95u32, 125u32, 170u32, 239u32, 57u32, 54u32,
+        92u32, 107u32, 132u32, 170u32, 227u32, 312u32, 86u32, 76u32, 136u32, 157u32, 190u32,
+        239u32, 312u32, 419u32,
     ],
     [
-        7u32,
-        8u32,
-        10u32,
-        14u32,
-        23u32,
-        44u32,
-        95u32,
-        241u32,
-        8u32,
-        8u32,
-        11u32,
-        15u32,
-        25u32,
-        47u32,
-        102u32,
-        255u32,
-        10u32,
-        11u32,
-        13u32,
-        19u32,
-        31u32,
-        58u32,
-        127u32,
-        255u32,
-        14u32,
-        15u32,
-        19u32,
-        27u32,
-        44u32,
-        83u32,
-        181u32,
-        255u32,
-        23u32,
-        25u32,
-        31u32,
-        44u32,
-        72u32,
-        136u32,
-        255u32,
-        255u32,
-        44u32,
-        47u32,
-        58u32,
-        83u32,
-        136u32,
-        255u32,
-        255u32,
-        255u32,
-        95u32,
-        102u32,
-        127u32,
-        181u32,
-        255u32,
-        255u32,
-        255u32,
-        255u32,
-        241u32,
-        255u32,
-        255u32,
-        255u32,
-        255u32,
-        255u32,
-        255u32,
-        255u32,
+        7u32, 8u32, 10u32, 14u32, 23u32, 44u32, 95u32, 241u32, 8u32, 8u32, 11u32, 15u32, 25u32,
+        47u32, 102u32, 255u32, 10u32, 11u32, 13u32, 19u32, 31u32, 58u32, 127u32, 255u32, 14u32,
+        15u32, 19u32, 27u32, 44u32, 83u32, 181u32, 255u32, 23u32, 25u32, 31u32, 44u32, 72u32,
+        136u32, 255u32, 255u32, 44u32, 47u32, 58u32, 83u32, 136u32, 255u32, 255u32, 255u32, 95u32,
+        102u32, 127u32, 181u32, 255u32, 255u32, 255u32, 255u32, 241u32, 255u32, 255u32, 255u32,
+        255u32, 255u32, 255u32, 255u32,
     ],
     [
-        15u32,
-        11u32,
-        11u32,
-        12u32,
-        15u32,
-        19u32,
-        25u32,
-        32u32,
-        11u32,
-        13u32,
-        10u32,
-        10u32,
-        12u32,
-        15u32,
-        19u32,
-        24u32,
-        11u32,
-        10u32,
-        14u32,
-        14u32,
-        16u32,
-        18u32,
-        22u32,
-        27u32,
-        12u32,
-        10u32,
-        14u32,
-        18u32,
-        21u32,
-        24u32,
-        28u32,
-        33u32,
-        15u32,
-        12u32,
-        16u32,
-        21u32,
-        26u32,
-        31u32,
-        36u32,
-        42u32,
-        19u32,
-        15u32,
-        18u32,
-        24u32,
-        31u32,
-        38u32,
-        45u32,
-        53u32,
-        25u32,
-        19u32,
-        22u32,
-        28u32,
-        36u32,
-        45u32,
-        55u32,
-        65u32,
-        32u32,
-        24u32,
-        27u32,
-        33u32,
-        42u32,
-        53u32,
-        65u32,
-        77u32,
+        15u32, 11u32, 11u32, 12u32, 15u32, 19u32, 25u32, 32u32, 11u32, 13u32, 10u32, 10u32, 12u32,
+        15u32, 19u32, 24u32, 11u32, 10u32, 14u32, 14u32, 16u32, 18u32, 22u32, 27u32, 12u32, 10u32,
+        14u32, 18u32, 21u32, 24u32, 28u32, 33u32, 15u32, 12u32, 16u32, 21u32, 26u32, 31u32, 36u32,
+        42u32, 19u32, 15u32, 18u32, 24u32, 31u32, 38u32, 45u32, 53u32, 25u32, 19u32, 22u32, 28u32,
+        36u32, 45u32, 55u32, 65u32, 32u32, 24u32, 27u32, 33u32, 42u32, 53u32, 65u32, 77u32,
     ],
     [
-        14u32,
-        10u32,
-        11u32,
-        14u32,
-        19u32,
-        25u32,
-        34u32,
-        45u32,
-        10u32,
-        11u32,
-        11u32,
-        12u32,
-        15u32,
-        20u32,
-        26u32,
-        33u32,
-        11u32,
-        11u32,
-        15u32,
-        18u32,
-        21u32,
-        25u32,
-        31u32,
-        38u32,
-        14u32,
-        12u32,
-        18u32,
-        24u32,
-        28u32,
-        33u32,
-        39u32,
-        47u32,
-        19u32,
-        15u32,
-        21u32,
-        28u32,
-        36u32,
-        43u32,
-        51u32,
-        59u32,
-        25u32,
-        20u32,
-        25u32,
-        33u32,
-        43u32,
-        54u32,
-        64u32,
-        74u32,
-        34u32,
-        26u32,
-        31u32,
-        39u32,
-        51u32,
-        64u32,
-        77u32,
-        91u32,
-        45u32,
-        33u32,
-        38u32,
-        47u32,
-        59u32,
-        74u32,
-        91u32,
-        108u32,
+        14u32, 10u32, 11u32, 14u32, 19u32, 25u32, 34u32, 45u32, 10u32, 11u32, 11u32, 12u32, 15u32,
+        20u32, 26u32, 33u32, 11u32, 11u32, 15u32, 18u32, 21u32, 25u32, 31u32, 38u32, 14u32, 12u32,
+        18u32, 24u32, 28u32, 33u32, 39u32, 47u32, 19u32, 15u32, 21u32, 28u32, 36u32, 43u32, 51u32,
+        59u32, 25u32, 20u32, 25u32, 33u32, 43u32, 54u32, 64u32, 74u32, 34u32, 26u32, 31u32, 39u32,
+        51u32, 64u32, 77u32, 91u32, 45u32, 33u32, 38u32, 47u32, 59u32, 74u32, 91u32, 108u32,
     ],
 ];
 
 static mut std_chrominance_quant_tbl: [[c_uint; 64]; 9] = [
     [
-        17u32,
-        18u32,
-        24u32,
-        47u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        18u32,
-        21u32,
-        26u32,
-        66u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        24u32,
-        26u32,
-        56u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        47u32,
-        66u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
+        17u32, 18u32, 24u32, 47u32, 99u32, 99u32, 99u32, 99u32, 18u32, 21u32, 26u32, 66u32, 99u32,
+        99u32, 99u32, 99u32, 24u32, 26u32, 56u32, 99u32, 99u32, 99u32, 99u32, 99u32, 47u32, 66u32,
+        99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32,
+        99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32,
+        99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32,
     ],
     [
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
-        16u32,
+        16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32,
+        16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32,
+        16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32,
+        16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32,
+        16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32, 16u32,
     ],
     [
-        8u32,
-        12u32,
-        15u32,
-        15u32,
-        86u32,
-        96u32,
-        96u32,
-        98u32,
-        13u32,
-        13u32,
-        15u32,
-        26u32,
-        90u32,
-        96u32,
-        99u32,
-        98u32,
-        12u32,
-        15u32,
-        18u32,
-        96u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        17u32,
-        16u32,
-        90u32,
-        96u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        96u32,
-        96u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
+        8u32, 12u32, 15u32, 15u32, 86u32, 96u32, 96u32, 98u32, 13u32, 13u32, 15u32, 26u32, 90u32,
+        96u32, 99u32, 98u32, 12u32, 15u32, 18u32, 96u32, 99u32, 99u32, 99u32, 99u32, 17u32, 16u32,
+        90u32, 96u32, 99u32, 99u32, 99u32, 99u32, 96u32, 96u32, 99u32, 99u32, 99u32, 99u32, 99u32,
+        99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32,
+        99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32,
     ],
     [
-        16u32,
-        16u32,
-        16u32,
-        18u32,
-        25u32,
-        37u32,
-        56u32,
-        85u32,
-        16u32,
-        17u32,
-        20u32,
-        27u32,
-        34u32,
-        40u32,
-        53u32,
-        75u32,
-        16u32,
-        20u32,
-        24u32,
-        31u32,
-        43u32,
-        62u32,
-        91u32,
-        135u32,
-        18u32,
-        27u32,
-        31u32,
-        40u32,
-        53u32,
-        74u32,
-        106u32,
-        156u32,
-        25u32,
-        34u32,
-        43u32,
-        53u32,
-        69u32,
-        94u32,
-        131u32,
-        189u32,
-        37u32,
-        40u32,
-        62u32,
-        74u32,
-        94u32,
-        124u32,
-        169u32,
-        238u32,
-        56u32,
-        53u32,
-        91u32,
-        106u32,
-        131u32,
-        169u32,
-        226u32,
-        311u32,
-        85u32,
-        75u32,
-        135u32,
-        156u32,
-        189u32,
-        238u32,
-        311u32,
-        418u32,
+        16u32, 16u32, 16u32, 18u32, 25u32, 37u32, 56u32, 85u32, 16u32, 17u32, 20u32, 27u32, 34u32,
+        40u32, 53u32, 75u32, 16u32, 20u32, 24u32, 31u32, 43u32, 62u32, 91u32, 135u32, 18u32, 27u32,
+        31u32, 40u32, 53u32, 74u32, 106u32, 156u32, 25u32, 34u32, 43u32, 53u32, 69u32, 94u32,
+        131u32, 189u32, 37u32, 40u32, 62u32, 74u32, 94u32, 124u32, 169u32, 238u32, 56u32, 53u32,
+        91u32, 106u32, 131u32, 169u32, 226u32, 311u32, 85u32, 75u32, 135u32, 156u32, 189u32,
+        238u32, 311u32, 418u32,
     ],
     [
-        9u32,
-        10u32,
-        17u32,
-        19u32,
-        62u32,
-        89u32,
-        91u32,
-        97u32,
-        12u32,
-        13u32,
-        18u32,
-        29u32,
-        84u32,
-        91u32,
-        88u32,
-        98u32,
-        14u32,
-        19u32,
-        29u32,
-        93u32,
-        95u32,
-        95u32,
-        98u32,
-        97u32,
-        20u32,
-        26u32,
-        84u32,
-        88u32,
-        95u32,
-        95u32,
-        98u32,
-        94u32,
-        26u32,
-        86u32,
-        91u32,
-        93u32,
-        97u32,
-        99u32,
-        98u32,
-        99u32,
-        99u32,
-        100u32,
-        98u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        97u32,
-        97u32,
-        99u32,
-        99u32,
-        99u32,
-        99u32,
-        97u32,
-        99u32,
+        9u32, 10u32, 17u32, 19u32, 62u32, 89u32, 91u32, 97u32, 12u32, 13u32, 18u32, 29u32, 84u32,
+        91u32, 88u32, 98u32, 14u32, 19u32, 29u32, 93u32, 95u32, 95u32, 98u32, 97u32, 20u32, 26u32,
+        84u32, 88u32, 95u32, 95u32, 98u32, 94u32, 26u32, 86u32, 91u32, 93u32, 97u32, 99u32, 98u32,
+        99u32, 99u32, 100u32, 98u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32, 99u32,
+        99u32, 99u32, 99u32, 99u32, 97u32, 97u32, 99u32, 99u32, 99u32, 99u32, 97u32, 99u32,
     ],
     [
-        10u32,
-        12u32,
-        14u32,
-        19u32,
-        26u32,
-        38u32,
-        57u32,
-        86u32,
-        12u32,
-        18u32,
-        21u32,
-        28u32,
-        35u32,
-        41u32,
-        54u32,
-        76u32,
-        14u32,
-        21u32,
-        25u32,
-        32u32,
-        44u32,
-        63u32,
-        92u32,
-        136u32,
-        19u32,
-        28u32,
-        32u32,
-        41u32,
-        54u32,
-        75u32,
-        107u32,
-        157u32,
-        26u32,
-        35u32,
-        44u32,
-        54u32,
-        70u32,
-        95u32,
-        132u32,
-        190u32,
-        38u32,
-        41u32,
-        63u32,
-        75u32,
-        95u32,
-        125u32,
-        170u32,
-        239u32,
-        57u32,
-        54u32,
-        92u32,
-        107u32,
-        132u32,
-        170u32,
-        227u32,
-        312u32,
-        86u32,
-        76u32,
-        136u32,
-        157u32,
-        190u32,
-        239u32,
-        312u32,
-        419u32,
+        10u32, 12u32, 14u32, 19u32, 26u32, 38u32, 57u32, 86u32, 12u32, 18u32, 21u32, 28u32, 35u32,
+        41u32, 54u32, 76u32, 14u32, 21u32, 25u32, 32u32, 44u32, 63u32, 92u32, 136u32, 19u32, 28u32,
+        32u32, 41u32, 54u32, 75u32, 107u32, 157u32, 26u32, 35u32, 44u32, 54u32, 70u32, 95u32,
+        132u32, 190u32, 38u32, 41u32, 63u32, 75u32, 95u32, 125u32, 170u32, 239u32, 57u32, 54u32,
+        92u32, 107u32, 132u32, 170u32, 227u32, 312u32, 86u32, 76u32, 136u32, 157u32, 190u32,
+        239u32, 312u32, 419u32,
     ],
     [
-        7u32,
-        8u32,
-        10u32,
-        14u32,
-        23u32,
-        44u32,
-        95u32,
-        241u32,
-        8u32,
-        8u32,
-        11u32,
-        15u32,
-        25u32,
-        47u32,
-        102u32,
-        255u32,
-        10u32,
-        11u32,
-        13u32,
-        19u32,
-        31u32,
-        58u32,
-        127u32,
-        255u32,
-        14u32,
-        15u32,
-        19u32,
-        27u32,
-        44u32,
-        83u32,
-        181u32,
-        255u32,
-        23u32,
-        25u32,
-        31u32,
-        44u32,
-        72u32,
-        136u32,
-        255u32,
-        255u32,
-        44u32,
-        47u32,
-        58u32,
-        83u32,
-        136u32,
-        255u32,
-        255u32,
-        255u32,
-        95u32,
-        102u32,
-        127u32,
-        181u32,
-        255u32,
-        255u32,
-        255u32,
-        255u32,
-        241u32,
-        255u32,
-        255u32,
-        255u32,
-        255u32,
-        255u32,
-        255u32,
-        255u32,
+        7u32, 8u32, 10u32, 14u32, 23u32, 44u32, 95u32, 241u32, 8u32, 8u32, 11u32, 15u32, 25u32,
+        47u32, 102u32, 255u32, 10u32, 11u32, 13u32, 19u32, 31u32, 58u32, 127u32, 255u32, 14u32,
+        15u32, 19u32, 27u32, 44u32, 83u32, 181u32, 255u32, 23u32, 25u32, 31u32, 44u32, 72u32,
+        136u32, 255u32, 255u32, 44u32, 47u32, 58u32, 83u32, 136u32, 255u32, 255u32, 255u32, 95u32,
+        102u32, 127u32, 181u32, 255u32, 255u32, 255u32, 255u32, 241u32, 255u32, 255u32, 255u32,
+        255u32, 255u32, 255u32, 255u32,
     ],
     [
-        15u32,
-        11u32,
-        11u32,
-        12u32,
-        15u32,
-        19u32,
-        25u32,
-        32u32,
-        11u32,
-        13u32,
-        10u32,
-        10u32,
-        12u32,
-        15u32,
-        19u32,
-        24u32,
-        11u32,
-        10u32,
-        14u32,
-        14u32,
-        16u32,
-        18u32,
-        22u32,
-        27u32,
-        12u32,
-        10u32,
-        14u32,
-        18u32,
-        21u32,
-        24u32,
-        28u32,
-        33u32,
-        15u32,
-        12u32,
-        16u32,
-        21u32,
-        26u32,
-        31u32,
-        36u32,
-        42u32,
-        19u32,
-        15u32,
-        18u32,
-        24u32,
-        31u32,
-        38u32,
-        45u32,
-        53u32,
-        25u32,
-        19u32,
-        22u32,
-        28u32,
-        36u32,
-        45u32,
-        55u32,
-        65u32,
-        32u32,
-        24u32,
-        27u32,
-        33u32,
-        42u32,
-        53u32,
-        65u32,
-        77u32,
+        15u32, 11u32, 11u32, 12u32, 15u32, 19u32, 25u32, 32u32, 11u32, 13u32, 10u32, 10u32, 12u32,
+        15u32, 19u32, 24u32, 11u32, 10u32, 14u32, 14u32, 16u32, 18u32, 22u32, 27u32, 12u32, 10u32,
+        14u32, 18u32, 21u32, 24u32, 28u32, 33u32, 15u32, 12u32, 16u32, 21u32, 26u32, 31u32, 36u32,
+        42u32, 19u32, 15u32, 18u32, 24u32, 31u32, 38u32, 45u32, 53u32, 25u32, 19u32, 22u32, 28u32,
+        36u32, 45u32, 55u32, 65u32, 32u32, 24u32, 27u32, 33u32, 42u32, 53u32, 65u32, 77u32,
     ],
     [
-        14u32,
-        10u32,
-        11u32,
-        14u32,
-        19u32,
-        25u32,
-        34u32,
-        45u32,
-        10u32,
-        11u32,
-        11u32,
-        12u32,
-        15u32,
-        20u32,
-        26u32,
-        33u32,
-        11u32,
-        11u32,
-        15u32,
-        18u32,
-        21u32,
-        25u32,
-        31u32,
-        38u32,
-        14u32,
-        12u32,
-        18u32,
-        24u32,
-        28u32,
-        33u32,
-        39u32,
-        47u32,
-        19u32,
-        15u32,
-        21u32,
-        28u32,
-        36u32,
-        43u32,
-        51u32,
-        59u32,
-        25u32,
-        20u32,
-        25u32,
-        33u32,
-        43u32,
-        54u32,
-        64u32,
-        74u32,
-        34u32,
-        26u32,
-        31u32,
-        39u32,
-        51u32,
-        64u32,
-        77u32,
-        91u32,
-        45u32,
-        33u32,
-        38u32,
-        47u32,
-        59u32,
-        74u32,
-        91u32,
-        108u32,
+        14u32, 10u32, 11u32, 14u32, 19u32, 25u32, 34u32, 45u32, 10u32, 11u32, 11u32, 12u32, 15u32,
+        20u32, 26u32, 33u32, 11u32, 11u32, 15u32, 18u32, 21u32, 25u32, 31u32, 38u32, 14u32, 12u32,
+        18u32, 24u32, 28u32, 33u32, 39u32, 47u32, 19u32, 15u32, 21u32, 28u32, 36u32, 43u32, 51u32,
+        59u32, 25u32, 20u32, 25u32, 33u32, 43u32, 54u32, 64u32, 74u32, 34u32, 26u32, 31u32, 39u32,
+        51u32, 64u32, 77u32, 91u32, 45u32, 33u32, 38u32, 47u32, 59u32, 74u32, 91u32, 108u32,
     ],
 ];
 
-unsafe extern "C" fn jpeg_default_qtables(
-    mut cinfo: j_compress_ptr,
-    mut force_baseline: boolean,
-) {
-     let mut quant_tbl_master_idx:  c_int =  0i32;
-    if jpeg_c_int_param_supported(
-        cinfo,
-        JINT_BASE_QUANT_TBL_IDX,
-    ) != 0
-    {
-        quant_tbl_master_idx =
-            jpeg_c_get_int_param(cinfo, JINT_BASE_QUANT_TBL_IDX)
+unsafe extern "C" fn jpeg_default_qtables(mut cinfo: j_compress_ptr, mut force_baseline: boolean) {
+    let mut quant_tbl_master_idx: c_int = 0i32;
+    if jpeg_c_int_param_supported(cinfo, JINT_BASE_QUANT_TBL_IDX) != 0 {
+        quant_tbl_master_idx = jpeg_c_get_int_param(cinfo, JINT_BASE_QUANT_TBL_IDX)
     }
     jpeg_add_quant_table(
         cinfo,
@@ -1765,16 +551,15 @@ pub unsafe extern "C" fn set_quality_ratings(
  *     N[,N,...]
  * If there are more q-table slots than parameters, the last value is replicated.
  */ {
-     /* default value */
-     /* if not set by sscanf, will be ',' */
-     let mut val:  c_float =  75.0f32; 
-     let mut tblno:   c_int =  0i32;
+    /* default value */
+    /* if not set by sscanf, will be ',' */
+    let mut val: c_float = 75.0f32;
+    let mut tblno: c_int = 0i32;
     while tblno < NUM_QUANT_TBLS {
         if *arg != 0 {
-              let mut ch:   c_char =   ',' as c_char;
+            let mut ch: c_char = ',' as c_char;
             if sscanf(
                 arg,
-                
                 b"%f%c\x00".as_ptr() as *const c_char,
                 &mut val as *mut c_float,
                 &mut ch as *mut c_char,
@@ -1787,8 +572,7 @@ pub unsafe extern "C" fn set_quality_ratings(
                 return FALSE;
             }
             /* Convert user 0-100 rating to percentage scaling */
-            q_scale_factor[tblno as usize] =
-                jpeg_float_quality_scaling(val) as c_int;
+            q_scale_factor[tblno as usize] = jpeg_float_quality_scaling(val) as c_int;
             /* advance to next segment of arg string */
             while *arg as c_int != 0 && {
                 let fresh0 = arg;
@@ -1797,8 +581,7 @@ pub unsafe extern "C" fn set_quality_ratings(
             } {}
         } else {
             /* reached end of parameter, set remaining factors to last value */
-            q_scale_factor[tblno as usize] =
-                jpeg_float_quality_scaling(val) as c_int
+            q_scale_factor[tblno as usize] = jpeg_float_quality_scaling(val) as c_int
         }
         tblno += 1
     }
@@ -1808,21 +591,9 @@ pub unsafe extern "C" fn set_quality_ratings(
     To make the quality setting more intuitive, disable subsampling when high-quality
     color is desired. */
     if val >= 90f32 {
-        set_sample_factors(
-            cinfo,
-            
-            
-            
-            b"1x1\x00".as_ptr() as *mut c_char,
-        );
+        set_sample_factors(cinfo, b"1x1\x00".as_ptr() as *mut c_char);
     } else if val >= 80f32 {
-        set_sample_factors(
-            cinfo,
-            
-            
-            
-            b"2x1\x00".as_ptr() as *mut c_char,
-        );
+        set_sample_factors(cinfo, b"2x1\x00".as_ptr() as *mut c_char);
     }
     return TRUE;
 }
@@ -1836,14 +607,13 @@ pub unsafe extern "C" fn set_quant_slots(
  *     N[,N,...]
  * If there are more components than parameters, the last value is replicated.
  */ {
-     
-     let mut ci:   c_int =  0i32;
+    let mut ci: c_int = 0i32;
     while ci < MAX_COMPONENTS {
-         let mut val:  c_int =  0i32;if *arg != 0 {
-              let mut ch:   c_char =   ',' as c_char;
+        let mut val: c_int = 0i32;
+        if *arg != 0 {
+            let mut ch: c_char = ',' as c_char;
             if sscanf(
                 arg,
-                
                 b"%d%c\x00".as_ptr() as *const c_char,
                 &mut val as *mut c_int,
                 &mut ch as *mut c_char,
@@ -1856,8 +626,10 @@ pub unsafe extern "C" fn set_quant_slots(
                 return FALSE;
             }
             if val < 0i32 || val >= NUM_QUANT_TBLS {
-                         eprintln!("JPEG quantization tables are numbered 0..{:}",
-          NUM_QUANT_TBLS - 1i32);
+                eprintln!(
+                    "JPEG quantization tables are numbered 0..{:}",
+                    NUM_QUANT_TBLS - 1i32
+                );
                 return FALSE;
             }
             (*(*cinfo).comp_info.offset(ci as isize)).quant_tbl_no = val;
@@ -1935,14 +707,15 @@ pub unsafe extern "C" fn set_sample_factors(
  *     HxV[,HxV,...]
  * If there are more components than parameters, "1x1" is assumed for the rest.
  */ {
-     
-     let mut ci:   c_int =  0i32;
+    let mut ci: c_int = 0i32;
     while ci < MAX_COMPONENTS {
         if *arg != 0 {
-             let mut val1:  c_int =  0; let mut val2:  c_int =  0; let mut ch1:  c_char =  0;  let mut ch2:   c_char =   ',' as c_char;
+            let mut val1: c_int = 0;
+            let mut val2: c_int = 0;
+            let mut ch1: c_char = 0;
+            let mut ch2: c_char = ',' as c_char;
             if sscanf(
                 arg,
-                
                 b"%d%c%d%c\x00".as_ptr() as *const c_char,
                 &mut val1 as *mut c_int,
                 &mut ch1 as *mut c_char,
@@ -1959,7 +732,7 @@ pub unsafe extern "C" fn set_sample_factors(
                 return FALSE;
             }
             if val1 <= 0i32 || val1 > 4i32 || val2 <= 0i32 || val2 > 4i32 {
-                 eprintln!("JPEG sampling factors must be 1..4");
+                eprintln!("JPEG sampling factors must be 1..4");
                 return FALSE;
             }
             (*(*cinfo).comp_info.offset(ci as isize)).h_samp_factor = val1;

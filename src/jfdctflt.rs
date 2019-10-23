@@ -1,6 +1,5 @@
-
-
-use libc::{c_float, c_int, self};pub use crate::jpeglib_h::DCTSIZE;
+pub use crate::jpeglib_h::DCTSIZE;
+use libc::{self, c_float, c_int};
 /*
  * jfdctflt.c
  *
@@ -46,29 +45,28 @@ use libc::{c_float, c_int, self};pub use crate::jpeglib_h::DCTSIZE;
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_fdct_float(mut data: *mut c_float) {
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-     let mut tmp0:  c_float =  0.; let mut tmp1:  c_float =  0.; let mut tmp2:  c_float =  0.; let mut tmp3:  c_float =  0.; let mut tmp4:  c_float =  0.; let mut tmp5:  c_float =  0.; let mut tmp6:  c_float =  0.; let mut tmp7:  c_float =  0.; let mut tmp10:  c_float =  0.; let mut tmp11:  c_float =  0.; let mut tmp12:  c_float =  0.; let mut tmp13:  c_float =  0.; let mut z1:  c_float =  0.; let mut z2:  c_float =  0.; let mut z3:  c_float =  0.; let mut z4:  c_float =  0.; let mut z5:  c_float =  0.; let mut z11:  c_float =  0.; let mut z13:  c_float =  0.;  
-    
-     let mut dataptr:   *mut c_float =  data; let mut ctr:   c_int =  DCTSIZE - 1i32;
+    let mut tmp0: c_float = 0.;
+    let mut tmp1: c_float = 0.;
+    let mut tmp2: c_float = 0.;
+    let mut tmp3: c_float = 0.;
+    let mut tmp4: c_float = 0.;
+    let mut tmp5: c_float = 0.;
+    let mut tmp6: c_float = 0.;
+    let mut tmp7: c_float = 0.;
+    let mut tmp10: c_float = 0.;
+    let mut tmp11: c_float = 0.;
+    let mut tmp12: c_float = 0.;
+    let mut tmp13: c_float = 0.;
+    let mut z1: c_float = 0.;
+    let mut z2: c_float = 0.;
+    let mut z3: c_float = 0.;
+    let mut z4: c_float = 0.;
+    let mut z5: c_float = 0.;
+    let mut z11: c_float = 0.;
+    let mut z13: c_float = 0.;
+
+    let mut dataptr: *mut c_float = data;
+    let mut ctr: c_int = DCTSIZE - 1i32;
     while ctr >= 0i32 {
         tmp0 = *dataptr.offset(0) + *dataptr.offset(7);
         tmp7 = *dataptr.offset(0) - *dataptr.offset(7);
@@ -122,22 +120,22 @@ pub unsafe extern "C" fn jpeg_fdct_float(mut data: *mut c_float) {
     dataptr = data;
     ctr = DCTSIZE - 1i32;
     while ctr >= 0i32 {
-        tmp0 = *dataptr.offset((DCTSIZE * 0i32) as isize)
-            + *dataptr.offset((DCTSIZE * 7i32) as isize);
-        tmp7 = *dataptr.offset((DCTSIZE * 0i32) as isize)
-            - *dataptr.offset((DCTSIZE * 7i32) as isize);
-        tmp1 = *dataptr.offset((DCTSIZE * 1i32) as isize)
-            + *dataptr.offset((DCTSIZE * 6i32) as isize);
-        tmp6 = *dataptr.offset((DCTSIZE * 1i32) as isize)
-            - *dataptr.offset((DCTSIZE * 6i32) as isize);
-        tmp2 = *dataptr.offset((DCTSIZE * 2i32) as isize)
-            + *dataptr.offset((DCTSIZE * 5i32) as isize);
-        tmp5 = *dataptr.offset((DCTSIZE * 2i32) as isize)
-            - *dataptr.offset((DCTSIZE * 5i32) as isize);
-        tmp3 = *dataptr.offset((DCTSIZE * 3i32) as isize)
-            + *dataptr.offset((DCTSIZE * 4i32) as isize);
-        tmp4 = *dataptr.offset((DCTSIZE * 3i32) as isize)
-            - *dataptr.offset((DCTSIZE * 4i32) as isize);
+        tmp0 =
+            *dataptr.offset((DCTSIZE * 0i32) as isize) + *dataptr.offset((DCTSIZE * 7i32) as isize);
+        tmp7 =
+            *dataptr.offset((DCTSIZE * 0i32) as isize) - *dataptr.offset((DCTSIZE * 7i32) as isize);
+        tmp1 =
+            *dataptr.offset((DCTSIZE * 1i32) as isize) + *dataptr.offset((DCTSIZE * 6i32) as isize);
+        tmp6 =
+            *dataptr.offset((DCTSIZE * 1i32) as isize) - *dataptr.offset((DCTSIZE * 6i32) as isize);
+        tmp2 =
+            *dataptr.offset((DCTSIZE * 2i32) as isize) + *dataptr.offset((DCTSIZE * 5i32) as isize);
+        tmp5 =
+            *dataptr.offset((DCTSIZE * 2i32) as isize) - *dataptr.offset((DCTSIZE * 5i32) as isize);
+        tmp3 =
+            *dataptr.offset((DCTSIZE * 3i32) as isize) + *dataptr.offset((DCTSIZE * 4i32) as isize);
+        tmp4 =
+            *dataptr.offset((DCTSIZE * 3i32) as isize) - *dataptr.offset((DCTSIZE * 4i32) as isize);
         /* advance pointer to next column */
         tmp10 = tmp0 + tmp3;
         tmp13 = tmp0 - tmp3;

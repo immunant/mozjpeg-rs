@@ -1,11 +1,11 @@
-use libc::{c_uint, c_ulong, c_char, c_uchar, c_void};extern "C" {
+use libc::{c_char, c_uchar, c_uint, c_ulong, c_void};
+extern "C" {
     #[no_mangle]
     pub fn MD5File(_: *const c_char, _: *mut c_char) -> *mut c_char;
 }
 
-
-
-use libc;use crate::stdlib::{memcpy, memset};
+use crate::stdlib::{memcpy, memset};
+use libc;
 // =============== BEGIN md5_h ================
 pub type uint32 = c_uint;
 
@@ -89,37 +89,28 @@ pub unsafe extern "C" fn MD5Update(
     mut buf: *mut c_uchar,
     mut len: c_uint,
 ) {
-     
-     let mut t:   uint32 =  (*ctx).bits[0]; /* Carry from low to high */
-    (*ctx).bits[0] =  t + (((len << 3i32))); /* Bytes already in shsInfo->data */
+    let mut t: uint32 = (*ctx).bits[0]; /* Carry from low to high */
+    (*ctx).bits[0] = t + (len << 3i32); /* Bytes already in shsInfo->data */
     if (*ctx).bits[0] < t {
-        (*ctx).bits[1] =  (*ctx).bits[1] + 1
+        (*ctx).bits[1] = (*ctx).bits[1] + 1
     }
-    (*ctx).bits[1] = (*ctx).bits[1] + (((len >> 29i32)));
+    (*ctx).bits[1] = (*ctx).bits[1] + (len >> 29i32);
     t = t >> 3i32 & 0x3fu32;
     /* Handle any leading odd-sized chunks */
     if t != 0 {
         let mut p: *mut c_uchar = (*ctx).in_0.as_mut_ptr().offset(t as isize);
         t = 64u32 - t;
         if len < t {
-            memcpy(
-                p as *mut c_void,
-                buf as *const c_void,
-                len as c_ulong,
-            );
+            memcpy(p as *mut c_void, buf as *const c_void, len as c_ulong);
             return;
         }
-        memcpy(
-            p as *mut c_void,
-            buf as *const c_void,
-            t as c_ulong,
-        );
+        memcpy(p as *mut c_void, buf as *const c_void, t as c_ulong);
         MD5Transform(
             (*ctx).buf.as_mut_ptr(),
             (*ctx).in_0.as_mut_ptr() as *mut uint32,
         );
         buf = buf.offset(t as isize);
-        len -=  t
+        len -= t
     }
     /* Process data in 64-byte chunks */
     while len >= 64u32 {
@@ -133,7 +124,7 @@ pub unsafe extern "C" fn MD5Update(
             (*ctx).in_0.as_mut_ptr() as *mut uint32,
         );
         buf = buf.offset(64);
-        len -=  64u32
+        len -= 64u32
     }
     /* Handle any remaining bytes of data. */
     memcpy(
@@ -148,19 +139,13 @@ pub unsafe extern "C" fn MD5Update(
  */
 #[no_mangle]
 
-pub unsafe extern "C" fn MD5Final(
-    mut digest: *mut c_uchar,
-    mut ctx: *mut MD5Context,
-) {
-    
-      
-    let mut in32: *mut uint32 =
-        (*ctx).in_0.as_mut_ptr() as *mut uint32;
-    
+pub unsafe extern "C" fn MD5Final(mut digest: *mut c_uchar, mut ctx: *mut MD5Context) {
+    let mut in32: *mut uint32 = (*ctx).in_0.as_mut_ptr() as *mut uint32;
+
     /* Set the first char of padding to 0x80.  This is safe since there is
     always at least one byte free */
-     let mut count:   c_uint =  (*ctx).bits[0] >> 3i32 & 0x3fu32; let mut p:   *mut c_uchar =
-     (*ctx).in_0.as_mut_ptr().offset(count as isize);
+    let mut count: c_uint = (*ctx).bits[0] >> 3i32 & 0x3fu32;
+    let mut p: *mut c_uchar = (*ctx).in_0.as_mut_ptr().offset(count as isize);
     let fresh0 = p;
     p = p.offset(1);
     *fresh0 = 0x80u8;
@@ -175,19 +160,10 @@ pub unsafe extern "C" fn MD5Final(
             (*ctx).in_0.as_mut_ptr() as *mut uint32,
         );
         /* Now fill the next block with 56 bytes */
-        memset(
-            (*ctx).in_0.as_mut_ptr() as *mut c_void,
-            0i32,
-            56u64,
-        );
+        memset((*ctx).in_0.as_mut_ptr() as *mut c_void, 0i32, 56u64);
     } else {
         /* Pad block to 56 bytes */
-        memset(
-            p as *mut c_void,
-            0i32,
-            (
-            count - 8u32) as c_ulong,
-        );
+        memset(p as *mut c_void, 0i32, (count - 8u32) as c_ulong);
     }
     /* Append length in bits and transform */
     *in32.offset(14) = (*ctx).bits[0];
@@ -248,210 +224,203 @@ uint32 as something guaranteed to be 32 bits.  */
  */
 #[no_mangle]
 
-pub unsafe extern "C" fn MD5Transform(
-    mut buf: *mut uint32,
-    mut in_0: *mut uint32,
-) {
-    
-    
-    
-        
-    
-    
-    
-     let mut a:   uint32 =  *buf.offset(0); let mut b:   uint32 =  *buf.offset(1); let mut c:   uint32 =  *buf.offset(2); let mut d:   uint32 =  *buf.offset(3);
-    a += (((d ^ b & (c ^ d)))) + *in_0.offset(0) + 0xd76aa478u32;
+pub unsafe extern "C" fn MD5Transform(mut buf: *mut uint32, mut in_0: *mut uint32) {
+    let mut a: uint32 = *buf.offset(0);
+    let mut b: uint32 = *buf.offset(1);
+    let mut c: uint32 = *buf.offset(2);
+    let mut d: uint32 = *buf.offset(3);
+    a += (d ^ b & (c ^ d)) + *in_0.offset(0) + 0xd76aa478u32;
     a = a << 7i32 | a >> 32i32 - 7i32;
-    a +=  b;
-    d += (((c ^ a & (b ^ c)))) + *in_0.offset(1) + 0xe8c7b756u32;
+    a += b;
+    d += (c ^ a & (b ^ c)) + *in_0.offset(1) + 0xe8c7b756u32;
     d = d << 12i32 | d >> 32i32 - 12i32;
-    d +=  a;
-    c += (((b ^ d & (a ^ b)))) + *in_0.offset(2) + 0x242070dbu32;
+    d += a;
+    c += (b ^ d & (a ^ b)) + *in_0.offset(2) + 0x242070dbu32;
     c = c << 17i32 | c >> 32i32 - 17i32;
-    c +=  d;
-    b += (((a ^ c & (d ^ a)))) + *in_0.offset(3) + 0xc1bdceeeu32;
+    c += d;
+    b += (a ^ c & (d ^ a)) + *in_0.offset(3) + 0xc1bdceeeu32;
     b = b << 22i32 | b >> 32i32 - 22i32;
-    b +=  c;
-    a += (((d ^ b & (c ^ d)))) + *in_0.offset(4) + 0xf57c0fafu32;
+    b += c;
+    a += (d ^ b & (c ^ d)) + *in_0.offset(4) + 0xf57c0fafu32;
     a = a << 7i32 | a >> 32i32 - 7i32;
-    a +=  b;
-    d += (((c ^ a & (b ^ c)))) + *in_0.offset(5) + 0x4787c62au32;
+    a += b;
+    d += (c ^ a & (b ^ c)) + *in_0.offset(5) + 0x4787c62au32;
     d = d << 12i32 | d >> 32i32 - 12i32;
-    d +=  a;
-    c += (((b ^ d & (a ^ b)))) + *in_0.offset(6) + 0xa8304613u32;
+    d += a;
+    c += (b ^ d & (a ^ b)) + *in_0.offset(6) + 0xa8304613u32;
     c = c << 17i32 | c >> 32i32 - 17i32;
-    c +=  d;
-    b += (((a ^ c & (d ^ a)))) + *in_0.offset(7) + 0xfd469501u32;
+    c += d;
+    b += (a ^ c & (d ^ a)) + *in_0.offset(7) + 0xfd469501u32;
     b = b << 22i32 | b >> 32i32 - 22i32;
-    b +=  c;
-    a += (((d ^ b & (c ^ d)))) + *in_0.offset(8) + 0x698098d8u32;
+    b += c;
+    a += (d ^ b & (c ^ d)) + *in_0.offset(8) + 0x698098d8u32;
     a = a << 7i32 | a >> 32i32 - 7i32;
-    a +=  b;
-    d += (((c ^ a & (b ^ c)))) + *in_0.offset(9) + 0x8b44f7afu32;
+    a += b;
+    d += (c ^ a & (b ^ c)) + *in_0.offset(9) + 0x8b44f7afu32;
     d = d << 12i32 | d >> 32i32 - 12i32;
-    d +=  a;
-    c += (((b ^ d & (a ^ b)))) + *in_0.offset(10) + 0xffff5bb1u32;
+    d += a;
+    c += (b ^ d & (a ^ b)) + *in_0.offset(10) + 0xffff5bb1u32;
     c = c << 17i32 | c >> 32i32 - 17i32;
-    c +=  d;
-    b += (((a ^ c & (d ^ a)))) + *in_0.offset(11) + 0x895cd7beu32;
+    c += d;
+    b += (a ^ c & (d ^ a)) + *in_0.offset(11) + 0x895cd7beu32;
     b = b << 22i32 | b >> 32i32 - 22i32;
-    b +=  c;
-    a += (((d ^ b & (c ^ d)))) + *in_0.offset(12) + 0x6b901122u32;
+    b += c;
+    a += (d ^ b & (c ^ d)) + *in_0.offset(12) + 0x6b901122u32;
     a = a << 7i32 | a >> 32i32 - 7i32;
-    a +=  b;
-    d += (((c ^ a & (b ^ c)))) + *in_0.offset(13) + 0xfd987193u32;
+    a += b;
+    d += (c ^ a & (b ^ c)) + *in_0.offset(13) + 0xfd987193u32;
     d = d << 12i32 | d >> 32i32 - 12i32;
-    d +=  a;
-    c += (((b ^ d & (a ^ b)))) + *in_0.offset(14) + 0xa679438eu32;
+    d += a;
+    c += (b ^ d & (a ^ b)) + *in_0.offset(14) + 0xa679438eu32;
     c = c << 17i32 | c >> 32i32 - 17i32;
-    c +=  d;
-    b += (((a ^ c & (d ^ a)))) + *in_0.offset(15) + 0x49b40821u32;
+    c += d;
+    b += (a ^ c & (d ^ a)) + *in_0.offset(15) + 0x49b40821u32;
     b = b << 22i32 | b >> 32i32 - 22i32;
-    b +=  c;
-    a += (((c ^ d & (b ^ c)))) + *in_0.offset(1) + 0xf61e2562u32;
+    b += c;
+    a += (c ^ d & (b ^ c)) + *in_0.offset(1) + 0xf61e2562u32;
     a = a << 5i32 | a >> 32i32 - 5i32;
-    a +=  b;
-    d += (((b ^ c & (a ^ b)))) + *in_0.offset(6) + 0xc040b340u32;
+    a += b;
+    d += (b ^ c & (a ^ b)) + *in_0.offset(6) + 0xc040b340u32;
     d = d << 9i32 | d >> 32i32 - 9i32;
-    d +=  a;
-    c += (((a ^ b & (d ^ a)))) + *in_0.offset(11) + 0x265e5a51u32;
+    d += a;
+    c += (a ^ b & (d ^ a)) + *in_0.offset(11) + 0x265e5a51u32;
     c = c << 14i32 | c >> 32i32 - 14i32;
-    c +=  d;
-    b += (((d ^ a & (c ^ d)))) + *in_0.offset(0) + 0xe9b6c7aau32;
+    c += d;
+    b += (d ^ a & (c ^ d)) + *in_0.offset(0) + 0xe9b6c7aau32;
     b = b << 20i32 | b >> 32i32 - 20i32;
-    b +=  c;
-    a += (((c ^ d & (b ^ c)))) + *in_0.offset(5) + 0xd62f105du32;
+    b += c;
+    a += (c ^ d & (b ^ c)) + *in_0.offset(5) + 0xd62f105du32;
     a = a << 5i32 | a >> 32i32 - 5i32;
-    a +=  b;
-    d += (((b ^ c & (a ^ b)))) + *in_0.offset(10) + 0x2441453u32;
+    a += b;
+    d += (b ^ c & (a ^ b)) + *in_0.offset(10) + 0x2441453u32;
     d = d << 9i32 | d >> 32i32 - 9i32;
-    d +=  a;
-    c += (((a ^ b & (d ^ a)))) + *in_0.offset(15) + 0xd8a1e681u32;
+    d += a;
+    c += (a ^ b & (d ^ a)) + *in_0.offset(15) + 0xd8a1e681u32;
     c = c << 14i32 | c >> 32i32 - 14i32;
-    c +=  d;
-    b += (((d ^ a & (c ^ d)))) + *in_0.offset(4) + 0xe7d3fbc8u32;
+    c += d;
+    b += (d ^ a & (c ^ d)) + *in_0.offset(4) + 0xe7d3fbc8u32;
     b = b << 20i32 | b >> 32i32 - 20i32;
-    b +=  c;
-    a += (((c ^ d & (b ^ c)))) + *in_0.offset(9) + 0x21e1cde6u32;
+    b += c;
+    a += (c ^ d & (b ^ c)) + *in_0.offset(9) + 0x21e1cde6u32;
     a = a << 5i32 | a >> 32i32 - 5i32;
-    a +=  b;
-    d += (((b ^ c & (a ^ b)))) + *in_0.offset(14) + 0xc33707d6u32;
+    a += b;
+    d += (b ^ c & (a ^ b)) + *in_0.offset(14) + 0xc33707d6u32;
     d = d << 9i32 | d >> 32i32 - 9i32;
-    d +=  a;
-    c += (((a ^ b & (d ^ a)))) + *in_0.offset(3) + 0xf4d50d87u32;
+    d += a;
+    c += (a ^ b & (d ^ a)) + *in_0.offset(3) + 0xf4d50d87u32;
     c = c << 14i32 | c >> 32i32 - 14i32;
-    c +=  d;
-    b += (((d ^ a & (c ^ d)))) + *in_0.offset(8) + 0x455a14edu32;
+    c += d;
+    b += (d ^ a & (c ^ d)) + *in_0.offset(8) + 0x455a14edu32;
     b = b << 20i32 | b >> 32i32 - 20i32;
-    b +=  c;
-    a += (((c ^ d & (b ^ c)))) + *in_0.offset(13) + 0xa9e3e905u32;
+    b += c;
+    a += (c ^ d & (b ^ c)) + *in_0.offset(13) + 0xa9e3e905u32;
     a = a << 5i32 | a >> 32i32 - 5i32;
-    a +=  b;
-    d += (((b ^ c & (a ^ b)))) + *in_0.offset(2) + 0xfcefa3f8u32;
+    a += b;
+    d += (b ^ c & (a ^ b)) + *in_0.offset(2) + 0xfcefa3f8u32;
     d = d << 9i32 | d >> 32i32 - 9i32;
-    d +=  a;
-    c += (((a ^ b & (d ^ a)))) + *in_0.offset(7) + 0x676f02d9u32;
+    d += a;
+    c += (a ^ b & (d ^ a)) + *in_0.offset(7) + 0x676f02d9u32;
     c = c << 14i32 | c >> 32i32 - 14i32;
-    c +=  d;
-    b += (((d ^ a & (c ^ d)))) + *in_0.offset(12) + 0x8d2a4c8au32;
+    c += d;
+    b += (d ^ a & (c ^ d)) + *in_0.offset(12) + 0x8d2a4c8au32;
     b = b << 20i32 | b >> 32i32 - 20i32;
-    b +=  c;
-    a += (((b ^ c ^ d))) + *in_0.offset(5) + 0xfffa3942u32;
+    b += c;
+    a += (b ^ c ^ d) + *in_0.offset(5) + 0xfffa3942u32;
     a = a << 4i32 | a >> 32i32 - 4i32;
-    a +=  b;
-    d += (((a ^ b ^ c))) + *in_0.offset(8) + 0x8771f681u32;
+    a += b;
+    d += (a ^ b ^ c) + *in_0.offset(8) + 0x8771f681u32;
     d = d << 11i32 | d >> 32i32 - 11i32;
-    d +=  a;
-    c += (((d ^ a ^ b))) + *in_0.offset(11) + 0x6d9d6122u32;
+    d += a;
+    c += (d ^ a ^ b) + *in_0.offset(11) + 0x6d9d6122u32;
     c = c << 16i32 | c >> 32i32 - 16i32;
-    c +=  d;
-    b += (((c ^ d ^ a))) + *in_0.offset(14) + 0xfde5380cu32;
+    c += d;
+    b += (c ^ d ^ a) + *in_0.offset(14) + 0xfde5380cu32;
     b = b << 23i32 | b >> 32i32 - 23i32;
-    b +=  c;
-    a += (((b ^ c ^ d))) + *in_0.offset(1) + 0xa4beea44u32;
+    b += c;
+    a += (b ^ c ^ d) + *in_0.offset(1) + 0xa4beea44u32;
     a = a << 4i32 | a >> 32i32 - 4i32;
-    a +=  b;
-    d += (((a ^ b ^ c))) + *in_0.offset(4) + 0x4bdecfa9u32;
+    a += b;
+    d += (a ^ b ^ c) + *in_0.offset(4) + 0x4bdecfa9u32;
     d = d << 11i32 | d >> 32i32 - 11i32;
-    d +=  a;
-    c += (((d ^ a ^ b))) + *in_0.offset(7) + 0xf6bb4b60u32;
+    d += a;
+    c += (d ^ a ^ b) + *in_0.offset(7) + 0xf6bb4b60u32;
     c = c << 16i32 | c >> 32i32 - 16i32;
-    c +=  d;
-    b += (((c ^ d ^ a))) + *in_0.offset(10) + 0xbebfbc70u32;
+    c += d;
+    b += (c ^ d ^ a) + *in_0.offset(10) + 0xbebfbc70u32;
     b = b << 23i32 | b >> 32i32 - 23i32;
-    b +=  c;
-    a += (((b ^ c ^ d))) + *in_0.offset(13) + 0x289b7ec6u32;
+    b += c;
+    a += (b ^ c ^ d) + *in_0.offset(13) + 0x289b7ec6u32;
     a = a << 4i32 | a >> 32i32 - 4i32;
-    a +=  b;
-    d += (((a ^ b ^ c))) + *in_0.offset(0) + 0xeaa127fau32;
+    a += b;
+    d += (a ^ b ^ c) + *in_0.offset(0) + 0xeaa127fau32;
     d = d << 11i32 | d >> 32i32 - 11i32;
-    d +=  a;
-    c += (((d ^ a ^ b))) + *in_0.offset(3) + 0xd4ef3085u32;
+    d += a;
+    c += (d ^ a ^ b) + *in_0.offset(3) + 0xd4ef3085u32;
     c = c << 16i32 | c >> 32i32 - 16i32;
-    c +=  d;
-    b += (((c ^ d ^ a))) + *in_0.offset(6) + 0x4881d05u32;
+    c += d;
+    b += (c ^ d ^ a) + *in_0.offset(6) + 0x4881d05u32;
     b = b << 23i32 | b >> 32i32 - 23i32;
-    b +=  c;
-    a += (((b ^ c ^ d))) + *in_0.offset(9) + 0xd9d4d039u32;
+    b += c;
+    a += (b ^ c ^ d) + *in_0.offset(9) + 0xd9d4d039u32;
     a = a << 4i32 | a >> 32i32 - 4i32;
-    a +=  b;
-    d += (((a ^ b ^ c))) + *in_0.offset(12) + 0xe6db99e5u32;
+    a += b;
+    d += (a ^ b ^ c) + *in_0.offset(12) + 0xe6db99e5u32;
     d = d << 11i32 | d >> 32i32 - 11i32;
-    d +=  a;
-    c += (((d ^ a ^ b))) + *in_0.offset(15) + 0x1fa27cf8u32;
+    d += a;
+    c += (d ^ a ^ b) + *in_0.offset(15) + 0x1fa27cf8u32;
     c = c << 16i32 | c >> 32i32 - 16i32;
-    c +=  d;
-    b += (((c ^ d ^ a))) + *in_0.offset(2) + 0xc4ac5665u32;
+    c += d;
+    b += (c ^ d ^ a) + *in_0.offset(2) + 0xc4ac5665u32;
     b = b << 23i32 | b >> 32i32 - 23i32;
-    b +=  c;
-    a += (((c ^ (b | !d)))) + *in_0.offset(0) + 0xf4292244u32;
+    b += c;
+    a += (c ^ (b | !d)) + *in_0.offset(0) + 0xf4292244u32;
     a = a << 6i32 | a >> 32i32 - 6i32;
-    a +=  b;
-    d += (((b ^ (a | !c)))) + *in_0.offset(7) + 0x432aff97u32;
+    a += b;
+    d += (b ^ (a | !c)) + *in_0.offset(7) + 0x432aff97u32;
     d = d << 10i32 | d >> 32i32 - 10i32;
-    d +=  a;
-    c += (((a ^ (d | !b)))) + *in_0.offset(14) + 0xab9423a7u32;
+    d += a;
+    c += (a ^ (d | !b)) + *in_0.offset(14) + 0xab9423a7u32;
     c = c << 15i32 | c >> 32i32 - 15i32;
-    c +=  d;
-    b += (((d ^ (c | !a)))) + *in_0.offset(5) + 0xfc93a039u32;
+    c += d;
+    b += (d ^ (c | !a)) + *in_0.offset(5) + 0xfc93a039u32;
     b = b << 21i32 | b >> 32i32 - 21i32;
-    b +=  c;
-    a += (((c ^ (b | !d)))) + *in_0.offset(12) + 0x655b59c3u32;
+    b += c;
+    a += (c ^ (b | !d)) + *in_0.offset(12) + 0x655b59c3u32;
     a = a << 6i32 | a >> 32i32 - 6i32;
-    a +=  b;
-    d += (((b ^ (a | !c)))) + *in_0.offset(3) + 0x8f0ccc92u32;
+    a += b;
+    d += (b ^ (a | !c)) + *in_0.offset(3) + 0x8f0ccc92u32;
     d = d << 10i32 | d >> 32i32 - 10i32;
-    d +=  a;
-    c += (((a ^ (d | !b)))) + *in_0.offset(10) + 0xffeff47du32;
+    d += a;
+    c += (a ^ (d | !b)) + *in_0.offset(10) + 0xffeff47du32;
     c = c << 15i32 | c >> 32i32 - 15i32;
-    c +=  d;
-    b += (((d ^ (c | !a)))) + *in_0.offset(1) + 0x85845dd1u32;
+    c += d;
+    b += (d ^ (c | !a)) + *in_0.offset(1) + 0x85845dd1u32;
     b = b << 21i32 | b >> 32i32 - 21i32;
-    b +=  c;
-    a += (((c ^ (b | !d)))) + *in_0.offset(8) + 0x6fa87e4fu32;
+    b += c;
+    a += (c ^ (b | !d)) + *in_0.offset(8) + 0x6fa87e4fu32;
     a = a << 6i32 | a >> 32i32 - 6i32;
-    a +=  b;
-    d += (((b ^ (a | !c)))) + *in_0.offset(15) + 0xfe2ce6e0u32;
+    a += b;
+    d += (b ^ (a | !c)) + *in_0.offset(15) + 0xfe2ce6e0u32;
     d = d << 10i32 | d >> 32i32 - 10i32;
-    d +=  a;
-    c += (((a ^ (d | !b)))) + *in_0.offset(6) + 0xa3014314u32;
+    d += a;
+    c += (a ^ (d | !b)) + *in_0.offset(6) + 0xa3014314u32;
     c = c << 15i32 | c >> 32i32 - 15i32;
-    c +=  d;
-    b += (((d ^ (c | !a)))) + *in_0.offset(13) + 0x4e0811a1u32;
+    c += d;
+    b += (d ^ (c | !a)) + *in_0.offset(13) + 0x4e0811a1u32;
     b = b << 21i32 | b >> 32i32 - 21i32;
-    b +=  c;
-    a += (((c ^ (b | !d)))) + *in_0.offset(4) + 0xf7537e82u32;
+    b += c;
+    a += (c ^ (b | !d)) + *in_0.offset(4) + 0xf7537e82u32;
     a = a << 6i32 | a >> 32i32 - 6i32;
-    a +=  b;
-    d += (((b ^ (a | !c)))) + *in_0.offset(11) + 0xbd3af235u32;
+    a += b;
+    d += (b ^ (a | !c)) + *in_0.offset(11) + 0xbd3af235u32;
     d = d << 10i32 | d >> 32i32 - 10i32;
-    d +=  a;
-    c += (((a ^ (d | !b)))) + *in_0.offset(2) + 0x2ad7d2bbu32;
+    d += a;
+    c += (a ^ (d | !b)) + *in_0.offset(2) + 0x2ad7d2bbu32;
     c = c << 15i32 | c >> 32i32 - 15i32;
-    c +=  d;
-    b += (((d ^ (c | !a)))) + *in_0.offset(9) + 0xeb86d391u32;
+    c += d;
+    b += (d ^ (c | !a)) + *in_0.offset(9) + 0xeb86d391u32;
     b = b << 21i32 | b >> 32i32 - 21i32;
-    b +=  c;
+    b += c;
     let ref mut fresh1 = *buf.offset(0);
     *fresh1 = *fresh1 + a;
     let ref mut fresh2 = *buf.offset(1);

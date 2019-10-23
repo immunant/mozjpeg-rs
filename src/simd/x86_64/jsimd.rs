@@ -1,4 +1,5 @@
-use libc::{c_uint, c_ulong, c_float, c_char, c_void, c_int};extern "C" {
+use libc::{c_char, c_float, c_int, c_uint, c_ulong, c_void};
+extern "C" {
     #[no_mangle]
     pub fn jpeg_simd_cpu_support() -> c_uint;
 
@@ -901,144 +902,39 @@ use libc::{c_uint, c_ulong, c_float, c_char, c_void, c_int};extern "C" {
     ) -> c_int;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-use libc;use crate::stdlib::{getenv, strcmp};pub use crate::jconfigint_h::SIZEOF_SIZE_T;pub use crate::jpegint_h::{inverse_DCT_method_ptr, JBUF_CRANK_DEST,
-                           JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS,
-                           JBUF_SAVE_SOURCE, J_BUF_MODE};pub use crate::jdct_h::{DCTELEM, FLOAT_MULT_TYPE, IFAST_MULT_TYPE,
-                        IFAST_SCALE_BITS, ISLOW_MULT_TYPE};pub use crate::jpeglib_h::{j_compress_ptr, j_decompress_ptr,
-                           jpeg_component_info, jpeg_compress_struct,
-                           jpeg_decompress_struct, C2RustUnnamed_2, JCOEFPTR,
-                           JSAMPARRAY, JSAMPIMAGE, JSAMPROW, j_common_ptr,
-                           jpeg_c_coef_controller, jpeg_c_main_controller,
-                           jpeg_c_prep_controller, jpeg_color_converter,
-                           jpeg_color_deconverter, jpeg_color_quantizer,
-                           jpeg_common_struct, jpeg_comp_master,
-                           jpeg_d_coef_controller, jpeg_d_main_controller,
-                           jpeg_d_post_controller, jpeg_decomp_master,
-                           jpeg_destination_mgr, jpeg_downsampler,
-                           jpeg_entropy_decoder, jpeg_entropy_encoder,
-                           jpeg_error_mgr, jpeg_forward_dct,
-                           jpeg_input_controller, jpeg_inverse_dct,
-                           jpeg_marker_parser_method, jpeg_marker_reader,
-                           jpeg_marker_struct, jpeg_marker_writer,
-                           jpeg_memory_mgr, jpeg_progress_mgr,
-                           jpeg_saved_marker_ptr, jpeg_scan_info,
-                           jpeg_source_mgr, jpeg_upsampler,
-                           jvirt_barray_control, jvirt_barray_ptr,
-                           jvirt_sarray_control, jvirt_sarray_ptr, JCS_YCbCr,
-                           DCTSIZE, JBLOCK, JBLOCKARRAY, JBLOCKROW, JCS_CMYK,
-                           JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR,
-                           JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB,
-                           JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR,
-                           JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565,
-                           JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST,
-                           JDCT_ISLOW, JDITHER_FS, JDITHER_NONE,
-                           JDITHER_ORDERED, JHUFF_TBL, JQUANT_TBL,
-                           J_COLOR_SPACE, J_DCT_METHOD, J_DITHER_MODE};pub use crate::jmorecfg_h::{JCOEF, JDIMENSION, JOCTET, boolean, JSAMPLE,
-                            RGB_PIXELSIZE, UINT16, UINT8};pub use crate::stddef_h::{size_t, NULL};pub use crate::jconfig_h::BITS_IN_JSAMPLE;pub use crate::src::jchuff::c_derived_tbl;
+pub use crate::jconfig_h::BITS_IN_JSAMPLE;
+pub use crate::jconfigint_h::SIZEOF_SIZE_T;
+pub use crate::jdct_h::{
+    DCTELEM, FLOAT_MULT_TYPE, IFAST_MULT_TYPE, IFAST_SCALE_BITS, ISLOW_MULT_TYPE,
+};
+pub use crate::jmorecfg_h::{
+    boolean, JCOEF, JDIMENSION, JOCTET, JSAMPLE, RGB_PIXELSIZE, UINT16, UINT8,
+};
+pub use crate::jpegint_h::{
+    inverse_DCT_method_ptr, JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS,
+    JBUF_SAVE_SOURCE, J_BUF_MODE,
+};
+pub use crate::jpeglib_h::{
+    j_common_ptr, j_compress_ptr, j_decompress_ptr, jpeg_c_coef_controller, jpeg_c_main_controller,
+    jpeg_c_prep_controller, jpeg_color_converter, jpeg_color_deconverter, jpeg_color_quantizer,
+    jpeg_common_struct, jpeg_comp_master, jpeg_component_info, jpeg_compress_struct,
+    jpeg_d_coef_controller, jpeg_d_main_controller, jpeg_d_post_controller, jpeg_decomp_master,
+    jpeg_decompress_struct, jpeg_destination_mgr, jpeg_downsampler, jpeg_entropy_decoder,
+    jpeg_entropy_encoder, jpeg_error_mgr, jpeg_forward_dct, jpeg_input_controller,
+    jpeg_inverse_dct, jpeg_marker_parser_method, jpeg_marker_reader, jpeg_marker_struct,
+    jpeg_marker_writer, jpeg_memory_mgr, jpeg_progress_mgr, jpeg_saved_marker_ptr, jpeg_scan_info,
+    jpeg_source_mgr, jpeg_upsampler, jvirt_barray_control, jvirt_barray_ptr, jvirt_sarray_control,
+    jvirt_sarray_ptr, C2RustUnnamed_2, JCS_YCbCr, DCTSIZE, JBLOCK, JBLOCKARRAY, JBLOCKROW,
+    JCOEFPTR, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX,
+    JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB,
+    JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST, JDCT_ISLOW, JDITHER_FS,
+    JDITHER_NONE, JDITHER_ORDERED, JHUFF_TBL, JQUANT_TBL, JSAMPARRAY, JSAMPIMAGE, JSAMPROW,
+    J_COLOR_SPACE, J_DCT_METHOD, J_DITHER_MODE,
+};
+pub use crate::src::jchuff::c_derived_tbl;
+pub use crate::stddef_h::{size_t, NULL};
+use crate::stdlib::{getenv, strcmp};
+use libc;
 // =============== BEGIN jsimd_h ================
 
 /*
@@ -1102,27 +998,19 @@ unsafe extern "C" fn init_simd() {
     simd_support = jpeg_simd_cpu_support();
     /* Force different settings through environment variables */
     env = getenv(b"JSIMD_FORCESSE2\x00".as_ptr() as *const c_char);
-    if !env.is_null()
-        && strcmp(env,  b"1\x00".as_ptr() as *const c_char) == 0i32
-    {
+    if !env.is_null() && strcmp(env, b"1\x00".as_ptr() as *const c_char) == 0i32 {
         simd_support &= JSIMD_SSE2 as c_uint
     }
     env = getenv(b"JSIMD_FORCEAVX2\x00".as_ptr() as *const c_char);
-    if !env.is_null()
-        && strcmp(env,  b"1\x00".as_ptr() as *const c_char) == 0i32
-    {
+    if !env.is_null() && strcmp(env, b"1\x00".as_ptr() as *const c_char) == 0i32 {
         simd_support &= JSIMD_AVX2 as c_uint
     }
     env = getenv(b"JSIMD_FORCENONE\x00".as_ptr() as *const c_char);
-    if !env.is_null()
-        && strcmp(env,  b"1\x00".as_ptr() as *const c_char) == 0i32
-    {
+    if !env.is_null() && strcmp(env, b"1\x00".as_ptr() as *const c_char) == 0i32 {
         simd_support = 0u32
     }
     env = getenv(b"JSIMD_NOHUFFENC\x00".as_ptr() as *const c_char);
-    if !env.is_null()
-        && strcmp(env,  b"1\x00".as_ptr() as *const c_char) == 0i32
-    {
+    if !env.is_null() && strcmp(env, b"1\x00".as_ptr() as *const c_char) == 0i32 {
         simd_huffman = 0u32
     };
 }
@@ -1146,26 +1034,20 @@ pub unsafe extern "C" fn jsimd_can_rgb_ycc() -> c_int {
     if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
-        != 4u64
-    {
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong != 4u64 {
         return 0i32;
     }
     if RGB_PIXELSIZE != 3i32 && RGB_PIXELSIZE != 4i32 {
         return 0i32;
     }
     if simd_support & JSIMD_AVX2 as c_uint != 0
-        && jconst_rgb_ycc_convert_avx2.as_ptr()
-            as size_t
-            & ((1i32 << 5i32) - 1i32) as c_ulong
+        && jconst_rgb_ycc_convert_avx2.as_ptr() as size_t & ((1i32 << 5i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
     }
     if simd_support & JSIMD_SSE2 as c_uint != 0
-        && jconst_rgb_ycc_convert_sse2.as_ptr()
-            as size_t
-            & ((1i32 << 4i32) - 1i32) as c_ulong
+        && jconst_rgb_ycc_convert_sse2.as_ptr() as size_t & ((1i32 << 4i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
@@ -1180,26 +1062,20 @@ pub unsafe extern "C" fn jsimd_can_rgb_gray() -> c_int {
     if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
-        != 4u64
-    {
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong != 4u64 {
         return 0i32;
     }
     if RGB_PIXELSIZE != 3i32 && RGB_PIXELSIZE != 4i32 {
         return 0i32;
     }
     if simd_support & JSIMD_AVX2 as c_uint != 0
-        && jconst_rgb_gray_convert_avx2.as_ptr()
-            as size_t
-            & ((1i32 << 5i32) - 1i32) as c_ulong
+        && jconst_rgb_gray_convert_avx2.as_ptr() as size_t & ((1i32 << 5i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
     }
     if simd_support & JSIMD_SSE2 as c_uint != 0
-        && jconst_rgb_gray_convert_sse2.as_ptr()
-            as size_t
-            & ((1i32 << 4i32) - 1i32) as c_ulong
+        && jconst_rgb_gray_convert_sse2.as_ptr() as size_t & ((1i32 << 4i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
@@ -1214,26 +1090,20 @@ pub unsafe extern "C" fn jsimd_can_ycc_rgb() -> c_int {
     if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
-        != 4u64
-    {
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong != 4u64 {
         return 0i32;
     }
     if RGB_PIXELSIZE != 3i32 && RGB_PIXELSIZE != 4i32 {
         return 0i32;
     }
     if simd_support & JSIMD_AVX2 as c_uint != 0
-        && jconst_ycc_rgb_convert_avx2.as_ptr()
-            as size_t
-            & ((1i32 << 5i32) - 1i32) as c_ulong
+        && jconst_ycc_rgb_convert_avx2.as_ptr() as size_t & ((1i32 << 5i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
     }
     if simd_support & JSIMD_SSE2 as c_uint != 0
-        && jconst_ycc_rgb_convert_sse2.as_ptr()
-            as size_t
-            & ((1i32 << 4i32) - 1i32) as c_ulong
+        && jconst_ycc_rgb_convert_sse2.as_ptr() as size_t & ((1i32 << 4i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
@@ -1272,7 +1142,7 @@ pub unsafe extern "C" fn jsimd_rgb_ycc_convert(
             _: c_int,
         ) -> (),
     > = None;
-    match  (*cinfo).in_color_space {
+    match (*cinfo).in_color_space {
         6 => {
             avx2fct = Some(
                 jsimd_extrgb_ycc_convert_avx2
@@ -1473,7 +1343,7 @@ pub unsafe extern "C" fn jsimd_rgb_gray_convert(
             _: c_int,
         ) -> (),
     > = None;
-    match  (*cinfo).in_color_space {
+    match (*cinfo).in_color_space {
         6 => {
             avx2fct = Some(
                 jsimd_extrgb_gray_convert_avx2
@@ -1674,7 +1544,7 @@ pub unsafe extern "C" fn jsimd_ycc_rgb_convert(
             _: c_int,
         ) -> (),
     > = None;
-    match  (*cinfo).out_color_space {
+    match (*cinfo).out_color_space {
         6 => {
             avx2fct = Some(
                 jsimd_ycc_extrgb_convert_avx2
@@ -1866,9 +1736,7 @@ pub unsafe extern "C" fn jsimd_can_h2v2_downsample() -> c_int {
     if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
-        != 4u64
-    {
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong != 4u64 {
         return 0i32;
     }
     if simd_support & JSIMD_AVX2 as c_uint != 0 {
@@ -1887,9 +1755,7 @@ pub unsafe extern "C" fn jsimd_can_h2v1_downsample() -> c_int {
     if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
-        != 4u64
-    {
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong != 4u64 {
         return 0i32;
     }
     if simd_support & JSIMD_AVX2 as c_uint != 0 {
@@ -1964,9 +1830,7 @@ pub unsafe extern "C" fn jsimd_can_h2v2_upsample() -> c_int {
     if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
-        != 4u64
-    {
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong != 4u64 {
         return 0i32;
     }
     if simd_support & JSIMD_AVX2 as c_uint != 0 {
@@ -1985,9 +1849,7 @@ pub unsafe extern "C" fn jsimd_can_h2v1_upsample() -> c_int {
     if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
-        != 4u64
-    {
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong != 4u64 {
         return 0i32;
     }
     if simd_support & JSIMD_AVX2 as c_uint != 0 {
@@ -2054,23 +1916,17 @@ pub unsafe extern "C" fn jsimd_can_h2v2_fancy_upsample() -> c_int {
     if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
-        != 4u64
-    {
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong != 4u64 {
         return 0i32;
     }
     if simd_support & JSIMD_AVX2 as c_uint != 0
-        && jconst_fancy_upsample_avx2.as_ptr()
-            as size_t
-            & ((1i32 << 5i32) - 1i32) as c_ulong
+        && jconst_fancy_upsample_avx2.as_ptr() as size_t & ((1i32 << 5i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
     }
     if simd_support & JSIMD_SSE2 as c_uint != 0
-        && jconst_fancy_upsample_sse2.as_ptr()
-            as size_t
-            & ((1i32 << 4i32) - 1i32) as c_ulong
+        && jconst_fancy_upsample_sse2.as_ptr() as size_t & ((1i32 << 4i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
@@ -2085,23 +1941,17 @@ pub unsafe extern "C" fn jsimd_can_h2v1_fancy_upsample() -> c_int {
     if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
-        != 4u64
-    {
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong != 4u64 {
         return 0i32;
     }
     if simd_support & JSIMD_AVX2 as c_uint != 0
-        && jconst_fancy_upsample_avx2.as_ptr()
-            as size_t
-            & ((1i32 << 5i32) - 1i32) as c_ulong
+        && jconst_fancy_upsample_avx2.as_ptr() as size_t & ((1i32 << 5i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
     }
     if simd_support & JSIMD_SSE2 as c_uint != 0
-        && jconst_fancy_upsample_sse2.as_ptr()
-            as size_t
-            & ((1i32 << 4i32) - 1i32) as c_ulong
+        && jconst_fancy_upsample_sse2.as_ptr() as size_t & ((1i32 << 4i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
@@ -2164,23 +2014,17 @@ pub unsafe extern "C" fn jsimd_can_h2v2_merged_upsample() -> c_int {
     if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
-        != 4u64
-    {
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong != 4u64 {
         return 0i32;
     }
     if simd_support & JSIMD_AVX2 as c_uint != 0
-        && jconst_merged_upsample_avx2.as_ptr()
-            as size_t
-            & ((1i32 << 5i32) - 1i32) as c_ulong
+        && jconst_merged_upsample_avx2.as_ptr() as size_t & ((1i32 << 5i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
     }
     if simd_support & JSIMD_SSE2 as c_uint != 0
-        && jconst_merged_upsample_sse2.as_ptr()
-            as size_t
-            & ((1i32 << 4i32) - 1i32) as c_ulong
+        && jconst_merged_upsample_sse2.as_ptr() as size_t & ((1i32 << 4i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
@@ -2195,23 +2039,17 @@ pub unsafe extern "C" fn jsimd_can_h2v1_merged_upsample() -> c_int {
     if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
-        != 4u64
-    {
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong != 4u64 {
         return 0i32;
     }
     if simd_support & JSIMD_AVX2 as c_uint != 0
-        && jconst_merged_upsample_avx2.as_ptr()
-            as size_t
-            & ((1i32 << 5i32) - 1i32) as c_ulong
+        && jconst_merged_upsample_avx2.as_ptr() as size_t & ((1i32 << 5i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
     }
     if simd_support & JSIMD_SSE2 as c_uint != 0
-        && jconst_merged_upsample_sse2.as_ptr()
-            as size_t
-            & ((1i32 << 4i32) - 1i32) as c_ulong
+        && jconst_merged_upsample_sse2.as_ptr() as size_t & ((1i32 << 4i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
@@ -2227,22 +2065,12 @@ pub unsafe extern "C" fn jsimd_h2v2_merged_upsample(
     mut output_buf: JSAMPARRAY,
 ) {
     let mut avx2fct: Option<
-        unsafe extern "C" fn(
-            _: JDIMENSION,
-            _: JSAMPIMAGE,
-            _: JDIMENSION,
-            _: JSAMPARRAY,
-        ) -> (),
+        unsafe extern "C" fn(_: JDIMENSION, _: JSAMPIMAGE, _: JDIMENSION, _: JSAMPARRAY) -> (),
     > = None;
     let mut sse2fct: Option<
-        unsafe extern "C" fn(
-            _: JDIMENSION,
-            _: JSAMPIMAGE,
-            _: JDIMENSION,
-            _: JSAMPARRAY,
-        ) -> (),
+        unsafe extern "C" fn(_: JDIMENSION, _: JSAMPIMAGE, _: JDIMENSION, _: JSAMPARRAY) -> (),
     > = None;
-    match  (*cinfo).out_color_space {
+    match (*cinfo).out_color_space {
         6 => {
             avx2fct = Some(
                 jsimd_h2v2_extrgb_merged_upsample_avx2
@@ -2409,22 +2237,12 @@ pub unsafe extern "C" fn jsimd_h2v1_merged_upsample(
     mut output_buf: JSAMPARRAY,
 ) {
     let mut avx2fct: Option<
-        unsafe extern "C" fn(
-            _: JDIMENSION,
-            _: JSAMPIMAGE,
-            _: JDIMENSION,
-            _: JSAMPARRAY,
-        ) -> (),
+        unsafe extern "C" fn(_: JDIMENSION, _: JSAMPIMAGE, _: JDIMENSION, _: JSAMPARRAY) -> (),
     > = None;
     let mut sse2fct: Option<
-        unsafe extern "C" fn(
-            _: JDIMENSION,
-            _: JSAMPIMAGE,
-            _: JDIMENSION,
-            _: JSAMPARRAY,
-        ) -> (),
+        unsafe extern "C" fn(_: JDIMENSION, _: JSAMPIMAGE, _: JDIMENSION, _: JSAMPARRAY) -> (),
     > = None;
-    match  (*cinfo).out_color_space {
+    match (*cinfo).out_color_space {
         6 => {
             avx2fct = Some(
                 jsimd_h2v1_extrgb_merged_upsample_avx2
@@ -2603,9 +2421,7 @@ pub unsafe extern "C" fn jsimd_can_convsamp() -> c_int {
     if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
-        != 4u64
-    {
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong != 4u64 {
         return 0i32;
     }
     if ::std::mem::size_of::<DCTELEM>() as c_ulong != 2u64 {
@@ -2630,9 +2446,7 @@ pub unsafe extern "C" fn jsimd_can_convsamp_float() -> c_int {
     if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
-        != 4u64
-    {
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong != 4u64 {
         return 0i32;
     }
     if ::std::mem::size_of::<c_float>() as c_ulong != 4u64 {
@@ -2677,18 +2491,12 @@ pub unsafe extern "C" fn jsimd_can_fdct_islow() -> c_int {
         return 0i32;
     }
     if simd_support & JSIMD_AVX2 as c_uint != 0
-        && jconst_fdct_islow_avx2.as_ptr()
-            as size_t
-            & ((1i32 << 5i32) - 1i32) as c_ulong
-            == 0u64
+        && jconst_fdct_islow_avx2.as_ptr() as size_t & ((1i32 << 5i32) - 1i32) as c_ulong == 0u64
     {
         return 1i32;
     }
     if simd_support & JSIMD_SSE2 as c_uint != 0
-        && jconst_fdct_islow_sse2.as_ptr()
-            as size_t
-            & ((1i32 << 4i32) - 1i32) as c_ulong
-            == 0u64
+        && jconst_fdct_islow_sse2.as_ptr() as size_t & ((1i32 << 4i32) - 1i32) as c_ulong == 0u64
     {
         return 1i32;
     }
@@ -2706,10 +2514,7 @@ pub unsafe extern "C" fn jsimd_can_fdct_ifast() -> c_int {
         return 0i32;
     }
     if simd_support & JSIMD_SSE2 as c_uint != 0
-        && jconst_fdct_ifast_sse2.as_ptr()
-            as size_t
-            & ((1i32 << 4i32) - 1i32) as c_ulong
-            == 0u64
+        && jconst_fdct_ifast_sse2.as_ptr() as size_t & ((1i32 << 4i32) - 1i32) as c_ulong == 0u64
     {
         return 1i32;
     }
@@ -2727,10 +2532,7 @@ pub unsafe extern "C" fn jsimd_can_fdct_float() -> c_int {
         return 0i32;
     }
     if simd_support & JSIMD_SSE as c_uint != 0
-        && jconst_fdct_float_sse.as_ptr()
-            as size_t
-            & ((1i32 << 4i32) - 1i32) as c_ulong
-            == 0u64
+        && jconst_fdct_float_sse.as_ptr() as size_t & ((1i32 << 4i32) - 1i32) as c_ulong == 0u64
     {
         return 1i32;
     }
@@ -2832,20 +2634,14 @@ pub unsafe extern "C" fn jsimd_can_idct_2x2() -> c_int {
     if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
-        != 4u64
-    {
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong != 4u64 {
         return 0i32;
     }
-    if ::std::mem::size_of::<ISLOW_MULT_TYPE>() as c_ulong
-        != 2u64
-    {
+    if ::std::mem::size_of::<ISLOW_MULT_TYPE>() as c_ulong != 2u64 {
         return 0i32;
     }
     if simd_support & JSIMD_SSE2 as c_uint != 0
-        && jconst_idct_red_sse2.as_ptr() as size_t
-            & ((1i32 << 4i32) - 1i32) as c_ulong
-            == 0u64
+        && jconst_idct_red_sse2.as_ptr() as size_t & ((1i32 << 4i32) - 1i32) as c_ulong == 0u64
     {
         return 1i32;
     }
@@ -2865,20 +2661,14 @@ pub unsafe extern "C" fn jsimd_can_idct_4x4() -> c_int {
     if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
-        != 4u64
-    {
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong != 4u64 {
         return 0i32;
     }
-    if ::std::mem::size_of::<ISLOW_MULT_TYPE>() as c_ulong
-        != 2u64
-    {
+    if ::std::mem::size_of::<ISLOW_MULT_TYPE>() as c_ulong != 2u64 {
         return 0i32;
     }
     if simd_support & JSIMD_SSE2 as c_uint != 0
-        && jconst_idct_red_sse2.as_ptr() as size_t
-            & ((1i32 << 4i32) - 1i32) as c_ulong
-            == 0u64
+        && jconst_idct_red_sse2.as_ptr() as size_t & ((1i32 << 4i32) - 1i32) as c_ulong == 0u64
     {
         return 1i32;
     }
@@ -2893,12 +2683,7 @@ pub unsafe extern "C" fn jsimd_idct_2x2(
     mut output_buf: JSAMPARRAY,
     mut output_col: JDIMENSION,
 ) {
-    jsimd_idct_2x2_sse2(
-        (*compptr).dct_table,
-        coef_block,
-        output_buf,
-        output_col,
-    );
+    jsimd_idct_2x2_sse2((*compptr).dct_table, coef_block, output_buf, output_col);
 }
 #[no_mangle]
 
@@ -2909,12 +2694,7 @@ pub unsafe extern "C" fn jsimd_idct_4x4(
     mut output_buf: JSAMPARRAY,
     mut output_col: JDIMENSION,
 ) {
-    jsimd_idct_4x4_sse2(
-        (*compptr).dct_table,
-        coef_block,
-        output_buf,
-        output_col,
-    );
+    jsimd_idct_4x4_sse2((*compptr).dct_table, coef_block, output_buf, output_col);
 }
 #[no_mangle]
 
@@ -2930,29 +2710,19 @@ pub unsafe extern "C" fn jsimd_can_idct_islow() -> c_int {
     if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
-        != 4u64
-    {
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong != 4u64 {
         return 0i32;
     }
-    if ::std::mem::size_of::<ISLOW_MULT_TYPE>() as c_ulong
-        != 2u64
-    {
+    if ::std::mem::size_of::<ISLOW_MULT_TYPE>() as c_ulong != 2u64 {
         return 0i32;
     }
     if simd_support & JSIMD_AVX2 as c_uint != 0
-        && jconst_idct_islow_avx2.as_ptr()
-            as size_t
-            & ((1i32 << 5i32) - 1i32) as c_ulong
-            == 0u64
+        && jconst_idct_islow_avx2.as_ptr() as size_t & ((1i32 << 5i32) - 1i32) as c_ulong == 0u64
     {
         return 1i32;
     }
     if simd_support & JSIMD_SSE2 as c_uint != 0
-        && jconst_idct_islow_sse2.as_ptr()
-            as size_t
-            & ((1i32 << 4i32) - 1i32) as c_ulong
-            == 0u64
+        && jconst_idct_islow_sse2.as_ptr() as size_t & ((1i32 << 4i32) - 1i32) as c_ulong == 0u64
     {
         return 1i32;
     }
@@ -2972,24 +2742,17 @@ pub unsafe extern "C" fn jsimd_can_idct_ifast() -> c_int {
     if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
-        != 4u64
-    {
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong != 4u64 {
         return 0i32;
     }
-    if ::std::mem::size_of::<IFAST_MULT_TYPE>() as c_ulong
-        != 2u64
-    {
+    if ::std::mem::size_of::<IFAST_MULT_TYPE>() as c_ulong != 2u64 {
         return 0i32;
     }
     if IFAST_SCALE_BITS != 2i32 {
         return 0i32;
     }
     if simd_support & JSIMD_SSE2 as c_uint != 0
-        && jconst_idct_ifast_sse2.as_ptr()
-            as size_t
-            & ((1i32 << 4i32) - 1i32) as c_ulong
-            == 0u64
+        && jconst_idct_ifast_sse2.as_ptr() as size_t & ((1i32 << 4i32) - 1i32) as c_ulong == 0u64
     {
         return 1i32;
     }
@@ -3008,24 +2771,17 @@ pub unsafe extern "C" fn jsimd_can_idct_float() -> c_int {
     if BITS_IN_JSAMPLE != 8i32 {
         return 0i32;
     }
-    if ::std::mem::size_of::<JDIMENSION>() as c_ulong
-        != 4u64
-    {
+    if ::std::mem::size_of::<JDIMENSION>() as c_ulong != 4u64 {
         return 0i32;
     }
     if ::std::mem::size_of::<c_float>() as c_ulong != 4u64 {
         return 0i32;
     }
-    if ::std::mem::size_of::<FLOAT_MULT_TYPE>() as c_ulong
-        != 4u64
-    {
+    if ::std::mem::size_of::<FLOAT_MULT_TYPE>() as c_ulong != 4u64 {
         return 0i32;
     }
     if simd_support & JSIMD_SSE2 as c_uint != 0
-        && jconst_idct_float_sse2.as_ptr()
-            as size_t
-            & ((1i32 << 4i32) - 1i32) as c_ulong
-            == 0u64
+        && jconst_idct_float_sse2.as_ptr() as size_t & ((1i32 << 4i32) - 1i32) as c_ulong == 0u64
     {
         return 1i32;
     }
@@ -3041,19 +2797,9 @@ pub unsafe extern "C" fn jsimd_idct_islow(
     mut output_col: JDIMENSION,
 ) {
     if simd_support & JSIMD_AVX2 as c_uint != 0 {
-        jsimd_idct_islow_avx2(
-            (*compptr).dct_table,
-            coef_block,
-            output_buf,
-            output_col,
-        );
+        jsimd_idct_islow_avx2((*compptr).dct_table, coef_block, output_buf, output_col);
     } else {
-        jsimd_idct_islow_sse2(
-            (*compptr).dct_table,
-            coef_block,
-            output_buf,
-            output_col,
-        );
+        jsimd_idct_islow_sse2((*compptr).dct_table, coef_block, output_buf, output_col);
     };
 }
 #[no_mangle]
@@ -3065,12 +2811,7 @@ pub unsafe extern "C" fn jsimd_idct_ifast(
     mut output_buf: JSAMPARRAY,
     mut output_col: JDIMENSION,
 ) {
-    jsimd_idct_ifast_sse2(
-        (*compptr).dct_table,
-        coef_block,
-        output_buf,
-        output_col,
-    );
+    jsimd_idct_ifast_sse2((*compptr).dct_table, coef_block, output_buf, output_col);
 }
 #[no_mangle]
 
@@ -3081,12 +2822,7 @@ pub unsafe extern "C" fn jsimd_idct_float(
     mut output_buf: JSAMPARRAY,
     mut output_col: JDIMENSION,
 ) {
-    jsimd_idct_float_sse2(
-        (*compptr).dct_table,
-        coef_block,
-        output_buf,
-        output_col,
-    );
+    jsimd_idct_float_sse2((*compptr).dct_table, coef_block, output_buf, output_col);
 }
 #[no_mangle]
 
@@ -3100,9 +2836,7 @@ pub unsafe extern "C" fn jsimd_can_huff_encode_one_block() -> c_int {
     }
     if simd_support & JSIMD_SSE2 as c_uint != 0
         && simd_huffman != 0
-        && jconst_huff_encode_one_block.as_ptr()
-            as size_t
-            & ((1i32 << 4i32) - 1i32) as c_ulong
+        && jconst_huff_encode_one_block.as_ptr() as size_t & ((1i32 << 4i32) - 1i32) as c_ulong
             == 0u64
     {
         return 1i32;
@@ -3119,14 +2853,7 @@ pub unsafe extern "C" fn jsimd_huff_encode_one_block(
     mut dctbl: *mut c_derived_tbl,
     mut actbl: *mut c_derived_tbl,
 ) -> *mut JOCTET {
-    return jsimd_huff_encode_one_block_sse2(
-        state,
-        buffer,
-        block,
-        last_dc_val,
-        dctbl,
-        actbl,
-    );
+    return jsimd_huff_encode_one_block_sse2(state, buffer, block, last_dc_val, dctbl, actbl);
 }
 #[no_mangle]
 

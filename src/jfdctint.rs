@@ -1,8 +1,7 @@
-
-
-
-
-use libc::{c_int, c_ulong, self};pub use crate::jpegint_h::JLONG;pub use crate::jdct_h::DCTELEM;pub use crate::jpeglib_h::DCTSIZE;
+pub use crate::jdct_h::DCTELEM;
+pub use crate::jpegint_h::JLONG;
+pub use crate::jpeglib_h::DCTSIZE;
+use libc::{self, c_int, c_ulong};
 /* preferred floating type */
 /*
  * Each IDCT routine is responsible for range-limiting its results and
@@ -107,62 +106,47 @@ use libc::{c_int, c_ulong, self};pub use crate::jpegint_h::JLONG;pub use crate::
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_fdct_islow(mut data: *mut DCTELEM) {
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-     let mut tmp0:  JLONG =  0; let mut tmp1:  JLONG =  0; let mut tmp2:  JLONG =  0; let mut tmp3:  JLONG =  0; let mut tmp4:  JLONG =  0; let mut tmp5:  JLONG =  0; let mut tmp6:  JLONG =  0; let mut tmp7:  JLONG =  0; let mut tmp10:  JLONG =  0; let mut tmp11:  JLONG =  0; let mut tmp12:  JLONG =  0; let mut tmp13:  JLONG =  0; let mut z1:  JLONG =  0; let mut z2:  JLONG =  0; let mut z3:  JLONG =  0; let mut z4:  JLONG =  0; let mut z5:  JLONG =  0;  
-    
-     let mut dataptr:   *mut DCTELEM =  data; let mut ctr:   c_int =  DCTSIZE - 1i32;
+    let mut tmp0: JLONG = 0;
+    let mut tmp1: JLONG = 0;
+    let mut tmp2: JLONG = 0;
+    let mut tmp3: JLONG = 0;
+    let mut tmp4: JLONG = 0;
+    let mut tmp5: JLONG = 0;
+    let mut tmp6: JLONG = 0;
+    let mut tmp7: JLONG = 0;
+    let mut tmp10: JLONG = 0;
+    let mut tmp11: JLONG = 0;
+    let mut tmp12: JLONG = 0;
+    let mut tmp13: JLONG = 0;
+    let mut z1: JLONG = 0;
+    let mut z2: JLONG = 0;
+    let mut z3: JLONG = 0;
+    let mut z4: JLONG = 0;
+    let mut z5: JLONG = 0;
+
+    let mut dataptr: *mut DCTELEM = data;
+    let mut ctr: c_int = DCTSIZE - 1i32;
     while ctr >= 0i32 {
-        tmp0 = (*dataptr.offset(0) as c_int + *dataptr.offset(7) as c_int)
-            as JLONG;
-        tmp7 = (*dataptr.offset(0) as c_int - *dataptr.offset(7) as c_int)
-            as JLONG;
-        tmp1 = (*dataptr.offset(1) as c_int + *dataptr.offset(6) as c_int)
-            as JLONG;
-        tmp6 = (*dataptr.offset(1) as c_int - *dataptr.offset(6) as c_int)
-            as JLONG;
-        tmp2 = (*dataptr.offset(2) as c_int + *dataptr.offset(5) as c_int)
-            as JLONG;
-        tmp5 = (*dataptr.offset(2) as c_int - *dataptr.offset(5) as c_int)
-            as JLONG;
-        tmp3 = (*dataptr.offset(3) as c_int + *dataptr.offset(4) as c_int)
-            as JLONG;
-        tmp4 = (*dataptr.offset(3) as c_int - *dataptr.offset(4) as c_int)
-            as JLONG;
+        tmp0 = (*dataptr.offset(0) as c_int + *dataptr.offset(7) as c_int) as JLONG;
+        tmp7 = (*dataptr.offset(0) as c_int - *dataptr.offset(7) as c_int) as JLONG;
+        tmp1 = (*dataptr.offset(1) as c_int + *dataptr.offset(6) as c_int) as JLONG;
+        tmp6 = (*dataptr.offset(1) as c_int - *dataptr.offset(6) as c_int) as JLONG;
+        tmp2 = (*dataptr.offset(2) as c_int + *dataptr.offset(5) as c_int) as JLONG;
+        tmp5 = (*dataptr.offset(2) as c_int - *dataptr.offset(5) as c_int) as JLONG;
+        tmp3 = (*dataptr.offset(3) as c_int + *dataptr.offset(4) as c_int) as JLONG;
+        tmp4 = (*dataptr.offset(3) as c_int - *dataptr.offset(4) as c_int) as JLONG;
         /* advance pointer to next row */
         tmp10 = tmp0 + tmp3;
         tmp13 = tmp0 - tmp3;
         tmp11 = tmp1 + tmp2;
         tmp12 = tmp1 - tmp2;
-        *dataptr.offset(0) = (((((tmp10 + tmp11) as c_ulong) << 2i32)))
-            as DCTELEM;
-        *dataptr.offset(4) = (((((tmp10 - tmp11) as c_ulong) << 2i32)))
-            as DCTELEM;
+        *dataptr.offset(0) = (((tmp10 + tmp11) as c_ulong) << 2i32) as DCTELEM;
+        *dataptr.offset(4) = (((tmp10 - tmp11) as c_ulong) << 2i32) as DCTELEM;
         z1 = (tmp12 + tmp13) * 4433i64;
-        *dataptr.offset(2) = (z1
-            + tmp13 * 6270i64
-            + ((1i64) << 13i32 - 2i32 - 1i32)
-            >> 13i32 - 2i32) as DCTELEM;
-        *dataptr.offset(6) = (z1
-            + tmp12 * -(15137i64)
-            + ((1i64) << 13i32 - 2i32 - 1i32)
-            >> 13i32 - 2i32) as DCTELEM;
+        *dataptr.offset(2) =
+            (z1 + tmp13 * 6270i64 + ((1i64) << 13i32 - 2i32 - 1i32) >> 13i32 - 2i32) as DCTELEM;
+        *dataptr.offset(6) =
+            (z1 + tmp12 * -(15137i64) + ((1i64) << 13i32 - 2i32 - 1i32) >> 13i32 - 2i32) as DCTELEM;
         z1 = tmp4 + tmp7;
         z2 = tmp5 + tmp6;
         z3 = tmp4 + tmp6;
@@ -179,17 +163,13 @@ pub unsafe extern "C" fn jpeg_fdct_islow(mut data: *mut DCTELEM) {
         z3 += z5;
         z4 += z5;
         *dataptr.offset(7) =
-            (tmp4 + z1 + z3 + ((1i64) << 13i32 - 2i32 - 1i32)
-                >> 13i32 - 2i32) as DCTELEM;
+            (tmp4 + z1 + z3 + ((1i64) << 13i32 - 2i32 - 1i32) >> 13i32 - 2i32) as DCTELEM;
         *dataptr.offset(5) =
-            (tmp5 + z2 + z4 + ((1i64) << 13i32 - 2i32 - 1i32)
-                >> 13i32 - 2i32) as DCTELEM;
+            (tmp5 + z2 + z4 + ((1i64) << 13i32 - 2i32 - 1i32) >> 13i32 - 2i32) as DCTELEM;
         *dataptr.offset(3) =
-            (tmp6 + z2 + z3 + ((1i64) << 13i32 - 2i32 - 1i32)
-                >> 13i32 - 2i32) as DCTELEM;
+            (tmp6 + z2 + z3 + ((1i64) << 13i32 - 2i32 - 1i32) >> 13i32 - 2i32) as DCTELEM;
         *dataptr.offset(1) =
-            (tmp7 + z1 + z4 + ((1i64) << 13i32 - 2i32 - 1i32)
-                >> 13i32 - 2i32) as DCTELEM;
+            (tmp7 + z1 + z4 + ((1i64) << 13i32 - 2i32 - 1i32) >> 13i32 - 2i32) as DCTELEM;
         dataptr = dataptr.offset(DCTSIZE as isize);
         ctr -= 1
     }
@@ -217,49 +197,35 @@ pub unsafe extern "C" fn jpeg_fdct_islow(mut data: *mut DCTELEM) {
     ctr = DCTSIZE - 1i32;
     while ctr >= 0i32 {
         tmp0 = (*dataptr.offset((DCTSIZE * 0i32) as isize) as c_int
-            + *dataptr.offset((DCTSIZE * 7i32) as isize) as c_int)
-            as JLONG;
+            + *dataptr.offset((DCTSIZE * 7i32) as isize) as c_int) as JLONG;
         tmp7 = (*dataptr.offset((DCTSIZE * 0i32) as isize) as c_int
-            - *dataptr.offset((DCTSIZE * 7i32) as isize) as c_int)
-            as JLONG;
+            - *dataptr.offset((DCTSIZE * 7i32) as isize) as c_int) as JLONG;
         tmp1 = (*dataptr.offset((DCTSIZE * 1i32) as isize) as c_int
-            + *dataptr.offset((DCTSIZE * 6i32) as isize) as c_int)
-            as JLONG;
+            + *dataptr.offset((DCTSIZE * 6i32) as isize) as c_int) as JLONG;
         tmp6 = (*dataptr.offset((DCTSIZE * 1i32) as isize) as c_int
-            - *dataptr.offset((DCTSIZE * 6i32) as isize) as c_int)
-            as JLONG;
+            - *dataptr.offset((DCTSIZE * 6i32) as isize) as c_int) as JLONG;
         tmp2 = (*dataptr.offset((DCTSIZE * 2i32) as isize) as c_int
-            + *dataptr.offset((DCTSIZE * 5i32) as isize) as c_int)
-            as JLONG;
+            + *dataptr.offset((DCTSIZE * 5i32) as isize) as c_int) as JLONG;
         tmp5 = (*dataptr.offset((DCTSIZE * 2i32) as isize) as c_int
-            - *dataptr.offset((DCTSIZE * 5i32) as isize) as c_int)
-            as JLONG;
+            - *dataptr.offset((DCTSIZE * 5i32) as isize) as c_int) as JLONG;
         tmp3 = (*dataptr.offset((DCTSIZE * 3i32) as isize) as c_int
-            + *dataptr.offset((DCTSIZE * 4i32) as isize) as c_int)
-            as JLONG;
+            + *dataptr.offset((DCTSIZE * 4i32) as isize) as c_int) as JLONG;
         tmp4 = (*dataptr.offset((DCTSIZE * 3i32) as isize) as c_int
-            - *dataptr.offset((DCTSIZE * 4i32) as isize) as c_int)
-            as JLONG;
+            - *dataptr.offset((DCTSIZE * 4i32) as isize) as c_int) as JLONG;
         /* advance pointer to next column */
         tmp10 = tmp0 + tmp3;
         tmp13 = tmp0 - tmp3;
         tmp11 = tmp1 + tmp2;
         tmp12 = tmp1 - tmp2;
         *dataptr.offset((DCTSIZE * 0i32) as isize) =
-            (tmp10 + tmp11 + ((1i64) << 2i32 - 1i32) >> 2i32)
-                as DCTELEM;
+            (tmp10 + tmp11 + ((1i64) << 2i32 - 1i32) >> 2i32) as DCTELEM;
         *dataptr.offset((DCTSIZE * 4i32) as isize) =
-            (tmp10 - tmp11 + ((1i64) << 2i32 - 1i32) >> 2i32)
-                as DCTELEM;
+            (tmp10 - tmp11 + ((1i64) << 2i32 - 1i32) >> 2i32) as DCTELEM;
         z1 = (tmp12 + tmp13) * 4433i64;
         *dataptr.offset((DCTSIZE * 2i32) as isize) =
-            (z1 + tmp13 * 6270i64
-                + ((1i64) << 13i32 + 2i32 - 1i32)
-                >> 13i32 + 2i32) as DCTELEM;
+            (z1 + tmp13 * 6270i64 + ((1i64) << 13i32 + 2i32 - 1i32) >> 13i32 + 2i32) as DCTELEM;
         *dataptr.offset((DCTSIZE * 6i32) as isize) =
-            (z1 + tmp12 * -(15137i64)
-                + ((1i64) << 13i32 + 2i32 - 1i32)
-                >> 13i32 + 2i32) as DCTELEM;
+            (z1 + tmp12 * -(15137i64) + ((1i64) << 13i32 + 2i32 - 1i32) >> 13i32 + 2i32) as DCTELEM;
         z1 = tmp4 + tmp7;
         z2 = tmp5 + tmp6;
         z3 = tmp4 + tmp6;
@@ -276,17 +242,13 @@ pub unsafe extern "C" fn jpeg_fdct_islow(mut data: *mut DCTELEM) {
         z3 += z5;
         z4 += z5;
         *dataptr.offset((DCTSIZE * 7i32) as isize) =
-            (tmp4 + z1 + z3 + ((1i64) << 13i32 + 2i32 - 1i32)
-                >> 13i32 + 2i32) as DCTELEM;
+            (tmp4 + z1 + z3 + ((1i64) << 13i32 + 2i32 - 1i32) >> 13i32 + 2i32) as DCTELEM;
         *dataptr.offset((DCTSIZE * 5i32) as isize) =
-            (tmp5 + z2 + z4 + ((1i64) << 13i32 + 2i32 - 1i32)
-                >> 13i32 + 2i32) as DCTELEM;
+            (tmp5 + z2 + z4 + ((1i64) << 13i32 + 2i32 - 1i32) >> 13i32 + 2i32) as DCTELEM;
         *dataptr.offset((DCTSIZE * 3i32) as isize) =
-            (tmp6 + z2 + z3 + ((1i64) << 13i32 + 2i32 - 1i32)
-                >> 13i32 + 2i32) as DCTELEM;
+            (tmp6 + z2 + z3 + ((1i64) << 13i32 + 2i32 - 1i32) >> 13i32 + 2i32) as DCTELEM;
         *dataptr.offset((DCTSIZE * 1i32) as isize) =
-            (tmp7 + z1 + z4 + ((1i64) << 13i32 + 2i32 - 1i32)
-                >> 13i32 + 2i32) as DCTELEM;
+            (tmp7 + z1 + z4 + ((1i64) << 13i32 + 2i32 - 1i32) >> 13i32 + 2i32) as DCTELEM;
         dataptr = dataptr.offset(1);
         ctr -= 1
     }

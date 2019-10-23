@@ -12,113 +12,30 @@
 #![feature(ptr_wrapping_offset_from)]
 #![feature(main)]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-use std::prelude::v1::*;use crate::src::md5::md5::MD5File;use crate::stdlib::{__errno_location, fclose, fopen, fwrite, memset, printf,
-                    snprintf, strcasecmp, strerror, unlink};use libc::{c_int, c_ulong, c_char, c_void, c_long, c_uchar};use mozjpeg::*;pub use crate::jmorecfg_h::JSAMPLE;pub use crate::cmyk_h::{cmyk_to_rgb, rgb_to_cmyk};pub use crate::stdlib::{_IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data,
-                        __off64_t, __off_t, FILE, _IO_FILE, exit, free,
-                        malloc, random, RAND_MAX};pub use crate::src::turbojpeg::{tjAlloc, tjAlphaOffset, tjBlueOffset,
-                                tjBufSize, tjBufSizeYUV2, tjCompress2,
-                                tjCompressFromYUV, tjDecodeYUV, tjDecompress2,
-                                tjDecompressHeader2, tjDecompressToYUV2,
-                                tjDestroy, tjEncodeYUV3, tjFree,
-                                tjGetErrorStr, tjGetScalingFactors,
-                                tjGreenOffset, tjInitCompress,
-                                tjInitDecompress, tjLoadImage, tjMCUHeight,
-                                tjMCUWidth, tjPixelSize, tjRedOffset,
-                                tjSaveImage, tjhandle, tjscalingfactor,
-                                TJFLAG_BOTTOMUP, TJFLAG_FASTUPSAMPLE,
-                                TJFLAG_NOREALLOC, TJPF, TJPF_ABGR, TJPF_ARGB,
-                                TJPF_BGR, TJPF_BGRA, TJPF_BGRX, TJPF_CMYK,
-                                TJPF_GRAY, TJPF_RGB, TJPF_RGBA, TJPF_RGBX,
-                                TJPF_UNKNOWN, TJPF_XBGR, TJPF_XRGB, TJSAMP,
-                                TJSAMP_411, TJSAMP_420, TJSAMP_422,
-                                TJSAMP_440, TJSAMP_444, TJSAMP_GRAY, TJ_NUMPF,
-                                TJ_NUMSAMP};pub use crate::stddef_h::{size_t, NULL};
+pub use crate::cmyk_h::{cmyk_to_rgb, rgb_to_cmyk};
+pub use crate::jmorecfg_h::JSAMPLE;
+use crate::src::md5::md5::MD5File;
+pub use crate::src::turbojpeg::{
+    tjAlloc, tjAlphaOffset, tjBlueOffset, tjBufSize, tjBufSizeYUV2, tjCompress2, tjCompressFromYUV,
+    tjDecodeYUV, tjDecompress2, tjDecompressHeader2, tjDecompressToYUV2, tjDestroy, tjEncodeYUV3,
+    tjFree, tjGetErrorStr, tjGetScalingFactors, tjGreenOffset, tjInitCompress, tjInitDecompress,
+    tjLoadImage, tjMCUHeight, tjMCUWidth, tjPixelSize, tjRedOffset, tjSaveImage, tjhandle,
+    tjscalingfactor, TJFLAG_BOTTOMUP, TJFLAG_FASTUPSAMPLE, TJFLAG_NOREALLOC, TJPF, TJPF_ABGR,
+    TJPF_ARGB, TJPF_BGR, TJPF_BGRA, TJPF_BGRX, TJPF_CMYK, TJPF_GRAY, TJPF_RGB, TJPF_RGBA,
+    TJPF_RGBX, TJPF_UNKNOWN, TJPF_XBGR, TJPF_XRGB, TJSAMP, TJSAMP_411, TJSAMP_420, TJSAMP_422,
+    TJSAMP_440, TJSAMP_444, TJSAMP_GRAY, TJ_NUMPF, TJ_NUMSAMP,
+};
+pub use crate::stddef_h::{size_t, NULL};
+pub use crate::stdlib::{
+    _IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data, __off64_t, __off_t, exit, free, malloc,
+    random, FILE, RAND_MAX, _IO_FILE,
+};
+use crate::stdlib::{
+    __errno_location, fclose, fopen, fwrite, memset, printf, snprintf, strcasecmp, strerror, unlink,
+};
+use libc::{c_char, c_int, c_long, c_uchar, c_ulong, c_void};
+use mozjpeg::*;
+use std::prelude::v1::*;
 /*
  * Copyright (C)2009-2014, 2017-2018 D. R. Commander.  All Rights Reserved.
  *
@@ -153,112 +70,62 @@ use std::prelude::v1::*;use crate::src::md5::md5::MD5File;use crate::stdlib::{__
 
 pub unsafe extern "C" fn usage(mut progName: *mut c_char) {
     printf(
-        
         b"\nUSAGE: %s [options]\n\n\x00".as_ptr() as *const c_char,
         progName,
     );
     printf(b"Options:\n\x00".as_ptr() as *const c_char);
+    printf(b"-yuv = test YUV encoding/decoding support\n\x00".as_ptr() as *const c_char);
     printf(
-        
-        b"-yuv = test YUV encoding/decoding support\n\x00".as_ptr() as *const c_char,
-    );
-    printf(
-        
-        b"-noyuvpad = do not pad each line of each Y, U, and V plane to the nearest\n\x00".as_ptr() as *const c_char,
+        b"-noyuvpad = do not pad each line of each Y, U, and V plane to the nearest\n\x00".as_ptr()
+            as *const c_char,
     );
     printf(b"            4-byte boundary\n\x00".as_ptr() as *const c_char);
-    printf(
-        
-        b"-alloc = test automatic buffer allocation\n\x00".as_ptr() as *const c_char,
-    );
-    printf(
-        
-        b"-bmp = tjLoadImage()/tjSaveImage() unit test\n\n\x00".as_ptr() as *const c_char,
-    );
+    printf(b"-alloc = test automatic buffer allocation\n\x00".as_ptr() as *const c_char);
+    printf(b"-bmp = tjLoadImage()/tjSaveImage() unit test\n\n\x00".as_ptr() as *const c_char);
     exit(1i32);
 }
 #[no_mangle]
 
 pub static mut subNameLong: [*const c_char; 6] = [
-    
     b"4:4:4\x00".as_ptr() as *const c_char,
-    
     b"4:2:2\x00".as_ptr() as *const c_char,
-    
     b"4:2:0\x00".as_ptr() as *const c_char,
-    
     b"GRAY\x00".as_ptr() as *const c_char,
-    
     b"4:4:0\x00".as_ptr() as *const c_char,
-    
     b"4:1:1\x00".as_ptr() as *const c_char,
 ];
 #[no_mangle]
 
 pub static mut subName: [*const c_char; 6] = [
-    
     b"444\x00".as_ptr() as *const c_char,
-    
     b"422\x00".as_ptr() as *const c_char,
-    
     b"420\x00".as_ptr() as *const c_char,
-    
     b"GRAY\x00".as_ptr() as *const c_char,
-    
     b"440\x00".as_ptr() as *const c_char,
-    
     b"411\x00".as_ptr() as *const c_char,
 ];
 #[no_mangle]
 
 pub static mut pixFormatStr: [*const c_char; 12] = [
-    
     b"RGB\x00".as_ptr() as *const c_char,
-    
     b"BGR\x00".as_ptr() as *const c_char,
-    
     b"RGBX\x00".as_ptr() as *const c_char,
-    
     b"BGRX\x00".as_ptr() as *const c_char,
-    
     b"XBGR\x00".as_ptr() as *const c_char,
-    
     b"XRGB\x00".as_ptr() as *const c_char,
-    
     b"Grayscale\x00".as_ptr() as *const c_char,
-    
     b"RGBA\x00".as_ptr() as *const c_char,
-    
     b"BGRA\x00".as_ptr() as *const c_char,
-    
     b"ABGR\x00".as_ptr() as *const c_char,
-    
     b"ARGB\x00".as_ptr() as *const c_char,
-    
     b"CMYK\x00".as_ptr() as *const c_char,
 ];
 #[no_mangle]
 
-pub static mut _3byteFormats: [c_int; 2] = [
-    
-    TJPF_RGB,
-    
-    TJPF_BGR,
-];
+pub static mut _3byteFormats: [c_int; 2] = [TJPF_RGB, TJPF_BGR];
 #[no_mangle]
 
-pub static mut _4byteFormats: [c_int; 5] = [
-    
-    TJPF_RGBX,
-    
-    TJPF_BGRX,
-    
-    TJPF_XBGR,
-    
-    TJPF_XRGB,
-    
-    TJPF_CMYK,
-];
+pub static mut _4byteFormats: [c_int; 5] = [TJPF_RGBX, TJPF_BGRX, TJPF_XBGR, TJPF_XRGB, TJPF_CMYK];
 #[no_mangle]
 
 pub static mut _onlyGray: [c_int; 1] = [TJPF_GRAY];
@@ -286,20 +153,17 @@ pub unsafe extern "C" fn initBuf(
     mut pf: c_int,
     mut flags: c_int,
 ) {
-     let mut index:  c_int =  0; let mut row:  c_int =  0; let mut col:  c_int =  0; let mut halfway:  c_int =  16i32;let mut roffset: c_int = tjRedOffset[pf as usize];
+    let mut index: c_int = 0;
+    let mut row: c_int = 0;
+    let mut col: c_int = 0;
+    let mut halfway: c_int = 16i32;
+    let mut roffset: c_int = tjRedOffset[pf as usize];
     let mut goffset: c_int = tjGreenOffset[pf as usize];
     let mut boffset: c_int = tjBlueOffset[pf as usize];
     let mut ps: c_int = tjPixelSize[pf as usize];
-    
-    
-    
-    
-    if pf ==  TJPF_GRAY {
-        memset(
-            buf as *mut c_void,
-            0i32,
-            (w * h * ps) as c_ulong,
-        );
+
+    if pf == TJPF_GRAY {
+        memset(buf as *mut c_void, 0i32, (w * h * ps) as c_ulong);
         row = 0i32;
         while row < h {
             col = 0i32;
@@ -320,12 +184,8 @@ pub unsafe extern "C" fn initBuf(
             }
             row += 1
         }
-    } else if pf ==  TJPF_CMYK {
-        memset(
-            buf as *mut c_void,
-            255i32,
-            (w * h * ps) as c_ulong,
-        );
+    } else if pf == TJPF_CMYK {
+        memset(buf as *mut c_void, 255i32, (w * h * ps) as c_ulong);
         row = 0i32;
         while row < h {
             col = 0i32;
@@ -350,11 +210,7 @@ pub unsafe extern "C" fn initBuf(
             row += 1
         }
     } else {
-        memset(
-            buf as *mut c_void,
-            0i32,
-            (w * h * ps) as c_ulong,
-        );
+        memset(buf as *mut c_void, 0i32, (w * h * ps) as c_ulong);
         row = 0i32;
         while row < h {
             col = 0i32;
@@ -393,25 +249,26 @@ pub unsafe extern "C" fn checkBuf(
     mut sf: tjscalingfactor,
     mut flags: c_int,
 ) -> c_int {
-     let mut index:  c_int =  0; let mut row:  c_int =  0; let mut col:  c_int =  0; let mut retval:  c_int =  1i32;
+    let mut index: c_int = 0;
+    let mut row: c_int = 0;
+    let mut col: c_int = 0;
+    let mut retval: c_int = 1i32;
     let mut roffset: c_int = tjRedOffset[pf as usize];
     let mut goffset: c_int = tjGreenOffset[pf as usize];
     let mut boffset: c_int = tjBlueOffset[pf as usize];
     let mut aoffset: c_int = tjAlphaOffset[pf as usize];
     let mut ps: c_int = tjPixelSize[pf as usize];
-    
-    
-    
-    
+
     let mut halfway: c_int = 16i32 * sf.num / sf.denom;
     let mut blocksize: c_int = 8i32 * sf.num / sf.denom;
-    if pf ==  TJPF_GRAY {
+    if pf == TJPF_GRAY {
         boffset = 0i32;
         goffset = boffset;
         roffset = goffset
     }
-    if pf ==  TJPF_CMYK {
-         let mut current_block:  u64;row = 0i32;
+    if pf == TJPF_CMYK {
+        let mut current_block: u64;
+        row = 0i32;
         's_40: loop {
             if !(row < h) {
                 current_block = 15514718523126015390;
@@ -419,26 +276,21 @@ pub unsafe extern "C" fn checkBuf(
             }
             col = 0i32;
             while col < w {
-                
-                
-                
-                    
                 if flags & TJFLAG_BOTTOMUP != 0 {
                     index = (h - row - 1i32) * w + col
                 } else {
                     index = row * w + col
                 }
-                
-                
-                
-                 let mut c:   c_uchar =  *buf.offset((index * ps) as isize); let mut m:   c_uchar =  *buf.offset((index * ps + 1i32) as isize); let mut y:   c_uchar =  *buf.offset((index * ps + 2i32) as isize); let mut k:   c_uchar =  *buf.offset((index * ps + 3i32) as isize);
+
+                let mut c: c_uchar = *buf.offset((index * ps) as isize);
+                let mut m: c_uchar = *buf.offset((index * ps + 1i32) as isize);
+                let mut y: c_uchar = *buf.offset((index * ps + 2i32) as isize);
+                let mut k: c_uchar = *buf.offset((index * ps + 3i32) as isize);
                 if (row / blocksize + col / blocksize) % 2i32 == 0i32 {
                     if (c as c_int) < 254i32 {
                         printf(
-                            
                             b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                                 as *const c_char,
-                            
                             b"c\x00".as_ptr() as *const c_char,
                             row,
                             col,
@@ -450,10 +302,8 @@ pub unsafe extern "C" fn checkBuf(
                         break 's_40;
                     } else if (m as c_int) < 254i32 {
                         printf(
-                            
                             b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                                 as *const c_char,
-                            
                             b"m\x00".as_ptr() as *const c_char,
                             row,
                             col,
@@ -465,10 +315,8 @@ pub unsafe extern "C" fn checkBuf(
                         break 's_40;
                     } else if (y as c_int) < 254i32 {
                         printf(
-                            
                             b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                                 as *const c_char,
-                            
                             b"y\x00".as_ptr() as *const c_char,
                             row,
                             col,
@@ -481,10 +329,8 @@ pub unsafe extern "C" fn checkBuf(
                     } else if row < halfway {
                         if (k as c_int) < 254i32 {
                             printf(
-                                
                                 b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                                     as *const c_char,
-                                
                                 b"k\x00".as_ptr() as *const c_char,
                                 row,
                                 col,
@@ -497,10 +343,8 @@ pub unsafe extern "C" fn checkBuf(
                         }
                     } else if k as c_int > 1i32 {
                         printf(
-                            
                             b"\nComp. %s at %d,%d should be 0, not %d\n\x00".as_ptr()
                                 as *const c_char,
-                            
                             b"k\x00".as_ptr() as *const c_char,
                             row,
                             col,
@@ -513,10 +357,8 @@ pub unsafe extern "C" fn checkBuf(
                     }
                 } else if (c as c_int) < 254i32 {
                     printf(
-                        
                         b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                             as *const c_char,
-                        
                         b"c\x00".as_ptr() as *const c_char,
                         row,
                         col,
@@ -528,10 +370,7 @@ pub unsafe extern "C" fn checkBuf(
                     break 's_40;
                 } else if y as c_int > 1i32 {
                     printf(
-                        
-                        b"\nComp. %s at %d,%d should be 0, not %d\n\x00".as_ptr()
-                            as *const c_char,
-                        
+                        b"\nComp. %s at %d,%d should be 0, not %d\n\x00".as_ptr() as *const c_char,
                         b"y\x00".as_ptr() as *const c_char,
                         row,
                         col,
@@ -543,10 +382,8 @@ pub unsafe extern "C" fn checkBuf(
                     break 's_40;
                 } else if (k as c_int) < 254i32 {
                     printf(
-                        
                         b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                             as *const c_char,
-                        
                         b"k\x00".as_ptr() as *const c_char,
                         row,
                         col,
@@ -559,10 +396,8 @@ pub unsafe extern "C" fn checkBuf(
                 } else if row < halfway {
                     if m as c_int > 1i32 {
                         printf(
-                            
                             b"\nComp. %s at %d,%d should be 0, not %d\n\x00".as_ptr()
                                 as *const c_char,
-                            
                             b"m\x00".as_ptr() as *const c_char,
                             row,
                             col,
@@ -575,10 +410,8 @@ pub unsafe extern "C" fn checkBuf(
                     }
                 } else if (m as c_int) < 254i32 {
                     printf(
-                        
                         b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                             as *const c_char,
-                        
                         b"m\x00".as_ptr() as *const c_char,
                         row,
                         col,
@@ -602,20 +435,16 @@ pub unsafe extern "C" fn checkBuf(
         's_400: while row < h {
             col = 0i32;
             while col < w {
-                
-                
-                
-                    
                 if flags & TJFLAG_BOTTOMUP != 0 {
                     index = (h - row - 1i32) * w + col
                 } else {
                     index = row * w + col
                 }
-                
-                
-                
-                 let mut r:   c_uchar =  *buf.offset((index * ps + roffset) as isize); let mut g:   c_uchar =  *buf.offset((index * ps + goffset) as isize); let mut b:   c_uchar =  *buf.offset((index * ps + boffset) as isize); let mut a:   c_uchar =
-     if aoffset >= 0i32 {
+
+                let mut r: c_uchar = *buf.offset((index * ps + roffset) as isize);
+                let mut g: c_uchar = *buf.offset((index * ps + goffset) as isize);
+                let mut b: c_uchar = *buf.offset((index * ps + boffset) as isize);
+                let mut a: c_uchar = if aoffset >= 0i32 {
                     *buf.offset((index * ps + aoffset) as isize) as c_int
                 } else {
                     0xffi32
@@ -624,10 +453,8 @@ pub unsafe extern "C" fn checkBuf(
                     if row < halfway {
                         if (r as c_int) < 254i32 {
                             printf(
-                                
                                 b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                                     as *const c_char,
-                                
                                 b"r\x00".as_ptr() as *const c_char,
                                 row,
                                 col,
@@ -638,10 +465,8 @@ pub unsafe extern "C" fn checkBuf(
                             break 's_400;
                         } else if (g as c_int) < 254i32 {
                             printf(
-                                
                                 b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                                     as *const c_char,
-                                
                                 b"g\x00".as_ptr() as *const c_char,
                                 row,
                                 col,
@@ -652,10 +477,8 @@ pub unsafe extern "C" fn checkBuf(
                             break 's_400;
                         } else if (b as c_int) < 254i32 {
                             printf(
-                                
                                 b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                                     as *const c_char,
-                                
                                 b"b\x00".as_ptr() as *const c_char,
                                 row,
                                 col,
@@ -667,10 +490,8 @@ pub unsafe extern "C" fn checkBuf(
                         }
                     } else if r as c_int > 1i32 {
                         printf(
-                            
                             b"\nComp. %s at %d,%d should be 0, not %d\n\x00".as_ptr()
                                 as *const c_char,
-                            
                             b"r\x00".as_ptr() as *const c_char,
                             row,
                             col,
@@ -681,10 +502,8 @@ pub unsafe extern "C" fn checkBuf(
                         break 's_400;
                     } else if g as c_int > 1i32 {
                         printf(
-                            
                             b"\nComp. %s at %d,%d should be 0, not %d\n\x00".as_ptr()
                                 as *const c_char,
-                            
                             b"g\x00".as_ptr() as *const c_char,
                             row,
                             col,
@@ -695,10 +514,8 @@ pub unsafe extern "C" fn checkBuf(
                         break 's_400;
                     } else if b as c_int > 1i32 {
                         printf(
-                            
                             b"\nComp. %s at %d,%d should be 0, not %d\n\x00".as_ptr()
                                 as *const c_char,
-                            
                             b"b\x00".as_ptr() as *const c_char,
                             row,
                             col,
@@ -712,10 +529,8 @@ pub unsafe extern "C" fn checkBuf(
                     if row < halfway {
                         if (r as c_int) < 76i32 - 1i32 || r as c_int > 76i32 + 1i32 {
                             printf(
-                                
                                 b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr()
                                     as *const c_char,
-                                
                                 b"r\x00".as_ptr() as *const c_char,
                                 row,
                                 col,
@@ -725,14 +540,10 @@ pub unsafe extern "C" fn checkBuf(
                             retval = 0i32;
                             exitStatus = -1i32;
                             break 's_400;
-                        } else if (g as c_int) < 76i32 - 1i32
-                            || g as c_int > 76i32 + 1i32
-                        {
+                        } else if (g as c_int) < 76i32 - 1i32 || g as c_int > 76i32 + 1i32 {
                             printf(
-                                
                                 b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr()
                                     as *const c_char,
-                                
                                 b"g\x00".as_ptr() as *const c_char,
                                 row,
                                 col,
@@ -742,14 +553,10 @@ pub unsafe extern "C" fn checkBuf(
                             retval = 0i32;
                             exitStatus = -1i32;
                             break 's_400;
-                        } else if (b as c_int) < 76i32 - 1i32
-                            || b as c_int > 76i32 + 1i32
-                        {
+                        } else if (b as c_int) < 76i32 - 1i32 || b as c_int > 76i32 + 1i32 {
                             printf(
-                                
                                 b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr()
                                     as *const c_char,
-                                
                                 b"b\x00".as_ptr() as *const c_char,
                                 row,
                                 col,
@@ -760,13 +567,10 @@ pub unsafe extern "C" fn checkBuf(
                             exitStatus = -1i32;
                             break 's_400;
                         }
-                    } else if (r as c_int) < 226i32 - 1i32 || r as c_int > 226i32 + 1i32
-                    {
+                    } else if (r as c_int) < 226i32 - 1i32 || r as c_int > 226i32 + 1i32 {
                         printf(
-                            
                             b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr()
                                 as *const c_char,
-                            
                             b"r\x00".as_ptr() as *const c_char,
                             row,
                             col,
@@ -776,13 +580,10 @@ pub unsafe extern "C" fn checkBuf(
                         retval = 0i32;
                         exitStatus = -1i32;
                         break 's_400;
-                    } else if (g as c_int) < 226i32 - 1i32 || g as c_int > 226i32 + 1i32
-                    {
+                    } else if (g as c_int) < 226i32 - 1i32 || g as c_int > 226i32 + 1i32 {
                         printf(
-                            
                             b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr()
                                 as *const c_char,
-                            
                             b"g\x00".as_ptr() as *const c_char,
                             row,
                             col,
@@ -792,13 +593,10 @@ pub unsafe extern "C" fn checkBuf(
                         retval = 0i32;
                         exitStatus = -1i32;
                         break 's_400;
-                    } else if (b as c_int) < 226i32 - 1i32 || b as c_int > 226i32 + 1i32
-                    {
+                    } else if (b as c_int) < 226i32 - 1i32 || b as c_int > 226i32 + 1i32 {
                         printf(
-                            
                             b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr()
                                 as *const c_char,
-                            
                             b"b\x00".as_ptr() as *const c_char,
                             row,
                             col,
@@ -812,10 +610,8 @@ pub unsafe extern "C" fn checkBuf(
                 } else if row < halfway {
                     if (r as c_int) < 254i32 {
                         printf(
-                            
                             b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                                 as *const c_char,
-                            
                             b"r\x00".as_ptr() as *const c_char,
                             row,
                             col,
@@ -826,10 +622,8 @@ pub unsafe extern "C" fn checkBuf(
                         break 's_400;
                     } else if g as c_int > 1i32 {
                         printf(
-                            
                             b"\nComp. %s at %d,%d should be 0, not %d\n\x00".as_ptr()
                                 as *const c_char,
-                            
                             b"g\x00".as_ptr() as *const c_char,
                             row,
                             col,
@@ -840,10 +634,8 @@ pub unsafe extern "C" fn checkBuf(
                         break 's_400;
                     } else if b as c_int > 1i32 {
                         printf(
-                            
                             b"\nComp. %s at %d,%d should be 0, not %d\n\x00".as_ptr()
                                 as *const c_char,
-                            
                             b"b\x00".as_ptr() as *const c_char,
                             row,
                             col,
@@ -855,10 +647,8 @@ pub unsafe extern "C" fn checkBuf(
                     }
                 } else if (r as c_int) < 254i32 {
                     printf(
-                        
                         b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                             as *const c_char,
-                        
                         b"r\x00".as_ptr() as *const c_char,
                         row,
                         col,
@@ -869,10 +659,8 @@ pub unsafe extern "C" fn checkBuf(
                     break 's_400;
                 } else if (g as c_int) < 254i32 {
                     printf(
-                        
                         b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                             as *const c_char,
-                        
                         b"g\x00".as_ptr() as *const c_char,
                         row,
                         col,
@@ -883,10 +671,7 @@ pub unsafe extern "C" fn checkBuf(
                     break 's_400;
                 } else if b as c_int > 1i32 {
                     printf(
-                        
-                        b"\nComp. %s at %d,%d should be 0, not %d\n\x00".as_ptr()
-                            as *const c_char,
-                        
+                        b"\nComp. %s at %d,%d should be 0, not %d\n\x00".as_ptr() as *const c_char,
                         b"b\x00".as_ptr() as *const c_char,
                         row,
                         col,
@@ -898,10 +683,8 @@ pub unsafe extern "C" fn checkBuf(
                 }
                 if (a as c_int) < 254i32 {
                     printf(
-                        
                         b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                             as *const c_char,
-                        
                         b"a\x00".as_ptr() as *const c_char,
                         row,
                         col,
@@ -922,9 +705,8 @@ pub unsafe extern "C" fn checkBuf(
         while row < h {
             col = 0i32;
             while col < w {
-                if pf ==  TJPF_CMYK {
+                if pf == TJPF_CMYK {
                     printf(
-                        
                         b"%.3d/%.3d/%.3d/%.3d \x00".as_ptr() as *const c_char,
                         *buf.offset(((row * w + col) * ps) as isize) as c_int,
                         *buf.offset(((row * w + col) * ps + 1i32) as isize) as c_int,
@@ -933,7 +715,6 @@ pub unsafe extern "C" fn checkBuf(
                     );
                 } else {
                     printf(
-                        
                         b"%.3d/%.3d/%.3d \x00".as_ptr() as *const c_char,
                         *buf.offset(((row * w + col) * ps + roffset) as isize) as c_int,
                         *buf.offset(((row * w + col) * ps + goffset) as isize) as c_int,
@@ -957,9 +738,9 @@ pub unsafe extern "C" fn checkBufYUV(
     mut subsamp: c_int,
     mut sf: tjscalingfactor,
 ) -> c_int {
-    
-    
-     let mut current_block:  u64;  let mut col:  c_int =  0; let mut retval:  c_int =  1i32;
+    let mut current_block: u64;
+    let mut col: c_int = 0;
+    let mut retval: c_int = 1i32;
     let mut hsf: c_int = tjMCUWidth[subsamp as usize] / 8i32;
     let mut vsf: c_int = tjMCUHeight[subsamp as usize] / 8i32;
     let mut pw: c_int = w + hsf - 1i32 & !(hsf - 1i32);
@@ -968,10 +749,10 @@ pub unsafe extern "C" fn checkBufYUV(
     let mut ch: c_int = ph / vsf;
     let mut ypitch: c_int = pw + pad - 1i32 & !(pad - 1i32);
     let mut uvpitch: c_int = cw + pad - 1i32 & !(pad - 1i32);
-    
+
     let mut halfway: c_int = 16i32 * sf.num / sf.denom;
     let mut blocksize: c_int = 8i32 * sf.num / sf.denom;
-     let mut row:   c_int =  0i32;
+    let mut row: c_int = 0i32;
     's_27: loop {
         if !(row < ph) {
             current_block = 1836292691772056875;
@@ -984,10 +765,8 @@ pub unsafe extern "C" fn checkBufYUV(
                 if row < halfway {
                     if (y as c_int) < 254i32 {
                         printf(
-                            
                             b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                                 as *const c_char,
-                            
                             b"y\x00".as_ptr() as *const c_char,
                             row,
                             col,
@@ -1000,10 +779,7 @@ pub unsafe extern "C" fn checkBufYUV(
                     }
                 } else if y as c_int > 1i32 {
                     printf(
-                        
-                        b"\nComp. %s at %d,%d should be 0, not %d\n\x00".as_ptr()
-                            as *const c_char,
-                        
+                        b"\nComp. %s at %d,%d should be 0, not %d\n\x00".as_ptr() as *const c_char,
                         b"y\x00".as_ptr() as *const c_char,
                         row,
                         col,
@@ -1017,10 +793,7 @@ pub unsafe extern "C" fn checkBufYUV(
             } else if row < halfway {
                 if (y as c_int) < 76i32 - 1i32 || y as c_int > 76i32 + 1i32 {
                     printf(
-                        
-                        b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr()
-                            as *const c_char,
-                        
+                        b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr() as *const c_char,
                         b"y\x00".as_ptr() as *const c_char,
                         row,
                         col,
@@ -1034,10 +807,7 @@ pub unsafe extern "C" fn checkBufYUV(
                 }
             } else if (y as c_int) < 226i32 - 1i32 || y as c_int > 226i32 + 1i32 {
                 printf(
-                    
-                    b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr()
-                        as *const c_char,
-                    
+                    b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr() as *const c_char,
                     b"y\x00".as_ptr() as *const c_char,
                     row,
                     col,
@@ -1066,14 +836,10 @@ pub unsafe extern "C" fn checkBufYUV(
                         let mut v: c_uchar = *buf
                             .offset((ypitch * ph + uvpitch * ch + (uvpitch * row + col)) as isize);
                         if (row * vsf / blocksize + col * hsf / blocksize) % 2i32 == 0i32 {
-                            if (u as c_int) < 128i32 - 1i32
-                                || u as c_int > 128i32 + 1i32
-                            {
+                            if (u as c_int) < 128i32 - 1i32 || u as c_int > 128i32 + 1i32 {
                                 printf(
-                                    
                                     b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr()
                                         as *const c_char,
-                                    
                                     b"u\x00".as_ptr() as *const c_char,
                                     row,
                                     col,
@@ -1083,14 +849,10 @@ pub unsafe extern "C" fn checkBufYUV(
                                 retval = 0i32;
                                 exitStatus = -1i32;
                                 break 's_193;
-                            } else if (v as c_int) < 128i32 - 1i32
-                                || v as c_int > 128i32 + 1i32
-                            {
+                            } else if (v as c_int) < 128i32 - 1i32 || v as c_int > 128i32 + 1i32 {
                                 printf(
-                                    
                                     b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr()
                                         as *const c_char,
-                                    
                                     b"v\x00".as_ptr() as *const c_char,
                                     row,
                                     col,
@@ -1102,13 +864,10 @@ pub unsafe extern "C" fn checkBufYUV(
                                 break 's_193;
                             }
                         } else if row < halfway_0 {
-                            if (u as c_int) < 85i32 - 1i32 || u as c_int > 85i32 + 1i32
-                            {
+                            if (u as c_int) < 85i32 - 1i32 || u as c_int > 85i32 + 1i32 {
                                 printf(
-                                    
                                     b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr()
                                         as *const c_char,
-                                    
                                     b"u\x00".as_ptr() as *const c_char,
                                     row,
                                     col,
@@ -1120,10 +879,8 @@ pub unsafe extern "C" fn checkBufYUV(
                                 break 's_193;
                             } else if (v as c_int) < 254i32 {
                                 printf(
-                                    
                                     b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                                         as *const c_char,
-                                    
                                     b"v\x00".as_ptr() as *const c_char,
                                     row,
                                     col,
@@ -1135,10 +892,8 @@ pub unsafe extern "C" fn checkBufYUV(
                             }
                         } else if u as c_int > 1i32 {
                             printf(
-                                
                                 b"\nComp. %s at %d,%d should be 0, not %d\n\x00".as_ptr()
                                     as *const c_char,
-                                
                                 b"u\x00".as_ptr() as *const c_char,
                                 row,
                                 col,
@@ -1147,14 +902,10 @@ pub unsafe extern "C" fn checkBufYUV(
                             retval = 0i32;
                             exitStatus = -1i32;
                             break 's_193;
-                        } else if (v as c_int) < 149i32 - 1i32
-                            || v as c_int > 149i32 + 1i32
-                        {
+                        } else if (v as c_int) < 149i32 - 1i32 || v as c_int > 149i32 + 1i32 {
                             printf(
-                                
                                 b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr()
                                     as *const c_char,
-                                
                                 b"v\x00".as_ptr() as *const c_char,
                                 row,
                                 col,
@@ -1179,7 +930,6 @@ pub unsafe extern "C" fn checkBufYUV(
             col = 0i32;
             while col < pw {
                 printf(
-                    
                     b"%.3d \x00".as_ptr() as *const c_char,
                     *buf.offset((ypitch * row + col) as isize) as c_int,
                 );
@@ -1194,7 +944,6 @@ pub unsafe extern "C" fn checkBufYUV(
             col = 0i32;
             while col < cw {
                 printf(
-                    
                     b"%.3d \x00".as_ptr() as *const c_char,
                     *buf.offset((ypitch * ph + (uvpitch * row + col)) as isize) as c_int,
                 );
@@ -1209,7 +958,6 @@ pub unsafe extern "C" fn checkBufYUV(
             col = 0i32;
             while col < cw {
                 printf(
-                    
                     b"%.3d \x00".as_ptr() as *const c_char,
                     *buf.offset((ypitch * ph + uvpitch * ch + (uvpitch * row + col)) as isize)
                         as c_int,
@@ -1229,18 +977,9 @@ pub unsafe extern "C" fn writeJPEG(
     mut jpegSize: c_ulong,
     mut filename: *mut c_char,
 ) {
-    let mut file: *mut FILE =
-        fopen(filename,  b"wb\x00".as_ptr() as *const c_char);
-    if file.is_null()
-        || fwrite(
-            jpegBuf as *const c_void,
-            jpegSize,
-            1u64,
-            file,
-        ) != 1u64
-    {
+    let mut file: *mut FILE = fopen(filename, b"wb\x00".as_ptr() as *const c_char);
+    if file.is_null() || fwrite(jpegBuf as *const c_void, jpegSize, 1u64, file) != 1u64 {
         printf(
-            
             b"ERROR: Could not write to %s.\n%s\n\x00".as_ptr() as *const c_char,
             filename,
             strerror(*__errno_location()),
@@ -1265,39 +1004,29 @@ pub unsafe extern "C" fn compTest(
     mut jpegQual: c_int,
     mut flags: c_int,
 ) {
-    
-    
     let mut srcBuf: *mut c_uchar = NULL as *mut c_uchar;
     let mut yuvBuf: *mut c_uchar = NULL as *mut c_uchar;
     let mut pfStr: *const c_char = pixFormatStr[pf as usize];
-    let mut buStrLong: *const c_char = if flags & TJFLAG_BOTTOMUP != 0
-    {
-        
+    let mut buStrLong: *const c_char = if flags & TJFLAG_BOTTOMUP != 0 {
         b"Bottom-Up\x00".as_ptr() as *const c_char
     } else {
-        
         b"Top-Down \x00".as_ptr() as *const c_char
     };
     let mut buStr: *const c_char = if flags & TJFLAG_BOTTOMUP != 0 {
-        
         b"BU\x00".as_ptr() as *const c_char
     } else {
-        
         b"TD\x00".as_ptr() as *const c_char
     };
-    srcBuf = malloc(
-        (w * h * tjPixelSize[pf as usize]) as c_ulong,
-    ) as *mut c_uchar;
+    srcBuf = malloc((w * h * tjPixelSize[pf as usize]) as c_ulong) as *mut c_uchar;
     if srcBuf.is_null() {
         printf(
-            
             b"ERROR: %s\n\x00".as_ptr() as *const c_char,
-            
             b"Memory allocation failure\x00".as_ptr() as *const c_char,
         );
         exitStatus = -1i32
     } else {
-         let mut current_block:  u64;initBuf(srcBuf, w, h, pf, flags);
+        let mut current_block: u64;
+        initBuf(srcBuf, w, h, pf, flags);
         if !(*dstBuf).is_null() && *dstSize > 0u64 {
             memset(*dstBuf as *mut c_void, 0i32, *dstSize);
         }
@@ -1305,18 +1034,17 @@ pub unsafe extern "C" fn compTest(
             flags |= TJFLAG_NOREALLOC
         }
         if doYUV != 0 {
-            let mut yuvSize: c_ulong =
-                tjBufSizeYUV2(w, pad, h, subsamp);
+            let mut yuvSize: c_ulong = tjBufSizeYUV2(w, pad, h, subsamp);
             let mut sf: tjscalingfactor = {
-                 let mut init =
-     tjscalingfactor{num:  1i32, denom:  1i32,};
+                let mut init = tjscalingfactor {
+                    num: 1i32,
+                    denom: 1i32,
+                };
                 init
             };
-            let mut handle2: tjhandle =
-                tjInitCompress();
+            let mut handle2: tjhandle = tjInitCompress();
             if handle2.is_null() {
                 printf(
-                    
                     b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const c_char,
                     tjGetErrorStr(),
                 );
@@ -1326,9 +1054,7 @@ pub unsafe extern "C" fn compTest(
                 yuvBuf = malloc(yuvSize) as *mut c_uchar;
                 if yuvBuf.is_null() {
                     printf(
-                        
                         b"ERROR: %s\n\x00".as_ptr() as *const c_char,
-                        
                         b"Memory allocation failure\x00".as_ptr() as *const c_char,
                     );
                     exitStatus = -1i32;
@@ -1336,18 +1062,15 @@ pub unsafe extern "C" fn compTest(
                 } else {
                     memset(yuvBuf as *mut c_void, 0i32, yuvSize);
                     printf(
-                        
                         b"%s %s -> YUV %s ... \x00".as_ptr() as *const c_char,
                         pfStr,
                         buStrLong,
                         subNameLong[subsamp as usize],
                     );
-                    if tjEncodeYUV3(
-                        handle2, srcBuf, w, 0i32, h, pf, yuvBuf, pad, subsamp, flags,
-                    ) == -1i32
+                    if tjEncodeYUV3(handle2, srcBuf, w, 0i32, h, pf, yuvBuf, pad, subsamp, flags)
+                        == -1i32
                     {
                         printf(
-                            
                             b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const c_char,
                             tjGetErrorStr(),
                         );
@@ -1356,18 +1079,11 @@ pub unsafe extern "C" fn compTest(
                     } else {
                         tjDestroy(handle2);
                         if checkBufYUV(yuvBuf, w, h, subsamp, sf) != 0 {
-                            printf(
-                                
-                                b"Passed.\n\x00".as_ptr() as *const c_char,
-                            );
+                            printf(b"Passed.\n\x00".as_ptr() as *const c_char);
                         } else {
-                            printf(
-                                
-                                b"FAILED!\n\x00".as_ptr() as *const c_char,
-                            );
+                            printf(b"FAILED!\n\x00".as_ptr() as *const c_char);
                         }
                         printf(
-                            
                             b"YUV %s %s -> JPEG Q%d ... \x00".as_ptr() as *const c_char,
                             subNameLong[subsamp as usize],
                             buStrLong,
@@ -1378,7 +1094,6 @@ pub unsafe extern "C" fn compTest(
                         ) == -1i32
                         {
                             printf(
-                                
                                 b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const c_char,
                                 tjGetErrorStr(),
                             );
@@ -1392,7 +1107,6 @@ pub unsafe extern "C" fn compTest(
             }
         } else {
             printf(
-                
                 b"%s %s -> %s Q%d ... \x00".as_ptr() as *const c_char,
                 pfStr,
                 buStrLong,
@@ -1404,7 +1118,6 @@ pub unsafe extern "C" fn compTest(
             ) == -1i32
             {
                 printf(
-                    
                     b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const c_char,
                     tjGetErrorStr(),
                 );
@@ -1417,10 +1130,10 @@ pub unsafe extern "C" fn compTest(
         match current_block {
             860601949763470011 => {}
             _ => {
-                 let mut tempStr:  [c_char; 1024] =  [0; 1024];snprintf(
+                let mut tempStr: [c_char; 1024] = [0; 1024];
+                snprintf(
                     tempStr.as_mut_ptr(),
                     1024u64,
-                    
                     b"%s_enc_%s_%s_%s_Q%d.jpg\x00".as_ptr() as *const c_char,
                     basename,
                     pfStr,
@@ -1430,7 +1143,6 @@ pub unsafe extern "C" fn compTest(
                 );
                 writeJPEG(*dstBuf, *dstSize, tempStr.as_mut_ptr());
                 printf(
-                    
                     b"Done.\n  Result in %s\n\x00".as_ptr() as *const c_char,
                     tempStr.as_mut_ptr(),
                 );
@@ -1458,15 +1170,15 @@ pub unsafe extern "C" fn _decompTest(
     mut flags: c_int,
     mut sf: tjscalingfactor,
 ) {
-     let mut _hdrw:  c_int =  0i32; let mut _hdrh:  c_int =  0i32;
+    let mut _hdrw: c_int = 0i32;
+    let mut _hdrh: c_int = 0i32;
     let mut dstBuf: *mut c_uchar = NULL as *mut c_uchar;
     let mut yuvBuf: *mut c_uchar = NULL as *mut c_uchar;
-    
-    
+
     let mut _hdrsubsamp: c_int = -1i32;
     let mut scaledWidth: c_int = (w * sf.num + sf.denom - 1i32) / sf.denom;
     let mut scaledHeight: c_int = (h * sf.num + sf.denom - 1i32) / sf.denom;
-    
+
     if tjDecompressHeader2(
         handle,
         jpegBuf,
@@ -1477,42 +1189,34 @@ pub unsafe extern "C" fn _decompTest(
     ) == -1i32
     {
         printf(
-            
             b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const c_char,
             tjGetErrorStr(),
         );
         exitStatus = -1i32
     } else if _hdrw != w || _hdrh != h || _hdrsubsamp != subsamp {
         printf(
-            
             b"ERROR: %s\n\x00".as_ptr() as *const c_char,
-            
             b"Incorrect JPEG header\x00".as_ptr() as *const c_char,
         );
         exitStatus = -1i32
     } else {
-          let mut dstSize:   c_ulong =
-     (scaledWidth * scaledHeight * tjPixelSize[pf as usize])
-            as c_ulong;
+        let mut dstSize: c_ulong =
+            (scaledWidth * scaledHeight * tjPixelSize[pf as usize]) as c_ulong;
         dstBuf = malloc(dstSize) as *mut c_uchar;
         if dstBuf.is_null() {
             printf(
-                
                 b"ERROR: %s\n\x00".as_ptr() as *const c_char,
-                
                 b"Memory allocation failure\x00".as_ptr() as *const c_char,
             );
             exitStatus = -1i32
         } else {
-             let mut current_block:  u64;memset(dstBuf as *mut c_void, 0i32, dstSize);
+            let mut current_block: u64;
+            memset(dstBuf as *mut c_void, 0i32, dstSize);
             if doYUV != 0 {
-                let mut yuvSize: c_ulong =
-                    tjBufSizeYUV2(scaledWidth, pad, scaledHeight, subsamp);
-                let mut handle2: tjhandle =
-                    tjInitDecompress();
+                let mut yuvSize: c_ulong = tjBufSizeYUV2(scaledWidth, pad, scaledHeight, subsamp);
+                let mut handle2: tjhandle = tjInitDecompress();
                 if handle2.is_null() {
                     printf(
-                        
                         b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const c_char,
                         tjGetErrorStr(),
                     );
@@ -1522,9 +1226,7 @@ pub unsafe extern "C" fn _decompTest(
                     yuvBuf = malloc(yuvSize) as *mut c_uchar;
                     if yuvBuf.is_null() {
                         printf(
-                            
                             b"ERROR: %s\n\x00".as_ptr() as *const c_char,
-                            
                             b"Memory allocation failure\x00".as_ptr() as *const c_char,
                         );
                         exitStatus = -1i32;
@@ -1532,13 +1234,11 @@ pub unsafe extern "C" fn _decompTest(
                     } else {
                         memset(yuvBuf as *mut c_void, 0i32, yuvSize);
                         printf(
-                            
                             b"JPEG -> YUV %s \x00".as_ptr() as *const c_char,
                             subNameLong[subsamp as usize],
                         );
                         if sf.num != 1i32 || sf.denom != 1i32 {
                             printf(
-                                
                                 b"%d/%d ... \x00".as_ptr() as *const c_char,
                                 sf.num,
                                 sf.denom,
@@ -1558,7 +1258,6 @@ pub unsafe extern "C" fn _decompTest(
                         ) == -1i32
                         {
                             printf(
-                                
                                 b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const c_char,
                                 tjGetErrorStr(),
                             );
@@ -1566,26 +1265,17 @@ pub unsafe extern "C" fn _decompTest(
                             current_block = 14297773496329963019;
                         } else {
                             if checkBufYUV(yuvBuf, scaledWidth, scaledHeight, subsamp, sf) != 0 {
-                                printf(
-                                    
-                                    b"Passed.\n\x00".as_ptr() as *const c_char,
-                                );
+                                printf(b"Passed.\n\x00".as_ptr() as *const c_char);
                             } else {
-                                printf(
-                                    
-                                    b"FAILED!\n\x00".as_ptr() as *const c_char,
-                                );
+                                printf(b"FAILED!\n\x00".as_ptr() as *const c_char);
                             }
                             printf(
-                                
                                 b"YUV %s -> %s %s ... \x00".as_ptr() as *const c_char,
                                 subNameLong[subsamp as usize],
                                 pixFormatStr[pf as usize],
                                 if flags & TJFLAG_BOTTOMUP != 0 {
-                                    
                                     b"Bottom-Up\x00".as_ptr() as *const c_char
                                 } else {
-                                    
                                     b"Top-Down \x00".as_ptr() as *const c_char
                                 },
                             );
@@ -1603,9 +1293,7 @@ pub unsafe extern "C" fn _decompTest(
                             ) == -1i32
                             {
                                 printf(
-                                    
-                                    b"TurboJPEG ERROR:\n%s\n\x00".as_ptr()
-                                        as *const c_char,
+                                    b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const c_char,
                                     tjGetErrorStr(),
                                 );
                                 exitStatus = -1i32;
@@ -1619,20 +1307,16 @@ pub unsafe extern "C" fn _decompTest(
                 }
             } else {
                 printf(
-                    
                     b"JPEG -> %s %s \x00".as_ptr() as *const c_char,
                     pixFormatStr[pf as usize],
                     if flags & TJFLAG_BOTTOMUP != 0 {
-                        
                         b"Bottom-Up\x00".as_ptr() as *const c_char
                     } else {
-                        
                         b"Top-Down \x00".as_ptr() as *const c_char
                     },
                 );
                 if sf.num != 1i32 || sf.denom != 1i32 {
                     printf(
-                        
                         b"%d/%d ... \x00".as_ptr() as *const c_char,
                         sf.num,
                         sf.denom,
@@ -1653,7 +1337,6 @@ pub unsafe extern "C" fn _decompTest(
                 ) == -1i32
                 {
                     printf(
-                        
                         b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const c_char,
                         tjGetErrorStr(),
                     );
@@ -1696,19 +1379,16 @@ pub unsafe extern "C" fn decompTest(
     mut subsamp: c_int,
     mut flags: c_int,
 ) {
-    
-     let mut n:  c_int =  0i32;
-    let mut sf: *mut tjscalingfactor =
-        tjGetScalingFactors(&mut n);
+    let mut n: c_int = 0i32;
+    let mut sf: *mut tjscalingfactor = tjGetScalingFactors(&mut n);
     if sf.is_null() || n == 0 {
         printf(
-            
             b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const c_char,
             tjGetErrorStr(),
         );
         exitStatus = -1i32
     } else {
-          let mut i:   c_int =  0i32;
+        let mut i: c_int = 0i32;
         while i < n {
             if subsamp == TJSAMP_444 as c_int
                 || subsamp == TJSAMP_GRAY as c_int
@@ -1749,14 +1429,12 @@ pub unsafe extern "C" fn doTest(
     mut subsamp: c_int,
     mut basename: *mut c_char,
 ) {
-     let mut current_block:  u64; let mut size:  c_ulong =  0u64;
+    let mut current_block: u64;
+    let mut size: c_ulong = 0u64;
     let mut chandle: tjhandle = NULL as *mut c_void;
     let mut dhandle: tjhandle = NULL as *mut c_void;
     let mut dstBuf: *mut c_uchar = NULL as *mut c_uchar;
-    
-    
-    
-    
+
     if alloc == 0 {
         size = tjBufSize(w, h, subsamp)
     }
@@ -1764,9 +1442,7 @@ pub unsafe extern "C" fn doTest(
         dstBuf = tjAlloc(size as c_int);
         if dstBuf.is_null() {
             printf(
-                
                 b"ERROR: %s\n\x00".as_ptr() as *const c_char,
-                
                 b"Memory allocation failure.\x00".as_ptr() as *const c_char,
             );
             exitStatus = -1i32;
@@ -1785,17 +1461,16 @@ pub unsafe extern "C" fn doTest(
                 dhandle.is_null()
             } {
                 printf(
-                    
                     b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const c_char,
                     tjGetErrorStr(),
                 );
                 exitStatus = -1i32
             } else {
-                  let mut pfi:   c_int =  0i32;
+                let mut pfi: c_int = 0i32;
                 while pfi < nformats {
-                      let mut i:   c_int =  0i32;
+                    let mut i: c_int = 0i32;
                     while i < 2i32 {
-                          let mut flags:  c_int =  0i32;
+                        let mut flags: c_int = 0i32;
                         if subsamp == TJSAMP_422 as c_int
                             || subsamp == TJSAMP_420 as c_int
                             || subsamp == TJSAMP_440 as c_int
@@ -1806,7 +1481,7 @@ pub unsafe extern "C" fn doTest(
                         if i == 1i32 {
                             flags |= TJFLAG_BOTTOMUP
                         }
-                         let mut pf:   c_int =  *formats.offset(pfi as isize);
+                        let mut pf: c_int = *formats.offset(pfi as isize);
                         compTest(
                             chandle,
                             &mut dstBuf,
@@ -1820,9 +1495,7 @@ pub unsafe extern "C" fn doTest(
                             flags,
                         );
                         decompTest(dhandle, dstBuf, size, w, h, pf, basename, subsamp, flags);
-                        if pf >=  TJPF_RGBX
-                            && pf <=  TJPF_XRGB
-                        {
+                        if pf >= TJPF_RGBX && pf <= TJPF_XRGB {
                             printf(b"\n\x00".as_ptr() as *const c_char);
                             decompTest(
                                 dhandle,
@@ -1830,8 +1503,7 @@ pub unsafe extern "C" fn doTest(
                                 size,
                                 w,
                                 h,
-                                pf + (TJPF_RGBA
-                                    -  TJPF_RGBX),
+                                pf + (TJPF_RGBA - TJPF_RGBX),
                                 basename,
                                 subsamp,
                                 flags,
@@ -1842,10 +1514,7 @@ pub unsafe extern "C" fn doTest(
                     }
                     pfi += 1
                 }
-                printf(
-                    
-                    b"--------------------\n\n\x00".as_ptr() as *const c_char,
-                );
+                printf(b"--------------------\n\n\x00".as_ptr() as *const c_char);
             }
         }
         _ => {}
@@ -1863,61 +1532,51 @@ pub unsafe extern "C" fn doTest(
 #[no_mangle]
 
 pub unsafe extern "C" fn bufSizeTest() {
-    
-    
-    
-    
-    
     let mut srcBuf: *mut c_uchar = NULL as *mut c_uchar;
     let mut dstBuf: *mut c_uchar = NULL as *mut c_uchar;
     let mut handle: tjhandle = NULL as *mut c_void;
-    
+
     handle = tjInitCompress();
     if handle.is_null() {
         printf(
-            
             b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const c_char,
             tjGetErrorStr(),
         );
         exitStatus = -1i32
     } else {
-         let mut current_block:  u64; printf(
-            
-            b"Buffer size regression test\n\x00".as_ptr() as *const c_char,
-        );
-         let mut subsamp:   c_int =  0i32;
+        let mut current_block: u64;
+        printf(b"Buffer size regression test\n\x00".as_ptr() as *const c_char);
+        let mut subsamp: c_int = 0i32;
         's_43: loop {
-             if !(subsamp < TJ_NUMSAMP) {
+            if !(subsamp < TJ_NUMSAMP) {
                 current_block = 6040267449472925966;
                 break;
             }
-             let mut w:   c_int =  1i32;
+            let mut w: c_int = 1i32;
             while w < 48i32 {
-                 let mut maxh: c_int = if w == 1i32 { 2048i32 } else { 48i32 };
-                 let mut h:   c_int =  1i32;
+                let mut maxh: c_int = if w == 1i32 { 2048i32 } else { 48i32 };
+                let mut h: c_int = 1i32;
                 while h < maxh {
                     if h % 100i32 == 0i32 {
                         printf(
-                            
-                            b"%.4d x %.4d\x08\x08\x08\x08\x08\x08\x08\x08\x08\x08\x08\x00".as_ptr() as *const c_char,
+                            b"%.4d x %.4d\x08\x08\x08\x08\x08\x08\x08\x08\x08\x08\x08\x00".as_ptr()
+                                as *const c_char,
                             w,
                             h,
                         );
                     }
-                    srcBuf = malloc((w * h * 4i32) as c_ulong)
-                        as *mut c_uchar;
+                    srcBuf = malloc((w * h * 4i32) as c_ulong) as *mut c_uchar;
                     if srcBuf.is_null() {
                         printf(
-                            
                             b"ERROR: %s\n\x00".as_ptr() as *const c_char,
-                            
                             b"Memory allocation failure\x00".as_ptr() as *const c_char,
                         );
                         exitStatus = -1i32;
                         current_block = 17868673386502678986;
                         break 's_43;
                     } else {
-                          let mut dstSize:  c_ulong =  0u64;if alloc == 0 || doYUV != 0 {
+                        let mut dstSize: c_ulong = 0u64;
+                        if alloc == 0 || doYUV != 0 {
                             if doYUV != 0 {
                                 dstSize = tjBufSizeYUV2(w, pad, h, subsamp)
                             } else {
@@ -1926,22 +1585,17 @@ pub unsafe extern "C" fn bufSizeTest() {
                             dstBuf = tjAlloc(dstSize as c_int);
                             if dstBuf.is_null() {
                                 printf(
-                                    
                                     b"ERROR: %s\n\x00".as_ptr() as *const c_char,
-                                    
-                                    b"Memory allocation failure\x00".as_ptr()
-                                        as *const c_char,
+                                    b"Memory allocation failure\x00".as_ptr() as *const c_char,
                                 );
                                 exitStatus = -1i32;
                                 current_block = 17868673386502678986;
                                 break 's_43;
                             }
                         }
-                         let mut i:   c_int =  0i32;
+                        let mut i: c_int = 0i32;
                         while i < w * h * 4i32 {
-                            if random()
-                                < (RAND_MAX / 2i32) as c_long
-                            {
+                            if random() < (RAND_MAX / 2i32) as c_long {
                                 *srcBuf.offset(i as isize) = 0u8
                             } else {
                                 *srcBuf.offset(i as isize) = 255u8
@@ -1950,23 +1604,11 @@ pub unsafe extern "C" fn bufSizeTest() {
                         }
                         if doYUV != 0 {
                             if tjEncodeYUV3(
-                                handle,
-                                srcBuf,
-                                w,
-                                0i32,
-                                h,
-                                
-                                TJPF_BGRX,
-                                dstBuf,
-                                pad,
-                                subsamp,
-                                0i32,
+                                handle, srcBuf, w, 0i32, h, TJPF_BGRX, dstBuf, pad, subsamp, 0i32,
                             ) == -1i32
                             {
                                 printf(
-                                    
-                                    b"TurboJPEG ERROR:\n%s\n\x00".as_ptr()
-                                        as *const c_char,
+                                    b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const c_char,
                                     tjGetErrorStr(),
                                 );
                                 exitStatus = -1i32;
@@ -1979,7 +1621,6 @@ pub unsafe extern "C" fn bufSizeTest() {
                             w,
                             0i32,
                             h,
-                            
                             TJPF_BGRX,
                             &mut dstBuf,
                             &mut dstSize,
@@ -1989,7 +1630,6 @@ pub unsafe extern "C" fn bufSizeTest() {
                         ) == -1i32
                         {
                             printf(
-                                
                                 b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const c_char,
                                 tjGetErrorStr(),
                             );
@@ -2003,15 +1643,11 @@ pub unsafe extern "C" fn bufSizeTest() {
                             tjFree(dstBuf);
                             dstBuf = NULL as *mut c_uchar
                         }
-                        srcBuf = malloc((h * w * 4i32) as c_ulong)
-                            as *mut c_uchar;
+                        srcBuf = malloc((h * w * 4i32) as c_ulong) as *mut c_uchar;
                         if srcBuf.is_null() {
                             printf(
-                                
                                 b"ERROR: %s\n\x00".as_ptr() as *const c_char,
-                                
-                                b"Memory allocation failure\x00".as_ptr()
-                                    as *const c_char,
+                                b"Memory allocation failure\x00".as_ptr() as *const c_char,
                             );
                             exitStatus = -1i32;
                             current_block = 17868673386502678986;
@@ -2019,19 +1655,15 @@ pub unsafe extern "C" fn bufSizeTest() {
                         } else {
                             if alloc == 0 || doYUV != 0 {
                                 if doYUV != 0 {
-                                    dstSize =
-                                        tjBufSizeYUV2(h, pad, w, subsamp)
+                                    dstSize = tjBufSizeYUV2(h, pad, w, subsamp)
                                 } else {
                                     dstSize = tjBufSize(h, w, subsamp)
                                 }
                                 dstBuf = tjAlloc(dstSize as c_int);
                                 if dstBuf.is_null() {
                                     printf(
-                                        
                                         b"ERROR: %s\n\x00".as_ptr() as *const c_char,
-                                        
-                                        b"Memory allocation failure\x00".as_ptr()
-                                            as *const c_char,
+                                        b"Memory allocation failure\x00".as_ptr() as *const c_char,
                                     );
                                     exitStatus = -1i32;
                                     current_block = 17868673386502678986;
@@ -2040,9 +1672,7 @@ pub unsafe extern "C" fn bufSizeTest() {
                             }
                             i = 0i32;
                             while i < h * w * 4i32 {
-                                if random()
-                                    < (RAND_MAX / 2i32) as c_long
-                                {
+                                if random() < (RAND_MAX / 2i32) as c_long {
                                     *srcBuf.offset(i as isize) = 0u8
                                 } else {
                                     *srcBuf.offset(i as isize) = 255u8
@@ -2051,23 +1681,12 @@ pub unsafe extern "C" fn bufSizeTest() {
                             }
                             if doYUV != 0 {
                                 if tjEncodeYUV3(
-                                    handle,
-                                    srcBuf,
-                                    h,
-                                    0i32,
-                                    w,
-                                    
-                                    TJPF_BGRX,
-                                    dstBuf,
-                                    pad,
-                                    subsamp,
+                                    handle, srcBuf, h, 0i32, w, TJPF_BGRX, dstBuf, pad, subsamp,
                                     0i32,
                                 ) == -1i32
                                 {
                                     printf(
-                                        
-                                        b"TurboJPEG ERROR:\n%s\n\x00".as_ptr()
-                                            as *const c_char,
+                                        b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const c_char,
                                         tjGetErrorStr(),
                                     );
                                     exitStatus = -1i32;
@@ -2080,7 +1699,6 @@ pub unsafe extern "C" fn bufSizeTest() {
                                 h,
                                 0i32,
                                 w,
-                                
                                 TJPF_BGRX,
                                 &mut dstBuf,
                                 &mut dstSize,
@@ -2090,9 +1708,7 @@ pub unsafe extern "C" fn bufSizeTest() {
                             ) == -1i32
                             {
                                 printf(
-                                    
-                                    b"TurboJPEG ERROR:\n%s\n\x00".as_ptr()
-                                        as *const c_char,
+                                    b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const c_char,
                                     tjGetErrorStr(),
                                 );
                                 exitStatus = -1i32;
@@ -2140,34 +1756,31 @@ pub unsafe extern "C" fn initBitmap(
     mut pf: c_int,
     mut flags: c_int,
 ) {
-     let mut roffset: c_int = tjRedOffset[pf as usize];
+    let mut roffset: c_int = tjRedOffset[pf as usize];
     let mut goffset: c_int = tjGreenOffset[pf as usize];
     let mut boffset: c_int = tjBlueOffset[pf as usize];
     let mut ps: c_int = tjPixelSize[pf as usize];
-    
-    
-     let mut j:   c_int =  0i32;
+
+    let mut j: c_int = 0i32;
     while j < height {
-         let mut row: c_int = if flags & TJFLAG_BOTTOMUP != 0 {
+        let mut row: c_int = if flags & TJFLAG_BOTTOMUP != 0 {
             (height - j) - 1i32
         } else {
             j
         };
-         let mut i:   c_int =  0i32;
+        let mut i: c_int = 0i32;
         while i < width {
             let mut r: c_uchar = (i * 256i32 / width % 256i32) as c_uchar;
             let mut g: c_uchar = (j * 256i32 / height % 256i32) as c_uchar;
-            let mut b: c_uchar =
-                ((j * 256i32 / height + i * 256i32 / width) % 256i32) as c_uchar;
+            let mut b: c_uchar = ((j * 256i32 / height + i * 256i32 / width) % 256i32) as c_uchar;
             memset(
-                &mut *buf.offset((row * pitch + i * ps) as isize) as *mut c_uchar
-                    as *mut c_void,
+                &mut *buf.offset((row * pitch + i * ps) as isize) as *mut c_uchar as *mut c_void,
                 0i32,
                 ps as c_ulong,
             );
-            if pf ==  TJPF_GRAY {
+            if pf == TJPF_GRAY {
                 *buf.offset((row * pitch + i * ps) as isize) = b
-            } else if pf ==  TJPF_CMYK {
+            } else if pf == TJPF_CMYK {
                 rgb_to_cmyk(
                     r,
                     g,
@@ -2198,34 +1811,32 @@ pub unsafe extern "C" fn cmpBitmap(
     mut flags: c_int,
     mut gray2rgb: c_int,
 ) -> c_int {
-     let mut roffset: c_int = tjRedOffset[pf as usize];
+    let mut roffset: c_int = tjRedOffset[pf as usize];
     let mut goffset: c_int = tjGreenOffset[pf as usize];
     let mut boffset: c_int = tjBlueOffset[pf as usize];
     let mut aoffset: c_int = tjAlphaOffset[pf as usize];
     let mut ps: c_int = tjPixelSize[pf as usize];
-    
-    
-     let mut j:   c_int =  0i32;
+
+    let mut j: c_int = 0i32;
     while j < height {
-         let mut row: c_int = if flags & TJFLAG_BOTTOMUP != 0 {
+        let mut row: c_int = if flags & TJFLAG_BOTTOMUP != 0 {
             (height - j) - 1i32
         } else {
             j
         };
-         let mut i:   c_int =  0i32;
+        let mut i: c_int = 0i32;
         while i < width {
             let mut r: c_uchar = (i * 256i32 / width % 256i32) as c_uchar;
             let mut g: c_uchar = (j * 256i32 / height % 256i32) as c_uchar;
-            let mut b: c_uchar =
-                ((j * 256i32 / height + i * 256i32 / width) % 256i32) as c_uchar;
-            if pf ==  TJPF_GRAY {
+            let mut b: c_uchar = ((j * 256i32 / height + i * 256i32 / width) % 256i32) as c_uchar;
+            if pf == TJPF_GRAY {
                 if *buf.offset((row * pitch + i * ps) as isize) as c_int != b as c_int {
                     return 0i32;
                 }
-            } else if pf ==  TJPF_CMYK {
-                
-                
-                 let mut rf:  c_uchar =  0; let mut gf:  c_uchar =  0; let mut bf:  c_uchar =  0;
+            } else if pf == TJPF_CMYK {
+                let mut rf: c_uchar = 0;
+                let mut gf: c_uchar = 0;
+                let mut bf: c_uchar = 0;
                 cmyk_to_rgb(
                     *buf.offset((row * pitch + i * ps + 0i32) as isize),
                     *buf.offset((row * pitch + i * ps + 1i32) as isize),
@@ -2250,8 +1861,7 @@ pub unsafe extern "C" fn cmpBitmap(
                 }
             } else {
                 if gray2rgb != 0 {
-                    if *buf.offset((row * pitch + i * ps + roffset) as isize) as c_int
-                        != b as c_int
+                    if *buf.offset((row * pitch + i * ps + roffset) as isize) as c_int != b as c_int
                         || *buf.offset((row * pitch + i * ps + goffset) as isize) as c_int
                             != b as c_int
                         || *buf.offset((row * pitch + i * ps + boffset) as isize) as c_int
@@ -2261,16 +1871,13 @@ pub unsafe extern "C" fn cmpBitmap(
                     }
                 } else if *buf.offset((row * pitch + i * ps + roffset) as isize) as c_int
                     != r as c_int
-                    || *buf.offset((row * pitch + i * ps + goffset) as isize) as c_int
-                        != g as c_int
-                    || *buf.offset((row * pitch + i * ps + boffset) as isize) as c_int
-                        != b as c_int
+                    || *buf.offset((row * pitch + i * ps + goffset) as isize) as c_int != g as c_int
+                    || *buf.offset((row * pitch + i * ps + boffset) as isize) as c_int != b as c_int
                 {
                     return 0i32;
                 }
                 if aoffset >= 0i32
-                    && *buf.offset((row * pitch + i * ps + aoffset) as isize) as c_int
-                        != 0xffi32
+                    && *buf.offset((row * pitch + i * ps + aoffset) as isize) as c_int != 0xffi32
                 {
                     return 0i32;
                 }
@@ -2291,95 +1898,71 @@ pub unsafe extern "C" fn doBmpTest(
     mut pf: c_int,
     mut flags: c_int,
 ) -> c_int {
-    
-    
-    
-     let mut retval:  c_int =  0i32; let mut md5ref:  *mut c_char =  ::std::ptr::null_mut::< c_char>();
+    let mut retval: c_int = 0i32;
+    let mut md5ref: *mut c_char = ::std::ptr::null_mut::<c_char>();
     let mut ps: c_int = tjPixelSize[pf as usize];
     let mut pitch: c_int = width * ps + align - 1i32 & !(align - 1i32);
-    
-    
-    
+
     let mut pixelFormat: c_int = pf;
     let mut buf: *mut c_uchar = NULL as *mut c_uchar;
-    
-    if pf ==  TJPF_GRAY {
-        md5ref =
-            if strcasecmp(ext,  b"ppm\x00".as_ptr() as *const c_char) == 0 {
-                
-                b"112c682e82ce5de1cca089e20d60000b\x00".as_ptr() as *const c_char
-            } else {
-                
-                b"51976530acf75f02beddf5d21149101d\x00".as_ptr() as *const c_char
-            } as *mut c_char
+
+    if pf == TJPF_GRAY {
+        md5ref = if strcasecmp(ext, b"ppm\x00".as_ptr() as *const c_char) == 0 {
+            b"112c682e82ce5de1cca089e20d60000b\x00".as_ptr() as *const c_char
+        } else {
+            b"51976530acf75f02beddf5d21149101d\x00".as_ptr() as *const c_char
+        } as *mut c_char
     } else {
-        md5ref =
-            if strcasecmp(ext,  b"ppm\x00".as_ptr() as *const c_char) == 0 {
-                
-                b"c0c9f772b464d1896326883a5c79c545\x00".as_ptr() as *const c_char
-            } else {
-                
-                b"6d659071b9bfcdee2def22cb58ddadca\x00".as_ptr() as *const c_char
-            } as *mut c_char
+        md5ref = if strcasecmp(ext, b"ppm\x00".as_ptr() as *const c_char) == 0 {
+            b"c0c9f772b464d1896326883a5c79c545\x00".as_ptr() as *const c_char
+        } else {
+            b"6d659071b9bfcdee2def22cb58ddadca\x00".as_ptr() as *const c_char
+        } as *mut c_char
     }
     buf = tjAlloc(pitch * height);
     if buf.is_null() {
         printf(
-            
             b"ERROR: %s\n\x00".as_ptr() as *const c_char,
-            
             b"Could not allocate memory\x00".as_ptr() as *const c_char,
         );
         exitStatus = -1i32
     } else {
-         let mut filename:  [c_char; 80] =  [0; 80];initBitmap(buf, width, pitch, height, pf, flags);
+        let mut filename: [c_char; 80] = [0; 80];
+        initBitmap(buf, width, pitch, height, pf, flags);
         snprintf(
             filename.as_mut_ptr(),
             80u64,
-            
             b"test_bmp_%s_%d_%s.%s\x00".as_ptr() as *const c_char,
             pixFormatStr[pf as usize],
             align,
             if flags & TJFLAG_BOTTOMUP != 0 {
-                
                 b"bu\x00".as_ptr() as *const c_char
             } else {
-                
                 b"td\x00".as_ptr() as *const c_char
             },
             ext,
         );
-        if tjSaveImage(
-            filename.as_mut_ptr(),
-            buf,
-            width,
-            pitch,
-            height,
-            pf,
-            flags,
-        ) == -1i32
-        {
+        if tjSaveImage(filename.as_mut_ptr(), buf, width, pitch, height, pf, flags) == -1i32 {
             printf(
-                
                 b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const c_char,
                 tjGetErrorStr(),
             );
             exitStatus = -1i32
         } else {
-              let mut md5buf:  [c_char; 65] =  [0; 65]; let mut md5sum:   *mut c_char =
-     MD5File(filename.as_mut_ptr(), md5buf.as_mut_ptr());
+            let mut md5buf: [c_char; 65] = [0; 65];
+            let mut md5sum: *mut c_char = MD5File(filename.as_mut_ptr(), md5buf.as_mut_ptr());
             if strcasecmp(md5sum, md5ref) != 0 {
                 printf(
-                    
-                    b"\n%s has an MD5 sum of %s.\n   Should be %s.\n\x00".as_ptr()
-                        as *const c_char,
+                    b"\n%s has an MD5 sum of %s.\n   Should be %s.\n\x00".as_ptr() as *const c_char,
                     filename.as_mut_ptr(),
                     md5sum,
                     md5ref,
                 );
                 exitStatus = -1i32
             } else {
-                 let mut loadWidth:  c_int =  0i32; let mut loadHeight:  c_int =  0i32;tjFree(buf);
+                let mut loadWidth: c_int = 0i32;
+                let mut loadHeight: c_int = 0i32;
+                tjFree(buf);
                 buf = NULL as *mut c_uchar;
                 buf = tjLoadImage(
                     filename.as_mut_ptr(),
@@ -2391,31 +1974,28 @@ pub unsafe extern "C" fn doBmpTest(
                 );
                 if buf.is_null() {
                     printf(
-                        
                         b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const c_char,
                         tjGetErrorStr(),
                     );
                     exitStatus = -1i32
                 } else if width != loadWidth || height != loadHeight {
                     printf(
-                        
-                        b"\n   Image dimensions of %s are bogus\n\x00".as_ptr()
-                            as *const c_char,
+                        b"\n   Image dimensions of %s are bogus\n\x00".as_ptr() as *const c_char,
                         filename.as_mut_ptr(),
                     );
                     retval = -1i32
                 } else if cmpBitmap(buf, width, pitch, height, pf, flags, 0i32) == 0 {
                     printf(
-                        
                         b"\n   Pixel data in %s is bogus\n\x00".as_ptr() as *const c_char,
                         filename.as_mut_ptr(),
                     );
                     retval = -1i32
                 } else {
-                     let mut current_block:  u64;if pf ==  TJPF_GRAY {
+                    let mut current_block: u64;
+                    if pf == TJPF_GRAY {
                         tjFree(buf);
                         buf = NULL as *mut c_uchar;
-                        pf =  TJPF_XBGR;
+                        pf = TJPF_XBGR;
                         buf = tjLoadImage(
                             filename.as_mut_ptr(),
                             &mut loadWidth,
@@ -2426,19 +2006,16 @@ pub unsafe extern "C" fn doBmpTest(
                         );
                         if buf.is_null() {
                             printf(
-                                
                                 b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const c_char,
                                 tjGetErrorStr(),
                             );
                             exitStatus = -1i32;
                             current_block = 14417489546151714667;
                         } else {
-                            pitch = width * tjPixelSize[pf as usize] + align
-                                - 1i32
-                                & !(align - 1i32);
+                            pitch =
+                                width * tjPixelSize[pf as usize] + align - 1i32 & !(align - 1i32);
                             if cmpBitmap(buf, width, pitch, height, pf, flags, 1i32) == 0 {
                                 printf(
-                                    
                                     b"\n   Converting %s to RGB failed\n\x00".as_ptr()
                                         as *const c_char,
                                     filename.as_mut_ptr(),
@@ -2448,7 +2025,7 @@ pub unsafe extern "C" fn doBmpTest(
                             } else {
                                 tjFree(buf);
                                 buf = NULL as *mut c_uchar;
-                                pf =  TJPF_CMYK;
+                                pf = TJPF_CMYK;
                                 buf = tjLoadImage(
                                     filename.as_mut_ptr(),
                                     &mut loadWidth,
@@ -2459,21 +2036,16 @@ pub unsafe extern "C" fn doBmpTest(
                                 );
                                 if buf.is_null() {
                                     printf(
-                                        
-                                        b"TurboJPEG ERROR:\n%s\n\x00".as_ptr()
-                                            as *const c_char,
+                                        b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const c_char,
                                         tjGetErrorStr(),
                                     );
                                     exitStatus = -1i32;
                                     current_block = 14417489546151714667;
                                 } else {
-                                    pitch = width * tjPixelSize[pf as usize]
-                                        + align
-                                        - 1i32
+                                    pitch = width * tjPixelSize[pf as usize] + align - 1i32
                                         & !(align - 1i32);
                                     if cmpBitmap(buf, width, pitch, height, pf, flags, 1i32) == 0 {
                                         printf(
-                                            
                                             b"\n   Converting %s to CMYK failed\n\x00".as_ptr()
                                                 as *const c_char,
                                             filename.as_mut_ptr(),
@@ -2497,7 +2069,7 @@ pub unsafe extern "C" fn doBmpTest(
                             tjFree(buf);
                             buf = NULL as *mut c_uchar;
                             pf = pixelFormat;
-                            pixelFormat =  TJPF_UNKNOWN;
+                            pixelFormat = TJPF_UNKNOWN;
                             buf = tjLoadImage(
                                 filename.as_mut_ptr(),
                                 &mut loadWidth,
@@ -2508,32 +2080,20 @@ pub unsafe extern "C" fn doBmpTest(
                             );
                             if buf.is_null() {
                                 printf(
-                                    
-                                    b"TurboJPEG ERROR:\n%s\n\x00".as_ptr()
-                                        as *const c_char,
+                                    b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const c_char,
                                     tjGetErrorStr(),
                                 );
                                 exitStatus = -1i32
                             } else {
-                                if pf ==  TJPF_GRAY
-                                    && pixelFormat
-                                        !=  TJPF_GRAY
-                                    || pf !=  TJPF_GRAY
-                                        && strcasecmp(
-                                            ext,
-                                            
-                                            b"bmp\x00".as_ptr() as *const c_char,
-                                        ) == 0
-                                        && pixelFormat
-                                            !=  TJPF_BGR
-                                    || pf !=  TJPF_GRAY
-                                        && strcasecmp(
-                                            ext,
-                                            
-                                            b"ppm\x00".as_ptr() as *const c_char,
-                                        ) == 0
-                                        && pixelFormat
-                                            !=  TJPF_RGB
+                                if pf == TJPF_GRAY && pixelFormat != TJPF_GRAY
+                                    || pf != TJPF_GRAY
+                                        && strcasecmp(ext, b"bmp\x00".as_ptr() as *const c_char)
+                                            == 0
+                                        && pixelFormat != TJPF_BGR
+                                    || pf != TJPF_GRAY
+                                        && strcasecmp(ext, b"ppm\x00".as_ptr() as *const c_char)
+                                            == 0
+                                        && pixelFormat != TJPF_RGB
                                 {
                                     printf(b"\n   tjLoadImage() returned unexpected pixel format: %s\n\x00".as_ptr() as
                                                *const c_char,
@@ -2560,23 +2120,18 @@ pub unsafe extern "C" fn doBmpTest(
 #[no_mangle]
 
 pub unsafe extern "C" fn bmpTest() -> c_int {
-    
-    
-    
-     
-     let mut align:   c_int =  1i32;
+    let mut align: c_int = 1i32;
     while align <= 8i32 {
-          let mut format:   c_int =  0i32;
+        let mut format: c_int = 0i32;
         while format < TJ_NUMPF {
-             let mut width:  c_int =  35i32; let mut height:  c_int =  39i32;printf(
-                
-                b"%s Top-Down BMP (row alignment = %d bytes)  ...  \x00".as_ptr()
-                    as *const c_char,
+            let mut width: c_int = 35i32;
+            let mut height: c_int = 39i32;
+            printf(
+                b"%s Top-Down BMP (row alignment = %d bytes)  ...  \x00".as_ptr() as *const c_char,
                 pixFormatStr[format as usize],
                 align,
             );
             if doBmpTest(
-                
                 b"bmp\x00".as_ptr() as *const c_char,
                 width,
                 align,
@@ -2589,14 +2144,11 @@ pub unsafe extern "C" fn bmpTest() -> c_int {
             }
             printf(b"OK.\n\x00".as_ptr() as *const c_char);
             printf(
-                
-                b"%s Top-Down PPM (row alignment = %d bytes)  ...  \x00".as_ptr()
-                    as *const c_char,
+                b"%s Top-Down PPM (row alignment = %d bytes)  ...  \x00".as_ptr() as *const c_char,
                 pixFormatStr[format as usize],
                 align,
             );
             if doBmpTest(
-                
                 b"ppm\x00".as_ptr() as *const c_char,
                 width,
                 align,
@@ -2609,14 +2161,11 @@ pub unsafe extern "C" fn bmpTest() -> c_int {
             }
             printf(b"OK.\n\x00".as_ptr() as *const c_char);
             printf(
-                
-                b"%s Bottom-Up BMP (row alignment = %d bytes)  ...  \x00".as_ptr()
-                    as *const c_char,
+                b"%s Bottom-Up BMP (row alignment = %d bytes)  ...  \x00".as_ptr() as *const c_char,
                 pixFormatStr[format as usize],
                 align,
             );
             if doBmpTest(
-                
                 b"bmp\x00".as_ptr() as *const c_char,
                 width,
                 align,
@@ -2629,14 +2178,11 @@ pub unsafe extern "C" fn bmpTest() -> c_int {
             }
             printf(b"OK.\n\x00".as_ptr() as *const c_char);
             printf(
-                
-                b"%s Bottom-Up PPM (row alignment = %d bytes)  ...  \x00".as_ptr()
-                    as *const c_char,
+                b"%s Bottom-Up PPM (row alignment = %d bytes)  ...  \x00".as_ptr() as *const c_char,
                 pixFormatStr[format as usize],
                 align,
             );
             if doBmpTest(
-                
                 b"ppm\x00".as_ptr() as *const c_char,
                 width,
                 align,
@@ -2656,35 +2202,30 @@ pub unsafe extern "C" fn bmpTest() -> c_int {
 }
 
 unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
-    
-     let mut num4bf:  c_int =  5i32;
+    let mut num4bf: c_int = 5i32;
     if argc > 1i32 {
-          let mut i:   c_int =  1i32;
+        let mut i: c_int = 1i32;
         while i < argc {
             if strcasecmp(
                 *argv.offset(i as isize),
-                
                 b"-yuv\x00".as_ptr() as *const c_char,
             ) == 0
             {
                 doYUV = 1i32
             } else if strcasecmp(
                 *argv.offset(i as isize),
-                
                 b"-noyuvpad\x00".as_ptr() as *const c_char,
             ) == 0
             {
                 pad = 1i32
             } else if strcasecmp(
                 *argv.offset(i as isize),
-                
                 b"-alloc\x00".as_ptr() as *const c_char,
             ) == 0
             {
                 alloc = 1i32
             } else if strcasecmp(
                 *argv.offset(i as isize),
-                
                 b"-bmp\x00".as_ptr() as *const c_char,
             ) == 0
             {
@@ -2696,10 +2237,7 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
         }
     }
     if alloc != 0 {
-        printf(
-            
-            b"Testing automatic buffer allocation\n\x00".as_ptr() as *const c_char,
-        );
+        printf(b"Testing automatic buffer allocation\n\x00".as_ptr() as *const c_char);
     }
     if doYUV != 0 {
         num4bf = 4i32
@@ -2710,9 +2248,6 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
         _3byteFormats.as_ptr(),
         2i32,
         TJSAMP_444 as c_int,
-        
-        
-        
         b"test\x00".as_ptr() as *mut c_char,
     );
     doTest(
@@ -2721,9 +2256,6 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
         _4byteFormats.as_ptr(),
         num4bf,
         TJSAMP_444 as c_int,
-        
-        
-        
         b"test\x00".as_ptr() as *mut c_char,
     );
     doTest(
@@ -2732,9 +2264,6 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
         _3byteFormats.as_ptr(),
         2i32,
         TJSAMP_422 as c_int,
-        
-        
-        
         b"test\x00".as_ptr() as *mut c_char,
     );
     doTest(
@@ -2743,9 +2272,6 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
         _4byteFormats.as_ptr(),
         num4bf,
         TJSAMP_422 as c_int,
-        
-        
-        
         b"test\x00".as_ptr() as *mut c_char,
     );
     doTest(
@@ -2754,9 +2280,6 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
         _3byteFormats.as_ptr(),
         2i32,
         TJSAMP_420 as c_int,
-        
-        
-        
         b"test\x00".as_ptr() as *mut c_char,
     );
     doTest(
@@ -2765,9 +2288,6 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
         _4byteFormats.as_ptr(),
         num4bf,
         TJSAMP_420 as c_int,
-        
-        
-        
         b"test\x00".as_ptr() as *mut c_char,
     );
     doTest(
@@ -2776,9 +2296,6 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
         _3byteFormats.as_ptr(),
         2i32,
         TJSAMP_440 as c_int,
-        
-        
-        
         b"test\x00".as_ptr() as *mut c_char,
     );
     doTest(
@@ -2787,9 +2304,6 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
         _4byteFormats.as_ptr(),
         num4bf,
         TJSAMP_440 as c_int,
-        
-        
-        
         b"test\x00".as_ptr() as *mut c_char,
     );
     doTest(
@@ -2798,9 +2312,6 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
         _3byteFormats.as_ptr(),
         2i32,
         TJSAMP_411 as c_int,
-        
-        
-        
         b"test\x00".as_ptr() as *mut c_char,
     );
     doTest(
@@ -2809,9 +2320,6 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
         _4byteFormats.as_ptr(),
         num4bf,
         TJSAMP_411 as c_int,
-        
-        
-        
         b"test\x00".as_ptr() as *mut c_char,
     );
     doTest(
@@ -2820,9 +2328,6 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
         _onlyGray.as_ptr(),
         1i32,
         TJSAMP_GRAY as c_int,
-        
-        
-        
         b"test\x00".as_ptr() as *mut c_char,
     );
     doTest(
@@ -2831,9 +2336,6 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
         _3byteFormats.as_ptr(),
         2i32,
         TJSAMP_GRAY as c_int,
-        
-        
-        
         b"test\x00".as_ptr() as *mut c_char,
     );
     doTest(
@@ -2842,26 +2344,17 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
         _4byteFormats.as_ptr(),
         4i32,
         TJSAMP_GRAY as c_int,
-        
-        
-        
         b"test\x00".as_ptr() as *mut c_char,
     );
     bufSizeTest();
     if doYUV != 0 {
-        printf(
-            
-            b"\n--------------------\n\n\x00".as_ptr() as *const c_char,
-        );
+        printf(b"\n--------------------\n\n\x00".as_ptr() as *const c_char);
         doTest(
             48i32,
             48i32,
             _onlyRGB.as_ptr(),
             1i32,
             TJSAMP_444 as c_int,
-            
-            
-            
             b"test_yuv0\x00".as_ptr() as *mut c_char,
         );
         doTest(
@@ -2870,9 +2363,6 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
             _onlyRGB.as_ptr(),
             1i32,
             TJSAMP_422 as c_int,
-            
-            
-            
             b"test_yuv0\x00".as_ptr() as *mut c_char,
         );
         doTest(
@@ -2881,9 +2371,6 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
             _onlyRGB.as_ptr(),
             1i32,
             TJSAMP_420 as c_int,
-            
-            
-            
             b"test_yuv0\x00".as_ptr() as *mut c_char,
         );
         doTest(
@@ -2892,9 +2379,6 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
             _onlyRGB.as_ptr(),
             1i32,
             TJSAMP_440 as c_int,
-            
-            
-            
             b"test_yuv0\x00".as_ptr() as *mut c_char,
         );
         doTest(
@@ -2903,9 +2387,6 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
             _onlyRGB.as_ptr(),
             1i32,
             TJSAMP_411 as c_int,
-            
-            
-            
             b"test_yuv0\x00".as_ptr() as *mut c_char,
         );
         doTest(
@@ -2914,9 +2395,6 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
             _onlyRGB.as_ptr(),
             1i32,
             TJSAMP_GRAY as c_int,
-            
-            
-            
             b"test_yuv0\x00".as_ptr() as *mut c_char,
         );
         doTest(
@@ -2925,9 +2403,6 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
             _onlyGray.as_ptr(),
             1i32,
             TJSAMP_GRAY as c_int,
-            
-            
-            
             b"test_yuv0\x00".as_ptr() as *mut c_char,
         );
     }
@@ -2935,7 +2410,7 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
 }
 #[main]
 pub fn main() {
-     let mut args:  Vec<*mut c_char> =  Vec::new();
+    let mut args: Vec<*mut c_char> = Vec::new();
     for arg in ::std::env::args() {
         args.push(
             ::std::ffi::CString::new(arg)
@@ -2944,11 +2419,5 @@ pub fn main() {
         );
     }
     args.push(::std::ptr::null_mut());
-    unsafe {
-        ::std::process::exit(main_0(
-            (args.len() - 1) as c_int,
-            
-            args.as_mut_ptr(),
-        ))
-    }
+    unsafe { ::std::process::exit(main_0((args.len() - 1) as c_int, args.as_mut_ptr())) }
 }

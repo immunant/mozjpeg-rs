@@ -1,5 +1,5 @@
-use libc::{c_int, c_ulong, c_float, c_long, c_schar, c_uint, c_void, c_ushort,
-           c_double, c_char};extern "C" {
+use libc::{c_char, c_double, c_float, c_int, c_long, c_schar, c_uint, c_ulong, c_ushort, c_void};
+extern "C" {
     #[no_mangle]
     pub fn __ctype_b_loc() -> *mut *const c_ushort;
 
@@ -52,12 +52,7 @@ use libc::{c_int, c_ulong, c_float, c_long, c_schar, c_uint, c_void, c_ushort,
     pub fn feof(__stream: *mut FILE) -> c_int;
 
     #[no_mangle]
-    pub fn snprintf(
-        _: *mut c_char,
-        _: c_ulong,
-        _: *const c_char,
-        _: ...
-    ) -> c_int;
+    pub fn snprintf(_: *mut c_char, _: c_ulong, _: *const c_char, _: ...) -> c_int;
 
     #[no_mangle]
     pub fn puts(__s: *const c_char) -> c_int;
@@ -84,19 +79,10 @@ use libc::{c_int, c_ulong, c_float, c_long, c_schar, c_uint, c_void, c_ushort,
     pub fn ungetc(__c: c_int, __stream: *mut FILE) -> c_int;
 
     #[no_mangle]
-    pub fn fread(
-        _: *mut c_void,
-        _: c_ulong,
-        _: c_ulong,
-        _: *mut FILE,
-    ) -> c_ulong;
+    pub fn fread(_: *mut c_void, _: c_ulong, _: c_ulong, _: *mut FILE) -> c_ulong;
 
     #[no_mangle]
-    pub fn fseek(
-        __stream: *mut FILE,
-        __off: c_long,
-        __whence: c_int,
-    ) -> c_int;
+    pub fn fseek(__stream: *mut FILE, __off: c_long, __whence: c_int) -> c_int;
 
     #[no_mangle]
     pub fn ftell(__stream: *mut FILE) -> c_long;
@@ -105,12 +91,7 @@ use libc::{c_int, c_ulong, c_float, c_long, c_schar, c_uint, c_void, c_ushort,
     pub fn putc(__c: c_int, __stream: *mut FILE) -> c_int;
 
     #[no_mangle]
-    pub fn fwrite(
-        _: *const c_void,
-        _: c_ulong,
-        _: c_ulong,
-        _: *mut FILE,
-    ) -> c_ulong;
+    pub fn fwrite(_: *const c_void, _: c_ulong, _: c_ulong, _: *mut FILE) -> c_ulong;
 
     #[no_mangle]
     pub fn ferror(__stream: *mut FILE) -> c_int;
@@ -124,11 +105,7 @@ use libc::{c_int, c_ulong, c_float, c_long, c_schar, c_uint, c_void, c_ushort,
     pub fn strtod(_: *const c_char, _: *mut *mut c_char) -> c_double;
 
     #[no_mangle]
-    pub fn strtol(
-        _: *const c_char,
-        _: *mut *mut c_char,
-        _: c_int,
-    ) -> c_long;
+    pub fn strtol(_: *const c_char, _: *mut *mut c_char, _: c_int) -> c_long;
 
     #[no_mangle]
     pub fn malloc(_: c_ulong) -> *mut c_void;
@@ -163,25 +140,16 @@ use libc::{c_int, c_ulong, c_float, c_long, c_schar, c_uint, c_void, c_ushort,
     pub fn memset(_: *mut c_void, _: c_int, _: c_ulong) -> *mut c_void;
 
     #[no_mangle]
-    pub fn memcpy(
-        _: *mut c_void,
-        _: *const c_void,
-        _: c_ulong,
-    ) -> *mut c_void;
+    pub fn memcpy(_: *mut c_void, _: *const c_void, _: c_ulong) -> *mut c_void;
 
     #[no_mangle]
     pub fn strlen(_: *const c_char) -> c_ulong;
 
     #[no_mangle]
-    pub fn strncpy(
-        _: *mut c_char,
-        _: *const c_char,
-        _: c_ulong,
-    ) -> *mut c_char;
+    pub fn strncpy(_: *mut c_char, _: *const c_char, _: c_ulong) -> *mut c_char;
 
     #[no_mangle]
-    pub fn strncmp(_: *const c_char, _: *const c_char, _: c_ulong)
-        -> c_int;
+    pub fn strncmp(_: *const c_char, _: *const c_char, _: c_ulong) -> c_int;
 
     #[no_mangle]
     pub fn strchr(_: *const c_char, _: c_int) -> *mut c_char;
@@ -195,46 +163,27 @@ use libc::{c_int, c_ulong, c_float, c_long, c_schar, c_uint, c_void, c_ushort,
     pub fn strcasecmp(_: *const c_char, _: *const c_char) -> c_int;
 
     #[no_mangle]
-    pub fn strncasecmp(
-        _: *const c_char,
-        _: *const c_char,
-        _: c_ulong,
-    ) -> c_int;
+    pub fn strncasecmp(_: *const c_char, _: *const c_char, _: c_ulong) -> c_int;
     pub type _IO_marker;
 
     pub type _IO_codecvt;
 
     pub type _IO_wide_data;
     #[no_mangle]
-    pub fn __fxstat(
-        __ver: c_int,
-        __fildes: c_int,
-        __stat_buf: *mut stat,
-    ) -> c_int;
+    pub fn __fxstat(__ver: c_int, __fildes: c_int, __stat_buf: *mut stat) -> c_int;
     #[no_mangle]
-    pub fn gettimeofday(
-        __tv: *mut timeval,
-        __tz: __timezone_ptr_t,
-    ) -> c_int;
+    pub fn gettimeofday(__tv: *mut timeval, __tz: __timezone_ptr_t) -> c_int;
     #[no_mangle]
     pub fn unlink(__name: *const c_char) -> c_int;
 
     #[no_mangle]
-    pub fn lseek(
-        __fd: c_int,
-        __offset: __off_t,
-        __whence: c_int,
-    ) -> __off_t;
+    pub fn lseek(__fd: c_int, __offset: __off_t, __whence: c_int) -> __off_t;
 
     #[no_mangle]
     pub fn close(__fd: c_int) -> c_int;
 
     #[no_mangle]
-    pub fn read(
-        __fd: c_int,
-        __buf: *mut c_void,
-        __nbytes: size_t,
-    ) -> ssize_t;
+    pub fn read(__fd: c_int, __buf: *mut c_void, __nbytes: size_t) -> ssize_t;
 }
 // =============== BEGIN FILE_h ================
 pub type FILE = _IO_FILE;
@@ -369,22 +318,13 @@ pub const EOF: c_int = -1i32;
 // =============== BEGIN stdlib_float_h ================
 #[inline]
 pub unsafe extern "C" fn atof(mut __nptr: *const c_char) -> c_double {
-    return strtod(
-        __nptr,
-        
-        NULL as *mut *mut c_char,
-    );
+    return strtod(__nptr, NULL as *mut *mut c_char);
 }
 // ================ END stdlib_float_h ================
 // =============== BEGIN stdlib_h ================
 #[inline]
 pub unsafe extern "C" fn atoi(mut __nptr: *const c_char) -> c_int {
-    return strtol(
-        __nptr,
-        
-        NULL as *mut *mut c_char,
-        10i32,
-    ) as c_int;
+    return strtol(__nptr, NULL as *mut *mut c_char, 10i32) as c_int;
 }
 pub const EXIT_SUCCESS: c_int = 0i32;
 pub const EXIT_FAILURE: c_int = 1i32;
@@ -412,10 +352,7 @@ pub struct timeval {
 // ================ END struct_timeval_h ================
 // =============== BEGIN sys_stat_h ================
 #[inline]
-pub unsafe extern "C" fn fstat(
-    mut __fd: c_int,
-    mut __statbuf: *mut stat,
-) -> c_int {
+pub unsafe extern "C" fn fstat(mut __fd: c_int, mut __statbuf: *mut stat) -> c_int {
     return __fxstat(_STAT_VER, __fd, __statbuf);
 }
 // ================ END sys_stat_h ================
