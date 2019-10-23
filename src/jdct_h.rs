@@ -1,4 +1,4 @@
-use libc::c_uint;use libc::c_ushort;use libc::c_float;use libc::c_short;use libc::c_int;extern "C" {
+use libc::{c_uint, c_ushort, c_float, c_short, c_int};extern "C" {
     #[no_mangle]
     pub fn jpeg_fdct_islow(data: *mut DCTELEM);
 
@@ -231,15 +231,17 @@ pub type IFAST_MULT_TYPE = c_short;
  * Each IDCT routine has its own ideas about the best dct_table element type.
  */
 pub type ISLOW_MULT_TYPE = c_short;
-use crate::jmorecfg_h::JCOEF;
-use crate::jmorecfg_h::JDIMENSION;
-use crate::jmorecfg_h::MAXJSAMPLE;
-use crate::jpeglib_h::j_decompress_ptr;
-use crate::jpeglib_h::jpeg_component_info;
-use crate::jpeglib_h::jpeg_decompress_struct;
-use crate::jpeglib_h::JCOEFPTR;
-use crate::jpeglib_h::JSAMPARRAY;
-use crate::jpeglib_h::JSAMPROW;
+
+
+
+
+
+
+
+
+use crate::jmorecfg_h::{JCOEF, JDIMENSION, MAXJSAMPLE};use crate::jpeglib_h::{j_decompress_ptr, jpeg_component_info,
+                       jpeg_decompress_struct, JCOEFPTR, JSAMPARRAY,
+                       JSAMPROW};
 /* preferred floating type */
 
 /*

@@ -1,4 +1,4 @@
-use libc::c_uchar;use libc::c_ulong;use libc::c_int;use libc::c_long;use libc::c_uint;use libc::c_void;extern "C" {
+use libc::{c_uchar, c_ulong, c_int, c_long, c_uint, c_void};extern "C" {
     #[no_mangle]
     pub fn jzero_far(target: *mut c_void, bytestozero: size_t);
 
@@ -167,11 +167,12 @@ pub const DSTATE_START: c_int = 200i32;
 pub type JLONG = c_long;
 pub const DSTATE_STOPPING: c_int = 210i32;
 pub const DSTATE_RDCOEFS: c_int = 209i32;
-use crate::jmorecfg_h::JDIMENSION;
-use crate::jpeglib_h::j_decompress_ptr;
-use crate::jpeglib_h::jpeg_component_info;
-use crate::jpeglib_h::JCOEFPTR;
-use crate::jpeglib_h::JSAMPARRAY;
+
+
+
+
+use crate::jmorecfg_h::JDIMENSION;use crate::jpeglib_h::{j_decompress_ptr, jpeg_component_info, JCOEFPTR,
+                       JSAMPARRAY};
 pub const DSTATE_SCANNING: c_int = 205i32;
 pub const DSTATE_RAW_OK: c_int = 206i32;
 pub const DSTATE_PRESCAN: c_int = 204i32;
@@ -180,10 +181,10 @@ pub const DSTATE_BUFIMAGE: c_int = 207i32;
 pub const DSTATE_READY: c_int = 202i32;
 pub const DSTATE_BUFPOST: c_int = 208i32;
 pub type J_BUF_MODE = c_uint;
-use crate::jpeglib_h::j_common_ptr;
-use crate::jpeglib_h::jpeg_common_struct;
-use crate::jpeglib_h::JBLOCK;
-use crate::jpeglib_h::JBLOCKROW;
+
+
+
+use crate::jpeglib_h::{j_common_ptr, jpeg_common_struct, JBLOCK, JBLOCKROW};
 pub const JBUF_REQUANT: J_BUF_MODE = 4;
 pub const JBUF_SAVE_AND_PASS: J_BUF_MODE = 3;
 pub const JBUF_CRANK_DEST: J_BUF_MODE = 2;
@@ -197,9 +198,10 @@ pub const CSTATE_SCANNING: c_int = 101i32;
 pub const CSTATE_RAW_OK: c_int = 102i32;
 /* start_compress done, write_raw_data OK */
 pub const CSTATE_WRCOEFS: c_int = 103i32;
-use crate::jmorecfg_h::boolean;
-use crate::jpeglib_h::j_compress_ptr;
-use crate::jpeglib_h::jpeg_compress_struct;
-use crate::jpeglib_h::jpeg_decompress_struct;
-use crate::jpeglib_h::JSAMPROW;
-use crate::stddef_h::size_t;
+
+
+
+
+
+use crate::jmorecfg_h::boolean;use crate::stddef_h::size_t;use crate::jpeglib_h::{j_compress_ptr, jpeg_compress_struct,
+                       jpeg_decompress_struct, JSAMPROW};

@@ -1,11 +1,11 @@
-use libc::c_uint;use libc::c_ulong;use libc::c_char;use libc::c_uchar;use libc::c_void;extern "C" {
+use libc::{c_uint, c_ulong, c_char, c_uchar, c_void};extern "C" {
     #[no_mangle]
     pub fn MD5File(_: *const c_char, _: *mut c_char) -> *mut c_char;
 }
-use libc;
 
-use crate::stdlib::memcpy;
-use crate::stdlib::memset;
+
+
+use libc;use crate::stdlib::{memcpy, memset};
 // =============== BEGIN md5_h ================
 pub type uint32 = c_uint;
 

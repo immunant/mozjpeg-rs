@@ -1,15 +1,16 @@
-use libc::c_uint;use libc::c_int;use libc::c_long;use crate::jmorecfg_h::INT16;
-use crate::jmorecfg_h::JDIMENSION;
-use crate::jmorecfg_h::JSAMPLE;
-use crate::jpegint_h::JLONG;
-use crate::jpeglib_h::j_decompress_ptr;
-use crate::jpeglib_h::jpeg_decompress_struct;
-use crate::jpeglib_h::JSAMPARRAY;
-use crate::jpeglib_h::JSAMPIMAGE;
-use crate::jpeglib_h::JSAMPROW;
-use crate::src::jdcolor::my_cconvert_ptr;
-use crate::src::jdcolor::my_color_deconverter;
-use crate::stddef_h::size_t;
+
+
+
+
+
+
+
+
+
+
+
+use crate::jpegint_h::JLONG;use crate::jpeglib_h::{j_decompress_ptr, jpeg_decompress_struct, JSAMPARRAY,
+                       JSAMPIMAGE, JSAMPROW};use crate::jmorecfg_h::{INT16, JDIMENSION, JSAMPLE};use crate::stddef_h::size_t;use crate::src::jdcolor::{my_cconvert_ptr, my_color_deconverter};use libc::{c_uint, c_int, c_long};
 /*
  * jdcol565.c
  *
@@ -1389,5 +1390,5 @@ pub unsafe extern "C" fn gray_rgb565D_convert_be(
         }
     }
 }
-use crate::src::jdcolor::dither_matrix;
-use crate::src::jdcolor::DITHER_MASK;
+
+use crate::src::jdcolor::{dither_matrix, DITHER_MASK};

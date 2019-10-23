@@ -1,14 +1,15 @@
-use libc::c_uint;use libc::c_int;use libc::c_long;use crate::jmorecfg_h::INT16;
-use crate::jmorecfg_h::JDIMENSION;
-use crate::jmorecfg_h::JSAMPLE;
-use crate::jpegint_h::JLONG;
-use crate::jpeglib_h::j_decompress_ptr;
-use crate::jpeglib_h::jpeg_decompress_struct;
-use crate::jpeglib_h::JSAMPARRAY;
-use crate::jpeglib_h::JSAMPIMAGE;
-use crate::jpeglib_h::JSAMPROW;
-use crate::src::jdmerge::my_upsample_ptr;
-use crate::src::jdmerge::my_upsampler;
+
+
+
+
+
+
+
+
+
+
+use crate::jmorecfg_h::{INT16, JDIMENSION, JSAMPLE};use crate::jpegint_h::JLONG;use crate::src::jdmerge::{my_upsample_ptr, my_upsampler};use crate::jpeglib_h::{j_decompress_ptr, jpeg_decompress_struct, JSAMPARRAY,
+                       JSAMPIMAGE, JSAMPROW};use libc::{c_uint, c_int, c_long};
 /*
  * jdmrg565.c
  *
@@ -1098,5 +1099,5 @@ pub unsafe extern "C" fn h2v2_merged_upsample_565D_be(
         *(outptr1 as *mut INT16) = rgb as INT16
     };
 }
-use crate::src::jdmerge::dither_matrix;
-use crate::src::jdmerge::DITHER_MASK;
+
+use crate::src::jdmerge::{dither_matrix, DITHER_MASK};

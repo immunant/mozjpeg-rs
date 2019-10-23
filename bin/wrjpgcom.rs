@@ -13,53 +13,60 @@
 #![feature(main)]
 
 
-use libc::c_uint;use libc::c_int;use libc::c_ushort;use libc::c_ulong;use libc::c_char;use libc::c_long;use std::prelude::v1;use mozjpeg::*;
 
 
-pub use crate::stddef_h::size_t;
-pub use crate::stddef_h::NULL;
-pub use crate::stdlib::_IO_codecvt;
-pub use crate::stdlib::_IO_lock_t;
-pub use crate::stdlib::_IO_marker;
-pub use crate::stdlib::_IO_wide_data;
-pub use crate::stdlib::__int32_t;
-pub use crate::stdlib::__off64_t;
-pub use crate::stdlib::__off_t;
-pub use crate::stdlib::FILE;
-pub use crate::stdlib::_IO_FILE;
 
-pub use crate::stdlib::C2RustUnnamed_0;
-pub use crate::stdlib::_ISalnum;
-pub use crate::stdlib::_ISalpha;
-pub use crate::stdlib::_ISblank;
-pub use crate::stdlib::_IScntrl;
-pub use crate::stdlib::_ISdigit;
-pub use crate::stdlib::_ISgraph;
-pub use crate::stdlib::_ISlower;
-pub use crate::stdlib::_ISprint;
-pub use crate::stdlib::_ISpunct;
-pub use crate::stdlib::_ISspace;
-pub use crate::stdlib::_ISupper;
-pub use crate::stdlib::_ISxdigit;
-pub use crate::stdlib::__ctype_b_loc;
-pub use crate::stdlib::__ctype_tolower_loc;
-pub use crate::stdlib::exit;
-pub use crate::stdlib::fclose;
-pub use crate::stdlib::fopen;
-pub use crate::stdlib::fprintf;
-pub use crate::stdlib::getc;
-pub use crate::stdlib::malloc;
-pub use crate::stdlib::putc;
-pub use crate::stdlib::stderr;
-pub use crate::stdlib::stdin;
-pub use crate::stdlib::stdout;
-use crate::stdlib::strcat;
-use crate::stdlib::strcpy;
-use crate::stdlib::strlen;
-pub use crate::stdlib::tolower;
-pub use crate::stdlib::EOF;
-pub use crate::stdlib::EXIT_FAILURE;
-pub use crate::stdlib::EXIT_SUCCESS;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+use std::prelude::v1::*;use std::prelude::v1;use libc::{c_uint, c_int, c_ushort, c_ulong, c_char, c_long};use crate::stdlib::{strcat, strcpy, strlen};use mozjpeg::*;pub use crate::stdlib::{_IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data,
+                        __int32_t, __off64_t, __off_t, FILE, _IO_FILE,
+                        C2RustUnnamed_0, _ISalnum, _ISalpha, _ISblank,
+                        _IScntrl, _ISdigit, _ISgraph, _ISlower, _ISprint,
+                        _ISpunct, _ISspace, _ISupper, _ISxdigit,
+                        __ctype_b_loc, __ctype_tolower_loc, exit, fclose,
+                        fopen, fprintf, getc, malloc, putc, stderr, stdin,
+                        stdout, tolower, EOF, EXIT_FAILURE, EXIT_SUCCESS};pub use crate::stddef_h::{size_t, NULL};
 /*
  * wrjpgcom.c
  *

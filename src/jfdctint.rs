@@ -1,35 +1,8 @@
-use libc::c_int;use libc::c_ulong;use libc;
 
-/* JPEGLIB_H */
 
-/*
- * The JPEG library modules define JPEG_INTERNALS before including this file.
- * The internal structure declarations are read only when that is true.
- * Applications using the library should not include jpegint.h, but may wish
- * to include jerror.h.
- */
 
-/* INCOMPLETE_TYPES_BROKEN */
 
-/* If we have a brain-damaged compiler that emits warnings (or worse, errors)
- * for structure definitions that are never filled in, keep it quiet by
- * supplying dummy definitions for the various substructures.
- */
-
-/* COM marker code */
-
-/* APP0 marker code */
-
-/* EOI marker code */
-
-/* RST0 marker code */
-
-/* These marker codes are exported since applications and data source modules
- * are likely to want to use them.
- */
-pub use crate::jdct_h::DCTELEM;
-pub use crate::jpegint_h::JLONG;
-pub use crate::jpeglib_h::DCTSIZE;
+use libc::{c_int, c_ulong, self};pub use crate::jpegint_h::JLONG;pub use crate::jdct_h::DCTELEM;pub use crate::jpeglib_h::DCTSIZE;
 /* preferred floating type */
 /*
  * Each IDCT routine is responsible for range-limiting its results and

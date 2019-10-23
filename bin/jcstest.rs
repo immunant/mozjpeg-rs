@@ -13,148 +13,106 @@
 #![feature(main)]
 
 
-use libc::c_void;use libc::c_char;use libc::c_int;use libc::c_ulong;use std::prelude::v1;use mozjpeg::*;
 
 
-/* Define to `unsigned int' if <sys/types.h> does not define. */
 
-/* #undef size_t */
 
-/* Define to empty if `const' does not conform to ANSI C. */
 
-/* #undef const */
 
-/* #undef __CHAR_UNSIGNED__ */
 
-/* Define to 1 if type `char' is unsigned and you are not using gcc.  */
 
-/* Define if your (broken) compiler shifts signed values as if they were
-unsigned. */
 
-/* #undef RIGHT_SHIFT_IS_UNSIGNED */
 
-/* Compiler does not support pointers to undefined structures. */
 
-/* #undef INCOMPLETE_TYPES_BROKEN */
 
-/* Define to 1 if the system has the type `unsigned short'. */
 
-/* Define to 1 if the system has the type `unsigned char'. */
 
-/* Define if you have BSD-like bzero and bcopy in <strings.h> rather than
-memset/memcpy in <string.h>. */
 
-/* #undef NEED_BSD_STRINGS */
 
-/* Define if you need to include <sys/types.h> to get size_t. */
 
-/* Define to 1 if you have the <stdlib.h> header file. */
 
-/* Define to 1 if you have the <stddef.h> header file. */
 
-/* Define to 1 if you have the <locale.h> header file. */
 
-/* use 8 or 12 */
 
-/*
- * Define BITS_IN_JSAMPLE as either
- *   8   for 8-bit sample values (the usual setting)
- *   12  for 12-bit sample values
- * Only 8 and 12 are legal data precisions for lossy JPEG according to the
- * JPEG standard, and the IJG code does not support anything else!
- * We do not support run-time selection of data precision, sorry.
- */
 
-/* Use accelerated SIMD routines. */
 
-/* Support in-memory source/destination managers */
 
-/* Support arithmetic decoding */
 
-/* #undef D_ARITH_CODING_SUPPORTED */
 
-/* Support arithmetic encoding */
 
-/* #undef C_ARITH_CODING_SUPPORTED */
 
-/* libjpeg-turbo version in integer form */
 
-/* libjpeg-turbo version */
-pub use crate::stddef_h::size_t;
 
-pub use crate::jconfig_h::JPEG_LIB_VERSION;
-pub use crate::jmorecfg_h::boolean;
-pub use crate::jmorecfg_h::JCOEF;
-pub use crate::jmorecfg_h::JDIMENSION;
-pub use crate::jmorecfg_h::JOCTET;
-pub use crate::jmorecfg_h::JSAMPLE;
-pub use crate::jmorecfg_h::UINT16;
-pub use crate::jmorecfg_h::UINT8;
-pub use crate::jpeglib_h::j_common_ptr;
-pub use crate::jpeglib_h::j_compress_ptr;
-pub use crate::jpeglib_h::jpeg_CreateCompress;
-pub use crate::jpeglib_h::jpeg_c_coef_controller;
-pub use crate::jpeglib_h::jpeg_c_main_controller;
-pub use crate::jpeglib_h::jpeg_c_prep_controller;
-pub use crate::jpeglib_h::jpeg_color_converter;
-pub use crate::jpeglib_h::jpeg_common_struct;
-pub use crate::jpeglib_h::jpeg_comp_master;
-pub use crate::jpeglib_h::jpeg_component_info;
-pub use crate::jpeglib_h::jpeg_compress_struct;
-pub use crate::jpeglib_h::jpeg_default_colorspace;
-pub use crate::jpeglib_h::jpeg_destination_mgr;
-pub use crate::jpeglib_h::jpeg_destroy_compress;
-pub use crate::jpeglib_h::jpeg_downsampler;
-pub use crate::jpeglib_h::jpeg_entropy_encoder;
-pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_forward_dct;
-pub use crate::jpeglib_h::jpeg_marker_writer;
-pub use crate::jpeglib_h::jpeg_memory_mgr;
-pub use crate::jpeglib_h::jpeg_progress_mgr;
-pub use crate::jpeglib_h::jpeg_scan_info;
-pub use crate::jpeglib_h::jpeg_set_defaults;
-pub use crate::jpeglib_h::jpeg_std_error;
-pub use crate::jpeglib_h::jvirt_barray_control;
-pub use crate::jpeglib_h::jvirt_barray_ptr;
-pub use crate::jpeglib_h::jvirt_sarray_control;
-pub use crate::jpeglib_h::jvirt_sarray_ptr;
-pub use crate::jpeglib_h::C2RustUnnamed_2;
-pub use crate::jpeglib_h::JCS_YCbCr;
-pub use crate::jpeglib_h::JBLOCK;
-pub use crate::jpeglib_h::JBLOCKARRAY;
-pub use crate::jpeglib_h::JBLOCKROW;
-pub use crate::jpeglib_h::JCS_CMYK;
-pub use crate::jpeglib_h::JCS_EXT_ABGR;
-pub use crate::jpeglib_h::JCS_EXT_ARGB;
-pub use crate::jpeglib_h::JCS_EXT_BGR;
-pub use crate::jpeglib_h::JCS_EXT_BGRA;
-pub use crate::jpeglib_h::JCS_EXT_BGRX;
-pub use crate::jpeglib_h::JCS_EXT_RGB;
-pub use crate::jpeglib_h::JCS_EXT_RGBA;
-pub use crate::jpeglib_h::JCS_EXT_RGBX;
-pub use crate::jpeglib_h::JCS_EXT_XBGR;
-pub use crate::jpeglib_h::JCS_EXT_XRGB;
-pub use crate::jpeglib_h::JCS_GRAYSCALE;
-pub use crate::jpeglib_h::JCS_RGB;
-pub use crate::jpeglib_h::JCS_RGB565;
-pub use crate::jpeglib_h::JCS_UNKNOWN;
-pub use crate::jpeglib_h::JCS_YCCK;
-pub use crate::jpeglib_h::JDCT_FLOAT;
-pub use crate::jpeglib_h::JDCT_IFAST;
-pub use crate::jpeglib_h::JDCT_ISLOW;
-pub use crate::jpeglib_h::JHUFF_TBL;
-pub use crate::jpeglib_h::JQUANT_TBL;
-pub use crate::jpeglib_h::JSAMPARRAY;
-pub use crate::jpeglib_h::JSAMPROW;
-pub use crate::jpeglib_h::J_COLOR_SPACE;
-pub use crate::jpeglib_h::J_DCT_METHOD;
-pub use crate::stdlib::__jmp_buf;
-pub use crate::stdlib::__jmp_buf_tag;
-pub use crate::stdlib::__sigset_t;
-pub use crate::stdlib::_setjmp;
-pub use crate::stdlib::jmp_buf;
-pub use crate::stdlib::longjmp;
-use crate::stdlib::printf;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+use std::prelude::v1::*;use std::prelude::v1;use crate::stdlib::printf;use libc::{c_void, c_char, c_int, c_ulong};use mozjpeg::*;pub use crate::jpeglib_h::{j_common_ptr, j_compress_ptr, jpeg_CreateCompress,
+                           jpeg_c_coef_controller, jpeg_c_main_controller,
+                           jpeg_c_prep_controller, jpeg_color_converter,
+                           jpeg_common_struct, jpeg_comp_master,
+                           jpeg_component_info, jpeg_compress_struct,
+                           jpeg_default_colorspace, jpeg_destination_mgr,
+                           jpeg_destroy_compress, jpeg_downsampler,
+                           jpeg_entropy_encoder, jpeg_error_mgr,
+                           jpeg_forward_dct, jpeg_marker_writer,
+                           jpeg_memory_mgr, jpeg_progress_mgr, jpeg_scan_info,
+                           jpeg_set_defaults, jpeg_std_error,
+                           jvirt_barray_control, jvirt_barray_ptr,
+                           jvirt_sarray_control, jvirt_sarray_ptr,
+                           C2RustUnnamed_2, JCS_YCbCr, JBLOCK, JBLOCKARRAY,
+                           JBLOCKROW, JCS_CMYK, JCS_EXT_ABGR, JCS_EXT_ARGB,
+                           JCS_EXT_BGR, JCS_EXT_BGRA, JCS_EXT_BGRX,
+                           JCS_EXT_RGB, JCS_EXT_RGBA, JCS_EXT_RGBX,
+                           JCS_EXT_XBGR, JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB,
+                           JCS_RGB565, JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT,
+                           JDCT_IFAST, JDCT_ISLOW, JHUFF_TBL, JQUANT_TBL,
+                           JSAMPARRAY, JSAMPROW, J_COLOR_SPACE, J_DCT_METHOD};pub use crate::stdlib::{__jmp_buf, __jmp_buf_tag, __sigset_t, _setjmp,
+                        jmp_buf, longjmp};pub use crate::jmorecfg_h::{boolean, JCOEF, JDIMENSION, JOCTET, JSAMPLE,
+                            UINT16, UINT8};pub use crate::jconfig_h::JPEG_LIB_VERSION;pub use crate::stddef_h::size_t;
 
 #[repr(C)]
 #[derive(Copy, Clone)]

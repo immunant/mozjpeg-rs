@@ -1,4 +1,4 @@
-use libc::c_uint;use libc::c_ulong;use libc::c_float;use libc::c_char;use libc::c_void;use libc::c_int;extern "C" {
+use libc::{c_uint, c_ulong, c_float, c_char, c_void, c_int};extern "C" {
     #[no_mangle]
     pub fn jpeg_simd_cpu_support() -> c_uint;
 
@@ -900,113 +900,145 @@ use libc::c_uint;use libc::c_ulong;use libc::c_float;use libc::c_char;use libc::
         bits: *mut size_t,
     ) -> c_int;
 }
-pub use crate::jdct_h::DCTELEM;
-pub use crate::jmorecfg_h::JCOEF;
-pub use crate::jmorecfg_h::JDIMENSION;
-pub use crate::jmorecfg_h::JOCTET;
-pub use crate::jpeglib_h::j_compress_ptr;
-pub use crate::jpeglib_h::j_decompress_ptr;
-pub use crate::jpeglib_h::jpeg_component_info;
-pub use crate::jpeglib_h::jpeg_compress_struct;
-pub use crate::jpeglib_h::jpeg_decompress_struct;
-pub use crate::jpeglib_h::C2RustUnnamed_2;
-pub use crate::jpeglib_h::JCOEFPTR;
-pub use crate::jpeglib_h::JSAMPARRAY;
-pub use crate::jpeglib_h::JSAMPIMAGE;
-pub use crate::jpeglib_h::JSAMPROW;
-pub use crate::src::jchuff::c_derived_tbl;
-pub use crate::stddef_h::size_t;
-/* TARGA_SUPPORTED */
-pub use crate::jconfig_h::BITS_IN_JSAMPLE;
-pub use crate::jdct_h::FLOAT_MULT_TYPE;
-pub use crate::jdct_h::IFAST_MULT_TYPE;
-pub use crate::jdct_h::IFAST_SCALE_BITS;
-pub use crate::jdct_h::ISLOW_MULT_TYPE;
-pub use crate::jmorecfg_h::boolean;
-pub use crate::jmorecfg_h::JSAMPLE;
-pub use crate::jmorecfg_h::RGB_PIXELSIZE;
-pub use crate::jmorecfg_h::UINT16;
-pub use crate::jmorecfg_h::UINT8;
-pub use crate::jpegint_h::inverse_DCT_method_ptr;
-pub use crate::jpegint_h::JBUF_CRANK_DEST;
-pub use crate::jpegint_h::JBUF_PASS_THRU;
-pub use crate::jpegint_h::JBUF_REQUANT;
-pub use crate::jpegint_h::JBUF_SAVE_AND_PASS;
-pub use crate::jpegint_h::JBUF_SAVE_SOURCE;
-pub use crate::jpegint_h::J_BUF_MODE;
-pub use crate::jpeglib_h::j_common_ptr;
-pub use crate::jpeglib_h::jpeg_c_coef_controller;
-pub use crate::jpeglib_h::jpeg_c_main_controller;
-pub use crate::jpeglib_h::jpeg_c_prep_controller;
-pub use crate::jpeglib_h::jpeg_color_converter;
-pub use crate::jpeglib_h::jpeg_color_deconverter;
-pub use crate::jpeglib_h::jpeg_color_quantizer;
-pub use crate::jpeglib_h::jpeg_common_struct;
-pub use crate::jpeglib_h::jpeg_comp_master;
-pub use crate::jpeglib_h::jpeg_d_coef_controller;
-pub use crate::jpeglib_h::jpeg_d_main_controller;
-pub use crate::jpeglib_h::jpeg_d_post_controller;
-pub use crate::jpeglib_h::jpeg_decomp_master;
-pub use crate::jpeglib_h::jpeg_destination_mgr;
-pub use crate::jpeglib_h::jpeg_downsampler;
-pub use crate::jpeglib_h::jpeg_entropy_decoder;
-pub use crate::jpeglib_h::jpeg_entropy_encoder;
-pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_forward_dct;
-pub use crate::jpeglib_h::jpeg_input_controller;
-pub use crate::jpeglib_h::jpeg_inverse_dct;
-pub use crate::jpeglib_h::jpeg_marker_parser_method;
-pub use crate::jpeglib_h::jpeg_marker_reader;
-pub use crate::jpeglib_h::jpeg_marker_struct;
-pub use crate::jpeglib_h::jpeg_marker_writer;
-pub use crate::jpeglib_h::jpeg_memory_mgr;
-pub use crate::jpeglib_h::jpeg_progress_mgr;
-pub use crate::jpeglib_h::jpeg_saved_marker_ptr;
-pub use crate::jpeglib_h::jpeg_scan_info;
-pub use crate::jpeglib_h::jpeg_source_mgr;
-pub use crate::jpeglib_h::jpeg_upsampler;
-pub use crate::jpeglib_h::jvirt_barray_control;
-pub use crate::jpeglib_h::jvirt_barray_ptr;
-pub use crate::jpeglib_h::jvirt_sarray_control;
-pub use crate::jpeglib_h::jvirt_sarray_ptr;
-pub use crate::jpeglib_h::JCS_YCbCr;
-pub use crate::jpeglib_h::DCTSIZE;
-pub use crate::jpeglib_h::JBLOCK;
-pub use crate::jpeglib_h::JBLOCKARRAY;
-pub use crate::jpeglib_h::JBLOCKROW;
-pub use crate::jpeglib_h::JCS_CMYK;
-pub use crate::jpeglib_h::JCS_EXT_ABGR;
-pub use crate::jpeglib_h::JCS_EXT_ARGB;
-pub use crate::jpeglib_h::JCS_EXT_BGR;
-pub use crate::jpeglib_h::JCS_EXT_BGRA;
-pub use crate::jpeglib_h::JCS_EXT_BGRX;
-pub use crate::jpeglib_h::JCS_EXT_RGB;
-pub use crate::jpeglib_h::JCS_EXT_RGBA;
-pub use crate::jpeglib_h::JCS_EXT_RGBX;
-pub use crate::jpeglib_h::JCS_EXT_XBGR;
-pub use crate::jpeglib_h::JCS_EXT_XRGB;
-pub use crate::jpeglib_h::JCS_GRAYSCALE;
-pub use crate::jpeglib_h::JCS_RGB;
-pub use crate::jpeglib_h::JCS_RGB565;
-pub use crate::jpeglib_h::JCS_UNKNOWN;
-pub use crate::jpeglib_h::JCS_YCCK;
-pub use crate::jpeglib_h::JDCT_FLOAT;
-pub use crate::jpeglib_h::JDCT_IFAST;
-pub use crate::jpeglib_h::JDCT_ISLOW;
-pub use crate::jpeglib_h::JDITHER_FS;
-pub use crate::jpeglib_h::JDITHER_NONE;
-pub use crate::jpeglib_h::JDITHER_ORDERED;
-pub use crate::jpeglib_h::JHUFF_TBL;
-pub use crate::jpeglib_h::JQUANT_TBL;
-pub use crate::jpeglib_h::J_COLOR_SPACE;
-pub use crate::jpeglib_h::J_DCT_METHOD;
-pub use crate::jpeglib_h::J_DITHER_MODE;
-pub use crate::stddef_h::NULL;
-use crate::stdlib::getenv;
-use crate::stdlib::strcmp;
-use libc;
 
-pub use crate::jconfigint_h::SIZEOF_SIZE_T;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+use libc;use crate::stdlib::{getenv, strcmp};pub use crate::jconfigint_h::SIZEOF_SIZE_T;pub use crate::jpegint_h::{inverse_DCT_method_ptr, JBUF_CRANK_DEST,
+                           JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS,
+                           JBUF_SAVE_SOURCE, J_BUF_MODE};pub use crate::jdct_h::{DCTELEM, FLOAT_MULT_TYPE, IFAST_MULT_TYPE,
+                        IFAST_SCALE_BITS, ISLOW_MULT_TYPE};pub use crate::jpeglib_h::{j_compress_ptr, j_decompress_ptr,
+                           jpeg_component_info, jpeg_compress_struct,
+                           jpeg_decompress_struct, C2RustUnnamed_2, JCOEFPTR,
+                           JSAMPARRAY, JSAMPIMAGE, JSAMPROW, j_common_ptr,
+                           jpeg_c_coef_controller, jpeg_c_main_controller,
+                           jpeg_c_prep_controller, jpeg_color_converter,
+                           jpeg_color_deconverter, jpeg_color_quantizer,
+                           jpeg_common_struct, jpeg_comp_master,
+                           jpeg_d_coef_controller, jpeg_d_main_controller,
+                           jpeg_d_post_controller, jpeg_decomp_master,
+                           jpeg_destination_mgr, jpeg_downsampler,
+                           jpeg_entropy_decoder, jpeg_entropy_encoder,
+                           jpeg_error_mgr, jpeg_forward_dct,
+                           jpeg_input_controller, jpeg_inverse_dct,
+                           jpeg_marker_parser_method, jpeg_marker_reader,
+                           jpeg_marker_struct, jpeg_marker_writer,
+                           jpeg_memory_mgr, jpeg_progress_mgr,
+                           jpeg_saved_marker_ptr, jpeg_scan_info,
+                           jpeg_source_mgr, jpeg_upsampler,
+                           jvirt_barray_control, jvirt_barray_ptr,
+                           jvirt_sarray_control, jvirt_sarray_ptr, JCS_YCbCr,
+                           DCTSIZE, JBLOCK, JBLOCKARRAY, JBLOCKROW, JCS_CMYK,
+                           JCS_EXT_ABGR, JCS_EXT_ARGB, JCS_EXT_BGR,
+                           JCS_EXT_BGRA, JCS_EXT_BGRX, JCS_EXT_RGB,
+                           JCS_EXT_RGBA, JCS_EXT_RGBX, JCS_EXT_XBGR,
+                           JCS_EXT_XRGB, JCS_GRAYSCALE, JCS_RGB, JCS_RGB565,
+                           JCS_UNKNOWN, JCS_YCCK, JDCT_FLOAT, JDCT_IFAST,
+                           JDCT_ISLOW, JDITHER_FS, JDITHER_NONE,
+                           JDITHER_ORDERED, JHUFF_TBL, JQUANT_TBL,
+                           J_COLOR_SPACE, J_DCT_METHOD, J_DITHER_MODE};pub use crate::jmorecfg_h::{JCOEF, JDIMENSION, JOCTET, boolean, JSAMPLE,
+                            RGB_PIXELSIZE, UINT16, UINT8};pub use crate::stddef_h::{size_t, NULL};pub use crate::jconfig_h::BITS_IN_JSAMPLE;pub use crate::src::jchuff::c_derived_tbl;
 // =============== BEGIN jsimd_h ================
 
 /*

@@ -1,13 +1,14 @@
-use libc::c_int;use crate::jmorecfg_h::JDIMENSION;
-use crate::jmorecfg_h::JSAMPLE;
-use crate::jpegint_h::JLONG;
-use crate::jpeglib_h::j_decompress_ptr;
-use crate::jpeglib_h::jpeg_decompress_struct;
-use crate::jpeglib_h::JSAMPARRAY;
-use crate::jpeglib_h::JSAMPIMAGE;
-use crate::jpeglib_h::JSAMPROW;
-use crate::src::jdmerge::my_upsample_ptr;
-use crate::src::jdmerge::my_upsampler;
+
+
+
+
+
+
+
+
+
+use crate::jmorecfg_h::{JDIMENSION, JSAMPLE};use crate::jpegint_h::JLONG;use crate::src::jdmerge::{my_upsample_ptr, my_upsampler};use crate::jpeglib_h::{j_decompress_ptr, jpeg_decompress_struct, JSAMPARRAY,
+                       JSAMPIMAGE, JSAMPROW};use libc::c_int;
 /*
  * jdmrgext.c
  *
@@ -1483,59 +1484,74 @@ pub unsafe extern "C" fn extxbgr_h2v2_merged_upsample_internal(
         *outptr1.offset(RGB_ALPHA_0 as isize) = 0xffu8
     };
 }
-use crate::jmorecfg_h::EXT_BGRX_BLUE;
-use crate::jmorecfg_h::EXT_BGRX_GREEN;
-use crate::jmorecfg_h::EXT_BGRX_PIXELSIZE;
-use crate::jmorecfg_h::EXT_BGRX_RED;
-use crate::jmorecfg_h::EXT_BGR_BLUE;
-use crate::jmorecfg_h::EXT_BGR_GREEN;
-use crate::jmorecfg_h::EXT_BGR_PIXELSIZE;
-use crate::jmorecfg_h::EXT_BGR_RED;
-use crate::jmorecfg_h::EXT_RGBX_BLUE;
-use crate::jmorecfg_h::EXT_RGBX_GREEN;
-use crate::jmorecfg_h::EXT_RGBX_PIXELSIZE;
-use crate::jmorecfg_h::EXT_RGBX_RED;
-use crate::jmorecfg_h::EXT_RGB_BLUE;
-use crate::jmorecfg_h::EXT_RGB_GREEN;
-use crate::jmorecfg_h::EXT_RGB_PIXELSIZE;
-use crate::jmorecfg_h::EXT_RGB_RED;
-use crate::jmorecfg_h::EXT_XBGR_BLUE;
-use crate::jmorecfg_h::EXT_XBGR_GREEN;
-use crate::jmorecfg_h::EXT_XBGR_PIXELSIZE;
-use crate::jmorecfg_h::EXT_XBGR_RED;
-use crate::jmorecfg_h::EXT_XRGB_BLUE;
-use crate::jmorecfg_h::EXT_XRGB_GREEN;
-use crate::jmorecfg_h::EXT_XRGB_PIXELSIZE;
-use crate::jmorecfg_h::EXT_XRGB_RED;
-use crate::jmorecfg_h::RGB_BLUE_5;
-use crate::jmorecfg_h::RGB_GREEN_5;
-use crate::jmorecfg_h::RGB_PIXELSIZE_5;
-use crate::jmorecfg_h::RGB_RED_5;
-use crate::src::jdmerge::RGB_ALPHA;
-use crate::src::jdmerge::RGB_ALPHA_0;
-use crate::src::jdmerge::RGB_ALPHA_1;
-use crate::src::jdmerge::RGB_ALPHA_2;
-use crate::src::jdmerge::RGB_BLUE;
-use crate::src::jdmerge::RGB_BLUE_0;
-use crate::src::jdmerge::RGB_BLUE_1;
-use crate::src::jdmerge::RGB_BLUE_2;
-use crate::src::jdmerge::RGB_BLUE_3;
-use crate::src::jdmerge::RGB_BLUE_4;
-use crate::src::jdmerge::RGB_GREEN;
-use crate::src::jdmerge::RGB_GREEN_0;
-use crate::src::jdmerge::RGB_GREEN_1;
-use crate::src::jdmerge::RGB_GREEN_2;
-use crate::src::jdmerge::RGB_GREEN_3;
-use crate::src::jdmerge::RGB_GREEN_4;
-use crate::src::jdmerge::RGB_PIXELSIZE;
-use crate::src::jdmerge::RGB_PIXELSIZE_0;
-use crate::src::jdmerge::RGB_PIXELSIZE_1;
-use crate::src::jdmerge::RGB_PIXELSIZE_2;
-use crate::src::jdmerge::RGB_PIXELSIZE_3;
-use crate::src::jdmerge::RGB_PIXELSIZE_4;
-use crate::src::jdmerge::RGB_RED;
-use crate::src::jdmerge::RGB_RED_0;
-use crate::src::jdmerge::RGB_RED_1;
-use crate::src::jdmerge::RGB_RED_2;
-use crate::src::jdmerge::RGB_RED_3;
-use crate::src::jdmerge::RGB_RED_4;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+use crate::jmorecfg_h::{EXT_BGRX_BLUE, EXT_BGRX_GREEN, EXT_BGRX_PIXELSIZE,
+                        EXT_BGRX_RED, EXT_BGR_BLUE, EXT_BGR_GREEN,
+                        EXT_BGR_PIXELSIZE, EXT_BGR_RED, EXT_RGBX_BLUE,
+                        EXT_RGBX_GREEN, EXT_RGBX_PIXELSIZE, EXT_RGBX_RED,
+                        EXT_RGB_BLUE, EXT_RGB_GREEN, EXT_RGB_PIXELSIZE,
+                        EXT_RGB_RED, EXT_XBGR_BLUE, EXT_XBGR_GREEN,
+                        EXT_XBGR_PIXELSIZE, EXT_XBGR_RED, EXT_XRGB_BLUE,
+                        EXT_XRGB_GREEN, EXT_XRGB_PIXELSIZE, EXT_XRGB_RED,
+                        RGB_BLUE_5, RGB_GREEN_5, RGB_PIXELSIZE_5, RGB_RED_5};use crate::src::jdmerge::{RGB_ALPHA, RGB_ALPHA_0, RGB_ALPHA_1, RGB_ALPHA_2,
+                          RGB_BLUE, RGB_BLUE_0, RGB_BLUE_1, RGB_BLUE_2,
+                          RGB_BLUE_3, RGB_BLUE_4, RGB_GREEN, RGB_GREEN_0,
+                          RGB_GREEN_1, RGB_GREEN_2, RGB_GREEN_3, RGB_GREEN_4,
+                          RGB_PIXELSIZE, RGB_PIXELSIZE_0, RGB_PIXELSIZE_1,
+                          RGB_PIXELSIZE_2, RGB_PIXELSIZE_3, RGB_PIXELSIZE_4,
+                          RGB_RED, RGB_RED_0, RGB_RED_1, RGB_RED_2, RGB_RED_3,
+                          RGB_RED_4};

@@ -13,25 +13,26 @@
 #![feature(main)]
 
 
-use libc::c_int;use libc::c_char;use std::prelude::v1;use mozjpeg::*;
 
 
-use crate::src::md5::md5::MD5File;
-pub use crate::stddef_h::size_t;
-pub use crate::stddef_h::NULL;
-pub use crate::stdlib::_IO_codecvt;
-pub use crate::stdlib::_IO_lock_t;
-pub use crate::stdlib::_IO_marker;
-pub use crate::stdlib::_IO_wide_data;
-pub use crate::stdlib::__off64_t;
-pub use crate::stdlib::__off_t;
-use crate::stdlib::fprintf;
-use crate::stdlib::perror;
-use crate::stdlib::stderr;
-use crate::stdlib::strcasecmp;
-use crate::stdlib::strlen;
-pub use crate::stdlib::FILE;
-pub use crate::stdlib::_IO_FILE;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+use std::prelude::v1::*;use mozjpeg::*;use crate::src::md5::md5::MD5File;use crate::stdlib::{fprintf, perror, stderr, strcasecmp, strlen};use std::prelude::v1;use libc::{c_int, c_char};pub use crate::stdlib::{_IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data,
+                        __off64_t, __off_t, FILE, _IO_FILE};pub use crate::stddef_h::{size_t, NULL};
 /*
  * Copyright (C)2013, 2016 D. R. Commander.  All Rights Reserved.
  *

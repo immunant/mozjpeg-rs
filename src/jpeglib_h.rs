@@ -1,4 +1,5 @@
-use libc::c_uchar;use libc::c_ulong;use libc::c_char;use libc::c_long;use libc::c_void;use libc::c_int;use libc::c_uint;use libc::c_double;use libc::c_float;extern "C" {
+use libc::{c_uchar, c_ulong, c_char, c_long, c_void, c_int, c_uint, c_double,
+           c_float};extern "C" {
     #[no_mangle]
     pub fn jpeg_write_m_header(
         cinfo: j_compress_ptr,
@@ -294,7 +295,6 @@ use libc::c_uchar;use libc::c_ulong;use libc::c_char;use libc::c_long;use libc::
     #[no_mangle]
     pub fn jpeg_abort_decompress(cinfo: j_decompress_ptr);
 }
-// =============== BEGIN jpeglib_h ================
 use crate::stdlib::FILE;
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -499,14 +499,15 @@ pub const C_MAX_BLOCKS_IN_MCU: c_int = 10i32;
 
 /* lasts until master record is destroyed */
 pub const JPOOL_IMAGE: c_int = 1i32;
-use crate::jmorecfg_h::boolean;
-use crate::jmorecfg_h::JCOEF;
-use crate::jmorecfg_h::JDIMENSION;
-use crate::jmorecfg_h::JOCTET;
-use crate::jmorecfg_h::JSAMPLE;
-use crate::jmorecfg_h::UINT16;
-use crate::jmorecfg_h::UINT8;
-use crate::stddef_h::size_t;
+
+
+
+
+
+
+
+use crate::jmorecfg_h::{boolean, JCOEF, JDIMENSION, JOCTET, JSAMPLE, UINT16,
+                        UINT8};use crate::stddef_h::size_t;
 /* Quantization tables are numbered 0..3 */
 
 /* Huffman tables are numbered 0..3 */

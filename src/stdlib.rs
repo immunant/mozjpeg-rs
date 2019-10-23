@@ -1,4 +1,5 @@
-use libc::c_int;use libc::c_ulong;use libc::c_float;use libc::c_long;use libc::c_schar;use libc::c_uint;use libc::c_void;use libc::c_ushort;use libc::c_double;use libc::c_char;extern "C" {
+use libc::{c_int, c_ulong, c_float, c_long, c_schar, c_uint, c_void, c_ushort,
+           c_double, c_char};extern "C" {
     #[no_mangle]
     pub fn __ctype_b_loc() -> *mut *const c_ushort;
 

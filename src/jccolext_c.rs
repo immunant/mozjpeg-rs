@@ -1,13 +1,14 @@
-use libc::c_int;use crate::jmorecfg_h::JDIMENSION;
-use crate::jmorecfg_h::JSAMPLE;
-use crate::jpegint_h::JLONG;
-use crate::jpeglib_h::j_compress_ptr;
-use crate::jpeglib_h::jpeg_compress_struct;
-use crate::jpeglib_h::JSAMPARRAY;
-use crate::jpeglib_h::JSAMPIMAGE;
-use crate::jpeglib_h::JSAMPROW;
-use crate::src::jccolor::my_cconvert_ptr;
-use crate::src::jccolor::my_color_converter;
+
+
+
+
+
+
+
+
+
+use crate::jmorecfg_h::{JDIMENSION, JSAMPLE};use crate::jpegint_h::JLONG;use crate::src::jccolor::{my_cconvert_ptr, my_color_converter};use crate::jpeglib_h::{j_compress_ptr, jpeg_compress_struct, JSAMPARRAY,
+                       JSAMPIMAGE, JSAMPROW};use libc::c_int;
 /*
  * jccolext.c
  *
@@ -1384,27 +1385,34 @@ pub unsafe extern "C" fn rgb_rgb_convert_internal(
         }
     }
 }
-use crate::jmorecfg_h::EXT_BGRX_PIXELSIZE;
-use crate::jmorecfg_h::EXT_BGR_PIXELSIZE;
-use crate::jmorecfg_h::EXT_RGBX_PIXELSIZE;
-use crate::jmorecfg_h::EXT_RGB_PIXELSIZE;
-use crate::jmorecfg_h::EXT_XBGR_PIXELSIZE;
-use crate::jmorecfg_h::EXT_XRGB_PIXELSIZE;
-use crate::jmorecfg_h::MAXJSAMPLE;
-use crate::jmorecfg_h::RGB_PIXELSIZE_5;
-use crate::src::jccolor::B_CB_OFF;
-use crate::src::jccolor::B_CR_OFF;
-use crate::src::jccolor::B_Y_OFF;
-use crate::src::jccolor::G_CB_OFF;
-use crate::src::jccolor::G_CR_OFF;
-use crate::src::jccolor::G_Y_OFF;
-use crate::src::jccolor::RGB_PIXELSIZE;
-use crate::src::jccolor::RGB_PIXELSIZE_0;
-use crate::src::jccolor::RGB_PIXELSIZE_1;
-use crate::src::jccolor::RGB_PIXELSIZE_2;
-use crate::src::jccolor::RGB_PIXELSIZE_3;
-use crate::src::jccolor::RGB_PIXELSIZE_4;
-use crate::src::jccolor::R_CB_OFF;
-use crate::src::jccolor::R_CR_OFF;
-use crate::src::jccolor::R_Y_OFF;
-use crate::src::jccolor::SCALEBITS;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+use crate::jmorecfg_h::{EXT_BGRX_PIXELSIZE, EXT_BGR_PIXELSIZE,
+                        EXT_RGBX_PIXELSIZE, EXT_RGB_PIXELSIZE,
+                        EXT_XBGR_PIXELSIZE, EXT_XRGB_PIXELSIZE, MAXJSAMPLE,
+                        RGB_PIXELSIZE_5};use crate::src::jccolor::{B_CB_OFF, B_CR_OFF, B_Y_OFF, G_CB_OFF, G_CR_OFF,
+                          G_Y_OFF, RGB_PIXELSIZE, RGB_PIXELSIZE_0,
+                          RGB_PIXELSIZE_1, RGB_PIXELSIZE_2, RGB_PIXELSIZE_3,
+                          RGB_PIXELSIZE_4, R_CB_OFF, R_CR_OFF, R_Y_OFF,
+                          SCALEBITS};

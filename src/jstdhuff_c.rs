@@ -1,4 +1,4 @@
-use libc::c_int;use libc::c_ulong;use libc::c_void;pub unsafe extern "C" fn add_huff_table(
+use libc::{c_int, c_ulong, c_void};pub unsafe extern "C" fn add_huff_table(
     mut cinfo: j_common_ptr,
     mut htblptr: *mut *mut JHUFF_TBL,
     mut bits: *const UINT8,
@@ -531,15 +531,16 @@ pub unsafe extern "C" fn std_huff_tables(mut cinfo: j_common_ptr) {
         val_ac_chrominance.as_ptr(),
     );
 }
-use crate::jmorecfg_h::boolean;
-use crate::jmorecfg_h::FALSE;
-use crate::jmorecfg_h::UINT8;
-use crate::jpeglib_h::j_common_ptr;
-use crate::jpeglib_h::j_compress_ptr;
-use crate::jpeglib_h::j_decompress_ptr;
-use crate::jpeglib_h::jpeg_alloc_huff_table;
-use crate::jpeglib_h::jpeg_common_struct;
-use crate::jpeglib_h::JHUFF_TBL;
-use crate::src::jerror::JERR_BAD_HUFF_TABLE;
-use crate::stdlib::memcpy;
-use crate::stdlib::memset;
+
+
+
+
+
+
+
+
+
+
+
+use crate::jmorecfg_h::{boolean, FALSE, UINT8};use crate::stdlib::{memcpy, memset};use crate::src::jerror::JERR_BAD_HUFF_TABLE;use crate::jpeglib_h::{j_common_ptr, j_compress_ptr, j_decompress_ptr,
+                       jpeg_alloc_huff_table, jpeg_common_struct, JHUFF_TBL};

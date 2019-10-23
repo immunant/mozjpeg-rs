@@ -13,92 +13,112 @@
 #![feature(main)]
 
 
-use std::prelude::v1;use libc::c_int;use libc::c_ulong;use libc::c_char;use libc::c_void;use libc::c_long;use libc::c_uchar;use mozjpeg::*;
 
 
-pub use crate::jmorecfg_h::JSAMPLE;
-pub use crate::src::turbojpeg::tjAlloc;
-pub use crate::src::turbojpeg::tjAlphaOffset;
-pub use crate::src::turbojpeg::tjBlueOffset;
-pub use crate::src::turbojpeg::tjBufSize;
-pub use crate::src::turbojpeg::tjBufSizeYUV2;
-pub use crate::src::turbojpeg::tjCompress2;
-pub use crate::src::turbojpeg::tjCompressFromYUV;
-pub use crate::src::turbojpeg::tjDecodeYUV;
-pub use crate::src::turbojpeg::tjDecompress2;
-pub use crate::src::turbojpeg::tjDecompressHeader2;
-pub use crate::src::turbojpeg::tjDecompressToYUV2;
-pub use crate::src::turbojpeg::tjDestroy;
-pub use crate::src::turbojpeg::tjEncodeYUV3;
-pub use crate::src::turbojpeg::tjFree;
-pub use crate::src::turbojpeg::tjGetErrorStr;
-pub use crate::src::turbojpeg::tjGetScalingFactors;
-pub use crate::src::turbojpeg::tjGreenOffset;
-pub use crate::src::turbojpeg::tjInitCompress;
-pub use crate::src::turbojpeg::tjInitDecompress;
-pub use crate::src::turbojpeg::tjLoadImage;
-pub use crate::src::turbojpeg::tjMCUHeight;
-pub use crate::src::turbojpeg::tjMCUWidth;
-pub use crate::src::turbojpeg::tjPixelSize;
-pub use crate::src::turbojpeg::tjRedOffset;
-pub use crate::src::turbojpeg::tjSaveImage;
-pub use crate::src::turbojpeg::tjhandle;
-pub use crate::src::turbojpeg::tjscalingfactor;
-pub use crate::src::turbojpeg::TJFLAG_BOTTOMUP;
-pub use crate::src::turbojpeg::TJFLAG_FASTUPSAMPLE;
-pub use crate::src::turbojpeg::TJFLAG_NOREALLOC;
-pub use crate::src::turbojpeg::TJPF;
-pub use crate::src::turbojpeg::TJPF_ABGR;
-pub use crate::src::turbojpeg::TJPF_ARGB;
-pub use crate::src::turbojpeg::TJPF_BGR;
-pub use crate::src::turbojpeg::TJPF_BGRA;
-pub use crate::src::turbojpeg::TJPF_BGRX;
-pub use crate::src::turbojpeg::TJPF_CMYK;
-pub use crate::src::turbojpeg::TJPF_GRAY;
-pub use crate::src::turbojpeg::TJPF_RGB;
-pub use crate::src::turbojpeg::TJPF_RGBA;
-pub use crate::src::turbojpeg::TJPF_RGBX;
-pub use crate::src::turbojpeg::TJPF_UNKNOWN;
-pub use crate::src::turbojpeg::TJPF_XBGR;
-pub use crate::src::turbojpeg::TJPF_XRGB;
-pub use crate::src::turbojpeg::TJSAMP;
-pub use crate::src::turbojpeg::TJSAMP_411;
-pub use crate::src::turbojpeg::TJSAMP_420;
-pub use crate::src::turbojpeg::TJSAMP_422;
-pub use crate::src::turbojpeg::TJSAMP_440;
-pub use crate::src::turbojpeg::TJSAMP_444;
-pub use crate::src::turbojpeg::TJSAMP_GRAY;
-pub use crate::src::turbojpeg::TJ_NUMPF;
-pub use crate::src::turbojpeg::TJ_NUMSAMP;
-pub use crate::stddef_h::size_t;
-pub use crate::stddef_h::NULL;
-pub use crate::stdlib::_IO_codecvt;
-pub use crate::stdlib::_IO_lock_t;
-pub use crate::stdlib::_IO_marker;
-pub use crate::stdlib::_IO_wide_data;
-pub use crate::stdlib::__off64_t;
-pub use crate::stdlib::__off_t;
-pub use crate::stdlib::FILE;
-pub use crate::stdlib::_IO_FILE;
 
-pub use crate::cmyk_h::cmyk_to_rgb;
-pub use crate::cmyk_h::rgb_to_cmyk;
-use crate::src::md5::md5::MD5File;
-use crate::stdlib::__errno_location;
-pub use crate::stdlib::exit;
-use crate::stdlib::fclose;
-use crate::stdlib::fopen;
-pub use crate::stdlib::free;
-use crate::stdlib::fwrite;
-pub use crate::stdlib::malloc;
-use crate::stdlib::memset;
-use crate::stdlib::printf;
-pub use crate::stdlib::random;
-use crate::stdlib::snprintf;
-use crate::stdlib::strcasecmp;
-use crate::stdlib::strerror;
-use crate::stdlib::unlink;
-pub use crate::stdlib::RAND_MAX;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+use std::prelude::v1::*;use crate::src::md5::md5::MD5File;use crate::stdlib::{__errno_location, fclose, fopen, fwrite, memset, printf,
+                    snprintf, strcasecmp, strerror, unlink};use libc::{c_int, c_ulong, c_char, c_void, c_long, c_uchar};use mozjpeg::*;use std::prelude::v1;pub use crate::jmorecfg_h::JSAMPLE;pub use crate::cmyk_h::{cmyk_to_rgb, rgb_to_cmyk};pub use crate::stdlib::{_IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data,
+                        __off64_t, __off_t, FILE, _IO_FILE, exit, free,
+                        malloc, random, RAND_MAX};pub use crate::src::turbojpeg::{tjAlloc, tjAlphaOffset, tjBlueOffset,
+                                tjBufSize, tjBufSizeYUV2, tjCompress2,
+                                tjCompressFromYUV, tjDecodeYUV, tjDecompress2,
+                                tjDecompressHeader2, tjDecompressToYUV2,
+                                tjDestroy, tjEncodeYUV3, tjFree,
+                                tjGetErrorStr, tjGetScalingFactors,
+                                tjGreenOffset, tjInitCompress,
+                                tjInitDecompress, tjLoadImage, tjMCUHeight,
+                                tjMCUWidth, tjPixelSize, tjRedOffset,
+                                tjSaveImage, tjhandle, tjscalingfactor,
+                                TJFLAG_BOTTOMUP, TJFLAG_FASTUPSAMPLE,
+                                TJFLAG_NOREALLOC, TJPF, TJPF_ABGR, TJPF_ARGB,
+                                TJPF_BGR, TJPF_BGRA, TJPF_BGRX, TJPF_CMYK,
+                                TJPF_GRAY, TJPF_RGB, TJPF_RGBA, TJPF_RGBX,
+                                TJPF_UNKNOWN, TJPF_XBGR, TJPF_XRGB, TJSAMP,
+                                TJSAMP_411, TJSAMP_420, TJSAMP_422,
+                                TJSAMP_440, TJSAMP_444, TJSAMP_GRAY, TJ_NUMPF,
+                                TJ_NUMSAMP};pub use crate::stddef_h::{size_t, NULL};
 /*
  * Copyright (C)2009-2014, 2017-2018 D. R. Commander.  All Rights Reserved.
  *

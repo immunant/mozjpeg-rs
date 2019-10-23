@@ -1,41 +1,46 @@
-use libc::c_uchar;use libc::c_ulong;use libc::c_char;use libc::c_long;use libc::c_uint;use libc::c_void;use libc::c_int;use libc;
 
-pub use crate::stddef_h::size_t;
-pub use crate::stdlib::__blkcnt_t;
-pub use crate::stdlib::__blksize_t;
-pub use crate::stdlib::__dev_t;
-pub use crate::stdlib::__gid_t;
-pub use crate::stdlib::__ino_t;
-pub use crate::stdlib::__mode_t;
-pub use crate::stdlib::__nlink_t;
-pub use crate::stdlib::__off_t;
-pub use crate::stdlib::__ssize_t;
-pub use crate::stdlib::__syscall_slong_t;
-pub use crate::stdlib::__time_t;
-pub use crate::stdlib::__uid_t;
-pub use crate::stdlib::off_t;
-pub use crate::stdlib::ssize_t;
-pub use crate::stdlib::timespec;
 
-pub use super::md5::uint32;
-pub use super::md5::MD5Context;
-pub use super::md5::MD5Final;
-pub use super::md5::MD5Init;
-pub use super::md5::MD5Update;
-pub use super::md5::MD5_CTX;
-use crate::stdlib::__errno_location;
-pub use crate::stdlib::__fxstat;
-use crate::stdlib::close;
-pub use crate::stdlib::fstat;
-use crate::stdlib::lseek;
-use crate::stdlib::malloc;
-use crate::stdlib::open;
-use crate::stdlib::read;
-pub use crate::stdlib::stat;
-pub use crate::stdlib::O_RDONLY;
-pub use crate::stdlib::SEEK_SET;
-pub use crate::stdlib::_STAT_VER;
-pub use crate::stdlib::_STAT_VER_LINUX;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+use crate::stdlib::{__errno_location, close, lseek, malloc, open, read};use libc::{c_uchar, c_ulong, c_char, c_long, c_uint, c_void, c_int, self};pub use crate::stdlib::{__blkcnt_t, __blksize_t, __dev_t, __gid_t, __ino_t,
+                        __mode_t, __nlink_t, __off_t, __ssize_t,
+                        __syscall_slong_t, __time_t, __uid_t, off_t, ssize_t,
+                        timespec, __fxstat, fstat, stat, O_RDONLY, SEEK_SET,
+                        _STAT_VER, _STAT_VER_LINUX};pub use crate::stddef_h::size_t;pub use super::md5::{uint32, MD5Context, MD5Final, MD5Init, MD5Update,
+                     MD5_CTX};
 /* mdXhl.c
  * ----------------------------------------------------------------------------
  * "THE BEER-WARE LICENSE" (Revision 42):

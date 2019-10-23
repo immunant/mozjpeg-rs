@@ -1,4 +1,4 @@
-use libc::c_ushort;use libc::c_ulong;use libc::c_char;use libc::c_int;extern "C" {
+use libc::{c_ushort, c_ulong, c_char, c_int};extern "C" {
     #[no_mangle]
     pub fn set_sample_factors(
         cinfo: j_compress_ptr,
@@ -85,11 +85,10 @@ use libc::c_ushort;use libc::c_ulong;use libc::c_char;use libc::c_int;extern "C"
         infile: *mut FILE,
     );
 }
-pub use crate::stdlib::C2RustUnnamed_0;
-// =============== BEGIN cdjpeg_h ================
-use crate::jmorecfg_h::JDIMENSION;
-use crate::jpeglib_h::jpeg_progress_mgr;
-use crate::jpeglib_h::JSAMPARRAY;
+
+
+
+use crate::jmorecfg_h::JDIMENSION;use crate::jpeglib_h::{jpeg_progress_mgr, JSAMPARRAY};pub use crate::stdlib::C2RustUnnamed_0;
 /*
  * cjpeg/djpeg may need to perform extra passes to convert to or from
  * the source/destination file format.  The JPEG library does not know
@@ -137,12 +136,13 @@ pub struct cjpeg_source_struct {
 }
 
 pub type cjpeg_source_ptr = *mut cjpeg_source_struct;
-pub use crate::jmorecfg_h::boolean;
-use crate::jpeglib_h::j_compress_ptr;
-use crate::jpeglib_h::j_decompress_ptr;
-use crate::jpeglib_h::jpeg_compress_struct;
-use crate::jpeglib_h::jpeg_saved_marker_ptr;
-pub use crate::stdlib::FILE;
+
+
+
+
+
+use crate::jpeglib_h::{j_compress_ptr, j_decompress_ptr, jpeg_compress_struct,
+                       jpeg_saved_marker_ptr};pub use crate::jmorecfg_h::boolean;pub use crate::stdlib::FILE;
 
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -178,19 +178,20 @@ pub struct djpeg_dest_struct {
 }
 
 pub type djpeg_dest_ptr = *mut djpeg_dest_struct;
-use crate::jpeglib_h::jpeg_decompress_struct;
-use libc;
 
-pub use crate::stddef_h::size_t;
-pub use crate::stdlib::__int32_t;
-pub use crate::stdlib::__off64_t;
-pub use crate::stdlib::__off_t;
-pub use crate::stdlib::_IO_FILE;
 
-pub use crate::stdlib::_IO_codecvt;
-pub use crate::stdlib::_IO_lock_t;
-pub use crate::stdlib::_IO_marker;
-pub use crate::stdlib::_IO_wide_data;
+
+
+
+
+
+
+
+
+
+
+use libc;use crate::jpeglib_h::jpeg_decompress_struct;pub use crate::stdlib::{__int32_t, __off64_t, __off_t, _IO_FILE, _IO_codecvt,
+                        _IO_lock_t, _IO_marker, _IO_wide_data};pub use crate::stddef_h::size_t;
 /*
  * cdjpeg.h
  *
@@ -274,25 +275,28 @@ pub const READ_BINARY: [c_char; 3] =
 /* define exit() codes if not provided */
 
 pub const EXIT_WARNING: c_int = 2i32;
-pub use crate::jmorecfg_h::FALSE;
-pub use crate::jmorecfg_h::TRUE;
-pub use crate::stdlib::_ISalnum;
-pub use crate::stdlib::_ISalpha;
-pub use crate::stdlib::_ISblank;
-pub use crate::stdlib::_IScntrl;
-pub use crate::stdlib::_ISdigit;
-pub use crate::stdlib::_ISgraph;
-pub use crate::stdlib::_ISlower;
-pub use crate::stdlib::_ISprint;
-pub use crate::stdlib::_ISpunct;
-pub use crate::stdlib::_ISspace;
-pub use crate::stdlib::_ISupper;
-pub use crate::stdlib::_ISxdigit;
-pub use crate::stdlib::__ctype_b_loc;
-pub use crate::stdlib::__ctype_tolower_loc;
-use crate::stdlib::stdin;
-use crate::stdlib::stdout;
-pub use crate::stdlib::tolower;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+use crate::stdlib::{stdin, stdout};pub use crate::jmorecfg_h::{FALSE, TRUE};pub use crate::stdlib::{_ISalnum, _ISalpha, _ISblank, _IScntrl, _ISdigit,
+                        _ISgraph, _ISlower, _ISprint, _ISpunct, _ISspace,
+                        _ISupper, _ISxdigit, __ctype_b_loc,
+                        __ctype_tolower_loc, tolower};
 /*
  * cdjpeg.c
  *

@@ -1,4 +1,4 @@
-use libc::c_double;use crate::jmorecfg_h::JSAMPLE;
+use crate::jmorecfg_h::JSAMPLE;use libc::c_double;
 #[inline(always)]
 pub unsafe extern "C" fn rgb_to_cmyk(
     mut r: JSAMPLE,
