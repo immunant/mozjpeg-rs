@@ -1355,7 +1355,7 @@ unsafe extern "C" fn jpeg_getc(mut cinfo: crate::jpeglib_h::j_decompress_ptr) ->
             );
         }
     }
-    (*datasrc).bytes_in_buffer = (*datasrc).bytes_in_buffer.wrapping_sub(1);
+    (*datasrc).bytes_in_buffer =  (*datasrc).bytes_in_buffer - 1;
     let fresh0 = (*datasrc).next_input_byte;
     (*datasrc).next_input_byte = (*datasrc).next_input_byte.offset(1);
     return *fresh0 as libc::c_uint;
@@ -1673,7 +1673,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         loop {
             inbuffer = crate::stdlib::realloc(
                 inbuffer as *mut libc::c_void,
-                insize.wrapping_add(INPUT_BUF_SIZE as libc::c_ulong),
+                
+                insize + INPUT_BUF_SIZE as libc::c_ulong,
             ) as *mut libc::c_uchar;
             if inbuffer.is_null() {
                 crate::stdlib::fprintf(
@@ -1708,7 +1709,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                     );
                 }
             }
-            insize = insize.wrapping_add(nbytes);
+            insize =  insize + nbytes;
             if !(nbytes == INPUT_BUF_SIZE as libc::c_ulong) {
                 break;
             }
@@ -1764,7 +1765,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     if skip != 0 {
         let mut tmp: crate::jmorecfg_h::JDIMENSION = 0;
         /* Decompress a subregion */
-        if skip_end > cinfo.output_height.wrapping_sub(1i32 as libc::c_uint) {
+        if skip_end >  cinfo.output_height - 1i32 as libc::c_uint {
             crate::stdlib::fprintf(
                 crate::stdlib::stderr,
                 
@@ -1776,11 +1777,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
         }
         tmp = cinfo.output_height;
-        cinfo.output_height = (cinfo.output_height as libc::c_uint).wrapping_sub(
-            skip_end
-                .wrapping_sub(skip_start)
-                .wrapping_add(1i32 as libc::c_uint),
-        ) as crate::jmorecfg_h::JDIMENSION
+        cinfo.output_height = (cinfo.output_height as libc::c_uint -
+    (
+            skip_end - skip_start + 1i32 as libc::c_uint)) as crate::jmorecfg_h::JDIMENSION
             as crate::jmorecfg_h::JDIMENSION;
         Some((*dest_mgr).start_output.expect("non-null function pointer"))
             .expect("non-null function pointer")(&mut cinfo, dest_mgr);
@@ -1809,9 +1808,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         }
         crate::jpeglib_h::jpeg_skip_scanlines(
             &mut cinfo,
-            skip_end
-                .wrapping_sub(skip_start)
-                .wrapping_add(1i32 as libc::c_uint),
+            
+            skip_end - skip_start + 1i32 as libc::c_uint,
         );
         while cinfo.output_scanline < cinfo.output_height {
             num_scanlines = crate::jpeglib_h::jpeg_read_scanlines(
@@ -1829,8 +1827,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     } else if crop != 0 {
         let mut tmp_0: crate::jmorecfg_h::JDIMENSION = 0;
         /* Normal full-image decompress */
-        if crop_x.wrapping_add(crop_width) > cinfo.output_width
-            || crop_y.wrapping_add(crop_height) > cinfo.output_height
+        if  crop_x + crop_width > cinfo.output_width
+            ||  crop_y + crop_height > cinfo.output_height
         {
             crate::stdlib::fprintf(
                 crate::stdlib::stderr,
@@ -1865,7 +1863,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             .expect("non-null function pointer")(&mut cinfo, dest_mgr);
         cinfo.output_height = tmp_0;
         crate::jpeglib_h::jpeg_skip_scanlines(&mut cinfo, crop_y);
-        while cinfo.output_scanline < crop_y.wrapping_add(crop_height) {
+        while cinfo.output_scanline <  crop_y + crop_height {
             num_scanlines = crate::jpeglib_h::jpeg_read_scanlines(
                 &mut cinfo,
                 (*dest_mgr).buffer,
@@ -1880,10 +1878,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         }
         crate::jpeglib_h::jpeg_skip_scanlines(
             &mut cinfo,
+            
             cinfo
-                .output_height
-                .wrapping_sub(crop_y)
-                .wrapping_sub(crop_height),
+                .output_height - crop_y - crop_height,
         );
     } else {
         /* Check for valid crop dimensions.  We cannot check these values until
