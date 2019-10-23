@@ -102,8 +102,10 @@ unsafe extern "C" fn read_1_byte() -> libc::c_int {
     if c == crate::stdlib::EOF {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b"%s\n\x00" as *const u8 as *const libc::c_char,
-            b"Premature EOF in JPEG file\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\n\x00".as_ptr() as *const libc::c_char,
+            
+            b"Premature EOF in JPEG file\x00".as_ptr() as *const libc::c_char,
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
@@ -119,8 +121,10 @@ unsafe extern "C" fn read_2_bytes() -> libc::c_uint {
     if c1 == crate::stdlib::EOF {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b"%s\n\x00" as *const u8 as *const libc::c_char,
-            b"Premature EOF in JPEG file\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\n\x00".as_ptr() as *const libc::c_char,
+            
+            b"Premature EOF in JPEG file\x00".as_ptr() as *const libc::c_char,
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
@@ -128,8 +132,10 @@ unsafe extern "C" fn read_2_bytes() -> libc::c_uint {
     if c2 == crate::stdlib::EOF {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b"%s\n\x00" as *const u8 as *const libc::c_char,
-            b"Premature EOF in JPEG file\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\n\x00".as_ptr() as *const libc::c_char,
+            
+            b"Premature EOF in JPEG file\x00".as_ptr() as *const libc::c_char,
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
@@ -170,7 +176,8 @@ unsafe extern "C" fn next_marker() -> libc::c_int {
     if discarded_bytes != 0i32 {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b"Warning: garbage data found in JPEG file\n\x00" as *const u8 as *const libc::c_char,
+            
+            b"Warning: garbage data found in JPEG file\n\x00".as_ptr() as *const libc::c_char,
         );
     }
     return c;
@@ -191,8 +198,10 @@ unsafe extern "C" fn first_marker() -> libc::c_int {
     if c1 != 0xffi32 || c2 != M_SOI {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b"%s\n\x00" as *const u8 as *const libc::c_char,
-            b"Not a JPEG file\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\n\x00".as_ptr() as *const libc::c_char,
+            
+            b"Not a JPEG file\x00".as_ptr() as *const libc::c_char,
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
@@ -217,8 +226,10 @@ unsafe extern "C" fn skip_variable()
     if length < 2i32 as libc::c_uint {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b"%s\n\x00" as *const u8 as *const libc::c_char,
-            b"Erroneous JPEG marker length\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\n\x00".as_ptr() as *const libc::c_char,
+            
+            b"Erroneous JPEG marker length\x00".as_ptr() as *const libc::c_char,
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
@@ -242,7 +253,8 @@ unsafe extern "C" fn process_COM(mut raw: libc::c_int) {
     /* Bill Allombert: set locale properly for isprint */
     crate::stdlib::setlocale(
         crate::stdlib::LC_CTYPE,
-        b"\x00" as *const u8 as *const libc::c_char,
+        
+        b"\x00".as_ptr() as *const libc::c_char,
     );
     /* Get the marker parameter length count */
     length = read_2_bytes();
@@ -250,8 +262,10 @@ unsafe extern "C" fn process_COM(mut raw: libc::c_int) {
     if length < 2i32 as libc::c_uint {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b"%s\n\x00" as *const u8 as *const libc::c_char,
-            b"Erroneous JPEG marker length\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\n\x00".as_ptr() as *const libc::c_char,
+            
+            b"Erroneous JPEG marker length\x00".as_ptr() as *const libc::c_char,
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
@@ -266,29 +280,30 @@ unsafe extern "C" fn process_COM(mut raw: libc::c_int) {
          * Newlines in CR, CR/LF, or LF form will be printed as one newline.
          */
         } else if ch == '\r' as i32 {
-            crate::stdlib::printf(b"\n\x00" as *const u8 as *const libc::c_char);
+            crate::stdlib::printf(b"\n\x00".as_ptr() as *const libc::c_char);
         } else if ch == '\n' as i32 {
             if lastch != '\r' as i32 {
-                crate::stdlib::printf(b"\n\x00" as *const u8 as *const libc::c_char);
+                crate::stdlib::printf(b"\n\x00".as_ptr() as *const libc::c_char);
             }
         } else if ch == '\\' as i32 {
-            crate::stdlib::printf(b"\\\\\x00" as *const u8 as *const libc::c_char);
+            crate::stdlib::printf(b"\\\\\x00".as_ptr() as *const libc::c_char);
         } else if *(*crate::stdlib::__ctype_b_loc()).offset(ch as isize) as libc::c_int
             & crate::stdlib::_ISprint as libc::c_int as libc::c_ushort as libc::c_int
             != 0
         {
             crate::stdlib::putc(ch, crate::stdlib::stdout);
         } else {
-            crate::stdlib::printf(b"\\%03o\x00" as *const u8 as *const libc::c_char, ch);
+            crate::stdlib::printf(b"\\%03o\x00".as_ptr() as *const libc::c_char, ch);
         }
         lastch = ch;
         length = length.wrapping_sub(1)
     }
-    crate::stdlib::printf(b"\n\x00" as *const u8 as *const libc::c_char);
+    crate::stdlib::printf(b"\n\x00".as_ptr() as *const libc::c_char);
     /* Bill Allombert: revert to C locale */
     crate::stdlib::setlocale(
         crate::stdlib::LC_CTYPE,
-        b"C\x00" as *const u8 as *const libc::c_char,
+        
+        b"C\x00".as_ptr() as *const libc::c_char,
     );
 }
 /*
@@ -310,35 +325,38 @@ unsafe extern "C" fn process_SOFn(mut marker: libc::c_int) {
     image_width = read_2_bytes();
     num_components = read_1_byte();
     match marker {
-        192 => process = b"Baseline\x00" as *const u8 as *const libc::c_char,
-        193 => process = b"Extended sequential\x00" as *const u8 as *const libc::c_char,
-        194 => process = b"Progressive\x00" as *const u8 as *const libc::c_char,
-        195 => process = b"Lossless\x00" as *const u8 as *const libc::c_char,
-        197 => process = b"Differential sequential\x00" as *const u8 as *const libc::c_char,
-        198 => process = b"Differential progressive\x00" as *const u8 as *const libc::c_char,
-        199 => process = b"Differential lossless\x00" as *const u8 as *const libc::c_char,
+        192 => process =  b"Baseline\x00".as_ptr() as *const libc::c_char,
+        193 => process =  b"Extended sequential\x00".as_ptr() as *const libc::c_char,
+        194 => process =  b"Progressive\x00".as_ptr() as *const libc::c_char,
+        195 => process =  b"Lossless\x00".as_ptr() as *const libc::c_char,
+        197 => process =  b"Differential sequential\x00".as_ptr() as *const libc::c_char,
+        198 => process =  b"Differential progressive\x00".as_ptr() as *const libc::c_char,
+        199 => process =  b"Differential lossless\x00".as_ptr() as *const libc::c_char,
         201 => {
             process =
-                b"Extended sequential, arithmetic coding\x00" as *const u8 as *const libc::c_char
+                
+                b"Extended sequential, arithmetic coding\x00".as_ptr() as *const libc::c_char
         }
-        202 => process = b"Progressive, arithmetic coding\x00" as *const u8 as *const libc::c_char,
-        203 => process = b"Lossless, arithmetic coding\x00" as *const u8 as *const libc::c_char,
+        202 => process =  b"Progressive, arithmetic coding\x00".as_ptr() as *const libc::c_char,
+        203 => process =  b"Lossless, arithmetic coding\x00".as_ptr() as *const libc::c_char,
         205 => {
-            process = b"Differential sequential, arithmetic coding\x00" as *const u8
+            process =  b"Differential sequential, arithmetic coding\x00".as_ptr()
                 as *const libc::c_char
         }
         206 => {
-            process = b"Differential progressive, arithmetic coding\x00" as *const u8
+            process =  b"Differential progressive, arithmetic coding\x00".as_ptr()
                 as *const libc::c_char
         }
         207 => {
             process =
-                b"Differential lossless, arithmetic coding\x00" as *const u8 as *const libc::c_char
+                
+                b"Differential lossless, arithmetic coding\x00".as_ptr() as *const libc::c_char
         }
-        _ => process = b"Unknown\x00" as *const u8 as *const libc::c_char,
+        _ => process =  b"Unknown\x00".as_ptr() as *const libc::c_char,
     }
     crate::stdlib::printf(
-        b"JPEG image is %uw * %uh, %d color components, %d bits per sample\n\x00" as *const u8
+        
+        b"JPEG image is %uw * %uh, %d color components, %d bits per sample\n\x00".as_ptr()
             as *const libc::c_char,
         image_width,
         image_height,
@@ -346,14 +364,17 @@ unsafe extern "C" fn process_SOFn(mut marker: libc::c_int) {
         data_precision,
     );
     crate::stdlib::printf(
-        b"JPEG process: %s\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"JPEG process: %s\n\x00".as_ptr() as *const libc::c_char,
         process,
     );
     if length != (8i32 + num_components * 3i32) as libc::c_uint {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b"%s\n\x00" as *const u8 as *const libc::c_char,
-            b"Bogus SOF marker length\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\n\x00".as_ptr() as *const libc::c_char,
+            
+            b"Bogus SOF marker length\x00".as_ptr() as *const libc::c_char,
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
@@ -385,8 +406,10 @@ unsafe extern "C" fn scan_JPEG_header(
     if first_marker() != M_SOI {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b"%s\n\x00" as *const u8 as *const libc::c_char,
-            b"Expected SOI marker first\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s\n\x00".as_ptr() as *const libc::c_char,
+            
+            b"Expected SOI marker first\x00".as_ptr() as *const libc::c_char,
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
@@ -454,7 +477,8 @@ unsafe extern "C" fn scan_JPEG_header(
                  */
                 if verbose != 0 {
                     crate::stdlib::printf(
-                        b"APP12 contains:\n\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"APP12 contains:\n\x00".as_ptr() as *const libc::c_char,
                     ); /* we assume it has a parameter count... */
                     process_COM(raw);
                 } else {
@@ -584,26 +608,31 @@ unsafe extern "C" fn usage()
 {
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"rdjpgcom displays any textual comments in a JPEG file.\n\x00" as *const u8
+        
+        b"rdjpgcom displays any textual comments in a JPEG file.\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"Usage: %s [switches] [inputfile]\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"Usage: %s [switches] [inputfile]\n\x00".as_ptr() as *const libc::c_char,
         progname,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"Switches (names may be abbreviated):\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"Switches (names may be abbreviated):\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"  -raw        Display non-printable characters in comments (unsafe)\n\x00" as *const u8
+        
+        b"  -raw        Display non-printable characters in comments (unsafe)\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::fprintf(
         crate::stdlib::stderr,
-        b"  -verbose    Also display dimensions of JPEG image\n\x00" as *const u8
+        
+        b"  -verbose    Also display dimensions of JPEG image\n\x00".as_ptr()
             as *const libc::c_char,
     );
     crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
@@ -682,7 +711,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     /* On Mac, fetch a command line. */
     progname = *argv.offset(0); /* in case C library doesn't provide it */
     if progname.is_null() || *progname.offset(0) as libc::c_int == 0i32 {
-        progname = b"rdjpgcom\x00" as *const u8 as *const libc::c_char
+        progname =  b"rdjpgcom\x00".as_ptr() as *const libc::c_char
     }
     /* Parse switches, if any */
     argn = 1i32; /* not switch, must be file name */
@@ -694,12 +723,13 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         arg = arg.offset(1);
         if keymatch(
             arg,
-            b"verbose\x00" as *const u8 as *const libc::c_char,
+            
+            b"verbose\x00".as_ptr() as *const libc::c_char,
             1i32,
         ) != 0
         {
             verbose += 1
-        } else if keymatch(arg, b"raw\x00" as *const u8 as *const libc::c_char, 1i32) != 0 {
+        } else if keymatch(arg,  b"raw\x00".as_ptr() as *const libc::c_char, 1i32) != 0 {
             raw = 1i32
         } else {
             usage();
@@ -711,7 +741,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     if argn < argc - 1i32 {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
-            b"%s: only one input file\n\x00" as *const u8 as *const libc::c_char,
+            
+            b"%s: only one input file\n\x00".as_ptr() as *const libc::c_char,
             progname,
         );
         usage();
@@ -721,7 +752,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         if infile.is_null() {
             crate::stdlib::fprintf(
                 crate::stdlib::stderr,
-                b"%s: can\'t open %s\n\x00" as *const u8 as *const libc::c_char,
+                
+                b"%s: can\'t open %s\n\x00".as_ptr() as *const libc::c_char,
                 progname,
                 *argv.offset(argn as isize),
             );
