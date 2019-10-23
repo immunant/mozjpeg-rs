@@ -220,24 +220,31 @@ pub static mut pixFormatStr: [*const libc::c_char; 12] = [
 #[no_mangle]
 
 pub static mut _3byteFormats: [libc::c_int; 2] = [
-    crate::src::turbojpeg::TJPF_RGB as libc::c_int,
-    crate::src::turbojpeg::TJPF_BGR as libc::c_int,
+    
+    crate::src::turbojpeg::TJPF_RGB,
+    
+    crate::src::turbojpeg::TJPF_BGR,
 ];
 #[no_mangle]
 
 pub static mut _4byteFormats: [libc::c_int; 5] = [
-    crate::src::turbojpeg::TJPF_RGBX as libc::c_int,
-    crate::src::turbojpeg::TJPF_BGRX as libc::c_int,
-    crate::src::turbojpeg::TJPF_XBGR as libc::c_int,
-    crate::src::turbojpeg::TJPF_XRGB as libc::c_int,
-    crate::src::turbojpeg::TJPF_CMYK as libc::c_int,
+    
+    crate::src::turbojpeg::TJPF_RGBX,
+    
+    crate::src::turbojpeg::TJPF_BGRX,
+    
+    crate::src::turbojpeg::TJPF_XBGR,
+    
+    crate::src::turbojpeg::TJPF_XRGB,
+    
+    crate::src::turbojpeg::TJPF_CMYK,
 ];
 #[no_mangle]
 
-pub static mut _onlyGray: [libc::c_int; 1] = [crate::src::turbojpeg::TJPF_GRAY as libc::c_int];
+pub static mut _onlyGray: [libc::c_int; 1] = [crate::src::turbojpeg::TJPF_GRAY];
 #[no_mangle]
 
-pub static mut _onlyRGB: [libc::c_int; 1] = [crate::src::turbojpeg::TJPF_RGB as libc::c_int];
+pub static mut _onlyRGB: [libc::c_int; 1] = [crate::src::turbojpeg::TJPF_RGB];
 #[no_mangle]
 
 pub static mut doYUV: libc::c_int = 0i32;
@@ -267,7 +274,7 @@ pub unsafe extern "C" fn initBuf(
     let mut row: libc::c_int = 0;
     let mut col: libc::c_int = 0;
     let mut halfway: libc::c_int = 16i32;
-    if pf == crate::src::turbojpeg::TJPF_GRAY as libc::c_int {
+    if pf ==  crate::src::turbojpeg::TJPF_GRAY {
         crate::stdlib::memset(
             buf as *mut libc::c_void,
             0i32,
@@ -293,7 +300,7 @@ pub unsafe extern "C" fn initBuf(
             }
             row += 1
         }
-    } else if pf == crate::src::turbojpeg::TJPF_CMYK as libc::c_int {
+    } else if pf ==  crate::src::turbojpeg::TJPF_CMYK {
         crate::stdlib::memset(
             buf as *mut libc::c_void,
             255i32,
@@ -310,12 +317,12 @@ pub unsafe extern "C" fn initBuf(
                 }
                 if (row / 8i32 + col / 8i32) % 2i32 == 0i32 {
                     if row >= halfway {
-                        *buf.offset((index * ps + 3i32) as isize) = 0i32 as libc::c_uchar
+                        *buf.offset((index * ps + 3i32) as isize) = 0u8
                     }
                 } else {
-                    *buf.offset((index * ps + 2i32) as isize) = 0i32 as libc::c_uchar;
+                    *buf.offset((index * ps + 2i32) as isize) = 0u8;
                     if row < halfway {
-                        *buf.offset((index * ps + 1i32) as isize) = 0i32 as libc::c_uchar
+                        *buf.offset((index * ps + 1i32) as isize) = 0u8
                     }
                 }
                 col += 1
@@ -339,14 +346,14 @@ pub unsafe extern "C" fn initBuf(
                 }
                 if (row / 8i32 + col / 8i32) % 2i32 == 0i32 {
                     if row < halfway {
-                        *buf.offset((index * ps + roffset) as isize) = 255i32 as libc::c_uchar;
-                        *buf.offset((index * ps + goffset) as isize) = 255i32 as libc::c_uchar;
-                        *buf.offset((index * ps + boffset) as isize) = 255i32 as libc::c_uchar
+                        *buf.offset((index * ps + roffset) as isize) = 255u8;
+                        *buf.offset((index * ps + goffset) as isize) = 255u8;
+                        *buf.offset((index * ps + boffset) as isize) = 255u8
                     }
                 } else {
-                    *buf.offset((index * ps + roffset) as isize) = 255i32 as libc::c_uchar;
+                    *buf.offset((index * ps + roffset) as isize) = 255u8;
                     if row >= halfway {
-                        *buf.offset((index * ps + goffset) as isize) = 255i32 as libc::c_uchar
+                        *buf.offset((index * ps + goffset) as isize) = 255u8
                     }
                 }
                 col += 1
@@ -378,12 +385,12 @@ pub unsafe extern "C" fn checkBuf(
     let mut retval: libc::c_int = 1i32;
     let mut halfway: libc::c_int = 16i32 * sf.num / sf.denom;
     let mut blocksize: libc::c_int = 8i32 * sf.num / sf.denom;
-    if pf == crate::src::turbojpeg::TJPF_GRAY as libc::c_int {
+    if pf ==  crate::src::turbojpeg::TJPF_GRAY {
         boffset = 0i32;
         goffset = boffset;
         roffset = goffset
     }
-    if pf == crate::src::turbojpeg::TJPF_CMYK as libc::c_int {
+    if pf ==  crate::src::turbojpeg::TJPF_CMYK {
         row = 0i32;
         's_40: loop {
             if !(row < h) {
@@ -894,7 +901,7 @@ pub unsafe extern "C" fn checkBuf(
         while row < h {
             col = 0i32;
             while col < w {
-                if pf == crate::src::turbojpeg::TJPF_CMYK as libc::c_int {
+                if pf ==  crate::src::turbojpeg::TJPF_CMYK {
                     crate::stdlib::printf(
                         
                         b"%.3d/%.3d/%.3d/%.3d \x00".as_ptr() as *const libc::c_char,
@@ -1207,9 +1214,9 @@ pub unsafe extern "C" fn writeJPEG(
         || crate::stdlib::fwrite(
             jpegBuf as *const libc::c_void,
             jpegSize,
-            1i32 as libc::c_ulong,
+            1u64,
             file,
-        ) != 1i32 as libc::c_ulong
+        ) != 1u64
     {
         crate::stdlib::printf(
             
@@ -1270,7 +1277,7 @@ pub unsafe extern "C" fn compTest(
         exitStatus = -1i32
     } else {
         initBuf(srcBuf, w, h, pf, flags);
-        if !(*dstBuf).is_null() && *dstSize > 0i32 as libc::c_ulong {
+        if !(*dstBuf).is_null() && *dstSize > 0u64 {
             crate::stdlib::memset(*dstBuf as *mut libc::c_void, 0i32, *dstSize);
         }
         if alloc == 0 {
@@ -1393,7 +1400,7 @@ pub unsafe extern "C" fn compTest(
             _ => {
                 crate::stdlib::snprintf(
                     tempStr.as_mut_ptr(),
-                    1024i32 as libc::c_ulong,
+                    1024u64,
                     
                     b"%s_enc_%s_%s_%s_Q%d.jpg\x00".as_ptr() as *const libc::c_char,
                     basename,
@@ -1440,7 +1447,7 @@ pub unsafe extern "C" fn _decompTest(
     let mut _hdrsubsamp: libc::c_int = -1i32;
     let mut scaledWidth: libc::c_int = (w * sf.num + sf.denom - 1i32) / sf.denom;
     let mut scaledHeight: libc::c_int = (h * sf.num + sf.denom - 1i32) / sf.denom;
-    let mut dstSize: libc::c_ulong = 0i32 as libc::c_ulong;
+    let mut dstSize: libc::c_ulong = 0u64;
     if crate::src::turbojpeg::tjDecompressHeader2(
         handle,
         jpegBuf,
@@ -1726,14 +1733,14 @@ pub unsafe extern "C" fn doTest(
     let mut chandle: crate::src::turbojpeg::tjhandle = crate::stddef_h::NULL as *mut libc::c_void;
     let mut dhandle: crate::src::turbojpeg::tjhandle = crate::stddef_h::NULL as *mut libc::c_void;
     let mut dstBuf: *mut libc::c_uchar = crate::stddef_h::NULL as *mut libc::c_uchar;
-    let mut size: libc::c_ulong = 0i32 as libc::c_ulong;
+    let mut size: libc::c_ulong = 0u64;
     let mut pfi: libc::c_int = 0;
     let mut pf: libc::c_int = 0;
     let mut i: libc::c_int = 0;
     if alloc == 0 {
         size = crate::src::turbojpeg::tjBufSize(w, h, subsamp)
     }
-    if size != 0i32 as libc::c_ulong {
+    if size != 0u64 {
         dstBuf = crate::src::turbojpeg::tjAlloc(size as libc::c_int);
         if dstBuf.is_null() {
             crate::stdlib::printf(
@@ -1793,8 +1800,8 @@ pub unsafe extern "C" fn doTest(
                             flags,
                         );
                         decompTest(dhandle, dstBuf, size, w, h, pf, basename, subsamp, flags);
-                        if pf >= crate::src::turbojpeg::TJPF_RGBX as libc::c_int
-                            && pf <= crate::src::turbojpeg::TJPF_XRGB as libc::c_int
+                        if pf >=  crate::src::turbojpeg::TJPF_RGBX
+                            && pf <=  crate::src::turbojpeg::TJPF_XRGB
                         {
                             crate::stdlib::printf(b"\n\x00".as_ptr() as *const libc::c_char);
                             decompTest(
@@ -1803,8 +1810,8 @@ pub unsafe extern "C" fn doTest(
                                 size,
                                 w,
                                 h,
-                                pf + (crate::src::turbojpeg::TJPF_RGBA as libc::c_int
-                                    - crate::src::turbojpeg::TJPF_RGBX as libc::c_int),
+                                pf + (crate::src::turbojpeg::TJPF_RGBA
+                                    -  crate::src::turbojpeg::TJPF_RGBX),
                                 basename,
                                 subsamp,
                                 flags,
@@ -1844,7 +1851,7 @@ pub unsafe extern "C" fn bufSizeTest() {
     let mut srcBuf: *mut libc::c_uchar = crate::stddef_h::NULL as *mut libc::c_uchar;
     let mut dstBuf: *mut libc::c_uchar = crate::stddef_h::NULL as *mut libc::c_uchar;
     let mut handle: crate::src::turbojpeg::tjhandle = crate::stddef_h::NULL as *mut libc::c_void;
-    let mut dstSize: libc::c_ulong = 0i32 as libc::c_ulong;
+    let mut dstSize: libc::c_ulong = 0u64;
     handle = crate::src::turbojpeg::tjInitCompress();
     if handle.is_null() {
         crate::stdlib::printf(
@@ -1915,9 +1922,9 @@ pub unsafe extern "C" fn bufSizeTest() {
                             if crate::stdlib::random()
                                 < (crate::stdlib::RAND_MAX / 2i32) as libc::c_long
                             {
-                                *srcBuf.offset(i as isize) = 0i32 as libc::c_uchar
+                                *srcBuf.offset(i as isize) = 0u8
                             } else {
-                                *srcBuf.offset(i as isize) = 255i32 as libc::c_uchar
+                                *srcBuf.offset(i as isize) = 255u8
                             }
                             i += 1
                         }
@@ -1928,7 +1935,8 @@ pub unsafe extern "C" fn bufSizeTest() {
                                 w,
                                 0i32,
                                 h,
-                                crate::src::turbojpeg::TJPF_BGRX as libc::c_int,
+                                
+                                crate::src::turbojpeg::TJPF_BGRX,
                                 dstBuf,
                                 pad,
                                 subsamp,
@@ -1951,7 +1959,8 @@ pub unsafe extern "C" fn bufSizeTest() {
                             w,
                             0i32,
                             h,
-                            crate::src::turbojpeg::TJPF_BGRX as libc::c_int,
+                            
+                            crate::src::turbojpeg::TJPF_BGRX,
                             &mut dstBuf,
                             &mut dstSize,
                             subsamp,
@@ -2014,9 +2023,9 @@ pub unsafe extern "C" fn bufSizeTest() {
                                 if crate::stdlib::random()
                                     < (crate::stdlib::RAND_MAX / 2i32) as libc::c_long
                                 {
-                                    *srcBuf.offset(i as isize) = 0i32 as libc::c_uchar
+                                    *srcBuf.offset(i as isize) = 0u8
                                 } else {
-                                    *srcBuf.offset(i as isize) = 255i32 as libc::c_uchar
+                                    *srcBuf.offset(i as isize) = 255u8
                                 }
                                 i += 1
                             }
@@ -2027,7 +2036,8 @@ pub unsafe extern "C" fn bufSizeTest() {
                                     h,
                                     0i32,
                                     w,
-                                    crate::src::turbojpeg::TJPF_BGRX as libc::c_int,
+                                    
+                                    crate::src::turbojpeg::TJPF_BGRX,
                                     dstBuf,
                                     pad,
                                     subsamp,
@@ -2050,7 +2060,8 @@ pub unsafe extern "C" fn bufSizeTest() {
                                 h,
                                 0i32,
                                 w,
-                                crate::src::turbojpeg::TJPF_BGRX as libc::c_int,
+                                
+                                crate::src::turbojpeg::TJPF_BGRX,
                                 &mut dstBuf,
                                 &mut dstSize,
                                 subsamp,
@@ -2134,9 +2145,9 @@ pub unsafe extern "C" fn initBitmap(
                 0i32,
                 ps as libc::c_ulong,
             );
-            if pf == crate::src::turbojpeg::TJPF_GRAY as libc::c_int {
+            if pf ==  crate::src::turbojpeg::TJPF_GRAY {
                 *buf.offset((row * pitch + i * ps) as isize) = b
-            } else if pf == crate::src::turbojpeg::TJPF_CMYK as libc::c_int {
+            } else if pf ==  crate::src::turbojpeg::TJPF_CMYK {
                 crate::cmyk_h::rgb_to_cmyk(
                     r,
                     g,
@@ -2187,11 +2198,11 @@ pub unsafe extern "C" fn cmpBitmap(
             let mut g: libc::c_uchar = (j * 256i32 / height % 256i32) as libc::c_uchar;
             let mut b: libc::c_uchar =
                 ((j * 256i32 / height + i * 256i32 / width) % 256i32) as libc::c_uchar;
-            if pf == crate::src::turbojpeg::TJPF_GRAY as libc::c_int {
+            if pf ==  crate::src::turbojpeg::TJPF_GRAY {
                 if *buf.offset((row * pitch + i * ps) as isize) as libc::c_int != b as libc::c_int {
                     return 0i32;
                 }
-            } else if pf == crate::src::turbojpeg::TJPF_CMYK as libc::c_int {
+            } else if pf ==  crate::src::turbojpeg::TJPF_CMYK {
                 let mut rf: libc::c_uchar = 0;
                 let mut gf: libc::c_uchar = 0;
                 let mut bf: libc::c_uchar = 0;
@@ -2272,7 +2283,7 @@ pub unsafe extern "C" fn doBmpTest(
     let mut pixelFormat: libc::c_int = pf;
     let mut buf: *mut libc::c_uchar = crate::stddef_h::NULL as *mut libc::c_uchar;
     let mut md5ref: *mut libc::c_char = ::std::ptr::null_mut::< libc::c_char>();
-    if pf == crate::src::turbojpeg::TJPF_GRAY as libc::c_int {
+    if pf ==  crate::src::turbojpeg::TJPF_GRAY {
         md5ref =
             if crate::stdlib::strcasecmp(ext,  b"ppm\x00".as_ptr() as *const libc::c_char) == 0 {
                 
@@ -2304,7 +2315,7 @@ pub unsafe extern "C" fn doBmpTest(
         initBitmap(buf, width, pitch, height, pf, flags);
         crate::stdlib::snprintf(
             filename.as_mut_ptr(),
-            80i32 as libc::c_ulong,
+            80u64,
             
             b"test_bmp_%s_%d_%s.%s\x00".as_ptr() as *const libc::c_char,
             pixFormatStr[pf as usize],
@@ -2380,10 +2391,10 @@ pub unsafe extern "C" fn doBmpTest(
                     );
                     retval = -1i32
                 } else {
-                    if pf == crate::src::turbojpeg::TJPF_GRAY as libc::c_int {
+                    if pf ==  crate::src::turbojpeg::TJPF_GRAY {
                         crate::src::turbojpeg::tjFree(buf);
                         buf = crate::stddef_h::NULL as *mut libc::c_uchar;
-                        pf = crate::src::turbojpeg::TJPF_XBGR as libc::c_int;
+                        pf =  crate::src::turbojpeg::TJPF_XBGR;
                         buf = crate::src::turbojpeg::tjLoadImage(
                             filename.as_mut_ptr(),
                             &mut loadWidth,
@@ -2416,7 +2427,7 @@ pub unsafe extern "C" fn doBmpTest(
                             } else {
                                 crate::src::turbojpeg::tjFree(buf);
                                 buf = crate::stddef_h::NULL as *mut libc::c_uchar;
-                                pf = crate::src::turbojpeg::TJPF_CMYK as libc::c_int;
+                                pf =  crate::src::turbojpeg::TJPF_CMYK;
                                 buf = crate::src::turbojpeg::tjLoadImage(
                                     filename.as_mut_ptr(),
                                     &mut loadWidth,
@@ -2465,7 +2476,7 @@ pub unsafe extern "C" fn doBmpTest(
                             crate::src::turbojpeg::tjFree(buf);
                             buf = crate::stddef_h::NULL as *mut libc::c_uchar;
                             pf = pixelFormat;
-                            pixelFormat = crate::src::turbojpeg::TJPF_UNKNOWN as libc::c_int;
+                            pixelFormat =  crate::src::turbojpeg::TJPF_UNKNOWN;
                             buf = crate::src::turbojpeg::tjLoadImage(
                                 filename.as_mut_ptr(),
                                 &mut loadWidth,
@@ -2483,25 +2494,25 @@ pub unsafe extern "C" fn doBmpTest(
                                 );
                                 exitStatus = -1i32
                             } else {
-                                if pf == crate::src::turbojpeg::TJPF_GRAY as libc::c_int
+                                if pf ==  crate::src::turbojpeg::TJPF_GRAY
                                     && pixelFormat
-                                        != crate::src::turbojpeg::TJPF_GRAY as libc::c_int
-                                    || pf != crate::src::turbojpeg::TJPF_GRAY as libc::c_int
+                                        !=  crate::src::turbojpeg::TJPF_GRAY
+                                    || pf !=  crate::src::turbojpeg::TJPF_GRAY
                                         && crate::stdlib::strcasecmp(
                                             ext,
                                             
                                             b"bmp\x00".as_ptr() as *const libc::c_char,
                                         ) == 0
                                         && pixelFormat
-                                            != crate::src::turbojpeg::TJPF_BGR as libc::c_int
-                                    || pf != crate::src::turbojpeg::TJPF_GRAY as libc::c_int
+                                            !=  crate::src::turbojpeg::TJPF_BGR
+                                    || pf !=  crate::src::turbojpeg::TJPF_GRAY
                                         && crate::stdlib::strcasecmp(
                                             ext,
                                             
                                             b"ppm\x00".as_ptr() as *const libc::c_char,
                                         ) == 0
                                         && pixelFormat
-                                            != crate::src::turbojpeg::TJPF_RGB as libc::c_int
+                                            !=  crate::src::turbojpeg::TJPF_RGB
                                 {
                                     crate::stdlib::printf(b"\n   tjLoadImage() returned unexpected pixel format: %s\n\x00".as_ptr() as
                                                *const libc::c_char,
@@ -2679,7 +2690,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         2i32,
         crate::src::turbojpeg::TJSAMP_444 as libc::c_int,
         
-        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
+        
+        
+        b"test\x00".as_ptr() as *mut libc::c_char,
     );
     doTest(
         39i32,
@@ -2688,7 +2701,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         num4bf,
         crate::src::turbojpeg::TJSAMP_444 as libc::c_int,
         
-        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
+        
+        
+        b"test\x00".as_ptr() as *mut libc::c_char,
     );
     doTest(
         41i32,
@@ -2697,7 +2712,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         2i32,
         crate::src::turbojpeg::TJSAMP_422 as libc::c_int,
         
-        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
+        
+        
+        b"test\x00".as_ptr() as *mut libc::c_char,
     );
     doTest(
         35i32,
@@ -2706,7 +2723,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         num4bf,
         crate::src::turbojpeg::TJSAMP_422 as libc::c_int,
         
-        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
+        
+        
+        b"test\x00".as_ptr() as *mut libc::c_char,
     );
     doTest(
         39i32,
@@ -2715,7 +2734,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         2i32,
         crate::src::turbojpeg::TJSAMP_420 as libc::c_int,
         
-        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
+        
+        
+        b"test\x00".as_ptr() as *mut libc::c_char,
     );
     doTest(
         41i32,
@@ -2724,7 +2745,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         num4bf,
         crate::src::turbojpeg::TJSAMP_420 as libc::c_int,
         
-        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
+        
+        
+        b"test\x00".as_ptr() as *mut libc::c_char,
     );
     doTest(
         35i32,
@@ -2733,7 +2756,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         2i32,
         crate::src::turbojpeg::TJSAMP_440 as libc::c_int,
         
-        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
+        
+        
+        b"test\x00".as_ptr() as *mut libc::c_char,
     );
     doTest(
         39i32,
@@ -2742,7 +2767,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         num4bf,
         crate::src::turbojpeg::TJSAMP_440 as libc::c_int,
         
-        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
+        
+        
+        b"test\x00".as_ptr() as *mut libc::c_char,
     );
     doTest(
         41i32,
@@ -2751,7 +2778,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         2i32,
         crate::src::turbojpeg::TJSAMP_411 as libc::c_int,
         
-        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
+        
+        
+        b"test\x00".as_ptr() as *mut libc::c_char,
     );
     doTest(
         35i32,
@@ -2760,7 +2789,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         num4bf,
         crate::src::turbojpeg::TJSAMP_411 as libc::c_int,
         
-        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
+        
+        
+        b"test\x00".as_ptr() as *mut libc::c_char,
     );
     doTest(
         39i32,
@@ -2769,7 +2800,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         1i32,
         crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int,
         
-        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
+        
+        
+        b"test\x00".as_ptr() as *mut libc::c_char,
     );
     doTest(
         41i32,
@@ -2778,7 +2811,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         2i32,
         crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int,
         
-        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
+        
+        
+        b"test\x00".as_ptr() as *mut libc::c_char,
     );
     doTest(
         35i32,
@@ -2787,7 +2822,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         4i32,
         crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int,
         
-        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
+        
+        
+        b"test\x00".as_ptr() as *mut libc::c_char,
     );
     bufSizeTest();
     if doYUV != 0 {
@@ -2802,7 +2839,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             1i32,
             crate::src::turbojpeg::TJSAMP_444 as libc::c_int,
             
-            b"test_yuv0\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
+            
+            
+            b"test_yuv0\x00".as_ptr() as *mut libc::c_char,
         );
         doTest(
             48i32,
@@ -2811,7 +2850,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             1i32,
             crate::src::turbojpeg::TJSAMP_422 as libc::c_int,
             
-            b"test_yuv0\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
+            
+            
+            b"test_yuv0\x00".as_ptr() as *mut libc::c_char,
         );
         doTest(
             48i32,
@@ -2820,7 +2861,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             1i32,
             crate::src::turbojpeg::TJSAMP_420 as libc::c_int,
             
-            b"test_yuv0\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
+            
+            
+            b"test_yuv0\x00".as_ptr() as *mut libc::c_char,
         );
         doTest(
             48i32,
@@ -2829,7 +2872,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             1i32,
             crate::src::turbojpeg::TJSAMP_440 as libc::c_int,
             
-            b"test_yuv0\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
+            
+            
+            b"test_yuv0\x00".as_ptr() as *mut libc::c_char,
         );
         doTest(
             48i32,
@@ -2838,7 +2883,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             1i32,
             crate::src::turbojpeg::TJSAMP_411 as libc::c_int,
             
-            b"test_yuv0\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
+            
+            
+            b"test_yuv0\x00".as_ptr() as *mut libc::c_char,
         );
         doTest(
             48i32,
@@ -2847,7 +2894,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             1i32,
             crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int,
             
-            b"test_yuv0\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
+            
+            
+            b"test_yuv0\x00".as_ptr() as *mut libc::c_char,
         );
         doTest(
             48i32,
@@ -2856,7 +2905,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             1i32,
             crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int,
             
-            b"test_yuv0\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
+            
+            
+            b"test_yuv0\x00".as_ptr() as *mut libc::c_char,
         );
     }
     return exitStatus;
@@ -2875,7 +2926,8 @@ pub fn main() {
     unsafe {
         ::std::process::exit(main_0(
             (args.len() - 1) as libc::c_int,
-            args.as_mut_ptr() as *mut *mut libc::c_char,
-        ) as i32)
+            
+            args.as_mut_ptr(),
+        ))
     }
 }
