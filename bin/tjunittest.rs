@@ -133,61 +133,89 @@ pub use crate::stdlib::RAND_MAX;
 
 pub unsafe extern "C" fn usage(mut progName: *mut libc::c_char) {
     crate::stdlib::printf(
-        b"\nUSAGE: %s [options]\n\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"\nUSAGE: %s [options]\n\n\x00".as_ptr() as *const libc::c_char,
         progName,
     );
-    crate::stdlib::printf(b"Options:\n\x00" as *const u8 as *const libc::c_char);
+    crate::stdlib::printf(b"Options:\n\x00".as_ptr() as *const libc::c_char);
     crate::stdlib::printf(
-        b"-yuv = test YUV encoding/decoding support\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"-yuv = test YUV encoding/decoding support\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"-noyuvpad = do not pad each line of each Y, U, and V plane to the nearest\n\x00"
-            as *const u8 as *const libc::c_char,
+        
+        b"-noyuvpad = do not pad each line of each Y, U, and V plane to the nearest\n\x00".as_ptr() as *const libc::c_char,
     );
-    crate::stdlib::printf(b"            4-byte boundary\n\x00" as *const u8 as *const libc::c_char);
+    crate::stdlib::printf(b"            4-byte boundary\n\x00".as_ptr() as *const libc::c_char);
     crate::stdlib::printf(
-        b"-alloc = test automatic buffer allocation\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"-alloc = test automatic buffer allocation\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::printf(
-        b"-bmp = tjLoadImage()/tjSaveImage() unit test\n\n\x00" as *const u8 as *const libc::c_char,
+        
+        b"-bmp = tjLoadImage()/tjSaveImage() unit test\n\n\x00".as_ptr() as *const libc::c_char,
     );
     crate::stdlib::exit(1i32);
 }
 #[no_mangle]
 
 pub static mut subNameLong: [*const libc::c_char; 6] = [
-    b"4:4:4\x00" as *const u8 as *const libc::c_char,
-    b"4:2:2\x00" as *const u8 as *const libc::c_char,
-    b"4:2:0\x00" as *const u8 as *const libc::c_char,
-    b"GRAY\x00" as *const u8 as *const libc::c_char,
-    b"4:4:0\x00" as *const u8 as *const libc::c_char,
-    b"4:1:1\x00" as *const u8 as *const libc::c_char,
+    
+    b"4:4:4\x00".as_ptr() as *const libc::c_char,
+    
+    b"4:2:2\x00".as_ptr() as *const libc::c_char,
+    
+    b"4:2:0\x00".as_ptr() as *const libc::c_char,
+    
+    b"GRAY\x00".as_ptr() as *const libc::c_char,
+    
+    b"4:4:0\x00".as_ptr() as *const libc::c_char,
+    
+    b"4:1:1\x00".as_ptr() as *const libc::c_char,
 ];
 #[no_mangle]
 
 pub static mut subName: [*const libc::c_char; 6] = [
-    b"444\x00" as *const u8 as *const libc::c_char,
-    b"422\x00" as *const u8 as *const libc::c_char,
-    b"420\x00" as *const u8 as *const libc::c_char,
-    b"GRAY\x00" as *const u8 as *const libc::c_char,
-    b"440\x00" as *const u8 as *const libc::c_char,
-    b"411\x00" as *const u8 as *const libc::c_char,
+    
+    b"444\x00".as_ptr() as *const libc::c_char,
+    
+    b"422\x00".as_ptr() as *const libc::c_char,
+    
+    b"420\x00".as_ptr() as *const libc::c_char,
+    
+    b"GRAY\x00".as_ptr() as *const libc::c_char,
+    
+    b"440\x00".as_ptr() as *const libc::c_char,
+    
+    b"411\x00".as_ptr() as *const libc::c_char,
 ];
 #[no_mangle]
 
 pub static mut pixFormatStr: [*const libc::c_char; 12] = [
-    b"RGB\x00" as *const u8 as *const libc::c_char,
-    b"BGR\x00" as *const u8 as *const libc::c_char,
-    b"RGBX\x00" as *const u8 as *const libc::c_char,
-    b"BGRX\x00" as *const u8 as *const libc::c_char,
-    b"XBGR\x00" as *const u8 as *const libc::c_char,
-    b"XRGB\x00" as *const u8 as *const libc::c_char,
-    b"Grayscale\x00" as *const u8 as *const libc::c_char,
-    b"RGBA\x00" as *const u8 as *const libc::c_char,
-    b"BGRA\x00" as *const u8 as *const libc::c_char,
-    b"ABGR\x00" as *const u8 as *const libc::c_char,
-    b"ARGB\x00" as *const u8 as *const libc::c_char,
-    b"CMYK\x00" as *const u8 as *const libc::c_char,
+    
+    b"RGB\x00".as_ptr() as *const libc::c_char,
+    
+    b"BGR\x00".as_ptr() as *const libc::c_char,
+    
+    b"RGBX\x00".as_ptr() as *const libc::c_char,
+    
+    b"BGRX\x00".as_ptr() as *const libc::c_char,
+    
+    b"XBGR\x00".as_ptr() as *const libc::c_char,
+    
+    b"XRGB\x00".as_ptr() as *const libc::c_char,
+    
+    b"Grayscale\x00".as_ptr() as *const libc::c_char,
+    
+    b"RGBA\x00".as_ptr() as *const libc::c_char,
+    
+    b"BGRA\x00".as_ptr() as *const libc::c_char,
+    
+    b"ABGR\x00".as_ptr() as *const libc::c_char,
+    
+    b"ARGB\x00".as_ptr() as *const libc::c_char,
+    
+    b"CMYK\x00".as_ptr() as *const libc::c_char,
 ];
 #[no_mangle]
 
@@ -380,9 +408,11 @@ pub unsafe extern "C" fn checkBuf(
                 if (row / blocksize + col / blocksize) % 2i32 == 0i32 {
                     if (c as libc::c_int) < 254i32 {
                         crate::stdlib::printf(
-                            b"\nComp. %s at %d,%d should be 255, not %d\n\x00" as *const u8
+                            
+                            b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                                 as *const libc::c_char,
-                            b"c\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"c\x00".as_ptr() as *const libc::c_char,
                             row,
                             col,
                             c as libc::c_int,
@@ -393,9 +423,11 @@ pub unsafe extern "C" fn checkBuf(
                         break 's_40;
                     } else if (m as libc::c_int) < 254i32 {
                         crate::stdlib::printf(
-                            b"\nComp. %s at %d,%d should be 255, not %d\n\x00" as *const u8
+                            
+                            b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                                 as *const libc::c_char,
-                            b"m\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"m\x00".as_ptr() as *const libc::c_char,
                             row,
                             col,
                             m as libc::c_int,
@@ -406,9 +438,11 @@ pub unsafe extern "C" fn checkBuf(
                         break 's_40;
                     } else if (y as libc::c_int) < 254i32 {
                         crate::stdlib::printf(
-                            b"\nComp. %s at %d,%d should be 255, not %d\n\x00" as *const u8
+                            
+                            b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                                 as *const libc::c_char,
-                            b"y\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"y\x00".as_ptr() as *const libc::c_char,
                             row,
                             col,
                             y as libc::c_int,
@@ -420,9 +454,11 @@ pub unsafe extern "C" fn checkBuf(
                     } else if row < halfway {
                         if (k as libc::c_int) < 254i32 {
                             crate::stdlib::printf(
-                                b"\nComp. %s at %d,%d should be 255, not %d\n\x00" as *const u8
+                                
+                                b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                                     as *const libc::c_char,
-                                b"k\x00" as *const u8 as *const libc::c_char,
+                                
+                                b"k\x00".as_ptr() as *const libc::c_char,
                                 row,
                                 col,
                                 k as libc::c_int,
@@ -434,9 +470,11 @@ pub unsafe extern "C" fn checkBuf(
                         }
                     } else if k as libc::c_int > 1i32 {
                         crate::stdlib::printf(
-                            b"\nComp. %s at %d,%d should be 0, not %d\n\x00" as *const u8
+                            
+                            b"\nComp. %s at %d,%d should be 0, not %d\n\x00".as_ptr()
                                 as *const libc::c_char,
-                            b"k\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"k\x00".as_ptr() as *const libc::c_char,
                             row,
                             col,
                             k as libc::c_int,
@@ -448,9 +486,11 @@ pub unsafe extern "C" fn checkBuf(
                     }
                 } else if (c as libc::c_int) < 254i32 {
                     crate::stdlib::printf(
-                        b"\nComp. %s at %d,%d should be 255, not %d\n\x00" as *const u8
+                        
+                        b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                             as *const libc::c_char,
-                        b"c\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"c\x00".as_ptr() as *const libc::c_char,
                         row,
                         col,
                         c as libc::c_int,
@@ -461,9 +501,11 @@ pub unsafe extern "C" fn checkBuf(
                     break 's_40;
                 } else if y as libc::c_int > 1i32 {
                     crate::stdlib::printf(
-                        b"\nComp. %s at %d,%d should be 0, not %d\n\x00" as *const u8
+                        
+                        b"\nComp. %s at %d,%d should be 0, not %d\n\x00".as_ptr()
                             as *const libc::c_char,
-                        b"y\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"y\x00".as_ptr() as *const libc::c_char,
                         row,
                         col,
                         y as libc::c_int,
@@ -474,9 +516,11 @@ pub unsafe extern "C" fn checkBuf(
                     break 's_40;
                 } else if (k as libc::c_int) < 254i32 {
                     crate::stdlib::printf(
-                        b"\nComp. %s at %d,%d should be 255, not %d\n\x00" as *const u8
+                        
+                        b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                             as *const libc::c_char,
-                        b"k\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"k\x00".as_ptr() as *const libc::c_char,
                         row,
                         col,
                         k as libc::c_int,
@@ -488,9 +532,11 @@ pub unsafe extern "C" fn checkBuf(
                 } else if row < halfway {
                     if m as libc::c_int > 1i32 {
                         crate::stdlib::printf(
-                            b"\nComp. %s at %d,%d should be 0, not %d\n\x00" as *const u8
+                            
+                            b"\nComp. %s at %d,%d should be 0, not %d\n\x00".as_ptr()
                                 as *const libc::c_char,
-                            b"m\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"m\x00".as_ptr() as *const libc::c_char,
                             row,
                             col,
                             m as libc::c_int,
@@ -502,9 +548,11 @@ pub unsafe extern "C" fn checkBuf(
                     }
                 } else if (m as libc::c_int) < 254i32 {
                     crate::stdlib::printf(
-                        b"\nComp. %s at %d,%d should be 255, not %d\n\x00" as *const u8
+                        
+                        b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                             as *const libc::c_char,
-                        b"m\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"m\x00".as_ptr() as *const libc::c_char,
                         row,
                         col,
                         m as libc::c_int,
@@ -548,9 +596,11 @@ pub unsafe extern "C" fn checkBuf(
                     if row < halfway {
                         if (r as libc::c_int) < 254i32 {
                             crate::stdlib::printf(
-                                b"\nComp. %s at %d,%d should be 255, not %d\n\x00" as *const u8
+                                
+                                b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                                     as *const libc::c_char,
-                                b"r\x00" as *const u8 as *const libc::c_char,
+                                
+                                b"r\x00".as_ptr() as *const libc::c_char,
                                 row,
                                 col,
                                 r as libc::c_int,
@@ -560,9 +610,11 @@ pub unsafe extern "C" fn checkBuf(
                             break 's_400;
                         } else if (g as libc::c_int) < 254i32 {
                             crate::stdlib::printf(
-                                b"\nComp. %s at %d,%d should be 255, not %d\n\x00" as *const u8
+                                
+                                b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                                     as *const libc::c_char,
-                                b"g\x00" as *const u8 as *const libc::c_char,
+                                
+                                b"g\x00".as_ptr() as *const libc::c_char,
                                 row,
                                 col,
                                 g as libc::c_int,
@@ -572,9 +624,11 @@ pub unsafe extern "C" fn checkBuf(
                             break 's_400;
                         } else if (b as libc::c_int) < 254i32 {
                             crate::stdlib::printf(
-                                b"\nComp. %s at %d,%d should be 255, not %d\n\x00" as *const u8
+                                
+                                b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                                     as *const libc::c_char,
-                                b"b\x00" as *const u8 as *const libc::c_char,
+                                
+                                b"b\x00".as_ptr() as *const libc::c_char,
                                 row,
                                 col,
                                 b as libc::c_int,
@@ -585,9 +639,11 @@ pub unsafe extern "C" fn checkBuf(
                         }
                     } else if r as libc::c_int > 1i32 {
                         crate::stdlib::printf(
-                            b"\nComp. %s at %d,%d should be 0, not %d\n\x00" as *const u8
+                            
+                            b"\nComp. %s at %d,%d should be 0, not %d\n\x00".as_ptr()
                                 as *const libc::c_char,
-                            b"r\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"r\x00".as_ptr() as *const libc::c_char,
                             row,
                             col,
                             r as libc::c_int,
@@ -597,9 +653,11 @@ pub unsafe extern "C" fn checkBuf(
                         break 's_400;
                     } else if g as libc::c_int > 1i32 {
                         crate::stdlib::printf(
-                            b"\nComp. %s at %d,%d should be 0, not %d\n\x00" as *const u8
+                            
+                            b"\nComp. %s at %d,%d should be 0, not %d\n\x00".as_ptr()
                                 as *const libc::c_char,
-                            b"g\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"g\x00".as_ptr() as *const libc::c_char,
                             row,
                             col,
                             g as libc::c_int,
@@ -609,9 +667,11 @@ pub unsafe extern "C" fn checkBuf(
                         break 's_400;
                     } else if b as libc::c_int > 1i32 {
                         crate::stdlib::printf(
-                            b"\nComp. %s at %d,%d should be 0, not %d\n\x00" as *const u8
+                            
+                            b"\nComp. %s at %d,%d should be 0, not %d\n\x00".as_ptr()
                                 as *const libc::c_char,
-                            b"b\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"b\x00".as_ptr() as *const libc::c_char,
                             row,
                             col,
                             b as libc::c_int,
@@ -624,9 +684,11 @@ pub unsafe extern "C" fn checkBuf(
                     if row < halfway {
                         if (r as libc::c_int) < 76i32 - 1i32 || r as libc::c_int > 76i32 + 1i32 {
                             crate::stdlib::printf(
-                                b"\nComp. %s at %d,%d should be %d, not %d\n\x00" as *const u8
+                                
+                                b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr()
                                     as *const libc::c_char,
-                                b"r\x00" as *const u8 as *const libc::c_char,
+                                
+                                b"r\x00".as_ptr() as *const libc::c_char,
                                 row,
                                 col,
                                 76i32,
@@ -639,9 +701,11 @@ pub unsafe extern "C" fn checkBuf(
                             || g as libc::c_int > 76i32 + 1i32
                         {
                             crate::stdlib::printf(
-                                b"\nComp. %s at %d,%d should be %d, not %d\n\x00" as *const u8
+                                
+                                b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr()
                                     as *const libc::c_char,
-                                b"g\x00" as *const u8 as *const libc::c_char,
+                                
+                                b"g\x00".as_ptr() as *const libc::c_char,
                                 row,
                                 col,
                                 76i32,
@@ -654,9 +718,11 @@ pub unsafe extern "C" fn checkBuf(
                             || b as libc::c_int > 76i32 + 1i32
                         {
                             crate::stdlib::printf(
-                                b"\nComp. %s at %d,%d should be %d, not %d\n\x00" as *const u8
+                                
+                                b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr()
                                     as *const libc::c_char,
-                                b"b\x00" as *const u8 as *const libc::c_char,
+                                
+                                b"b\x00".as_ptr() as *const libc::c_char,
                                 row,
                                 col,
                                 76i32,
@@ -669,9 +735,11 @@ pub unsafe extern "C" fn checkBuf(
                     } else if (r as libc::c_int) < 226i32 - 1i32 || r as libc::c_int > 226i32 + 1i32
                     {
                         crate::stdlib::printf(
-                            b"\nComp. %s at %d,%d should be %d, not %d\n\x00" as *const u8
+                            
+                            b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr()
                                 as *const libc::c_char,
-                            b"r\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"r\x00".as_ptr() as *const libc::c_char,
                             row,
                             col,
                             226i32,
@@ -683,9 +751,11 @@ pub unsafe extern "C" fn checkBuf(
                     } else if (g as libc::c_int) < 226i32 - 1i32 || g as libc::c_int > 226i32 + 1i32
                     {
                         crate::stdlib::printf(
-                            b"\nComp. %s at %d,%d should be %d, not %d\n\x00" as *const u8
+                            
+                            b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr()
                                 as *const libc::c_char,
-                            b"g\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"g\x00".as_ptr() as *const libc::c_char,
                             row,
                             col,
                             226i32,
@@ -697,9 +767,11 @@ pub unsafe extern "C" fn checkBuf(
                     } else if (b as libc::c_int) < 226i32 - 1i32 || b as libc::c_int > 226i32 + 1i32
                     {
                         crate::stdlib::printf(
-                            b"\nComp. %s at %d,%d should be %d, not %d\n\x00" as *const u8
+                            
+                            b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr()
                                 as *const libc::c_char,
-                            b"b\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"b\x00".as_ptr() as *const libc::c_char,
                             row,
                             col,
                             226i32,
@@ -712,9 +784,11 @@ pub unsafe extern "C" fn checkBuf(
                 } else if row < halfway {
                     if (r as libc::c_int) < 254i32 {
                         crate::stdlib::printf(
-                            b"\nComp. %s at %d,%d should be 255, not %d\n\x00" as *const u8
+                            
+                            b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                                 as *const libc::c_char,
-                            b"r\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"r\x00".as_ptr() as *const libc::c_char,
                             row,
                             col,
                             r as libc::c_int,
@@ -724,9 +798,11 @@ pub unsafe extern "C" fn checkBuf(
                         break 's_400;
                     } else if g as libc::c_int > 1i32 {
                         crate::stdlib::printf(
-                            b"\nComp. %s at %d,%d should be 0, not %d\n\x00" as *const u8
+                            
+                            b"\nComp. %s at %d,%d should be 0, not %d\n\x00".as_ptr()
                                 as *const libc::c_char,
-                            b"g\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"g\x00".as_ptr() as *const libc::c_char,
                             row,
                             col,
                             g as libc::c_int,
@@ -736,9 +812,11 @@ pub unsafe extern "C" fn checkBuf(
                         break 's_400;
                     } else if b as libc::c_int > 1i32 {
                         crate::stdlib::printf(
-                            b"\nComp. %s at %d,%d should be 0, not %d\n\x00" as *const u8
+                            
+                            b"\nComp. %s at %d,%d should be 0, not %d\n\x00".as_ptr()
                                 as *const libc::c_char,
-                            b"b\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"b\x00".as_ptr() as *const libc::c_char,
                             row,
                             col,
                             b as libc::c_int,
@@ -749,9 +827,11 @@ pub unsafe extern "C" fn checkBuf(
                     }
                 } else if (r as libc::c_int) < 254i32 {
                     crate::stdlib::printf(
-                        b"\nComp. %s at %d,%d should be 255, not %d\n\x00" as *const u8
+                        
+                        b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                             as *const libc::c_char,
-                        b"r\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"r\x00".as_ptr() as *const libc::c_char,
                         row,
                         col,
                         r as libc::c_int,
@@ -761,9 +841,11 @@ pub unsafe extern "C" fn checkBuf(
                     break 's_400;
                 } else if (g as libc::c_int) < 254i32 {
                     crate::stdlib::printf(
-                        b"\nComp. %s at %d,%d should be 255, not %d\n\x00" as *const u8
+                        
+                        b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                             as *const libc::c_char,
-                        b"g\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"g\x00".as_ptr() as *const libc::c_char,
                         row,
                         col,
                         g as libc::c_int,
@@ -773,9 +855,11 @@ pub unsafe extern "C" fn checkBuf(
                     break 's_400;
                 } else if b as libc::c_int > 1i32 {
                     crate::stdlib::printf(
-                        b"\nComp. %s at %d,%d should be 0, not %d\n\x00" as *const u8
+                        
+                        b"\nComp. %s at %d,%d should be 0, not %d\n\x00".as_ptr()
                             as *const libc::c_char,
-                        b"b\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"b\x00".as_ptr() as *const libc::c_char,
                         row,
                         col,
                         b as libc::c_int,
@@ -786,9 +870,11 @@ pub unsafe extern "C" fn checkBuf(
                 }
                 if (a as libc::c_int) < 254i32 {
                     crate::stdlib::printf(
-                        b"\nComp. %s at %d,%d should be 255, not %d\n\x00" as *const u8
+                        
+                        b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                             as *const libc::c_char,
-                        b"a\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"a\x00".as_ptr() as *const libc::c_char,
                         row,
                         col,
                         a as libc::c_int,
@@ -810,7 +896,8 @@ pub unsafe extern "C" fn checkBuf(
             while col < w {
                 if pf == crate::src::turbojpeg::TJPF_CMYK as libc::c_int {
                     crate::stdlib::printf(
-                        b"%.3d/%.3d/%.3d/%.3d \x00" as *const u8 as *const libc::c_char,
+                        
+                        b"%.3d/%.3d/%.3d/%.3d \x00".as_ptr() as *const libc::c_char,
                         *buf.offset(((row * w + col) * ps) as isize) as libc::c_int,
                         *buf.offset(((row * w + col) * ps + 1i32) as isize) as libc::c_int,
                         *buf.offset(((row * w + col) * ps + 2i32) as isize) as libc::c_int,
@@ -818,7 +905,8 @@ pub unsafe extern "C" fn checkBuf(
                     );
                 } else {
                     crate::stdlib::printf(
-                        b"%.3d/%.3d/%.3d \x00" as *const u8 as *const libc::c_char,
+                        
+                        b"%.3d/%.3d/%.3d \x00".as_ptr() as *const libc::c_char,
                         *buf.offset(((row * w + col) * ps + roffset) as isize) as libc::c_int,
                         *buf.offset(((row * w + col) * ps + goffset) as isize) as libc::c_int,
                         *buf.offset(((row * w + col) * ps + boffset) as isize) as libc::c_int,
@@ -826,7 +914,7 @@ pub unsafe extern "C" fn checkBuf(
                 }
                 col += 1
             }
-            crate::stdlib::printf(b"\n\x00" as *const u8 as *const libc::c_char);
+            crate::stdlib::printf(b"\n\x00".as_ptr() as *const libc::c_char);
             row += 1
         }
     }
@@ -868,9 +956,11 @@ pub unsafe extern "C" fn checkBufYUV(
                 if row < halfway {
                     if (y as libc::c_int) < 254i32 {
                         crate::stdlib::printf(
-                            b"\nComp. %s at %d,%d should be 255, not %d\n\x00" as *const u8
+                            
+                            b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                                 as *const libc::c_char,
-                            b"y\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"y\x00".as_ptr() as *const libc::c_char,
                             row,
                             col,
                             y as libc::c_int,
@@ -882,9 +972,11 @@ pub unsafe extern "C" fn checkBufYUV(
                     }
                 } else if y as libc::c_int > 1i32 {
                     crate::stdlib::printf(
-                        b"\nComp. %s at %d,%d should be 0, not %d\n\x00" as *const u8
+                        
+                        b"\nComp. %s at %d,%d should be 0, not %d\n\x00".as_ptr()
                             as *const libc::c_char,
-                        b"y\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"y\x00".as_ptr() as *const libc::c_char,
                         row,
                         col,
                         y as libc::c_int,
@@ -897,9 +989,11 @@ pub unsafe extern "C" fn checkBufYUV(
             } else if row < halfway {
                 if (y as libc::c_int) < 76i32 - 1i32 || y as libc::c_int > 76i32 + 1i32 {
                     crate::stdlib::printf(
-                        b"\nComp. %s at %d,%d should be %d, not %d\n\x00" as *const u8
+                        
+                        b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr()
                             as *const libc::c_char,
-                        b"y\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"y\x00".as_ptr() as *const libc::c_char,
                         row,
                         col,
                         76i32,
@@ -912,9 +1006,11 @@ pub unsafe extern "C" fn checkBufYUV(
                 }
             } else if (y as libc::c_int) < 226i32 - 1i32 || y as libc::c_int > 226i32 + 1i32 {
                 crate::stdlib::printf(
-                    b"\nComp. %s at %d,%d should be %d, not %d\n\x00" as *const u8
+                    
+                    b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr()
                         as *const libc::c_char,
-                    b"y\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"y\x00".as_ptr() as *const libc::c_char,
                     row,
                     col,
                     226i32,
@@ -946,9 +1042,11 @@ pub unsafe extern "C" fn checkBufYUV(
                                 || u as libc::c_int > 128i32 + 1i32
                             {
                                 crate::stdlib::printf(
-                                    b"\nComp. %s at %d,%d should be %d, not %d\n\x00" as *const u8
+                                    
+                                    b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr()
                                         as *const libc::c_char,
-                                    b"u\x00" as *const u8 as *const libc::c_char,
+                                    
+                                    b"u\x00".as_ptr() as *const libc::c_char,
                                     row,
                                     col,
                                     128i32,
@@ -961,9 +1059,11 @@ pub unsafe extern "C" fn checkBufYUV(
                                 || v as libc::c_int > 128i32 + 1i32
                             {
                                 crate::stdlib::printf(
-                                    b"\nComp. %s at %d,%d should be %d, not %d\n\x00" as *const u8
+                                    
+                                    b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr()
                                         as *const libc::c_char,
-                                    b"v\x00" as *const u8 as *const libc::c_char,
+                                    
+                                    b"v\x00".as_ptr() as *const libc::c_char,
                                     row,
                                     col,
                                     128i32,
@@ -977,9 +1077,11 @@ pub unsafe extern "C" fn checkBufYUV(
                             if (u as libc::c_int) < 85i32 - 1i32 || u as libc::c_int > 85i32 + 1i32
                             {
                                 crate::stdlib::printf(
-                                    b"\nComp. %s at %d,%d should be %d, not %d\n\x00" as *const u8
+                                    
+                                    b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr()
                                         as *const libc::c_char,
-                                    b"u\x00" as *const u8 as *const libc::c_char,
+                                    
+                                    b"u\x00".as_ptr() as *const libc::c_char,
                                     row,
                                     col,
                                     85i32,
@@ -990,9 +1092,11 @@ pub unsafe extern "C" fn checkBufYUV(
                                 break 's_193;
                             } else if (v as libc::c_int) < 254i32 {
                                 crate::stdlib::printf(
-                                    b"\nComp. %s at %d,%d should be 255, not %d\n\x00" as *const u8
+                                    
+                                    b"\nComp. %s at %d,%d should be 255, not %d\n\x00".as_ptr()
                                         as *const libc::c_char,
-                                    b"v\x00" as *const u8 as *const libc::c_char,
+                                    
+                                    b"v\x00".as_ptr() as *const libc::c_char,
                                     row,
                                     col,
                                     v as libc::c_int,
@@ -1003,9 +1107,11 @@ pub unsafe extern "C" fn checkBufYUV(
                             }
                         } else if u as libc::c_int > 1i32 {
                             crate::stdlib::printf(
-                                b"\nComp. %s at %d,%d should be 0, not %d\n\x00" as *const u8
+                                
+                                b"\nComp. %s at %d,%d should be 0, not %d\n\x00".as_ptr()
                                     as *const libc::c_char,
-                                b"u\x00" as *const u8 as *const libc::c_char,
+                                
+                                b"u\x00".as_ptr() as *const libc::c_char,
                                 row,
                                 col,
                                 u as libc::c_int,
@@ -1017,9 +1123,11 @@ pub unsafe extern "C" fn checkBufYUV(
                             || v as libc::c_int > 149i32 + 1i32
                         {
                             crate::stdlib::printf(
-                                b"\nComp. %s at %d,%d should be %d, not %d\n\x00" as *const u8
+                                
+                                b"\nComp. %s at %d,%d should be %d, not %d\n\x00".as_ptr()
                                     as *const libc::c_char,
-                                b"v\x00" as *const u8 as *const libc::c_char,
+                                
+                                b"v\x00".as_ptr() as *const libc::c_char,
                                 row,
                                 col,
                                 149i32,
@@ -1043,41 +1151,44 @@ pub unsafe extern "C" fn checkBufYUV(
             col = 0i32;
             while col < pw {
                 crate::stdlib::printf(
-                    b"%.3d \x00" as *const u8 as *const libc::c_char,
+                    
+                    b"%.3d \x00".as_ptr() as *const libc::c_char,
                     *buf.offset((ypitch * row + col) as isize) as libc::c_int,
                 );
                 col += 1
             }
-            crate::stdlib::printf(b"\n\x00" as *const u8 as *const libc::c_char);
+            crate::stdlib::printf(b"\n\x00".as_ptr() as *const libc::c_char);
             row += 1
         }
-        crate::stdlib::printf(b"\n\x00" as *const u8 as *const libc::c_char);
+        crate::stdlib::printf(b"\n\x00".as_ptr() as *const libc::c_char);
         row = 0i32;
         while row < ch {
             col = 0i32;
             while col < cw {
                 crate::stdlib::printf(
-                    b"%.3d \x00" as *const u8 as *const libc::c_char,
+                    
+                    b"%.3d \x00".as_ptr() as *const libc::c_char,
                     *buf.offset((ypitch * ph + (uvpitch * row + col)) as isize) as libc::c_int,
                 );
                 col += 1
             }
-            crate::stdlib::printf(b"\n\x00" as *const u8 as *const libc::c_char);
+            crate::stdlib::printf(b"\n\x00".as_ptr() as *const libc::c_char);
             row += 1
         }
-        crate::stdlib::printf(b"\n\x00" as *const u8 as *const libc::c_char);
+        crate::stdlib::printf(b"\n\x00".as_ptr() as *const libc::c_char);
         row = 0i32;
         while row < ch {
             col = 0i32;
             while col < cw {
                 crate::stdlib::printf(
-                    b"%.3d \x00" as *const u8 as *const libc::c_char,
+                    
+                    b"%.3d \x00".as_ptr() as *const libc::c_char,
                     *buf.offset((ypitch * ph + uvpitch * ch + (uvpitch * row + col)) as isize)
                         as libc::c_int,
                 );
                 col += 1
             }
-            crate::stdlib::printf(b"\n\x00" as *const u8 as *const libc::c_char);
+            crate::stdlib::printf(b"\n\x00".as_ptr() as *const libc::c_char);
             row += 1
         }
     }
@@ -1091,7 +1202,7 @@ pub unsafe extern "C" fn writeJPEG(
     mut filename: *mut libc::c_char,
 ) {
     let mut file: *mut crate::stdlib::FILE =
-        crate::stdlib::fopen(filename, b"wb\x00" as *const u8 as *const libc::c_char);
+        crate::stdlib::fopen(filename,  b"wb\x00".as_ptr() as *const libc::c_char);
     if file.is_null()
         || crate::stdlib::fwrite(
             jpegBuf as *const libc::c_void,
@@ -1101,7 +1212,8 @@ pub unsafe extern "C" fn writeJPEG(
         ) != 1i32 as libc::c_ulong
     {
         crate::stdlib::printf(
-            b"ERROR: Could not write to %s.\n%s\n\x00" as *const u8 as *const libc::c_char,
+            
+            b"ERROR: Could not write to %s.\n%s\n\x00".as_ptr() as *const libc::c_char,
             filename,
             crate::stdlib::strerror(*crate::stdlib::__errno_location()),
         );
@@ -1132,22 +1244,28 @@ pub unsafe extern "C" fn compTest(
     let mut pfStr: *const libc::c_char = pixFormatStr[pf as usize];
     let mut buStrLong: *const libc::c_char = if flags & crate::src::turbojpeg::TJFLAG_BOTTOMUP != 0
     {
-        b"Bottom-Up\x00" as *const u8 as *const libc::c_char
+        
+        b"Bottom-Up\x00".as_ptr() as *const libc::c_char
     } else {
-        b"Top-Down \x00" as *const u8 as *const libc::c_char
+        
+        b"Top-Down \x00".as_ptr() as *const libc::c_char
     };
     let mut buStr: *const libc::c_char = if flags & crate::src::turbojpeg::TJFLAG_BOTTOMUP != 0 {
-        b"BU\x00" as *const u8 as *const libc::c_char
+        
+        b"BU\x00".as_ptr() as *const libc::c_char
     } else {
-        b"TD\x00" as *const u8 as *const libc::c_char
+        
+        b"TD\x00".as_ptr() as *const libc::c_char
     };
     srcBuf = crate::stdlib::malloc(
         (w * h * crate::src::turbojpeg::tjPixelSize[pf as usize]) as libc::c_ulong,
     ) as *mut libc::c_uchar;
     if srcBuf.is_null() {
         crate::stdlib::printf(
-            b"ERROR: %s\n\x00" as *const u8 as *const libc::c_char,
-            b"Memory allocation failure\x00" as *const u8 as *const libc::c_char,
+            
+            b"ERROR: %s\n\x00".as_ptr() as *const libc::c_char,
+            
+            b"Memory allocation failure\x00".as_ptr() as *const libc::c_char,
         );
         exitStatus = -1i32
     } else {
@@ -1172,7 +1290,8 @@ pub unsafe extern "C" fn compTest(
                 crate::src::turbojpeg::tjInitCompress();
             if handle2.is_null() {
                 crate::stdlib::printf(
-                    b"TurboJPEG ERROR:\n%s\n\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const libc::c_char,
                     crate::src::turbojpeg::tjGetErrorStr(),
                 );
                 exitStatus = -1i32;
@@ -1181,15 +1300,18 @@ pub unsafe extern "C" fn compTest(
                 yuvBuf = crate::stdlib::malloc(yuvSize) as *mut libc::c_uchar;
                 if yuvBuf.is_null() {
                     crate::stdlib::printf(
-                        b"ERROR: %s\n\x00" as *const u8 as *const libc::c_char,
-                        b"Memory allocation failure\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"ERROR: %s\n\x00".as_ptr() as *const libc::c_char,
+                        
+                        b"Memory allocation failure\x00".as_ptr() as *const libc::c_char,
                     );
                     exitStatus = -1i32;
                     current_block = 860601949763470011;
                 } else {
                     crate::stdlib::memset(yuvBuf as *mut libc::c_void, 0i32, yuvSize);
                     crate::stdlib::printf(
-                        b"%s %s -> YUV %s ... \x00" as *const u8 as *const libc::c_char,
+                        
+                        b"%s %s -> YUV %s ... \x00".as_ptr() as *const libc::c_char,
                         pfStr,
                         buStrLong,
                         subNameLong[subsamp as usize],
@@ -1199,7 +1321,8 @@ pub unsafe extern "C" fn compTest(
                     ) == -1i32
                     {
                         crate::stdlib::printf(
-                            b"TurboJPEG ERROR:\n%s\n\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const libc::c_char,
                             crate::src::turbojpeg::tjGetErrorStr(),
                         );
                         exitStatus = -1i32;
@@ -1208,15 +1331,18 @@ pub unsafe extern "C" fn compTest(
                         crate::src::turbojpeg::tjDestroy(handle2);
                         if checkBufYUV(yuvBuf, w, h, subsamp, sf) != 0 {
                             crate::stdlib::printf(
-                                b"Passed.\n\x00" as *const u8 as *const libc::c_char,
+                                
+                                b"Passed.\n\x00".as_ptr() as *const libc::c_char,
                             );
                         } else {
                             crate::stdlib::printf(
-                                b"FAILED!\n\x00" as *const u8 as *const libc::c_char,
+                                
+                                b"FAILED!\n\x00".as_ptr() as *const libc::c_char,
                             );
                         }
                         crate::stdlib::printf(
-                            b"YUV %s %s -> JPEG Q%d ... \x00" as *const u8 as *const libc::c_char,
+                            
+                            b"YUV %s %s -> JPEG Q%d ... \x00".as_ptr() as *const libc::c_char,
                             subNameLong[subsamp as usize],
                             buStrLong,
                             jpegQual,
@@ -1226,7 +1352,8 @@ pub unsafe extern "C" fn compTest(
                         ) == -1i32
                         {
                             crate::stdlib::printf(
-                                b"TurboJPEG ERROR:\n%s\n\x00" as *const u8 as *const libc::c_char,
+                                
+                                b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const libc::c_char,
                                 crate::src::turbojpeg::tjGetErrorStr(),
                             );
                             exitStatus = -1i32;
@@ -1239,7 +1366,8 @@ pub unsafe extern "C" fn compTest(
             }
         } else {
             crate::stdlib::printf(
-                b"%s %s -> %s Q%d ... \x00" as *const u8 as *const libc::c_char,
+                
+                b"%s %s -> %s Q%d ... \x00".as_ptr() as *const libc::c_char,
                 pfStr,
                 buStrLong,
                 subNameLong[subsamp as usize],
@@ -1250,7 +1378,8 @@ pub unsafe extern "C" fn compTest(
             ) == -1i32
             {
                 crate::stdlib::printf(
-                    b"TurboJPEG ERROR:\n%s\n\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const libc::c_char,
                     crate::src::turbojpeg::tjGetErrorStr(),
                 );
                 exitStatus = -1i32;
@@ -1265,7 +1394,8 @@ pub unsafe extern "C" fn compTest(
                 crate::stdlib::snprintf(
                     tempStr.as_mut_ptr(),
                     1024i32 as libc::c_ulong,
-                    b"%s_enc_%s_%s_%s_Q%d.jpg\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"%s_enc_%s_%s_%s_Q%d.jpg\x00".as_ptr() as *const libc::c_char,
                     basename,
                     pfStr,
                     buStr,
@@ -1274,7 +1404,8 @@ pub unsafe extern "C" fn compTest(
                 );
                 writeJPEG(*dstBuf, *dstSize, tempStr.as_mut_ptr());
                 crate::stdlib::printf(
-                    b"Done.\n  Result in %s\n\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"Done.\n  Result in %s\n\x00".as_ptr() as *const libc::c_char,
                     tempStr.as_mut_ptr(),
                 );
             }
@@ -1320,14 +1451,17 @@ pub unsafe extern "C" fn _decompTest(
     ) == -1i32
     {
         crate::stdlib::printf(
-            b"TurboJPEG ERROR:\n%s\n\x00" as *const u8 as *const libc::c_char,
+            
+            b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const libc::c_char,
             crate::src::turbojpeg::tjGetErrorStr(),
         );
         exitStatus = -1i32
     } else if _hdrw != w || _hdrh != h || _hdrsubsamp != subsamp {
         crate::stdlib::printf(
-            b"ERROR: %s\n\x00" as *const u8 as *const libc::c_char,
-            b"Incorrect JPEG header\x00" as *const u8 as *const libc::c_char,
+            
+            b"ERROR: %s\n\x00".as_ptr() as *const libc::c_char,
+            
+            b"Incorrect JPEG header\x00".as_ptr() as *const libc::c_char,
         );
         exitStatus = -1i32
     } else {
@@ -1336,8 +1470,10 @@ pub unsafe extern "C" fn _decompTest(
         dstBuf = crate::stdlib::malloc(dstSize) as *mut libc::c_uchar;
         if dstBuf.is_null() {
             crate::stdlib::printf(
-                b"ERROR: %s\n\x00" as *const u8 as *const libc::c_char,
-                b"Memory allocation failure\x00" as *const u8 as *const libc::c_char,
+                
+                b"ERROR: %s\n\x00".as_ptr() as *const libc::c_char,
+                
+                b"Memory allocation failure\x00".as_ptr() as *const libc::c_char,
             );
             exitStatus = -1i32
         } else {
@@ -1349,7 +1485,8 @@ pub unsafe extern "C" fn _decompTest(
                     crate::src::turbojpeg::tjInitDecompress();
                 if handle2.is_null() {
                     crate::stdlib::printf(
-                        b"TurboJPEG ERROR:\n%s\n\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const libc::c_char,
                         crate::src::turbojpeg::tjGetErrorStr(),
                     );
                     exitStatus = -1i32;
@@ -1358,25 +1495,29 @@ pub unsafe extern "C" fn _decompTest(
                     yuvBuf = crate::stdlib::malloc(yuvSize) as *mut libc::c_uchar;
                     if yuvBuf.is_null() {
                         crate::stdlib::printf(
-                            b"ERROR: %s\n\x00" as *const u8 as *const libc::c_char,
-                            b"Memory allocation failure\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"ERROR: %s\n\x00".as_ptr() as *const libc::c_char,
+                            
+                            b"Memory allocation failure\x00".as_ptr() as *const libc::c_char,
                         );
                         exitStatus = -1i32;
                         current_block = 14297773496329963019;
                     } else {
                         crate::stdlib::memset(yuvBuf as *mut libc::c_void, 0i32, yuvSize);
                         crate::stdlib::printf(
-                            b"JPEG -> YUV %s \x00" as *const u8 as *const libc::c_char,
+                            
+                            b"JPEG -> YUV %s \x00".as_ptr() as *const libc::c_char,
                             subNameLong[subsamp as usize],
                         );
                         if sf.num != 1i32 || sf.denom != 1i32 {
                             crate::stdlib::printf(
-                                b"%d/%d ... \x00" as *const u8 as *const libc::c_char,
+                                
+                                b"%d/%d ... \x00".as_ptr() as *const libc::c_char,
                                 sf.num,
                                 sf.denom,
                             );
                         } else {
-                            crate::stdlib::printf(b"... \x00" as *const u8 as *const libc::c_char);
+                            crate::stdlib::printf(b"... \x00".as_ptr() as *const libc::c_char);
                         }
                         if crate::src::turbojpeg::tjDecompressToYUV2(
                             handle,
@@ -1390,7 +1531,8 @@ pub unsafe extern "C" fn _decompTest(
                         ) == -1i32
                         {
                             crate::stdlib::printf(
-                                b"TurboJPEG ERROR:\n%s\n\x00" as *const u8 as *const libc::c_char,
+                                
+                                b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const libc::c_char,
                                 crate::src::turbojpeg::tjGetErrorStr(),
                             );
                             exitStatus = -1i32;
@@ -1398,21 +1540,26 @@ pub unsafe extern "C" fn _decompTest(
                         } else {
                             if checkBufYUV(yuvBuf, scaledWidth, scaledHeight, subsamp, sf) != 0 {
                                 crate::stdlib::printf(
-                                    b"Passed.\n\x00" as *const u8 as *const libc::c_char,
+                                    
+                                    b"Passed.\n\x00".as_ptr() as *const libc::c_char,
                                 );
                             } else {
                                 crate::stdlib::printf(
-                                    b"FAILED!\n\x00" as *const u8 as *const libc::c_char,
+                                    
+                                    b"FAILED!\n\x00".as_ptr() as *const libc::c_char,
                                 );
                             }
                             crate::stdlib::printf(
-                                b"YUV %s -> %s %s ... \x00" as *const u8 as *const libc::c_char,
+                                
+                                b"YUV %s -> %s %s ... \x00".as_ptr() as *const libc::c_char,
                                 subNameLong[subsamp as usize],
                                 pixFormatStr[pf as usize],
                                 if flags & crate::src::turbojpeg::TJFLAG_BOTTOMUP != 0 {
-                                    b"Bottom-Up\x00" as *const u8 as *const libc::c_char
+                                    
+                                    b"Bottom-Up\x00".as_ptr() as *const libc::c_char
                                 } else {
-                                    b"Top-Down \x00" as *const u8 as *const libc::c_char
+                                    
+                                    b"Top-Down \x00".as_ptr() as *const libc::c_char
                                 },
                             );
                             if crate::src::turbojpeg::tjDecodeYUV(
@@ -1429,7 +1576,8 @@ pub unsafe extern "C" fn _decompTest(
                             ) == -1i32
                             {
                                 crate::stdlib::printf(
-                                    b"TurboJPEG ERROR:\n%s\n\x00" as *const u8
+                                    
+                                    b"TurboJPEG ERROR:\n%s\n\x00".as_ptr()
                                         as *const libc::c_char,
                                     crate::src::turbojpeg::tjGetErrorStr(),
                                 );
@@ -1444,22 +1592,26 @@ pub unsafe extern "C" fn _decompTest(
                 }
             } else {
                 crate::stdlib::printf(
-                    b"JPEG -> %s %s \x00" as *const u8 as *const libc::c_char,
+                    
+                    b"JPEG -> %s %s \x00".as_ptr() as *const libc::c_char,
                     pixFormatStr[pf as usize],
                     if flags & crate::src::turbojpeg::TJFLAG_BOTTOMUP != 0 {
-                        b"Bottom-Up\x00" as *const u8 as *const libc::c_char
+                        
+                        b"Bottom-Up\x00".as_ptr() as *const libc::c_char
                     } else {
-                        b"Top-Down \x00" as *const u8 as *const libc::c_char
+                        
+                        b"Top-Down \x00".as_ptr() as *const libc::c_char
                     },
                 );
                 if sf.num != 1i32 || sf.denom != 1i32 {
                     crate::stdlib::printf(
-                        b"%d/%d ... \x00" as *const u8 as *const libc::c_char,
+                        
+                        b"%d/%d ... \x00".as_ptr() as *const libc::c_char,
                         sf.num,
                         sf.denom,
                     );
                 } else {
-                    crate::stdlib::printf(b"... \x00" as *const u8 as *const libc::c_char);
+                    crate::stdlib::printf(b"... \x00".as_ptr() as *const libc::c_char);
                 }
                 if crate::src::turbojpeg::tjDecompress2(
                     handle,
@@ -1474,7 +1626,8 @@ pub unsafe extern "C" fn _decompTest(
                 ) == -1i32
                 {
                     crate::stdlib::printf(
-                        b"TurboJPEG ERROR:\n%s\n\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const libc::c_char,
                         crate::src::turbojpeg::tjGetErrorStr(),
                     );
                     exitStatus = -1i32;
@@ -1487,11 +1640,11 @@ pub unsafe extern "C" fn _decompTest(
                 14297773496329963019 => {}
                 _ => {
                     if checkBuf(dstBuf, scaledWidth, scaledHeight, pf, subsamp, sf, flags) != 0 {
-                        crate::stdlib::printf(b"Passed.\x00" as *const u8 as *const libc::c_char);
+                        crate::stdlib::printf(b"Passed.\x00".as_ptr() as *const libc::c_char);
                     } else {
-                        crate::stdlib::printf(b"FAILED!\x00" as *const u8 as *const libc::c_char);
+                        crate::stdlib::printf(b"FAILED!\x00".as_ptr() as *const libc::c_char);
                     }
-                    crate::stdlib::printf(b"\n\x00" as *const u8 as *const libc::c_char);
+                    crate::stdlib::printf(b"\n\x00".as_ptr() as *const libc::c_char);
                 }
             }
         }
@@ -1522,7 +1675,8 @@ pub unsafe extern "C" fn decompTest(
         crate::src::turbojpeg::tjGetScalingFactors(&mut n);
     if sf.is_null() || n == 0 {
         crate::stdlib::printf(
-            b"TurboJPEG ERROR:\n%s\n\x00" as *const u8 as *const libc::c_char,
+            
+            b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const libc::c_char,
             crate::src::turbojpeg::tjGetErrorStr(),
         );
         exitStatus = -1i32
@@ -1583,8 +1737,10 @@ pub unsafe extern "C" fn doTest(
         dstBuf = crate::src::turbojpeg::tjAlloc(size as libc::c_int);
         if dstBuf.is_null() {
             crate::stdlib::printf(
-                b"ERROR: %s\n\x00" as *const u8 as *const libc::c_char,
-                b"Memory allocation failure.\x00" as *const u8 as *const libc::c_char,
+                
+                b"ERROR: %s\n\x00".as_ptr() as *const libc::c_char,
+                
+                b"Memory allocation failure.\x00".as_ptr() as *const libc::c_char,
             );
             exitStatus = -1i32;
             current_block = 15679700284600549218;
@@ -1602,7 +1758,8 @@ pub unsafe extern "C" fn doTest(
                 dhandle.is_null()
             } {
                 crate::stdlib::printf(
-                    b"TurboJPEG ERROR:\n%s\n\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const libc::c_char,
                     crate::src::turbojpeg::tjGetErrorStr(),
                 );
                 exitStatus = -1i32
@@ -1639,7 +1796,7 @@ pub unsafe extern "C" fn doTest(
                         if pf >= crate::src::turbojpeg::TJPF_RGBX as libc::c_int
                             && pf <= crate::src::turbojpeg::TJPF_XRGB as libc::c_int
                         {
-                            crate::stdlib::printf(b"\n\x00" as *const u8 as *const libc::c_char);
+                            crate::stdlib::printf(b"\n\x00".as_ptr() as *const libc::c_char);
                             decompTest(
                                 dhandle,
                                 dstBuf,
@@ -1653,13 +1810,14 @@ pub unsafe extern "C" fn doTest(
                                 flags,
                             );
                         }
-                        crate::stdlib::printf(b"\n\x00" as *const u8 as *const libc::c_char);
+                        crate::stdlib::printf(b"\n\x00".as_ptr() as *const libc::c_char);
                         i += 1
                     }
                     pfi += 1
                 }
                 crate::stdlib::printf(
-                    b"--------------------\n\n\x00" as *const u8 as *const libc::c_char,
+                    
+                    b"--------------------\n\n\x00".as_ptr() as *const libc::c_char,
                 );
             }
         }
@@ -1690,13 +1848,15 @@ pub unsafe extern "C" fn bufSizeTest() {
     handle = crate::src::turbojpeg::tjInitCompress();
     if handle.is_null() {
         crate::stdlib::printf(
-            b"TurboJPEG ERROR:\n%s\n\x00" as *const u8 as *const libc::c_char,
+            
+            b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const libc::c_char,
             crate::src::turbojpeg::tjGetErrorStr(),
         );
         exitStatus = -1i32
     } else {
         crate::stdlib::printf(
-            b"Buffer size regression test\n\x00" as *const u8 as *const libc::c_char,
+            
+            b"Buffer size regression test\n\x00".as_ptr() as *const libc::c_char,
         );
         subsamp = 0i32;
         's_43: loop {
@@ -1711,8 +1871,8 @@ pub unsafe extern "C" fn bufSizeTest() {
                 while h < maxh {
                     if h % 100i32 == 0i32 {
                         crate::stdlib::printf(
-                            b"%.4d x %.4d\x08\x08\x08\x08\x08\x08\x08\x08\x08\x08\x08\x00"
-                                as *const u8 as *const libc::c_char,
+                            
+                            b"%.4d x %.4d\x08\x08\x08\x08\x08\x08\x08\x08\x08\x08\x08\x00".as_ptr() as *const libc::c_char,
                             w,
                             h,
                         );
@@ -1721,8 +1881,10 @@ pub unsafe extern "C" fn bufSizeTest() {
                         as *mut libc::c_uchar;
                     if srcBuf.is_null() {
                         crate::stdlib::printf(
-                            b"ERROR: %s\n\x00" as *const u8 as *const libc::c_char,
-                            b"Memory allocation failure\x00" as *const u8 as *const libc::c_char,
+                            
+                            b"ERROR: %s\n\x00".as_ptr() as *const libc::c_char,
+                            
+                            b"Memory allocation failure\x00".as_ptr() as *const libc::c_char,
                         );
                         exitStatus = -1i32;
                         current_block = 17868673386502678986;
@@ -1737,8 +1899,10 @@ pub unsafe extern "C" fn bufSizeTest() {
                             dstBuf = crate::src::turbojpeg::tjAlloc(dstSize as libc::c_int);
                             if dstBuf.is_null() {
                                 crate::stdlib::printf(
-                                    b"ERROR: %s\n\x00" as *const u8 as *const libc::c_char,
-                                    b"Memory allocation failure\x00" as *const u8
+                                    
+                                    b"ERROR: %s\n\x00".as_ptr() as *const libc::c_char,
+                                    
+                                    b"Memory allocation failure\x00".as_ptr()
                                         as *const libc::c_char,
                                 );
                                 exitStatus = -1i32;
@@ -1772,7 +1936,8 @@ pub unsafe extern "C" fn bufSizeTest() {
                             ) == -1i32
                             {
                                 crate::stdlib::printf(
-                                    b"TurboJPEG ERROR:\n%s\n\x00" as *const u8
+                                    
+                                    b"TurboJPEG ERROR:\n%s\n\x00".as_ptr()
                                         as *const libc::c_char,
                                     crate::src::turbojpeg::tjGetErrorStr(),
                                 );
@@ -1795,7 +1960,8 @@ pub unsafe extern "C" fn bufSizeTest() {
                         ) == -1i32
                         {
                             crate::stdlib::printf(
-                                b"TurboJPEG ERROR:\n%s\n\x00" as *const u8 as *const libc::c_char,
+                                
+                                b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const libc::c_char,
                                 crate::src::turbojpeg::tjGetErrorStr(),
                             );
                             exitStatus = -1i32;
@@ -1812,8 +1978,10 @@ pub unsafe extern "C" fn bufSizeTest() {
                             as *mut libc::c_uchar;
                         if srcBuf.is_null() {
                             crate::stdlib::printf(
-                                b"ERROR: %s\n\x00" as *const u8 as *const libc::c_char,
-                                b"Memory allocation failure\x00" as *const u8
+                                
+                                b"ERROR: %s\n\x00".as_ptr() as *const libc::c_char,
+                                
+                                b"Memory allocation failure\x00".as_ptr()
                                     as *const libc::c_char,
                             );
                             exitStatus = -1i32;
@@ -1830,8 +1998,10 @@ pub unsafe extern "C" fn bufSizeTest() {
                                 dstBuf = crate::src::turbojpeg::tjAlloc(dstSize as libc::c_int);
                                 if dstBuf.is_null() {
                                     crate::stdlib::printf(
-                                        b"ERROR: %s\n\x00" as *const u8 as *const libc::c_char,
-                                        b"Memory allocation failure\x00" as *const u8
+                                        
+                                        b"ERROR: %s\n\x00".as_ptr() as *const libc::c_char,
+                                        
+                                        b"Memory allocation failure\x00".as_ptr()
                                             as *const libc::c_char,
                                     );
                                     exitStatus = -1i32;
@@ -1865,7 +2035,8 @@ pub unsafe extern "C" fn bufSizeTest() {
                                 ) == -1i32
                                 {
                                     crate::stdlib::printf(
-                                        b"TurboJPEG ERROR:\n%s\n\x00" as *const u8
+                                        
+                                        b"TurboJPEG ERROR:\n%s\n\x00".as_ptr()
                                             as *const libc::c_char,
                                         crate::src::turbojpeg::tjGetErrorStr(),
                                     );
@@ -1888,7 +2059,8 @@ pub unsafe extern "C" fn bufSizeTest() {
                             ) == -1i32
                             {
                                 crate::stdlib::printf(
-                                    b"TurboJPEG ERROR:\n%s\n\x00" as *const u8
+                                    
+                                    b"TurboJPEG ERROR:\n%s\n\x00".as_ptr()
                                         as *const libc::c_char,
                                     crate::src::turbojpeg::tjGetErrorStr(),
                                 );
@@ -1913,7 +2085,7 @@ pub unsafe extern "C" fn bufSizeTest() {
         match current_block {
             17868673386502678986 => {}
             _ => {
-                crate::stdlib::printf(b"Done.      \n\x00" as *const u8 as *const libc::c_char);
+                crate::stdlib::printf(b"Done.      \n\x00".as_ptr() as *const libc::c_char);
             }
         }
     }
@@ -2102,24 +2274,30 @@ pub unsafe extern "C" fn doBmpTest(
     let mut md5ref: *mut libc::c_char = ::std::ptr::null_mut::< libc::c_char>();
     if pf == crate::src::turbojpeg::TJPF_GRAY as libc::c_int {
         md5ref =
-            if crate::stdlib::strcasecmp(ext, b"ppm\x00" as *const u8 as *const libc::c_char) == 0 {
-                b"112c682e82ce5de1cca089e20d60000b\x00" as *const u8 as *const libc::c_char
+            if crate::stdlib::strcasecmp(ext,  b"ppm\x00".as_ptr() as *const libc::c_char) == 0 {
+                
+                b"112c682e82ce5de1cca089e20d60000b\x00".as_ptr() as *const libc::c_char
             } else {
-                b"51976530acf75f02beddf5d21149101d\x00" as *const u8 as *const libc::c_char
+                
+                b"51976530acf75f02beddf5d21149101d\x00".as_ptr() as *const libc::c_char
             } as *mut libc::c_char
     } else {
         md5ref =
-            if crate::stdlib::strcasecmp(ext, b"ppm\x00" as *const u8 as *const libc::c_char) == 0 {
-                b"c0c9f772b464d1896326883a5c79c545\x00" as *const u8 as *const libc::c_char
+            if crate::stdlib::strcasecmp(ext,  b"ppm\x00".as_ptr() as *const libc::c_char) == 0 {
+                
+                b"c0c9f772b464d1896326883a5c79c545\x00".as_ptr() as *const libc::c_char
             } else {
-                b"6d659071b9bfcdee2def22cb58ddadca\x00" as *const u8 as *const libc::c_char
+                
+                b"6d659071b9bfcdee2def22cb58ddadca\x00".as_ptr() as *const libc::c_char
             } as *mut libc::c_char
     }
     buf = crate::src::turbojpeg::tjAlloc(pitch * height);
     if buf.is_null() {
         crate::stdlib::printf(
-            b"ERROR: %s\n\x00" as *const u8 as *const libc::c_char,
-            b"Could not allocate memory\x00" as *const u8 as *const libc::c_char,
+            
+            b"ERROR: %s\n\x00".as_ptr() as *const libc::c_char,
+            
+            b"Could not allocate memory\x00".as_ptr() as *const libc::c_char,
         );
         exitStatus = -1i32
     } else {
@@ -2127,13 +2305,16 @@ pub unsafe extern "C" fn doBmpTest(
         crate::stdlib::snprintf(
             filename.as_mut_ptr(),
             80i32 as libc::c_ulong,
-            b"test_bmp_%s_%d_%s.%s\x00" as *const u8 as *const libc::c_char,
+            
+            b"test_bmp_%s_%d_%s.%s\x00".as_ptr() as *const libc::c_char,
             pixFormatStr[pf as usize],
             align,
             if flags & crate::src::turbojpeg::TJFLAG_BOTTOMUP != 0 {
-                b"bu\x00" as *const u8 as *const libc::c_char
+                
+                b"bu\x00".as_ptr() as *const libc::c_char
             } else {
-                b"td\x00" as *const u8 as *const libc::c_char
+                
+                b"td\x00".as_ptr() as *const libc::c_char
             },
             ext,
         );
@@ -2148,7 +2329,8 @@ pub unsafe extern "C" fn doBmpTest(
         ) == -1i32
         {
             crate::stdlib::printf(
-                b"TurboJPEG ERROR:\n%s\n\x00" as *const u8 as *const libc::c_char,
+                
+                b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const libc::c_char,
                 crate::src::turbojpeg::tjGetErrorStr(),
             );
             exitStatus = -1i32
@@ -2156,7 +2338,8 @@ pub unsafe extern "C" fn doBmpTest(
             md5sum = crate::src::md5::md5::MD5File(filename.as_mut_ptr(), md5buf.as_mut_ptr());
             if crate::stdlib::strcasecmp(md5sum, md5ref) != 0 {
                 crate::stdlib::printf(
-                    b"\n%s has an MD5 sum of %s.\n   Should be %s.\n\x00" as *const u8
+                    
+                    b"\n%s has an MD5 sum of %s.\n   Should be %s.\n\x00".as_ptr()
                         as *const libc::c_char,
                     filename.as_mut_ptr(),
                     md5sum,
@@ -2176,20 +2359,23 @@ pub unsafe extern "C" fn doBmpTest(
                 );
                 if buf.is_null() {
                     crate::stdlib::printf(
-                        b"TurboJPEG ERROR:\n%s\n\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const libc::c_char,
                         crate::src::turbojpeg::tjGetErrorStr(),
                     );
                     exitStatus = -1i32
                 } else if width != loadWidth || height != loadHeight {
                     crate::stdlib::printf(
-                        b"\n   Image dimensions of %s are bogus\n\x00" as *const u8
+                        
+                        b"\n   Image dimensions of %s are bogus\n\x00".as_ptr()
                             as *const libc::c_char,
                         filename.as_mut_ptr(),
                     );
                     retval = -1i32
                 } else if cmpBitmap(buf, width, pitch, height, pf, flags, 0i32) == 0 {
                     crate::stdlib::printf(
-                        b"\n   Pixel data in %s is bogus\n\x00" as *const u8 as *const libc::c_char,
+                        
+                        b"\n   Pixel data in %s is bogus\n\x00".as_ptr() as *const libc::c_char,
                         filename.as_mut_ptr(),
                     );
                     retval = -1i32
@@ -2208,7 +2394,8 @@ pub unsafe extern "C" fn doBmpTest(
                         );
                         if buf.is_null() {
                             crate::stdlib::printf(
-                                b"TurboJPEG ERROR:\n%s\n\x00" as *const u8 as *const libc::c_char,
+                                
+                                b"TurboJPEG ERROR:\n%s\n\x00".as_ptr() as *const libc::c_char,
                                 crate::src::turbojpeg::tjGetErrorStr(),
                             );
                             exitStatus = -1i32;
@@ -2219,7 +2406,8 @@ pub unsafe extern "C" fn doBmpTest(
                                 & !(align - 1i32);
                             if cmpBitmap(buf, width, pitch, height, pf, flags, 1i32) == 0 {
                                 crate::stdlib::printf(
-                                    b"\n   Converting %s to RGB failed\n\x00" as *const u8
+                                    
+                                    b"\n   Converting %s to RGB failed\n\x00".as_ptr()
                                         as *const libc::c_char,
                                     filename.as_mut_ptr(),
                                 );
@@ -2239,7 +2427,8 @@ pub unsafe extern "C" fn doBmpTest(
                                 );
                                 if buf.is_null() {
                                     crate::stdlib::printf(
-                                        b"TurboJPEG ERROR:\n%s\n\x00" as *const u8
+                                        
+                                        b"TurboJPEG ERROR:\n%s\n\x00".as_ptr()
                                             as *const libc::c_char,
                                         crate::src::turbojpeg::tjGetErrorStr(),
                                     );
@@ -2252,7 +2441,8 @@ pub unsafe extern "C" fn doBmpTest(
                                         & !(align - 1i32);
                                     if cmpBitmap(buf, width, pitch, height, pf, flags, 1i32) == 0 {
                                         crate::stdlib::printf(
-                                            b"\n   Converting %s to CMYK failed\n\x00" as *const u8
+                                            
+                                            b"\n   Converting %s to CMYK failed\n\x00".as_ptr()
                                                 as *const libc::c_char,
                                             filename.as_mut_ptr(),
                                         );
@@ -2286,7 +2476,8 @@ pub unsafe extern "C" fn doBmpTest(
                             );
                             if buf.is_null() {
                                 crate::stdlib::printf(
-                                    b"TurboJPEG ERROR:\n%s\n\x00" as *const u8
+                                    
+                                    b"TurboJPEG ERROR:\n%s\n\x00".as_ptr()
                                         as *const libc::c_char,
                                     crate::src::turbojpeg::tjGetErrorStr(),
                                 );
@@ -2298,20 +2489,21 @@ pub unsafe extern "C" fn doBmpTest(
                                     || pf != crate::src::turbojpeg::TJPF_GRAY as libc::c_int
                                         && crate::stdlib::strcasecmp(
                                             ext,
-                                            b"bmp\x00" as *const u8 as *const libc::c_char,
+                                            
+                                            b"bmp\x00".as_ptr() as *const libc::c_char,
                                         ) == 0
                                         && pixelFormat
                                             != crate::src::turbojpeg::TJPF_BGR as libc::c_int
                                     || pf != crate::src::turbojpeg::TJPF_GRAY as libc::c_int
                                         && crate::stdlib::strcasecmp(
                                             ext,
-                                            b"ppm\x00" as *const u8 as *const libc::c_char,
+                                            
+                                            b"ppm\x00".as_ptr() as *const libc::c_char,
                                         ) == 0
                                         && pixelFormat
                                             != crate::src::turbojpeg::TJPF_RGB as libc::c_int
                                 {
-                                    crate::stdlib::printf(b"\n   tjLoadImage() returned unexpected pixel format: %s\n\x00"
-                                               as *const u8 as
+                                    crate::stdlib::printf(b"\n   tjLoadImage() returned unexpected pixel format: %s\n\x00".as_ptr() as
                                                *const libc::c_char,
                                            pixFormatStr[pixelFormat as
                                                             usize]);
@@ -2345,13 +2537,15 @@ pub unsafe extern "C" fn bmpTest() -> libc::c_int {
         format = 0i32;
         while format < crate::src::turbojpeg::TJ_NUMPF {
             crate::stdlib::printf(
-                b"%s Top-Down BMP (row alignment = %d bytes)  ...  \x00" as *const u8
+                
+                b"%s Top-Down BMP (row alignment = %d bytes)  ...  \x00".as_ptr()
                     as *const libc::c_char,
                 pixFormatStr[format as usize],
                 align,
             );
             if doBmpTest(
-                b"bmp\x00" as *const u8 as *const libc::c_char,
+                
+                b"bmp\x00".as_ptr() as *const libc::c_char,
                 width,
                 align,
                 height,
@@ -2361,15 +2555,17 @@ pub unsafe extern "C" fn bmpTest() -> libc::c_int {
             {
                 return -1i32;
             }
-            crate::stdlib::printf(b"OK.\n\x00" as *const u8 as *const libc::c_char);
+            crate::stdlib::printf(b"OK.\n\x00".as_ptr() as *const libc::c_char);
             crate::stdlib::printf(
-                b"%s Top-Down PPM (row alignment = %d bytes)  ...  \x00" as *const u8
+                
+                b"%s Top-Down PPM (row alignment = %d bytes)  ...  \x00".as_ptr()
                     as *const libc::c_char,
                 pixFormatStr[format as usize],
                 align,
             );
             if doBmpTest(
-                b"ppm\x00" as *const u8 as *const libc::c_char,
+                
+                b"ppm\x00".as_ptr() as *const libc::c_char,
                 width,
                 align,
                 height,
@@ -2379,15 +2575,17 @@ pub unsafe extern "C" fn bmpTest() -> libc::c_int {
             {
                 return -1i32;
             }
-            crate::stdlib::printf(b"OK.\n\x00" as *const u8 as *const libc::c_char);
+            crate::stdlib::printf(b"OK.\n\x00".as_ptr() as *const libc::c_char);
             crate::stdlib::printf(
-                b"%s Bottom-Up BMP (row alignment = %d bytes)  ...  \x00" as *const u8
+                
+                b"%s Bottom-Up BMP (row alignment = %d bytes)  ...  \x00".as_ptr()
                     as *const libc::c_char,
                 pixFormatStr[format as usize],
                 align,
             );
             if doBmpTest(
-                b"bmp\x00" as *const u8 as *const libc::c_char,
+                
+                b"bmp\x00".as_ptr() as *const libc::c_char,
                 width,
                 align,
                 height,
@@ -2397,15 +2595,17 @@ pub unsafe extern "C" fn bmpTest() -> libc::c_int {
             {
                 return -1i32;
             }
-            crate::stdlib::printf(b"OK.\n\x00" as *const u8 as *const libc::c_char);
+            crate::stdlib::printf(b"OK.\n\x00".as_ptr() as *const libc::c_char);
             crate::stdlib::printf(
-                b"%s Bottom-Up PPM (row alignment = %d bytes)  ...  \x00" as *const u8
+                
+                b"%s Bottom-Up PPM (row alignment = %d bytes)  ...  \x00".as_ptr()
                     as *const libc::c_char,
                 pixFormatStr[format as usize],
                 align,
             );
             if doBmpTest(
-                b"ppm\x00" as *const u8 as *const libc::c_char,
+                
+                b"ppm\x00".as_ptr() as *const libc::c_char,
                 width,
                 align,
                 height,
@@ -2415,7 +2615,7 @@ pub unsafe extern "C" fn bmpTest() -> libc::c_int {
             {
                 return -1i32;
             }
-            crate::stdlib::printf(b"OK.\n\x00" as *const u8 as *const libc::c_char);
+            crate::stdlib::printf(b"OK.\n\x00".as_ptr() as *const libc::c_char);
             format += 1
         }
         align *= 2i32
@@ -2431,25 +2631,29 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         while i < argc {
             if crate::stdlib::strcasecmp(
                 *argv.offset(i as isize),
-                b"-yuv\x00" as *const u8 as *const libc::c_char,
+                
+                b"-yuv\x00".as_ptr() as *const libc::c_char,
             ) == 0
             {
                 doYUV = 1i32
             } else if crate::stdlib::strcasecmp(
                 *argv.offset(i as isize),
-                b"-noyuvpad\x00" as *const u8 as *const libc::c_char,
+                
+                b"-noyuvpad\x00".as_ptr() as *const libc::c_char,
             ) == 0
             {
                 pad = 1i32
             } else if crate::stdlib::strcasecmp(
                 *argv.offset(i as isize),
-                b"-alloc\x00" as *const u8 as *const libc::c_char,
+                
+                b"-alloc\x00".as_ptr() as *const libc::c_char,
             ) == 0
             {
                 alloc = 1i32
             } else if crate::stdlib::strcasecmp(
                 *argv.offset(i as isize),
-                b"-bmp\x00" as *const u8 as *const libc::c_char,
+                
+                b"-bmp\x00".as_ptr() as *const libc::c_char,
             ) == 0
             {
                 return bmpTest();
@@ -2461,7 +2665,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     }
     if alloc != 0 {
         crate::stdlib::printf(
-            b"Testing automatic buffer allocation\n\x00" as *const u8 as *const libc::c_char,
+            
+            b"Testing automatic buffer allocation\n\x00".as_ptr() as *const libc::c_char,
         );
     }
     if doYUV != 0 {
@@ -2473,7 +2678,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         _3byteFormats.as_ptr(),
         2i32,
         crate::src::turbojpeg::TJSAMP_444 as libc::c_int,
-        b"test\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+        
+        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
     );
     doTest(
         39i32,
@@ -2481,7 +2687,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         _4byteFormats.as_ptr(),
         num4bf,
         crate::src::turbojpeg::TJSAMP_444 as libc::c_int,
-        b"test\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+        
+        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
     );
     doTest(
         41i32,
@@ -2489,7 +2696,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         _3byteFormats.as_ptr(),
         2i32,
         crate::src::turbojpeg::TJSAMP_422 as libc::c_int,
-        b"test\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+        
+        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
     );
     doTest(
         35i32,
@@ -2497,7 +2705,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         _4byteFormats.as_ptr(),
         num4bf,
         crate::src::turbojpeg::TJSAMP_422 as libc::c_int,
-        b"test\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+        
+        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
     );
     doTest(
         39i32,
@@ -2505,7 +2714,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         _3byteFormats.as_ptr(),
         2i32,
         crate::src::turbojpeg::TJSAMP_420 as libc::c_int,
-        b"test\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+        
+        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
     );
     doTest(
         41i32,
@@ -2513,7 +2723,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         _4byteFormats.as_ptr(),
         num4bf,
         crate::src::turbojpeg::TJSAMP_420 as libc::c_int,
-        b"test\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+        
+        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
     );
     doTest(
         35i32,
@@ -2521,7 +2732,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         _3byteFormats.as_ptr(),
         2i32,
         crate::src::turbojpeg::TJSAMP_440 as libc::c_int,
-        b"test\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+        
+        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
     );
     doTest(
         39i32,
@@ -2529,7 +2741,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         _4byteFormats.as_ptr(),
         num4bf,
         crate::src::turbojpeg::TJSAMP_440 as libc::c_int,
-        b"test\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+        
+        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
     );
     doTest(
         41i32,
@@ -2537,7 +2750,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         _3byteFormats.as_ptr(),
         2i32,
         crate::src::turbojpeg::TJSAMP_411 as libc::c_int,
-        b"test\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+        
+        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
     );
     doTest(
         35i32,
@@ -2545,7 +2759,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         _4byteFormats.as_ptr(),
         num4bf,
         crate::src::turbojpeg::TJSAMP_411 as libc::c_int,
-        b"test\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+        
+        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
     );
     doTest(
         39i32,
@@ -2553,7 +2768,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         _onlyGray.as_ptr(),
         1i32,
         crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int,
-        b"test\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+        
+        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
     );
     doTest(
         41i32,
@@ -2561,7 +2777,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         _3byteFormats.as_ptr(),
         2i32,
         crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int,
-        b"test\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+        
+        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
     );
     doTest(
         35i32,
@@ -2569,12 +2786,14 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         _4byteFormats.as_ptr(),
         4i32,
         crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int,
-        b"test\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+        
+        b"test\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
     );
     bufSizeTest();
     if doYUV != 0 {
         crate::stdlib::printf(
-            b"\n--------------------\n\n\x00" as *const u8 as *const libc::c_char,
+            
+            b"\n--------------------\n\n\x00".as_ptr() as *const libc::c_char,
         );
         doTest(
             48i32,
@@ -2582,7 +2801,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             _onlyRGB.as_ptr(),
             1i32,
             crate::src::turbojpeg::TJSAMP_444 as libc::c_int,
-            b"test_yuv0\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            
+            b"test_yuv0\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
         );
         doTest(
             48i32,
@@ -2590,7 +2810,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             _onlyRGB.as_ptr(),
             1i32,
             crate::src::turbojpeg::TJSAMP_422 as libc::c_int,
-            b"test_yuv0\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            
+            b"test_yuv0\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
         );
         doTest(
             48i32,
@@ -2598,7 +2819,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             _onlyRGB.as_ptr(),
             1i32,
             crate::src::turbojpeg::TJSAMP_420 as libc::c_int,
-            b"test_yuv0\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            
+            b"test_yuv0\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
         );
         doTest(
             48i32,
@@ -2606,7 +2828,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             _onlyRGB.as_ptr(),
             1i32,
             crate::src::turbojpeg::TJSAMP_440 as libc::c_int,
-            b"test_yuv0\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            
+            b"test_yuv0\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
         );
         doTest(
             48i32,
@@ -2614,7 +2837,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             _onlyRGB.as_ptr(),
             1i32,
             crate::src::turbojpeg::TJSAMP_411 as libc::c_int,
-            b"test_yuv0\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            
+            b"test_yuv0\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
         );
         doTest(
             48i32,
@@ -2622,7 +2846,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             _onlyRGB.as_ptr(),
             1i32,
             crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int,
-            b"test_yuv0\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            
+            b"test_yuv0\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
         );
         doTest(
             48i32,
@@ -2630,7 +2855,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             _onlyGray.as_ptr(),
             1i32,
             crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int,
-            b"test_yuv0\x00" as *const u8 as *const libc::c_char as *mut libc::c_char,
+            
+            b"test_yuv0\x00".as_ptr() as *const libc::c_char as *mut libc::c_char,
         );
     }
     return exitStatus;
