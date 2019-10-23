@@ -97,7 +97,7 @@ static mut infile: *mut crate::stdlib::FILE =
 /* Read one byte, testing for EOF */
 
 unsafe extern "C" fn read_1_byte() -> libc::c_int {
-    let mut c: libc::c_int = 0;
+     let mut c:  libc::c_int =  0;
     c = crate::stdlib::getc(infile);
     if c == crate::stdlib::EOF {
         crate::stdlib::fprintf(
@@ -115,8 +115,8 @@ unsafe extern "C" fn read_1_byte() -> libc::c_int {
 /* All 2-byte quantities in JPEG markers are MSB first */
 
 unsafe extern "C" fn read_2_bytes() -> libc::c_uint {
-    let mut c1: libc::c_int = 0;
-    let mut c2: libc::c_int = 0;
+    
+     let mut c1:  libc::c_int =  0; let mut c2:  libc::c_int =  0;
     c1 = crate::stdlib::getc(infile);
     if c1 == crate::stdlib::EOF {
         crate::stdlib::fprintf(
@@ -155,8 +155,8 @@ pub const M_SOI: libc::c_int = 0xd8i32;
  */
 
 unsafe extern "C" fn next_marker() -> libc::c_int {
-    let mut c: libc::c_int = 0;
-    let mut discarded_bytes: libc::c_int = 0i32;
+    
+     let mut c:  libc::c_int =  0; let mut discarded_bytes:  libc::c_int =  0i32;
     /* Find 0xFF byte; count and skip any non-FFs. */
     c = read_1_byte();
     while c != 0xffi32 {
@@ -191,8 +191,8 @@ unsafe extern "C" fn next_marker() -> libc::c_int {
  */
 
 unsafe extern "C" fn first_marker() -> libc::c_int {
-    let mut c1: libc::c_int = 0;
-    let mut c2: libc::c_int = 0;
+    
+     let mut c1:  libc::c_int =  0; let mut c2:  libc::c_int =  0;
     c1 = crate::stdlib::getc(infile);
     c2 = crate::stdlib::getc(infile);
     if c1 != 0xffi32 || c2 != M_SOI {
@@ -219,7 +219,7 @@ unsafe extern "C" fn first_marker() -> libc::c_int {
 unsafe extern "C" fn skip_variable()
 /* Skip over an unknown or uninteresting variable-length marker */
 {
-    let mut length: libc::c_uint = 0;
+     let mut length:  libc::c_uint =  0;
     /* Get the marker parameter length count */
     length = read_2_bytes();
     /* Length includes itself, so must be at least 2 */
@@ -247,9 +247,9 @@ unsafe extern "C" fn skip_variable()
  */
 
 unsafe extern "C" fn process_COM(mut raw: libc::c_int) {
-    let mut length: libc::c_uint = 0;
-    let mut ch: libc::c_int = 0;
-    let mut lastch: libc::c_int = 0i32;
+    
+    
+     let mut length:  libc::c_uint =  0;
     /* Bill Allombert: set locale properly for isprint */
     crate::stdlib::setlocale(
         crate::stdlib::LC_CTYPE,
@@ -271,7 +271,7 @@ unsafe extern "C" fn process_COM(mut raw: libc::c_int) {
     }
     length =  length - 2u32;
     while length > 0u32 {
-        ch = read_1_byte();
+         let mut ch:  libc::c_int =  0; let mut lastch:  libc::c_int =  0i32;ch = read_1_byte();
         if raw != 0 {
             crate::stdlib::putc(ch, crate::stdlib::stdout);
         /* Emit the character in a readable form.
@@ -312,13 +312,13 @@ unsafe extern "C" fn process_COM(mut raw: libc::c_int) {
  */
 
 unsafe extern "C" fn process_SOFn(mut marker: libc::c_int) {
-    let mut length: libc::c_uint = 0; /* usual parameter length count */
-    let mut image_height: libc::c_uint = 0; /* Component ID code */
-    let mut image_width: libc::c_uint = 0;
-    let mut data_precision: libc::c_int = 0;
-    let mut num_components: libc::c_int = 0;
-    let mut process: *const libc::c_char = ::std::ptr::null::< libc::c_char>();
-    let mut ci: libc::c_int = 0;
+     /* usual parameter length count */
+     /* Component ID code */
+    
+    
+    
+    
+     let mut length:  libc::c_uint =  0; let mut image_height:  libc::c_uint =  0; let mut image_width:  libc::c_uint =  0; let mut data_precision:  libc::c_int =  0; let mut num_components:  libc::c_int =  0; let mut process:  *const libc::c_char =  ::std::ptr::null::< libc::c_char>(); let mut ci:  libc::c_int =  0;
     length = read_2_bytes();
     data_precision = read_1_byte();
     image_height = read_2_bytes();
@@ -401,7 +401,7 @@ unsafe extern "C" fn scan_JPEG_header(
     mut verbose: libc::c_int,
     mut raw: libc::c_int,
 ) -> libc::c_int {
-    let mut marker: libc::c_int = 0;
+    
     /* Expect SOI at start of file */
     if first_marker() != M_SOI {
         crate::stdlib::fprintf(
@@ -416,8 +416,8 @@ unsafe extern "C" fn scan_JPEG_header(
     loop
     /* Scan miscellaneous markers until we reach SOS. */
     {
-        marker = next_marker();
-        let mut current_block_14: u64;
+         let mut marker:  libc::c_int =  0; let mut current_block_14:  u64;marker = next_marker();
+        
         match marker {
             192 => {
                 /* Baseline */
@@ -646,11 +646,11 @@ unsafe extern "C" fn keymatch(
 /* Case-insensitive matching of (possibly abbreviated) keyword switches. */
 /* keyword is the constant keyword (must be lower case already), */
 /* minchars is length of minimum legal abbreviation. */ {
-    let mut ca: libc::c_int = 0; /* arg longer than keyword, no good */
-    let mut ck: libc::c_int = 0;
-    let mut nmatched: libc::c_int = 0i32;
+     /* arg longer than keyword, no good */
+    
+     let mut nmatched:  libc::c_int =  0i32;
     loop {
-        let fresh0 = arg;
+         let mut ca:  libc::c_int =  0; let mut ck:  libc::c_int =  0;let fresh0 = arg;
         arg = arg.offset(1);
         ca = *fresh0 as libc::c_int;
         if !(ca != '\u{0}' as i32) {
@@ -669,7 +669,7 @@ unsafe extern "C" fn keymatch(
             /* count matched characters */
             /* force arg to lcase (assume ck is already) */
             ca = ({
-                let mut __res: libc::c_int = 0; /* no good */
+                 let mut __res:  libc::c_int =  0; /* no good */
                 if ::std::mem::size_of::<libc::c_int>() as libc::c_ulong > 1u64 {
                     if 0 != 0 {
                         let mut __c: libc::c_int = ca;
@@ -704,10 +704,10 @@ unsafe extern "C" fn keymatch(
  */
 
 unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> libc::c_int {
-    let mut argn: libc::c_int = 0;
-    let mut arg: *mut libc::c_char = ::std::ptr::null_mut::< libc::c_char>();
-    let mut verbose: libc::c_int = 0i32;
-    let mut raw: libc::c_int = 0i32;
+    
+    
+    
+     let mut argn:  libc::c_int =  0; let mut verbose:  libc::c_int =  0i32; let mut raw:  libc::c_int =  0i32;
     /* On Mac, fetch a command line. */
     progname = *argv.offset(0); /* in case C library doesn't provide it */
     if progname.is_null() || *progname.offset(0) as libc::c_int == 0i32 {
@@ -716,7 +716,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     /* Parse switches, if any */
     argn = 1i32; /* not switch, must be file name */
     while argn < argc {
-        arg = *argv.offset(argn as isize); /* advance over '-' */
+         let mut arg:  *mut libc::c_char =  ::std::ptr::null_mut::< libc::c_char>();arg = *argv.offset(argn as isize); /* advance over '-' */
         if *arg.offset(0) as libc::c_int != '-' as i32 {
             break;
         }
@@ -773,7 +773,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
 }
 #[main]
 pub fn main() {
-    let mut args: Vec<*mut libc::c_char> = Vec::new();
+     let mut args:  Vec<*mut libc::c_char> =  Vec::new();
     for arg in ::std::env::args() {
         args.push(
             ::std::ffi::CString::new(arg)
