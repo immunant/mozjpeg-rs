@@ -72,7 +72,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         );
         return -1i32;
     }
-    if crate::stdlib::strlen(*argv.offset(1)) != 32i32 as libc::c_ulong {
+    if crate::stdlib::strlen(*argv.offset(1)) != 32u64 {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
             
@@ -117,7 +117,8 @@ pub fn main() {
     unsafe {
         ::std::process::exit(main_0(
             (args.len() - 1) as libc::c_int,
-            args.as_mut_ptr() as *mut *mut libc::c_char,
-        ) as i32)
+            
+            args.as_mut_ptr(),
+        ))
     }
 }
