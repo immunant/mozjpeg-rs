@@ -448,9 +448,9 @@ unsafe extern "C" fn select_transform(mut transform: crate::src::transupp::JXFOR
  * which we can't handle.
  */
 {
-    if transformoption.transform as libc::c_uint
-        == crate::src::transupp::JXFORM_NONE as libc::c_int as libc::c_uint
-        || transformoption.transform as libc::c_uint == transform as libc::c_uint
+    if  transformoption.transform
+        ==  crate::src::transupp::JXFORM_NONE
+        ||  transformoption.transform ==  transform
     {
         transformoption.transform = transform
     } else {
@@ -743,7 +743,7 @@ unsafe extern "C" fn parse_switches(
                     {
                         /* Maximum memory in Kb (or Mb with 'm'). */
                         let mut lval: libc::c_long = 0;
-                        let mut ch: libc::c_char = 'x' as i32 as libc::c_char;
+                        let mut ch: libc::c_char =  'x' as libc::c_char;
                         argn += 1;
                         if argn >= argc {
                             /* advance to next argument */
@@ -823,7 +823,7 @@ unsafe extern "C" fn parse_switches(
                     {
                         /* Restart interval in MCU rows (or in MCUs with 'b'). */
                         let mut lval_0: libc::c_long = 0;
-                        let mut ch_0: libc::c_char = 'x' as i32 as libc::c_char;
+                        let mut ch_0: libc::c_char =  'x' as libc::c_char;
                         argn += 1;
                         if argn >= argc {
                             /* advance to next argument */
@@ -839,7 +839,7 @@ unsafe extern "C" fn parse_switches(
                         {
                             usage();
                         }
-                        if lval_0 < 0i32 as libc::c_long || lval_0 > 65535i64 {
+                        if lval_0 < 0i64 || lval_0 > 65535i64 {
                             usage();
                         }
                         if ch_0 as libc::c_int == 'b' as i32 || ch_0 as libc::c_int == 'B' as i32 {
@@ -1182,13 +1182,13 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
      */
     let mut fp: *mut crate::stdlib::FILE = ::std::ptr::null_mut::< crate::stdlib::FILE>();
     let mut inbuffer: *mut libc::c_uchar = crate::stddef_h::NULL as *mut libc::c_uchar;
-    let mut insize: libc::c_ulong = 0i32 as libc::c_ulong;
+    let mut insize: libc::c_ulong = 0u64;
     let mut outbuffer: *mut libc::c_uchar = crate::stddef_h::NULL as *mut libc::c_uchar;
-    let mut outsize: libc::c_ulong = 0i32 as libc::c_ulong;
+    let mut outsize: libc::c_ulong = 0u64;
     let mut icc_file: *mut crate::stdlib::FILE = ::std::ptr::null_mut::< crate::stdlib::FILE>();
     let mut icc_profile: *mut crate::jmorecfg_h::JOCTET =
         crate::stddef_h::NULL as *mut crate::jmorecfg_h::JOCTET;
-    let mut icc_len: libc::c_long = 0i32 as libc::c_long;
+    let mut icc_len: libc::c_long = 0i64;
     /* On Mac, fetch a command line. */
     progname = *argv.offset(0); /* in case C library doesn't provide it */
     if progname.is_null() || *progname.offset(0) as libc::c_int == 0i32 {
@@ -1261,12 +1261,12 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             );
             crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
         }
-        if crate::stdlib::fseek(icc_file, 0i32 as libc::c_long, crate::stdlib::SEEK_END) < 0i32
+        if crate::stdlib::fseek(icc_file, 0i64, crate::stdlib::SEEK_END) < 0i32
             || {
                 icc_len = crate::stdlib::ftell(icc_file);
-                (icc_len) < 1i32 as libc::c_long
+                (icc_len) < 1i64
             }
-            || crate::stdlib::fseek(icc_file, 0i32 as libc::c_long, crate::stdlib::SEEK_SET) < 0i32
+            || crate::stdlib::fseek(icc_file, 0i64, crate::stdlib::SEEK_SET) < 0i32
         {
             crate::stdlib::fprintf(
                 crate::stdlib::stderr,
@@ -1293,9 +1293,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         if crate::stdlib::fread(
             icc_profile as *mut libc::c_void,
             icc_len as libc::c_ulong,
-            1i32 as libc::c_ulong,
+            1u64,
             icc_file,
-        ) < 1i32 as libc::c_ulong
+        ) < 1u64
         {
             crate::stdlib::fprintf(
                 crate::stdlib::stderr,
@@ -1309,8 +1309,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
         }
         crate::stdlib::fclose(icc_file);
-        if copyoption as libc::c_uint
-            == crate::src::transupp::JCOPYOPT_ALL as libc::c_int as libc::c_uint
+        if  copyoption
+            ==  crate::src::transupp::JCOPYOPT_ALL
         {
             copyoption = crate::src::transupp::JCOPYOPT_ALL_EXCEPT_ICC
         }
@@ -1346,8 +1346,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             }
             nbytes = crate::stdlib::fread(
                 &mut *inbuffer.offset(insize as isize) as *mut libc::c_uchar as *mut libc::c_void,
-                1i32 as crate::stddef_h::size_t,
-                4096i32 as crate::stddef_h::size_t,
+                1u64,
+                4096u64,
                 fp,
             );
             if nbytes < INPUT_BUF_SIZE as libc::c_ulong && crate::stdlib::ferror(fp) != 0 {
@@ -1489,7 +1489,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         }
         nbytes_0 = crate::stdlib::fwrite(
             buffer as *const libc::c_void,
-            1i32 as crate::stddef_h::size_t,
+            1u64,
             size,
             fp,
         );
@@ -1546,7 +1546,8 @@ pub fn main() {
     unsafe {
         ::std::process::exit(main_0(
             (args.len() - 1) as libc::c_int,
-            args.as_mut_ptr() as *mut *mut libc::c_char,
-        ) as i32)
+            
+            args.as_mut_ptr(),
+        ))
     }
 }
