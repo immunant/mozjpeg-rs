@@ -266,14 +266,14 @@ pub unsafe extern "C" fn initBuf(
     mut pf: libc::c_int,
     mut flags: libc::c_int,
 ) {
-    let mut roffset: libc::c_int = crate::src::turbojpeg::tjRedOffset[pf as usize];
+     let mut index:  libc::c_int =  0; let mut row:  libc::c_int =  0; let mut col:  libc::c_int =  0; let mut halfway:  libc::c_int =  16i32;let mut roffset: libc::c_int = crate::src::turbojpeg::tjRedOffset[pf as usize];
     let mut goffset: libc::c_int = crate::src::turbojpeg::tjGreenOffset[pf as usize];
     let mut boffset: libc::c_int = crate::src::turbojpeg::tjBlueOffset[pf as usize];
     let mut ps: libc::c_int = crate::src::turbojpeg::tjPixelSize[pf as usize];
-    let mut index: libc::c_int = 0;
-    let mut row: libc::c_int = 0;
-    let mut col: libc::c_int = 0;
-    let mut halfway: libc::c_int = 16i32;
+    
+    
+    
+    
     if pf ==  crate::src::turbojpeg::TJPF_GRAY {
         crate::stdlib::memset(
             buf as *mut libc::c_void,
@@ -373,16 +373,16 @@ pub unsafe extern "C" fn checkBuf(
     mut sf: crate::src::turbojpeg::tjscalingfactor,
     mut flags: libc::c_int,
 ) -> libc::c_int {
-    let mut current_block: u64;
+     let mut index:  libc::c_int =  0; let mut row:  libc::c_int =  0; let mut col:  libc::c_int =  0; let mut retval:  libc::c_int =  1i32;
     let mut roffset: libc::c_int = crate::src::turbojpeg::tjRedOffset[pf as usize];
     let mut goffset: libc::c_int = crate::src::turbojpeg::tjGreenOffset[pf as usize];
     let mut boffset: libc::c_int = crate::src::turbojpeg::tjBlueOffset[pf as usize];
     let mut aoffset: libc::c_int = crate::src::turbojpeg::tjAlphaOffset[pf as usize];
     let mut ps: libc::c_int = crate::src::turbojpeg::tjPixelSize[pf as usize];
-    let mut index: libc::c_int = 0;
-    let mut row: libc::c_int = 0;
-    let mut col: libc::c_int = 0;
-    let mut retval: libc::c_int = 1i32;
+    
+    
+    
+    
     let mut halfway: libc::c_int = 16i32 * sf.num / sf.denom;
     let mut blocksize: libc::c_int = 8i32 * sf.num / sf.denom;
     if pf ==  crate::src::turbojpeg::TJPF_GRAY {
@@ -391,7 +391,7 @@ pub unsafe extern "C" fn checkBuf(
         roffset = goffset
     }
     if pf ==  crate::src::turbojpeg::TJPF_CMYK {
-        row = 0i32;
+         let mut current_block:  u64;row = 0i32;
         's_40: loop {
             if !(row < h) {
                 current_block = 15514718523126015390;
@@ -399,10 +399,10 @@ pub unsafe extern "C" fn checkBuf(
             }
             col = 0i32;
             while col < w {
-                let mut c: libc::c_uchar = 0;
-                let mut m: libc::c_uchar = 0;
-                let mut y: libc::c_uchar = 0;
-                let mut k: libc::c_uchar = 0;
+                
+                
+                
+                 let mut c:  libc::c_uchar =  0; let mut m:  libc::c_uchar =  0; let mut y:  libc::c_uchar =  0; let mut k:  libc::c_uchar =  0;
                 if flags & crate::src::turbojpeg::TJFLAG_BOTTOMUP != 0 {
                     index = (h - row - 1i32) * w + col
                 } else {
@@ -582,10 +582,10 @@ pub unsafe extern "C" fn checkBuf(
         's_400: while row < h {
             col = 0i32;
             while col < w {
-                let mut r: libc::c_uchar = 0;
-                let mut g: libc::c_uchar = 0;
-                let mut b: libc::c_uchar = 0;
-                let mut a: libc::c_uchar = 0;
+                
+                
+                
+                 let mut r:  libc::c_uchar =  0; let mut g:  libc::c_uchar =  0; let mut b:  libc::c_uchar =  0; let mut a:  libc::c_uchar =  0;
                 if flags & crate::src::turbojpeg::TJFLAG_BOTTOMUP != 0 {
                     index = (h - row - 1i32) * w + col
                 } else {
@@ -936,9 +936,9 @@ pub unsafe extern "C" fn checkBufYUV(
     mut subsamp: libc::c_int,
     mut sf: crate::src::turbojpeg::tjscalingfactor,
 ) -> libc::c_int {
-    let mut current_block: u64;
-    let mut row: libc::c_int = 0;
-    let mut col: libc::c_int = 0;
+    
+    
+     let mut current_block:  u64; let mut row:  libc::c_int =  0; let mut col:  libc::c_int =  0; let mut retval:  libc::c_int =  1i32;
     let mut hsf: libc::c_int = crate::src::turbojpeg::tjMCUWidth[subsamp as usize] / 8i32;
     let mut vsf: libc::c_int = crate::src::turbojpeg::tjMCUHeight[subsamp as usize] / 8i32;
     let mut pw: libc::c_int = w + hsf - 1i32 & !(hsf - 1i32);
@@ -947,7 +947,7 @@ pub unsafe extern "C" fn checkBufYUV(
     let mut ch: libc::c_int = ph / vsf;
     let mut ypitch: libc::c_int = pw + pad - 1i32 & !(pad - 1i32);
     let mut uvpitch: libc::c_int = cw + pad - 1i32 & !(pad - 1i32);
-    let mut retval: libc::c_int = 1i32;
+    
     let mut halfway: libc::c_int = 16i32 * sf.num / sf.denom;
     let mut blocksize: libc::c_int = 8i32 * sf.num / sf.denom;
     row = 0i32;
@@ -1244,8 +1244,8 @@ pub unsafe extern "C" fn compTest(
     mut jpegQual: libc::c_int,
     mut flags: libc::c_int,
 ) {
-    let mut current_block: u64;
-    let mut tempStr: [libc::c_char; 1024] = [0; 1024];
+    
+    
     let mut srcBuf: *mut libc::c_uchar = crate::stddef_h::NULL as *mut libc::c_uchar;
     let mut yuvBuf: *mut libc::c_uchar = crate::stddef_h::NULL as *mut libc::c_uchar;
     let mut pfStr: *const libc::c_char = pixFormatStr[pf as usize];
@@ -1276,7 +1276,7 @@ pub unsafe extern "C" fn compTest(
         );
         exitStatus = -1i32
     } else {
-        initBuf(srcBuf, w, h, pf, flags);
+         let mut current_block:  u64;initBuf(srcBuf, w, h, pf, flags);
         if !(*dstBuf).is_null() && *dstSize > 0u64 {
             crate::stdlib::memset(*dstBuf as *mut libc::c_void, 0i32, *dstSize);
         }
@@ -1287,7 +1287,8 @@ pub unsafe extern "C" fn compTest(
             let mut yuvSize: libc::c_ulong =
                 crate::src::turbojpeg::tjBufSizeYUV2(w, pad, h, subsamp);
             let mut sf: crate::src::turbojpeg::tjscalingfactor = {
-                let mut init = crate::src::turbojpeg::tjscalingfactor {
+                 let mut init =
+     crate::src::turbojpeg::tjscalingfactor {
                     num: 1i32,
                     denom: 1i32,
                 };
@@ -1398,7 +1399,7 @@ pub unsafe extern "C" fn compTest(
         match current_block {
             860601949763470011 => {}
             _ => {
-                crate::stdlib::snprintf(
+                 let mut tempStr:  [libc::c_char; 1024] =  [0; 1024];crate::stdlib::snprintf(
                     tempStr.as_mut_ptr(),
                     1024u64,
                     
@@ -1439,15 +1440,15 @@ pub unsafe extern "C" fn _decompTest(
     mut flags: libc::c_int,
     mut sf: crate::src::turbojpeg::tjscalingfactor,
 ) {
-    let mut current_block: u64;
+     let mut _hdrw:  libc::c_int =  0i32; let mut _hdrh:  libc::c_int =  0i32;
     let mut dstBuf: *mut libc::c_uchar = crate::stddef_h::NULL as *mut libc::c_uchar;
     let mut yuvBuf: *mut libc::c_uchar = crate::stddef_h::NULL as *mut libc::c_uchar;
-    let mut _hdrw: libc::c_int = 0i32;
-    let mut _hdrh: libc::c_int = 0i32;
+    
+    
     let mut _hdrsubsamp: libc::c_int = -1i32;
     let mut scaledWidth: libc::c_int = (w * sf.num + sf.denom - 1i32) / sf.denom;
     let mut scaledHeight: libc::c_int = (h * sf.num + sf.denom - 1i32) / sf.denom;
-    let mut dstSize: libc::c_ulong = 0u64;
+    
     if crate::src::turbojpeg::tjDecompressHeader2(
         handle,
         jpegBuf,
@@ -1472,7 +1473,7 @@ pub unsafe extern "C" fn _decompTest(
         );
         exitStatus = -1i32
     } else {
-        dstSize = (scaledWidth * scaledHeight * crate::src::turbojpeg::tjPixelSize[pf as usize])
+         let mut dstSize:  libc::c_ulong =  0u64;dstSize = (scaledWidth * scaledHeight * crate::src::turbojpeg::tjPixelSize[pf as usize])
             as libc::c_ulong;
         dstBuf = crate::stdlib::malloc(dstSize) as *mut libc::c_uchar;
         if dstBuf.is_null() {
@@ -1484,7 +1485,7 @@ pub unsafe extern "C" fn _decompTest(
             );
             exitStatus = -1i32
         } else {
-            crate::stdlib::memset(dstBuf as *mut libc::c_void, 0i32, dstSize);
+             let mut current_block:  u64;crate::stdlib::memset(dstBuf as *mut libc::c_void, 0i32, dstSize);
             if doYUV != 0 {
                 let mut yuvSize: libc::c_ulong =
                     crate::src::turbojpeg::tjBufSizeYUV2(scaledWidth, pad, scaledHeight, subsamp);
@@ -1676,8 +1677,8 @@ pub unsafe extern "C" fn decompTest(
     mut subsamp: libc::c_int,
     mut flags: libc::c_int,
 ) {
-    let mut i: libc::c_int = 0;
-    let mut n: libc::c_int = 0i32;
+    
+     let mut n:  libc::c_int =  0i32;
     let mut sf: *mut crate::src::turbojpeg::tjscalingfactor =
         crate::src::turbojpeg::tjGetScalingFactors(&mut n);
     if sf.is_null() || n == 0 {
@@ -1688,7 +1689,7 @@ pub unsafe extern "C" fn decompTest(
         );
         exitStatus = -1i32
     } else {
-        i = 0i32;
+         let mut i:  libc::c_int =  0;i = 0i32;
         while i < n {
             if subsamp == crate::src::turbojpeg::TJSAMP_444 as libc::c_int
                 || subsamp == crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int
@@ -1729,14 +1730,14 @@ pub unsafe extern "C" fn doTest(
     mut subsamp: libc::c_int,
     mut basename: *mut libc::c_char,
 ) {
-    let mut current_block: u64;
+     let mut current_block:  u64; let mut size:  libc::c_ulong =  0u64;
     let mut chandle: crate::src::turbojpeg::tjhandle = crate::stddef_h::NULL as *mut libc::c_void;
     let mut dhandle: crate::src::turbojpeg::tjhandle = crate::stddef_h::NULL as *mut libc::c_void;
     let mut dstBuf: *mut libc::c_uchar = crate::stddef_h::NULL as *mut libc::c_uchar;
-    let mut size: libc::c_ulong = 0u64;
-    let mut pfi: libc::c_int = 0;
-    let mut pf: libc::c_int = 0;
-    let mut i: libc::c_int = 0;
+    
+    
+    
+    
     if alloc == 0 {
         size = crate::src::turbojpeg::tjBufSize(w, h, subsamp)
     }
@@ -1771,11 +1772,11 @@ pub unsafe extern "C" fn doTest(
                 );
                 exitStatus = -1i32
             } else {
-                pfi = 0i32;
+                 let mut pfi:  libc::c_int =  0;pfi = 0i32;
                 while pfi < nformats {
-                    i = 0i32;
+                     let mut i:  libc::c_int =  0;i = 0i32;
                     while i < 2i32 {
-                        let mut flags: libc::c_int = 0i32;
+                         let mut pf:  libc::c_int =  0; let mut flags:  libc::c_int =  0i32;
                         if subsamp == crate::src::turbojpeg::TJSAMP_422 as libc::c_int
                             || subsamp == crate::src::turbojpeg::TJSAMP_420 as libc::c_int
                             || subsamp == crate::src::turbojpeg::TJSAMP_440 as libc::c_int
@@ -1843,15 +1844,15 @@ pub unsafe extern "C" fn doTest(
 #[no_mangle]
 
 pub unsafe extern "C" fn bufSizeTest() {
-    let mut current_block: u64;
-    let mut w: libc::c_int = 0;
-    let mut h: libc::c_int = 0;
-    let mut i: libc::c_int = 0;
-    let mut subsamp: libc::c_int = 0;
+    
+    
+    
+    
+    
     let mut srcBuf: *mut libc::c_uchar = crate::stddef_h::NULL as *mut libc::c_uchar;
     let mut dstBuf: *mut libc::c_uchar = crate::stddef_h::NULL as *mut libc::c_uchar;
     let mut handle: crate::src::turbojpeg::tjhandle = crate::stddef_h::NULL as *mut libc::c_void;
-    let mut dstSize: libc::c_ulong = 0u64;
+    
     handle = crate::src::turbojpeg::tjInitCompress();
     if handle.is_null() {
         crate::stdlib::printf(
@@ -1861,19 +1862,19 @@ pub unsafe extern "C" fn bufSizeTest() {
         );
         exitStatus = -1i32
     } else {
-        crate::stdlib::printf(
+         let mut current_block:  u64; let mut subsamp:  libc::c_int =  0;crate::stdlib::printf(
             
             b"Buffer size regression test\n\x00".as_ptr() as *const libc::c_char,
         );
         subsamp = 0i32;
         's_43: loop {
-            if !(subsamp < crate::src::turbojpeg::TJ_NUMSAMP) {
+             let mut w:  libc::c_int =  0;if !(subsamp < crate::src::turbojpeg::TJ_NUMSAMP) {
                 current_block = 6040267449472925966;
                 break;
             }
             w = 1i32;
             while w < 48i32 {
-                let mut maxh: libc::c_int = if w == 1i32 { 2048i32 } else { 48i32 };
+                 let mut h:  libc::c_int =  0;let mut maxh: libc::c_int = if w == 1i32 { 2048i32 } else { 48i32 };
                 h = 1i32;
                 while h < maxh {
                     if h % 100i32 == 0i32 {
@@ -1897,7 +1898,7 @@ pub unsafe extern "C" fn bufSizeTest() {
                         current_block = 17868673386502678986;
                         break 's_43;
                     } else {
-                        if alloc == 0 || doYUV != 0 {
+                         let mut i:  libc::c_int =  0; let mut dstSize:  libc::c_ulong =  0u64;if alloc == 0 || doYUV != 0 {
                             if doYUV != 0 {
                                 dstSize = crate::src::turbojpeg::tjBufSizeYUV2(w, pad, h, subsamp)
                             } else {
@@ -2120,15 +2121,15 @@ pub unsafe extern "C" fn initBitmap(
     mut pf: libc::c_int,
     mut flags: libc::c_int,
 ) {
-    let mut roffset: libc::c_int = crate::src::turbojpeg::tjRedOffset[pf as usize];
+     let mut j:  libc::c_int =  0;let mut roffset: libc::c_int = crate::src::turbojpeg::tjRedOffset[pf as usize];
     let mut goffset: libc::c_int = crate::src::turbojpeg::tjGreenOffset[pf as usize];
     let mut boffset: libc::c_int = crate::src::turbojpeg::tjBlueOffset[pf as usize];
     let mut ps: libc::c_int = crate::src::turbojpeg::tjPixelSize[pf as usize];
-    let mut i: libc::c_int = 0;
-    let mut j: libc::c_int = 0;
+    
+    
     j = 0i32;
     while j < height {
-        let mut row: libc::c_int = if flags & crate::src::turbojpeg::TJFLAG_BOTTOMUP != 0 {
+         let mut i:  libc::c_int =  0;let mut row: libc::c_int = if flags & crate::src::turbojpeg::TJFLAG_BOTTOMUP != 0 {
             (height - j) - 1i32
         } else {
             j
@@ -2178,16 +2179,16 @@ pub unsafe extern "C" fn cmpBitmap(
     mut flags: libc::c_int,
     mut gray2rgb: libc::c_int,
 ) -> libc::c_int {
-    let mut roffset: libc::c_int = crate::src::turbojpeg::tjRedOffset[pf as usize];
+     let mut j:  libc::c_int =  0;let mut roffset: libc::c_int = crate::src::turbojpeg::tjRedOffset[pf as usize];
     let mut goffset: libc::c_int = crate::src::turbojpeg::tjGreenOffset[pf as usize];
     let mut boffset: libc::c_int = crate::src::turbojpeg::tjBlueOffset[pf as usize];
     let mut aoffset: libc::c_int = crate::src::turbojpeg::tjAlphaOffset[pf as usize];
     let mut ps: libc::c_int = crate::src::turbojpeg::tjPixelSize[pf as usize];
-    let mut i: libc::c_int = 0;
-    let mut j: libc::c_int = 0;
+    
+    
     j = 0i32;
     while j < height {
-        let mut row: libc::c_int = if flags & crate::src::turbojpeg::TJFLAG_BOTTOMUP != 0 {
+         let mut i:  libc::c_int =  0;let mut row: libc::c_int = if flags & crate::src::turbojpeg::TJFLAG_BOTTOMUP != 0 {
             (height - j) - 1i32
         } else {
             j
@@ -2203,9 +2204,9 @@ pub unsafe extern "C" fn cmpBitmap(
                     return 0i32;
                 }
             } else if pf ==  crate::src::turbojpeg::TJPF_CMYK {
-                let mut rf: libc::c_uchar = 0;
-                let mut gf: libc::c_uchar = 0;
-                let mut bf: libc::c_uchar = 0;
+                
+                
+                 let mut rf:  libc::c_uchar =  0; let mut gf:  libc::c_uchar =  0; let mut bf:  libc::c_uchar =  0;
                 crate::cmyk_h::cmyk_to_rgb(
                     *buf.offset((row * pitch + i * ps + 0i32) as isize),
                     *buf.offset((row * pitch + i * ps + 1i32) as isize),
@@ -2271,18 +2272,18 @@ pub unsafe extern "C" fn doBmpTest(
     mut pf: libc::c_int,
     mut flags: libc::c_int,
 ) -> libc::c_int {
-    let mut current_block: u64;
-    let mut filename: [libc::c_char; 80] = [0; 80];
-    let mut md5sum: *mut libc::c_char = ::std::ptr::null_mut::< libc::c_char>();
-    let mut md5buf: [libc::c_char; 65] = [0; 65];
+    
+    
+    
+     let mut retval:  libc::c_int =  0i32; let mut md5ref:  *mut libc::c_char =  ::std::ptr::null_mut::< libc::c_char>();
     let mut ps: libc::c_int = crate::src::turbojpeg::tjPixelSize[pf as usize];
     let mut pitch: libc::c_int = width * ps + align - 1i32 & !(align - 1i32);
-    let mut loadWidth: libc::c_int = 0i32;
-    let mut loadHeight: libc::c_int = 0i32;
-    let mut retval: libc::c_int = 0i32;
+    
+    
+    
     let mut pixelFormat: libc::c_int = pf;
     let mut buf: *mut libc::c_uchar = crate::stddef_h::NULL as *mut libc::c_uchar;
-    let mut md5ref: *mut libc::c_char = ::std::ptr::null_mut::< libc::c_char>();
+    
     if pf ==  crate::src::turbojpeg::TJPF_GRAY {
         md5ref =
             if crate::stdlib::strcasecmp(ext,  b"ppm\x00".as_ptr() as *const libc::c_char) == 0 {
@@ -2312,7 +2313,7 @@ pub unsafe extern "C" fn doBmpTest(
         );
         exitStatus = -1i32
     } else {
-        initBitmap(buf, width, pitch, height, pf, flags);
+         let mut filename:  [libc::c_char; 80] =  [0; 80];initBitmap(buf, width, pitch, height, pf, flags);
         crate::stdlib::snprintf(
             filename.as_mut_ptr(),
             80u64,
@@ -2346,7 +2347,7 @@ pub unsafe extern "C" fn doBmpTest(
             );
             exitStatus = -1i32
         } else {
-            md5sum = crate::src::md5::md5::MD5File(filename.as_mut_ptr(), md5buf.as_mut_ptr());
+             let mut md5sum:  *mut libc::c_char =  ::std::ptr::null_mut::< libc::c_char>(); let mut md5buf:  [libc::c_char; 65] =  [0; 65];md5sum = crate::src::md5::md5::MD5File(filename.as_mut_ptr(), md5buf.as_mut_ptr());
             if crate::stdlib::strcasecmp(md5sum, md5ref) != 0 {
                 crate::stdlib::printf(
                     
@@ -2358,7 +2359,7 @@ pub unsafe extern "C" fn doBmpTest(
                 );
                 exitStatus = -1i32
             } else {
-                crate::src::turbojpeg::tjFree(buf);
+                 let mut loadWidth:  libc::c_int =  0i32; let mut loadHeight:  libc::c_int =  0i32;crate::src::turbojpeg::tjFree(buf);
                 buf = crate::stddef_h::NULL as *mut libc::c_uchar;
                 buf = crate::src::turbojpeg::tjLoadImage(
                     filename.as_mut_ptr(),
@@ -2391,7 +2392,7 @@ pub unsafe extern "C" fn doBmpTest(
                     );
                     retval = -1i32
                 } else {
-                    if pf ==  crate::src::turbojpeg::TJPF_GRAY {
+                     let mut current_block:  u64;if pf ==  crate::src::turbojpeg::TJPF_GRAY {
                         crate::src::turbojpeg::tjFree(buf);
                         buf = crate::stddef_h::NULL as *mut libc::c_uchar;
                         pf =  crate::src::turbojpeg::TJPF_XBGR;
@@ -2539,15 +2540,15 @@ pub unsafe extern "C" fn doBmpTest(
 #[no_mangle]
 
 pub unsafe extern "C" fn bmpTest() -> libc::c_int {
-    let mut align: libc::c_int = 0;
-    let mut width: libc::c_int = 35i32;
-    let mut height: libc::c_int = 39i32;
-    let mut format: libc::c_int = 0;
+    
+    
+    
+     let mut align:  libc::c_int =  0;
     align = 1i32;
     while align <= 8i32 {
-        format = 0i32;
+         let mut format:  libc::c_int =  0;format = 0i32;
         while format < crate::src::turbojpeg::TJ_NUMPF {
-            crate::stdlib::printf(
+             let mut width:  libc::c_int =  35i32; let mut height:  libc::c_int =  39i32;crate::stdlib::printf(
                 
                 b"%s Top-Down BMP (row alignment = %d bytes)  ...  \x00".as_ptr()
                     as *const libc::c_char,
@@ -2635,10 +2636,10 @@ pub unsafe extern "C" fn bmpTest() -> libc::c_int {
 }
 
 unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> libc::c_int {
-    let mut i: libc::c_int = 0;
-    let mut num4bf: libc::c_int = 5i32;
+    
+     let mut num4bf:  libc::c_int =  5i32;
     if argc > 1i32 {
-        i = 1i32;
+         let mut i:  libc::c_int =  0;i = 1i32;
         while i < argc {
             if crate::stdlib::strcasecmp(
                 *argv.offset(i as isize),
@@ -2914,7 +2915,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
 }
 #[main]
 pub fn main() {
-    let mut args: Vec<*mut libc::c_char> = Vec::new();
+     let mut args:  Vec<*mut libc::c_char> =  Vec::new();
     for arg in ::std::env::args() {
         args.push(
             ::std::ffi::CString::new(arg)
