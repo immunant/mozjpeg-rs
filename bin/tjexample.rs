@@ -187,7 +187,7 @@ pub unsafe extern "C" fn customFilter(
     mut transformIndex: libc::c_int,
     mut transform: *mut crate::src::turbojpeg::tjtransform,
 ) -> libc::c_int {
-    let mut i: libc::c_int = 0;
+     let mut i:  libc::c_int =  0;
     i = 0i32;
     while i < arrayRegion.w * arrayRegion.h {
         *coeffs.offset(i as isize) = -(*coeffs.offset(i as isize) as libc::c_int) as libc::c_short;
@@ -198,7 +198,7 @@ pub unsafe extern "C" fn customFilter(
 #[no_mangle]
 
 pub unsafe extern "C" fn usage(mut programName: *mut libc::c_char) {
-    let mut i: libc::c_int = 0;
+     let mut i:  libc::c_int =  0;
     crate::stdlib::printf(
         
         b"\nUSAGE: %s <Input image> <Output image> [options]\n\n\x00".as_ptr()
@@ -367,9 +367,10 @@ pub unsafe extern "C" fn usage(mut programName: *mut libc::c_char) {
 }
 
 unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> libc::c_int {
-    let mut current_block: u64;
+     let mut retval:  libc::c_int =  0i32;
     let mut scalingFactor: crate::src::turbojpeg::tjscalingfactor = {
-        let mut init = crate::src::turbojpeg::tjscalingfactor {
+         let mut init =
+     crate::src::turbojpeg::tjscalingfactor {
             num: 1i32,
             denom: 1i32,
         };
@@ -389,17 +390,17 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         data: ::std::ptr::null_mut::< libc::c_void>(),
         customFilter: None,
     };
-    let mut flags: libc::c_int = 0i32;
-    let mut width: libc::c_int = 0;
-    let mut height: libc::c_int = 0;
-    let mut inFormat: *mut libc::c_char = ::std::ptr::null_mut::< libc::c_char>();
-    let mut outFormat: *mut libc::c_char = ::std::ptr::null_mut::< libc::c_char>();
+    
+    
+    
+    
+    
     let mut jpegFile: *mut crate::stdlib::FILE =
         crate::stddef_h::NULL_0 as *mut crate::stdlib::FILE;
     let mut imgBuf: *mut libc::c_uchar = crate::stddef_h::NULL_0 as *mut libc::c_uchar;
     let mut jpegBuf: *mut libc::c_uchar = crate::stddef_h::NULL_0 as *mut libc::c_uchar;
-    let mut retval: libc::c_int = 0i32;
-    let mut i: libc::c_int = 0;
+    
+    
     let mut pixelFormat: libc::c_int =  crate::src::turbojpeg::TJPF_UNKNOWN;
     let mut tjInstance: crate::src::turbojpeg::tjhandle =
         crate::stddef_h::NULL_0 as *mut libc::c_void;
@@ -415,7 +416,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         );
         retval = -1i32
     } else {
-        crate::stdlib::memset(
+         let mut current_block:  u64; let mut flags:  libc::c_int =  0i32; let mut width:  libc::c_int =  0; let mut height:  libc::c_int =  0; let mut inFormat:  *mut libc::c_char =  ::std::ptr::null_mut::< libc::c_char>(); let mut outFormat:  *mut libc::c_char =  ::std::ptr::null_mut::< libc::c_char>(); let mut i:  libc::c_int =  0;crate::stdlib::memset(
             &mut xform as *mut crate::src::turbojpeg::tjtransform as *mut libc::c_void,
             0i32,
             ::std::mem::size_of::<crate::src::turbojpeg::tjtransform>() as libc::c_ulong,
@@ -434,10 +435,10 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             ) == 0
                 && i < argc - 1i32
             {
-                let mut match_0: libc::c_int = 0i32;
-                let mut temp1: libc::c_int = 0i32;
-                let mut temp2: libc::c_int = 0i32;
-                let mut j: libc::c_int = 0;
+                
+                
+                
+                 let mut match_0:  libc::c_int =  0i32; let mut temp1:  libc::c_int =  0i32; let mut temp2:  libc::c_int =  0i32; let mut j:  libc::c_int =  0;
                 i += 1;
                 if crate::stdlib::sscanf(
                     *argv.offset(i as isize),
@@ -672,15 +673,14 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         outFormat = &mut *outFormat.offset(1) as *mut libc::c_char;
         if crate::stdlib::strcasecmp(inFormat,  b"jpg\x00".as_ptr() as *const libc::c_char) == 0
         {
-            /* Input image is a JPEG image.  Decompress and/or transform it. */
-            let mut size: libc::c_long = 0;
-            let mut inSubsamp: libc::c_int = 0;
-            let mut inColorspace: libc::c_int = 0;
+            
+            
+             let mut size:  libc::c_long =  0;
             let mut doTransform: libc::c_int =
                 (xform.op != crate::src::turbojpeg::TJXOP_NONE as libc::c_int
                     || xform.options != 0i32
                     || xform.customFilter.is_some()) as libc::c_int;
-            let mut jpegSize: libc::c_ulong = 0;
+            
             /* Read the JPEG file into memory. */
             jpegFile = crate::stdlib::fopen(
                 *argv.offset(1),
@@ -730,7 +730,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                 retval = -1i32;
                 current_block = 16288987300638808654;
             } else {
-                jpegSize = size as libc::c_ulong;
+                 let mut jpegSize:  libc::c_ulong =  0;jpegSize = size as libc::c_ulong;
                 jpegBuf = crate::src::turbojpeg::tjAlloc(jpegSize as libc::c_int);
                 if jpegBuf.is_null() {
                     crate::stdlib::printf(
@@ -767,7 +767,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                         /* Transform it. */
                         let mut dstBuf: *mut libc::c_uchar =
                             crate::stddef_h::NULL_0 as *mut libc::c_uchar; /* Dynamically allocate the JPEG buffer */
-                        let mut dstSize: libc::c_ulong = 0u64;
+                        
                         tjInstance = crate::src::turbojpeg::tjInitTransform();
                         if tjInstance.is_null() {
                             crate::stdlib::printf(
@@ -782,7 +782,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                             retval = -1i32;
                             current_block = 16288987300638808654;
                         } else {
-                            xform.options |= crate::src::turbojpeg::TJXOPT_TRIM;
+                             let mut dstSize:  libc::c_ulong =  0u64;xform.options |= crate::src::turbojpeg::TJXOPT_TRIM;
                             if crate::src::turbojpeg::tjTransform(
                                 tjInstance,
                                 jpegBuf,
@@ -835,7 +835,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                     match current_block {
                         16288987300638808654 => {}
                         _ => {
-                            if crate::src::turbojpeg::tjDecompressHeader3(
+                             let mut inSubsamp:  libc::c_int =  0; let mut inColorspace:  libc::c_int =  0;if crate::src::turbojpeg::tjDecompressHeader3(
                                 tjInstance,
                                 jpegBuf,
                                 jpegSize,
@@ -1055,9 +1055,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                 ) == 0
                 {
                     /* Output image format is JPEG.  Compress the uncompressed image. */
-                    let mut jpegBuf_0: *mut libc::c_uchar =
+                     let mut jpegSize_0:  libc::c_ulong =  0u64;let mut jpegBuf_0: *mut libc::c_uchar =
                         crate::stddef_h::NULL_0 as *mut libc::c_uchar; /* Dynamically allocate the JPEG buffer */
-                    let mut jpegSize_0: libc::c_ulong = 0u64;
+                    
                     if outQual < 0i32 {
                         outQual = DEFAULT_QUALITY
                     }
@@ -1194,7 +1194,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
 }
 #[main]
 pub fn main() {
-    let mut args: Vec<*mut libc::c_char> = Vec::new();
+     let mut args:  Vec<*mut libc::c_char> =  Vec::new();
     for arg in ::std::env::args() {
         args.push(
             ::std::ffi::CString::new(arg)
