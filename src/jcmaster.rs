@@ -1247,8 +1247,8 @@ unsafe extern "C" fn copy_buffer(
           eprint!("SCAN ");
          let mut i:   libc::c_int =  0i32;
         while i < (*(*cinfo).scan_info.offset(scan_idx as isize)).comps_in_scan {
-                 eprint!("{:}{:}",
-        unsafe {
+                  eprint!("{:}{:}",
+        {
     std::ffi::CStr::from_ptr(if i == 0i32 {
                                  b"\x00".as_ptr() as *const libc::c_char
                              } else {
@@ -1260,8 +1260,8 @@ unsafe extern "C" fn copy_buffer(
         }
         
         
-             eprint!(": {:} {:}", (*(*cinfo).scan_info.offset(scan_idx as isize)).Ss,
-        (*(*cinfo).scan_info.offset(scan_idx as isize)).Se);     eprint!(" {:} {:}", (*(*cinfo).scan_info.offset(scan_idx as isize)).Ah,
+              eprint!(": {:} {:}", (*(*cinfo).scan_info.offset(scan_idx as isize)).Ss,
+        (*(*cinfo).scan_info.offset(scan_idx as isize)).Se);      eprint!(" {:} {:}", (*(*cinfo).scan_info.offset(scan_idx as isize)).Ah,
         (*master).actual_Al[scan_idx as usize]); eprintln!("");
     }
     while size >= (*(*cinfo).dest).free_in_buffer {
