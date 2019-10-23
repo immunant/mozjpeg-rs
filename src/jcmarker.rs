@@ -811,7 +811,7 @@ unsafe extern "C" fn emit_multi_dht(
     return TRUE;
 }
 
-unsafe extern "C" fn emit_dac(mut cinfo: j_compress_ptr)
+unsafe extern "C" fn emit_dac(mut _cinfo: j_compress_ptr)
 /* Emit a DAC marker */
 /* Since the useful info is so small, we want to emit all the tables in */
 /* one DAC marker.  Therefore this routine does its own scan of the table. */

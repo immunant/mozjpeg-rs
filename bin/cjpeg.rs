@@ -362,7 +362,7 @@
 
 
 
-use std::prelude::v1::*;use std::prelude::v1;use libc::{c_long, c_int, c_uint, c_char, c_uchar, c_ulong, c_float, c_void};use mozjpeg::*;pub use crate::src::jerror::{C2RustUnnamed_3, JERR_ARITH_NOTIMPL,
+use std::prelude::v1::*;use libc::{c_long, c_int, c_uint, c_char, c_uchar, c_ulong, c_float, c_void};use mozjpeg::*;pub use crate::src::jerror::{C2RustUnnamed_3, JERR_ARITH_NOTIMPL,
                              JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
                              JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID,
                              JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,

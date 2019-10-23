@@ -59,7 +59,7 @@
 
 
 
-use std::prelude::v1::*;use std::prelude::v1;use libc::{c_uint, c_int, c_ushort, c_ulong, c_char, c_long};use crate::stdlib::{strcat, strcpy, strlen};use mozjpeg::*;pub use crate::stdlib::{_IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data,
+use std::prelude::v1::*;use libc::{c_uint, c_int, c_ushort, c_ulong, c_char, c_long};use crate::stdlib::{strcat, strcpy, strlen};use mozjpeg::*;pub use crate::stdlib::{_IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data,
                         __int32_t, __off64_t, __off_t, FILE, _IO_FILE,
                         C2RustUnnamed_0, _ISalnum, _ISalpha, _ISblank,
                         _IScntrl, _ISdigit, _ISgraph, _ISlower, _ISprint,
@@ -635,7 +635,7 @@ unsafe extern "C" fn keymatch(
         {
             /* count matched characters */
             /* force arg to lcase (assume ck is already) */
-            ca = ({
+            ca = {
                  let mut __res:  c_int =  0; /* no good */
                 if ::std::mem::size_of::<c_int>() as c_ulong > 1u64 {
                     if 0 != 0 {
@@ -652,7 +652,7 @@ unsafe extern "C" fn keymatch(
                     __res = *(*__ctype_tolower_loc()).offset(ca as isize)
                 }
                 __res
-            })
+            }
         }
         if ca != ck {
             return 0i32;

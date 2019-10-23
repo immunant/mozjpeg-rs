@@ -141,7 +141,7 @@ pub type cjpeg_source_ptr = *mut cjpeg_source_struct;
 
 
 
-use crate::jpeglib_h::{j_compress_ptr, j_decompress_ptr, jpeg_compress_struct,
+use crate::jpeglib_h::{j_compress_ptr, j_decompress_ptr,
                        jpeg_saved_marker_ptr};pub use crate::jmorecfg_h::boolean;pub use crate::stdlib::FILE;
 
 #[repr(C)]
@@ -190,7 +190,7 @@ pub type djpeg_dest_ptr = *mut djpeg_dest_struct;
 
 
 
-use libc;use crate::jpeglib_h::jpeg_decompress_struct;pub use crate::stdlib::{__int32_t, __off64_t, __off_t, _IO_FILE, _IO_codecvt,
+use libc;pub use crate::stdlib::{__int32_t, __off64_t, __off_t, _IO_FILE, _IO_codecvt,
                         _IO_lock_t, _IO_marker, _IO_wide_data};pub use crate::stddef_h::size_t;
 /*
  * cdjpeg.h
@@ -348,7 +348,7 @@ pub unsafe extern "C" fn keymatch(
         {
             /* count matched characters */
             /* force arg to lcase (assume ck is already) */
-            ca = ({
+            ca = {
                  let mut __res:  c_int =  0; /* no good */
                 if ::std::mem::size_of::<c_int>() as c_ulong > 1u64 {
                     if 0 != 0 {
@@ -365,7 +365,7 @@ pub unsafe extern "C" fn keymatch(
                     __res = *(*__ctype_tolower_loc()).offset(ca as isize)
                 }
                 __res
-            })
+            }
         }
         if ca != ck {
             return FALSE;

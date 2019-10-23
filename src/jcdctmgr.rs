@@ -236,13 +236,7 @@
 
 
 
-use crate::stdlib::{abs, ceilf, free, malloc, pow};use libc::{c_uint, c_ulong, c_float, c_double, c_void, intptr_t, c_int, self};use super::simd::x86_64::jsimd::{jsimd_can_convsamp, jsimd_can_convsamp_float,
-                                 jsimd_can_fdct_float, jsimd_can_fdct_ifast,
-                                 jsimd_can_fdct_islow, jsimd_can_quantize,
-                                 jsimd_can_quantize_float, jsimd_convsamp,
-                                 jsimd_convsamp_float, jsimd_fdct_float,
-                                 jsimd_fdct_ifast, jsimd_fdct_islow,
-                                 jsimd_quantize, jsimd_quantize_float};pub use crate::jpegint_h::{jpeg_natural_order, JBUF_CRANK_DEST,
+use crate::stdlib::{abs, ceilf, free, malloc, pow};use libc::{c_uint, c_ulong, c_float, c_double, c_void, intptr_t, c_int, self};pub use crate::jpegint_h::{jpeg_natural_order, JBUF_CRANK_DEST,
                            JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS,
                            JBUF_SAVE_SOURCE, JLONG, J_BUF_MODE};pub use crate::jdct_h::{jpeg_fdct_float, jpeg_fdct_ifast, jpeg_fdct_islow,
                         DCTELEM, UDCTELEM, UDCTELEM2};pub use crate::jpeglib_h::{j_common_ptr, j_compress_ptr,

@@ -222,14 +222,7 @@
 
 
 
-use super::simd::x86_64::jsimd::{jsimd_can_h2v1_fancy_upsample,
-                                 jsimd_can_h2v1_upsample,
-                                 jsimd_can_h2v2_fancy_upsample,
-                                 jsimd_can_h2v2_upsample,
-                                 jsimd_h2v1_fancy_upsample,
-                                 jsimd_h2v1_upsample,
-                                 jsimd_h2v2_fancy_upsample,
-                                 jsimd_h2v2_upsample};use libc::{c_uint, c_ulong, c_int, c_long, self};pub use crate::jmorecfg_h::{JDIMENSION, UINT8, boolean, FALSE, JCOEF, JOCTET,
+use libc::{c_uint, c_ulong, c_int, c_long, self};pub use crate::jmorecfg_h::{JDIMENSION, UINT8, boolean, FALSE, JCOEF, JOCTET,
                             JSAMPLE, TRUE, UINT16};pub use crate::jpegint_h::{inverse_DCT_method_ptr, jcopy_sample_rows,
                            jround_up, JBUF_CRANK_DEST, JBUF_PASS_THRU,
                            JBUF_REQUANT, JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE,
@@ -392,7 +385,7 @@ unsafe extern "C" fn sep_upsample(
     mut cinfo: j_decompress_ptr,
     mut input_buf: JSAMPIMAGE,
     mut in_row_group_ctr: *mut JDIMENSION,
-    mut in_row_groups_avail: JDIMENSION,
+    mut _in_row_groups_avail: JDIMENSION,
     mut output_buf: JSAMPARRAY,
     mut out_row_ctr: *mut JDIMENSION,
     mut out_rows_avail: JDIMENSION,
@@ -476,8 +469,8 @@ unsafe extern "C" fn sep_upsample(
  */
 
 unsafe extern "C" fn fullsize_upsample(
-    mut cinfo: j_decompress_ptr,
-    mut compptr: *mut jpeg_component_info,
+    mut _cinfo: j_decompress_ptr,
+    mut _compptr: *mut jpeg_component_info,
     mut input_data: JSAMPARRAY,
     mut output_data_ptr: *mut JSAMPARRAY,
 ) {
@@ -489,9 +482,9 @@ unsafe extern "C" fn fullsize_upsample(
  */
 
 unsafe extern "C" fn noop_upsample(
-    mut cinfo: j_decompress_ptr,
-    mut compptr: *mut jpeg_component_info,
-    mut input_data: JSAMPARRAY,
+    mut _cinfo: j_decompress_ptr,
+    mut _compptr: *mut jpeg_component_info,
+    mut _input_data: JSAMPARRAY,
     mut output_data_ptr: *mut JSAMPARRAY,
 ) {
     *output_data_ptr = NULL as JSAMPARRAY;
@@ -573,7 +566,7 @@ unsafe extern "C" fn int_upsample(
 
 unsafe extern "C" fn h2v1_upsample(
     mut cinfo: j_decompress_ptr,
-    mut compptr: *mut jpeg_component_info,
+    mut _compptr: *mut jpeg_component_info,
     mut input_data: JSAMPARRAY,
     mut output_data_ptr: *mut JSAMPARRAY,
 ) {
@@ -612,7 +605,7 @@ unsafe extern "C" fn h2v1_upsample(
 
 unsafe extern "C" fn h2v2_upsample(
     mut cinfo: j_decompress_ptr,
-    mut compptr: *mut jpeg_component_info,
+    mut _compptr: *mut jpeg_component_info,
     mut input_data: JSAMPARRAY,
     mut output_data_ptr: *mut JSAMPARRAY,
 ) {

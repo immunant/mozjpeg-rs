@@ -284,9 +284,7 @@ pub mod jmorecfg_h {
 
 
 
-use super::simd::x86_64::jsimd::{jsimd_can_h2v1_merged_upsample,
-                                 jsimd_can_h2v2_merged_upsample,
-                                 jsimd_can_ycc_rgb};use crate::stdlib::{memcpy, memset};pub use jmorecfg_h::rgb_pixelsize;pub use super::jerror::{JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE,
+use crate::stdlib::{memcpy, memset};pub use jmorecfg_h::rgb_pixelsize;pub use super::jerror::{JERR_ARITH_NOTIMPL, JERR_BAD_ALIGN_TYPE,
                         JERR_BAD_ALLOC_CHUNK, JERR_BAD_BUFFER_MODE,
                         JERR_BAD_COMPONENT_ID, JERR_BAD_CROP_SPEC,
                         JERR_BAD_DCTSIZE, JERR_BAD_DCT_COEF,

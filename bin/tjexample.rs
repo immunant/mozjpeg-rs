@@ -102,7 +102,7 @@
 
 
 
-use std::prelude::v1::*;use std::prelude::v1;use libc::{c_long, c_char, c_int, c_ulong, c_uchar, c_short, c_double,
+use std::prelude::v1::*;use libc::{c_long, c_char, c_int, c_ulong, c_uchar, c_short, c_double,
            c_void};use mozjpeg::*;use crate::stdlib::{__errno_location, memset, strcasecmp, strerror, strlen,
                     strncasecmp, strrchr};pub use crate::stdlib::{_IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data,
                         __off64_t, __off_t, FILE, _IO_FILE, atoi, exit,
@@ -204,10 +204,10 @@ pub static mut numScalingFactors: c_int = 0i32;
 pub unsafe extern "C" fn customFilter(
     mut coeffs: *mut c_short,
     mut arrayRegion: tjregion,
-    mut planeRegion: tjregion,
-    mut componentIndex: c_int,
-    mut transformIndex: c_int,
-    mut transform: *mut tjtransform,
+    mut _planeRegion: tjregion,
+    mut _componentIndex: c_int,
+    mut _transformIndex: c_int,
+    mut _transform: *mut tjtransform,
 ) -> c_int {
      
      let mut i:   c_int =  0i32;

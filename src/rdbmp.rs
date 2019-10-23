@@ -1829,8 +1829,8 @@ unsafe extern "C" fn start_input_bmp(
  */
 
 unsafe extern "C" fn finish_input_bmp(
-    mut cinfo: j_compress_ptr,
-    mut sinfo: super::cdjpeg::cjpeg_source_ptr,
+    mut _cinfo: j_compress_ptr,
+    mut _sinfo: super::cdjpeg::cjpeg_source_ptr,
 ) {
     /* no work */
 }

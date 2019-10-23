@@ -78,7 +78,7 @@
 
 
 
-use libc;use crate::stdlib::{fprintf, stderr};pub use crate::jmorecfg_h::{boolean, JCOEF, JDIMENSION, JOCTET, JSAMPLE,
+pub use crate::jmorecfg_h::{boolean, JCOEF, JDIMENSION, JOCTET, JSAMPLE,
                             UINT16, UINT8};pub use crate::stddef_h::{size_t, NULL};pub use crate::jpeglib_h::{j_common_ptr, j_compress_ptr,
                            jpeg_c_coef_controller, jpeg_c_main_controller,
                            jpeg_c_prep_controller, jpeg_color_converter,
@@ -178,7 +178,7 @@ to write the image in bottom-up order.) */
 #[no_mangle]
 
 pub unsafe extern "C" fn jinit_read_gif(
-    mut cinfo: j_compress_ptr,
+    mut _cinfo: j_compress_ptr,
 ) -> super::cdjpeg::cjpeg_source_ptr {
      eprintln!("GIF input is unsupported for legal reasons.  Sorry.");
     exit(EXIT_FAILURE);

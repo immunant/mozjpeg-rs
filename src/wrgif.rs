@@ -673,7 +673,7 @@ unsafe extern "C" fn start_output_gif(
 unsafe extern "C" fn put_pixel_rows(
     mut cinfo: j_decompress_ptr,
     mut dinfo: super::cdjpeg::djpeg_dest_ptr,
-    mut rows_supplied: JDIMENSION,
+    mut _rows_supplied: JDIMENSION,
 ) {
       let mut dest: gif_dest_ptr = dinfo as gif_dest_ptr;
     
@@ -719,8 +719,8 @@ unsafe extern "C" fn finish_output_gif(
  */
 
 unsafe extern "C" fn calc_buffer_dimensions_gif(
-    mut cinfo: j_decompress_ptr,
-    mut dinfo: super::cdjpeg::djpeg_dest_ptr,
+    mut _cinfo: j_decompress_ptr,
+    mut _dinfo: super::cdjpeg::djpeg_dest_ptr,
 ) {
 }
 /*

@@ -367,9 +367,7 @@ pub mod jmorecfg_h {
 
 
 
-use super::simd::x86_64::jsimd::{jsimd_can_ycc_rgb, jsimd_can_ycc_rgb565,
-                                 jsimd_ycc_rgb565_convert,
-                                 jsimd_ycc_rgb_convert};pub use jmorecfg_h::{rgb_blue, rgb_green, rgb_red};pub use super::jerror::{C2RustUnnamed_3, JERR_ARITH_NOTIMPL,
+pub use jmorecfg_h::{rgb_blue, rgb_green, rgb_red};pub use super::jerror::{C2RustUnnamed_3, JERR_ARITH_NOTIMPL,
                         JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
                         JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID,
                         JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,
@@ -1268,7 +1266,7 @@ unsafe extern "C" fn gray_rgb565D_convert(
  * Empty method for start_pass.
  */
 
-unsafe extern "C" fn start_pass_dcolor(mut cinfo: j_decompress_ptr) {
+unsafe extern "C" fn start_pass_dcolor(mut _cinfo: j_decompress_ptr) {
     /* no work needed */
 }
 /*

@@ -13,7 +13,7 @@
 #![feature(main)]
 #![feature(ptr_wrapping_offset_from)]
 
-use std::prelude::v1::*;use std::prelude::v1;pub mod src {
+pub mod src {
     pub mod cdjpeg;
     
     

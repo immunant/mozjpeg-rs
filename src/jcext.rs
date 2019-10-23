@@ -325,7 +325,7 @@ use libc::{c_int, c_float, self};pub use crate::jmorecfg_h::{boolean, FALSE, JCO
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_c_bool_param_supported(
-    cinfo: j_compress_ptr,
+    _cinfo: j_compress_ptr,
     mut param: J_BOOLEAN_PARAM,
 ) -> boolean {
     match  param {
@@ -396,7 +396,7 @@ pub unsafe extern "C" fn jpeg_c_get_bool_param(
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_c_float_param_supported(
-    cinfo: j_compress_ptr,
+    _cinfo: j_compress_ptr,
     mut param: J_FLOAT_PARAM,
 ) -> boolean {
     match  param {
@@ -456,7 +456,7 @@ pub unsafe extern "C" fn jpeg_c_get_float_param(
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_c_int_param_supported(
-    cinfo: j_compress_ptr,
+    _cinfo: j_compress_ptr,
     mut param: J_INT_PARAM,
 ) -> boolean {
     match  param {

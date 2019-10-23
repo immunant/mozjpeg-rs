@@ -8,7 +8,7 @@
 
 
 
-use crate::jmorecfg_h::{INT16, JDIMENSION, JSAMPLE};use crate::jpegint_h::JLONG;use crate::src::jdmerge::{my_upsample_ptr, my_upsampler};use crate::jpeglib_h::{j_decompress_ptr, jpeg_decompress_struct, JSAMPARRAY,
+use crate::jmorecfg_h::{INT16, JDIMENSION, JSAMPLE};use crate::jpegint_h::JLONG;use crate::src::jdmerge::{my_upsample_ptr};use crate::jpeglib_h::{j_decompress_ptr, JSAMPARRAY,
                        JSAMPIMAGE, JSAMPROW};use libc::{c_uint, c_int, c_long};
 /*
  * jdmrg565.c

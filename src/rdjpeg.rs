@@ -167,7 +167,7 @@ pub struct _jpeg_source_struct {
 pub type jpeg_source_struct = _jpeg_source_struct;
 
 unsafe extern "C" fn get_rows(
-    mut cinfo: j_compress_ptr,
+    mut _cinfo: j_compress_ptr,
     mut sinfo: super::cdjpeg::cjpeg_source_ptr,
 ) -> JDIMENSION {
     let mut source: jpeg_source_ptr = sinfo as jpeg_source_ptr;
@@ -245,7 +245,7 @@ unsafe extern "C" fn start_input_jpeg(
  */
 
 unsafe extern "C" fn finish_input_jpeg(
-    mut cinfo: j_compress_ptr,
+    mut _cinfo: j_compress_ptr,
     mut sinfo: super::cdjpeg::cjpeg_source_ptr,
 ) {
     let mut source: jpeg_source_ptr = sinfo as jpeg_source_ptr;

@@ -543,7 +543,7 @@ pub const C2_SHIFT: c_int = BITS_IN_JSAMPLE - HIST_C2_BITS;
 unsafe extern "C" fn prescan_quantize(
     mut cinfo: j_decompress_ptr,
     mut input_buf: JSAMPARRAY,
-    mut output_buf: JSAMPARRAY,
+    mut _output_buf: JSAMPARRAY,
     mut num_rows: c_int,
 ) {
      let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr;
@@ -1808,7 +1808,7 @@ unsafe extern "C" fn init_error_limit(mut cinfo: j_decompress_ptr)
         *table.offset(in_0 as isize) = out;
         *table.offset(-in_0 as isize) = -out;
         in_0 += 1;
-        out += (if in_0 & 1i32 != 0 { 0i32 } else { 1i32 })
+        out += if in_0 & 1i32 != 0 { 0i32 } else { 1i32 }
     }
     /* Clamp the rest to final out value (which is (MAXJSAMPLE+1)/8) */
     while in_0 <= MAXJSAMPLE {
@@ -1832,7 +1832,7 @@ unsafe extern "C" fn finish_pass1(mut cinfo: j_decompress_ptr) {
     (*cquantize).needs_zeroed = TRUE;
 }
 
-unsafe extern "C" fn finish_pass2(mut cinfo: j_decompress_ptr) {
+unsafe extern "C" fn finish_pass2(mut _cinfo: j_decompress_ptr) {
     /* no work */
 }
 /*

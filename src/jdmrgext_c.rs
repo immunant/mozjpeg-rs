@@ -7,7 +7,7 @@
 
 
 
-use crate::jmorecfg_h::{JDIMENSION, JSAMPLE};use crate::jpegint_h::JLONG;use crate::src::jdmerge::{my_upsample_ptr, my_upsampler};use crate::jpeglib_h::{j_decompress_ptr, jpeg_decompress_struct, JSAMPARRAY,
+use crate::jmorecfg_h::{JDIMENSION, JSAMPLE};use crate::jpegint_h::JLONG;use crate::src::jdmerge::{my_upsample_ptr};use crate::jpeglib_h::{j_decompress_ptr, JSAMPARRAY,
                        JSAMPIMAGE, JSAMPROW};use libc::c_int;
 /*
  * jdmrgext.c
@@ -1539,15 +1539,7 @@ pub unsafe extern "C" fn extxbgr_h2v2_merged_upsample_internal(
 
 
 
-use crate::jmorecfg_h::{EXT_BGRX_BLUE, EXT_BGRX_GREEN, EXT_BGRX_PIXELSIZE,
-                        EXT_BGRX_RED, EXT_BGR_BLUE, EXT_BGR_GREEN,
-                        EXT_BGR_PIXELSIZE, EXT_BGR_RED, EXT_RGBX_BLUE,
-                        EXT_RGBX_GREEN, EXT_RGBX_PIXELSIZE, EXT_RGBX_RED,
-                        EXT_RGB_BLUE, EXT_RGB_GREEN, EXT_RGB_PIXELSIZE,
-                        EXT_RGB_RED, EXT_XBGR_BLUE, EXT_XBGR_GREEN,
-                        EXT_XBGR_PIXELSIZE, EXT_XBGR_RED, EXT_XRGB_BLUE,
-                        EXT_XRGB_GREEN, EXT_XRGB_PIXELSIZE, EXT_XRGB_RED,
-                        RGB_BLUE_5, RGB_GREEN_5, RGB_PIXELSIZE_5, RGB_RED_5};use crate::src::jdmerge::{RGB_ALPHA, RGB_ALPHA_0, RGB_ALPHA_1, RGB_ALPHA_2,
+use crate::jmorecfg_h::{RGB_BLUE_5, RGB_GREEN_5, RGB_PIXELSIZE_5, RGB_RED_5};use crate::src::jdmerge::{RGB_ALPHA, RGB_ALPHA_0, RGB_ALPHA_1, RGB_ALPHA_2,
                           RGB_BLUE, RGB_BLUE_0, RGB_BLUE_1, RGB_BLUE_2,
                           RGB_BLUE_3, RGB_BLUE_4, RGB_GREEN, RGB_GREEN_0,
                           RGB_GREEN_1, RGB_GREEN_2, RGB_GREEN_3, RGB_GREEN_4,

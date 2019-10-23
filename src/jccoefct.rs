@@ -949,7 +949,7 @@ unsafe extern "C" fn compress_trellis_pass(
 
 unsafe extern "C" fn compress_output(
     mut cinfo: j_compress_ptr,
-    mut input_buf: JSAMPIMAGE,
+    mut _input_buf: JSAMPIMAGE,
 ) -> boolean {
        let mut buffer:  [JBLOCKARRAY; 4] =
      [::std::ptr::null_mut::< JBLOCKROW>(); 4]; let mut compptr:  *mut jpeg_component_info =

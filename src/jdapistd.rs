@@ -712,20 +712,20 @@ pub unsafe extern "C" fn jpeg_read_scanlines(
 /* Dummy color convert function used by jpeg_skip_scanlines() */
 
 unsafe extern "C" fn noop_convert(
-    mut cinfo: j_decompress_ptr,
-    mut input_buf: JSAMPIMAGE,
-    mut input_row: JDIMENSION,
-    mut output_buf: JSAMPARRAY,
-    mut num_rows: c_int,
+    mut _cinfo: j_decompress_ptr,
+    mut _input_buf: JSAMPIMAGE,
+    mut _input_row: JDIMENSION,
+    mut _output_buf: JSAMPARRAY,
+    mut _num_rows: c_int,
 ) {
 }
 /* Dummy quantize function used by jpeg_skip_scanlines() */
 
 unsafe extern "C" fn noop_quantize(
-    mut cinfo: j_decompress_ptr,
-    mut input_buf: JSAMPARRAY,
-    mut output_buf: JSAMPARRAY,
-    mut num_rows: c_int,
+    mut _cinfo: j_decompress_ptr,
+    mut _input_buf: JSAMPARRAY,
+    mut _output_buf: JSAMPARRAY,
+    mut _num_rows: c_int,
 ) {
 }
 /*

@@ -279,7 +279,7 @@ use crate::stdlib::{free, malloc};use libc::{c_int, c_ulong, c_void, c_long, sel
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_get_small(
-    mut cinfo: j_common_ptr,
+    mut _cinfo: j_common_ptr,
     mut sizeofobject: size_t,
 ) -> *mut c_void {
     return malloc(sizeofobject);
@@ -287,9 +287,9 @@ pub unsafe extern "C" fn jpeg_get_small(
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_free_small(
-    mut cinfo: j_common_ptr,
+    mut _cinfo: j_common_ptr,
     mut object: *mut c_void,
-    mut sizeofobject: size_t,
+    mut _sizeofobject: size_t,
 ) {
     free(object);
 }
@@ -306,7 +306,7 @@ pub unsafe extern "C" fn jpeg_free_small(
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_get_large(
-    mut cinfo: j_common_ptr,
+    mut _cinfo: j_common_ptr,
     mut sizeofobject: size_t,
 ) -> *mut c_void {
     return malloc(sizeofobject);
@@ -314,9 +314,9 @@ pub unsafe extern "C" fn jpeg_get_large(
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_free_large(
-    mut cinfo: j_common_ptr,
+    mut _cinfo: j_common_ptr,
     mut object: *mut c_void,
-    mut sizeofobject: size_t,
+    mut _sizeofobject: size_t,
 ) {
     free(object);
 }
@@ -359,7 +359,7 @@ pub unsafe extern "C" fn jpeg_free_large(
 
 pub unsafe extern "C" fn jpeg_mem_available(
     mut cinfo: j_common_ptr,
-    mut min_bytes_needed: size_t,
+    mut _min_bytes_needed: size_t,
     mut max_bytes_needed: size_t,
     mut already_allocated: size_t,
 ) -> size_t {
@@ -390,8 +390,8 @@ pub unsafe extern "C" fn jpeg_mem_available(
 
 pub unsafe extern "C" fn jpeg_open_backing_store(
     mut cinfo: j_common_ptr,
-    mut info: backing_store_ptr,
-    mut total_bytes_needed: c_long,
+    mut _info: backing_store_ptr,
+    mut _total_bytes_needed: c_long,
 ) {
     (*(*cinfo).err).msg_code = super::jerror::JERR_NO_BACKING_STORE as c_int;
     Some(
@@ -418,12 +418,12 @@ pub unsafe extern "C" fn jpeg_open_backing_store(
  */
 #[no_mangle]
 
-pub unsafe extern "C" fn jpeg_mem_init(mut cinfo: j_common_ptr) -> c_long {
+pub unsafe extern "C" fn jpeg_mem_init(mut _cinfo: j_common_ptr) -> c_long {
     return 0i64;
     /* just set max_memory_to_use to 0 */
 }
 #[no_mangle]
 
-pub unsafe extern "C" fn jpeg_mem_term(mut cinfo: j_common_ptr) {
+pub unsafe extern "C" fn jpeg_mem_term(mut _cinfo: j_common_ptr) {
     /* no work */
 }

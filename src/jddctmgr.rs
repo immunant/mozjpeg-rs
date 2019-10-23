@@ -249,11 +249,7 @@
 
 
 
-use crate::stdlib::memset;use libc::{c_double, intptr_t, c_int, c_ulong, self};use super::simd::x86_64::jsimd::{jsimd_can_idct_2x2, jsimd_can_idct_4x4,
-                                 jsimd_can_idct_float, jsimd_can_idct_ifast,
-                                 jsimd_can_idct_islow, jsimd_idct_2x2,
-                                 jsimd_idct_4x4, jsimd_idct_float,
-                                 jsimd_idct_ifast, jsimd_idct_islow};pub use crate::jpegint_h::{inverse_DCT_method_ptr, JBUF_CRANK_DEST,
+use crate::stdlib::memset;use libc::{c_double, intptr_t, c_int, c_ulong, self};pub use crate::jpegint_h::{inverse_DCT_method_ptr, JBUF_CRANK_DEST,
                            JBUF_PASS_THRU, JBUF_REQUANT, JBUF_SAVE_AND_PASS,
                            JBUF_SAVE_SOURCE, JLONG, J_BUF_MODE};pub use crate::jdct_h::{jpeg_idct_10x10, jpeg_idct_11x11, jpeg_idct_12x12,
                         jpeg_idct_13x13, jpeg_idct_14x14, jpeg_idct_15x15,

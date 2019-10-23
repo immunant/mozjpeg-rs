@@ -542,5 +542,5 @@ pub unsafe extern "C" fn std_huff_tables(mut cinfo: j_common_ptr) {
 
 
 
-use crate::jmorecfg_h::{boolean, FALSE, UINT8};use crate::stdlib::{memcpy, memset};use crate::src::jerror::JERR_BAD_HUFF_TABLE;use crate::jpeglib_h::{j_common_ptr, j_compress_ptr, j_decompress_ptr,
-                       jpeg_alloc_huff_table, jpeg_common_struct, JHUFF_TBL};
+use crate::jmorecfg_h::{FALSE, UINT8};use crate::stdlib::{memcpy, memset};use crate::src::jerror::JERR_BAD_HUFF_TABLE;use crate::jpeglib_h::{j_common_ptr, j_compress_ptr, j_decompress_ptr,
+                       jpeg_alloc_huff_table, JHUFF_TBL};

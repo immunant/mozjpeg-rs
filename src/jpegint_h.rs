@@ -184,7 +184,7 @@ pub type J_BUF_MODE = c_uint;
 
 
 
-use crate::jpeglib_h::{j_common_ptr, jpeg_common_struct, JBLOCK, JBLOCKROW};
+use crate::jpeglib_h::{j_common_ptr, JBLOCKROW};
 pub const JBUF_REQUANT: J_BUF_MODE = 4;
 pub const JBUF_SAVE_AND_PASS: J_BUF_MODE = 3;
 pub const JBUF_CRANK_DEST: J_BUF_MODE = 2;
@@ -203,5 +203,4 @@ pub const CSTATE_WRCOEFS: c_int = 103i32;
 
 
 
-use crate::jmorecfg_h::boolean;use crate::stddef_h::size_t;use crate::jpeglib_h::{j_compress_ptr, jpeg_compress_struct,
-                       jpeg_decompress_struct, JSAMPROW};
+use crate::jmorecfg_h::boolean;use crate::stddef_h::size_t;use crate::jpeglib_h::{j_compress_ptr};

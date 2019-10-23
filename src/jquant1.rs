@@ -853,8 +853,8 @@ unsafe extern "C" fn select_ncolors(
 }
 
 unsafe extern "C" fn output_value(
-    mut cinfo: j_decompress_ptr,
-    mut ci: c_int,
+    mut _cinfo: j_decompress_ptr,
+    mut _ci: c_int,
     mut j: c_int,
     mut maxj: c_int,
 ) -> c_int
@@ -871,8 +871,8 @@ unsafe extern "C" fn output_value(
 }
 
 unsafe extern "C" fn largest_input_value(
-    mut cinfo: j_decompress_ptr,
-    mut ci: c_int,
+    mut _cinfo: j_decompress_ptr,
+    mut _ci: c_int,
     mut j: c_int,
     mut maxj: c_int,
 ) -> c_int
@@ -1514,7 +1514,7 @@ unsafe extern "C" fn alloc_fs_workspace(mut cinfo: j_decompress_ptr) {
 
 unsafe extern "C" fn start_pass_1_quant(
     mut cinfo: j_decompress_ptr,
-    mut is_pre_scan: boolean,
+    mut _is_pre_scan: boolean,
 ) {
     let mut cquantize: my_cquantize_ptr = (*cinfo).cquantize as my_cquantize_ptr;
     
@@ -1626,7 +1626,7 @@ unsafe extern "C" fn start_pass_1_quant(
  * Finish up at the end of the pass.
  */
 
-unsafe extern "C" fn finish_pass_1_quant(mut cinfo: j_decompress_ptr) {
+unsafe extern "C" fn finish_pass_1_quant(mut _cinfo: j_decompress_ptr) {
     /* no work in 1-pass case */
 }
 /*

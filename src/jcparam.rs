@@ -243,7 +243,7 @@
 
 
 
-use crate::stdlib::{memcpy, memset};use libc::{c_uint, c_ulong, c_float, c_long, c_int, self};pub use crate::jpegint_h::{inverse_DCT_method_ptr, CSTATE_START,
+use libc::{c_uint, c_ulong, c_float, c_long, c_int, self};pub use crate::jpegint_h::{inverse_DCT_method_ptr, CSTATE_START,
                            JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT,
                            JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, J_BUF_MODE};pub use crate::jpeglib_h::{j_common_ptr, j_compress_ptr, j_decompress_ptr,
                            jpeg_alloc_huff_table, jpeg_alloc_quant_table,

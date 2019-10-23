@@ -153,7 +153,7 @@
 
 use std::prelude::v1::*;use crate::stdlib::{memcpy, memset, strcasecmp, strchr, strerror, strlen,
                     strncmp, strncpy, strrchr, __errno_location, ceil, fabs,
-                    log10};use crate::src::tjutil::getTime;use mozjpeg::*;use std::prelude::v1;use libc::{c_double, c_ulong, c_void, c_long, c_int, c_short, c_uchar,
+                    log10};use crate::src::tjutil::getTime;use mozjpeg::*;use libc::{c_double, c_ulong, c_void, c_long, c_int, c_short, c_uchar,
            c_char};pub use crate::jpeglib_h::JMSG_LENGTH_MAX;pub use crate::src::turbojpeg::{tjAlloc, tjBlueOffset, tjBufSize,
                                 tjBufSizeYUV2, tjCompress2, tjCompressFromYUV,
                                 tjDecodeYUV, tjDecompress2,
@@ -450,10 +450,10 @@ pub unsafe extern "C" fn sigfig(
 pub unsafe extern "C" fn dummyDCTFilter(
     mut coeffs: *mut c_short,
     mut arrayRegion: tjregion,
-    mut planeRegion: tjregion,
-    mut componentIndex: c_int,
-    mut transformIndex: c_int,
-    mut transform: *mut tjtransform,
+    mut _planeRegion: tjregion,
+    mut _componentIndex: c_int,
+    mut _transformIndex: c_int,
+    mut _transform: *mut tjtransform,
 ) -> c_int {
      
      let mut i:   c_int =  0i32;
@@ -1502,8 +1502,8 @@ pub unsafe extern "C" fn fullTest(
                 jpegQual,
             );
         }
-        tilew = (if doTile != 0 { 8i32 } else { w });
-        tileh = (if doTile != 0 { 8i32 } else { h });
+        tilew = if doTile != 0 { 8i32 } else { w };
+        tileh = if doTile != 0 { 8i32 } else { h };
         's_73: loop {
             if tilew > w {
                 tilew = w
@@ -3281,16 +3281,16 @@ pub unsafe extern "C" fn decompTest(mut fileName: *mut c_char) -> c_int {
                                         if xformOpt & TJXOPT_NOOUTPUT == 0 {
                                             if decomp(
                                                 NULL_0 as *mut c_uchar,
-                                                (if decompsrc != 0 {
+                                                if decompsrc != 0 {
                                                     &mut srcBuf
                                                 } else {
                                                     jpegBuf
-                                                }),
-                                                (if decompsrc != 0 {
+                                                },
+                                                if decompsrc != 0 {
                                                     &mut srcSize
                                                 } else {
                                                     jpegSize
-                                                }),
+                                                },
                                                 NULL_0 as *mut c_uchar,
                                                 tw,
                                                 th,
@@ -4024,11 +4024,11 @@ unsafe fn main_0(mut argc: c_int, mut argv: *mut *mut c_char) -> c_int {
                             if 0 != 0 {
                                 let mut __c: c_int =
                                     *(*argv.offset(i as isize)).offset(0) as c_int;
-                                __res = (if __c < -128i32 || __c > 255i32 {
+                                __res = if __c < -128i32 || __c > 255i32 {
                                     __c
                                 } else {
                                     *(*__ctype_toupper_loc()).offset(__c as isize)
-                                })
+                                }
                             } else {
                                 __res = toupper(
                                     *(*argv.offset(i as isize)).offset(0) as c_int,

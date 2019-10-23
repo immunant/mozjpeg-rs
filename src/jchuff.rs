@@ -232,8 +232,7 @@ use libc::{c_uint, c_double, c_char, c_long, c_ulong, c_void, c_int};extern "C" 
 
 
 
-use libc;use super::simd::x86_64::jsimd::{jsimd_can_huff_encode_one_block,
-                                 jsimd_huff_encode_one_block};use crate::stdlib::{memcpy, memset};pub use crate::jpeg_nbits_table_h::jpeg_nbits_table;pub use crate::stddef_h::{size_t, NULL};pub use crate::jpeglib_h::{j_compress_ptr, jpeg_compress_struct,
+use libc;use crate::stdlib::{memcpy, memset};pub use crate::jpeg_nbits_table_h::jpeg_nbits_table;pub use crate::stddef_h::{size_t, NULL};pub use crate::jpeglib_h::{j_compress_ptr, jpeg_compress_struct,
                            C2RustUnnamed_2, JBLOCK, JBLOCKROW, JHUFF_TBL,
                            JQUANT_TBL, j_common_ptr, jpeg_alloc_huff_table,
                            jpeg_c_coef_controller, jpeg_c_main_controller,

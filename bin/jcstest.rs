@@ -90,7 +90,7 @@
 
 
 
-use std::prelude::v1::*;use std::prelude::v1;use crate::stdlib::printf;use libc::{c_void, c_char, c_int, c_ulong};use mozjpeg::*;pub use crate::jpeglib_h::{j_common_ptr, j_compress_ptr, jpeg_CreateCompress,
+use std::prelude::v1::*;use crate::stdlib::printf;use libc::{c_void, c_char, c_int, c_ulong};use mozjpeg::*;pub use crate::jpeglib_h::{j_common_ptr, j_compress_ptr, jpeg_CreateCompress,
                            jpeg_c_coef_controller, jpeg_c_main_controller,
                            jpeg_c_prep_controller, jpeg_color_converter,
                            jpeg_common_struct, jpeg_comp_master,

@@ -314,7 +314,7 @@ pub const OUTPUT_BUF_SIZE: c_int = 4096i32;
  * before any data is actually written.
  */
 
-unsafe extern "C" fn init_mem_destination(mut cinfo: j_compress_ptr) {
+unsafe extern "C" fn init_mem_destination(mut _cinfo: j_compress_ptr) {
     /* no work necessary here */
 }
 /*

@@ -209,7 +209,7 @@
 
 
 
-use std::prelude::v1::*;use std::prelude::v1;use libc::{c_long, c_uint, c_int, c_ulong, c_void, c_uchar, c_char};use mozjpeg::*;pub use crate::jmorecfg_h::{boolean, FALSE, JCOEF, JDIMENSION, JOCTET,
+use std::prelude::v1::*;use libc::{c_long, c_uint, c_int, c_ulong, c_void, c_uchar, c_char};use mozjpeg::*;pub use crate::jmorecfg_h::{boolean, FALSE, JCOEF, JDIMENSION, JOCTET,
                             JSAMPLE, TRUE, UINT16, UINT8};pub use crate::jconfigint_h::{BUILD, PACKAGE_NAME, VERSION};pub use crate::jversion_h::{JCOPYRIGHT, JVERSION};pub use crate::jpeglib_h::{j_common_ptr, j_compress_ptr, j_decompress_ptr,
                            jpeg_CreateCompress, jpeg_CreateDecompress,
                            jpeg_c_coef_controller, jpeg_c_get_int_param,

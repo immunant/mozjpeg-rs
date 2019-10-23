@@ -321,7 +321,7 @@ unsafe extern "C" fn init_source(mut cinfo: j_decompress_ptr) {
     (*src).start_of_file = TRUE;
 }
 
-unsafe extern "C" fn init_mem_source(mut cinfo: j_decompress_ptr) {
+unsafe extern "C" fn init_mem_source(mut _cinfo: j_decompress_ptr) {
     /* no work necessary here */
 }
 /*
@@ -477,7 +477,7 @@ unsafe extern "C" fn skip_input_data(
  * for error exit.
  */
 
-unsafe extern "C" fn term_source(mut cinfo: j_decompress_ptr) {
+unsafe extern "C" fn term_source(mut _cinfo: j_decompress_ptr) {
     /* no work necessary here */
 }
 /*

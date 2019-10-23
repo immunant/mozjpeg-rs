@@ -217,10 +217,7 @@
 
 
 
-use crate::stdlib::memset;use libc::{c_uint, c_ulong, c_char, c_long, c_void, c_int, self};use super::simd::x86_64::jsimd::{jsimd_can_encode_mcu_AC_first_prepare,
-                                 jsimd_can_encode_mcu_AC_refine_prepare,
-                                 jsimd_encode_mcu_AC_first_prepare,
-                                 jsimd_encode_mcu_AC_refine_prepare};pub use crate::jpeg_nbits_table_h::jpeg_nbits_table;pub use crate::stddef_h::{size_t, NULL};pub use crate::jpeglib_h::{j_common_ptr, j_compress_ptr,
+use crate::stdlib::memset;use libc::{c_uint, c_ulong, c_char, c_long, c_void, c_int, self};pub use crate::jpeg_nbits_table_h::jpeg_nbits_table;pub use crate::stddef_h::{size_t, NULL};pub use crate::jpeglib_h::{j_common_ptr, j_compress_ptr,
                            jpeg_alloc_huff_table, jpeg_c_coef_controller,
                            jpeg_c_main_controller, jpeg_c_prep_controller,
                            jpeg_color_converter, jpeg_common_struct,

@@ -485,9 +485,9 @@ unsafe extern "C" fn post_process_prepass(
     mut input_buf: JSAMPIMAGE,
     mut in_row_group_ctr: *mut JDIMENSION,
     mut in_row_groups_avail: JDIMENSION,
-    mut output_buf: JSAMPARRAY,
+    mut _output_buf: JSAMPARRAY,
     mut out_row_ctr: *mut JDIMENSION,
-    mut out_rows_avail: JDIMENSION,
+    mut _out_rows_avail: JDIMENSION,
 ) {
      let mut post: my_post_ptr = (*cinfo).post as my_post_ptr;
     
@@ -554,9 +554,9 @@ unsafe extern "C" fn post_process_prepass(
 
 unsafe extern "C" fn post_process_2pass(
     mut cinfo: j_decompress_ptr,
-    mut input_buf: JSAMPIMAGE,
-    mut in_row_group_ctr: *mut JDIMENSION,
-    mut in_row_groups_avail: JDIMENSION,
+    mut _input_buf: JSAMPIMAGE,
+    mut _in_row_group_ctr: *mut JDIMENSION,
+    mut _in_row_groups_avail: JDIMENSION,
     mut output_buf: JSAMPARRAY,
     mut out_row_ctr: *mut JDIMENSION,
     mut out_rows_avail: JDIMENSION,

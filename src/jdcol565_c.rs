@@ -9,8 +9,8 @@
 
 
 
-use crate::jpegint_h::JLONG;use crate::jpeglib_h::{j_decompress_ptr, jpeg_decompress_struct, JSAMPARRAY,
-                       JSAMPIMAGE, JSAMPROW};use crate::jmorecfg_h::{INT16, JDIMENSION, JSAMPLE};use crate::stddef_h::size_t;use crate::src::jdcolor::{my_cconvert_ptr, my_color_deconverter};use libc::{c_uint, c_int, c_long};
+use crate::jpegint_h::JLONG;use crate::jpeglib_h::{j_decompress_ptr, JSAMPARRAY,
+                       JSAMPIMAGE, JSAMPROW};use crate::jmorecfg_h::{INT16, JDIMENSION, JSAMPLE};use crate::stddef_h::size_t;use crate::src::jdcolor::{my_cconvert_ptr};use libc::{c_uint, c_int, c_long};
 /*
  * jdcol565.c
  *

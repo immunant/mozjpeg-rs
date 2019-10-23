@@ -392,7 +392,7 @@ unsafe extern "C" fn decompress_onepass(
  */
 
 unsafe extern "C" fn dummy_consume_data(
-    mut cinfo: j_decompress_ptr,
+    mut _cinfo: j_decompress_ptr,
 ) -> c_int {
     return JPEG_SUSPENDED;
     /* Always indicate nothing was done */

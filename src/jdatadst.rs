@@ -341,7 +341,7 @@ unsafe extern "C" fn init_destination(mut cinfo: j_compress_ptr) {
     (*dest).pub_0.free_in_buffer = OUTPUT_BUF_SIZE as size_t;
 }
 
-unsafe extern "C" fn init_mem_destination(mut cinfo: j_compress_ptr) {
+unsafe extern "C" fn init_mem_destination(mut _cinfo: j_compress_ptr) {
     /* no work necessary here */
 }
 /*

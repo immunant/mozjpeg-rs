@@ -140,10 +140,7 @@
 
 
 
-use super::simd::x86_64::jsimd::{jsimd_can_h2v1_merged_upsample,
-                                 jsimd_can_h2v2_merged_upsample,
-                                 jsimd_h2v1_merged_upsample,
-                                 jsimd_h2v2_merged_upsample};use libc::{c_uint, c_double, c_char, c_ulong, c_int, self};pub use crate::jpegint_h::{inverse_DCT_method_ptr, jcopy_sample_rows,
+use libc::{c_uint, c_double, c_char, c_ulong, c_int, self};pub use crate::jpegint_h::{inverse_DCT_method_ptr, jcopy_sample_rows,
                            JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT,
                            JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, JLONG,
                            J_BUF_MODE};pub use crate::jpeglib_h::{j_common_ptr, j_decompress_ptr,
@@ -395,7 +392,7 @@ unsafe extern "C" fn merged_2v_upsample(
     mut cinfo: j_decompress_ptr,
     mut input_buf: JSAMPIMAGE,
     mut in_row_group_ctr: *mut JDIMENSION,
-    mut in_row_groups_avail: JDIMENSION,
+    mut _in_row_groups_avail: JDIMENSION,
     mut output_buf: JSAMPARRAY,
     mut out_row_ctr: *mut JDIMENSION,
     mut out_rows_avail: JDIMENSION,
@@ -467,10 +464,10 @@ unsafe extern "C" fn merged_1v_upsample(
     mut cinfo: j_decompress_ptr,
     mut input_buf: JSAMPIMAGE,
     mut in_row_group_ctr: *mut JDIMENSION,
-    mut in_row_groups_avail: JDIMENSION,
+    mut _in_row_groups_avail: JDIMENSION,
     mut output_buf: JSAMPARRAY,
     mut out_row_ctr: *mut JDIMENSION,
-    mut out_rows_avail: JDIMENSION,
+    mut _out_rows_avail: JDIMENSION,
 )
 /* 1:1 vertical sampling case: much easier, never need a spare row. */
 {

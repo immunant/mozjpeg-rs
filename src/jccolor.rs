@@ -260,9 +260,7 @@
 
 
 
-use super::simd::x86_64::jsimd::{jsimd_can_rgb_gray, jsimd_can_rgb_ycc,
-                                 jsimd_rgb_gray_convert,
-                                 jsimd_rgb_ycc_convert};use libc::{c_double, c_ulong, c_int, c_long, self};pub use crate::jpegint_h::{JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT,
+use libc::{c_double, c_ulong, c_int, c_long, self};pub use crate::jpegint_h::{JBUF_CRANK_DEST, JBUF_PASS_THRU, JBUF_REQUANT,
                            JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE, JLONG,
                            J_BUF_MODE};pub use crate::jccolext_c::{extbgr_gray_convert_internal,
                             extbgr_rgb_convert_internal,
@@ -906,7 +904,7 @@ unsafe extern "C" fn null_convert(
  * Empty method for start_pass.
  */
 
-unsafe extern "C" fn null_method(mut cinfo: j_compress_ptr) {
+unsafe extern "C" fn null_method(mut _cinfo: j_compress_ptr) {
     /* no work needed */
 }
 /*

@@ -498,7 +498,7 @@ unsafe extern "C" fn is_big_endian() -> boolean {
 unsafe extern "C" fn put_pixel_rows(
     mut cinfo: j_decompress_ptr,
     mut dinfo: super::cdjpeg::djpeg_dest_ptr,
-    mut rows_supplied: JDIMENSION,
+    mut _rows_supplied: JDIMENSION,
 )
 /* This version is for writing 24-bit pixels */
 {
@@ -630,7 +630,7 @@ unsafe extern "C" fn put_pixel_rows(
 unsafe extern "C" fn put_gray_rows(
     mut cinfo: j_decompress_ptr,
     mut dinfo: super::cdjpeg::djpeg_dest_ptr,
-    mut rows_supplied: JDIMENSION,
+    mut _rows_supplied: JDIMENSION,
 )
 /* This version is for grayscale OR quantized color output */
 {

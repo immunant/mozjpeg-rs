@@ -209,10 +209,7 @@
 
 
 
-use super::simd::x86_64::jsimd::{jsimd_can_h2v1_downsample,
-                                 jsimd_can_h2v2_downsample,
-                                 jsimd_h2v1_downsample,
-                                 jsimd_h2v2_downsample};use libc::{c_uint, c_ulong, c_int, c_long, self};pub use crate::jmorecfg_h::{boolean, FALSE, JCOEF, JDIMENSION, JOCTET,
+use libc::{c_uint, c_ulong, c_int, c_long, self};pub use crate::jmorecfg_h::{boolean, FALSE, JCOEF, JDIMENSION, JOCTET,
                             JSAMPLE, TRUE, UINT16, UINT8};pub use crate::stddef_h::size_t;pub use crate::jpegint_h::{jcopy_sample_rows, JBUF_CRANK_DEST, JBUF_PASS_THRU,
                            JBUF_REQUANT, JBUF_SAVE_AND_PASS, JBUF_SAVE_SOURCE,
                            JLONG, J_BUF_MODE};pub use crate::jpeglib_h::{j_common_ptr, j_compress_ptr,
@@ -362,7 +359,7 @@ pub struct my_downsampler {
  * Initialize for a downsampling pass.
  */
 
-unsafe extern "C" fn start_pass_downsample(mut cinfo: j_compress_ptr) {
+unsafe extern "C" fn start_pass_downsample(mut _cinfo: j_compress_ptr) {
     /* no work for now */
 }
 /*

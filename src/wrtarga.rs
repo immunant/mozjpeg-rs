@@ -436,7 +436,7 @@ unsafe extern "C" fn write_header(
 unsafe extern "C" fn put_pixel_rows(
     mut cinfo: j_decompress_ptr,
     mut dinfo: super::cdjpeg::djpeg_dest_ptr,
-    mut rows_supplied: JDIMENSION,
+    mut _rows_supplied: JDIMENSION,
 )
 /* used for unquantized full-color output */
 {
@@ -466,7 +466,7 @@ unsafe extern "C" fn put_pixel_rows(
 unsafe extern "C" fn put_gray_rows(
     mut cinfo: j_decompress_ptr,
     mut dinfo: super::cdjpeg::djpeg_dest_ptr,
-    mut rows_supplied: JDIMENSION,
+    mut _rows_supplied: JDIMENSION,
 )
 /* used for grayscale OR quantized color output */
 {
@@ -500,7 +500,7 @@ unsafe extern "C" fn put_gray_rows(
 unsafe extern "C" fn put_demapped_gray(
     mut cinfo: j_decompress_ptr,
     mut dinfo: super::cdjpeg::djpeg_dest_ptr,
-    mut rows_supplied: JDIMENSION,
+    mut _rows_supplied: JDIMENSION,
 ) {
        let mut dest: tga_dest_ptr = dinfo as tga_dest_ptr;
     

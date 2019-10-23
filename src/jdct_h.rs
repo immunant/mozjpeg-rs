@@ -239,7 +239,7 @@ pub type ISLOW_MULT_TYPE = c_short;
 
 
 
-use crate::jmorecfg_h::{JCOEF, JDIMENSION, MAXJSAMPLE};use crate::jpeglib_h::{j_decompress_ptr, jpeg_component_info,
+use crate::jmorecfg_h::{JDIMENSION, MAXJSAMPLE};use crate::jpeglib_h::{j_decompress_ptr, jpeg_component_info,
                        jpeg_decompress_struct, JCOEFPTR, JSAMPARRAY,
                        JSAMPROW};
 /* preferred floating type */

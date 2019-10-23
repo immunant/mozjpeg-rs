@@ -344,7 +344,7 @@
 
 
 use std::prelude::v1::*;use crate::stdlib::{fclose, ferror, fopen, fprintf, fread, fwrite, putc,
-                    sscanf, stderr, stdin, stdout};use mozjpeg::*;use libc::{c_void, c_uchar, c_ulong, c_ushort, c_long, c_char, c_uint, c_int};use std::prelude::v1;pub use crate::jversion_h::{JCOPYRIGHT, JVERSION};pub use crate::jconfigint_h::{BUILD, PACKAGE_NAME, VERSION};pub use crate::src::jerror::{C2RustUnnamed_3, JERR_ARITH_NOTIMPL,
+                    sscanf, stderr, stdin, stdout};use mozjpeg::*;use libc::{c_void, c_uchar, c_ulong, c_ushort, c_long, c_char, c_uint, c_int};pub use crate::jversion_h::{JCOPYRIGHT, JVERSION};pub use crate::jconfigint_h::{BUILD, PACKAGE_NAME, VERSION};pub use crate::src::jerror::{C2RustUnnamed_3, JERR_ARITH_NOTIMPL,
                              JERR_BAD_ALIGN_TYPE, JERR_BAD_ALLOC_CHUNK,
                              JERR_BAD_BUFFER_MODE, JERR_BAD_COMPONENT_ID,
                              JERR_BAD_CROP_SPEC, JERR_BAD_DCTSIZE,

@@ -1851,11 +1851,11 @@ pub unsafe extern "C" fn jsimd_ycc_rgb_convert(
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_ycc_rgb565_convert(
-    mut cinfo: j_decompress_ptr,
-    mut input_buf: JSAMPIMAGE,
-    mut input_row: JDIMENSION,
-    mut output_buf: JSAMPARRAY,
-    mut num_rows: c_int,
+    mut _cinfo: j_decompress_ptr,
+    mut _input_buf: JSAMPIMAGE,
+    mut _input_row: JDIMENSION,
+    mut _output_buf: JSAMPARRAY,
+    mut _num_rows: c_int,
 ) {
 }
 #[no_mangle]
@@ -2002,7 +2002,7 @@ pub unsafe extern "C" fn jsimd_can_h2v1_upsample() -> c_int {
 
 pub unsafe extern "C" fn jsimd_h2v2_upsample(
     mut cinfo: j_decompress_ptr,
-    mut compptr: *mut jpeg_component_info,
+    mut _compptr: *mut jpeg_component_info,
     mut input_data: JSAMPARRAY,
     mut output_data_ptr: *mut JSAMPARRAY,
 ) {
@@ -2026,7 +2026,7 @@ pub unsafe extern "C" fn jsimd_h2v2_upsample(
 
 pub unsafe extern "C" fn jsimd_h2v1_upsample(
     mut cinfo: j_decompress_ptr,
-    mut compptr: *mut jpeg_component_info,
+    mut _compptr: *mut jpeg_component_info,
     mut input_data: JSAMPARRAY,
     mut output_data_ptr: *mut JSAMPARRAY,
 ) {
@@ -2887,7 +2887,7 @@ pub unsafe extern "C" fn jsimd_can_idct_4x4() -> c_int {
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_idct_2x2(
-    mut cinfo: j_decompress_ptr,
+    mut _cinfo: j_decompress_ptr,
     mut compptr: *mut jpeg_component_info,
     mut coef_block: JCOEFPTR,
     mut output_buf: JSAMPARRAY,
@@ -2903,7 +2903,7 @@ pub unsafe extern "C" fn jsimd_idct_2x2(
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_idct_4x4(
-    mut cinfo: j_decompress_ptr,
+    mut _cinfo: j_decompress_ptr,
     mut compptr: *mut jpeg_component_info,
     mut coef_block: JCOEFPTR,
     mut output_buf: JSAMPARRAY,
@@ -3034,7 +3034,7 @@ pub unsafe extern "C" fn jsimd_can_idct_float() -> c_int {
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_idct_islow(
-    mut cinfo: j_decompress_ptr,
+    mut _cinfo: j_decompress_ptr,
     mut compptr: *mut jpeg_component_info,
     mut coef_block: JCOEFPTR,
     mut output_buf: JSAMPARRAY,
@@ -3059,7 +3059,7 @@ pub unsafe extern "C" fn jsimd_idct_islow(
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_idct_ifast(
-    mut cinfo: j_decompress_ptr,
+    mut _cinfo: j_decompress_ptr,
     mut compptr: *mut jpeg_component_info,
     mut coef_block: JCOEFPTR,
     mut output_buf: JSAMPARRAY,
@@ -3075,7 +3075,7 @@ pub unsafe extern "C" fn jsimd_idct_ifast(
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_idct_float(
-    mut cinfo: j_decompress_ptr,
+    mut _cinfo: j_decompress_ptr,
     mut compptr: *mut jpeg_component_info,
     mut coef_block: JCOEFPTR,
     mut output_buf: JSAMPARRAY,

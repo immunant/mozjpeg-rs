@@ -363,7 +363,7 @@ pub const main_pass: c_pass_type = 0;
 
 unsafe extern "C" fn initial_setup(
     mut cinfo: j_compress_ptr,
-    mut transcode_only: boolean,
+    mut _transcode_only: boolean,
 )
 /* Do computations that are needed before master selection phase */
 {

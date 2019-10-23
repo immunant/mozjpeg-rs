@@ -99,7 +99,7 @@
 
 
 use std::prelude::v1::*;use crate::src::md5::md5::MD5File;use crate::stdlib::{__errno_location, fclose, fopen, fwrite, memset, printf,
-                    snprintf, strcasecmp, strerror, unlink};use libc::{c_int, c_ulong, c_char, c_void, c_long, c_uchar};use mozjpeg::*;use std::prelude::v1;pub use crate::jmorecfg_h::JSAMPLE;pub use crate::cmyk_h::{cmyk_to_rgb, rgb_to_cmyk};pub use crate::stdlib::{_IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data,
+                    snprintf, strcasecmp, strerror, unlink};use libc::{c_int, c_ulong, c_char, c_void, c_long, c_uchar};use mozjpeg::*;pub use crate::jmorecfg_h::JSAMPLE;pub use crate::cmyk_h::{cmyk_to_rgb, rgb_to_cmyk};pub use crate::stdlib::{_IO_codecvt, _IO_lock_t, _IO_marker, _IO_wide_data,
                         __off64_t, __off_t, FILE, _IO_FILE, exit, free,
                         malloc, random, RAND_MAX};pub use crate::src::turbojpeg::{tjAlloc, tjAlphaOffset, tjBlueOffset,
                                 tjBufSize, tjBufSizeYUV2, tjCompress2,
@@ -1453,7 +1453,7 @@ pub unsafe extern "C" fn _decompTest(
     mut w: c_int,
     mut h: c_int,
     mut pf: c_int,
-    mut basename: *mut c_char,
+    mut _basename: *mut c_char,
     mut subsamp: c_int,
     mut flags: c_int,
     mut sf: tjscalingfactor,
@@ -1985,7 +1985,7 @@ pub unsafe extern "C" fn bufSizeTest() {
                             &mut dstSize,
                             subsamp,
                             100i32,
-                            (if alloc != 0 { 0i32 } else { 1024i32 }),
+                            if alloc != 0 { 0i32 } else { 1024i32 },
                         ) == -1i32
                         {
                             printf(
@@ -2086,7 +2086,7 @@ pub unsafe extern "C" fn bufSizeTest() {
                                 &mut dstSize,
                                 subsamp,
                                 100i32,
-                                (if alloc != 0 { 0i32 } else { 1024i32 }),
+                                if alloc != 0 { 0i32 } else { 1024i32 },
                             ) == -1i32
                             {
                                 printf(
