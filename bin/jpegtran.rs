@@ -1332,7 +1332,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         loop {
             inbuffer = crate::stdlib::realloc(
                 inbuffer as *mut libc::c_void,
-                insize.wrapping_add(INPUT_BUF_SIZE as libc::c_ulong),
+                
+                insize + INPUT_BUF_SIZE as libc::c_ulong,
             ) as *mut libc::c_uchar;
             if inbuffer.is_null() {
                 crate::stdlib::fprintf(
@@ -1367,7 +1368,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                     );
                 }
             }
-            insize = insize.wrapping_add(nbytes);
+            insize =  insize + nbytes;
             if !(nbytes == INPUT_BUF_SIZE as libc::c_ulong) {
                 break;
             }
