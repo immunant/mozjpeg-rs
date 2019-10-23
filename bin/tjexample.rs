@@ -400,7 +400,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     let mut jpegBuf: *mut libc::c_uchar = crate::stddef_h::NULL_0 as *mut libc::c_uchar;
     let mut retval: libc::c_int = 0i32;
     let mut i: libc::c_int = 0;
-    let mut pixelFormat: libc::c_int = crate::src::turbojpeg::TJPF_UNKNOWN as libc::c_int;
+    let mut pixelFormat: libc::c_int =  crate::src::turbojpeg::TJPF_UNKNOWN;
     let mut tjInstance: crate::src::turbojpeg::tjhandle =
         crate::stddef_h::NULL_0 as *mut libc::c_void;
     scalingFactors = crate::src::turbojpeg::tjGetScalingFactors(&mut numScalingFactors);
@@ -430,7 +430,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                 *argv.offset(i as isize),
                 
                 b"-sc\x00".as_ptr() as *const libc::c_char,
-                3i32 as libc::c_ulong,
+                3u64,
             ) == 0
                 && i < argc - 1i32
             {
@@ -469,7 +469,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                 *argv.offset(i as isize),
                 
                 b"-su\x00".as_ptr() as *const libc::c_char,
-                3i32 as libc::c_ulong,
+                3u64,
             ) == 0
                 && i < argc - 1i32
             {
@@ -478,7 +478,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                     *argv.offset(i as isize),
                     
                     b"g\x00".as_ptr() as *const libc::c_char,
-                    1i32 as libc::c_ulong,
+                    1u64,
                 ) == 0
                 {
                     outSubsamp = crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int
@@ -510,7 +510,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                 *argv.offset(i as isize),
                 
                 b"-q\x00".as_ptr() as *const libc::c_char,
-                2i32 as libc::c_ulong,
+                2u64,
             ) == 0
                 && i < argc - 1i32
             {
@@ -523,7 +523,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                 *argv.offset(i as isize),
                 
                 b"-g\x00".as_ptr() as *const libc::c_char,
-                2i32 as libc::c_ulong,
+                2u64,
             ) == 0
             {
                 xform.options |= crate::src::turbojpeg::TJXOPT_GRAY
@@ -597,7 +597,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                 *argv.offset(i as isize),
                 
                 b"-c\x00".as_ptr() as *const libc::c_char,
-                2i32 as libc::c_ulong,
+                2u64,
             ) == 0
                 && i < argc - 1i32
             {
@@ -663,8 +663,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         outFormat = crate::stdlib::strrchr(*argv.offset(2), '.' as i32);
         if inFormat.is_null()
             || outFormat.is_null()
-            || crate::stdlib::strlen(inFormat) < 2i32 as libc::c_ulong
-            || crate::stdlib::strlen(outFormat) < 2i32 as libc::c_ulong
+            || crate::stdlib::strlen(inFormat) < 2u64
+            || crate::stdlib::strlen(outFormat) < 2u64
         {
             usage(*argv.offset(0));
         }
@@ -698,13 +698,13 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                 );
                 retval = -1i32;
                 current_block = 16288987300638808654;
-            } else if crate::stdlib::fseek(jpegFile, 0i32 as libc::c_long, crate::stdlib::SEEK_END)
+            } else if crate::stdlib::fseek(jpegFile, 0i64, crate::stdlib::SEEK_END)
                 < 0i32
                 || {
                     size = crate::stdlib::ftell(jpegFile);
-                    (size) < 0i32 as libc::c_long
+                    (size) < 0i64
                 }
-                || crate::stdlib::fseek(jpegFile, 0i32 as libc::c_long, crate::stdlib::SEEK_SET)
+                || crate::stdlib::fseek(jpegFile, 0i64, crate::stdlib::SEEK_SET)
                     < 0i32
             {
                 crate::stdlib::printf(
@@ -717,7 +717,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                 );
                 retval = -1i32;
                 current_block = 16288987300638808654;
-            } else if size == 0i32 as libc::c_long {
+            } else if size == 0i64 {
                 crate::stdlib::printf(
                     
                     b"ERROR in line %d while %s:\n%s\n\x00".as_ptr() as *const libc::c_char,
@@ -746,9 +746,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                 } else if crate::stdlib::fread(
                     jpegBuf as *mut libc::c_void,
                     jpegSize,
-                    1i32 as libc::c_ulong,
+                    1u64,
                     jpegFile,
-                ) < 1i32 as libc::c_ulong
+                ) < 1u64
                 {
                     crate::stdlib::printf(
                         
@@ -767,7 +767,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                         /* Transform it. */
                         let mut dstBuf: *mut libc::c_uchar =
                             crate::stddef_h::NULL_0 as *mut libc::c_uchar; /* Dynamically allocate the JPEG buffer */
-                        let mut dstSize: libc::c_ulong = 0i32 as libc::c_ulong;
+                        let mut dstSize: libc::c_ulong = 0u64;
                         tjInstance = crate::src::turbojpeg::tjInitTransform();
                         if tjInstance.is_null() {
                             crate::stdlib::printf(
@@ -905,9 +905,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                                     } else if crate::stdlib::fwrite(
                                         jpegBuf as *const libc::c_void,
                                         jpegSize,
-                                        1i32 as libc::c_ulong,
+                                        1u64,
                                         jpegFile,
-                                    ) < 1i32 as libc::c_ulong
+                                    ) < 1u64
                                     {
                                         crate::stdlib::printf(
                                             
@@ -941,7 +941,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                                     if outSubsamp < 0i32 {
                                         outSubsamp = inSubsamp
                                     }
-                                    pixelFormat = crate::src::turbojpeg::TJPF_BGRX as libc::c_int;
+                                    pixelFormat =  crate::src::turbojpeg::TJPF_BGRX;
                                     imgBuf = crate::src::turbojpeg::tjAlloc(
                                         width
                                             * height
@@ -1023,7 +1023,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                 current_block = 16288987300638808654;
             } else {
                 if outSubsamp < 0i32 {
-                    if pixelFormat == crate::src::turbojpeg::TJPF_GRAY as libc::c_int {
+                    if pixelFormat ==  crate::src::turbojpeg::TJPF_GRAY {
                         outSubsamp = crate::src::turbojpeg::TJSAMP_GRAY as libc::c_int
                     } else {
                         outSubsamp = crate::src::turbojpeg::TJSAMP_444 as libc::c_int
@@ -1057,7 +1057,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                     /* Output image format is JPEG.  Compress the uncompressed image. */
                     let mut jpegBuf_0: *mut libc::c_uchar =
                         crate::stddef_h::NULL_0 as *mut libc::c_uchar; /* Dynamically allocate the JPEG buffer */
-                    let mut jpegSize_0: libc::c_ulong = 0i32 as libc::c_ulong;
+                    let mut jpegSize_0: libc::c_ulong = 0u64;
                     if outQual < 0i32 {
                         outQual = DEFAULT_QUALITY
                     }
@@ -1126,9 +1126,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
                         } else if crate::stdlib::fwrite(
                             jpegBuf_0 as *const libc::c_void,
                             jpegSize_0,
-                            1i32 as libc::c_ulong,
+                            1u64,
                             jpegFile,
-                        ) < 1i32 as libc::c_ulong
+                        ) < 1u64
                         {
                             crate::stdlib::printf(
                                 
@@ -1206,7 +1206,8 @@ pub fn main() {
     unsafe {
         ::std::process::exit(main_0(
             (args.len() - 1) as libc::c_int,
-            args.as_mut_ptr() as *mut *mut libc::c_char,
-        ) as i32)
+            
+            args.as_mut_ptr(),
+        ))
     }
 }
