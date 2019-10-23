@@ -1193,7 +1193,7 @@ unsafe extern "C" fn parse_switches(
                     {
                         /* Maximum memory in Kb (or Mb with 'm'). */
                         let mut lval: libc::c_long = 0;
-                        let mut ch: libc::c_char = 'x' as i32 as libc::c_char;
+                        let mut ch: libc::c_char =  'x' as libc::c_char;
                         argn += 1;
                         if argn >= argc {
                             /* advance to next argument */
@@ -1400,7 +1400,7 @@ unsafe extern "C" fn parse_switches(
                     {
                         /* Restart interval in MCU rows (or in MCUs with 'b'). */
                         let mut lval_0: libc::c_long = 0;
-                        let mut ch_0: libc::c_char = 'x' as i32 as libc::c_char;
+                        let mut ch_0: libc::c_char =  'x' as libc::c_char;
                         argn += 1;
                         if argn >= argc {
                             /* advance to next argument */
@@ -1416,7 +1416,7 @@ unsafe extern "C" fn parse_switches(
                         {
                             usage();
                         }
-                        if lval_0 < 0i32 as libc::c_long || lval_0 > 65535i64 {
+                        if lval_0 < 0i64 || lval_0 > 65535i64 {
                             usage();
                         }
                         if ch_0 as libc::c_int == 'b' as i32 || ch_0 as libc::c_int == 'B' as i32 {
@@ -1588,12 +1588,12 @@ unsafe extern "C" fn parse_switches(
                         crate::jpeglib_h::jpeg_c_set_float_param(
                             cinfo,
                             crate::jpeglib_h::JFLOAT_LAMBDA_LOG_SCALE1,
-                            9.0f64 as libc::c_float,
+                            9f32,
                         );
                         crate::jpeglib_h::jpeg_c_set_float_param(
                             cinfo,
                             crate::jpeglib_h::JFLOAT_LAMBDA_LOG_SCALE2,
-                            0.0f64 as libc::c_float,
+                            0f32,
                         );
                         crate::jpeglib_h::jpeg_c_set_bool_param(
                             cinfo,
@@ -1616,12 +1616,12 @@ unsafe extern "C" fn parse_switches(
                         crate::jpeglib_h::jpeg_c_set_float_param(
                             cinfo,
                             crate::jpeglib_h::JFLOAT_LAMBDA_LOG_SCALE1,
-                            11.5f64 as libc::c_float,
+                            11.5f32,
                         );
                         crate::jpeglib_h::jpeg_c_set_float_param(
                             cinfo,
                             crate::jpeglib_h::JFLOAT_LAMBDA_LOG_SCALE2,
-                            12.75f64 as libc::c_float,
+                            12.75f32,
                         );
                         crate::jpeglib_h::jpeg_c_set_bool_param(
                             cinfo,
@@ -1644,12 +1644,12 @@ unsafe extern "C" fn parse_switches(
                         crate::jpeglib_h::jpeg_c_set_float_param(
                             cinfo,
                             crate::jpeglib_h::JFLOAT_LAMBDA_LOG_SCALE1,
-                            12.0f64 as libc::c_float,
+                            12f32,
                         );
                         crate::jpeglib_h::jpeg_c_set_float_param(
                             cinfo,
                             crate::jpeglib_h::JFLOAT_LAMBDA_LOG_SCALE2,
-                            13.0f64 as libc::c_float,
+                            13f32,
                         );
                         crate::jpeglib_h::jpeg_c_set_bool_param(
                             cinfo,
@@ -1672,12 +1672,12 @@ unsafe extern "C" fn parse_switches(
                         crate::jpeglib_h::jpeg_c_set_float_param(
                             cinfo,
                             crate::jpeglib_h::JFLOAT_LAMBDA_LOG_SCALE1,
-                            14.75f64 as libc::c_float,
+                            14.75f32,
                         );
                         crate::jpeglib_h::jpeg_c_set_float_param(
                             cinfo,
                             crate::jpeglib_h::JFLOAT_LAMBDA_LOG_SCALE2,
-                            16.5f64 as libc::c_float,
+                            16.5f32,
                         );
                         crate::jpeglib_h::jpeg_c_set_bool_param(
                             cinfo,
@@ -1879,11 +1879,11 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     let mut icc_file: *mut crate::stdlib::FILE = ::std::ptr::null_mut::< crate::stdlib::FILE>();
     let mut icc_profile: *mut crate::jmorecfg_h::JOCTET =
         crate::stddef_h::NULL_0 as *mut crate::jmorecfg_h::JOCTET;
-    let mut icc_len: libc::c_long = 0i32 as libc::c_long;
+    let mut icc_len: libc::c_long = 0i64;
     let mut output_file: *mut crate::stdlib::FILE =
         crate::stddef_h::NULL_0 as *mut crate::stdlib::FILE;
     let mut outbuffer: *mut libc::c_uchar = crate::stddef_h::NULL_0 as *mut libc::c_uchar;
-    let mut outsize: libc::c_ulong = 0i32 as libc::c_ulong;
+    let mut outsize: libc::c_ulong = 0u64;
     let mut num_scanlines: crate::jmorecfg_h::JDIMENSION = 0;
     /* On Mac, fetch a command line. */
     progname = *argv.offset(0); /* in case C library doesn't provide it */
@@ -1974,12 +1974,12 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             );
             crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
         }
-        if crate::stdlib::fseek(icc_file, 0i32 as libc::c_long, crate::stdlib::SEEK_END) < 0i32
+        if crate::stdlib::fseek(icc_file, 0i64, crate::stdlib::SEEK_END) < 0i32
             || {
                 icc_len = crate::stdlib::ftell(icc_file);
-                (icc_len) < 1i32 as libc::c_long
+                (icc_len) < 1i64
             }
-            || crate::stdlib::fseek(icc_file, 0i32 as libc::c_long, crate::stdlib::SEEK_SET) < 0i32
+            || crate::stdlib::fseek(icc_file, 0i64, crate::stdlib::SEEK_SET) < 0i32
         {
             crate::stdlib::fprintf(
                 crate::stdlib::stderr,
@@ -2006,9 +2006,9 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         if crate::stdlib::fread(
             icc_profile as *mut libc::c_void,
             icc_len as libc::c_ulong,
-            1i32 as libc::c_ulong,
+            1u64,
             icc_file,
-        ) < 1i32 as libc::c_ulong
+        ) < 1u64
         {
             crate::stdlib::fprintf(
                 crate::stdlib::stderr,
@@ -2054,7 +2054,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         while !marker.is_null() {
             if !(cinfo.write_JFIF_header != 0
                 && (*marker).marker as libc::c_int == crate::jpeglib_h::JPEG_APP0
-                && (*marker).data_length >= 5i32 as libc::c_uint
+                && (*marker).data_length >= 5u32
                 && *(*marker).data.offset(0) as libc::c_int == 0x4ai32
                 && *(*marker).data.offset(1) as libc::c_int == 0x46i32
                 && *(*marker).data.offset(2) as libc::c_int == 0x49i32
@@ -2063,7 +2063,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
             {
                 if !(cinfo.write_Adobe_marker != 0
                     && (*marker).marker as libc::c_int == crate::jpeglib_h::JPEG_APP0 + 14i32
-                    && (*marker).data_length >= 5i32 as libc::c_uint
+                    && (*marker).data_length >= 5u32
                     && *(*marker).data.offset(0) as libc::c_int == 0x41i32
                     && *(*marker).data.offset(1) as libc::c_int == 0x64i32
                     && *(*marker).data.offset(2) as libc::c_int == 0x6fi32
@@ -2142,7 +2142,8 @@ pub fn main() {
     unsafe {
         ::std::process::exit(main_0(
             (args.len() - 1) as libc::c_int,
-            args.as_mut_ptr() as *mut *mut libc::c_char,
-        ) as i32)
+            
+            args.as_mut_ptr(),
+        ))
     }
 }
