@@ -2090,7 +2090,7 @@ pub unsafe extern "C" fn doBmpTest(
 ) -> libc::c_int {
     let mut current_block: u64;
     let mut filename: [libc::c_char; 80] = [0; 80];
-    let mut md5sum: *mut libc::c_char = 0 as *mut libc::c_char;
+    let mut md5sum: *mut libc::c_char = ::std::ptr::null_mut::< libc::c_char>();
     let mut md5buf: [libc::c_char; 65] = [0; 65];
     let mut ps: libc::c_int = crate::src::turbojpeg::tjPixelSize[pf as usize];
     let mut pitch: libc::c_int = width * ps + align - 1i32 & !(align - 1i32);
@@ -2099,7 +2099,7 @@ pub unsafe extern "C" fn doBmpTest(
     let mut retval: libc::c_int = 0i32;
     let mut pixelFormat: libc::c_int = pf;
     let mut buf: *mut libc::c_uchar = crate::stddef_h::NULL as *mut libc::c_uchar;
-    let mut md5ref: *mut libc::c_char = 0 as *mut libc::c_char;
+    let mut md5ref: *mut libc::c_char = ::std::ptr::null_mut::< libc::c_char>();
     if pf == crate::src::turbojpeg::TJPF_GRAY as libc::c_int {
         md5ref =
             if crate::stdlib::strcasecmp(ext, b"ppm\x00" as *const u8 as *const libc::c_char) == 0 {
