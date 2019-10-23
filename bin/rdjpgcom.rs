@@ -231,11 +231,11 @@ unsafe extern "C" fn skip_variable()
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
-    length =  length - 2u32;
+    length -=  2u32;
     /* Skip over the remaining bytes */
     while length > 0u32 {
         read_1_byte();
-        length =  length - 1
+        length -=  1
     }
 }
 /*
@@ -266,7 +266,7 @@ unsafe extern "C" fn process_COM(mut raw: libc::c_int) {
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
-    length =  length - 2u32;
+    length -=  2u32;
     while length > 0u32 {
           let mut lastch:  libc::c_int =  0i32; let mut ch:   libc::c_int =  read_1_byte();
         if raw != 0 {
@@ -293,7 +293,7 @@ unsafe extern "C" fn process_COM(mut raw: libc::c_int) {
             crate::stdlib::printf(b"\\%03o\x00".as_ptr() as *const libc::c_char, ch);
         }
         lastch = ch;
-        length =  length - 1
+        length -=  1
     }
     crate::stdlib::printf(b"\n\x00".as_ptr() as *const libc::c_char);
     /* Bill Allombert: revert to C locale */
