@@ -528,7 +528,7 @@ unsafe extern "C" fn select_file_type(
     mut cinfo: crate::jpeglib_h::j_compress_ptr,
     mut infile: *mut crate::stdlib::FILE,
 ) -> crate::src::cdjpeg::cjpeg_source_ptr {
-    let mut c: libc::c_int = 0;
+     let mut c:  libc::c_int =  0;
     if is_targa != 0 {
         return crate::src::cdjpeg::jinit_read_targa(cinfo);
     }
@@ -919,10 +919,10 @@ unsafe extern "C" fn parse_switches(
  * for_real is FALSE on the first (dummy) pass; we may skip any expensive
  * processing.
  */ {
-    let mut argn: libc::c_int = 0; /* saves -quality parm if any */
-    let mut arg: *mut libc::c_char = ::std::ptr::null_mut::< libc::c_char>(); /* saves -qtables filename if any */
-    let mut force_baseline: crate::jmorecfg_h::boolean = 0; /* saves -qslots parm if any */
-    let mut simple_progressive: crate::jmorecfg_h::boolean = 0; /* saves -sample parm if any */
+     /* saves -quality parm if any */
+     /* saves -qtables filename if any */
+     /* saves -qslots parm if any */
+     let mut argn:  libc::c_int =  0; let mut force_baseline:  crate::jmorecfg_h::boolean =  0; let mut simple_progressive:  crate::jmorecfg_h::boolean =  0; /* saves -sample parm if any */
     let mut qualityarg: *mut libc::c_char = crate::stddef_h::NULL_0 as *mut libc::c_char; /* saves -scans parm if any */
     let mut qtablefile: *mut libc::c_char = crate::stddef_h::NULL_0 as *mut libc::c_char;
     let mut qslotsarg: *mut libc::c_char = crate::stddef_h::NULL_0 as *mut libc::c_char;
@@ -943,7 +943,7 @@ unsafe extern "C" fn parse_switches(
     /* Scan command line options, adjust parameters */
     argn = 1i32;
     while argn < argc {
-        arg = *argv.offset(argn as isize);
+         let mut arg:  *mut libc::c_char =  ::std::ptr::null_mut::< libc::c_char>();arg = *argv.offset(argn as isize);
         if *arg as libc::c_int != '-' as i32 {
             /* Not a switch, must be a file name argument */
             if !(argn <= last_file_arg_seen) {
@@ -1191,9 +1191,8 @@ unsafe extern "C" fn parse_switches(
                         3i32,
                     ) != 0
                     {
-                        /* Maximum memory in Kb (or Mb with 'm'). */
-                        let mut lval: libc::c_long = 0;
-                        let mut ch: libc::c_char =  'x' as libc::c_char;
+                        
+                         let mut lval:  libc::c_long =  0; let mut ch:  libc::c_char =   'x' as libc::c_char;
                         argn += 1;
                         if argn >= argc {
                             /* advance to next argument */
@@ -1354,7 +1353,7 @@ unsafe extern "C" fn parse_switches(
                         7i32,
                     ) != 0
                     {
-                        let mut val: libc::c_int = 0;
+                         let mut val:  libc::c_int =  0;
                         argn += 1;
                         if argn >= argc {
                             /* advance to next argument */
@@ -1398,9 +1397,8 @@ unsafe extern "C" fn parse_switches(
                         1i32,
                     ) != 0
                     {
-                        /* Restart interval in MCU rows (or in MCUs with 'b'). */
-                        let mut lval_0: libc::c_long = 0;
-                        let mut ch_0: libc::c_char =  'x' as libc::c_char;
+                        
+                         let mut lval_0:  libc::c_long =  0; let mut ch_0:  libc::c_char =   'x' as libc::c_char;
                         argn += 1;
                         if argn >= argc {
                             /* advance to next argument */
@@ -1481,8 +1479,7 @@ unsafe extern "C" fn parse_switches(
                         2i32,
                     ) != 0
                     {
-                        /* Set input smoothing factor. */
-                        let mut val_0: libc::c_int = 0;
+                         let mut val_0:  libc::c_int =  0;
                         argn += 1;
                         if argn >= argc {
                             /* advance to next argument */
@@ -1788,7 +1785,10 @@ unsafe extern "C" fn parse_switches(
  */
 
 unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> libc::c_int {
-    let mut cinfo: crate::jpeglib_h::jpeg_compress_struct =
+     let mut file_index:  libc::c_int =  0; let mut src_mgr:  crate::src::cdjpeg::cjpeg_source_ptr =
+    
+        ::std::ptr::null_mut::< crate::src::cdjpeg::cjpeg_source_struct>(); let mut input_file:  *mut crate::stdlib::FILE =
+     ::std::ptr::null_mut::< crate::stdlib::FILE>(); let mut icc_len:  libc::c_long =  0i64; let mut outsize:  libc::c_ulong =  0u64;let mut cinfo: crate::jpeglib_h::jpeg_compress_struct =
         crate::jpeglib_h::jpeg_compress_struct {
             err: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_error_mgr>(),
             mem: ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_memory_mgr>(),
@@ -1872,19 +1872,18 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         first_addon_message: 0,
         last_addon_message: 0,
     };
-    let mut file_index: libc::c_int = 0;
-    let mut src_mgr: crate::src::cdjpeg::cjpeg_source_ptr =
-        ::std::ptr::null_mut::< crate::src::cdjpeg::cjpeg_source_struct>();
-    let mut input_file: *mut crate::stdlib::FILE = ::std::ptr::null_mut::< crate::stdlib::FILE>();
-    let mut icc_file: *mut crate::stdlib::FILE = ::std::ptr::null_mut::< crate::stdlib::FILE>();
+    
+    
+    
+    
     let mut icc_profile: *mut crate::jmorecfg_h::JOCTET =
         crate::stddef_h::NULL_0 as *mut crate::jmorecfg_h::JOCTET;
-    let mut icc_len: libc::c_long = 0i64;
+    
     let mut output_file: *mut crate::stdlib::FILE =
         crate::stddef_h::NULL_0 as *mut crate::stdlib::FILE;
     let mut outbuffer: *mut libc::c_uchar = crate::stddef_h::NULL_0 as *mut libc::c_uchar;
-    let mut outsize: libc::c_ulong = 0u64;
-    let mut num_scanlines: crate::jmorecfg_h::JDIMENSION = 0;
+    
+    
     /* On Mac, fetch a command line. */
     progname = *argv.offset(0); /* in case C library doesn't provide it */
     if progname.is_null() || *progname.offset(0) as libc::c_int == 0i32 {
@@ -1963,7 +1962,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
         output_file = crate::src::cdjpeg::write_stdout()
     }
     if !icc_filename.is_null() {
-        icc_file = crate::stdlib::fopen(icc_filename, crate::src::cdjpeg::READ_BINARY.as_ptr());
+         let mut icc_file:  *mut crate::stdlib::FILE =
+     ::std::ptr::null_mut::< crate::stdlib::FILE>();icc_file = crate::stdlib::fopen(icc_filename, crate::src::cdjpeg::READ_BINARY.as_ptr());
         if icc_file.is_null() {
             crate::stdlib::fprintf(
                 crate::stdlib::stderr,
@@ -2043,7 +2043,8 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     crate::jpeglib_h::jpeg_start_compress(&mut cinfo, crate::jmorecfg_h::TRUE);
     /* Copy metadata */
     if copy_markers != 0 {
-        let mut marker: crate::jpeglib_h::jpeg_saved_marker_ptr =
+         let mut marker:  crate::jpeglib_h::jpeg_saved_marker_ptr =
+    
             ::std::ptr::null_mut::< crate::jpeglib_h::jpeg_marker_struct>();
         /* In the current implementation, we don't actually need to examine the
          * option flag here; we just copy everything that got saved.
@@ -2086,7 +2087,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     }
     /* Process data */
     while cinfo.next_scanline < cinfo.image_height {
-        num_scanlines = Some(
+         let mut num_scanlines:  crate::jmorecfg_h::JDIMENSION =  0;num_scanlines = Some(
             (*src_mgr)
                 .get_pixel_rows
                 .expect("non-null function pointer"),
@@ -2130,7 +2131,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
 }
 #[main]
 pub fn main() {
-    let mut args: Vec<*mut libc::c_char> = Vec::new();
+     let mut args:  Vec<*mut libc::c_char> =  Vec::new();
     for arg in ::std::env::args() {
         args.push(
             ::std::ffi::CString::new(arg)
