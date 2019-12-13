@@ -1,68 +1,696 @@
-pub use crate::jmorecfg_h::boolean;
-pub use crate::jmorecfg_h::JOCTET;
-pub use crate::jpegint_h::JLONG;
-pub use crate::jpeglib_h::j_decompress_ptr;
-pub use crate::jpeglib_h::jpeg_decompress_struct;
-pub use crate::jpeglib_h::C2RustUnnamed_2;
-pub use crate::jpeglib_h::JHUFF_TBL;
-pub use crate::src::jerror::C2RustUnnamed_3;
-pub use crate::stddef_h::size_t;
-use libc;
+// =============== BEGIN jdhuff_h ================
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct d_derived_tbl {
+    pub maxcode: [crate::jpegint_h::JLONG; 18],
+    pub valoffset: [crate::jpegint_h::JLONG; 18],
+    pub pub_0: *mut crate::jpeglib_h::JHUFF_TBL,
+    pub lookup: [libc::c_int; 256],
+}
 
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct bitread_perm_state {
+    pub get_buffer: crate::src::jdhuff::bit_buf_type,
+    pub bits_left: libc::c_int,
+}
+/*
+ * Fetching the next N bits from the input stream is a time-critical operation
+ * for the Huffman decoders.  We implement it with a combination of inline
+ * macros and out-of-line subroutines.  Note that N (the number of bits
+ * demanded at one time) never exceeds 15 for JPEG use.
+ *
+ * We read source bytes into get_buffer and dole out bits as needed.
+ * If get_buffer already contains enough bits, they are fetched in-line
+ * by the macros CHECK_BIT_BUFFER and GET_BITS.  When there aren't enough
+ * bits, jpeg_fill_bit_buffer is called; it will attempt to fill get_buffer
+ * as full as possible (not just to the number of bits needed; this
+ * prefetching reduces the overhead cost of calling jpeg_fill_bit_buffer).
+ * Note that jpeg_fill_bit_buffer may return FALSE to indicate suspension.
+ * On TRUE return, jpeg_fill_bit_buffer guarantees that get_buffer contains
+ * at least the requested number of bits --- dummy zeroes are inserted if
+ * necessary.
+ */
+
+pub type bit_buf_type = crate::stddef_h::size_t;
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct bitread_working_state {
+    pub next_input_byte: *const crate::jmorecfg_h::JOCTET,
+    pub bytes_in_buffer: crate::stddef_h::size_t,
+    pub get_buffer: crate::src::jdhuff::bit_buf_type,
+    pub bits_left: libc::c_int,
+    pub cinfo: crate::jpeglib_h::j_decompress_ptr,
+}
+/*
+ * jdhuff.h
+ *
+ * This file was part of the Independent JPEG Group's software:
+ * Copyright (C) 1991-1997, Thomas G. Lane.
+ * libjpeg-turbo Modifications:
+ * Copyright (C) 2010-2011, 2015-2016, D. R. Commander.
+ * For conditions of distribution and use, see the accompanying README.ijg
+ * file.
+ *
+ * This file contains declarations for Huffman entropy decoding routines
+ * that are shared between the sequential decoder (jdhuff.c) and the
+ * progressive decoder (jdphuff.c).  No other modules need to see these.
+ */
+/* Derived data constructed for each Huffman table */
+
+pub const HUFF_LOOKAHEAD: libc::c_int = 8 as libc::c_int;
+/* type of bit-extraction buffer */
+
+pub const BIT_BUF_SIZE: libc::c_int = 64 as libc::c_int;
+use ::libc;
+
+#[c2rust::header_src = "/home/sjcrane/projects/c2rust/mozjpeg/mozjpeg-c2rust/mozjpeg-c/jstdhuff.c:28"]
+pub mod jstdhuff_c {
+    /*
+     * jstdhuff.c
+     *
+     * This file was part of the Independent JPEG Group's software:
+     * Copyright (C) 1991-1998, Thomas G. Lane.
+     * libjpeg-turbo Modifications:
+     * Copyright (C) 2013, D. R. Commander.
+     * For conditions of distribution and use, see the accompanying README.ijg
+     * file.
+     *
+     * This file contains routines to set the default Huffman tables, if they are
+     * not already set.
+     */
+    /*
+     * Huffman table setup routines
+     */
+
+    pub unsafe extern "C" fn add_huff_table(
+        mut cinfo: crate::jpeglib_h::j_common_ptr,
+        mut htblptr: *mut *mut crate::jpeglib_h::JHUFF_TBL,
+        mut bits: *const crate::jmorecfg_h::UINT8,
+        mut val: *const crate::jmorecfg_h::UINT8,
+    )
+    /* Define a Huffman table */
+    {
+        let mut nsymbols: libc::c_int = 0;
+        let mut len: libc::c_int = 0;
+        if (*htblptr).is_null() {
+            *htblptr = crate::src::jcomapi::jpeg_alloc_huff_table(cinfo)
+        } else {
+            return;
+        }
+        /* Copy the number-of-symbols-of-each-code-length counts */
+        crate::stdlib::memcpy(
+            (**htblptr).bits.as_mut_ptr() as *mut libc::c_void,
+            bits as *const libc::c_void,
+            ::std::mem::size_of::<[crate::jmorecfg_h::UINT8; 17]>() as libc::c_ulong,
+        );
+        /* Validate the counts.  We do this here mainly so we can copy the right
+         * number of symbols from the val[] array, without risking marching off
+         * the end of memory.  jchuff.c will do a more thorough test later.
+         */
+        nsymbols = 0 as libc::c_int;
+        len = 1 as libc::c_int;
+        while len <= 16 as libc::c_int {
+            nsymbols += *bits.offset(len as isize) as libc::c_int;
+            len += 1
+        }
+        if nsymbols < 1 as libc::c_int || nsymbols > 256 as libc::c_int {
+            (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_HUFF_TABLE as libc::c_int;
+            Some(
+                (*(*cinfo).err)
+                    .error_exit
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(cinfo);
+        }
+        crate::stdlib::memcpy(
+            (**htblptr).huffval.as_mut_ptr() as *mut libc::c_void,
+            val as *const libc::c_void,
+            (nsymbols as libc::c_ulong)
+                .wrapping_mul(::std::mem::size_of::<crate::jmorecfg_h::UINT8>() as libc::c_ulong),
+        );
+        crate::stdlib::memset(
+            &mut *(**htblptr).huffval.as_mut_ptr().offset(nsymbols as isize)
+                as *mut crate::jmorecfg_h::UINT8 as *mut libc::c_void,
+            0 as libc::c_int,
+            ((256 as libc::c_int - nsymbols) as libc::c_ulong)
+                .wrapping_mul(::std::mem::size_of::<crate::jmorecfg_h::UINT8>() as libc::c_ulong),
+        );
+        /* Initialize sent_table FALSE so table will be written to JPEG file. */
+        (**htblptr).sent_table = crate::jmorecfg_h::FALSE;
+    }
+
+    pub unsafe extern "C" fn std_huff_tables(mut cinfo: crate::jpeglib_h::j_common_ptr)
+    /* Set up the standard Huffman tables (cf. JPEG standard section K.3) */
+    /* IMPORTANT: these are only valid for 8-bit data precision! */
+    {
+        let mut dc_huff_tbl_ptrs: *mut *mut crate::jpeglib_h::JHUFF_TBL =
+            0 as *mut *mut crate::jpeglib_h::JHUFF_TBL;
+        let mut ac_huff_tbl_ptrs: *mut *mut crate::jpeglib_h::JHUFF_TBL =
+            0 as *mut *mut crate::jpeglib_h::JHUFF_TBL;
+        pub static mut bits_dc_luminance: [crate::jmorecfg_h::UINT8; 17] = [
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+        ];
+        pub static mut val_dc_luminance: [crate::jmorecfg_h::UINT8; 12] = [
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            10 as libc::c_int as crate::jmorecfg_h::UINT8,
+            11 as libc::c_int as crate::jmorecfg_h::UINT8,
+        ];
+        pub static mut bits_dc_chrominance: [crate::jmorecfg_h::UINT8; 17] = [
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+        ];
+        pub static mut val_dc_chrominance: [crate::jmorecfg_h::UINT8; 12] = [
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            10 as libc::c_int as crate::jmorecfg_h::UINT8,
+            11 as libc::c_int as crate::jmorecfg_h::UINT8,
+        ];
+        pub static mut bits_ac_luminance: [crate::jmorecfg_h::UINT8; 17] = [
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x7d as libc::c_int as crate::jmorecfg_h::UINT8,
+        ];
+        pub static mut val_ac_luminance: [crate::jmorecfg_h::UINT8; 162] = [
+            0x1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x11 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x12 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x21 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x31 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x41 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x13 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x51 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x61 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x22 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x71 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x14 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x32 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x81 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x91 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x23 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x42 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x15 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x52 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x24 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x33 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x62 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x72 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x82 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x16 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x17 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x18 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x19 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x1a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x25 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x26 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x27 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x28 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x29 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x2a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x34 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x35 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x36 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x37 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x38 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x39 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x3a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x43 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x44 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x45 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x46 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x47 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x48 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x49 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x4a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x53 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x54 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x55 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x56 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x57 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x58 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x59 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x5a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x63 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x64 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x65 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x66 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x67 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x68 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x69 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x6a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x73 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x74 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x75 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x76 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x77 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x78 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x79 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x7a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x83 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x84 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x85 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x86 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x87 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x88 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x89 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x8a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x92 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x93 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x94 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x95 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x96 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x97 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x98 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x99 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x9a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xaa as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xba as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xca as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xda as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xea as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xfa as libc::c_int as crate::jmorecfg_h::UINT8,
+        ];
+        pub static mut bits_ac_chrominance: [crate::jmorecfg_h::UINT8; 17] = [
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x77 as libc::c_int as crate::jmorecfg_h::UINT8,
+        ];
+        pub static mut val_ac_chrominance: [crate::jmorecfg_h::UINT8; 162] = [
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x11 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x21 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x31 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x12 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x41 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x51 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x61 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x71 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x13 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x22 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x32 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x81 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x14 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x42 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x91 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x23 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x33 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x52 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x15 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x62 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x72 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x16 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x24 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x34 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x25 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x17 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x18 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x19 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x1a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x26 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x27 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x28 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x29 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x2a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x35 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x36 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x37 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x38 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x39 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x3a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x43 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x44 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x45 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x46 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x47 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x48 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x49 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x4a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x53 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x54 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x55 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x56 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x57 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x58 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x59 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x5a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x63 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x64 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x65 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x66 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x67 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x68 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x69 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x6a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x73 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x74 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x75 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x76 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x77 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x78 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x79 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x7a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x82 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x83 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x84 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x85 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x86 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x87 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x88 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x89 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x8a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x92 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x93 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x94 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x95 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x96 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x97 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x98 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x99 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x9a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xaa as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xba as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xca as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xda as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xea as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xfa as libc::c_int as crate::jmorecfg_h::UINT8,
+        ];
+        if (*cinfo).is_decompressor != 0 {
+            dc_huff_tbl_ptrs = (*(cinfo as crate::jpeglib_h::j_decompress_ptr))
+                .dc_huff_tbl_ptrs
+                .as_mut_ptr();
+            ac_huff_tbl_ptrs = (*(cinfo as crate::jpeglib_h::j_decompress_ptr))
+                .ac_huff_tbl_ptrs
+                .as_mut_ptr()
+        } else {
+            dc_huff_tbl_ptrs = (*(cinfo as crate::jpeglib_h::j_compress_ptr))
+                .dc_huff_tbl_ptrs
+                .as_mut_ptr();
+            ac_huff_tbl_ptrs = (*(cinfo as crate::jpeglib_h::j_compress_ptr))
+                .ac_huff_tbl_ptrs
+                .as_mut_ptr()
+        }
+        add_huff_table(
+            cinfo,
+            &mut *dc_huff_tbl_ptrs.offset(0 as libc::c_int as isize),
+            bits_dc_luminance.as_ptr(),
+            val_dc_luminance.as_ptr(),
+        );
+        add_huff_table(
+            cinfo,
+            &mut *ac_huff_tbl_ptrs.offset(0 as libc::c_int as isize),
+            bits_ac_luminance.as_ptr(),
+            val_ac_luminance.as_ptr(),
+        );
+        add_huff_table(
+            cinfo,
+            &mut *dc_huff_tbl_ptrs.offset(1 as libc::c_int as isize),
+            bits_dc_chrominance.as_ptr(),
+            val_dc_chrominance.as_ptr(),
+        );
+        add_huff_table(
+            cinfo,
+            &mut *ac_huff_tbl_ptrs.offset(1 as libc::c_int as isize),
+            bits_ac_chrominance.as_ptr(),
+            val_ac_chrominance.as_ptr(),
+        );
+    }
+
+    use crate::jmorecfg_h::FALSE;
+    use crate::jmorecfg_h::UINT8;
+    use crate::jpeglib_h::j_compress_ptr;
+    use crate::jpeglib_h::j_decompress_ptr;
+    use crate::jpeglib_h::JHUFF_TBL;
+    use crate::src::jcomapi::jpeg_alloc_huff_table;
+    use crate::src::jerror::JERR_BAD_HUFF_TABLE;
+    use crate::stdlib::memcpy;
+    use crate::stdlib::memset;
+}
+
+pub use crate::jmorecfg_h::boolean;
 pub use crate::jmorecfg_h::FALSE;
 pub use crate::jmorecfg_h::JCOEF;
 pub use crate::jmorecfg_h::JDIMENSION;
+pub use crate::jmorecfg_h::JOCTET;
 pub use crate::jmorecfg_h::JSAMPLE;
 pub use crate::jmorecfg_h::TRUE;
 pub use crate::jmorecfg_h::UINT16;
 pub use crate::jmorecfg_h::UINT8;
 pub use crate::jpegint_h::inverse_DCT_method_ptr;
-pub use crate::jpegint_h::jpeg_natural_order;
+pub use crate::jpegint_h::jpeg_c_coef_controller;
+pub use crate::jpegint_h::jpeg_c_main_controller;
+pub use crate::jpegint_h::jpeg_c_prep_controller;
+pub use crate::jpegint_h::jpeg_color_converter;
+pub use crate::jpegint_h::jpeg_color_deconverter;
+pub use crate::jpegint_h::jpeg_color_quantizer;
+pub use crate::jpegint_h::jpeg_comp_master;
+pub use crate::jpegint_h::jpeg_d_coef_controller;
+pub use crate::jpegint_h::jpeg_d_main_controller;
+pub use crate::jpegint_h::jpeg_d_post_controller;
+pub use crate::jpegint_h::jpeg_decomp_master;
+pub use crate::jpegint_h::jpeg_downsampler;
+pub use crate::jpegint_h::jpeg_entropy_decoder;
+pub use crate::jpegint_h::jpeg_entropy_encoder;
+pub use crate::jpegint_h::jpeg_forward_dct;
+pub use crate::jpegint_h::jpeg_input_controller;
+pub use crate::jpegint_h::jpeg_inverse_dct;
+pub use crate::jpegint_h::jpeg_marker_reader;
+pub use crate::jpegint_h::jpeg_marker_writer;
+pub use crate::jpegint_h::jpeg_upsampler;
 pub use crate::jpegint_h::JBUF_CRANK_DEST;
 pub use crate::jpegint_h::JBUF_PASS_THRU;
 pub use crate::jpegint_h::JBUF_REQUANT;
 pub use crate::jpegint_h::JBUF_SAVE_AND_PASS;
 pub use crate::jpegint_h::JBUF_SAVE_SOURCE;
+pub use crate::jpegint_h::JLONG;
 pub use crate::jpegint_h::J_BUF_MODE;
 pub use crate::jpeglib_h::j_common_ptr;
 pub use crate::jpeglib_h::j_compress_ptr;
-pub use crate::jpeglib_h::jpeg_alloc_huff_table;
-pub use crate::jpeglib_h::jpeg_c_coef_controller;
-pub use crate::jpeglib_h::jpeg_c_main_controller;
-pub use crate::jpeglib_h::jpeg_c_prep_controller;
-pub use crate::jpeglib_h::jpeg_color_converter;
-pub use crate::jpeglib_h::jpeg_color_deconverter;
-pub use crate::jpeglib_h::jpeg_color_quantizer;
+pub use crate::jpeglib_h::j_decompress_ptr;
 pub use crate::jpeglib_h::jpeg_common_struct;
-pub use crate::jpeglib_h::jpeg_comp_master;
 pub use crate::jpeglib_h::jpeg_component_info;
 pub use crate::jpeglib_h::jpeg_compress_struct;
-pub use crate::jpeglib_h::jpeg_d_coef_controller;
-pub use crate::jpeglib_h::jpeg_d_main_controller;
-pub use crate::jpeglib_h::jpeg_d_post_controller;
-pub use crate::jpeglib_h::jpeg_decomp_master;
+pub use crate::jpeglib_h::jpeg_decompress_struct;
 pub use crate::jpeglib_h::jpeg_destination_mgr;
-pub use crate::jpeglib_h::jpeg_downsampler;
-pub use crate::jpeglib_h::jpeg_entropy_decoder;
-pub use crate::jpeglib_h::jpeg_entropy_encoder;
 pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_forward_dct;
-pub use crate::jpeglib_h::jpeg_input_controller;
-pub use crate::jpeglib_h::jpeg_inverse_dct;
 pub use crate::jpeglib_h::jpeg_marker_parser_method;
-pub use crate::jpeglib_h::jpeg_marker_reader;
 pub use crate::jpeglib_h::jpeg_marker_struct;
-pub use crate::jpeglib_h::jpeg_marker_writer;
 pub use crate::jpeglib_h::jpeg_memory_mgr;
 pub use crate::jpeglib_h::jpeg_progress_mgr;
 pub use crate::jpeglib_h::jpeg_saved_marker_ptr;
 pub use crate::jpeglib_h::jpeg_scan_info;
 pub use crate::jpeglib_h::jpeg_source_mgr;
-pub use crate::jpeglib_h::jpeg_upsampler;
 pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
+pub use crate::jpeglib_h::C2RustUnnamed_2;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::DCTSIZE2;
 pub use crate::jpeglib_h::JBLOCK;
@@ -91,6 +719,7 @@ pub use crate::jpeglib_h::JDCT_ISLOW;
 pub use crate::jpeglib_h::JDITHER_FS;
 pub use crate::jpeglib_h::JDITHER_NONE;
 pub use crate::jpeglib_h::JDITHER_ORDERED;
+pub use crate::jpeglib_h::JHUFF_TBL;
 pub use crate::jpeglib_h::JPOOL_IMAGE;
 pub use crate::jpeglib_h::JQUANT_TBL;
 pub use crate::jpeglib_h::JSAMPARRAY;
@@ -100,8 +729,9 @@ pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::jpeglib_h::J_DITHER_MODE;
 pub use crate::jpeglib_h::NUM_HUFF_TBLS;
-pub use crate::jstdhuff_c::add_huff_table;
-pub use crate::jstdhuff_c::std_huff_tables;
+pub use crate::src::jcomapi::jpeg_alloc_huff_table;
+pub use crate::src::jdhuff::jstdhuff_c::add_huff_table;
+pub use crate::src::jdhuff::jstdhuff_c::std_huff_tables;
 pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -232,85 +862,19 @@ pub use crate::src::jerror::JWRN_JPEG_EOF;
 pub use crate::src::jerror::JWRN_MUST_RESYNC;
 pub use crate::src::jerror::JWRN_NOT_SEQUENTIAL;
 pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
+pub use crate::src::jutils::jpeg_natural_order;
+pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 use crate::stdlib::memcpy;
 use crate::stdlib::memset;
-// =============== BEGIN jdhuff_h ================
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct d_derived_tbl {
-    pub maxcode: [crate::jpegint_h::JLONG; 18],
-    pub valoffset: [crate::jpegint_h::JLONG; 18],
-    pub pub_0: *mut crate::jpeglib_h::JHUFF_TBL,
-    pub lookup: [libc::c_int; 256],
-}
+pub use crate::stdlib::C2RustUnnamed_0;
 
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct bitread_perm_state {
-    pub get_buffer: crate::src::jdhuff::bit_buf_type,
-    pub bits_left: libc::c_int,
-}
-/*
- * Fetching the next N bits from the input stream is a time-critical operation
- * for the Huffman decoders.  We implement it with a combination of inline
- * macros and out-of-line subroutines.  Note that N (the number of bits
- * demanded at one time) never exceeds 15 for JPEG use.
- *
- * We read source bytes into get_buffer and dole out bits as needed.
- * If get_buffer already contains enough bits, they are fetched in-line
- * by the macros CHECK_BIT_BUFFER and GET_BITS.  When there aren't enough
- * bits, jpeg_fill_bit_buffer is called; it will attempt to fill get_buffer
- * as full as possible (not just to the number of bits needed; this
- * prefetching reduces the overhead cost of calling jpeg_fill_bit_buffer).
- * Note that jpeg_fill_bit_buffer may return FALSE to indicate suspension.
- * On TRUE return, jpeg_fill_bit_buffer guarantees that get_buffer contains
- * at least the requested number of bits --- dummy zeroes are inserted if
- * necessary.
- */
-
-pub type bit_buf_type = crate::stddef_h::size_t;
-
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct bitread_working_state {
-    pub next_input_byte: *const crate::jmorecfg_h::JOCTET,
-    pub bytes_in_buffer: crate::stddef_h::size_t,
-    pub get_buffer: crate::src::jdhuff::bit_buf_type,
-    pub bits_left: libc::c_int,
-    pub cinfo: crate::jpeglib_h::j_decompress_ptr,
-}
-/*
- * jdhuff.h
- *
- * This file was part of the Independent JPEG Group's software:
- * Copyright (C) 1991-1997, Thomas G. Lane.
- * libjpeg-turbo Modifications:
- * Copyright (C) 2010-2011, 2015-2016, D. R. Commander.
- * For conditions of distribution and use, see the accompanying README.ijg
- * file.
- *
- * This file contains declarations for Huffman entropy decoding routines
- * that are shared between the sequential decoder (jdhuff.c) and the
- * progressive decoder (jdphuff.c).  No other modules need to see these.
- */
-/* Derived data constructed for each Huffman table */
-
-pub const HUFF_LOOKAHEAD: libc::c_int = 8i32;
-/* type of bit-extraction buffer */
-
-pub const BIT_BUF_SIZE: libc::c_int = 64i32;
-
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct savable_state {
-    pub last_dc_val: [libc::c_int; 4],
-}
+pub type huff_entropy_ptr = *mut huff_entropy_decoder;
 
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct huff_entropy_decoder {
-    pub pub_0: crate::jpeglib_h::jpeg_entropy_decoder,
+    pub pub_0: crate::jpegint_h::jpeg_entropy_decoder,
     pub bitstate: crate::src::jdhuff::bitread_perm_state,
     pub saved: savable_state,
     pub restarts_to_go: libc::c_uint,
@@ -322,7 +886,11 @@ pub struct huff_entropy_decoder {
     pub ac_needed: [crate::jmorecfg_h::boolean; 10],
 }
 
-pub type huff_entropy_ptr = *mut huff_entropy_decoder;
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct savable_state {
+    pub last_dc_val: [libc::c_int; 4],
+}
 /*
  * Initialize for a Huffman-compressed scan.
  */
@@ -341,10 +909,10 @@ unsafe extern "C" fn start_pass_huff_decoder(mut cinfo: crate::jpeglib_h::j_deco
      * This ought to be an error condition, but we make it a warning because
      * there are some baseline files out there with all zeroes in these bytes.
      */
-    if (*cinfo).Ss != 0i32
-        || (*cinfo).Se != crate::jpeglib_h::DCTSIZE2 - 1i32
-        || (*cinfo).Ah != 0i32
-        || (*cinfo).Al != 0i32
+    if (*cinfo).Ss != 0 as libc::c_int
+        || (*cinfo).Se != crate::jpeglib_h::DCTSIZE2 - 1 as libc::c_int
+        || (*cinfo).Ah != 0 as libc::c_int
+        || (*cinfo).Al != 0 as libc::c_int
     {
         (*(*cinfo).err).msg_code = crate::src::jerror::JWRN_NOT_SEQUENTIAL as libc::c_int;
         Some(
@@ -352,9 +920,12 @@ unsafe extern "C" fn start_pass_huff_decoder(mut cinfo: crate::jpeglib_h::j_deco
                 .emit_message
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, -1i32);
+        .expect("non-null function pointer")(
+            cinfo as crate::jpeglib_h::j_common_ptr,
+            -(1 as libc::c_int),
+        );
     }
-    ci = 0i32;
+    ci = 0 as libc::c_int;
     while ci < (*cinfo).comps_in_scan {
         compptr = (*cinfo).cur_comp_info[ci as usize];
         dctbl = (*compptr).dc_tbl_no;
@@ -372,11 +943,11 @@ unsafe extern "C" fn start_pass_huff_decoder(mut cinfo: crate::jpeglib_h::j_deco
             .offset(actbl as isize);
         jpeg_make_d_derived_tbl(cinfo, crate::jmorecfg_h::FALSE, actbl, pdtbl);
         /* Initialize DC predictions to 0 */
-        (*entropy).saved.last_dc_val[ci as usize] = 0i32;
+        (*entropy).saved.last_dc_val[ci as usize] = 0 as libc::c_int;
         ci += 1
     }
     /* Precalculate decoding info for each block in an MCU of this scan */
-    blkn = 0i32;
+    blkn = 0 as libc::c_int;
     while blkn < (*cinfo).blocks_in_MCU {
         ci = (*cinfo).MCU_membership[blkn as usize];
         compptr = (*cinfo).cur_comp_info[ci as usize];
@@ -389,7 +960,8 @@ unsafe extern "C" fn start_pass_huff_decoder(mut cinfo: crate::jpeglib_h::j_deco
         if (*compptr).component_needed != 0 {
             (*entropy).dc_needed[blkn as usize] = crate::jmorecfg_h::TRUE;
             /* we don't need the ACs if producing a 1/8th-size image */
-            (*entropy).ac_needed[blkn as usize] = ((*compptr).DCT_scaled_size > 1i32) as libc::c_int
+            (*entropy).ac_needed[blkn as usize] =
+                ((*compptr).DCT_scaled_size > 1 as libc::c_int) as libc::c_int
         } else {
             (*entropy).ac_needed[blkn as usize] = crate::jmorecfg_h::FALSE;
             (*entropy).dc_needed[blkn as usize] = (*entropy).ac_needed[blkn as usize]
@@ -397,8 +969,8 @@ unsafe extern "C" fn start_pass_huff_decoder(mut cinfo: crate::jpeglib_h::j_deco
         blkn += 1
     }
     /* Initialize bitread state variables */
-    (*entropy).bitstate.bits_left = 0i32; /* unnecessary, but keeps Purify quiet */
-    (*entropy).bitstate.get_buffer = 0i32 as crate::src::jdhuff::bit_buf_type;
+    (*entropy).bitstate.bits_left = 0 as libc::c_int; /* unnecessary, but keeps Purify quiet */
+    (*entropy).bitstate.get_buffer = 0 as libc::c_int as crate::src::jdhuff::bit_buf_type;
     (*entropy).pub_0.insufficient_data = crate::jmorecfg_h::FALSE;
     /* Initialize restart counter */
     (*entropy).restarts_to_go = (*cinfo).restart_interval;
@@ -435,9 +1007,9 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
      * paralleling the order of the symbols themselves in htbl->huffval[].
      */
     /* Find the input Huffman table */
-    if tblno < 0i32 || tblno >= crate::jpeglib_h::NUM_HUFF_TBLS {
+    if tblno < 0 as libc::c_int || tblno >= crate::jpeglib_h::NUM_HUFF_TBLS {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_NO_HUFF_TABLE as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = tblno;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = tblno;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -452,7 +1024,7 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
     };
     if htbl.is_null() {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_NO_HUFF_TABLE as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = tblno;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = tblno;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -476,11 +1048,11 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
     dtbl = *pdtbl;
     (*dtbl).pub_0 = htbl;
     /* Figure C.1: make table of Huffman code length for each symbol */
-    p = 0i32;
-    l = 1i32;
-    while l <= 16i32 {
+    p = 0 as libc::c_int;
+    l = 1 as libc::c_int;
+    while l <= 16 as libc::c_int {
         i = (*htbl).bits[l as usize] as libc::c_int;
-        if i < 0i32 || p + i > 256i32 {
+        if i < 0 as libc::c_int || p + i > 256 as libc::c_int {
             /* protect against table overrun */
             (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_HUFF_TABLE as libc::c_int;
             Some(
@@ -504,13 +1076,13 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
         }
         l += 1
     }
-    huffsize[p as usize] = 0i32 as libc::c_char;
+    huffsize[p as usize] = 0 as libc::c_int as libc::c_char;
     numsymbols = p;
     /* Figure C.2: generate the codes themselves */
     /* We also validate that the counts represent a legal Huffman code tree. */
-    code = 0i32 as libc::c_uint;
-    si = huffsize[0] as libc::c_int;
-    p = 0i32;
+    code = 0 as libc::c_int as libc::c_uint;
+    si = huffsize[0 as libc::c_int as usize] as libc::c_int;
+    p = 0 as libc::c_int;
     while huffsize[p as usize] != 0 {
         while huffsize[p as usize] as libc::c_int == si {
             let fresh2 = p;
@@ -521,7 +1093,7 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
         /* code is now 1 more than the last code used for codelength si; but
          * it must still fit in si bits, since no code is allowed to be all ones.
          */
-        if code as crate::jpegint_h::JLONG >= (1i32 as crate::jpegint_h::JLONG) << si {
+        if code as crate::jpegint_h::JLONG >= (1 as libc::c_int as crate::jpegint_h::JLONG) << si {
             (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_HUFF_TABLE as libc::c_int;
             Some(
                 (*(*cinfo).err)
@@ -532,13 +1104,13 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
                 cinfo as crate::jpeglib_h::j_common_ptr
             );
         }
-        code <<= 1i32;
+        code <<= 1 as libc::c_int;
         si += 1
     }
     /* Figure F.15: generate decoding tables for bit-sequential decoding */
-    p = 0i32;
-    l = 1i32;
-    while l <= 16i32 {
+    p = 0 as libc::c_int;
+    l = 1 as libc::c_int;
+    while l <= 16 as libc::c_int {
         if (*htbl).bits[l as usize] != 0 {
             /* valoffset[l] = huffval[] index of 1st symbol of code length l,
              * minus the minimum code of length l
@@ -546,39 +1118,40 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
             (*dtbl).valoffset[l as usize] =
                 p as crate::jpegint_h::JLONG - huffcode[p as usize] as crate::jpegint_h::JLONG;
             p += (*htbl).bits[l as usize] as libc::c_int;
-            (*dtbl).maxcode[l as usize] = huffcode[(p - 1i32) as usize] as crate::jpegint_h::JLONG
+            (*dtbl).maxcode[l as usize] =
+                huffcode[(p - 1 as libc::c_int) as usize] as crate::jpegint_h::JLONG
         /* maximum code of length l */
         } else {
-            (*dtbl).maxcode[l as usize] = -1i32 as crate::jpegint_h::JLONG
+            (*dtbl).maxcode[l as usize] = -(1 as libc::c_int) as crate::jpegint_h::JLONG
             /* -1 if no codes of this length */
         } /* ensures jpeg_huff_decode terminates */
         l += 1
     }
-    (*dtbl).valoffset[17] = 0i32 as crate::jpegint_h::JLONG;
-    (*dtbl).maxcode[17] = 0xfffffi64;
+    (*dtbl).valoffset[17 as libc::c_int as usize] = 0 as libc::c_int as crate::jpegint_h::JLONG;
+    (*dtbl).maxcode[17 as libc::c_int as usize] = 0xfffff as libc::c_long;
     /* Compute lookahead tables to speed up decoding.
      * First we set all the table entries to 0, indicating "too long";
      * then we iterate through the Huffman codes that are short enough and
      * fill in all the entries that correspond to bit sequences starting
      * with that code.
      */
-    i = 0i32;
-    while i < 1i32 << crate::src::jdhuff::HUFF_LOOKAHEAD {
-        (*dtbl).lookup[i as usize] =
-            crate::src::jdhuff::HUFF_LOOKAHEAD + 1i32 << crate::src::jdhuff::HUFF_LOOKAHEAD;
+    i = 0 as libc::c_int;
+    while i < (1 as libc::c_int) << crate::src::jdhuff::HUFF_LOOKAHEAD {
+        (*dtbl).lookup[i as usize] = (crate::src::jdhuff::HUFF_LOOKAHEAD + 1 as libc::c_int)
+            << crate::src::jdhuff::HUFF_LOOKAHEAD;
         i += 1
     }
-    p = 0i32;
-    l = 1i32;
+    p = 0 as libc::c_int;
+    l = 1 as libc::c_int;
     while l <= crate::src::jdhuff::HUFF_LOOKAHEAD {
-        i = 1i32;
+        i = 1 as libc::c_int;
         while i <= (*htbl).bits[l as usize] as libc::c_int {
             /* l = current code's length, p = its index in huffcode[] & huffval[]. */
             /* Generate left-justified code followed by all possible bit sequences */
             lookbits =
                 (huffcode[p as usize] << crate::src::jdhuff::HUFF_LOOKAHEAD - l) as libc::c_int;
-            ctr = 1i32 << crate::src::jdhuff::HUFF_LOOKAHEAD - l;
-            while ctr > 0i32 {
+            ctr = (1 as libc::c_int) << crate::src::jdhuff::HUFF_LOOKAHEAD - l;
+            while ctr > 0 as libc::c_int {
                 (*dtbl).lookup[lookbits as usize] = l << crate::src::jdhuff::HUFF_LOOKAHEAD
                     | (*htbl).huffval[p as usize] as libc::c_int;
                 lookbits += 1;
@@ -596,10 +1169,10 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
      * but this is sufficient to ensure safe decoding.)
      */
     if isDC != 0 {
-        i = 0i32;
+        i = 0 as libc::c_int;
         while i < numsymbols {
             let mut sym: libc::c_int = (*htbl).huffval[i as usize] as libc::c_int;
-            if sym < 0i32 || sym > 15i32 {
+            if sym < 0 as libc::c_int || sym > 15 as libc::c_int {
                 (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_HUFF_TABLE as libc::c_int;
                 Some(
                     (*(*cinfo).err)
@@ -629,7 +1202,7 @@ pub unsafe extern "C" fn jpeg_make_d_derived_tbl(
  * average shift distance at the cost of more calls to jpeg_fill_bit_buffer.
  */
 
-pub const MIN_GET_BITS: libc::c_int = crate::src::jdhuff::BIT_BUF_SIZE - 7i32;
+pub const MIN_GET_BITS: libc::c_int = crate::src::jdhuff::BIT_BUF_SIZE - 7 as libc::c_int;
 /* Macros to declare and load/save bitread local variables. */
 /*
  * These macros provide the in-line portion of bit fetching.
@@ -666,7 +1239,7 @@ pub unsafe extern "C" fn jpeg_fill_bit_buffer(
     /* Attempt to load at least MIN_GET_BITS bits into get_buffer. */
     /* (It is assumed that no request will be for more than that many bits.) */
     /* We fail to do so only if we hit a marker or are forced to suspend. */
-    if (*cinfo).unread_marker == 0i32 {
+    if (*cinfo).unread_marker == 0 as libc::c_int {
         loop {
             if !(bits_left < MIN_GET_BITS) {
                 current_block_30 = 6417057564578538666;
@@ -675,7 +1248,7 @@ pub unsafe extern "C" fn jpeg_fill_bit_buffer(
             }
             let mut c: libc::c_int = 0;
             /* Attempt to read a byte */
-            if bytes_in_buffer == 0i32 as libc::c_ulong {
+            if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
                 if Some(
                     (*(*cinfo).src)
                         .fill_input_buffer
@@ -694,7 +1267,7 @@ pub unsafe extern "C" fn jpeg_fill_bit_buffer(
             next_input_byte = next_input_byte.offset(1);
             c = *fresh3 as libc::c_int;
             /* If it's 0xFF, check and discard stuffed zero byte */
-            if c == 0xffi32 {
+            if c == 0xff as libc::c_int {
                 loop
                 /* Loop here to discard any padding FF's on terminating marker,
                  * so that we can save a valid unread_marker value.  NOTE: we will
@@ -702,7 +1275,7 @@ pub unsafe extern "C" fn jpeg_fill_bit_buffer(
                  * byte.  This data pattern is not valid according to the standard.
                  */
                 {
-                    if bytes_in_buffer == 0i32 as libc::c_ulong {
+                    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
                         if Some(
                             (*(*cinfo).src)
                                 .fill_input_buffer
@@ -720,13 +1293,13 @@ pub unsafe extern "C" fn jpeg_fill_bit_buffer(
                     let fresh4 = next_input_byte;
                     next_input_byte = next_input_byte.offset(1);
                     c = *fresh4 as libc::c_int;
-                    if !(c == 0xffi32) {
+                    if !(c == 0xff as libc::c_int) {
                         break;
                     }
                 }
-                if c == 0i32 {
+                if c == 0 as libc::c_int {
                     /* Found FF/00, which represents an FF data byte */
-                    c = 0xffi32
+                    c = 0xff as libc::c_int
                 } else {
                     /* Oops, it's actually a marker indicating end of compressed data.
                      * Save the marker code for later use.
@@ -742,8 +1315,8 @@ pub unsafe extern "C" fn jpeg_fill_bit_buffer(
                 }
             }
             /* OK, load c into get_buffer */
-            get_buffer = get_buffer << 8i32 | c as libc::c_ulong;
-            bits_left += 8i32
+            get_buffer = get_buffer << 8 as libc::c_int | c as libc::c_ulong;
+            bits_left += 8 as libc::c_int
         }
     } else {
         current_block_30 = 7022714159392939963;
@@ -771,7 +1344,7 @@ pub unsafe extern "C" fn jpeg_fill_bit_buffer(
                     )
                     .expect("non-null function pointer")(
                         cinfo as crate::jpeglib_h::j_common_ptr,
-                        -1i32,
+                        -(1 as libc::c_int),
                     );
                     (*(*cinfo).entropy).insufficient_data = crate::jmorecfg_h::TRUE
                 }
@@ -836,34 +1409,36 @@ pub unsafe extern "C" fn jpeg_huff_decode(
     /* bits long, so fetch that many bits in one swoop. */
     if bits_left < l {
         if jpeg_fill_bit_buffer(state, get_buffer, bits_left, l) == 0 {
-            return -1i32;
+            return -(1 as libc::c_int);
         }
         get_buffer = (*state).get_buffer;
         bits_left = (*state).bits_left
     }
     bits_left -= l;
-    code =
-        ((get_buffer >> bits_left) as libc::c_int & (1i32 << l) - 1i32) as crate::jpegint_h::JLONG;
+    code = ((get_buffer >> bits_left) as libc::c_int & ((1 as libc::c_int) << l) - 1 as libc::c_int)
+        as crate::jpegint_h::JLONG;
     /* Collect the rest of the Huffman code one bit at a time. */
     /* This is per Figure F.16. */
     while code > (*htbl).maxcode[l as usize] {
-        code <<= 1i32;
-        if bits_left < 1i32 {
-            if jpeg_fill_bit_buffer(state, get_buffer, bits_left, 1i32) == 0 {
-                return -1i32;
+        code <<= 1 as libc::c_int;
+        if bits_left < 1 as libc::c_int {
+            if jpeg_fill_bit_buffer(state, get_buffer, bits_left, 1 as libc::c_int) == 0 {
+                return -(1 as libc::c_int);
             }
             get_buffer = (*state).get_buffer;
             bits_left = (*state).bits_left
         }
-        bits_left -= 1i32;
-        code |= ((get_buffer >> bits_left) as libc::c_int & (1i32 << 1i32) - 1i32) as libc::c_long;
+        bits_left -= 1 as libc::c_int;
+        code |= ((get_buffer >> bits_left) as libc::c_int
+            & ((1 as libc::c_int) << 1 as libc::c_int) - 1 as libc::c_int)
+            as libc::c_long;
         l += 1
     }
     /* Unload the local registers */
     (*state).get_buffer = get_buffer;
     (*state).bits_left = bits_left;
     /* With garbage input we may reach the sentinel value l = 17. */
-    if l > 16i32 {
+    if l > 16 as libc::c_int {
         (*(*(*state).cinfo).err).msg_code = crate::src::jerror::JWRN_HUFF_BAD_CODE as libc::c_int;
         Some(
             (*(*(*state).cinfo).err)
@@ -872,9 +1447,9 @@ pub unsafe extern "C" fn jpeg_huff_decode(
         )
         .expect("non-null function pointer")(
             (*state).cinfo as crate::jpeglib_h::j_common_ptr,
-            -1i32,
+            -(1 as libc::c_int),
         );
-        return 0i32;
+        return 0 as libc::c_int;
         /* fake a zero as the safest result */
     }
     return (*(*htbl).pub_0).huffval[(code + (*htbl).valoffset[l as usize]) as libc::c_int as usize]
@@ -895,8 +1470,8 @@ unsafe extern "C" fn process_restart(
     /* include any full bytes in next_marker's count of discarded bytes */
     (*(*cinfo).marker).discarded_bytes = (*(*cinfo).marker)
         .discarded_bytes
-        .wrapping_add(((*entropy).bitstate.bits_left / 8i32) as libc::c_uint);
-    (*entropy).bitstate.bits_left = 0i32;
+        .wrapping_add(((*entropy).bitstate.bits_left / 8 as libc::c_int) as libc::c_uint);
+    (*entropy).bitstate.bits_left = 0 as libc::c_int;
     /* Advance past the RSTn marker */
     if Some(
         (*(*cinfo).marker)
@@ -909,9 +1484,9 @@ unsafe extern "C" fn process_restart(
         return crate::jmorecfg_h::FALSE;
     }
     /* Re-initialize DC predictions to 0 */
-    ci = 0i32;
+    ci = 0 as libc::c_int;
     while ci < (*cinfo).comps_in_scan {
-        (*entropy).saved.last_dc_val[ci as usize] = 0i32;
+        (*entropy).saved.last_dc_val[ci as usize] = 0 as libc::c_int;
         ci += 1
     }
     /* Reset restart counter */
@@ -921,7 +1496,7 @@ unsafe extern "C" fn process_restart(
      * segment as empty, and we can avoid producing bogus output pixels by
      * leaving the flag set.
      */
-    if (*cinfo).unread_marker == 0i32 {
+    if (*cinfo).unread_marker == 0 as libc::c_int {
         (*entropy).pub_0.insufficient_data = crate::jmorecfg_h::FALSE
     }
     return crate::jmorecfg_h::TRUE;
@@ -954,7 +1529,7 @@ unsafe extern "C" fn decode_mcu_slow(
     get_buffer = (*entropy).bitstate.get_buffer;
     bits_left = (*entropy).bitstate.bits_left;
     state = (*entropy).saved;
-    blkn = 0i32;
+    blkn = 0 as libc::c_int;
     while blkn < (*cinfo).blocks_in_MCU {
         let mut block: crate::jpeglib_h::JBLOCKROW = if !MCU_data.is_null() {
             *MCU_data.offset(blkn as isize)
@@ -974,13 +1549,13 @@ unsafe extern "C" fn decode_mcu_slow(
         let mut nb: libc::c_int = 0;
         let mut look: libc::c_int = 0;
         if bits_left < crate::src::jdhuff::HUFF_LOOKAHEAD {
-            if jpeg_fill_bit_buffer(&mut br_state, get_buffer, bits_left, 0i32) == 0 {
-                return 0i32;
+            if jpeg_fill_bit_buffer(&mut br_state, get_buffer, bits_left, 0 as libc::c_int) == 0 {
+                return 0 as libc::c_int;
             }
             get_buffer = br_state.get_buffer;
             bits_left = br_state.bits_left;
             if bits_left < crate::src::jdhuff::HUFF_LOOKAHEAD {
-                nb = 1i32;
+                nb = 1 as libc::c_int;
                 current_block_22 = 6603671518751921130;
             } else {
                 current_block_22 = 14576567515993809846;
@@ -990,12 +1565,14 @@ unsafe extern "C" fn decode_mcu_slow(
         }
         match current_block_22 {
             14576567515993809846 => {
-                look = (get_buffer >> bits_left - 8i32) as libc::c_int & (1i32 << 8i32) - 1i32;
+                look = (get_buffer >> bits_left - 8 as libc::c_int) as libc::c_int
+                    & ((1 as libc::c_int) << 8 as libc::c_int) - 1 as libc::c_int;
                 nb = (*dctbl).lookup[look as usize] >> crate::src::jdhuff::HUFF_LOOKAHEAD;
                 if nb <= crate::src::jdhuff::HUFF_LOOKAHEAD {
                     bits_left -= nb;
                     s = (*dctbl).lookup[look as usize]
-                        & (1i32 << crate::src::jdhuff::HUFF_LOOKAHEAD) - 1i32;
+                        & ((1 as libc::c_int) << crate::src::jdhuff::HUFF_LOOKAHEAD)
+                            - 1 as libc::c_int;
                     current_block_22 = 652864300344834934;
                 } else {
                     current_block_22 = 6603671518751921130;
@@ -1006,8 +1583,8 @@ unsafe extern "C" fn decode_mcu_slow(
         match current_block_22 {
             6603671518751921130 => {
                 s = jpeg_huff_decode(&mut br_state, get_buffer, bits_left, dctbl, nb);
-                if s < 0i32 {
-                    return 0i32;
+                if s < 0 as libc::c_int {
+                    return 0 as libc::c_int;
                 }
                 get_buffer = br_state.get_buffer;
                 bits_left = br_state.bits_left
@@ -1017,16 +1594,19 @@ unsafe extern "C" fn decode_mcu_slow(
         if s != 0 {
             if bits_left < s {
                 if jpeg_fill_bit_buffer(&mut br_state, get_buffer, bits_left, s) == 0 {
-                    return 0i32;
+                    return 0 as libc::c_int;
                 }
                 get_buffer = br_state.get_buffer;
                 bits_left = br_state.bits_left
             }
             bits_left -= s;
-            r = (get_buffer >> bits_left) as libc::c_int & (1i32 << s) - 1i32;
+            r = (get_buffer >> bits_left) as libc::c_int
+                & ((1 as libc::c_int) << s) - 1 as libc::c_int;
             s = (r as libc::c_uint).wrapping_add(
-                (r - (1i32 << s - 1i32) >> 31i32) as libc::c_uint
-                    & ((-1i32 as libc::c_uint) << s).wrapping_add(1i32 as libc::c_uint),
+                (r - ((1 as libc::c_int) << s - 1 as libc::c_int) >> 31 as libc::c_int)
+                    as libc::c_uint
+                    & ((-(1 as libc::c_int) as libc::c_uint) << s)
+                        .wrapping_add(1 as libc::c_int as libc::c_uint),
             ) as libc::c_int
         }
         if (*entropy).dc_needed[blkn as usize] != 0 {
@@ -1036,25 +1616,27 @@ unsafe extern "C" fn decode_mcu_slow(
             state.last_dc_val[ci as usize] = s;
             if !block.is_null() {
                 /* Output the DC coefficient (assumes jpeg_natural_order[0] = 0) */
-                (*block)[0] = s as crate::jmorecfg_h::JCOEF
+                (*block)[0 as libc::c_int as usize] = s as crate::jmorecfg_h::JCOEF
             }
         }
         if (*entropy).ac_needed[blkn as usize] != 0 && !block.is_null() {
             /* Section F.2.2.2: decode the AC coefficients */
             /* Since zeroes are skipped, output area must be cleared beforehand */
-            k = 1i32;
+            k = 1 as libc::c_int;
             while k < crate::jpeglib_h::DCTSIZE2 {
                 let mut current_block_60: u64;
                 let mut nb_0: libc::c_int = 0;
                 let mut look_0: libc::c_int = 0;
                 if bits_left < crate::src::jdhuff::HUFF_LOOKAHEAD {
-                    if jpeg_fill_bit_buffer(&mut br_state, get_buffer, bits_left, 0i32) == 0 {
-                        return 0i32;
+                    if jpeg_fill_bit_buffer(&mut br_state, get_buffer, bits_left, 0 as libc::c_int)
+                        == 0
+                    {
+                        return 0 as libc::c_int;
                     }
                     get_buffer = br_state.get_buffer;
                     bits_left = br_state.bits_left;
                     if bits_left < crate::src::jdhuff::HUFF_LOOKAHEAD {
-                        nb_0 = 1i32;
+                        nb_0 = 1 as libc::c_int;
                         current_block_60 = 276222993270550982;
                     } else {
                         current_block_60 = 3580086814630675314;
@@ -1064,14 +1646,15 @@ unsafe extern "C" fn decode_mcu_slow(
                 }
                 match current_block_60 {
                     3580086814630675314 => {
-                        look_0 =
-                            (get_buffer >> bits_left - 8i32) as libc::c_int & (1i32 << 8i32) - 1i32;
+                        look_0 = (get_buffer >> bits_left - 8 as libc::c_int) as libc::c_int
+                            & ((1 as libc::c_int) << 8 as libc::c_int) - 1 as libc::c_int;
                         nb_0 =
                             (*actbl).lookup[look_0 as usize] >> crate::src::jdhuff::HUFF_LOOKAHEAD;
                         if nb_0 <= crate::src::jdhuff::HUFF_LOOKAHEAD {
                             bits_left -= nb_0;
                             s = (*actbl).lookup[look_0 as usize]
-                                & (1i32 << crate::src::jdhuff::HUFF_LOOKAHEAD) - 1i32;
+                                & ((1 as libc::c_int) << crate::src::jdhuff::HUFF_LOOKAHEAD)
+                                    - 1 as libc::c_int;
                             current_block_60 = 7385833325316299293;
                         } else {
                             current_block_60 = 276222993270550982;
@@ -1082,62 +1665,67 @@ unsafe extern "C" fn decode_mcu_slow(
                 match current_block_60 {
                     276222993270550982 => {
                         s = jpeg_huff_decode(&mut br_state, get_buffer, bits_left, actbl, nb_0);
-                        if s < 0i32 {
-                            return 0i32;
+                        if s < 0 as libc::c_int {
+                            return 0 as libc::c_int;
                         }
                         get_buffer = br_state.get_buffer;
                         bits_left = br_state.bits_left
                     }
                     _ => {}
                 }
-                r = s >> 4i32;
-                s &= 15i32;
+                r = s >> 4 as libc::c_int;
+                s &= 15 as libc::c_int;
                 if s != 0 {
                     k += r;
                     if bits_left < s {
                         if jpeg_fill_bit_buffer(&mut br_state, get_buffer, bits_left, s) == 0 {
-                            return 0i32;
+                            return 0 as libc::c_int;
                         }
                         get_buffer = br_state.get_buffer;
                         bits_left = br_state.bits_left
                     }
                     bits_left -= s;
-                    r = (get_buffer >> bits_left) as libc::c_int & (1i32 << s) - 1i32;
+                    r = (get_buffer >> bits_left) as libc::c_int
+                        & ((1 as libc::c_int) << s) - 1 as libc::c_int;
                     s = (r as libc::c_uint).wrapping_add(
-                        (r - (1i32 << s - 1i32) >> 31i32) as libc::c_uint
-                            & ((-1i32 as libc::c_uint) << s).wrapping_add(1i32 as libc::c_uint),
+                        (r - ((1 as libc::c_int) << s - 1 as libc::c_int) >> 31 as libc::c_int)
+                            as libc::c_uint
+                            & ((-(1 as libc::c_int) as libc::c_uint) << s)
+                                .wrapping_add(1 as libc::c_int as libc::c_uint),
                     ) as libc::c_int;
                     /* Output coefficient in natural (dezigzagged) order.
                      * Note: the extra entries in jpeg_natural_order[] will save us
                      * if k >= DCTSIZE2, which could happen if the data is corrupted.
                      */
-                    (*block)[*crate::jpegint_h::jpeg_natural_order
+                    (*block)[*crate::src::jutils::jpeg_natural_order
                         .as_ptr()
                         .offset(k as isize) as usize] = s as crate::jmorecfg_h::JCOEF
                 } else {
-                    if r != 15i32 {
+                    if r != 15 as libc::c_int {
                         break;
                     }
-                    k += 15i32
+                    k += 15 as libc::c_int
                 }
                 k += 1
             }
         } else {
             /* Section F.2.2.2: decode the AC coefficients */
             /* In this path we just discard the values */
-            k = 1i32;
+            k = 1 as libc::c_int;
             while k < crate::jpeglib_h::DCTSIZE2 {
                 let mut current_block_97: u64;
                 let mut nb_1: libc::c_int = 0;
                 let mut look_1: libc::c_int = 0;
                 if bits_left < crate::src::jdhuff::HUFF_LOOKAHEAD {
-                    if jpeg_fill_bit_buffer(&mut br_state, get_buffer, bits_left, 0i32) == 0 {
-                        return 0i32;
+                    if jpeg_fill_bit_buffer(&mut br_state, get_buffer, bits_left, 0 as libc::c_int)
+                        == 0
+                    {
+                        return 0 as libc::c_int;
                     }
                     get_buffer = br_state.get_buffer;
                     bits_left = br_state.bits_left;
                     if bits_left < crate::src::jdhuff::HUFF_LOOKAHEAD {
-                        nb_1 = 1i32;
+                        nb_1 = 1 as libc::c_int;
                         current_block_97 = 6072411194766323756;
                     } else {
                         current_block_97 = 9521147444787763968;
@@ -1147,14 +1735,15 @@ unsafe extern "C" fn decode_mcu_slow(
                 }
                 match current_block_97 {
                     9521147444787763968 => {
-                        look_1 =
-                            (get_buffer >> bits_left - 8i32) as libc::c_int & (1i32 << 8i32) - 1i32;
+                        look_1 = (get_buffer >> bits_left - 8 as libc::c_int) as libc::c_int
+                            & ((1 as libc::c_int) << 8 as libc::c_int) - 1 as libc::c_int;
                         nb_1 =
                             (*actbl).lookup[look_1 as usize] >> crate::src::jdhuff::HUFF_LOOKAHEAD;
                         if nb_1 <= crate::src::jdhuff::HUFF_LOOKAHEAD {
                             bits_left -= nb_1;
                             s = (*actbl).lookup[look_1 as usize]
-                                & (1i32 << crate::src::jdhuff::HUFF_LOOKAHEAD) - 1i32;
+                                & ((1 as libc::c_int) << crate::src::jdhuff::HUFF_LOOKAHEAD)
+                                    - 1 as libc::c_int;
                             current_block_97 = 16375338222180917333;
                         } else {
                             current_block_97 = 6072411194766323756;
@@ -1165,31 +1754,31 @@ unsafe extern "C" fn decode_mcu_slow(
                 match current_block_97 {
                     6072411194766323756 => {
                         s = jpeg_huff_decode(&mut br_state, get_buffer, bits_left, actbl, nb_1);
-                        if s < 0i32 {
-                            return 0i32;
+                        if s < 0 as libc::c_int {
+                            return 0 as libc::c_int;
                         }
                         get_buffer = br_state.get_buffer;
                         bits_left = br_state.bits_left
                     }
                     _ => {}
                 }
-                r = s >> 4i32;
-                s &= 15i32;
+                r = s >> 4 as libc::c_int;
+                s &= 15 as libc::c_int;
                 if s != 0 {
                     k += r;
                     if bits_left < s {
                         if jpeg_fill_bit_buffer(&mut br_state, get_buffer, bits_left, s) == 0 {
-                            return 0i32;
+                            return 0 as libc::c_int;
                         }
                         get_buffer = br_state.get_buffer;
                         bits_left = br_state.bits_left
                     }
                     bits_left -= s
                 } else {
-                    if r != 15i32 {
+                    if r != 15 as libc::c_int {
                         break;
                     }
-                    k += 15i32
+                    k += 15 as libc::c_int
                 }
                 k += 1
             }
@@ -1234,7 +1823,7 @@ unsafe extern "C" fn decode_mcu_fast(
     bits_left = (*entropy).bitstate.bits_left;
     buffer = br_state.next_input_byte as *mut crate::jmorecfg_h::JOCTET;
     state = (*entropy).saved;
-    blkn = 0i32;
+    blkn = 0 as libc::c_int;
     while blkn < (*cinfo).blocks_in_MCU {
         let mut block: crate::jpeglib_h::JBLOCKROW = if !MCU_data.is_null() {
             *MCU_data.offset(blkn as isize)
@@ -1249,21 +1838,21 @@ unsafe extern "C" fn decode_mcu_fast(
         let mut k: libc::c_int = 0;
         let mut r: libc::c_int = 0;
         let mut l: libc::c_int = 0;
-        if bits_left <= 16i32 {
+        if bits_left <= 16 as libc::c_int {
             let mut c0: libc::c_int = 0;
             let mut c1: libc::c_int = 0;
             let fresh5 = buffer;
             buffer = buffer.offset(1);
             c0 = *fresh5 as libc::c_int;
             c1 = *buffer as libc::c_int;
-            get_buffer = get_buffer << 8i32 | c0 as libc::c_ulong;
-            bits_left += 8i32;
-            if c0 == 0xffi32 {
+            get_buffer = get_buffer << 8 as libc::c_int | c0 as libc::c_ulong;
+            bits_left += 8 as libc::c_int;
+            if c0 == 0xff as libc::c_int {
                 buffer = buffer.offset(1);
-                if c1 != 0i32 {
+                if c1 != 0 as libc::c_int {
                     (*cinfo).unread_marker = c1;
-                    buffer = buffer.offset(-2);
-                    get_buffer &= !0xffi32 as libc::c_ulong
+                    buffer = buffer.offset(-(2 as libc::c_int as isize));
+                    get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                 }
             }
             let mut c0_0: libc::c_int = 0;
@@ -1272,14 +1861,14 @@ unsafe extern "C" fn decode_mcu_fast(
             buffer = buffer.offset(1);
             c0_0 = *fresh6 as libc::c_int;
             c1_0 = *buffer as libc::c_int;
-            get_buffer = get_buffer << 8i32 | c0_0 as libc::c_ulong;
-            bits_left += 8i32;
-            if c0_0 == 0xffi32 {
+            get_buffer = get_buffer << 8 as libc::c_int | c0_0 as libc::c_ulong;
+            bits_left += 8 as libc::c_int;
+            if c0_0 == 0xff as libc::c_int {
                 buffer = buffer.offset(1);
-                if c1_0 != 0i32 {
+                if c1_0 != 0 as libc::c_int {
                     (*cinfo).unread_marker = c1_0;
-                    buffer = buffer.offset(-2);
-                    get_buffer &= !0xffi32 as libc::c_ulong
+                    buffer = buffer.offset(-(2 as libc::c_int as isize));
+                    get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                 }
             }
             let mut c0_1: libc::c_int = 0;
@@ -1288,14 +1877,14 @@ unsafe extern "C" fn decode_mcu_fast(
             buffer = buffer.offset(1);
             c0_1 = *fresh7 as libc::c_int;
             c1_1 = *buffer as libc::c_int;
-            get_buffer = get_buffer << 8i32 | c0_1 as libc::c_ulong;
-            bits_left += 8i32;
-            if c0_1 == 0xffi32 {
+            get_buffer = get_buffer << 8 as libc::c_int | c0_1 as libc::c_ulong;
+            bits_left += 8 as libc::c_int;
+            if c0_1 == 0xff as libc::c_int {
                 buffer = buffer.offset(1);
-                if c1_1 != 0i32 {
+                if c1_1 != 0 as libc::c_int {
                     (*cinfo).unread_marker = c1_1;
-                    buffer = buffer.offset(-2);
-                    get_buffer &= !0xffi32 as libc::c_ulong
+                    buffer = buffer.offset(-(2 as libc::c_int as isize));
+                    get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                 }
             }
             let mut c0_2: libc::c_int = 0;
@@ -1304,14 +1893,14 @@ unsafe extern "C" fn decode_mcu_fast(
             buffer = buffer.offset(1);
             c0_2 = *fresh8 as libc::c_int;
             c1_2 = *buffer as libc::c_int;
-            get_buffer = get_buffer << 8i32 | c0_2 as libc::c_ulong;
-            bits_left += 8i32;
-            if c0_2 == 0xffi32 {
+            get_buffer = get_buffer << 8 as libc::c_int | c0_2 as libc::c_ulong;
+            bits_left += 8 as libc::c_int;
+            if c0_2 == 0xff as libc::c_int {
                 buffer = buffer.offset(1);
-                if c1_2 != 0i32 {
+                if c1_2 != 0 as libc::c_int {
                     (*cinfo).unread_marker = c1_2;
-                    buffer = buffer.offset(-2);
-                    get_buffer &= !0xffi32 as libc::c_ulong
+                    buffer = buffer.offset(-(2 as libc::c_int as isize));
+                    get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                 }
             }
             let mut c0_3: libc::c_int = 0;
@@ -1320,14 +1909,14 @@ unsafe extern "C" fn decode_mcu_fast(
             buffer = buffer.offset(1);
             c0_3 = *fresh9 as libc::c_int;
             c1_3 = *buffer as libc::c_int;
-            get_buffer = get_buffer << 8i32 | c0_3 as libc::c_ulong;
-            bits_left += 8i32;
-            if c0_3 == 0xffi32 {
+            get_buffer = get_buffer << 8 as libc::c_int | c0_3 as libc::c_ulong;
+            bits_left += 8 as libc::c_int;
+            if c0_3 == 0xff as libc::c_int {
                 buffer = buffer.offset(1);
-                if c1_3 != 0i32 {
+                if c1_3 != 0 as libc::c_int {
                     (*cinfo).unread_marker = c1_3;
-                    buffer = buffer.offset(-2);
-                    get_buffer &= !0xffi32 as libc::c_ulong
+                    buffer = buffer.offset(-(2 as libc::c_int as isize));
+                    get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                 }
             }
             let mut c0_4: libc::c_int = 0;
@@ -1336,50 +1925,54 @@ unsafe extern "C" fn decode_mcu_fast(
             buffer = buffer.offset(1);
             c0_4 = *fresh10 as libc::c_int;
             c1_4 = *buffer as libc::c_int;
-            get_buffer = get_buffer << 8i32 | c0_4 as libc::c_ulong;
-            bits_left += 8i32;
-            if c0_4 == 0xffi32 {
+            get_buffer = get_buffer << 8 as libc::c_int | c0_4 as libc::c_ulong;
+            bits_left += 8 as libc::c_int;
+            if c0_4 == 0xff as libc::c_int {
                 buffer = buffer.offset(1);
-                if c1_4 != 0i32 {
+                if c1_4 != 0 as libc::c_int {
                     (*cinfo).unread_marker = c1_4;
-                    buffer = buffer.offset(-2);
-                    get_buffer &= !0xffi32 as libc::c_ulong
+                    buffer = buffer.offset(-(2 as libc::c_int as isize));
+                    get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                 }
             }
         }
-        s = (get_buffer >> bits_left - 8i32) as libc::c_int & (1i32 << 8i32) - 1i32;
+        s = (get_buffer >> bits_left - 8 as libc::c_int) as libc::c_int
+            & ((1 as libc::c_int) << 8 as libc::c_int) - 1 as libc::c_int;
         s = (*dctbl).lookup[s as usize];
         l = s >> crate::src::jdhuff::HUFF_LOOKAHEAD;
         bits_left -= l;
-        s = s & (1i32 << crate::src::jdhuff::HUFF_LOOKAHEAD) - 1i32;
+        s = s & ((1 as libc::c_int) << crate::src::jdhuff::HUFF_LOOKAHEAD) - 1 as libc::c_int;
         if l > crate::src::jdhuff::HUFF_LOOKAHEAD {
-            s = (get_buffer >> bits_left & ((1i32 << l) - 1i32) as libc::c_ulong) as libc::c_int;
+            s = (get_buffer >> bits_left
+                & (((1 as libc::c_int) << l) - 1 as libc::c_int) as libc::c_ulong)
+                as libc::c_int;
             while s as libc::c_long > (*dctbl).maxcode[l as usize] {
-                s <<= 1i32;
-                bits_left -= 1i32;
-                s |= (get_buffer >> bits_left) as libc::c_int & (1i32 << 1i32) - 1i32;
+                s <<= 1 as libc::c_int;
+                bits_left -= 1 as libc::c_int;
+                s |= (get_buffer >> bits_left) as libc::c_int
+                    & ((1 as libc::c_int) << 1 as libc::c_int) - 1 as libc::c_int;
                 l += 1
             }
             s = (*(*dctbl).pub_0).huffval[((s as libc::c_long + (*dctbl).valoffset[l as usize])
                 as libc::c_int
-                & 0xffi32) as usize] as libc::c_int
+                & 0xff as libc::c_int) as usize] as libc::c_int
         }
         if s != 0 {
-            if bits_left <= 16i32 {
+            if bits_left <= 16 as libc::c_int {
                 let mut c0_5: libc::c_int = 0;
                 let mut c1_5: libc::c_int = 0;
                 let fresh11 = buffer;
                 buffer = buffer.offset(1);
                 c0_5 = *fresh11 as libc::c_int;
                 c1_5 = *buffer as libc::c_int;
-                get_buffer = get_buffer << 8i32 | c0_5 as libc::c_ulong;
-                bits_left += 8i32;
-                if c0_5 == 0xffi32 {
+                get_buffer = get_buffer << 8 as libc::c_int | c0_5 as libc::c_ulong;
+                bits_left += 8 as libc::c_int;
+                if c0_5 == 0xff as libc::c_int {
                     buffer = buffer.offset(1);
-                    if c1_5 != 0i32 {
+                    if c1_5 != 0 as libc::c_int {
                         (*cinfo).unread_marker = c1_5;
-                        buffer = buffer.offset(-2);
-                        get_buffer &= !0xffi32 as libc::c_ulong
+                        buffer = buffer.offset(-(2 as libc::c_int as isize));
+                        get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                     }
                 }
                 let mut c0_6: libc::c_int = 0;
@@ -1388,14 +1981,14 @@ unsafe extern "C" fn decode_mcu_fast(
                 buffer = buffer.offset(1);
                 c0_6 = *fresh12 as libc::c_int;
                 c1_6 = *buffer as libc::c_int;
-                get_buffer = get_buffer << 8i32 | c0_6 as libc::c_ulong;
-                bits_left += 8i32;
-                if c0_6 == 0xffi32 {
+                get_buffer = get_buffer << 8 as libc::c_int | c0_6 as libc::c_ulong;
+                bits_left += 8 as libc::c_int;
+                if c0_6 == 0xff as libc::c_int {
                     buffer = buffer.offset(1);
-                    if c1_6 != 0i32 {
+                    if c1_6 != 0 as libc::c_int {
                         (*cinfo).unread_marker = c1_6;
-                        buffer = buffer.offset(-2);
-                        get_buffer &= !0xffi32 as libc::c_ulong
+                        buffer = buffer.offset(-(2 as libc::c_int as isize));
+                        get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                     }
                 }
                 let mut c0_7: libc::c_int = 0;
@@ -1404,14 +1997,14 @@ unsafe extern "C" fn decode_mcu_fast(
                 buffer = buffer.offset(1);
                 c0_7 = *fresh13 as libc::c_int;
                 c1_7 = *buffer as libc::c_int;
-                get_buffer = get_buffer << 8i32 | c0_7 as libc::c_ulong;
-                bits_left += 8i32;
-                if c0_7 == 0xffi32 {
+                get_buffer = get_buffer << 8 as libc::c_int | c0_7 as libc::c_ulong;
+                bits_left += 8 as libc::c_int;
+                if c0_7 == 0xff as libc::c_int {
                     buffer = buffer.offset(1);
-                    if c1_7 != 0i32 {
+                    if c1_7 != 0 as libc::c_int {
                         (*cinfo).unread_marker = c1_7;
-                        buffer = buffer.offset(-2);
-                        get_buffer &= !0xffi32 as libc::c_ulong
+                        buffer = buffer.offset(-(2 as libc::c_int as isize));
+                        get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                     }
                 }
                 let mut c0_8: libc::c_int = 0;
@@ -1420,14 +2013,14 @@ unsafe extern "C" fn decode_mcu_fast(
                 buffer = buffer.offset(1);
                 c0_8 = *fresh14 as libc::c_int;
                 c1_8 = *buffer as libc::c_int;
-                get_buffer = get_buffer << 8i32 | c0_8 as libc::c_ulong;
-                bits_left += 8i32;
-                if c0_8 == 0xffi32 {
+                get_buffer = get_buffer << 8 as libc::c_int | c0_8 as libc::c_ulong;
+                bits_left += 8 as libc::c_int;
+                if c0_8 == 0xff as libc::c_int {
                     buffer = buffer.offset(1);
-                    if c1_8 != 0i32 {
+                    if c1_8 != 0 as libc::c_int {
                         (*cinfo).unread_marker = c1_8;
-                        buffer = buffer.offset(-2);
-                        get_buffer &= !0xffi32 as libc::c_ulong
+                        buffer = buffer.offset(-(2 as libc::c_int as isize));
+                        get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                     }
                 }
                 let mut c0_9: libc::c_int = 0;
@@ -1436,14 +2029,14 @@ unsafe extern "C" fn decode_mcu_fast(
                 buffer = buffer.offset(1);
                 c0_9 = *fresh15 as libc::c_int;
                 c1_9 = *buffer as libc::c_int;
-                get_buffer = get_buffer << 8i32 | c0_9 as libc::c_ulong;
-                bits_left += 8i32;
-                if c0_9 == 0xffi32 {
+                get_buffer = get_buffer << 8 as libc::c_int | c0_9 as libc::c_ulong;
+                bits_left += 8 as libc::c_int;
+                if c0_9 == 0xff as libc::c_int {
                     buffer = buffer.offset(1);
-                    if c1_9 != 0i32 {
+                    if c1_9 != 0 as libc::c_int {
                         (*cinfo).unread_marker = c1_9;
-                        buffer = buffer.offset(-2);
-                        get_buffer &= !0xffi32 as libc::c_ulong
+                        buffer = buffer.offset(-(2 as libc::c_int as isize));
+                        get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                     }
                 }
                 let mut c0_10: libc::c_int = 0;
@@ -1452,22 +2045,25 @@ unsafe extern "C" fn decode_mcu_fast(
                 buffer = buffer.offset(1);
                 c0_10 = *fresh16 as libc::c_int;
                 c1_10 = *buffer as libc::c_int;
-                get_buffer = get_buffer << 8i32 | c0_10 as libc::c_ulong;
-                bits_left += 8i32;
-                if c0_10 == 0xffi32 {
+                get_buffer = get_buffer << 8 as libc::c_int | c0_10 as libc::c_ulong;
+                bits_left += 8 as libc::c_int;
+                if c0_10 == 0xff as libc::c_int {
                     buffer = buffer.offset(1);
-                    if c1_10 != 0i32 {
+                    if c1_10 != 0 as libc::c_int {
                         (*cinfo).unread_marker = c1_10;
-                        buffer = buffer.offset(-2);
-                        get_buffer &= !0xffi32 as libc::c_ulong
+                        buffer = buffer.offset(-(2 as libc::c_int as isize));
+                        get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                     }
                 }
             }
             bits_left -= s;
-            r = (get_buffer >> bits_left) as libc::c_int & (1i32 << s) - 1i32;
+            r = (get_buffer >> bits_left) as libc::c_int
+                & ((1 as libc::c_int) << s) - 1 as libc::c_int;
             s = (r as libc::c_uint).wrapping_add(
-                (r - (1i32 << s - 1i32) >> 31i32) as libc::c_uint
-                    & ((-1i32 as libc::c_uint) << s).wrapping_add(1i32 as libc::c_uint),
+                (r - ((1 as libc::c_int) << s - 1 as libc::c_int) >> 31 as libc::c_int)
+                    as libc::c_uint
+                    & ((-(1 as libc::c_int) as libc::c_uint) << s)
+                        .wrapping_add(1 as libc::c_int as libc::c_uint),
             ) as libc::c_int
         }
         if (*entropy).dc_needed[blkn as usize] != 0 {
@@ -1475,27 +2071,27 @@ unsafe extern "C" fn decode_mcu_fast(
             s += state.last_dc_val[ci as usize];
             state.last_dc_val[ci as usize] = s;
             if !block.is_null() {
-                (*block)[0] = s as crate::jmorecfg_h::JCOEF
+                (*block)[0 as libc::c_int as usize] = s as crate::jmorecfg_h::JCOEF
             }
         }
         if (*entropy).ac_needed[blkn as usize] != 0 && !block.is_null() {
-            k = 1i32;
+            k = 1 as libc::c_int;
             while k < crate::jpeglib_h::DCTSIZE2 {
-                if bits_left <= 16i32 {
+                if bits_left <= 16 as libc::c_int {
                     let mut c0_11: libc::c_int = 0;
                     let mut c1_11: libc::c_int = 0;
                     let fresh17 = buffer;
                     buffer = buffer.offset(1);
                     c0_11 = *fresh17 as libc::c_int;
                     c1_11 = *buffer as libc::c_int;
-                    get_buffer = get_buffer << 8i32 | c0_11 as libc::c_ulong;
-                    bits_left += 8i32;
-                    if c0_11 == 0xffi32 {
+                    get_buffer = get_buffer << 8 as libc::c_int | c0_11 as libc::c_ulong;
+                    bits_left += 8 as libc::c_int;
+                    if c0_11 == 0xff as libc::c_int {
                         buffer = buffer.offset(1);
-                        if c1_11 != 0i32 {
+                        if c1_11 != 0 as libc::c_int {
                             (*cinfo).unread_marker = c1_11;
-                            buffer = buffer.offset(-2);
-                            get_buffer &= !0xffi32 as libc::c_ulong
+                            buffer = buffer.offset(-(2 as libc::c_int as isize));
+                            get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                         }
                     }
                     let mut c0_12: libc::c_int = 0;
@@ -1504,14 +2100,14 @@ unsafe extern "C" fn decode_mcu_fast(
                     buffer = buffer.offset(1);
                     c0_12 = *fresh18 as libc::c_int;
                     c1_12 = *buffer as libc::c_int;
-                    get_buffer = get_buffer << 8i32 | c0_12 as libc::c_ulong;
-                    bits_left += 8i32;
-                    if c0_12 == 0xffi32 {
+                    get_buffer = get_buffer << 8 as libc::c_int | c0_12 as libc::c_ulong;
+                    bits_left += 8 as libc::c_int;
+                    if c0_12 == 0xff as libc::c_int {
                         buffer = buffer.offset(1);
-                        if c1_12 != 0i32 {
+                        if c1_12 != 0 as libc::c_int {
                             (*cinfo).unread_marker = c1_12;
-                            buffer = buffer.offset(-2);
-                            get_buffer &= !0xffi32 as libc::c_ulong
+                            buffer = buffer.offset(-(2 as libc::c_int as isize));
+                            get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                         }
                     }
                     let mut c0_13: libc::c_int = 0;
@@ -1520,14 +2116,14 @@ unsafe extern "C" fn decode_mcu_fast(
                     buffer = buffer.offset(1);
                     c0_13 = *fresh19 as libc::c_int;
                     c1_13 = *buffer as libc::c_int;
-                    get_buffer = get_buffer << 8i32 | c0_13 as libc::c_ulong;
-                    bits_left += 8i32;
-                    if c0_13 == 0xffi32 {
+                    get_buffer = get_buffer << 8 as libc::c_int | c0_13 as libc::c_ulong;
+                    bits_left += 8 as libc::c_int;
+                    if c0_13 == 0xff as libc::c_int {
                         buffer = buffer.offset(1);
-                        if c1_13 != 0i32 {
+                        if c1_13 != 0 as libc::c_int {
                             (*cinfo).unread_marker = c1_13;
-                            buffer = buffer.offset(-2);
-                            get_buffer &= !0xffi32 as libc::c_ulong
+                            buffer = buffer.offset(-(2 as libc::c_int as isize));
+                            get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                         }
                     }
                     let mut c0_14: libc::c_int = 0;
@@ -1536,14 +2132,14 @@ unsafe extern "C" fn decode_mcu_fast(
                     buffer = buffer.offset(1);
                     c0_14 = *fresh20 as libc::c_int;
                     c1_14 = *buffer as libc::c_int;
-                    get_buffer = get_buffer << 8i32 | c0_14 as libc::c_ulong;
-                    bits_left += 8i32;
-                    if c0_14 == 0xffi32 {
+                    get_buffer = get_buffer << 8 as libc::c_int | c0_14 as libc::c_ulong;
+                    bits_left += 8 as libc::c_int;
+                    if c0_14 == 0xff as libc::c_int {
                         buffer = buffer.offset(1);
-                        if c1_14 != 0i32 {
+                        if c1_14 != 0 as libc::c_int {
                             (*cinfo).unread_marker = c1_14;
-                            buffer = buffer.offset(-2);
-                            get_buffer &= !0xffi32 as libc::c_ulong
+                            buffer = buffer.offset(-(2 as libc::c_int as isize));
+                            get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                         }
                     }
                     let mut c0_15: libc::c_int = 0;
@@ -1552,14 +2148,14 @@ unsafe extern "C" fn decode_mcu_fast(
                     buffer = buffer.offset(1);
                     c0_15 = *fresh21 as libc::c_int;
                     c1_15 = *buffer as libc::c_int;
-                    get_buffer = get_buffer << 8i32 | c0_15 as libc::c_ulong;
-                    bits_left += 8i32;
-                    if c0_15 == 0xffi32 {
+                    get_buffer = get_buffer << 8 as libc::c_int | c0_15 as libc::c_ulong;
+                    bits_left += 8 as libc::c_int;
+                    if c0_15 == 0xff as libc::c_int {
                         buffer = buffer.offset(1);
-                        if c1_15 != 0i32 {
+                        if c1_15 != 0 as libc::c_int {
                             (*cinfo).unread_marker = c1_15;
-                            buffer = buffer.offset(-2);
-                            get_buffer &= !0xffi32 as libc::c_ulong
+                            buffer = buffer.offset(-(2 as libc::c_int as isize));
+                            get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                         }
                     }
                     let mut c0_16: libc::c_int = 0;
@@ -1568,55 +2164,60 @@ unsafe extern "C" fn decode_mcu_fast(
                     buffer = buffer.offset(1);
                     c0_16 = *fresh22 as libc::c_int;
                     c1_16 = *buffer as libc::c_int;
-                    get_buffer = get_buffer << 8i32 | c0_16 as libc::c_ulong;
-                    bits_left += 8i32;
-                    if c0_16 == 0xffi32 {
+                    get_buffer = get_buffer << 8 as libc::c_int | c0_16 as libc::c_ulong;
+                    bits_left += 8 as libc::c_int;
+                    if c0_16 == 0xff as libc::c_int {
                         buffer = buffer.offset(1);
-                        if c1_16 != 0i32 {
+                        if c1_16 != 0 as libc::c_int {
                             (*cinfo).unread_marker = c1_16;
-                            buffer = buffer.offset(-2);
-                            get_buffer &= !0xffi32 as libc::c_ulong
+                            buffer = buffer.offset(-(2 as libc::c_int as isize));
+                            get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                         }
                     }
                 }
-                s = (get_buffer >> bits_left - 8i32) as libc::c_int & (1i32 << 8i32) - 1i32;
+                s = (get_buffer >> bits_left - 8 as libc::c_int) as libc::c_int
+                    & ((1 as libc::c_int) << 8 as libc::c_int) - 1 as libc::c_int;
                 s = (*actbl).lookup[s as usize];
                 l = s >> crate::src::jdhuff::HUFF_LOOKAHEAD;
                 bits_left -= l;
-                s = s & (1i32 << crate::src::jdhuff::HUFF_LOOKAHEAD) - 1i32;
+                s = s
+                    & ((1 as libc::c_int) << crate::src::jdhuff::HUFF_LOOKAHEAD) - 1 as libc::c_int;
                 if l > crate::src::jdhuff::HUFF_LOOKAHEAD {
-                    s = (get_buffer >> bits_left & ((1i32 << l) - 1i32) as libc::c_ulong)
+                    s = (get_buffer >> bits_left
+                        & (((1 as libc::c_int) << l) - 1 as libc::c_int) as libc::c_ulong)
                         as libc::c_int;
                     while s as libc::c_long > (*actbl).maxcode[l as usize] {
-                        s <<= 1i32;
-                        bits_left -= 1i32;
-                        s |= (get_buffer >> bits_left) as libc::c_int & (1i32 << 1i32) - 1i32;
+                        s <<= 1 as libc::c_int;
+                        bits_left -= 1 as libc::c_int;
+                        s |= (get_buffer >> bits_left) as libc::c_int
+                            & ((1 as libc::c_int) << 1 as libc::c_int) - 1 as libc::c_int;
                         l += 1
                     }
                     s = (*(*actbl).pub_0).huffval[((s as libc::c_long
                         + (*actbl).valoffset[l as usize])
                         as libc::c_int
-                        & 0xffi32) as usize] as libc::c_int
+                        & 0xff as libc::c_int)
+                        as usize] as libc::c_int
                 }
-                r = s >> 4i32;
-                s &= 15i32;
+                r = s >> 4 as libc::c_int;
+                s &= 15 as libc::c_int;
                 if s != 0 {
                     k += r;
-                    if bits_left <= 16i32 {
+                    if bits_left <= 16 as libc::c_int {
                         let mut c0_17: libc::c_int = 0;
                         let mut c1_17: libc::c_int = 0;
                         let fresh23 = buffer;
                         buffer = buffer.offset(1);
                         c0_17 = *fresh23 as libc::c_int;
                         c1_17 = *buffer as libc::c_int;
-                        get_buffer = get_buffer << 8i32 | c0_17 as libc::c_ulong;
-                        bits_left += 8i32;
-                        if c0_17 == 0xffi32 {
+                        get_buffer = get_buffer << 8 as libc::c_int | c0_17 as libc::c_ulong;
+                        bits_left += 8 as libc::c_int;
+                        if c0_17 == 0xff as libc::c_int {
                             buffer = buffer.offset(1);
-                            if c1_17 != 0i32 {
+                            if c1_17 != 0 as libc::c_int {
                                 (*cinfo).unread_marker = c1_17;
-                                buffer = buffer.offset(-2);
-                                get_buffer &= !0xffi32 as libc::c_ulong
+                                buffer = buffer.offset(-(2 as libc::c_int as isize));
+                                get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                             }
                         }
                         let mut c0_18: libc::c_int = 0;
@@ -1625,14 +2226,14 @@ unsafe extern "C" fn decode_mcu_fast(
                         buffer = buffer.offset(1);
                         c0_18 = *fresh24 as libc::c_int;
                         c1_18 = *buffer as libc::c_int;
-                        get_buffer = get_buffer << 8i32 | c0_18 as libc::c_ulong;
-                        bits_left += 8i32;
-                        if c0_18 == 0xffi32 {
+                        get_buffer = get_buffer << 8 as libc::c_int | c0_18 as libc::c_ulong;
+                        bits_left += 8 as libc::c_int;
+                        if c0_18 == 0xff as libc::c_int {
                             buffer = buffer.offset(1);
-                            if c1_18 != 0i32 {
+                            if c1_18 != 0 as libc::c_int {
                                 (*cinfo).unread_marker = c1_18;
-                                buffer = buffer.offset(-2);
-                                get_buffer &= !0xffi32 as libc::c_ulong
+                                buffer = buffer.offset(-(2 as libc::c_int as isize));
+                                get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                             }
                         }
                         let mut c0_19: libc::c_int = 0;
@@ -1641,14 +2242,14 @@ unsafe extern "C" fn decode_mcu_fast(
                         buffer = buffer.offset(1);
                         c0_19 = *fresh25 as libc::c_int;
                         c1_19 = *buffer as libc::c_int;
-                        get_buffer = get_buffer << 8i32 | c0_19 as libc::c_ulong;
-                        bits_left += 8i32;
-                        if c0_19 == 0xffi32 {
+                        get_buffer = get_buffer << 8 as libc::c_int | c0_19 as libc::c_ulong;
+                        bits_left += 8 as libc::c_int;
+                        if c0_19 == 0xff as libc::c_int {
                             buffer = buffer.offset(1);
-                            if c1_19 != 0i32 {
+                            if c1_19 != 0 as libc::c_int {
                                 (*cinfo).unread_marker = c1_19;
-                                buffer = buffer.offset(-2);
-                                get_buffer &= !0xffi32 as libc::c_ulong
+                                buffer = buffer.offset(-(2 as libc::c_int as isize));
+                                get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                             }
                         }
                         let mut c0_20: libc::c_int = 0;
@@ -1657,14 +2258,14 @@ unsafe extern "C" fn decode_mcu_fast(
                         buffer = buffer.offset(1);
                         c0_20 = *fresh26 as libc::c_int;
                         c1_20 = *buffer as libc::c_int;
-                        get_buffer = get_buffer << 8i32 | c0_20 as libc::c_ulong;
-                        bits_left += 8i32;
-                        if c0_20 == 0xffi32 {
+                        get_buffer = get_buffer << 8 as libc::c_int | c0_20 as libc::c_ulong;
+                        bits_left += 8 as libc::c_int;
+                        if c0_20 == 0xff as libc::c_int {
                             buffer = buffer.offset(1);
-                            if c1_20 != 0i32 {
+                            if c1_20 != 0 as libc::c_int {
                                 (*cinfo).unread_marker = c1_20;
-                                buffer = buffer.offset(-2);
-                                get_buffer &= !0xffi32 as libc::c_ulong
+                                buffer = buffer.offset(-(2 as libc::c_int as isize));
+                                get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                             }
                         }
                         let mut c0_21: libc::c_int = 0;
@@ -1673,14 +2274,14 @@ unsafe extern "C" fn decode_mcu_fast(
                         buffer = buffer.offset(1);
                         c0_21 = *fresh27 as libc::c_int;
                         c1_21 = *buffer as libc::c_int;
-                        get_buffer = get_buffer << 8i32 | c0_21 as libc::c_ulong;
-                        bits_left += 8i32;
-                        if c0_21 == 0xffi32 {
+                        get_buffer = get_buffer << 8 as libc::c_int | c0_21 as libc::c_ulong;
+                        bits_left += 8 as libc::c_int;
+                        if c0_21 == 0xff as libc::c_int {
                             buffer = buffer.offset(1);
-                            if c1_21 != 0i32 {
+                            if c1_21 != 0 as libc::c_int {
                                 (*cinfo).unread_marker = c1_21;
-                                buffer = buffer.offset(-2);
-                                get_buffer &= !0xffi32 as libc::c_ulong
+                                buffer = buffer.offset(-(2 as libc::c_int as isize));
+                                get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                             }
                         }
                         let mut c0_22: libc::c_int = 0;
@@ -1689,52 +2290,55 @@ unsafe extern "C" fn decode_mcu_fast(
                         buffer = buffer.offset(1);
                         c0_22 = *fresh28 as libc::c_int;
                         c1_22 = *buffer as libc::c_int;
-                        get_buffer = get_buffer << 8i32 | c0_22 as libc::c_ulong;
-                        bits_left += 8i32;
-                        if c0_22 == 0xffi32 {
+                        get_buffer = get_buffer << 8 as libc::c_int | c0_22 as libc::c_ulong;
+                        bits_left += 8 as libc::c_int;
+                        if c0_22 == 0xff as libc::c_int {
                             buffer = buffer.offset(1);
-                            if c1_22 != 0i32 {
+                            if c1_22 != 0 as libc::c_int {
                                 (*cinfo).unread_marker = c1_22;
-                                buffer = buffer.offset(-2);
-                                get_buffer &= !0xffi32 as libc::c_ulong
+                                buffer = buffer.offset(-(2 as libc::c_int as isize));
+                                get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                             }
                         }
                     }
                     bits_left -= s;
-                    r = (get_buffer >> bits_left) as libc::c_int & (1i32 << s) - 1i32;
+                    r = (get_buffer >> bits_left) as libc::c_int
+                        & ((1 as libc::c_int) << s) - 1 as libc::c_int;
                     s = (r as libc::c_uint).wrapping_add(
-                        (r - (1i32 << s - 1i32) >> 31i32) as libc::c_uint
-                            & ((-1i32 as libc::c_uint) << s).wrapping_add(1i32 as libc::c_uint),
+                        (r - ((1 as libc::c_int) << s - 1 as libc::c_int) >> 31 as libc::c_int)
+                            as libc::c_uint
+                            & ((-(1 as libc::c_int) as libc::c_uint) << s)
+                                .wrapping_add(1 as libc::c_int as libc::c_uint),
                     ) as libc::c_int;
-                    (*block)[*crate::jpegint_h::jpeg_natural_order
+                    (*block)[*crate::src::jutils::jpeg_natural_order
                         .as_ptr()
                         .offset(k as isize) as usize] = s as crate::jmorecfg_h::JCOEF
                 } else {
-                    if r != 15i32 {
+                    if r != 15 as libc::c_int {
                         break;
                     }
-                    k += 15i32
+                    k += 15 as libc::c_int
                 }
                 k += 1
             }
         } else {
-            k = 1i32;
+            k = 1 as libc::c_int;
             while k < crate::jpeglib_h::DCTSIZE2 {
-                if bits_left <= 16i32 {
+                if bits_left <= 16 as libc::c_int {
                     let mut c0_23: libc::c_int = 0;
                     let mut c1_23: libc::c_int = 0;
                     let fresh29 = buffer;
                     buffer = buffer.offset(1);
                     c0_23 = *fresh29 as libc::c_int;
                     c1_23 = *buffer as libc::c_int;
-                    get_buffer = get_buffer << 8i32 | c0_23 as libc::c_ulong;
-                    bits_left += 8i32;
-                    if c0_23 == 0xffi32 {
+                    get_buffer = get_buffer << 8 as libc::c_int | c0_23 as libc::c_ulong;
+                    bits_left += 8 as libc::c_int;
+                    if c0_23 == 0xff as libc::c_int {
                         buffer = buffer.offset(1);
-                        if c1_23 != 0i32 {
+                        if c1_23 != 0 as libc::c_int {
                             (*cinfo).unread_marker = c1_23;
-                            buffer = buffer.offset(-2);
-                            get_buffer &= !0xffi32 as libc::c_ulong
+                            buffer = buffer.offset(-(2 as libc::c_int as isize));
+                            get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                         }
                     }
                     let mut c0_24: libc::c_int = 0;
@@ -1743,14 +2347,14 @@ unsafe extern "C" fn decode_mcu_fast(
                     buffer = buffer.offset(1);
                     c0_24 = *fresh30 as libc::c_int;
                     c1_24 = *buffer as libc::c_int;
-                    get_buffer = get_buffer << 8i32 | c0_24 as libc::c_ulong;
-                    bits_left += 8i32;
-                    if c0_24 == 0xffi32 {
+                    get_buffer = get_buffer << 8 as libc::c_int | c0_24 as libc::c_ulong;
+                    bits_left += 8 as libc::c_int;
+                    if c0_24 == 0xff as libc::c_int {
                         buffer = buffer.offset(1);
-                        if c1_24 != 0i32 {
+                        if c1_24 != 0 as libc::c_int {
                             (*cinfo).unread_marker = c1_24;
-                            buffer = buffer.offset(-2);
-                            get_buffer &= !0xffi32 as libc::c_ulong
+                            buffer = buffer.offset(-(2 as libc::c_int as isize));
+                            get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                         }
                     }
                     let mut c0_25: libc::c_int = 0;
@@ -1759,14 +2363,14 @@ unsafe extern "C" fn decode_mcu_fast(
                     buffer = buffer.offset(1);
                     c0_25 = *fresh31 as libc::c_int;
                     c1_25 = *buffer as libc::c_int;
-                    get_buffer = get_buffer << 8i32 | c0_25 as libc::c_ulong;
-                    bits_left += 8i32;
-                    if c0_25 == 0xffi32 {
+                    get_buffer = get_buffer << 8 as libc::c_int | c0_25 as libc::c_ulong;
+                    bits_left += 8 as libc::c_int;
+                    if c0_25 == 0xff as libc::c_int {
                         buffer = buffer.offset(1);
-                        if c1_25 != 0i32 {
+                        if c1_25 != 0 as libc::c_int {
                             (*cinfo).unread_marker = c1_25;
-                            buffer = buffer.offset(-2);
-                            get_buffer &= !0xffi32 as libc::c_ulong
+                            buffer = buffer.offset(-(2 as libc::c_int as isize));
+                            get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                         }
                     }
                     let mut c0_26: libc::c_int = 0;
@@ -1775,14 +2379,14 @@ unsafe extern "C" fn decode_mcu_fast(
                     buffer = buffer.offset(1);
                     c0_26 = *fresh32 as libc::c_int;
                     c1_26 = *buffer as libc::c_int;
-                    get_buffer = get_buffer << 8i32 | c0_26 as libc::c_ulong;
-                    bits_left += 8i32;
-                    if c0_26 == 0xffi32 {
+                    get_buffer = get_buffer << 8 as libc::c_int | c0_26 as libc::c_ulong;
+                    bits_left += 8 as libc::c_int;
+                    if c0_26 == 0xff as libc::c_int {
                         buffer = buffer.offset(1);
-                        if c1_26 != 0i32 {
+                        if c1_26 != 0 as libc::c_int {
                             (*cinfo).unread_marker = c1_26;
-                            buffer = buffer.offset(-2);
-                            get_buffer &= !0xffi32 as libc::c_ulong
+                            buffer = buffer.offset(-(2 as libc::c_int as isize));
+                            get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                         }
                     }
                     let mut c0_27: libc::c_int = 0;
@@ -1791,14 +2395,14 @@ unsafe extern "C" fn decode_mcu_fast(
                     buffer = buffer.offset(1);
                     c0_27 = *fresh33 as libc::c_int;
                     c1_27 = *buffer as libc::c_int;
-                    get_buffer = get_buffer << 8i32 | c0_27 as libc::c_ulong;
-                    bits_left += 8i32;
-                    if c0_27 == 0xffi32 {
+                    get_buffer = get_buffer << 8 as libc::c_int | c0_27 as libc::c_ulong;
+                    bits_left += 8 as libc::c_int;
+                    if c0_27 == 0xff as libc::c_int {
                         buffer = buffer.offset(1);
-                        if c1_27 != 0i32 {
+                        if c1_27 != 0 as libc::c_int {
                             (*cinfo).unread_marker = c1_27;
-                            buffer = buffer.offset(-2);
-                            get_buffer &= !0xffi32 as libc::c_ulong
+                            buffer = buffer.offset(-(2 as libc::c_int as isize));
+                            get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                         }
                     }
                     let mut c0_28: libc::c_int = 0;
@@ -1807,55 +2411,60 @@ unsafe extern "C" fn decode_mcu_fast(
                     buffer = buffer.offset(1);
                     c0_28 = *fresh34 as libc::c_int;
                     c1_28 = *buffer as libc::c_int;
-                    get_buffer = get_buffer << 8i32 | c0_28 as libc::c_ulong;
-                    bits_left += 8i32;
-                    if c0_28 == 0xffi32 {
+                    get_buffer = get_buffer << 8 as libc::c_int | c0_28 as libc::c_ulong;
+                    bits_left += 8 as libc::c_int;
+                    if c0_28 == 0xff as libc::c_int {
                         buffer = buffer.offset(1);
-                        if c1_28 != 0i32 {
+                        if c1_28 != 0 as libc::c_int {
                             (*cinfo).unread_marker = c1_28;
-                            buffer = buffer.offset(-2);
-                            get_buffer &= !0xffi32 as libc::c_ulong
+                            buffer = buffer.offset(-(2 as libc::c_int as isize));
+                            get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                         }
                     }
                 }
-                s = (get_buffer >> bits_left - 8i32) as libc::c_int & (1i32 << 8i32) - 1i32;
+                s = (get_buffer >> bits_left - 8 as libc::c_int) as libc::c_int
+                    & ((1 as libc::c_int) << 8 as libc::c_int) - 1 as libc::c_int;
                 s = (*actbl).lookup[s as usize];
                 l = s >> crate::src::jdhuff::HUFF_LOOKAHEAD;
                 bits_left -= l;
-                s = s & (1i32 << crate::src::jdhuff::HUFF_LOOKAHEAD) - 1i32;
+                s = s
+                    & ((1 as libc::c_int) << crate::src::jdhuff::HUFF_LOOKAHEAD) - 1 as libc::c_int;
                 if l > crate::src::jdhuff::HUFF_LOOKAHEAD {
-                    s = (get_buffer >> bits_left & ((1i32 << l) - 1i32) as libc::c_ulong)
+                    s = (get_buffer >> bits_left
+                        & (((1 as libc::c_int) << l) - 1 as libc::c_int) as libc::c_ulong)
                         as libc::c_int;
                     while s as libc::c_long > (*actbl).maxcode[l as usize] {
-                        s <<= 1i32;
-                        bits_left -= 1i32;
-                        s |= (get_buffer >> bits_left) as libc::c_int & (1i32 << 1i32) - 1i32;
+                        s <<= 1 as libc::c_int;
+                        bits_left -= 1 as libc::c_int;
+                        s |= (get_buffer >> bits_left) as libc::c_int
+                            & ((1 as libc::c_int) << 1 as libc::c_int) - 1 as libc::c_int;
                         l += 1
                     }
                     s = (*(*actbl).pub_0).huffval[((s as libc::c_long
                         + (*actbl).valoffset[l as usize])
                         as libc::c_int
-                        & 0xffi32) as usize] as libc::c_int
+                        & 0xff as libc::c_int)
+                        as usize] as libc::c_int
                 }
-                r = s >> 4i32;
-                s &= 15i32;
+                r = s >> 4 as libc::c_int;
+                s &= 15 as libc::c_int;
                 if s != 0 {
                     k += r;
-                    if bits_left <= 16i32 {
+                    if bits_left <= 16 as libc::c_int {
                         let mut c0_29: libc::c_int = 0;
                         let mut c1_29: libc::c_int = 0;
                         let fresh35 = buffer;
                         buffer = buffer.offset(1);
                         c0_29 = *fresh35 as libc::c_int;
                         c1_29 = *buffer as libc::c_int;
-                        get_buffer = get_buffer << 8i32 | c0_29 as libc::c_ulong;
-                        bits_left += 8i32;
-                        if c0_29 == 0xffi32 {
+                        get_buffer = get_buffer << 8 as libc::c_int | c0_29 as libc::c_ulong;
+                        bits_left += 8 as libc::c_int;
+                        if c0_29 == 0xff as libc::c_int {
                             buffer = buffer.offset(1);
-                            if c1_29 != 0i32 {
+                            if c1_29 != 0 as libc::c_int {
                                 (*cinfo).unread_marker = c1_29;
-                                buffer = buffer.offset(-2);
-                                get_buffer &= !0xffi32 as libc::c_ulong
+                                buffer = buffer.offset(-(2 as libc::c_int as isize));
+                                get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                             }
                         }
                         let mut c0_30: libc::c_int = 0;
@@ -1864,14 +2473,14 @@ unsafe extern "C" fn decode_mcu_fast(
                         buffer = buffer.offset(1);
                         c0_30 = *fresh36 as libc::c_int;
                         c1_30 = *buffer as libc::c_int;
-                        get_buffer = get_buffer << 8i32 | c0_30 as libc::c_ulong;
-                        bits_left += 8i32;
-                        if c0_30 == 0xffi32 {
+                        get_buffer = get_buffer << 8 as libc::c_int | c0_30 as libc::c_ulong;
+                        bits_left += 8 as libc::c_int;
+                        if c0_30 == 0xff as libc::c_int {
                             buffer = buffer.offset(1);
-                            if c1_30 != 0i32 {
+                            if c1_30 != 0 as libc::c_int {
                                 (*cinfo).unread_marker = c1_30;
-                                buffer = buffer.offset(-2);
-                                get_buffer &= !0xffi32 as libc::c_ulong
+                                buffer = buffer.offset(-(2 as libc::c_int as isize));
+                                get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                             }
                         }
                         let mut c0_31: libc::c_int = 0;
@@ -1880,14 +2489,14 @@ unsafe extern "C" fn decode_mcu_fast(
                         buffer = buffer.offset(1);
                         c0_31 = *fresh37 as libc::c_int;
                         c1_31 = *buffer as libc::c_int;
-                        get_buffer = get_buffer << 8i32 | c0_31 as libc::c_ulong;
-                        bits_left += 8i32;
-                        if c0_31 == 0xffi32 {
+                        get_buffer = get_buffer << 8 as libc::c_int | c0_31 as libc::c_ulong;
+                        bits_left += 8 as libc::c_int;
+                        if c0_31 == 0xff as libc::c_int {
                             buffer = buffer.offset(1);
-                            if c1_31 != 0i32 {
+                            if c1_31 != 0 as libc::c_int {
                                 (*cinfo).unread_marker = c1_31;
-                                buffer = buffer.offset(-2);
-                                get_buffer &= !0xffi32 as libc::c_ulong
+                                buffer = buffer.offset(-(2 as libc::c_int as isize));
+                                get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                             }
                         }
                         let mut c0_32: libc::c_int = 0;
@@ -1896,14 +2505,14 @@ unsafe extern "C" fn decode_mcu_fast(
                         buffer = buffer.offset(1);
                         c0_32 = *fresh38 as libc::c_int;
                         c1_32 = *buffer as libc::c_int;
-                        get_buffer = get_buffer << 8i32 | c0_32 as libc::c_ulong;
-                        bits_left += 8i32;
-                        if c0_32 == 0xffi32 {
+                        get_buffer = get_buffer << 8 as libc::c_int | c0_32 as libc::c_ulong;
+                        bits_left += 8 as libc::c_int;
+                        if c0_32 == 0xff as libc::c_int {
                             buffer = buffer.offset(1);
-                            if c1_32 != 0i32 {
+                            if c1_32 != 0 as libc::c_int {
                                 (*cinfo).unread_marker = c1_32;
-                                buffer = buffer.offset(-2);
-                                get_buffer &= !0xffi32 as libc::c_ulong
+                                buffer = buffer.offset(-(2 as libc::c_int as isize));
+                                get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                             }
                         }
                         let mut c0_33: libc::c_int = 0;
@@ -1912,14 +2521,14 @@ unsafe extern "C" fn decode_mcu_fast(
                         buffer = buffer.offset(1);
                         c0_33 = *fresh39 as libc::c_int;
                         c1_33 = *buffer as libc::c_int;
-                        get_buffer = get_buffer << 8i32 | c0_33 as libc::c_ulong;
-                        bits_left += 8i32;
-                        if c0_33 == 0xffi32 {
+                        get_buffer = get_buffer << 8 as libc::c_int | c0_33 as libc::c_ulong;
+                        bits_left += 8 as libc::c_int;
+                        if c0_33 == 0xff as libc::c_int {
                             buffer = buffer.offset(1);
-                            if c1_33 != 0i32 {
+                            if c1_33 != 0 as libc::c_int {
                                 (*cinfo).unread_marker = c1_33;
-                                buffer = buffer.offset(-2);
-                                get_buffer &= !0xffi32 as libc::c_ulong
+                                buffer = buffer.offset(-(2 as libc::c_int as isize));
+                                get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                             }
                         }
                         let mut c0_34: libc::c_int = 0;
@@ -1928,31 +2537,31 @@ unsafe extern "C" fn decode_mcu_fast(
                         buffer = buffer.offset(1);
                         c0_34 = *fresh40 as libc::c_int;
                         c1_34 = *buffer as libc::c_int;
-                        get_buffer = get_buffer << 8i32 | c0_34 as libc::c_ulong;
-                        bits_left += 8i32;
-                        if c0_34 == 0xffi32 {
+                        get_buffer = get_buffer << 8 as libc::c_int | c0_34 as libc::c_ulong;
+                        bits_left += 8 as libc::c_int;
+                        if c0_34 == 0xff as libc::c_int {
                             buffer = buffer.offset(1);
-                            if c1_34 != 0i32 {
+                            if c1_34 != 0 as libc::c_int {
                                 (*cinfo).unread_marker = c1_34;
-                                buffer = buffer.offset(-2);
-                                get_buffer &= !0xffi32 as libc::c_ulong
+                                buffer = buffer.offset(-(2 as libc::c_int as isize));
+                                get_buffer &= !(0xff as libc::c_int) as libc::c_ulong
                             }
                         }
                     }
                     bits_left -= s
                 } else {
-                    if r != 15i32 {
+                    if r != 15 as libc::c_int {
                         break;
                     }
-                    k += 15i32
+                    k += 15 as libc::c_int
                 }
                 k += 1
             }
         }
         blkn += 1
     }
-    if (*cinfo).unread_marker != 0i32 {
-        (*cinfo).unread_marker = 0i32;
+    if (*cinfo).unread_marker != 0 as libc::c_int {
+        (*cinfo).unread_marker = 0 as libc::c_int;
         return crate::jmorecfg_h::FALSE;
     }
     br_state.bytes_in_buffer = (br_state.bytes_in_buffer as libc::c_ulong).wrapping_sub(
@@ -1981,28 +2590,28 @@ unsafe extern "C" fn decode_mcu_fast(
  * this module, since we'll just re-assign them on the next call.)
  */
 
-pub const BUFSIZE: libc::c_int = crate::jpeglib_h::DCTSIZE2 * 8i32;
+pub const BUFSIZE: libc::c_int = crate::jpeglib_h::DCTSIZE2 * 8 as libc::c_int;
 
 unsafe extern "C" fn decode_mcu(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
     mut MCU_data: *mut crate::jpeglib_h::JBLOCKROW,
 ) -> crate::jmorecfg_h::boolean {
     let mut entropy: huff_entropy_ptr = (*cinfo).entropy as huff_entropy_ptr;
-    let mut usefast: libc::c_int = 1i32;
+    let mut usefast: libc::c_int = 1 as libc::c_int;
     /* Process restart marker if needed; may have to suspend */
     if (*cinfo).restart_interval != 0 {
-        if (*entropy).restarts_to_go == 0i32 as libc::c_uint {
+        if (*entropy).restarts_to_go == 0 as libc::c_int as libc::c_uint {
             if process_restart(cinfo) == 0 {
                 return crate::jmorecfg_h::FALSE;
             }
         }
-        usefast = 0i32
+        usefast = 0 as libc::c_int
     }
     if (*(*cinfo).src).bytes_in_buffer
         < (BUFSIZE as libc::c_ulong).wrapping_mul((*cinfo).blocks_in_MCU as crate::stddef_h::size_t)
-        || (*cinfo).unread_marker != 0i32
+        || (*cinfo).unread_marker != 0 as libc::c_int
     {
-        usefast = 0i32
+        usefast = 0 as libc::c_int
     }
     /* If we've run out of data, just leave the MCU set to zeroes.
      * This way, we return uniform gray for the remainder of the segment.
@@ -2043,7 +2652,7 @@ pub unsafe extern "C" fn jinit_huff_decoder(mut cinfo: crate::jpeglib_h::j_decom
     are the default tables.  Thus, if the tables are not set by the time
     the Huffman decoder is initialized (usually within the body of
     jpeg_start_decompress()), we set them to default values. */
-    crate::jstdhuff_c::std_huff_tables(cinfo as crate::jpeglib_h::j_common_ptr);
+    std_huff_tables(cinfo as crate::jpeglib_h::j_common_ptr);
     entropy = Some(
         (*(*cinfo).mem)
             .alloc_small
@@ -2054,7 +2663,7 @@ pub unsafe extern "C" fn jinit_huff_decoder(mut cinfo: crate::jpeglib_h::j_decom
         crate::jpeglib_h::JPOOL_IMAGE,
         ::std::mem::size_of::<huff_entropy_decoder>() as libc::c_ulong,
     ) as huff_entropy_ptr;
-    (*cinfo).entropy = entropy as *mut crate::jpeglib_h::jpeg_entropy_decoder;
+    (*cinfo).entropy = entropy as *mut crate::jpegint_h::jpeg_entropy_decoder;
     (*entropy).pub_0.start_pass = Some(
         start_pass_huff_decoder
             as unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> (),
@@ -2067,7 +2676,7 @@ pub unsafe extern "C" fn jinit_huff_decoder(mut cinfo: crate::jpeglib_h::j_decom
             ) -> crate::jmorecfg_h::boolean,
     );
     /* Mark tables unallocated */
-    i = 0i32;
+    i = 0 as libc::c_int;
     while i < crate::jpeglib_h::NUM_HUFF_TBLS {
         (*entropy).ac_derived_tbls[i as usize] =
             crate::stddef_h::NULL as *mut crate::src::jdhuff::d_derived_tbl;

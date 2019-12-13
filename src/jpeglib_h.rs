@@ -1,469 +1,178 @@
-extern "C" {
-    #[no_mangle]
-    pub fn jpeg_write_m_header(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        marker: libc::c_int,
-        datalen: libc::c_uint,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_write_m_byte(cinfo: crate::jpeglib_h::j_compress_ptr, val: libc::c_int);
-    /* Read or write raw DCT coefficients --- useful for lossless transcoding. */
-    #[no_mangle]
-    pub fn jpeg_read_coefficients(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-    ) -> *mut crate::jpeglib_h::jvirt_barray_ptr;
-
-    #[no_mangle]
-    pub fn jpeg_write_coefficients(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        coef_arrays: *mut crate::jpeglib_h::jvirt_barray_ptr,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_copy_critical_parameters(
-        srcinfo: crate::jpeglib_h::j_decompress_ptr,
-        dstinfo: crate::jpeglib_h::j_compress_ptr,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_c_int_param_supported(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        param: crate::jpeglib_h::J_INT_PARAM,
-    ) -> crate::jmorecfg_h::boolean;
-
-    #[no_mangle]
-    pub fn jpeg_alloc_quant_table(
-        cinfo: crate::jpeglib_h::j_common_ptr,
-    ) -> *mut crate::jpeglib_h::JQUANT_TBL;
-
-    #[no_mangle]
-    pub fn jpeg_add_quant_table(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        which_tbl: libc::c_int,
-        basic_table: *const libc::c_uint,
-        scale_factor: libc::c_int,
-        force_baseline: crate::jmorecfg_h::boolean,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_float_quality_scaling(quality: libc::c_float) -> libc::c_float;
-
-    #[no_mangle]
-    pub fn jpeg_suppress_tables(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        suppress: crate::jmorecfg_h::boolean,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_resync_to_restart(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        desired: libc::c_int,
-    ) -> crate::jmorecfg_h::boolean;
-    /* Generic versions of jpeg_abort and jpeg_destroy that work on either
-     * flavor of JPEG object.  These may be more convenient in some places.
-     */
-    #[no_mangle]
-    pub fn jpeg_destroy(cinfo: crate::jpeglib_h::j_common_ptr);
-
-    #[no_mangle]
-    pub fn jpeg_abort(cinfo: crate::jpeglib_h::j_common_ptr);
-
-    #[no_mangle]
-    pub fn jpeg_alloc_huff_table(
-        cinfo: crate::jpeglib_h::j_common_ptr,
-    ) -> *mut crate::jpeglib_h::JHUFF_TBL;
-
-    #[no_mangle]
-    pub fn jpeg_std_error(
-        err: *mut crate::jpeglib_h::jpeg_error_mgr,
-    ) -> *mut crate::jpeglib_h::jpeg_error_mgr;
-
-    #[no_mangle]
-    pub fn jpeg_CreateCompress(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        version: libc::c_int,
-        structsize: crate::stddef_h::size_t,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_destroy_compress(cinfo: crate::jpeglib_h::j_compress_ptr);
-
-    #[no_mangle]
-    pub fn jpeg_stdio_dest(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        outfile: *mut crate::stdlib::FILE,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_mem_dest(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        outbuffer: *mut *mut libc::c_uchar,
-        outsize: *mut libc::c_ulong,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_set_defaults(cinfo: crate::jpeglib_h::j_compress_ptr);
-
-    #[no_mangle]
-    pub fn jpeg_set_colorspace(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        colorspace: crate::jpeglib_h::J_COLOR_SPACE,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_default_colorspace(cinfo: crate::jpeglib_h::j_compress_ptr);
-
-    #[no_mangle]
-    pub fn jpeg_set_quality(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        quality: libc::c_int,
-        force_baseline: crate::jmorecfg_h::boolean,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_simple_progression(cinfo: crate::jpeglib_h::j_compress_ptr);
-
-    #[no_mangle]
-    pub fn jpeg_start_compress(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        write_all_tables: crate::jmorecfg_h::boolean,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_write_scanlines(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        scanlines: crate::jpeglib_h::JSAMPARRAY,
-        num_lines: crate::jmorecfg_h::JDIMENSION,
-    ) -> crate::jmorecfg_h::JDIMENSION;
-
-    #[no_mangle]
-    pub fn jpeg_finish_compress(cinfo: crate::jpeglib_h::j_compress_ptr);
-
-    #[no_mangle]
-    pub fn jpeg_write_marker(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        marker: libc::c_int,
-        dataptr: *const crate::jmorecfg_h::JOCTET,
-        datalen: libc::c_uint,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_write_icc_profile(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        icc_data_ptr: *const crate::jmorecfg_h::JOCTET,
-        icc_data_len: libc::c_uint,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_c_set_bool_param(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        param: crate::jpeglib_h::J_BOOLEAN_PARAM,
-        value: crate::jmorecfg_h::boolean,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_c_set_float_param(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        param: crate::jpeglib_h::J_FLOAT_PARAM,
-        value: libc::c_float,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_c_set_int_param(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        param: crate::jpeglib_h::J_INT_PARAM,
-        value: libc::c_int,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_c_get_int_param(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        param: crate::jpeglib_h::J_INT_PARAM,
-    ) -> libc::c_int;
-
-    #[no_mangle]
-    pub fn jpeg_CreateDecompress(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        version: libc::c_int,
-        structsize: crate::stddef_h::size_t,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_destroy_decompress(cinfo: crate::jpeglib_h::j_decompress_ptr);
-
-    #[no_mangle]
-    pub fn jpeg_stdio_src(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        infile: *mut crate::stdlib::FILE,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_mem_src(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        inbuffer: *const libc::c_uchar,
-        insize: libc::c_ulong,
-    );
-    /* Decompression startup: read start of JPEG datastream to see what's there */
-    #[no_mangle]
-    pub fn jpeg_read_header(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        require_image: crate::jmorecfg_h::boolean,
-    ) -> libc::c_int;
-    /* Return value is one of: */
-    /* Suspended due to lack of input data */
-    /* Found valid image datastream */
-    /* Found valid table-specs-only datastream */
-    /* If you pass require_image = TRUE (normal case), you need not check for
-     * a TABLES_ONLY return code; an abbreviated file will cause an error exit.
-     * JPEG_SUSPENDED is only possible if you use a data source module that can
-     * give a suspension return (the stdio source module doesn't).
-     */
-    /* Main entry points for decompression */
-    #[no_mangle]
-    pub fn jpeg_start_decompress(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-    ) -> crate::jmorecfg_h::boolean;
-
-    #[no_mangle]
-    pub fn jpeg_read_scanlines(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        scanlines: crate::jpeglib_h::JSAMPARRAY,
-        max_lines: crate::jmorecfg_h::JDIMENSION,
-    ) -> crate::jmorecfg_h::JDIMENSION;
-
-    #[no_mangle]
-    pub fn jpeg_skip_scanlines(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        num_lines: crate::jmorecfg_h::JDIMENSION,
-    ) -> crate::jmorecfg_h::JDIMENSION;
-
-    #[no_mangle]
-    pub fn jpeg_crop_scanline(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        xoffset: *mut crate::jmorecfg_h::JDIMENSION,
-        width: *mut crate::jmorecfg_h::JDIMENSION,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_finish_decompress(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-    ) -> crate::jmorecfg_h::boolean;
-    /* Control saving of COM and APPn markers into marker_list. */
-    #[no_mangle]
-    pub fn jpeg_save_markers(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        marker_code: libc::c_int,
-        length_limit: libc::c_uint,
-    );
-    /* Install a special processing method for COM or APPn markers. */
-    #[no_mangle]
-    pub fn jpeg_set_marker_processor(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        marker_code: libc::c_int,
-        routine: crate::jpeglib_h::jpeg_marker_parser_method,
-    );
-    /* Read ICC profile.  See libjpeg.txt for usage information. */
-    #[no_mangle]
-    pub fn jpeg_read_icc_profile(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        icc_data_ptr: *mut *mut crate::jmorecfg_h::JOCTET,
-        icc_data_len: *mut libc::c_uint,
-    ) -> crate::jmorecfg_h::boolean;
-
-    #[no_mangle]
-    pub fn jpeg_write_raw_data(
-        cinfo: crate::jpeglib_h::j_compress_ptr,
-        data: crate::jpeglib_h::JSAMPIMAGE,
-        num_lines: crate::jmorecfg_h::JDIMENSION,
-    ) -> crate::jmorecfg_h::JDIMENSION;
-
-    #[no_mangle]
-    pub fn jpeg_read_raw_data(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        data: crate::jpeglib_h::JSAMPIMAGE,
-        max_lines: crate::jmorecfg_h::JDIMENSION,
-    ) -> crate::jmorecfg_h::JDIMENSION;
-
-    #[no_mangle]
-    pub fn jpeg_calc_output_dimensions(cinfo: crate::jpeglib_h::j_decompress_ptr);
-
-    #[no_mangle]
-    pub fn jpeg_abort_compress(cinfo: crate::jpeglib_h::j_compress_ptr);
-
-    #[no_mangle]
-    pub fn jpeg_abort_decompress(cinfo: crate::jpeglib_h::j_decompress_ptr);
-}
-// =============== BEGIN jpeglib_h ================
-use crate::stdlib::FILE;
+pub const JPEG_COM: libc::c_int = 0xfe as libc::c_int;
+pub type J_BOOLEAN_PARAM = libc::c_uint;
+pub type J_FLOAT_PARAM = libc::c_uint;
+pub type J_INT_PARAM = libc::c_uint;
+pub const JBOOLEAN_OVERSHOOT_DERINGING: crate::jpeglib_h::J_BOOLEAN_PARAM = 1061927929;
+pub const JBOOLEAN_TRELLIS_Q_OPT: crate::jpeglib_h::J_BOOLEAN_PARAM = 3777684073;
+pub const JBOOLEAN_USE_SCANS_IN_TRELLIS: crate::jpeglib_h::J_BOOLEAN_PARAM = 4253291573;
+pub const JBOOLEAN_USE_LAMBDA_WEIGHT_TBL: crate::jpeglib_h::J_BOOLEAN_PARAM = 865973855;
+pub const JBOOLEAN_TRELLIS_EOB_OPT: crate::jpeglib_h::J_BOOLEAN_PARAM = 3623303040;
+pub const JBOOLEAN_TRELLIS_QUANT_DC: crate::jpeglib_h::J_BOOLEAN_PARAM = 865946636;
+pub const JBOOLEAN_TRELLIS_QUANT: crate::jpeglib_h::J_BOOLEAN_PARAM = 3306299443;
+pub const JBOOLEAN_OPTIMIZE_SCANS: crate::jpeglib_h::J_BOOLEAN_PARAM = 1745618462;
+pub const JFLOAT_TRELLIS_DELTA_DC_WEIGHT: crate::jpeglib_h::J_FLOAT_PARAM = 326587475;
+pub const JFLOAT_LAMBDA_LOG_SCALE2: crate::jpeglib_h::J_FLOAT_PARAM = 3116084739;
+pub const JFLOAT_LAMBDA_LOG_SCALE1: crate::jpeglib_h::J_FLOAT_PARAM = 1533126041;
+pub const JINT_DC_SCAN_OPT_MODE: crate::jpeglib_h::J_INT_PARAM = 199732540;
+pub const JINT_BASE_QUANT_TBL_IDX: crate::jpeglib_h::J_INT_PARAM = 1145645745;
+pub const JINT_TRELLIS_NUM_LOOPS: crate::jpeglib_h::J_INT_PARAM = 3057565497;
+pub const JINT_TRELLIS_FREQ_SPLIT: crate::jpeglib_h::J_INT_PARAM = 1873801511;
+pub const JINT_COMPRESS_PROFILE: crate::jpeglib_h::J_INT_PARAM = 3918628389;
 #[repr(C)]
 #[derive(Copy, Clone)]
-pub struct jpeg_color_quantizer {
-    pub start_pass: Option<
-        unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_decompress_ptr,
-            _: crate::jmorecfg_h::boolean,
-        ) -> (),
+pub struct jpeg_marker_struct {
+    pub next: crate::jpeglib_h::jpeg_saved_marker_ptr,
+    pub marker: crate::jmorecfg_h::UINT8,
+    pub original_length: libc::c_uint,
+    pub data_length: libc::c_uint,
+    pub data: *mut crate::jmorecfg_h::JOCTET,
+}
+/* The decompressor can save APPn and COM markers in a list of these: */
+pub type jpeg_saved_marker_ptr = *mut crate::jpeglib_h::jpeg_marker_struct;
+pub type J_DITHER_MODE = libc::c_uint;
+/* Master record for a decompression instance */
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct jpeg_decompress_struct {
+    pub err: *mut crate::jpeglib_h::jpeg_error_mgr,
+    pub mem: *mut crate::jpeglib_h::jpeg_memory_mgr,
+    pub progress: *mut crate::jpeglib_h::jpeg_progress_mgr,
+    pub client_data: *mut libc::c_void,
+    pub is_decompressor: crate::jmorecfg_h::boolean,
+    pub global_state: libc::c_int,
+    pub src: *mut crate::jpeglib_h::jpeg_source_mgr,
+    pub image_width: crate::jmorecfg_h::JDIMENSION,
+    pub image_height: crate::jmorecfg_h::JDIMENSION,
+    pub num_components: libc::c_int,
+    pub jpeg_color_space: crate::jpeglib_h::J_COLOR_SPACE,
+    pub out_color_space: crate::jpeglib_h::J_COLOR_SPACE,
+    pub scale_num: libc::c_uint,
+    pub scale_denom: libc::c_uint,
+    pub output_gamma: libc::c_double,
+    pub buffered_image: crate::jmorecfg_h::boolean,
+    pub raw_data_out: crate::jmorecfg_h::boolean,
+    pub dct_method: crate::jpeglib_h::J_DCT_METHOD,
+    pub do_fancy_upsampling: crate::jmorecfg_h::boolean,
+    pub do_block_smoothing: crate::jmorecfg_h::boolean,
+    pub quantize_colors: crate::jmorecfg_h::boolean,
+    pub dither_mode: crate::jpeglib_h::J_DITHER_MODE,
+    pub two_pass_quantize: crate::jmorecfg_h::boolean,
+    pub desired_number_of_colors: libc::c_int,
+    pub enable_1pass_quant: crate::jmorecfg_h::boolean,
+    pub enable_external_quant: crate::jmorecfg_h::boolean,
+    pub enable_2pass_quant: crate::jmorecfg_h::boolean,
+    pub output_width: crate::jmorecfg_h::JDIMENSION,
+    pub output_height: crate::jmorecfg_h::JDIMENSION,
+    pub out_color_components: libc::c_int,
+    pub output_components: libc::c_int,
+    pub rec_outbuf_height: libc::c_int,
+    pub actual_number_of_colors: libc::c_int,
+    pub colormap: crate::jpeglib_h::JSAMPARRAY,
+    pub output_scanline: crate::jmorecfg_h::JDIMENSION,
+    pub input_scan_number: libc::c_int,
+    pub input_iMCU_row: crate::jmorecfg_h::JDIMENSION,
+    pub output_scan_number: libc::c_int,
+    pub output_iMCU_row: crate::jmorecfg_h::JDIMENSION,
+    pub coef_bits: *mut [libc::c_int; 64],
+    pub quant_tbl_ptrs: [*mut crate::jpeglib_h::JQUANT_TBL; 4],
+    pub dc_huff_tbl_ptrs: [*mut crate::jpeglib_h::JHUFF_TBL; 4],
+    pub ac_huff_tbl_ptrs: [*mut crate::jpeglib_h::JHUFF_TBL; 4],
+    pub data_precision: libc::c_int,
+    pub comp_info: *mut crate::jpeglib_h::jpeg_component_info,
+    pub progressive_mode: crate::jmorecfg_h::boolean,
+    pub arith_code: crate::jmorecfg_h::boolean,
+    pub arith_dc_L: [crate::jmorecfg_h::UINT8; 16],
+    pub arith_dc_U: [crate::jmorecfg_h::UINT8; 16],
+    pub arith_ac_K: [crate::jmorecfg_h::UINT8; 16],
+    pub restart_interval: libc::c_uint,
+    pub saw_JFIF_marker: crate::jmorecfg_h::boolean,
+    pub JFIF_major_version: crate::jmorecfg_h::UINT8,
+    pub JFIF_minor_version: crate::jmorecfg_h::UINT8,
+    pub density_unit: crate::jmorecfg_h::UINT8,
+    pub X_density: crate::jmorecfg_h::UINT16,
+    pub Y_density: crate::jmorecfg_h::UINT16,
+    pub saw_Adobe_marker: crate::jmorecfg_h::boolean,
+    pub Adobe_transform: crate::jmorecfg_h::UINT8,
+    pub CCIR601_sampling: crate::jmorecfg_h::boolean,
+    pub marker_list: crate::jpeglib_h::jpeg_saved_marker_ptr,
+    pub max_h_samp_factor: libc::c_int,
+    pub max_v_samp_factor: libc::c_int,
+    pub min_DCT_scaled_size: libc::c_int,
+    pub total_iMCU_rows: crate::jmorecfg_h::JDIMENSION,
+    pub sample_range_limit: *mut crate::jmorecfg_h::JSAMPLE,
+    pub comps_in_scan: libc::c_int,
+    pub cur_comp_info: [*mut crate::jpeglib_h::jpeg_component_info; 4],
+    pub MCUs_per_row: crate::jmorecfg_h::JDIMENSION,
+    pub MCU_rows_in_scan: crate::jmorecfg_h::JDIMENSION,
+    pub blocks_in_MCU: libc::c_int,
+    pub MCU_membership: [libc::c_int; 10],
+    pub Ss: libc::c_int,
+    pub Se: libc::c_int,
+    pub Ah: libc::c_int,
+    pub Al: libc::c_int,
+    pub unread_marker: libc::c_int,
+    pub master: *mut crate::jpegint_h::jpeg_decomp_master,
+    pub main: *mut crate::jpegint_h::jpeg_d_main_controller,
+    pub coef: *mut crate::jpegint_h::jpeg_d_coef_controller,
+    pub post: *mut crate::jpegint_h::jpeg_d_post_controller,
+    pub inputctl: *mut crate::jpegint_h::jpeg_input_controller,
+    pub marker: *mut crate::jpegint_h::jpeg_marker_reader,
+    pub entropy: *mut crate::jpegint_h::jpeg_entropy_decoder,
+    pub idct: *mut crate::jpegint_h::jpeg_inverse_dct,
+    pub upsample: *mut crate::jpegint_h::jpeg_upsampler,
+    pub cconvert: *mut crate::jpegint_h::jpeg_color_deconverter,
+    pub cquantize: *mut crate::jpegint_h::jpeg_color_quantizer,
+}
+pub type j_decompress_ptr = *mut crate::jpeglib_h::jpeg_decompress_struct;
+/* Routine signature for application-supplied marker processing methods.
+ * Need not pass marker code since it is stored in cinfo->unread_marker.
+ */
+pub type jpeg_marker_parser_method = Option<
+    unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> crate::jmorecfg_h::boolean,
+>;
+/* Data source object for decompression */
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct jpeg_source_mgr {
+    pub next_input_byte: *const crate::jmorecfg_h::JOCTET,
+    pub bytes_in_buffer: crate::stddef_h::size_t,
+    pub init_source: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
+    pub fill_input_buffer: Option<
+        unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> crate::jmorecfg_h::boolean,
     >,
-    pub color_quantize: Option<
+    pub skip_input_data:
+        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr, _: libc::c_long) -> ()>,
+    pub resync_to_restart: Option<
         unsafe extern "C" fn(
             _: crate::jpeglib_h::j_decompress_ptr,
-            _: crate::jpeglib_h::JSAMPARRAY,
-            _: crate::jpeglib_h::JSAMPARRAY,
             _: libc::c_int,
-        ) -> (),
-    >,
-    pub finish_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
-    pub new_color_map: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jpeg_color_deconverter {
-    pub start_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
-    pub color_convert: Option<
-        unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_decompress_ptr,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPARRAY,
-            _: libc::c_int,
-        ) -> (),
-    >,
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jpeg_upsampler {
-    pub start_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
-    pub upsample: Option<
-        unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_decompress_ptr,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-            _: *mut crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPARRAY,
-            _: *mut crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
-        ) -> (),
-    >,
-    pub need_context_rows: crate::jmorecfg_h::boolean,
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jpeg_inverse_dct {
-    pub start_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
-    pub inverse_DCT: [crate::jpegint_h::inverse_DCT_method_ptr; 10],
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jpeg_entropy_decoder {
-    pub start_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
-    pub decode_mcu: Option<
-        unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_decompress_ptr,
-            _: *mut crate::jpeglib_h::JBLOCKROW,
         ) -> crate::jmorecfg_h::boolean,
     >,
-    pub insufficient_data: crate::jmorecfg_h::boolean,
+    pub term_source: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
 }
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jpeg_marker_reader {
-    pub reset_marker_reader:
-        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
-    pub read_markers:
-        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> libc::c_int>,
-    pub read_restart_marker: crate::jpeglib_h::jpeg_marker_parser_method,
-    pub saw_SOI: crate::jmorecfg_h::boolean,
-    pub saw_SOF: crate::jmorecfg_h::boolean,
-    pub next_restart_num: libc::c_int,
-    pub discarded_bytes: libc::c_uint,
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jpeg_input_controller {
-    pub consume_input:
-        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> libc::c_int>,
-    pub reset_input_controller:
-        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
-    pub start_input_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
-    pub finish_input_pass:
-        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
-    pub has_multiple_scans: crate::jmorecfg_h::boolean,
-    pub eoi_reached: crate::jmorecfg_h::boolean,
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jpeg_d_post_controller {
-    pub start_pass: Option<
-        unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_decompress_ptr,
-            _: crate::jpegint_h::J_BUF_MODE,
-        ) -> (),
-    >,
-    pub post_process_data: Option<
-        unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_decompress_ptr,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-            _: *mut crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPARRAY,
-            _: *mut crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
-        ) -> (),
-    >,
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jpeg_d_coef_controller {
-    pub start_input_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
-    pub consume_data:
-        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> libc::c_int>,
-    pub start_output_pass:
-        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
-    pub decompress_data: Option<
-        unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_decompress_ptr,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-        ) -> libc::c_int,
-    >,
-    pub coef_arrays: *mut crate::jpeglib_h::jvirt_barray_ptr,
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jpeg_d_main_controller {
-    pub start_pass: Option<
-        unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_decompress_ptr,
-            _: crate::jpegint_h::J_BUF_MODE,
-        ) -> (),
-    >,
-    pub process_data: Option<
-        unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_decompress_ptr,
-            _: crate::jpeglib_h::JSAMPARRAY,
-            _: *mut crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
-        ) -> (),
-    >,
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jpeg_decomp_master {
-    pub prepare_for_output_pass:
-        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
-    pub finish_output_pass:
-        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
-    pub is_dummy_pass: crate::jmorecfg_h::boolean,
-    pub first_iMCU_col: crate::jmorecfg_h::JDIMENSION,
-    pub last_iMCU_col: crate::jmorecfg_h::JDIMENSION,
-    pub first_MCU_col: [crate::jmorecfg_h::JDIMENSION; 10],
-    pub last_MCU_col: [crate::jmorecfg_h::JDIMENSION; 10],
-    pub jinit_upsampler_no_alloc: crate::jmorecfg_h::boolean,
-}
+pub const JDITHER_FS: crate::jpeglib_h::J_DITHER_MODE = 2;
+pub const JDITHER_ORDERED: crate::jpeglib_h::J_DITHER_MODE = 1;
+pub const JDITHER_NONE: crate::jpeglib_h::J_DITHER_MODE = 0;
 /* lasts until master record is destroyed */
 
 /* lasts until done with image/datastream */
-pub const JPOOL_NUMPOOLS: libc::c_int = 2i32;
+pub const JPOOL_NUMPOOLS: libc::c_int = 2 as libc::c_int;
+/* Read ICC profile.  See libjpeg.txt for usage information. */
+
+/*
+ * Permit users to replace the IDCT method dynamically.
+ * The selector callback is called after the default idct implementation was choosen,
+ * and is able to override it.
+ */
+
+/* These marker codes are exported since applications and data source modules
+ * are likely to want to use them.
+ */
+
+/* RST0 marker code */
+
+/* EOI marker code */
+pub const JPEG_APP0: libc::c_int = 0xe0 as libc::c_int;
 /* The basic DCT block is 8x8 samples */
 
 /* DCTSIZE squared; # of elements in a block */
@@ -485,7 +194,7 @@ pub const JPOOL_NUMPOOLS: libc::c_int = 2i32;
  * we strongly discourage changing C_MAX_BLOCKS_IN_MCU; just because Adobe
  * sometimes emits noncompliant files doesn't mean you should too.
  */
-pub const C_MAX_BLOCKS_IN_MCU: libc::c_int = 10i32;
+pub const C_MAX_BLOCKS_IN_MCU: libc::c_int = 10 as libc::c_int;
 /* Memory manager object.
  * Allocates "small" objects (a few K total), "large" objects (tens of K),
  * and "really big" objects (virtual arrays with backing store if needed).
@@ -498,19 +207,13 @@ pub const C_MAX_BLOCKS_IN_MCU: libc::c_int = 10i32;
  */
 
 /* lasts until master record is destroyed */
-pub const JPOOL_IMAGE: libc::c_int = 1i32;
-use crate::jmorecfg_h::boolean;
-use crate::jmorecfg_h::JCOEF;
-use crate::jmorecfg_h::JDIMENSION;
-use crate::jmorecfg_h::JOCTET;
-use crate::jmorecfg_h::JSAMPLE;
-use crate::jmorecfg_h::UINT16;
-use crate::jmorecfg_h::UINT8;
-use crate::stddef_h::size_t;
+pub const JPOOL_IMAGE: libc::c_int = 1 as libc::c_int;
 /* Quantization tables are numbered 0..3 */
 
 /* Huffman tables are numbered 0..3 */
-pub const NUM_ARITH_TBLS: libc::c_int = 16i32;
+pub const NUM_ARITH_TBLS: libc::c_int = 16 as libc::c_int;
+/* may be overridden in jconfig.h */
+pub const JDCT_DEFAULT: libc::c_int = crate::jpeglib_h::JDCT_ISLOW as libc::c_int;
 /*
  * jpeglib.h
  *
@@ -543,829 +246,37 @@ pub const NUM_ARITH_TBLS: libc::c_int = 16i32;
  * All of these are specified by the JPEG standard, so don't change them
  * if you want to be compatible.
  */
-pub const DCTSIZE: libc::c_int = 8i32;
+pub const DCTSIZE: libc::c_int = 8 as libc::c_int;
 /* Quantization tables are numbered 0..3 */
 
 /* Huffman tables are numbered 0..3 */
 
 /* Arith-coding tables are numbered 0..15 */
-pub const MAX_COMPS_IN_SCAN: libc::c_int = 4i32;
+pub const MAX_COMPS_IN_SCAN: libc::c_int = 4 as libc::c_int;
 /* JPEG limit on # of components in one scan */
-pub const MAX_SAMP_FACTOR: libc::c_int = 4i32;
-use crate::jpegint_h::J_BUF_MODE;
+pub const MAX_SAMP_FACTOR: libc::c_int = 4 as libc::c_int;
 /* a 3-D array of coefficient blocks */
 pub type JCOEFPTR = *mut crate::jmorecfg_h::JCOEF;
-use crate::jpegint_h::inverse_DCT_method_ptr;
 /* The basic DCT block is 8x8 samples */
-pub const DCTSIZE2: libc::c_int = 64i32;
+pub const DCTSIZE2: libc::c_int = 64 as libc::c_int;
 /* Return value is one of: */
 
 /* #define JPEG_SUSPENDED       0    Suspended due to lack of input data */
-pub const JPEG_REACHED_SOS: libc::c_int = 1i32;
+pub const JPEG_REACHED_SOS: libc::c_int = 1 as libc::c_int;
 /* Reached start of new scan */
 
 /* Reached end of image */
-pub const JPEG_ROW_COMPLETED: libc::c_int = 3i32;
-pub const JPEG_REACHED_EOI: libc::c_int = 2i32;
-pub const JPEG_SUSPENDED: libc::c_int = 0i32;
+pub const JPEG_ROW_COMPLETED: libc::c_int = 3 as libc::c_int;
+pub const JPEG_REACHED_EOI: libc::c_int = 2 as libc::c_int;
+pub const JPEG_SUSPENDED: libc::c_int = 0 as libc::c_int;
 /* These marker codes are exported since applications and data source modules
  * are likely to want to use them.
  */
 
 /* RST0 marker code */
-pub const JPEG_EOI: libc::c_int = 0xd9i32;
-pub const D_MAX_BLOCKS_IN_MCU: libc::c_int = 10i32;
-pub const JPEG_SCAN_COMPLETED: libc::c_int = 4i32;
-/* Entropy encoding */
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jpeg_entropy_encoder {
-    pub start_pass: Option<
-        unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: crate::jmorecfg_h::boolean,
-        ) -> (),
-    >,
-    pub encode_mcu: Option<
-        unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: *mut crate::jpeglib_h::JBLOCKROW,
-        ) -> crate::jmorecfg_h::boolean,
-    >,
-    pub finish_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
-}
-/* TRUE if need rows above & below */
-
-/* Forward DCT (also controls coefficient quantization) */
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jpeg_forward_dct {
-    pub start_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
-    pub forward_DCT: Option<
-        unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: *mut crate::jpeglib_h::jpeg_component_info,
-            _: crate::jpeglib_h::JSAMPARRAY,
-            _: crate::jpeglib_h::JBLOCKROW,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JBLOCKROW,
-        ) -> (),
-    >,
-}
-/* Downsampling */
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jpeg_downsampler {
-    pub start_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
-    pub downsample: Option<
-        unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-            _: crate::jmorecfg_h::JDIMENSION,
-        ) -> (),
-    >,
-    pub need_context_rows: crate::jmorecfg_h::boolean,
-}
-/* Colorspace conversion */
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jpeg_color_converter {
-    pub start_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
-    pub color_convert: Option<
-        unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: crate::jpeglib_h::JSAMPARRAY,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: libc::c_int,
-        ) -> (),
-    >,
-}
-/* Marker writing */
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jpeg_marker_writer {
-    pub write_file_header: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
-    pub write_frame_header: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
-    pub write_scan_header: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
-    pub write_file_trailer: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
-    pub write_tables_only: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
-    pub write_marker_header: Option<
-        unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: libc::c_int,
-            _: libc::c_uint,
-        ) -> (),
-    >,
-    pub write_marker_byte:
-        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr, _: libc::c_int) -> ()>,
-}
-/* Coefficient buffer control */
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jpeg_c_coef_controller {
-    pub start_pass: Option<
-        unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: crate::jpegint_h::J_BUF_MODE,
-        ) -> (),
-    >,
-    pub compress_data: Option<
-        unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-        ) -> crate::jmorecfg_h::boolean,
-    >,
-}
-/* Compression preprocessing (downsampling input buffer control) */
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jpeg_c_prep_controller {
-    pub start_pass: Option<
-        unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: crate::jpegint_h::J_BUF_MODE,
-        ) -> (),
-    >,
-    pub pre_process_data: Option<
-        unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: crate::jpeglib_h::JSAMPARRAY,
-            _: *mut crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
-            _: crate::jpeglib_h::JSAMPIMAGE,
-            _: *mut crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
-        ) -> (),
-    >,
-}
-/* Main buffer control (downsampled-data buffer) */
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jpeg_c_main_controller {
-    pub start_pass: Option<
-        unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: crate::jpegint_h::J_BUF_MODE,
-        ) -> (),
-    >,
-    pub process_data: Option<
-        unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_compress_ptr,
-            _: crate::jpeglib_h::JSAMPARRAY,
-            _: *mut crate::jmorecfg_h::JDIMENSION,
-            _: crate::jmorecfg_h::JDIMENSION,
-        ) -> (),
-    >,
-}
-/*
- * Left shift macro that handles a negative operand without causing any
- * sanitizer warnings
- */
-
-/* Declarations for compression modules */
-
-/* Master control module */
-
-/*
- * jpeglib.h
- *
- * This file was part of the Independent JPEG Group's software:
- * Copyright (C) 1991-1998, Thomas G. Lane.
- * Modified 2002-2009 by Guido Vollbeding.
- * libjpeg-turbo Modifications:
- * Copyright (C) 2009-2011, 2013-2014, 2016-2017, D. R. Commander.
- * Copyright (C) 2015, Google, Inc.
- * mozjpeg Modifications:
- * Copyright (C) 2014, Mozilla Corporation.
- * For conditions of distribution and use, see the accompanying README.ijg
- * file.
- *
- * This file defines the application interface for the JPEG library.
- * Most applications using the library need only include this file,
- * and perhaps jerror.h if they want to know the exact error codes.
- */
-
-/*
- * First we include the configuration files that record how this
- * installation of the JPEG library is set up.  jconfig.h can be
- * generated automatically for many systems.  jmorecfg.h contains
- * manual configuration options that most people need not worry about.
- */
-
-/* in case jinclude.h already did */
-
-/* Various constants determining the sizes of things.
- * All of these are specified by the JPEG standard, so don't change them
- * if you want to be compatible.
- */
-
-/* The basic DCT block is 8x8 samples */
-
-/* DCTSIZE squared; # of elements in a block */
-
-/* Quantization tables are numbered 0..3 */
-
-/* Huffman tables are numbered 0..3 */
-
-/* Arith-coding tables are numbered 0..15 */
-
-/* JPEG limit on # of components in one scan */
-
-/* JPEG limit on sampling factors */
-
-/* Unfortunately, some bozo at Adobe saw no reason to be bound by the standard;
- * the PostScript DCT filter can emit files with many more than 10 blocks/MCU.
- * If you happen to run across such a file, you can up D_MAX_BLOCKS_IN_MCU
- * to handle it.  We even let you do this from the jconfig.h file.  However,
- * we strongly discourage changing C_MAX_BLOCKS_IN_MCU; just because Adobe
- * sometimes emits noncompliant files doesn't mean you should too.
- */
-
-/* compressor's limit on blocks per MCU */
-
-/* decompressor's limit on blocks per MCU */
-
-/* Data structures for images (arrays of samples and of DCT coefficients).
- */
-
-/* ptr to one image row of pixel samples. */
-
-/* ptr to some rows (a 2-D sample array) */
-
-/* a 3-D sample array: top index is color */
-
-/* one block of coefficients */
-
-/* pointer to one row of coefficient blocks */
-
-/* a 2-D array of coefficient blocks */
-
-/* a 3-D array of coefficient blocks */
-
-/* useful in a couple of places */
-
-/* Types for JPEG compression parameters and working tables. */
-
-/* DCT coefficient quantization tables. */
-
-/* This array gives the coefficient quantizers in natural array order
- * (not the zigzag order in which they are stored in a JPEG DQT marker).
- * CAUTION: IJG versions prior to v6a kept this array in zigzag order.
- */
-
-/* quantization step for each coefficient */
-
-/* This field is used only during compression.  It's initialized FALSE when
- * the table is created, and set TRUE when it's been output to the file.
- * You could suppress output of a table by setting this to TRUE.
- * (See jpeg_suppress_tables for an example.)
- */
-
-/* TRUE when table has been output */
-
-/* Huffman coding tables. */
-
-/* These two fields directly represent the contents of a JPEG DHT marker */
-
-/* bits[k] = # of symbols with codes of */
-
-/* length k bits; bits[0] is unused */
-
-/* The symbols, in order of incr code length */
-
-/* This field is used only during compression.  It's initialized FALSE when
- * the table is created, and set TRUE when it's been output to the file.
- * You could suppress output of a table by setting this to TRUE.
- * (See jpeg_suppress_tables for an example.)
- */
-
-/* TRUE when table has been output */
-
-/* Basic info about one component (color channel). */
-
-/* These values are fixed over the whole image. */
-
-/* For compression, they must be supplied by parameter setup; */
-
-/* for decompression, they are read from the SOF marker. */
-
-/* identifier for this component (0..255) */
-
-/* its index in SOF or cinfo->comp_info[] */
-
-/* horizontal sampling factor (1..4) */
-
-/* vertical sampling factor (1..4) */
-
-/* quantization table selector (0..3) */
-
-/* These values may vary between scans. */
-
-/* For compression, they must be supplied by parameter setup; */
-
-/* for decompression, they are read from the SOS marker. */
-
-/* The decompressor output side may not use these variables. */
-
-/* DC entropy table selector (0..3) */
-
-/* AC entropy table selector (0..3) */
-
-/* Remaining fields should be treated as private by applications. */
-
-/* These values are computed during compression or decompression startup: */
-
-/* Component's size in DCT blocks.
- * Any dummy blocks added to complete an MCU are not counted; therefore
- * these values do not depend on whether a scan is interleaved or not.
- */
-
-/* Size of a DCT block in samples.  Always DCTSIZE for compression.
- * For decompression this is the size of the output from one DCT block,
- * reflecting any scaling we choose to apply during the IDCT step.
- * Values from 1 to 16 are supported.
- * Note that different components may receive different IDCT scalings.
- */
-
-/* The downsampled dimensions are the component's actual, unpadded number
- * of samples at the main buffer (preprocessing/compression interface), thus
- * downsampled_width = ceil(image_width * Hi/Hmax)
- * and similarly for height.  For decompression, IDCT scaling is included, so
- * downsampled_width = ceil(image_width * Hi/Hmax * DCT_[h_]scaled_size/DCTSIZE)
- */
-
-/* actual width in samples */
-
-/* actual height in samples */
-
-/* This flag is used only for decompression.  In cases where some of the
- * components will be ignored (eg grayscale output from YCbCr image),
- * we can skip most computations for the unused components.
- */
-
-/* do we need the value of this component? */
-
-/* These values are computed before starting a scan of the component. */
-
-/* The decompressor output side may not use these variables. */
-
-/* number of blocks per MCU, horizontally */
-
-/* number of blocks per MCU, vertically */
-
-/* MCU_width * MCU_height */
-
-/* MCU width in samples, MCU_width*DCT_[h_]scaled_size */
-
-/* # of non-dummy blocks across in last MCU */
-
-/* # of non-dummy blocks down in last MCU */
-
-/* Saved quantization table for component; NULL if none yet saved.
- * See jdinput.c comments about the need for this information.
- * This field is currently used only for decompression.
- */
-
-/* Private per-component storage for DCT or IDCT subsystem. */
-
-/* The script for encoding a multiple-scan file is an array of these: */
-
-/* number of components encoded in this scan */
-
-/* their SOF/comp_info[] indexes */
-
-/* progressive JPEG spectral selection parms */
-
-/* progressive JPEG successive approx. parms */
-
-/* The decompressor can save APPn and COM markers in a list of these: */
-
-/* next in list, or NULL */
-
-/* marker code: JPEG_COM, or JPEG_APP0+n */
-
-/* # bytes of data in the file */
-
-/* # bytes of data saved at data[] */
-
-/* the data contained in the marker */
-
-/* the marker length word is not counted in data_length or original_length */
-
-/* Known color spaces. */
-
-/* error/unspecified */
-
-/* monochrome */
-
-/* red/green/blue as specified by the RGB_RED,
-RGB_GREEN, RGB_BLUE, and RGB_PIXELSIZE macros */
-
-/* Y/Cb/Cr (also known as YUV) */
-
-/* C/M/Y/K */
-
-/* Y/Cb/Cr/K */
-
-/* red/green/blue */
-
-/* red/green/blue/x */
-
-/* blue/green/red */
-
-/* blue/green/red/x */
-
-/* x/blue/green/red */
-
-/* x/red/green/blue */
-
-/* When out_color_space it set to JCS_EXT_RGBX, JCS_EXT_BGRX, JCS_EXT_XBGR,
-or JCS_EXT_XRGB during decompression, the X byte is undefined, and in
-order to ensure the best performance, libjpeg-turbo can set that byte to
-whatever value it wishes.  Use the following colorspace constants to
-ensure that the X byte is set to 0xFF, so that it can be interpreted as an
-opaque alpha channel. */
-
-/* red/green/blue/alpha */
-
-/* blue/green/red/alpha */
-
-/* alpha/blue/green/red */
-
-/* alpha/red/green/blue */
-
-/* 5-bit red/6-bit green/5-bit blue */
-
-/* DCT/IDCT algorithm options. */
-
-/* slow but accurate integer algorithm */
-
-/* faster, less accurate integer method */
-
-/* floating-point: accurate, fast on fast HW */
-
-/* may be overridden in jconfig.h */
-
-/* may be overridden in jconfig.h */
-
-/* Dithering options for decompression. */
-
-/* no dithering */
-
-/* simple ordered dither */
-
-/* Floyd-Steinberg error diffusion dither */
-
-/* These 32-bit GUIDs and the corresponding jpeg_*_get_*_param()/
- * jpeg_*_set_*_param() functions allow for extending the libjpeg API without
- * breaking backward ABI compatibility.  The actual parameters are stored in
- * the opaque jpeg_comp_master and jpeg_decomp_master structs.
- */
-
-/* Boolean extension parameters */
-
-/* TRUE=optimize progressive coding scans */
-
-/* TRUE=use trellis quantization */
-
-/* TRUE=use trellis quant for DC coefficient */
-
-/* TRUE=optimize for sequences of EOB */
-
-/* TRUE=use lambda weighting table */
-
-/* TRUE=use scans in trellis optimization */
-
-/* TRUE=optimize quant table in trellis loop */
-
-/* TRUE=preprocess input to reduce ringing of edges on white background */
-
-/* Floating point parameters */
-
-/* Integer parameters */
-
-/* compression profile */
-
-/* splitting point for frequency in trellis quantization */
-
-/* number of trellis loops */
-
-/* base quantization table index */
-
-/* DC scan optimization mode */
-
-/* Values for the JINT_COMPRESS_PROFILE parameter (32-bit GUIDs) */
-
-/* best compression ratio (progressive, all mozjpeg extensions) */
-
-/* libjpeg[-turbo] defaults (baseline, no mozjpeg extensions) */
-
-/* Common fields between JPEG compression and decompression master structs. */
-
-/* Error handler module */
-
-/* Memory manager module */
-
-/* Progress monitor, or NULL if none */
-
-/* Available for use by application */
-
-/* So common code can tell which is which */
-
-/* For checking call sequence validity */
-
-/* Routines that are to be used by both halves of the library are declared
- * to receive a pointer to this structure.  There are no actual instances of
- * jpeg_common_struct, only of jpeg_compress_struct and jpeg_decompress_struct.
- */
-
-/* Fields common to both master struct types */
-
-/* Additional fields follow in an actual jpeg_compress_struct or
- * jpeg_decompress_struct.  All three structs must agree on these
- * initial fields!  (This would be a lot cleaner in C++.)
- */
-
-/* Master record for a compression instance */
-
-/* Fields shared with jpeg_decompress_struct */
-
-/* Destination for compressed data */
-
-/* Description of source image --- these fields must be filled in by
- * outer application before starting compression.  in_color_space must
- * be correct before you can even call jpeg_set_defaults().
- */
-
-/* input image width */
-
-/* input image height */
-
-/* # of color components in input image */
-
-/* colorspace of input image */
-
-/* image gamma of input image */
-
-/* Compression parameters --- these fields must be set before calling
- * jpeg_start_compress().  We recommend calling jpeg_set_defaults() to
- * initialize everything to reasonable defaults, then changing anything
- * the application specifically wants to change.  That way you won't get
- * burnt when new parameters are added.  Also note that there are several
- * helper routines to simplify changing parameters.
- */
-
-/* bits of precision in image data */
-
-/* # of color components in JPEG image */
-
-/* colorspace of JPEG image */
-
-/* comp_info[i] describes component that appears i'th in SOF */
-
-/* ptrs to coefficient quantization tables, or NULL if not defined,
- * and corresponding scale factors (percentage, initialized 100).
- */
-
-/* ptrs to Huffman coding tables, or NULL if not defined */
-
-/* L values for DC arith-coding tables */
-
-/* U values for DC arith-coding tables */
-
-/* Kx values for AC arith-coding tables */
-
-/* # of entries in scan_info array */
-
-/* script for multi-scan file, or NULL */
-
-/* The default value of scan_info is NULL, which causes a single-scan
- * sequential JPEG file to be emitted.  To create a multi-scan file,
- * set num_scans and scan_info to point to an array of scan definitions.
- */
-
-/* TRUE=caller supplies downsampled data */
-
-/* TRUE=arithmetic coding, FALSE=Huffman */
-
-/* TRUE=optimize entropy encoding parms */
-
-/* TRUE=first samples are cosited */
-
-/* 1..100, or 0 for no input smoothing */
-
-/* DCT algorithm selector */
-
-/* The restart interval can be specified in absolute MCUs by setting
- * restart_interval, or in MCU rows by setting restart_in_rows
- * (in which case the correct restart_interval will be figured
- * for each scan).
- */
-
-/* MCUs per restart, or 0 for no restart */
-
-/* if > 0, MCU rows per restart interval */
-
-/* Parameters controlling emission of special markers. */
-
-/* should a JFIF marker be written? */
-
-/* What to write for the JFIF version number */
-
-/* These three values are not used by the JPEG code, merely copied */
-
-/* into the JFIF APP0 marker.  density_unit can be 0 for unknown, */
-
-/* 1 for dots/inch, or 2 for dots/cm.  Note that the pixel aspect */
-
-/* ratio is defined by X_density/Y_density even when density_unit=0. */
-
-/* JFIF code for pixel size units */
-
-/* Horizontal pixel density */
-
-/* Vertical pixel density */
-
-/* should an Adobe marker be written? */
-
-/* State variable: index of next scanline to be written to
- * jpeg_write_scanlines().  Application may use this to control its
- * processing loop, e.g., "while (next_scanline < image_height)".
- */
-
-/* 0 .. image_height-1  */
-
-/* Remaining fields are known throughout compressor, but generally
- * should not be touched by a surrounding application.
- */
-
-/*
- * These fields are computed during compression startup
- */
-
-/* TRUE if scan script uses progressive mode */
-
-/* largest h_samp_factor */
-
-/* largest v_samp_factor */
-
-/* # of iMCU rows to be input to coef ctlr */
-
-/* The coefficient controller receives data in units of MCU rows as defined
- * for fully interleaved scans (whether the JPEG file is interleaved or not).
- * There are v_samp_factor * DCTSIZE sample rows of each component in an
- * "iMCU" (interleaved MCU) row.
- */
-
-/*
- * These fields are valid during any one scan.
- * They describe the components and MCUs actually appearing in the scan.
- */
-
-/* # of JPEG components in this scan */
-
-/* *cur_comp_info[i] describes component that appears i'th in SOS */
-
-/* # of MCUs across the image */
-
-/* # of MCU rows in the image */
-
-/* # of DCT blocks per MCU */
-
-/* MCU_membership[i] is index in cur_comp_info of component owning */
-
-/* i'th block in an MCU */
-
-/* progressive JPEG parameters for scan */
-
-/*
- * Links to compression subobjects (methods and private variables of modules)
- */
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jpeg_comp_master {
-    pub prepare_for_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
-    pub pass_startup: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
-    pub finish_pass: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
-    pub call_pass_startup: crate::jmorecfg_h::boolean,
-    pub is_last_pass: crate::jmorecfg_h::boolean,
-    pub optimize_scans: crate::jmorecfg_h::boolean,
-    pub trellis_quant: crate::jmorecfg_h::boolean,
-    pub trellis_quant_dc: crate::jmorecfg_h::boolean,
-    pub trellis_eob_opt: crate::jmorecfg_h::boolean,
-    pub use_lambda_weight_tbl: crate::jmorecfg_h::boolean,
-    pub use_scans_in_trellis: crate::jmorecfg_h::boolean,
-    pub trellis_passes: crate::jmorecfg_h::boolean,
-    pub trellis_q_opt: crate::jmorecfg_h::boolean,
-    pub overshoot_deringing: crate::jmorecfg_h::boolean,
-    pub norm_src: [[libc::c_double; 64]; 4],
-    pub norm_coef: [[libc::c_double; 64]; 4],
-    pub compress_profile: libc::c_int,
-    pub dc_scan_opt_mode: libc::c_int,
-    pub quant_tbl_master_idx: libc::c_int,
-    pub trellis_freq_split: libc::c_int,
-    pub trellis_num_loops: libc::c_int,
-    pub num_scans_luma: libc::c_int,
-    pub num_scans_luma_dc: libc::c_int,
-    pub num_scans_chroma_dc: libc::c_int,
-    pub num_frequency_splits: libc::c_int,
-    pub Al_max_luma: libc::c_int,
-    pub Al_max_chroma: libc::c_int,
-    pub lambda_log_scale1: libc::c_float,
-    pub lambda_log_scale2: libc::c_float,
-    pub trellis_delta_dc_weight: libc::c_float,
-}
-pub type JSAMPIMAGE = *mut crate::jpeglib_h::JSAMPARRAY;
-pub type jpeg_idct_method = Option<
-    unsafe extern "C" fn(
-        _: crate::jpeglib_h::j_decompress_ptr,
-        _: *mut crate::jpeglib_h::jpeg_component_info,
-        _: crate::jpeglib_h::JCOEFPTR,
-        _: crate::jpeglib_h::JSAMPARRAY,
-        _: crate::jmorecfg_h::JDIMENSION,
-    ) -> (),
->;
-pub type jpeg_idct_method_selector = Option<
-    unsafe extern "C" fn(
-        _: crate::jpeglib_h::j_decompress_ptr,
-        _: *mut crate::jpeglib_h::jpeg_component_info,
-        _: *mut crate::jpeglib_h::jpeg_idct_method,
-        _: *mut libc::c_int,
-    ) -> (),
->;
-pub const JPOOL_PERMANENT: libc::c_int = 0i32;
-pub const NUM_HUFF_TBLS: libc::c_int = 4i32;
-pub const NUM_QUANT_TBLS: libc::c_int = 4i32;
-/* Method pointers */
-
-/* Limit on memory allocation for this JPEG object.  (Note that this is
- * merely advisory, not a guaranteed maximum; it only affects the space
- * used for virtual-array buffers.)  May be changed by outer application
- * after creating the JPEG object.
- */
-
-/* Maximum allocation request accepted by alloc_large. */
-
-/* Routine signature for application-supplied marker processing methods.
- * Need not pass marker code since it is stored in cinfo->unread_marker.
- */
-
-/* Originally, this macro was used as a way of defining function prototypes
- * for both modern compilers as well as older compilers that did not support
- * prototype parameters.  libjpeg-turbo has never supported these older,
- * non-ANSI compilers, but the macro is still included because there is some
- * software out there that uses it.
- */
-
-/* Default error-management setup */
-
-/* Initialization of JPEG compression objects.
- * jpeg_create_compress() and jpeg_create_decompress() are the exported
- * names that applications should call.  These expand to calls on
- * jpeg_CreateCompress and jpeg_CreateDecompress with additional information
- * passed for version mismatch checking.
- * NB: you must set up the error-manager BEFORE calling jpeg_create_xxx.
- */
-
-/* Destruction of JPEG compression objects */
-
-/* Standard data source and destination managers: stdio streams. */
-
-/* Caller is responsible for opening the file before and closing after. */
-
-/* Data source and destination managers: memory buffers. */
-
-/* Default parameter setup for compression */
-
-/* Compression parameter setup aids */
-
-/* Main entry points for compression */
-
-/* Replaces jpeg_write_scanlines when writing raw downsampled data. */
-
-/* Write a special marker.  See libjpeg.txt concerning safe usage. */
-
-/* Same, but piecemeal. */
-
-/* Alternate compression function: just write an abbreviated table file */
-
-/* Write ICC profile.  See libjpeg.txt for usage information. */
-
-/* Decompression startup: read start of JPEG datastream to see what's there */
-
-/* Return value is one of: */
-
-/* Suspended due to lack of input data */
-
-/* Found valid image datastream */
-pub const JPEG_HEADER_TABLES_ONLY: libc::c_int = 2i32;
-pub const JPEG_HEADER_OK: libc::c_int = 1i32;
-pub type C2RustUnnamed_1 = libc::c_uint;
+pub const JPEG_EOI: libc::c_int = 0xd9 as libc::c_int;
+pub const D_MAX_BLOCKS_IN_MCU: libc::c_int = 10 as libc::c_int;
+pub const JPEG_SCAN_COMPLETED: libc::c_int = 4 as libc::c_int;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub union C2RustUnnamed_2 {
@@ -1374,6 +285,7 @@ pub union C2RustUnnamed_2 {
 }
 pub type JSAMPROW = *mut crate::jmorecfg_h::JSAMPLE;
 pub type JSAMPARRAY = *mut crate::jpeglib_h::JSAMPROW;
+pub type JSAMPIMAGE = *mut crate::jpeglib_h::JSAMPARRAY;
 pub type JBLOCK = [crate::jmorecfg_h::JCOEF; 64];
 pub type JBLOCKROW = *mut crate::jpeglib_h::JBLOCK;
 pub type JBLOCKARRAY = *mut crate::jpeglib_h::JBLOCKROW;
@@ -1425,21 +337,8 @@ pub struct jpeg_scan_info {
     pub Ah: libc::c_int,
     pub Al: libc::c_int,
 }
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jpeg_marker_struct {
-    pub next: crate::jpeglib_h::jpeg_saved_marker_ptr,
-    pub marker: crate::jmorecfg_h::UINT8,
-    pub original_length: libc::c_uint,
-    pub data_length: libc::c_uint,
-    pub data: *mut crate::jmorecfg_h::JOCTET,
-}
-pub type jpeg_saved_marker_ptr = *mut crate::jpeglib_h::jpeg_marker_struct;
 pub type J_COLOR_SPACE = libc::c_uint;
 pub type J_DCT_METHOD = libc::c_uint;
-pub type J_BOOLEAN_PARAM = libc::c_uint;
-pub type J_FLOAT_PARAM = libc::c_uint;
-pub type J_INT_PARAM = libc::c_uint;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_common_struct {
@@ -1617,18 +516,19 @@ pub struct jpeg_compress_struct {
     pub Se: libc::c_int,
     pub Ah: libc::c_int,
     pub Al: libc::c_int,
-    pub master: *mut crate::jpeglib_h::jpeg_comp_master,
-    pub main: *mut crate::jpeglib_h::jpeg_c_main_controller,
-    pub prep: *mut crate::jpeglib_h::jpeg_c_prep_controller,
-    pub coef: *mut crate::jpeglib_h::jpeg_c_coef_controller,
-    pub marker: *mut crate::jpeglib_h::jpeg_marker_writer,
-    pub cconvert: *mut crate::jpeglib_h::jpeg_color_converter,
-    pub downsample: *mut crate::jpeglib_h::jpeg_downsampler,
-    pub fdct: *mut crate::jpeglib_h::jpeg_forward_dct,
-    pub entropy: *mut crate::jpeglib_h::jpeg_entropy_encoder,
+    pub master: *mut crate::jpegint_h::jpeg_comp_master,
+    pub main: *mut crate::jpegint_h::jpeg_c_main_controller,
+    pub prep: *mut crate::jpegint_h::jpeg_c_prep_controller,
+    pub coef: *mut crate::jpegint_h::jpeg_c_coef_controller,
+    pub marker: *mut crate::jpegint_h::jpeg_marker_writer,
+    pub cconvert: *mut crate::jpegint_h::jpeg_color_converter,
+    pub downsample: *mut crate::jpegint_h::jpeg_downsampler,
+    pub fdct: *mut crate::jpegint_h::jpeg_forward_dct,
+    pub entropy: *mut crate::jpegint_h::jpeg_entropy_encoder,
     pub script_space: *mut crate::jpeglib_h::jpeg_scan_info,
     pub script_space_size: libc::c_int,
 }
+pub type j_compress_ptr = *mut crate::jpeglib_h::jpeg_compress_struct;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct jpeg_destination_mgr {
@@ -1640,130 +540,22 @@ pub struct jpeg_destination_mgr {
     >,
     pub term_destination: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> ()>,
 }
-pub type j_compress_ptr = *mut crate::jpeglib_h::jpeg_compress_struct;
-/* may be overridden in jconfig.h */
-
-/* may be overridden in jconfig.h */
-
-/* Dithering options for decompression. */
-pub type J_DITHER_MODE = libc::c_uint;
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jpeg_decompress_struct {
-    pub err: *mut crate::jpeglib_h::jpeg_error_mgr,
-    pub mem: *mut crate::jpeglib_h::jpeg_memory_mgr,
-    pub progress: *mut crate::jpeglib_h::jpeg_progress_mgr,
-    pub client_data: *mut libc::c_void,
-    pub is_decompressor: crate::jmorecfg_h::boolean,
-    pub global_state: libc::c_int,
-    pub src: *mut crate::jpeglib_h::jpeg_source_mgr,
-    pub image_width: crate::jmorecfg_h::JDIMENSION,
-    pub image_height: crate::jmorecfg_h::JDIMENSION,
-    pub num_components: libc::c_int,
-    pub jpeg_color_space: crate::jpeglib_h::J_COLOR_SPACE,
-    pub out_color_space: crate::jpeglib_h::J_COLOR_SPACE,
-    pub scale_num: libc::c_uint,
-    pub scale_denom: libc::c_uint,
-    pub output_gamma: libc::c_double,
-    pub buffered_image: crate::jmorecfg_h::boolean,
-    pub raw_data_out: crate::jmorecfg_h::boolean,
-    pub dct_method: crate::jpeglib_h::J_DCT_METHOD,
-    pub do_fancy_upsampling: crate::jmorecfg_h::boolean,
-    pub do_block_smoothing: crate::jmorecfg_h::boolean,
-    pub quantize_colors: crate::jmorecfg_h::boolean,
-    pub dither_mode: crate::jpeglib_h::J_DITHER_MODE,
-    pub two_pass_quantize: crate::jmorecfg_h::boolean,
-    pub desired_number_of_colors: libc::c_int,
-    pub enable_1pass_quant: crate::jmorecfg_h::boolean,
-    pub enable_external_quant: crate::jmorecfg_h::boolean,
-    pub enable_2pass_quant: crate::jmorecfg_h::boolean,
-    pub output_width: crate::jmorecfg_h::JDIMENSION,
-    pub output_height: crate::jmorecfg_h::JDIMENSION,
-    pub out_color_components: libc::c_int,
-    pub output_components: libc::c_int,
-    pub rec_outbuf_height: libc::c_int,
-    pub actual_number_of_colors: libc::c_int,
-    pub colormap: crate::jpeglib_h::JSAMPARRAY,
-    pub output_scanline: crate::jmorecfg_h::JDIMENSION,
-    pub input_scan_number: libc::c_int,
-    pub input_iMCU_row: crate::jmorecfg_h::JDIMENSION,
-    pub output_scan_number: libc::c_int,
-    pub output_iMCU_row: crate::jmorecfg_h::JDIMENSION,
-    pub coef_bits: *mut [libc::c_int; 64],
-    pub quant_tbl_ptrs: [*mut crate::jpeglib_h::JQUANT_TBL; 4],
-    pub dc_huff_tbl_ptrs: [*mut crate::jpeglib_h::JHUFF_TBL; 4],
-    pub ac_huff_tbl_ptrs: [*mut crate::jpeglib_h::JHUFF_TBL; 4],
-    pub data_precision: libc::c_int,
-    pub comp_info: *mut crate::jpeglib_h::jpeg_component_info,
-    pub progressive_mode: crate::jmorecfg_h::boolean,
-    pub arith_code: crate::jmorecfg_h::boolean,
-    pub arith_dc_L: [crate::jmorecfg_h::UINT8; 16],
-    pub arith_dc_U: [crate::jmorecfg_h::UINT8; 16],
-    pub arith_ac_K: [crate::jmorecfg_h::UINT8; 16],
-    pub restart_interval: libc::c_uint,
-    pub saw_JFIF_marker: crate::jmorecfg_h::boolean,
-    pub JFIF_major_version: crate::jmorecfg_h::UINT8,
-    pub JFIF_minor_version: crate::jmorecfg_h::UINT8,
-    pub density_unit: crate::jmorecfg_h::UINT8,
-    pub X_density: crate::jmorecfg_h::UINT16,
-    pub Y_density: crate::jmorecfg_h::UINT16,
-    pub saw_Adobe_marker: crate::jmorecfg_h::boolean,
-    pub Adobe_transform: crate::jmorecfg_h::UINT8,
-    pub CCIR601_sampling: crate::jmorecfg_h::boolean,
-    pub marker_list: crate::jpeglib_h::jpeg_saved_marker_ptr,
-    pub max_h_samp_factor: libc::c_int,
-    pub max_v_samp_factor: libc::c_int,
-    pub min_DCT_scaled_size: libc::c_int,
-    pub total_iMCU_rows: crate::jmorecfg_h::JDIMENSION,
-    pub sample_range_limit: *mut crate::jmorecfg_h::JSAMPLE,
-    pub comps_in_scan: libc::c_int,
-    pub cur_comp_info: [*mut crate::jpeglib_h::jpeg_component_info; 4],
-    pub MCUs_per_row: crate::jmorecfg_h::JDIMENSION,
-    pub MCU_rows_in_scan: crate::jmorecfg_h::JDIMENSION,
-    pub blocks_in_MCU: libc::c_int,
-    pub MCU_membership: [libc::c_int; 10],
-    pub Ss: libc::c_int,
-    pub Se: libc::c_int,
-    pub Ah: libc::c_int,
-    pub Al: libc::c_int,
-    pub unread_marker: libc::c_int,
-    pub master: *mut crate::jpeglib_h::jpeg_decomp_master,
-    pub main: *mut crate::jpeglib_h::jpeg_d_main_controller,
-    pub coef: *mut crate::jpeglib_h::jpeg_d_coef_controller,
-    pub post: *mut crate::jpeglib_h::jpeg_d_post_controller,
-    pub inputctl: *mut crate::jpeglib_h::jpeg_input_controller,
-    pub marker: *mut crate::jpeglib_h::jpeg_marker_reader,
-    pub entropy: *mut crate::jpeglib_h::jpeg_entropy_decoder,
-    pub idct: *mut crate::jpeglib_h::jpeg_inverse_dct,
-    pub upsample: *mut crate::jpeglib_h::jpeg_upsampler,
-    pub cconvert: *mut crate::jpeglib_h::jpeg_color_deconverter,
-    pub cquantize: *mut crate::jpeglib_h::jpeg_color_quantizer,
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jpeg_source_mgr {
-    pub next_input_byte: *const crate::jmorecfg_h::JOCTET,
-    pub bytes_in_buffer: crate::stddef_h::size_t,
-    pub init_source: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
-    pub fill_input_buffer: Option<
-        unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> crate::jmorecfg_h::boolean,
-    >,
-    pub skip_input_data:
-        Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr, _: libc::c_long) -> ()>,
-    pub resync_to_restart: Option<
-        unsafe extern "C" fn(
-            _: crate::jpeglib_h::j_decompress_ptr,
-            _: libc::c_int,
-        ) -> crate::jmorecfg_h::boolean,
-    >,
-    pub term_source: Option<unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ()>,
-}
-pub type j_decompress_ptr = *mut crate::jpeglib_h::jpeg_decompress_struct;
-/* Routine signature for application-supplied marker processing methods.
- * Need not pass marker code since it is stored in cinfo->unread_marker.
- */
-pub type jpeg_marker_parser_method = Option<
-    unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> crate::jmorecfg_h::boolean,
+pub type jpeg_idct_method = Option<
+    unsafe extern "C" fn(
+        _: crate::jpeglib_h::j_decompress_ptr,
+        _: *mut crate::jpeglib_h::jpeg_component_info,
+        _: crate::jpeglib_h::JCOEFPTR,
+        _: crate::jpeglib_h::JSAMPARRAY,
+        _: crate::jmorecfg_h::JDIMENSION,
+    ) -> (),
+>;
+pub type jpeg_idct_method_selector = Option<
+    unsafe extern "C" fn(
+        _: crate::jpeglib_h::j_decompress_ptr,
+        _: *mut crate::jpeglib_h::jpeg_component_info,
+        _: *mut crate::jpeglib_h::jpeg_idct_method,
+        _: *mut libc::c_int,
+    ) -> (),
 >;
 pub const JCS_RGB565: crate::jpeglib_h::J_COLOR_SPACE = 16;
 pub const JCS_EXT_ARGB: crate::jpeglib_h::J_COLOR_SPACE = 15;
@@ -1785,892 +577,11 @@ pub const JCS_UNKNOWN: crate::jpeglib_h::J_COLOR_SPACE = 0;
 pub const JDCT_FLOAT: crate::jpeglib_h::J_DCT_METHOD = 2;
 pub const JDCT_IFAST: crate::jpeglib_h::J_DCT_METHOD = 1;
 pub const JDCT_ISLOW: crate::jpeglib_h::J_DCT_METHOD = 0;
-pub const JBOOLEAN_OVERSHOOT_DERINGING: crate::jpeglib_h::J_BOOLEAN_PARAM = 1061927929;
-pub const JBOOLEAN_TRELLIS_Q_OPT: crate::jpeglib_h::J_BOOLEAN_PARAM = 3777684073;
-pub const JBOOLEAN_USE_SCANS_IN_TRELLIS: crate::jpeglib_h::J_BOOLEAN_PARAM = 4253291573;
-pub const JBOOLEAN_USE_LAMBDA_WEIGHT_TBL: crate::jpeglib_h::J_BOOLEAN_PARAM = 865973855;
-pub const JBOOLEAN_TRELLIS_EOB_OPT: crate::jpeglib_h::J_BOOLEAN_PARAM = 3623303040;
-pub const JBOOLEAN_TRELLIS_QUANT_DC: crate::jpeglib_h::J_BOOLEAN_PARAM = 865946636;
-pub const JBOOLEAN_TRELLIS_QUANT: crate::jpeglib_h::J_BOOLEAN_PARAM = 3306299443;
-pub const JBOOLEAN_OPTIMIZE_SCANS: crate::jpeglib_h::J_BOOLEAN_PARAM = 1745618462;
-pub const JFLOAT_TRELLIS_DELTA_DC_WEIGHT: crate::jpeglib_h::J_FLOAT_PARAM = 326587475;
-pub const JFLOAT_LAMBDA_LOG_SCALE2: crate::jpeglib_h::J_FLOAT_PARAM = 3116084739;
-pub const JFLOAT_LAMBDA_LOG_SCALE1: crate::jpeglib_h::J_FLOAT_PARAM = 1533126041;
-pub const JINT_DC_SCAN_OPT_MODE: crate::jpeglib_h::J_INT_PARAM = 199732540;
-pub const JINT_BASE_QUANT_TBL_IDX: crate::jpeglib_h::J_INT_PARAM = 1145645745;
-pub const JINT_TRELLIS_NUM_LOOPS: crate::jpeglib_h::J_INT_PARAM = 3057565497;
-pub const JINT_TRELLIS_FREQ_SPLIT: crate::jpeglib_h::J_INT_PARAM = 1873801511;
-pub const JINT_COMPRESS_PROFILE: crate::jpeglib_h::J_INT_PARAM = 3918628389;
-pub const JCP_FASTEST: crate::jpeglib_h::C2RustUnnamed_1 = 720002228;
-pub const JCP_MAX_COMPRESSION: crate::jpeglib_h::C2RustUnnamed_1 = 1560820397;
-/*
- * jpeglib.h
- *
- * This file was part of the Independent JPEG Group's software:
- * Copyright (C) 1991-1998, Thomas G. Lane.
- * Modified 2002-2009 by Guido Vollbeding.
- * libjpeg-turbo Modifications:
- * Copyright (C) 2009-2011, 2013-2014, 2016-2017, D. R. Commander.
- * Copyright (C) 2015, Google, Inc.
- * mozjpeg Modifications:
- * Copyright (C) 2014, Mozilla Corporation.
- * For conditions of distribution and use, see the accompanying README.ijg
- * file.
- *
- * This file defines the application interface for the JPEG library.
- * Most applications using the library need only include this file,
- * and perhaps jerror.h if they want to know the exact error codes.
- */
-
-/*
- * First we include the configuration files that record how this
- * installation of the JPEG library is set up.  jconfig.h can be
- * generated automatically for many systems.  jmorecfg.h contains
- * manual configuration options that most people need not worry about.
- */
-
-/* in case jinclude.h already did */
-
-/* Various constants determining the sizes of things.
- * All of these are specified by the JPEG standard, so don't change them
- * if you want to be compatible.
- */
-
-/* The basic DCT block is 8x8 samples */
-
-/* DCTSIZE squared; # of elements in a block */
-
-/* Quantization tables are numbered 0..3 */
-
-/* Huffman tables are numbered 0..3 */
-
-/* Arith-coding tables are numbered 0..15 */
-
-/* JPEG limit on # of components in one scan */
-
-/* JPEG limit on sampling factors */
-
-/* Unfortunately, some bozo at Adobe saw no reason to be bound by the standard;
- * the PostScript DCT filter can emit files with many more than 10 blocks/MCU.
- * If you happen to run across such a file, you can up D_MAX_BLOCKS_IN_MCU
- * to handle it.  We even let you do this from the jconfig.h file.  However,
- * we strongly discourage changing C_MAX_BLOCKS_IN_MCU; just because Adobe
- * sometimes emits noncompliant files doesn't mean you should too.
- */
-
-/* compressor's limit on blocks per MCU */
-
-/* decompressor's limit on blocks per MCU */
-
-/* Data structures for images (arrays of samples and of DCT coefficients).
- */
-
-/* ptr to one image row of pixel samples. */
-
-/* ptr to some rows (a 2-D sample array) */
-
-/* a 3-D sample array: top index is color */
-
-/* one block of coefficients */
-
-/* pointer to one row of coefficient blocks */
-
-/* a 2-D array of coefficient blocks */
-
-/* a 3-D array of coefficient blocks */
-
-/* useful in a couple of places */
-
-/* Types for JPEG compression parameters and working tables. */
-
-/* DCT coefficient quantization tables. */
-
-/* This array gives the coefficient quantizers in natural array order
- * (not the zigzag order in which they are stored in a JPEG DQT marker).
- * CAUTION: IJG versions prior to v6a kept this array in zigzag order.
- */
-
-/* quantization step for each coefficient */
-
-/* This field is used only during compression.  It's initialized FALSE when
- * the table is created, and set TRUE when it's been output to the file.
- * You could suppress output of a table by setting this to TRUE.
- * (See jpeg_suppress_tables for an example.)
- */
-
-/* TRUE when table has been output */
-
-/* Huffman coding tables. */
-
-/* These two fields directly represent the contents of a JPEG DHT marker */
-
-/* bits[k] = # of symbols with codes of */
-
-/* length k bits; bits[0] is unused */
-
-/* The symbols, in order of incr code length */
-
-/* This field is used only during compression.  It's initialized FALSE when
- * the table is created, and set TRUE when it's been output to the file.
- * You could suppress output of a table by setting this to TRUE.
- * (See jpeg_suppress_tables for an example.)
- */
-
-/* TRUE when table has been output */
-
-/* Basic info about one component (color channel). */
-
-/* These values are fixed over the whole image. */
-
-/* For compression, they must be supplied by parameter setup; */
-
-/* for decompression, they are read from the SOF marker. */
-
-/* identifier for this component (0..255) */
-
-/* its index in SOF or cinfo->comp_info[] */
-
-/* horizontal sampling factor (1..4) */
-
-/* vertical sampling factor (1..4) */
-
-/* quantization table selector (0..3) */
-
-/* These values may vary between scans. */
-
-/* For compression, they must be supplied by parameter setup; */
-
-/* for decompression, they are read from the SOS marker. */
-
-/* The decompressor output side may not use these variables. */
-
-/* DC entropy table selector (0..3) */
-
-/* AC entropy table selector (0..3) */
-
-/* Remaining fields should be treated as private by applications. */
-
-/* These values are computed during compression or decompression startup: */
-
-/* Component's size in DCT blocks.
- * Any dummy blocks added to complete an MCU are not counted; therefore
- * these values do not depend on whether a scan is interleaved or not.
- */
-
-/* Size of a DCT block in samples.  Always DCTSIZE for compression.
- * For decompression this is the size of the output from one DCT block,
- * reflecting any scaling we choose to apply during the IDCT step.
- * Values from 1 to 16 are supported.
- * Note that different components may receive different IDCT scalings.
- */
-
-/* The downsampled dimensions are the component's actual, unpadded number
- * of samples at the main buffer (preprocessing/compression interface), thus
- * downsampled_width = ceil(image_width * Hi/Hmax)
- * and similarly for height.  For decompression, IDCT scaling is included, so
- * downsampled_width = ceil(image_width * Hi/Hmax * DCT_[h_]scaled_size/DCTSIZE)
- */
-
-/* actual width in samples */
-
-/* actual height in samples */
-
-/* This flag is used only for decompression.  In cases where some of the
- * components will be ignored (eg grayscale output from YCbCr image),
- * we can skip most computations for the unused components.
- */
-
-/* do we need the value of this component? */
-
-/* These values are computed before starting a scan of the component. */
-
-/* The decompressor output side may not use these variables. */
-
-/* number of blocks per MCU, horizontally */
-
-/* number of blocks per MCU, vertically */
-
-/* MCU_width * MCU_height */
-
-/* MCU width in samples, MCU_width*DCT_[h_]scaled_size */
-
-/* # of non-dummy blocks across in last MCU */
-
-/* # of non-dummy blocks down in last MCU */
-
-/* Saved quantization table for component; NULL if none yet saved.
- * See jdinput.c comments about the need for this information.
- * This field is currently used only for decompression.
- */
-
-/* Private per-component storage for DCT or IDCT subsystem. */
-
-/* The script for encoding a multiple-scan file is an array of these: */
-
-/* number of components encoded in this scan */
-
-/* their SOF/comp_info[] indexes */
-
-/* progressive JPEG spectral selection parms */
-
-/* progressive JPEG successive approx. parms */
-
-/* The decompressor can save APPn and COM markers in a list of these: */
-
-/* next in list, or NULL */
-
-/* marker code: JPEG_COM, or JPEG_APP0+n */
-
-/* # bytes of data in the file */
-
-/* # bytes of data saved at data[] */
-
-/* the data contained in the marker */
-
-/* the marker length word is not counted in data_length or original_length */
-
-/* Known color spaces. */
-
-/* error/unspecified */
-
-/* monochrome */
-
-/* red/green/blue as specified by the RGB_RED,
-RGB_GREEN, RGB_BLUE, and RGB_PIXELSIZE macros */
-
-/* Y/Cb/Cr (also known as YUV) */
-
-/* C/M/Y/K */
-
-/* Y/Cb/Cr/K */
-
-/* red/green/blue */
-
-/* red/green/blue/x */
-
-/* blue/green/red */
-
-/* blue/green/red/x */
-
-/* x/blue/green/red */
-
-/* x/red/green/blue */
-
-/* When out_color_space it set to JCS_EXT_RGBX, JCS_EXT_BGRX, JCS_EXT_XBGR,
-or JCS_EXT_XRGB during decompression, the X byte is undefined, and in
-order to ensure the best performance, libjpeg-turbo can set that byte to
-whatever value it wishes.  Use the following colorspace constants to
-ensure that the X byte is set to 0xFF, so that it can be interpreted as an
-opaque alpha channel. */
-
-/* red/green/blue/alpha */
-
-/* blue/green/red/alpha */
-
-/* alpha/blue/green/red */
-
-/* alpha/red/green/blue */
-
-/* 5-bit red/6-bit green/5-bit blue */
-
-/* DCT/IDCT algorithm options. */
-
-/* slow but accurate integer algorithm */
-
-/* faster, less accurate integer method */
-
-/* floating-point: accurate, fast on fast HW */
-
-/* may be overridden in jconfig.h */
-
-/* may be overridden in jconfig.h */
-
-/* Dithering options for decompression. */
-
-/* no dithering */
-
-/* simple ordered dither */
-
-/* Floyd-Steinberg error diffusion dither */
-
-/* These 32-bit GUIDs and the corresponding jpeg_*_get_*_param()/
- * jpeg_*_set_*_param() functions allow for extending the libjpeg API without
- * breaking backward ABI compatibility.  The actual parameters are stored in
- * the opaque jpeg_comp_master and jpeg_decomp_master structs.
- */
-
-/* Boolean extension parameters */
-
-/* TRUE=optimize progressive coding scans */
-
-/* TRUE=use trellis quantization */
-
-/* TRUE=use trellis quant for DC coefficient */
-
-/* TRUE=optimize for sequences of EOB */
-
-/* TRUE=use lambda weighting table */
-
-/* TRUE=use scans in trellis optimization */
-
-/* TRUE=optimize quant table in trellis loop */
-
-/* TRUE=preprocess input to reduce ringing of edges on white background */
-
-/* Floating point parameters */
-
-/* Integer parameters */
-
-/* compression profile */
-
-/* splitting point for frequency in trellis quantization */
-
-/* number of trellis loops */
-
-/* base quantization table index */
-
-/* DC scan optimization mode */
-
-/* Values for the JINT_COMPRESS_PROFILE parameter (32-bit GUIDs) */
-
-/* best compression ratio (progressive, all mozjpeg extensions) */
-
-/* libjpeg[-turbo] defaults (baseline, no mozjpeg extensions) */
-
-/* Common fields between JPEG compression and decompression master structs. */
-
-/* Error handler module */
-
-/* Memory manager module */
-
-/* Progress monitor, or NULL if none */
-
-/* Available for use by application */
-
-/* So common code can tell which is which */
-
-/* For checking call sequence validity */
-
-/* Routines that are to be used by both halves of the library are declared
- * to receive a pointer to this structure.  There are no actual instances of
- * jpeg_common_struct, only of jpeg_compress_struct and jpeg_decompress_struct.
- */
-
-/* Fields common to both master struct types */
-
-/* Additional fields follow in an actual jpeg_compress_struct or
- * jpeg_decompress_struct.  All three structs must agree on these
- * initial fields!  (This would be a lot cleaner in C++.)
- */
-
-/* Master record for a compression instance */
-
-/* Fields shared with jpeg_decompress_struct */
-
-/* Destination for compressed data */
-
-/* Description of source image --- these fields must be filled in by
- * outer application before starting compression.  in_color_space must
- * be correct before you can even call jpeg_set_defaults().
- */
-
-/* input image width */
-
-/* input image height */
-
-/* # of color components in input image */
-
-/* colorspace of input image */
-
-/* image gamma of input image */
-
-/* Compression parameters --- these fields must be set before calling
- * jpeg_start_compress().  We recommend calling jpeg_set_defaults() to
- * initialize everything to reasonable defaults, then changing anything
- * the application specifically wants to change.  That way you won't get
- * burnt when new parameters are added.  Also note that there are several
- * helper routines to simplify changing parameters.
- */
-
-/* bits of precision in image data */
-
-/* # of color components in JPEG image */
-
-/* colorspace of JPEG image */
-
-/* comp_info[i] describes component that appears i'th in SOF */
-
-/* ptrs to coefficient quantization tables, or NULL if not defined,
- * and corresponding scale factors (percentage, initialized 100).
- */
-
-/* ptrs to Huffman coding tables, or NULL if not defined */
-
-/* L values for DC arith-coding tables */
-
-/* U values for DC arith-coding tables */
-
-/* Kx values for AC arith-coding tables */
-
-/* # of entries in scan_info array */
-
-/* script for multi-scan file, or NULL */
-
-/* The default value of scan_info is NULL, which causes a single-scan
- * sequential JPEG file to be emitted.  To create a multi-scan file,
- * set num_scans and scan_info to point to an array of scan definitions.
- */
-
-/* TRUE=caller supplies downsampled data */
-
-/* TRUE=arithmetic coding, FALSE=Huffman */
-
-/* TRUE=optimize entropy encoding parms */
-
-/* TRUE=first samples are cosited */
-
-/* 1..100, or 0 for no input smoothing */
-
-/* DCT algorithm selector */
-
-/* The restart interval can be specified in absolute MCUs by setting
- * restart_interval, or in MCU rows by setting restart_in_rows
- * (in which case the correct restart_interval will be figured
- * for each scan).
- */
-
-/* MCUs per restart, or 0 for no restart */
-
-/* if > 0, MCU rows per restart interval */
-
-/* Parameters controlling emission of special markers. */
-
-/* should a JFIF marker be written? */
-
-/* What to write for the JFIF version number */
-
-/* These three values are not used by the JPEG code, merely copied */
-
-/* into the JFIF APP0 marker.  density_unit can be 0 for unknown, */
-
-/* 1 for dots/inch, or 2 for dots/cm.  Note that the pixel aspect */
-
-/* ratio is defined by X_density/Y_density even when density_unit=0. */
-
-/* JFIF code for pixel size units */
-
-/* Horizontal pixel density */
-
-/* Vertical pixel density */
-
-/* should an Adobe marker be written? */
-
-/* State variable: index of next scanline to be written to
- * jpeg_write_scanlines().  Application may use this to control its
- * processing loop, e.g., "while (next_scanline < image_height)".
- */
-
-/* 0 .. image_height-1  */
-
-/* Remaining fields are known throughout compressor, but generally
- * should not be touched by a surrounding application.
- */
-
-/*
- * These fields are computed during compression startup
- */
-
-/* TRUE if scan script uses progressive mode */
-
-/* largest h_samp_factor */
-
-/* largest v_samp_factor */
-
-/* # of iMCU rows to be input to coef ctlr */
-
-/* The coefficient controller receives data in units of MCU rows as defined
- * for fully interleaved scans (whether the JPEG file is interleaved or not).
- * There are v_samp_factor * DCTSIZE sample rows of each component in an
- * "iMCU" (interleaved MCU) row.
- */
-
-/*
- * These fields are valid during any one scan.
- * They describe the components and MCUs actually appearing in the scan.
- */
-
-/* # of JPEG components in this scan */
-
-/* *cur_comp_info[i] describes component that appears i'th in SOS */
-
-/* # of MCUs across the image */
-
-/* # of MCU rows in the image */
-
-/* # of DCT blocks per MCU */
-
-/* MCU_membership[i] is index in cur_comp_info of component owning */
-
-/* i'th block in an MCU */
-
-/* progressive JPEG parameters for scan */
-
-/*
- * Links to compression subobjects (methods and private variables of modules)
- */
-
-/* workspace for jpeg_simple_progression */
-
-/* Master record for a decompression instance */
-
-/* Fields shared with jpeg_compress_struct */
-
-/* Source of compressed data */
-
-/* Basic description of image --- filled in by jpeg_read_header(). */
-
-/* Application may inspect these values to decide how to process image. */
-
-/* nominal image width (from SOF marker) */
-
-/* nominal image height */
-
-/* # of color components in JPEG image */
-
-/* colorspace of JPEG image */
-
-/* Decompression processing parameters --- these fields must be set before
- * calling jpeg_start_decompress().  Note that jpeg_read_header() initializes
- * them to default values.
- */
-
-/* colorspace for output */
-
-/* fraction by which to scale image */
-
-/* image gamma wanted in output */
-
-/* TRUE=multiple output passes */
-
-/* TRUE=downsampled data wanted */
-
-/* IDCT algorithm selector */
-
-/* TRUE=apply fancy upsampling */
-
-/* TRUE=apply interblock smoothing */
-
-/* TRUE=colormapped output wanted */
-
-/* the following are ignored if not quantize_colors: */
-
-/* type of color dithering to use */
-
-/* TRUE=use two-pass color quantization */
-
-/* max # colors to use in created colormap */
-
-/* these are significant only in buffered-image mode: */
-
-/* enable future use of 1-pass quantizer */
-
-/* enable future use of external colormap */
-
-/* enable future use of 2-pass quantizer */
-
-/* Description of actual output image that will be returned to application.
- * These fields are computed by jpeg_start_decompress().
- * You can also use jpeg_calc_output_dimensions() to determine these values
- * in advance of calling jpeg_start_decompress().
- */
-
-/* scaled image width */
-
-/* scaled image height */
-
-/* # of color components in out_color_space */
-
-/* # of color components returned */
-
-/* output_components is 1 (a colormap index) when quantizing colors;
- * otherwise it equals out_color_components.
- */
-
-/* min recommended height of scanline buffer */
-
-/* If the buffer passed to jpeg_read_scanlines() is less than this many rows
- * high, space and time will be wasted due to unnecessary data copying.
- * Usually rec_outbuf_height will be 1 or 2, at most 4.
- */
-
-/* When quantizing colors, the output colormap is described by these fields.
- * The application can supply a colormap by setting colormap non-NULL before
- * calling jpeg_start_decompress; otherwise a colormap is created during
- * jpeg_start_decompress or jpeg_start_output.
- * The map has out_color_components rows and actual_number_of_colors columns.
- */
-
-/* number of entries in use */
-
-/* The color map as a 2-D pixel array */
-
-/* State variables: these variables indicate the progress of decompression.
- * The application may examine these but must not modify them.
- */
-
-/* Row index of next scanline to be read from jpeg_read_scanlines().
- * Application may use this to control its processing loop, e.g.,
- * "while (output_scanline < output_height)".
- */
-
-/* 0 .. output_height-1  */
-
-/* Current input scan number and number of iMCU rows completed in scan.
- * These indicate the progress of the decompressor input side.
- */
-
-/* Number of SOS markers seen so far */
-
-/* Number of iMCU rows completed */
-
-/* The "output scan number" is the notional scan being displayed by the
- * output side.  The decompressor will not allow output scan/row number
- * to get ahead of input scan/row, but it can fall arbitrarily far behind.
- */
-
-/* Nominal scan number being displayed */
-
-/* Number of iMCU rows read */
-
-/* Current progression status.  coef_bits[c][i] indicates the precision
- * with which component c's DCT coefficient i (in zigzag order) is known.
- * It is -1 when no data has yet been received, otherwise it is the point
- * transform (shift) value for the most recent scan of the coefficient
- * (thus, 0 at completion of the progression).
- * This pointer is NULL when reading a non-progressive file.
- */
-
-/* -1 or current Al value for each coef */
-
-/* Internal JPEG parameters --- the application usually need not look at
- * these fields.  Note that the decompressor output side may not use
- * any parameters that can change between scans.
- */
-
-/* Quantization and Huffman tables are carried forward across input
- * datastreams when processing abbreviated JPEG datastreams.
- */
-
-/* ptrs to coefficient quantization tables, or NULL if not defined */
-
-/* ptrs to Huffman coding tables, or NULL if not defined */
-
-/* These parameters are never carried across datastreams, since they
- * are given in SOF/SOS markers or defined to be reset by SOI.
- */
-
-/* bits of precision in image data */
-
-/* comp_info[i] describes component that appears i'th in SOF */
-
-/* TRUE if SOFn specifies progressive mode */
-
-/* TRUE=arithmetic coding, FALSE=Huffman */
-
-/* L values for DC arith-coding tables */
-
-/* U values for DC arith-coding tables */
-
-/* Kx values for AC arith-coding tables */
-
-/* MCUs per restart interval, or 0 for no restart */
-
-/* These fields record data obtained from optional markers recognized by
- * the JPEG library.
- */
-
-/* TRUE iff a JFIF APP0 marker was found */
-
-/* Data copied from JFIF marker; only valid if saw_JFIF_marker is TRUE: */
-
-/* JFIF version number */
-
-/* JFIF code for pixel size units */
-
-/* Horizontal pixel density */
-
-/* Vertical pixel density */
-
-/* TRUE iff an Adobe APP14 marker was found */
-
-/* Color transform code from Adobe marker */
-
-/* TRUE=first samples are cosited */
-
-/* Aside from the specific data retained from APPn markers known to the
- * library, the uninterpreted contents of any or all APPn and COM markers
- * can be saved in a list for examination by the application.
- */
-
-/* Head of list of saved markers */
-
-/* Remaining fields are known throughout decompressor, but generally
- * should not be touched by a surrounding application.
- */
-
-/*
- * These fields are computed during decompression startup
- */
-
-/* largest h_samp_factor */
-
-/* largest v_samp_factor */
-
-/* smallest DCT_scaled_size of any component */
-
-/* # of iMCU rows in image */
-
-/* The coefficient controller's input and output progress is measured in
- * units of "iMCU" (interleaved MCU) rows.  These are the same as MCU rows
- * in fully interleaved JPEG scans, but are used whether the scan is
- * interleaved or not.  We define an iMCU row as v_samp_factor DCT block
- * rows of each component.  Therefore, the IDCT output contains
- * v_samp_factor*DCT_[v_]scaled_size sample rows of a component per iMCU row.
- */
-
-/* table for fast range-limiting */
-
-/*
- * These fields are valid during any one scan.
- * They describe the components and MCUs actually appearing in the scan.
- * Note that the decompressor output side must not use these fields.
- */
-
-/* # of JPEG components in this scan */
-
-/* *cur_comp_info[i] describes component that appears i'th in SOS */
-
-/* # of MCUs across the image */
-
-/* # of MCU rows in the image */
-
-/* # of DCT blocks per MCU */
-
-/* MCU_membership[i] is index in cur_comp_info of component owning */
-
-/* i'th block in an MCU */
-
-/* progressive JPEG parameters for scan */
-
-/* This field is shared between entropy decoder and marker parser.
- * It is either zero or the code of a JPEG marker that has been
- * read from the data source, but has not yet been processed.
- */
-
-/*
- * Links to decompression subobjects (methods, private variables of modules)
- */
-
-/* "Object" declarations for JPEG modules that may be supplied or called
- * directly by the surrounding application.
- * As with all objects in the JPEG library, these structs only define the
- * publicly visible methods and state variables of a module.  Additional
- * private fields may exist after the public ones.
- */
-
-/* Error handler object */
-
-/* Error exit handler: does not return to caller */
-
-/* Conditionally emit a trace or warning message */
-
-/* Routine that actually outputs a trace or error message */
-
-/* Format a message string for the most recent JPEG error or message */
-
-/* recommended size of format_message buffer */
-
-/* Reset error state variables at start of a new image */
-
-/* The message ID code and any parameters are saved here.
- * A message can have one string parameter or up to 8 int parameters.
- */
-
-/* Standard state variables for error facility */
-
-/* max msg_level that will be displayed */
-
-/* For recoverable corrupt-data errors, we emit a warning message,
- * but keep going unless emit_message chooses to abort.  emit_message
- * should count warnings in num_warnings.  The surrounding application
- * can check for bad data by seeing if num_warnings is nonzero at the
- * end of processing.
- */
-
-/* number of corrupt-data warnings */
-
-/* These fields point to the table(s) of error message strings.
- * An application can change the table pointer to switch to a different
- * message list (typically, to change the language in which errors are
- * reported).  Some applications may wish to add additional error codes
- * that will be handled by the JPEG library error mechanism; the second
- * table pointer is used for this purpose.
- *
- * First table includes all errors generated by JPEG library itself.
- * Error code 0 is reserved for a "no such error string" message.
- */
-
-/* Library errors */
-
-/* Table contains strings 0..last_jpeg_message */
-
-/* Second table can be added by application (see cjpeg/djpeg for example).
- * It contains strings numbered first_addon_message..last_addon_message.
- */
-
-/* Non-library errors */
-
-/* code for first string in addon table */
-
-/* code for last string in addon table */
-
-/* Progress monitor object */
-
-/* work units completed in this pass */
-
-/* total number of work units in this pass */
-
-/* passes completed so far */
-
-/* total number of passes expected */
-
-/* Data destination object for compression */
-
-/* => next byte to write in buffer */
-
-/* # of byte spaces remaining in buffer */
-
-/* Data source object for decompression */
-
-/* => next byte to read from buffer */
-
-/* # of bytes remaining in buffer */
-
-/* Memory manager object.
- * Allocates "small" objects (a few K total), "large" objects (tens of K),
- * and "really big" objects (virtual arrays with backing store if needed).
- * The memory manager does not allow individual objects to be freed; rather,
- * each created object is assigned to a pool, and whole pools can be freed
- * at once.  This is faster and more convenient than remembering exactly what
- * to free, especially where malloc()/free() are not too speedy.
- * NB: alloc routines never return NULL.  They exit to error_exit if not
- * successful.
- */
-
-/* lasts until master record is destroyed */
-
-/* lasts until done with image/datastream */
-
+pub const JCP_FASTEST: crate::stdlib::C2RustUnnamed_0 = 720002228;
+pub const JCP_MAX_COMPRESSION: crate::stdlib::C2RustUnnamed_0 = 1560820397;
+pub const JPOOL_PERMANENT: libc::c_int = 0 as libc::c_int;
+pub const NUM_HUFF_TBLS: libc::c_int = 4 as libc::c_int;
+pub const NUM_QUANT_TBLS: libc::c_int = 4 as libc::c_int;
 /* Method pointers */
 
 /* Limit on memory allocation for this JPEG object.  (Note that this is
@@ -2733,124 +644,9 @@ opaque alpha channel. */
 /* Suspended due to lack of input data */
 
 /* Found valid image datastream */
-
-/* Found valid table-specs-only datastream */
-
-/* If you pass require_image = TRUE (normal case), you need not check for
- * a TABLES_ONLY return code; an abbreviated file will cause an error exit.
- * JPEG_SUSPENDED is only possible if you use a data source module that can
- * give a suspension return (the stdio source module doesn't).
- */
-
-/* Main entry points for decompression */
-
-/* Replaces jpeg_read_scanlines when reading raw downsampled data. */
-
-/* Additional entry points for buffered-image mode. */
-
-/* Return value is one of: */
-
-/* #define JPEG_SUSPENDED       0    Suspended due to lack of input data */
-
-/* Reached start of new scan */
-
-/* Reached end of image */
-
-/* Completed one iMCU row */
-
-/* Completed last iMCU row of a scan */
-
-/* Precalculate output dimensions for current decompression parameters. */
-
-/* Control saving of COM and APPn markers into marker_list. */
-
-/* Install a special processing method for COM or APPn markers. */
-
-/* Read or write raw DCT coefficients --- useful for lossless transcoding. */
-
-/* If you choose to abort compression or decompression before completing
- * jpeg_finish_(de)compress, then you need to clean up to release memory,
- * temporary files, etc.  You can just call jpeg_destroy_(de)compress
- * if you're done with the JPEG object, but if you want to clean it up and
- * reuse it, call this:
- */
-
-/* Generic versions of jpeg_abort and jpeg_destroy that work on either
- * flavor of JPEG object.  These may be more convenient in some places.
- */
-
-/* Default restart-marker-resync procedure for use by data source modules */
-
-/* Accessor functions for extension parameters */
-
-/* Read ICC profile.  See libjpeg.txt for usage information. */
-
-/*
- * Permit users to replace the IDCT method dynamically.
- * The selector callback is called after the default idct implementation was choosen,
- * and is able to override it.
- */
-
-/* These marker codes are exported since applications and data source modules
- * are likely to want to use them.
- */
-
-/* RST0 marker code */
-
-/* EOI marker code */
-pub const JPEG_APP0: libc::c_int = 0xe0i32;
-pub const JDCT_DEFAULT: libc::c_int = crate::jpeglib_h::JDCT_ISLOW as libc::c_int;
-/* Floyd-Steinberg error diffusion dither */
-
-/* simple ordered dither */
-pub const JDITHER_FS: crate::jpeglib_h::J_DITHER_MODE = 2;
-/* no dithering */
-pub const JDITHER_ORDERED: crate::jpeglib_h::J_DITHER_MODE = 1;
-pub const JDITHER_NONE: crate::jpeglib_h::J_DITHER_MODE = 0;
-/* These marker codes are exported since applications and data source modules
- * are likely to want to use them.
- */
-
-/* RST0 marker code */
-
-/* EOI marker code */
-
-/* APP0 marker code */
-pub const JPEG_COM: libc::c_int = 0xfei32;
+pub const JPEG_HEADER_TABLES_ONLY: libc::c_int = 2 as libc::c_int;
+pub const JPEG_HEADER_OK: libc::c_int = 1 as libc::c_int;
+pub use crate::src::jmemmgr::jvirt_barray_control;
+pub use crate::src::jmemmgr::jvirt_sarray_control;
 pub const JDCT_FASTEST: libc::c_int = crate::jpeglib_h::JDCT_IFAST as libc::c_int;
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jvirt_barray_control {
-    pub mem_buffer: crate::jpeglib_h::JBLOCKARRAY,
-    pub rows_in_array: crate::jmorecfg_h::JDIMENSION,
-    pub blocksperrow: crate::jmorecfg_h::JDIMENSION,
-    pub maxaccess: crate::jmorecfg_h::JDIMENSION,
-    pub rows_in_mem: crate::jmorecfg_h::JDIMENSION,
-    pub rowsperchunk: crate::jmorecfg_h::JDIMENSION,
-    pub cur_start_row: crate::jmorecfg_h::JDIMENSION,
-    pub first_undef_row: crate::jmorecfg_h::JDIMENSION,
-    pub pre_zero: crate::jmorecfg_h::boolean,
-    pub dirty: crate::jmorecfg_h::boolean,
-    pub b_s_open: crate::jmorecfg_h::boolean,
-    pub next: crate::jpeglib_h::jvirt_barray_ptr,
-    pub b_s_info: crate::jmemsys_h::backing_store_info,
-}
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jvirt_sarray_control {
-    pub mem_buffer: crate::jpeglib_h::JSAMPARRAY,
-    pub rows_in_array: crate::jmorecfg_h::JDIMENSION,
-    pub samplesperrow: crate::jmorecfg_h::JDIMENSION,
-    pub maxaccess: crate::jmorecfg_h::JDIMENSION,
-    pub rows_in_mem: crate::jmorecfg_h::JDIMENSION,
-    pub rowsperchunk: crate::jmorecfg_h::JDIMENSION,
-    pub cur_start_row: crate::jmorecfg_h::JDIMENSION,
-    pub first_undef_row: crate::jmorecfg_h::JDIMENSION,
-    pub pre_zero: crate::jmorecfg_h::boolean,
-    pub dirty: crate::jmorecfg_h::boolean,
-    pub b_s_open: crate::jmorecfg_h::boolean,
-    pub next: crate::jpeglib_h::jvirt_sarray_ptr,
-    pub b_s_info: crate::jmemsys_h::backing_store_info,
-}
-use crate::jmemsys_h::backing_store_info;
-pub const JMSG_LENGTH_MAX: libc::c_int = 200i32;
+pub const JMSG_LENGTH_MAX: libc::c_int = 200 as libc::c_int;

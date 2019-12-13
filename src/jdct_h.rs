@@ -1,179 +1,4 @@
-extern "C" {
-    #[no_mangle]
-    pub fn jpeg_fdct_islow(data: *mut crate::jdct_h::DCTELEM);
-
-    #[no_mangle]
-    pub fn jpeg_fdct_ifast(data: *mut crate::jdct_h::DCTELEM);
-
-    #[no_mangle]
-    pub fn jpeg_fdct_float(data: *mut libc::c_float);
-
-    #[no_mangle]
-    pub fn jpeg_idct_islow(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        compptr: *mut crate::jpeglib_h::jpeg_component_info,
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_col: crate::jmorecfg_h::JDIMENSION,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_idct_ifast(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        compptr: *mut crate::jpeglib_h::jpeg_component_info,
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_col: crate::jmorecfg_h::JDIMENSION,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_idct_float(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        compptr: *mut crate::jpeglib_h::jpeg_component_info,
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_col: crate::jmorecfg_h::JDIMENSION,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_idct_7x7(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        compptr: *mut crate::jpeglib_h::jpeg_component_info,
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_col: crate::jmorecfg_h::JDIMENSION,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_idct_6x6(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        compptr: *mut crate::jpeglib_h::jpeg_component_info,
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_col: crate::jmorecfg_h::JDIMENSION,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_idct_5x5(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        compptr: *mut crate::jpeglib_h::jpeg_component_info,
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_col: crate::jmorecfg_h::JDIMENSION,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_idct_4x4(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        compptr: *mut crate::jpeglib_h::jpeg_component_info,
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_col: crate::jmorecfg_h::JDIMENSION,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_idct_3x3(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        compptr: *mut crate::jpeglib_h::jpeg_component_info,
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_col: crate::jmorecfg_h::JDIMENSION,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_idct_2x2(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        compptr: *mut crate::jpeglib_h::jpeg_component_info,
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_col: crate::jmorecfg_h::JDIMENSION,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_idct_1x1(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        compptr: *mut crate::jpeglib_h::jpeg_component_info,
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_col: crate::jmorecfg_h::JDIMENSION,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_idct_9x9(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        compptr: *mut crate::jpeglib_h::jpeg_component_info,
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_col: crate::jmorecfg_h::JDIMENSION,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_idct_10x10(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        compptr: *mut crate::jpeglib_h::jpeg_component_info,
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_col: crate::jmorecfg_h::JDIMENSION,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_idct_11x11(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        compptr: *mut crate::jpeglib_h::jpeg_component_info,
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_col: crate::jmorecfg_h::JDIMENSION,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_idct_12x12(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        compptr: *mut crate::jpeglib_h::jpeg_component_info,
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_col: crate::jmorecfg_h::JDIMENSION,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_idct_13x13(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        compptr: *mut crate::jpeglib_h::jpeg_component_info,
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_col: crate::jmorecfg_h::JDIMENSION,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_idct_14x14(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        compptr: *mut crate::jpeglib_h::jpeg_component_info,
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_col: crate::jmorecfg_h::JDIMENSION,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_idct_15x15(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        compptr: *mut crate::jpeglib_h::jpeg_component_info,
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_col: crate::jmorecfg_h::JDIMENSION,
-    );
-
-    #[no_mangle]
-    pub fn jpeg_idct_16x16(
-        cinfo: crate::jpeglib_h::j_decompress_ptr,
-        compptr: *mut crate::jpeglib_h::jpeg_component_info,
-        coef_block: crate::jpeglib_h::JCOEFPTR,
-        output_buf: crate::jpeglib_h::JSAMPARRAY,
-        output_col: crate::jmorecfg_h::JDIMENSION,
-    );
-}
-// =============== BEGIN jdct_h ================
-
-/* 16 bits is OK, use short if faster */
-pub const IFAST_SCALE_BITS: libc::c_int = 2i32;
+pub const IFAST_SCALE_BITS: libc::c_int = 2 as libc::c_int;
 /*
  * jdct.h
  *
@@ -231,15 +56,6 @@ pub type IFAST_MULT_TYPE = libc::c_short;
  * Each IDCT routine has its own ideas about the best dct_table element type.
  */
 pub type ISLOW_MULT_TYPE = libc::c_short;
-use crate::jmorecfg_h::JCOEF;
-use crate::jmorecfg_h::JDIMENSION;
-use crate::jmorecfg_h::MAXJSAMPLE;
-use crate::jpeglib_h::j_decompress_ptr;
-use crate::jpeglib_h::jpeg_component_info;
-use crate::jpeglib_h::jpeg_decompress_struct;
-use crate::jpeglib_h::JCOEFPTR;
-use crate::jpeglib_h::JSAMPARRAY;
-use crate::jpeglib_h::JSAMPROW;
 /* preferred floating type */
 
 /*
@@ -250,7 +66,8 @@ use crate::jpeglib_h::JSAMPROW;
  * to do the combined operations quickly.  See the comments with
  * prepare_range_limit_table (in jdmaster.c) for more info.
  */
-pub const RANGE_MASK: libc::c_int = crate::jmorecfg_h::MAXJSAMPLE * 4i32 + 3i32;
+pub const RANGE_MASK: libc::c_int =
+    crate::jmorecfg_h::MAXJSAMPLE * 4 as libc::c_int + 3 as libc::c_int;
 /*
  * Macros for handling fixed-point arithmetic; these are used by many
  * but not all of the DCT/IDCT modules.
@@ -260,4 +77,4 @@ pub const RANGE_MASK: libc::c_int = crate::jmorecfg_h::MAXJSAMPLE * 4i32 + 3i32;
  * CONST_BITS is defined within each module using these macros,
  * and may differ from one module to the next.
  */
-pub const ONE: libc::c_int = 1i32;
+pub const ONE: libc::c_int = 1 as libc::c_int;

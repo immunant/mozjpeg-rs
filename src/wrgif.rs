@@ -1,4 +1,4 @@
-use libc;
+use ::libc;
 
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
@@ -11,7 +11,6 @@ pub use crate::stdlib::__off_t;
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::_IO_FILE;
 
-pub use crate::cderror_h::C2RustUnnamed_4;
 pub use crate::cderror_h::JERR_BAD_CMAP_FILE;
 pub use crate::cderror_h::JERR_BMP_BADCMAP;
 pub use crate::cderror_h::JERR_BMP_BADDEPTH;
@@ -59,6 +58,8 @@ pub use crate::cderror_h::JWRN_GIF_BADDATA;
 pub use crate::cderror_h::JWRN_GIF_CHAR;
 pub use crate::cderror_h::JWRN_GIF_ENDCODE;
 pub use crate::cderror_h::JWRN_GIF_NOMOREDATA;
+pub use crate::cdjpeg_h::djpeg_dest_ptr;
+pub use crate::cdjpeg_h::djpeg_dest_struct;
 pub use crate::jmorecfg_h::boolean;
 pub use crate::jmorecfg_h::JCOEF;
 pub use crate::jmorecfg_h::JDIMENSION;
@@ -67,29 +68,28 @@ pub use crate::jmorecfg_h::JSAMPLE;
 pub use crate::jmorecfg_h::TRUE;
 pub use crate::jmorecfg_h::UINT16;
 pub use crate::jmorecfg_h::UINT8;
+pub use crate::jpegint_h::jpeg_color_deconverter;
+pub use crate::jpegint_h::jpeg_color_quantizer;
+pub use crate::jpegint_h::jpeg_d_coef_controller;
+pub use crate::jpegint_h::jpeg_d_main_controller;
+pub use crate::jpegint_h::jpeg_d_post_controller;
+pub use crate::jpegint_h::jpeg_decomp_master;
+pub use crate::jpegint_h::jpeg_entropy_decoder;
+pub use crate::jpegint_h::jpeg_input_controller;
+pub use crate::jpegint_h::jpeg_inverse_dct;
+pub use crate::jpegint_h::jpeg_marker_reader;
+pub use crate::jpegint_h::jpeg_upsampler;
 pub use crate::jpeglib_h::j_common_ptr;
 pub use crate::jpeglib_h::j_decompress_ptr;
-pub use crate::jpeglib_h::jpeg_calc_output_dimensions;
-pub use crate::jpeglib_h::jpeg_color_deconverter;
-pub use crate::jpeglib_h::jpeg_color_quantizer;
 pub use crate::jpeglib_h::jpeg_common_struct;
 pub use crate::jpeglib_h::jpeg_component_info;
-pub use crate::jpeglib_h::jpeg_d_coef_controller;
-pub use crate::jpeglib_h::jpeg_d_main_controller;
-pub use crate::jpeglib_h::jpeg_d_post_controller;
-pub use crate::jpeglib_h::jpeg_decomp_master;
 pub use crate::jpeglib_h::jpeg_decompress_struct;
-pub use crate::jpeglib_h::jpeg_entropy_decoder;
 pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_input_controller;
-pub use crate::jpeglib_h::jpeg_inverse_dct;
-pub use crate::jpeglib_h::jpeg_marker_reader;
 pub use crate::jpeglib_h::jpeg_marker_struct;
 pub use crate::jpeglib_h::jpeg_memory_mgr;
 pub use crate::jpeglib_h::jpeg_progress_mgr;
 pub use crate::jpeglib_h::jpeg_saved_marker_ptr;
 pub use crate::jpeglib_h::jpeg_source_mgr;
-pub use crate::jpeglib_h::jpeg_upsampler;
 pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
@@ -129,9 +129,7 @@ pub use crate::jpeglib_h::JSAMPROW;
 pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::jpeglib_h::J_DITHER_MODE;
-pub use crate::src::cdjpeg::djpeg_dest_ptr;
-pub use crate::src::cdjpeg::djpeg_dest_struct;
-pub use crate::src::jerror::C2RustUnnamed_3;
+pub use crate::src::jdmaster::jpeg_calc_output_dimensions;
 pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -266,13 +264,14 @@ use crate::stdlib::ferror;
 use crate::stdlib::fflush;
 use crate::stdlib::fwrite;
 use crate::stdlib::putc;
+pub use crate::stdlib::C2RustUnnamed_0;
 
 pub type gif_dest_ptr = *mut gif_dest_struct;
 
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct gif_dest_struct {
-    pub pub_0: crate::src::cdjpeg::djpeg_dest_struct,
+    pub pub_0: crate::cdjpeg_h::djpeg_dest_struct,
     pub cinfo: crate::jpeglib_h::j_decompress_ptr,
     pub n_bits: libc::c_int,
     pub maxcode: libc::c_int,
@@ -293,14 +292,14 @@ pub struct gif_dest_struct {
 unsafe extern "C" fn flush_packet(mut dinfo: gif_dest_ptr)
 /* flush any accumulated data */
 {
-    if (*dinfo).bytesinpkt > 0i32 {
+    if (*dinfo).bytesinpkt > 0 as libc::c_int {
         /* never write zero-length packet */
         let fresh0 = (*dinfo).bytesinpkt;
         (*dinfo).bytesinpkt = (*dinfo).bytesinpkt + 1;
-        (*dinfo).packetbuf[0] = fresh0 as libc::c_char;
+        (*dinfo).packetbuf[0 as libc::c_int as usize] = fresh0 as libc::c_char;
         if crate::stdlib::fwrite(
             (*dinfo).packetbuf.as_mut_ptr() as *const libc::c_void,
-            1i32 as crate::stddef_h::size_t,
+            1 as libc::c_int as crate::stddef_h::size_t,
             (*dinfo).bytesinpkt as crate::stddef_h::size_t,
             (*dinfo).pub_0.output_file,
         ) != (*dinfo).bytesinpkt as crate::stddef_h::size_t
@@ -315,7 +314,7 @@ unsafe extern "C" fn flush_packet(mut dinfo: gif_dest_ptr)
                 (*dinfo).cinfo as crate::jpeglib_h::j_common_ptr
             );
         }
-        (*dinfo).bytesinpkt = 0i32
+        (*dinfo).bytesinpkt = 0 as libc::c_int
     };
 }
 /* Add a character to current packet; flush to disk if necessary */
@@ -327,15 +326,15 @@ unsafe extern "C" fn output(mut dinfo: gif_dest_ptr, mut code: libc::c_int)
 {
     (*dinfo).cur_accum |= (code as libc::c_long) << (*dinfo).cur_bits;
     (*dinfo).cur_bits += (*dinfo).n_bits;
-    while (*dinfo).cur_bits >= 8i32 {
+    while (*dinfo).cur_bits >= 8 as libc::c_int {
         (*dinfo).bytesinpkt += 1;
         (*dinfo).packetbuf[(*dinfo).bytesinpkt as usize] =
-            ((*dinfo).cur_accum & 0xffi32 as libc::c_long) as libc::c_char;
-        if (*dinfo).bytesinpkt >= 255i32 {
+            ((*dinfo).cur_accum & 0xff as libc::c_int as libc::c_long) as libc::c_char;
+        if (*dinfo).bytesinpkt >= 255 as libc::c_int {
             flush_packet(dinfo);
         }
-        (*dinfo).cur_accum >>= 8i32;
-        (*dinfo).cur_bits -= 8i32
+        (*dinfo).cur_accum >>= 8 as libc::c_int;
+        (*dinfo).cur_bits -= 8 as libc::c_int
     }
 }
 /* The pseudo-compression algorithm.
@@ -365,14 +364,14 @@ unsafe extern "C" fn compress_init(mut dinfo: gif_dest_ptr, mut i_bits: libc::c_
 {
     /* init all the state variables */
     (*dinfo).n_bits = i_bits;
-    (*dinfo).maxcode = (1i32 << (*dinfo).n_bits) - 1i32;
-    (*dinfo).ClearCode = 1i32 << i_bits - 1i32;
-    (*dinfo).EOFCode = (*dinfo).ClearCode + 1i32;
-    (*dinfo).code_counter = (*dinfo).ClearCode + 2i32;
+    (*dinfo).maxcode = ((1 as libc::c_int) << (*dinfo).n_bits) - 1 as libc::c_int;
+    (*dinfo).ClearCode = (1 as libc::c_int) << i_bits - 1 as libc::c_int;
+    (*dinfo).EOFCode = (*dinfo).ClearCode + 1 as libc::c_int;
+    (*dinfo).code_counter = (*dinfo).ClearCode + 2 as libc::c_int;
     /* init output buffering vars */
-    (*dinfo).bytesinpkt = 0i32;
-    (*dinfo).cur_accum = 0i32 as libc::c_long;
-    (*dinfo).cur_bits = 0i32;
+    (*dinfo).bytesinpkt = 0 as libc::c_int;
+    (*dinfo).cur_accum = 0 as libc::c_int as libc::c_long;
+    (*dinfo).cur_bits = 0 as libc::c_int;
     /* GIF specifies an initial Clear code */
     output(dinfo, (*dinfo).ClearCode);
 }
@@ -391,7 +390,7 @@ unsafe extern "C" fn compress_pixel(mut dinfo: gif_dest_ptr, mut c: libc::c_int)
         (*dinfo).code_counter += 1
     } else {
         output(dinfo, (*dinfo).ClearCode);
-        (*dinfo).code_counter = (*dinfo).ClearCode + 2i32
+        (*dinfo).code_counter = (*dinfo).ClearCode + 2 as libc::c_int
         /* reset the counter */
     };
 }
@@ -402,11 +401,11 @@ unsafe extern "C" fn compress_term(mut dinfo: gif_dest_ptr)
     /* Send an EOF code */
     output(dinfo, (*dinfo).EOFCode);
     /* Flush the bit-packing buffer */
-    if (*dinfo).cur_bits > 0i32 {
+    if (*dinfo).cur_bits > 0 as libc::c_int {
         (*dinfo).bytesinpkt += 1;
         (*dinfo).packetbuf[(*dinfo).bytesinpkt as usize] =
-            ((*dinfo).cur_accum & 0xffi32 as libc::c_long) as libc::c_char;
-        if (*dinfo).bytesinpkt >= 255i32 {
+            ((*dinfo).cur_accum & 0xff as libc::c_int as libc::c_long) as libc::c_char;
+        if (*dinfo).bytesinpkt >= 255 as libc::c_int {
             flush_packet(dinfo);
         }
     }
@@ -419,11 +418,11 @@ unsafe extern "C" fn put_word(mut dinfo: gif_dest_ptr, mut w: libc::c_uint)
 /* Emit a 16-bit word, LSB first */
 {
     crate::stdlib::putc(
-        (w & 0xffi32 as libc::c_uint) as libc::c_int,
+        (w & 0xff as libc::c_int as libc::c_uint) as libc::c_int,
         (*dinfo).pub_0.output_file,
     );
     crate::stdlib::putc(
-        (w >> 8i32 & 0xffi32 as libc::c_uint) as libc::c_int,
+        (w >> 8 as libc::c_int & 0xff as libc::c_int as libc::c_uint) as libc::c_int,
         (*dinfo).pub_0.output_file,
     );
 }
@@ -448,11 +447,11 @@ unsafe extern "C" fn emit_header(
     let mut ColorMapSize: libc::c_int = 0;
     let mut InitCodeSize: libc::c_int = 0;
     let mut FlagByte: libc::c_int = 0;
-    let mut cshift: libc::c_int = (*(*dinfo).cinfo).data_precision - 8i32;
+    let mut cshift: libc::c_int = (*(*dinfo).cinfo).data_precision - 8 as libc::c_int;
     let mut i: libc::c_int = 0;
-    if num_colors > 256i32 {
+    if num_colors > 256 as libc::c_int {
         (*(*(*dinfo).cinfo).err).msg_code = crate::cderror_h::JERR_TOO_MANY_COLORS as libc::c_int;
-        (*(*(*dinfo).cinfo).err).msg_parm.i[0] = num_colors;
+        (*(*(*dinfo).cinfo).err).msg_parm.i[0 as libc::c_int as usize] = num_colors;
         Some(
             (*(*(*dinfo).cinfo).err)
                 .error_exit
@@ -463,13 +462,13 @@ unsafe extern "C" fn emit_header(
         );
     }
     /* Compute bits/pixel and related values */
-    BitsPerPixel = 1i32;
-    while num_colors > 1i32 << BitsPerPixel {
+    BitsPerPixel = 1 as libc::c_int;
+    while num_colors > (1 as libc::c_int) << BitsPerPixel {
         BitsPerPixel += 1
     }
-    ColorMapSize = 1i32 << BitsPerPixel;
-    if BitsPerPixel <= 1i32 {
-        InitCodeSize = 2i32
+    ColorMapSize = (1 as libc::c_int) << BitsPerPixel;
+    if BitsPerPixel <= 1 as libc::c_int {
+        InitCodeSize = 2 as libc::c_int
     } else {
         InitCodeSize = BitsPerPixel
     }
@@ -486,16 +485,16 @@ unsafe extern "C" fn emit_header(
     /* Write the Logical Screen Descriptor */
     put_word(dinfo, (*(*dinfo).cinfo).output_width); /* Yes, there is a global color table */
     put_word(dinfo, (*(*dinfo).cinfo).output_height); /* color resolution */
-    FlagByte = 0x80i32; /* size of global color table */
-    FlagByte |= BitsPerPixel - 1i32 << 4i32; /* Background color index */
-    FlagByte |= BitsPerPixel - 1i32; /* Reserved (aspect ratio in GIF89) */
+    FlagByte = 0x80 as libc::c_int; /* size of global color table */
+    FlagByte |= (BitsPerPixel - 1 as libc::c_int) << 4 as libc::c_int; /* Background color index */
+    FlagByte |= BitsPerPixel - 1 as libc::c_int; /* Reserved (aspect ratio in GIF89) */
     crate::stdlib::putc(FlagByte, (*dinfo).pub_0.output_file);
-    crate::stdlib::putc(0i32, (*dinfo).pub_0.output_file);
-    crate::stdlib::putc(0i32, (*dinfo).pub_0.output_file);
+    crate::stdlib::putc(0 as libc::c_int, (*dinfo).pub_0.output_file);
+    crate::stdlib::putc(0 as libc::c_int, (*dinfo).pub_0.output_file);
     /* Write the Global Color Map */
     /* If the color map is more than 8 bits precision, */
     /* we reduce it to 8 bits by shifting */
-    i = 0i32;
+    i = 0 as libc::c_int;
     while i < ColorMapSize {
         if i < num_colors {
             if !colormap.is_null() {
@@ -504,49 +503,58 @@ unsafe extern "C" fn emit_header(
                 {
                     /* Normal case: RGB color map */
                     crate::stdlib::putc(
-                        *(*colormap.offset(0)).offset(i as isize) as libc::c_int >> cshift,
+                        *(*colormap.offset(0 as libc::c_int as isize)).offset(i as isize)
+                            as libc::c_int
+                            >> cshift,
                         (*dinfo).pub_0.output_file,
                     );
                     crate::stdlib::putc(
-                        *(*colormap.offset(1)).offset(i as isize) as libc::c_int >> cshift,
+                        *(*colormap.offset(1 as libc::c_int as isize)).offset(i as isize)
+                            as libc::c_int
+                            >> cshift,
                         (*dinfo).pub_0.output_file,
                     );
                     crate::stdlib::putc(
-                        *(*colormap.offset(2)).offset(i as isize) as libc::c_int >> cshift,
+                        *(*colormap.offset(2 as libc::c_int as isize)).offset(i as isize)
+                            as libc::c_int
+                            >> cshift,
                         (*dinfo).pub_0.output_file,
                     );
                 } else {
                     /* Grayscale "color map": possible if quantizing grayscale image */
                     put_3bytes(
                         dinfo,
-                        *(*colormap.offset(0)).offset(i as isize) as libc::c_int >> cshift,
+                        *(*colormap.offset(0 as libc::c_int as isize)).offset(i as isize)
+                            as libc::c_int
+                            >> cshift,
                     );
                 }
             } else {
                 /* Create a grayscale map of num_colors values, range 0..255 */
                 put_3bytes(
                     dinfo,
-                    (i * 255i32 + (num_colors - 1i32) / 2i32) / (num_colors - 1i32),
+                    (i * 255 as libc::c_int + (num_colors - 1 as libc::c_int) / 2 as libc::c_int)
+                        / (num_colors - 1 as libc::c_int),
                 );
             }
         } else {
             /* fill out the map to a power of 2 */
-            put_3bytes(dinfo, 0i32);
+            put_3bytes(dinfo, 0 as libc::c_int);
         }
         i += 1
     }
     /* Write image separator and Image Descriptor */
     crate::stdlib::putc(',' as i32, (*dinfo).pub_0.output_file); /* separator */
-    put_word(dinfo, 0i32 as libc::c_uint); /* left/top offset */
-    put_word(dinfo, 0i32 as libc::c_uint); /* image size */
+    put_word(dinfo, 0 as libc::c_int as libc::c_uint); /* left/top offset */
+    put_word(dinfo, 0 as libc::c_int as libc::c_uint); /* image size */
     put_word(dinfo, (*(*dinfo).cinfo).output_width);
     put_word(dinfo, (*(*dinfo).cinfo).output_height);
     /* flag byte: not interlaced, no local color map */
-    crate::stdlib::putc(0i32, (*dinfo).pub_0.output_file);
+    crate::stdlib::putc(0 as libc::c_int, (*dinfo).pub_0.output_file);
     /* Write Initial Code Size byte */
     crate::stdlib::putc(InitCodeSize, (*dinfo).pub_0.output_file);
     /* Initialize for "compression" of image data */
-    compress_init(dinfo, InitCodeSize + 1i32);
+    compress_init(dinfo, InitCodeSize + 1 as libc::c_int);
 }
 /*
  * Startup: write the file header.
@@ -554,7 +562,7 @@ unsafe extern "C" fn emit_header(
 
 unsafe extern "C" fn start_output_gif(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
+    mut dinfo: crate::cdjpeg_h::djpeg_dest_ptr,
 ) {
     let mut dest: gif_dest_ptr = dinfo as gif_dest_ptr;
     if (*cinfo).quantize_colors != 0 {
@@ -562,7 +570,7 @@ unsafe extern "C" fn start_output_gif(
     } else {
         emit_header(
             dest,
-            256i32,
+            256 as libc::c_int,
             crate::stddef_h::NULL as *mut libc::c_void as crate::jpeglib_h::JSAMPARRAY,
         );
     };
@@ -574,15 +582,15 @@ unsafe extern "C" fn start_output_gif(
 
 unsafe extern "C" fn put_pixel_rows(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
+    mut dinfo: crate::cdjpeg_h::djpeg_dest_ptr,
     mut rows_supplied: crate::jmorecfg_h::JDIMENSION,
 ) {
     let mut dest: gif_dest_ptr = dinfo as gif_dest_ptr;
     let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
-    ptr = *(*dest).pub_0.buffer.offset(0);
+    ptr = *(*dest).pub_0.buffer.offset(0 as libc::c_int as isize);
     col = (*cinfo).output_width;
-    while col > 0i32 as libc::c_uint {
+    while col > 0 as libc::c_int as libc::c_uint {
         let fresh1 = ptr;
         ptr = ptr.offset(1);
         compress_pixel(dest, *fresh1 as libc::c_int);
@@ -595,13 +603,13 @@ unsafe extern "C" fn put_pixel_rows(
 
 unsafe extern "C" fn finish_output_gif(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
+    mut dinfo: crate::cdjpeg_h::djpeg_dest_ptr,
 ) {
     let mut dest: gif_dest_ptr = dinfo as gif_dest_ptr;
     /* Flush "compression" mechanism */
     compress_term(dest);
     /* Write a zero-length data block to end the series */
-    crate::stdlib::putc(0i32, (*dest).pub_0.output_file);
+    crate::stdlib::putc(0 as libc::c_int, (*dest).pub_0.output_file);
     /* Write the GIF terminator mark */
     crate::stdlib::putc(';' as i32, (*dest).pub_0.output_file);
     /* Make sure we wrote the output file OK */
@@ -622,7 +630,7 @@ unsafe extern "C" fn finish_output_gif(
 
 unsafe extern "C" fn calc_buffer_dimensions_gif(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
+    mut dinfo: crate::cdjpeg_h::djpeg_dest_ptr,
 ) {
 }
 /*
@@ -681,7 +689,7 @@ to write the image in bottom-up order.) */
 
 pub unsafe extern "C" fn jinit_write_gif(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-) -> crate::src::cdjpeg::djpeg_dest_ptr {
+) -> crate::cdjpeg_h::djpeg_dest_ptr {
     let mut dest: gif_dest_ptr = 0 as *mut gif_dest_struct;
     /* Create module interface object, fill in method pointers */
     dest = Some(
@@ -699,14 +707,14 @@ pub unsafe extern "C" fn jinit_write_gif(
         start_output_gif
             as unsafe extern "C" fn(
                 _: crate::jpeglib_h::j_decompress_ptr,
-                _: crate::src::cdjpeg::djpeg_dest_ptr,
+                _: crate::cdjpeg_h::djpeg_dest_ptr,
             ) -> (),
     );
     (*dest).pub_0.put_pixel_rows = Some(
         put_pixel_rows
             as unsafe extern "C" fn(
                 _: crate::jpeglib_h::j_decompress_ptr,
-                _: crate::src::cdjpeg::djpeg_dest_ptr,
+                _: crate::cdjpeg_h::djpeg_dest_ptr,
                 _: crate::jmorecfg_h::JDIMENSION,
             ) -> (),
     );
@@ -714,14 +722,14 @@ pub unsafe extern "C" fn jinit_write_gif(
         finish_output_gif
             as unsafe extern "C" fn(
                 _: crate::jpeglib_h::j_decompress_ptr,
-                _: crate::src::cdjpeg::djpeg_dest_ptr,
+                _: crate::cdjpeg_h::djpeg_dest_ptr,
             ) -> (),
     );
     (*dest).pub_0.calc_buffer_dimensions = Some(
         calc_buffer_dimensions_gif
             as unsafe extern "C" fn(
                 _: crate::jpeglib_h::j_decompress_ptr,
-                _: crate::src::cdjpeg::djpeg_dest_ptr,
+                _: crate::cdjpeg_h::djpeg_dest_ptr,
             ) -> (),
     );
     if (*cinfo).out_color_space as libc::c_uint
@@ -740,17 +748,17 @@ pub unsafe extern "C" fn jinit_write_gif(
     /* Force quantization if color or if > 8 bits input */
     if (*cinfo).out_color_space as libc::c_uint
         != crate::jpeglib_h::JCS_GRAYSCALE as libc::c_int as libc::c_uint
-        || (*cinfo).data_precision > 8i32
+        || (*cinfo).data_precision > 8 as libc::c_int
     {
         /* Force quantization to at most 256 colors */
         (*cinfo).quantize_colors = crate::jmorecfg_h::TRUE;
-        if (*cinfo).desired_number_of_colors > 256i32 {
-            (*cinfo).desired_number_of_colors = 256i32
+        if (*cinfo).desired_number_of_colors > 256 as libc::c_int {
+            (*cinfo).desired_number_of_colors = 256 as libc::c_int
         }
     }
     /* Calculate output image dimensions so we can allocate space */
-    crate::jpeglib_h::jpeg_calc_output_dimensions(cinfo);
-    if (*cinfo).output_components != 1i32 {
+    crate::src::jdmaster::jpeg_calc_output_dimensions(cinfo);
+    if (*cinfo).output_components != 1 as libc::c_int {
         /* safety check: just one component? */
         (*(*cinfo).err).msg_code = crate::cderror_h::JERR_GIF_BUG as libc::c_int;
         Some(
@@ -770,9 +778,9 @@ pub unsafe extern "C" fn jinit_write_gif(
         cinfo as crate::jpeglib_h::j_common_ptr,
         crate::jpeglib_h::JPOOL_IMAGE,
         (*cinfo).output_width,
-        1i32 as crate::jmorecfg_h::JDIMENSION,
+        1 as libc::c_int as crate::jmorecfg_h::JDIMENSION,
     );
-    (*dest).pub_0.buffer_height = 1i32 as crate::jmorecfg_h::JDIMENSION;
-    return dest as crate::src::cdjpeg::djpeg_dest_ptr;
+    (*dest).pub_0.buffer_height = 1 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
+    return dest as crate::cdjpeg_h::djpeg_dest_ptr;
 }
 /* GIF_SUPPORTED */

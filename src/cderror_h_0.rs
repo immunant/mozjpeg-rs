@@ -1,0 +1,14 @@
+pub const JMSG_LASTADDONCODE: crate::stdlib::C2RustUnnamed_0 = 1028;
+pub const JERR_UNSUPPORTED_FORMAT: crate::stdlib::C2RustUnnamed_0 = 1027;
+pub const JERR_UNKNOWN_FORMAT: crate::stdlib::C2RustUnnamed_0 = 1026;
+pub const JERR_UNGETC_FAILED: crate::stdlib::C2RustUnnamed_0 = 1025;
+pub const JERR_TOO_MANY_COLORS: crate::stdlib::C2RustUnnamed_0 = 1024;
+pub const JERR_BAD_CMAP_FILE: crate::stdlib::C2RustUnnamed_0 = 1023;
+pub const JTRC_PPM_TEXT: crate::stdlib::C2RustUnnamed_0 = 1021;
+pub const JTRC_PPM: crate::stdlib::C2RustUnnamed_0 = 1020;
+pub const JTRC_PGM_TEXT: crate::stdlib::C2RustUnnamed_0 = 1019;
+pub const JTRC_PGM: crate::stdlib::C2RustUnnamed_0 = 1018;
+pub const JERR_PPM_OUTOFRANGE: crate::stdlib::C2RustUnnamed_0 = 1017;
+pub const JERR_PPM_NOT: crate::stdlib::C2RustUnnamed_0 = 1016;
+pub const JERR_PPM_NONNUMERIC: crate::stdlib::C2RustUnnamed_0 = 1015;
+pub const JERR_PPM_COLORSPACE: crate::stdlib::C2RustUnnamed_0 = 1014;

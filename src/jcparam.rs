@@ -1,4 +1,572 @@
-use libc;
+use ::libc;
+
+#[c2rust::header_src = "/home/sjcrane/projects/c2rust/mozjpeg/mozjpeg-c2rust/mozjpeg-c/jstdhuff.c:21"]
+pub mod jstdhuff_c {
+    /*
+     * jstdhuff.c
+     *
+     * This file was part of the Independent JPEG Group's software:
+     * Copyright (C) 1991-1998, Thomas G. Lane.
+     * libjpeg-turbo Modifications:
+     * Copyright (C) 2013, D. R. Commander.
+     * For conditions of distribution and use, see the accompanying README.ijg
+     * file.
+     *
+     * This file contains routines to set the default Huffman tables, if they are
+     * not already set.
+     */
+    /*
+     * Huffman table setup routines
+     */
+
+    pub unsafe extern "C" fn add_huff_table(
+        mut cinfo: crate::jpeglib_h::j_common_ptr,
+        mut htblptr: *mut *mut crate::jpeglib_h::JHUFF_TBL,
+        mut bits: *const crate::jmorecfg_h::UINT8,
+        mut val: *const crate::jmorecfg_h::UINT8,
+    )
+    /* Define a Huffman table */
+    {
+        let mut nsymbols: libc::c_int = 0;
+        let mut len: libc::c_int = 0;
+        if (*htblptr).is_null() {
+            *htblptr = crate::src::jcomapi::jpeg_alloc_huff_table(cinfo)
+        } else {
+            return;
+        }
+        /* Copy the number-of-symbols-of-each-code-length counts */
+        crate::stdlib::memcpy(
+            (**htblptr).bits.as_mut_ptr() as *mut libc::c_void,
+            bits as *const libc::c_void,
+            ::std::mem::size_of::<[crate::jmorecfg_h::UINT8; 17]>() as libc::c_ulong,
+        );
+        /* Validate the counts.  We do this here mainly so we can copy the right
+         * number of symbols from the val[] array, without risking marching off
+         * the end of memory.  jchuff.c will do a more thorough test later.
+         */
+        nsymbols = 0 as libc::c_int;
+        len = 1 as libc::c_int;
+        while len <= 16 as libc::c_int {
+            nsymbols += *bits.offset(len as isize) as libc::c_int;
+            len += 1
+        }
+        if nsymbols < 1 as libc::c_int || nsymbols > 256 as libc::c_int {
+            (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_HUFF_TABLE as libc::c_int;
+            Some(
+                (*(*cinfo).err)
+                    .error_exit
+                    .expect("non-null function pointer"),
+            )
+            .expect("non-null function pointer")(cinfo);
+        }
+        crate::stdlib::memcpy(
+            (**htblptr).huffval.as_mut_ptr() as *mut libc::c_void,
+            val as *const libc::c_void,
+            (nsymbols as libc::c_ulong)
+                .wrapping_mul(::std::mem::size_of::<crate::jmorecfg_h::UINT8>() as libc::c_ulong),
+        );
+        crate::stdlib::memset(
+            &mut *(**htblptr).huffval.as_mut_ptr().offset(nsymbols as isize)
+                as *mut crate::jmorecfg_h::UINT8 as *mut libc::c_void,
+            0 as libc::c_int,
+            ((256 as libc::c_int - nsymbols) as libc::c_ulong)
+                .wrapping_mul(::std::mem::size_of::<crate::jmorecfg_h::UINT8>() as libc::c_ulong),
+        );
+        /* Initialize sent_table FALSE so table will be written to JPEG file. */
+        (**htblptr).sent_table = crate::jmorecfg_h::FALSE;
+    }
+
+    pub unsafe extern "C" fn std_huff_tables(mut cinfo: crate::jpeglib_h::j_common_ptr)
+    /* Set up the standard Huffman tables (cf. JPEG standard section K.3) */
+    /* IMPORTANT: these are only valid for 8-bit data precision! */
+    {
+        let mut dc_huff_tbl_ptrs: *mut *mut crate::jpeglib_h::JHUFF_TBL =
+            0 as *mut *mut crate::jpeglib_h::JHUFF_TBL;
+        let mut ac_huff_tbl_ptrs: *mut *mut crate::jpeglib_h::JHUFF_TBL =
+            0 as *mut *mut crate::jpeglib_h::JHUFF_TBL;
+        pub static mut bits_dc_luminance: [crate::jmorecfg_h::UINT8; 17] = [
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+        ];
+        pub static mut val_dc_luminance: [crate::jmorecfg_h::UINT8; 12] = [
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            10 as libc::c_int as crate::jmorecfg_h::UINT8,
+            11 as libc::c_int as crate::jmorecfg_h::UINT8,
+        ];
+        pub static mut bits_dc_chrominance: [crate::jmorecfg_h::UINT8; 17] = [
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+        ];
+        pub static mut val_dc_chrominance: [crate::jmorecfg_h::UINT8; 12] = [
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            10 as libc::c_int as crate::jmorecfg_h::UINT8,
+            11 as libc::c_int as crate::jmorecfg_h::UINT8,
+        ];
+        pub static mut bits_ac_luminance: [crate::jmorecfg_h::UINT8; 17] = [
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x7d as libc::c_int as crate::jmorecfg_h::UINT8,
+        ];
+        pub static mut val_ac_luminance: [crate::jmorecfg_h::UINT8; 162] = [
+            0x1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x11 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x12 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x21 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x31 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x41 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x13 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x51 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x61 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x22 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x71 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x14 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x32 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x81 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x91 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x23 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x42 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x15 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x52 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x24 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x33 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x62 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x72 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x82 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x16 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x17 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x18 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x19 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x1a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x25 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x26 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x27 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x28 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x29 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x2a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x34 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x35 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x36 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x37 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x38 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x39 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x3a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x43 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x44 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x45 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x46 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x47 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x48 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x49 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x4a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x53 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x54 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x55 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x56 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x57 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x58 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x59 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x5a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x63 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x64 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x65 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x66 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x67 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x68 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x69 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x6a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x73 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x74 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x75 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x76 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x77 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x78 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x79 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x7a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x83 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x84 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x85 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x86 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x87 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x88 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x89 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x8a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x92 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x93 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x94 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x95 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x96 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x97 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x98 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x99 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x9a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xaa as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xba as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xca as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xda as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xea as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xfa as libc::c_int as crate::jmorecfg_h::UINT8,
+        ];
+        pub static mut bits_ac_chrominance: [crate::jmorecfg_h::UINT8; 17] = [
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x77 as libc::c_int as crate::jmorecfg_h::UINT8,
+        ];
+        pub static mut val_ac_chrominance: [crate::jmorecfg_h::UINT8; 162] = [
+            0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x11 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x21 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x31 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x12 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x41 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x51 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x61 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x71 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x13 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x22 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x32 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x81 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x14 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x42 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x91 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x23 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x33 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x52 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf0 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x15 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x62 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x72 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x16 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x24 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x34 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x25 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf1 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x17 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x18 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x19 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x1a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x26 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x27 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x28 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x29 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x2a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x35 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x36 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x37 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x38 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x39 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x3a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x43 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x44 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x45 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x46 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x47 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x48 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x49 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x4a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x53 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x54 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x55 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x56 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x57 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x58 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x59 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x5a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x63 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x64 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x65 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x66 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x67 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x68 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x69 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x6a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x73 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x74 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x75 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x76 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x77 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x78 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x79 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x7a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x82 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x83 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x84 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x85 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x86 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x87 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x88 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x89 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x8a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x92 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x93 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x94 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x95 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x96 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x97 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x98 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x99 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0x9a as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xa9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xaa as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xb9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xba as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xc9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xca as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xd9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xda as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xe9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xea as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf2 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf3 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf4 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf5 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf6 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf7 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf8 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xf9 as libc::c_int as crate::jmorecfg_h::UINT8,
+            0xfa as libc::c_int as crate::jmorecfg_h::UINT8,
+        ];
+        if (*cinfo).is_decompressor != 0 {
+            dc_huff_tbl_ptrs = (*(cinfo as crate::jpeglib_h::j_decompress_ptr))
+                .dc_huff_tbl_ptrs
+                .as_mut_ptr();
+            ac_huff_tbl_ptrs = (*(cinfo as crate::jpeglib_h::j_decompress_ptr))
+                .ac_huff_tbl_ptrs
+                .as_mut_ptr()
+        } else {
+            dc_huff_tbl_ptrs = (*(cinfo as crate::jpeglib_h::j_compress_ptr))
+                .dc_huff_tbl_ptrs
+                .as_mut_ptr();
+            ac_huff_tbl_ptrs = (*(cinfo as crate::jpeglib_h::j_compress_ptr))
+                .ac_huff_tbl_ptrs
+                .as_mut_ptr()
+        }
+        add_huff_table(
+            cinfo,
+            &mut *dc_huff_tbl_ptrs.offset(0 as libc::c_int as isize),
+            bits_dc_luminance.as_ptr(),
+            val_dc_luminance.as_ptr(),
+        );
+        add_huff_table(
+            cinfo,
+            &mut *ac_huff_tbl_ptrs.offset(0 as libc::c_int as isize),
+            bits_ac_luminance.as_ptr(),
+            val_ac_luminance.as_ptr(),
+        );
+        add_huff_table(
+            cinfo,
+            &mut *dc_huff_tbl_ptrs.offset(1 as libc::c_int as isize),
+            bits_dc_chrominance.as_ptr(),
+            val_dc_chrominance.as_ptr(),
+        );
+        add_huff_table(
+            cinfo,
+            &mut *ac_huff_tbl_ptrs.offset(1 as libc::c_int as isize),
+            bits_ac_chrominance.as_ptr(),
+            val_ac_chrominance.as_ptr(),
+        );
+    }
+
+    use crate::jmorecfg_h::FALSE;
+    use crate::jmorecfg_h::UINT8;
+    use crate::jpeglib_h::j_compress_ptr;
+    use crate::jpeglib_h::j_decompress_ptr;
+    use crate::jpeglib_h::JHUFF_TBL;
+    use crate::src::jcomapi::jpeg_alloc_huff_table;
+    use crate::src::jerror::JERR_BAD_HUFF_TABLE;
+    use crate::stdlib::memcpy;
+    use crate::stdlib::memset;
+}
 
 pub use crate::jconfig_h::BITS_IN_JSAMPLE;
 pub use crate::jmorecfg_h::boolean;
@@ -12,6 +580,26 @@ pub use crate::jmorecfg_h::TRUE;
 pub use crate::jmorecfg_h::UINT16;
 pub use crate::jmorecfg_h::UINT8;
 pub use crate::jpegint_h::inverse_DCT_method_ptr;
+pub use crate::jpegint_h::jpeg_c_coef_controller;
+pub use crate::jpegint_h::jpeg_c_main_controller;
+pub use crate::jpegint_h::jpeg_c_prep_controller;
+pub use crate::jpegint_h::jpeg_color_converter;
+pub use crate::jpegint_h::jpeg_color_deconverter;
+pub use crate::jpegint_h::jpeg_color_quantizer;
+pub use crate::jpegint_h::jpeg_comp_master;
+pub use crate::jpegint_h::jpeg_d_coef_controller;
+pub use crate::jpegint_h::jpeg_d_main_controller;
+pub use crate::jpegint_h::jpeg_d_post_controller;
+pub use crate::jpegint_h::jpeg_decomp_master;
+pub use crate::jpegint_h::jpeg_downsampler;
+pub use crate::jpegint_h::jpeg_entropy_decoder;
+pub use crate::jpegint_h::jpeg_entropy_encoder;
+pub use crate::jpegint_h::jpeg_forward_dct;
+pub use crate::jpegint_h::jpeg_input_controller;
+pub use crate::jpegint_h::jpeg_inverse_dct;
+pub use crate::jpegint_h::jpeg_marker_reader;
+pub use crate::jpegint_h::jpeg_marker_writer;
+pub use crate::jpegint_h::jpeg_upsampler;
 pub use crate::jpegint_h::CSTATE_START;
 pub use crate::jpegint_h::JBUF_CRANK_DEST;
 pub use crate::jpegint_h::JBUF_PASS_THRU;
@@ -22,46 +610,23 @@ pub use crate::jpegint_h::J_BUF_MODE;
 pub use crate::jpeglib_h::j_common_ptr;
 pub use crate::jpeglib_h::j_compress_ptr;
 pub use crate::jpeglib_h::j_decompress_ptr;
-pub use crate::jpeglib_h::jpeg_alloc_huff_table;
-pub use crate::jpeglib_h::jpeg_alloc_quant_table;
-pub use crate::jpeglib_h::jpeg_c_coef_controller;
-pub use crate::jpeglib_h::jpeg_c_main_controller;
-pub use crate::jpeglib_h::jpeg_c_prep_controller;
-pub use crate::jpeglib_h::jpeg_color_converter;
-pub use crate::jpeglib_h::jpeg_color_deconverter;
-pub use crate::jpeglib_h::jpeg_color_quantizer;
 pub use crate::jpeglib_h::jpeg_common_struct;
-pub use crate::jpeglib_h::jpeg_comp_master;
 pub use crate::jpeglib_h::jpeg_component_info;
 pub use crate::jpeglib_h::jpeg_compress_struct;
-pub use crate::jpeglib_h::jpeg_d_coef_controller;
-pub use crate::jpeglib_h::jpeg_d_main_controller;
-pub use crate::jpeglib_h::jpeg_d_post_controller;
-pub use crate::jpeglib_h::jpeg_decomp_master;
 pub use crate::jpeglib_h::jpeg_decompress_struct;
 pub use crate::jpeglib_h::jpeg_destination_mgr;
-pub use crate::jpeglib_h::jpeg_downsampler;
-pub use crate::jpeglib_h::jpeg_entropy_decoder;
-pub use crate::jpeglib_h::jpeg_entropy_encoder;
 pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_forward_dct;
-pub use crate::jpeglib_h::jpeg_input_controller;
-pub use crate::jpeglib_h::jpeg_inverse_dct;
 pub use crate::jpeglib_h::jpeg_marker_parser_method;
-pub use crate::jpeglib_h::jpeg_marker_reader;
 pub use crate::jpeglib_h::jpeg_marker_struct;
-pub use crate::jpeglib_h::jpeg_marker_writer;
 pub use crate::jpeglib_h::jpeg_memory_mgr;
 pub use crate::jpeglib_h::jpeg_progress_mgr;
 pub use crate::jpeglib_h::jpeg_saved_marker_ptr;
 pub use crate::jpeglib_h::jpeg_scan_info;
 pub use crate::jpeglib_h::jpeg_source_mgr;
-pub use crate::jpeglib_h::jpeg_upsampler;
 pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
-pub use crate::jpeglib_h::C2RustUnnamed_1;
 pub use crate::jpeglib_h::C2RustUnnamed_2;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::DCTSIZE2;
@@ -106,7 +671,8 @@ pub use crate::jpeglib_h::J_DITHER_MODE;
 pub use crate::jpeglib_h::MAX_COMPS_IN_SCAN;
 pub use crate::jpeglib_h::NUM_ARITH_TBLS;
 pub use crate::jpeglib_h::NUM_QUANT_TBLS;
-pub use crate::src::jerror::C2RustUnnamed_3;
+pub use crate::src::jcomapi::jpeg_alloc_huff_table;
+pub use crate::src::jcomapi::jpeg_alloc_quant_table;
 pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -239,9 +805,10 @@ pub use crate::src::jerror::JWRN_NOT_SEQUENTIAL;
 pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
+pub use crate::stdlib::C2RustUnnamed_0;
 
-pub use crate::jstdhuff_c::add_huff_table;
-pub use crate::jstdhuff_c::std_huff_tables;
+pub use crate::src::jcparam::jstdhuff_c::add_huff_table;
+pub use crate::src::jcparam::jstdhuff_c::std_huff_tables;
 use crate::stdlib::memcpy;
 use crate::stdlib::memset;
 /*
@@ -285,7 +852,7 @@ pub unsafe extern "C" fn jpeg_add_quant_table(
     /* Safety check to ensure start_compress not called yet. */
     if (*cinfo).global_state != crate::jpegint_h::CSTATE_START {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = (*cinfo).global_state;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -293,9 +860,9 @@ pub unsafe extern "C" fn jpeg_add_quant_table(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    if which_tbl < 0i32 || which_tbl >= crate::jpeglib_h::NUM_QUANT_TBLS {
+    if which_tbl < 0 as libc::c_int || which_tbl >= crate::jpeglib_h::NUM_QUANT_TBLS {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_DQT_INDEX as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = which_tbl;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = which_tbl;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -308,22 +875,23 @@ pub unsafe extern "C" fn jpeg_add_quant_table(
         .as_mut_ptr()
         .offset(which_tbl as isize) as *mut *mut crate::jpeglib_h::JQUANT_TBL;
     if (*qtblptr).is_null() {
-        *qtblptr = crate::jpeglib_h::jpeg_alloc_quant_table(cinfo as crate::jpeglib_h::j_common_ptr)
+        *qtblptr =
+            crate::src::jcomapi::jpeg_alloc_quant_table(cinfo as crate::jpeglib_h::j_common_ptr)
     }
-    i = 0i32;
+    i = 0 as libc::c_int;
     while i < crate::jpeglib_h::DCTSIZE2 {
         temp = (*basic_table.offset(i as isize) as libc::c_long * scale_factor as libc::c_long
-            + 50i64)
-            / 100i64;
+            + 50 as libc::c_long)
+            / 100 as libc::c_long;
         /* limit the values to the valid range */
-        if temp <= 0i64 {
-            temp = 1i64
+        if temp <= 0 as libc::c_long {
+            temp = 1 as libc::c_long
         } /* max quantizer needed for 12 bits */
-        if temp > 32767i64 {
-            temp = 32767i64
+        if temp > 32767 as libc::c_long {
+            temp = 32767 as libc::c_long
         } /* limit to baseline range if requested */
-        if force_baseline != 0 && temp > 255i64 {
-            temp = 255i64
+        if force_baseline != 0 && temp > 255 as libc::c_long {
+            temp = 255 as libc::c_long
         }
         (**qtblptr).quantval[i as usize] = temp as crate::jmorecfg_h::UINT16;
         i += 1
@@ -339,1195 +907,1195 @@ pub unsafe extern "C" fn jpeg_add_quant_table(
 
 static mut std_luminance_quant_tbl: [[libc::c_uint; 64]; 9] = [
     [
-        16i32 as libc::c_uint,
-        11i32 as libc::c_uint,
-        10i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        24i32 as libc::c_uint,
-        40i32 as libc::c_uint,
-        51i32 as libc::c_uint,
-        61i32 as libc::c_uint,
-        12i32 as libc::c_uint,
-        12i32 as libc::c_uint,
-        14i32 as libc::c_uint,
-        19i32 as libc::c_uint,
-        26i32 as libc::c_uint,
-        58i32 as libc::c_uint,
-        60i32 as libc::c_uint,
-        55i32 as libc::c_uint,
-        14i32 as libc::c_uint,
-        13i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        24i32 as libc::c_uint,
-        40i32 as libc::c_uint,
-        57i32 as libc::c_uint,
-        69i32 as libc::c_uint,
-        56i32 as libc::c_uint,
-        14i32 as libc::c_uint,
-        17i32 as libc::c_uint,
-        22i32 as libc::c_uint,
-        29i32 as libc::c_uint,
-        51i32 as libc::c_uint,
-        87i32 as libc::c_uint,
-        80i32 as libc::c_uint,
-        62i32 as libc::c_uint,
-        18i32 as libc::c_uint,
-        22i32 as libc::c_uint,
-        37i32 as libc::c_uint,
-        56i32 as libc::c_uint,
-        68i32 as libc::c_uint,
-        109i32 as libc::c_uint,
-        103i32 as libc::c_uint,
-        77i32 as libc::c_uint,
-        24i32 as libc::c_uint,
-        35i32 as libc::c_uint,
-        55i32 as libc::c_uint,
-        64i32 as libc::c_uint,
-        81i32 as libc::c_uint,
-        104i32 as libc::c_uint,
-        113i32 as libc::c_uint,
-        92i32 as libc::c_uint,
-        49i32 as libc::c_uint,
-        64i32 as libc::c_uint,
-        78i32 as libc::c_uint,
-        87i32 as libc::c_uint,
-        103i32 as libc::c_uint,
-        121i32 as libc::c_uint,
-        120i32 as libc::c_uint,
-        101i32 as libc::c_uint,
-        72i32 as libc::c_uint,
-        92i32 as libc::c_uint,
-        95i32 as libc::c_uint,
-        98i32 as libc::c_uint,
-        112i32 as libc::c_uint,
-        100i32 as libc::c_uint,
-        103i32 as libc::c_uint,
-        99i32 as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        11 as libc::c_int as libc::c_uint,
+        10 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        24 as libc::c_int as libc::c_uint,
+        40 as libc::c_int as libc::c_uint,
+        51 as libc::c_int as libc::c_uint,
+        61 as libc::c_int as libc::c_uint,
+        12 as libc::c_int as libc::c_uint,
+        12 as libc::c_int as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        19 as libc::c_int as libc::c_uint,
+        26 as libc::c_int as libc::c_uint,
+        58 as libc::c_int as libc::c_uint,
+        60 as libc::c_int as libc::c_uint,
+        55 as libc::c_int as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        13 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        24 as libc::c_int as libc::c_uint,
+        40 as libc::c_int as libc::c_uint,
+        57 as libc::c_int as libc::c_uint,
+        69 as libc::c_int as libc::c_uint,
+        56 as libc::c_int as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        17 as libc::c_int as libc::c_uint,
+        22 as libc::c_int as libc::c_uint,
+        29 as libc::c_int as libc::c_uint,
+        51 as libc::c_int as libc::c_uint,
+        87 as libc::c_int as libc::c_uint,
+        80 as libc::c_int as libc::c_uint,
+        62 as libc::c_int as libc::c_uint,
+        18 as libc::c_int as libc::c_uint,
+        22 as libc::c_int as libc::c_uint,
+        37 as libc::c_int as libc::c_uint,
+        56 as libc::c_int as libc::c_uint,
+        68 as libc::c_int as libc::c_uint,
+        109 as libc::c_int as libc::c_uint,
+        103 as libc::c_int as libc::c_uint,
+        77 as libc::c_int as libc::c_uint,
+        24 as libc::c_int as libc::c_uint,
+        35 as libc::c_int as libc::c_uint,
+        55 as libc::c_int as libc::c_uint,
+        64 as libc::c_int as libc::c_uint,
+        81 as libc::c_int as libc::c_uint,
+        104 as libc::c_int as libc::c_uint,
+        113 as libc::c_int as libc::c_uint,
+        92 as libc::c_int as libc::c_uint,
+        49 as libc::c_int as libc::c_uint,
+        64 as libc::c_int as libc::c_uint,
+        78 as libc::c_int as libc::c_uint,
+        87 as libc::c_int as libc::c_uint,
+        103 as libc::c_int as libc::c_uint,
+        121 as libc::c_int as libc::c_uint,
+        120 as libc::c_int as libc::c_uint,
+        101 as libc::c_int as libc::c_uint,
+        72 as libc::c_int as libc::c_uint,
+        92 as libc::c_int as libc::c_uint,
+        95 as libc::c_int as libc::c_uint,
+        98 as libc::c_int as libc::c_uint,
+        112 as libc::c_int as libc::c_uint,
+        100 as libc::c_int as libc::c_uint,
+        103 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
     ],
     [
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
     ],
     [
-        12i32 as libc::c_uint,
-        17i32 as libc::c_uint,
-        20i32 as libc::c_uint,
-        21i32 as libc::c_uint,
-        30i32 as libc::c_uint,
-        34i32 as libc::c_uint,
-        56i32 as libc::c_uint,
-        63i32 as libc::c_uint,
-        18i32 as libc::c_uint,
-        20i32 as libc::c_uint,
-        20i32 as libc::c_uint,
-        26i32 as libc::c_uint,
-        28i32 as libc::c_uint,
-        51i32 as libc::c_uint,
-        61i32 as libc::c_uint,
-        55i32 as libc::c_uint,
-        19i32 as libc::c_uint,
-        20i32 as libc::c_uint,
-        21i32 as libc::c_uint,
-        26i32 as libc::c_uint,
-        33i32 as libc::c_uint,
-        58i32 as libc::c_uint,
-        69i32 as libc::c_uint,
-        55i32 as libc::c_uint,
-        26i32 as libc::c_uint,
-        26i32 as libc::c_uint,
-        26i32 as libc::c_uint,
-        30i32 as libc::c_uint,
-        46i32 as libc::c_uint,
-        87i32 as libc::c_uint,
-        86i32 as libc::c_uint,
-        66i32 as libc::c_uint,
-        31i32 as libc::c_uint,
-        33i32 as libc::c_uint,
-        36i32 as libc::c_uint,
-        40i32 as libc::c_uint,
-        46i32 as libc::c_uint,
-        96i32 as libc::c_uint,
-        100i32 as libc::c_uint,
-        73i32 as libc::c_uint,
-        40i32 as libc::c_uint,
-        35i32 as libc::c_uint,
-        46i32 as libc::c_uint,
-        62i32 as libc::c_uint,
-        81i32 as libc::c_uint,
-        100i32 as libc::c_uint,
-        111i32 as libc::c_uint,
-        91i32 as libc::c_uint,
-        46i32 as libc::c_uint,
-        66i32 as libc::c_uint,
-        76i32 as libc::c_uint,
-        86i32 as libc::c_uint,
-        102i32 as libc::c_uint,
-        121i32 as libc::c_uint,
-        120i32 as libc::c_uint,
-        101i32 as libc::c_uint,
-        68i32 as libc::c_uint,
-        90i32 as libc::c_uint,
-        90i32 as libc::c_uint,
-        96i32 as libc::c_uint,
-        113i32 as libc::c_uint,
-        102i32 as libc::c_uint,
-        105i32 as libc::c_uint,
-        103i32 as libc::c_uint,
+        12 as libc::c_int as libc::c_uint,
+        17 as libc::c_int as libc::c_uint,
+        20 as libc::c_int as libc::c_uint,
+        21 as libc::c_int as libc::c_uint,
+        30 as libc::c_int as libc::c_uint,
+        34 as libc::c_int as libc::c_uint,
+        56 as libc::c_int as libc::c_uint,
+        63 as libc::c_int as libc::c_uint,
+        18 as libc::c_int as libc::c_uint,
+        20 as libc::c_int as libc::c_uint,
+        20 as libc::c_int as libc::c_uint,
+        26 as libc::c_int as libc::c_uint,
+        28 as libc::c_int as libc::c_uint,
+        51 as libc::c_int as libc::c_uint,
+        61 as libc::c_int as libc::c_uint,
+        55 as libc::c_int as libc::c_uint,
+        19 as libc::c_int as libc::c_uint,
+        20 as libc::c_int as libc::c_uint,
+        21 as libc::c_int as libc::c_uint,
+        26 as libc::c_int as libc::c_uint,
+        33 as libc::c_int as libc::c_uint,
+        58 as libc::c_int as libc::c_uint,
+        69 as libc::c_int as libc::c_uint,
+        55 as libc::c_int as libc::c_uint,
+        26 as libc::c_int as libc::c_uint,
+        26 as libc::c_int as libc::c_uint,
+        26 as libc::c_int as libc::c_uint,
+        30 as libc::c_int as libc::c_uint,
+        46 as libc::c_int as libc::c_uint,
+        87 as libc::c_int as libc::c_uint,
+        86 as libc::c_int as libc::c_uint,
+        66 as libc::c_int as libc::c_uint,
+        31 as libc::c_int as libc::c_uint,
+        33 as libc::c_int as libc::c_uint,
+        36 as libc::c_int as libc::c_uint,
+        40 as libc::c_int as libc::c_uint,
+        46 as libc::c_int as libc::c_uint,
+        96 as libc::c_int as libc::c_uint,
+        100 as libc::c_int as libc::c_uint,
+        73 as libc::c_int as libc::c_uint,
+        40 as libc::c_int as libc::c_uint,
+        35 as libc::c_int as libc::c_uint,
+        46 as libc::c_int as libc::c_uint,
+        62 as libc::c_int as libc::c_uint,
+        81 as libc::c_int as libc::c_uint,
+        100 as libc::c_int as libc::c_uint,
+        111 as libc::c_int as libc::c_uint,
+        91 as libc::c_int as libc::c_uint,
+        46 as libc::c_int as libc::c_uint,
+        66 as libc::c_int as libc::c_uint,
+        76 as libc::c_int as libc::c_uint,
+        86 as libc::c_int as libc::c_uint,
+        102 as libc::c_int as libc::c_uint,
+        121 as libc::c_int as libc::c_uint,
+        120 as libc::c_int as libc::c_uint,
+        101 as libc::c_int as libc::c_uint,
+        68 as libc::c_int as libc::c_uint,
+        90 as libc::c_int as libc::c_uint,
+        90 as libc::c_int as libc::c_uint,
+        96 as libc::c_int as libc::c_uint,
+        113 as libc::c_int as libc::c_uint,
+        102 as libc::c_int as libc::c_uint,
+        105 as libc::c_int as libc::c_uint,
+        103 as libc::c_int as libc::c_uint,
     ],
     [
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        18i32 as libc::c_uint,
-        25i32 as libc::c_uint,
-        37i32 as libc::c_uint,
-        56i32 as libc::c_uint,
-        85i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        17i32 as libc::c_uint,
-        20i32 as libc::c_uint,
-        27i32 as libc::c_uint,
-        34i32 as libc::c_uint,
-        40i32 as libc::c_uint,
-        53i32 as libc::c_uint,
-        75i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        20i32 as libc::c_uint,
-        24i32 as libc::c_uint,
-        31i32 as libc::c_uint,
-        43i32 as libc::c_uint,
-        62i32 as libc::c_uint,
-        91i32 as libc::c_uint,
-        135i32 as libc::c_uint,
-        18i32 as libc::c_uint,
-        27i32 as libc::c_uint,
-        31i32 as libc::c_uint,
-        40i32 as libc::c_uint,
-        53i32 as libc::c_uint,
-        74i32 as libc::c_uint,
-        106i32 as libc::c_uint,
-        156i32 as libc::c_uint,
-        25i32 as libc::c_uint,
-        34i32 as libc::c_uint,
-        43i32 as libc::c_uint,
-        53i32 as libc::c_uint,
-        69i32 as libc::c_uint,
-        94i32 as libc::c_uint,
-        131i32 as libc::c_uint,
-        189i32 as libc::c_uint,
-        37i32 as libc::c_uint,
-        40i32 as libc::c_uint,
-        62i32 as libc::c_uint,
-        74i32 as libc::c_uint,
-        94i32 as libc::c_uint,
-        124i32 as libc::c_uint,
-        169i32 as libc::c_uint,
-        238i32 as libc::c_uint,
-        56i32 as libc::c_uint,
-        53i32 as libc::c_uint,
-        91i32 as libc::c_uint,
-        106i32 as libc::c_uint,
-        131i32 as libc::c_uint,
-        169i32 as libc::c_uint,
-        226i32 as libc::c_uint,
-        311i32 as libc::c_uint,
-        85i32 as libc::c_uint,
-        75i32 as libc::c_uint,
-        135i32 as libc::c_uint,
-        156i32 as libc::c_uint,
-        189i32 as libc::c_uint,
-        238i32 as libc::c_uint,
-        311i32 as libc::c_uint,
-        418i32 as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        18 as libc::c_int as libc::c_uint,
+        25 as libc::c_int as libc::c_uint,
+        37 as libc::c_int as libc::c_uint,
+        56 as libc::c_int as libc::c_uint,
+        85 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        17 as libc::c_int as libc::c_uint,
+        20 as libc::c_int as libc::c_uint,
+        27 as libc::c_int as libc::c_uint,
+        34 as libc::c_int as libc::c_uint,
+        40 as libc::c_int as libc::c_uint,
+        53 as libc::c_int as libc::c_uint,
+        75 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        20 as libc::c_int as libc::c_uint,
+        24 as libc::c_int as libc::c_uint,
+        31 as libc::c_int as libc::c_uint,
+        43 as libc::c_int as libc::c_uint,
+        62 as libc::c_int as libc::c_uint,
+        91 as libc::c_int as libc::c_uint,
+        135 as libc::c_int as libc::c_uint,
+        18 as libc::c_int as libc::c_uint,
+        27 as libc::c_int as libc::c_uint,
+        31 as libc::c_int as libc::c_uint,
+        40 as libc::c_int as libc::c_uint,
+        53 as libc::c_int as libc::c_uint,
+        74 as libc::c_int as libc::c_uint,
+        106 as libc::c_int as libc::c_uint,
+        156 as libc::c_int as libc::c_uint,
+        25 as libc::c_int as libc::c_uint,
+        34 as libc::c_int as libc::c_uint,
+        43 as libc::c_int as libc::c_uint,
+        53 as libc::c_int as libc::c_uint,
+        69 as libc::c_int as libc::c_uint,
+        94 as libc::c_int as libc::c_uint,
+        131 as libc::c_int as libc::c_uint,
+        189 as libc::c_int as libc::c_uint,
+        37 as libc::c_int as libc::c_uint,
+        40 as libc::c_int as libc::c_uint,
+        62 as libc::c_int as libc::c_uint,
+        74 as libc::c_int as libc::c_uint,
+        94 as libc::c_int as libc::c_uint,
+        124 as libc::c_int as libc::c_uint,
+        169 as libc::c_int as libc::c_uint,
+        238 as libc::c_int as libc::c_uint,
+        56 as libc::c_int as libc::c_uint,
+        53 as libc::c_int as libc::c_uint,
+        91 as libc::c_int as libc::c_uint,
+        106 as libc::c_int as libc::c_uint,
+        131 as libc::c_int as libc::c_uint,
+        169 as libc::c_int as libc::c_uint,
+        226 as libc::c_int as libc::c_uint,
+        311 as libc::c_int as libc::c_uint,
+        85 as libc::c_int as libc::c_uint,
+        75 as libc::c_int as libc::c_uint,
+        135 as libc::c_int as libc::c_uint,
+        156 as libc::c_int as libc::c_uint,
+        189 as libc::c_int as libc::c_uint,
+        238 as libc::c_int as libc::c_uint,
+        311 as libc::c_int as libc::c_uint,
+        418 as libc::c_int as libc::c_uint,
     ],
     [
-        9i32 as libc::c_uint,
-        10i32 as libc::c_uint,
-        12i32 as libc::c_uint,
-        14i32 as libc::c_uint,
-        27i32 as libc::c_uint,
-        32i32 as libc::c_uint,
-        51i32 as libc::c_uint,
-        62i32 as libc::c_uint,
-        11i32 as libc::c_uint,
-        12i32 as libc::c_uint,
-        14i32 as libc::c_uint,
-        19i32 as libc::c_uint,
-        27i32 as libc::c_uint,
-        44i32 as libc::c_uint,
-        59i32 as libc::c_uint,
-        73i32 as libc::c_uint,
-        12i32 as libc::c_uint,
-        14i32 as libc::c_uint,
-        18i32 as libc::c_uint,
-        25i32 as libc::c_uint,
-        42i32 as libc::c_uint,
-        59i32 as libc::c_uint,
-        79i32 as libc::c_uint,
-        78i32 as libc::c_uint,
-        17i32 as libc::c_uint,
-        18i32 as libc::c_uint,
-        25i32 as libc::c_uint,
-        42i32 as libc::c_uint,
-        61i32 as libc::c_uint,
-        92i32 as libc::c_uint,
-        87i32 as libc::c_uint,
-        92i32 as libc::c_uint,
-        23i32 as libc::c_uint,
-        28i32 as libc::c_uint,
-        42i32 as libc::c_uint,
-        75i32 as libc::c_uint,
-        79i32 as libc::c_uint,
-        112i32 as libc::c_uint,
-        112i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        40i32 as libc::c_uint,
-        42i32 as libc::c_uint,
-        59i32 as libc::c_uint,
-        84i32 as libc::c_uint,
-        88i32 as libc::c_uint,
-        124i32 as libc::c_uint,
-        132i32 as libc::c_uint,
-        111i32 as libc::c_uint,
-        42i32 as libc::c_uint,
-        64i32 as libc::c_uint,
-        78i32 as libc::c_uint,
-        95i32 as libc::c_uint,
-        105i32 as libc::c_uint,
-        126i32 as libc::c_uint,
-        125i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        70i32 as libc::c_uint,
-        75i32 as libc::c_uint,
-        100i32 as libc::c_uint,
-        102i32 as libc::c_uint,
-        116i32 as libc::c_uint,
-        100i32 as libc::c_uint,
-        107i32 as libc::c_uint,
-        98i32 as libc::c_uint,
+        9 as libc::c_int as libc::c_uint,
+        10 as libc::c_int as libc::c_uint,
+        12 as libc::c_int as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        27 as libc::c_int as libc::c_uint,
+        32 as libc::c_int as libc::c_uint,
+        51 as libc::c_int as libc::c_uint,
+        62 as libc::c_int as libc::c_uint,
+        11 as libc::c_int as libc::c_uint,
+        12 as libc::c_int as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        19 as libc::c_int as libc::c_uint,
+        27 as libc::c_int as libc::c_uint,
+        44 as libc::c_int as libc::c_uint,
+        59 as libc::c_int as libc::c_uint,
+        73 as libc::c_int as libc::c_uint,
+        12 as libc::c_int as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        18 as libc::c_int as libc::c_uint,
+        25 as libc::c_int as libc::c_uint,
+        42 as libc::c_int as libc::c_uint,
+        59 as libc::c_int as libc::c_uint,
+        79 as libc::c_int as libc::c_uint,
+        78 as libc::c_int as libc::c_uint,
+        17 as libc::c_int as libc::c_uint,
+        18 as libc::c_int as libc::c_uint,
+        25 as libc::c_int as libc::c_uint,
+        42 as libc::c_int as libc::c_uint,
+        61 as libc::c_int as libc::c_uint,
+        92 as libc::c_int as libc::c_uint,
+        87 as libc::c_int as libc::c_uint,
+        92 as libc::c_int as libc::c_uint,
+        23 as libc::c_int as libc::c_uint,
+        28 as libc::c_int as libc::c_uint,
+        42 as libc::c_int as libc::c_uint,
+        75 as libc::c_int as libc::c_uint,
+        79 as libc::c_int as libc::c_uint,
+        112 as libc::c_int as libc::c_uint,
+        112 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        40 as libc::c_int as libc::c_uint,
+        42 as libc::c_int as libc::c_uint,
+        59 as libc::c_int as libc::c_uint,
+        84 as libc::c_int as libc::c_uint,
+        88 as libc::c_int as libc::c_uint,
+        124 as libc::c_int as libc::c_uint,
+        132 as libc::c_int as libc::c_uint,
+        111 as libc::c_int as libc::c_uint,
+        42 as libc::c_int as libc::c_uint,
+        64 as libc::c_int as libc::c_uint,
+        78 as libc::c_int as libc::c_uint,
+        95 as libc::c_int as libc::c_uint,
+        105 as libc::c_int as libc::c_uint,
+        126 as libc::c_int as libc::c_uint,
+        125 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        70 as libc::c_int as libc::c_uint,
+        75 as libc::c_int as libc::c_uint,
+        100 as libc::c_int as libc::c_uint,
+        102 as libc::c_int as libc::c_uint,
+        116 as libc::c_int as libc::c_uint,
+        100 as libc::c_int as libc::c_uint,
+        107 as libc::c_int as libc::c_uint,
+        98 as libc::c_int as libc::c_uint,
     ],
     [
-        10i32 as libc::c_uint,
-        12i32 as libc::c_uint,
-        14i32 as libc::c_uint,
-        19i32 as libc::c_uint,
-        26i32 as libc::c_uint,
-        38i32 as libc::c_uint,
-        57i32 as libc::c_uint,
-        86i32 as libc::c_uint,
-        12i32 as libc::c_uint,
-        18i32 as libc::c_uint,
-        21i32 as libc::c_uint,
-        28i32 as libc::c_uint,
-        35i32 as libc::c_uint,
-        41i32 as libc::c_uint,
-        54i32 as libc::c_uint,
-        76i32 as libc::c_uint,
-        14i32 as libc::c_uint,
-        21i32 as libc::c_uint,
-        25i32 as libc::c_uint,
-        32i32 as libc::c_uint,
-        44i32 as libc::c_uint,
-        63i32 as libc::c_uint,
-        92i32 as libc::c_uint,
-        136i32 as libc::c_uint,
-        19i32 as libc::c_uint,
-        28i32 as libc::c_uint,
-        32i32 as libc::c_uint,
-        41i32 as libc::c_uint,
-        54i32 as libc::c_uint,
-        75i32 as libc::c_uint,
-        107i32 as libc::c_uint,
-        157i32 as libc::c_uint,
-        26i32 as libc::c_uint,
-        35i32 as libc::c_uint,
-        44i32 as libc::c_uint,
-        54i32 as libc::c_uint,
-        70i32 as libc::c_uint,
-        95i32 as libc::c_uint,
-        132i32 as libc::c_uint,
-        190i32 as libc::c_uint,
-        38i32 as libc::c_uint,
-        41i32 as libc::c_uint,
-        63i32 as libc::c_uint,
-        75i32 as libc::c_uint,
-        95i32 as libc::c_uint,
-        125i32 as libc::c_uint,
-        170i32 as libc::c_uint,
-        239i32 as libc::c_uint,
-        57i32 as libc::c_uint,
-        54i32 as libc::c_uint,
-        92i32 as libc::c_uint,
-        107i32 as libc::c_uint,
-        132i32 as libc::c_uint,
-        170i32 as libc::c_uint,
-        227i32 as libc::c_uint,
-        312i32 as libc::c_uint,
-        86i32 as libc::c_uint,
-        76i32 as libc::c_uint,
-        136i32 as libc::c_uint,
-        157i32 as libc::c_uint,
-        190i32 as libc::c_uint,
-        239i32 as libc::c_uint,
-        312i32 as libc::c_uint,
-        419i32 as libc::c_uint,
+        10 as libc::c_int as libc::c_uint,
+        12 as libc::c_int as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        19 as libc::c_int as libc::c_uint,
+        26 as libc::c_int as libc::c_uint,
+        38 as libc::c_int as libc::c_uint,
+        57 as libc::c_int as libc::c_uint,
+        86 as libc::c_int as libc::c_uint,
+        12 as libc::c_int as libc::c_uint,
+        18 as libc::c_int as libc::c_uint,
+        21 as libc::c_int as libc::c_uint,
+        28 as libc::c_int as libc::c_uint,
+        35 as libc::c_int as libc::c_uint,
+        41 as libc::c_int as libc::c_uint,
+        54 as libc::c_int as libc::c_uint,
+        76 as libc::c_int as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        21 as libc::c_int as libc::c_uint,
+        25 as libc::c_int as libc::c_uint,
+        32 as libc::c_int as libc::c_uint,
+        44 as libc::c_int as libc::c_uint,
+        63 as libc::c_int as libc::c_uint,
+        92 as libc::c_int as libc::c_uint,
+        136 as libc::c_int as libc::c_uint,
+        19 as libc::c_int as libc::c_uint,
+        28 as libc::c_int as libc::c_uint,
+        32 as libc::c_int as libc::c_uint,
+        41 as libc::c_int as libc::c_uint,
+        54 as libc::c_int as libc::c_uint,
+        75 as libc::c_int as libc::c_uint,
+        107 as libc::c_int as libc::c_uint,
+        157 as libc::c_int as libc::c_uint,
+        26 as libc::c_int as libc::c_uint,
+        35 as libc::c_int as libc::c_uint,
+        44 as libc::c_int as libc::c_uint,
+        54 as libc::c_int as libc::c_uint,
+        70 as libc::c_int as libc::c_uint,
+        95 as libc::c_int as libc::c_uint,
+        132 as libc::c_int as libc::c_uint,
+        190 as libc::c_int as libc::c_uint,
+        38 as libc::c_int as libc::c_uint,
+        41 as libc::c_int as libc::c_uint,
+        63 as libc::c_int as libc::c_uint,
+        75 as libc::c_int as libc::c_uint,
+        95 as libc::c_int as libc::c_uint,
+        125 as libc::c_int as libc::c_uint,
+        170 as libc::c_int as libc::c_uint,
+        239 as libc::c_int as libc::c_uint,
+        57 as libc::c_int as libc::c_uint,
+        54 as libc::c_int as libc::c_uint,
+        92 as libc::c_int as libc::c_uint,
+        107 as libc::c_int as libc::c_uint,
+        132 as libc::c_int as libc::c_uint,
+        170 as libc::c_int as libc::c_uint,
+        227 as libc::c_int as libc::c_uint,
+        312 as libc::c_int as libc::c_uint,
+        86 as libc::c_int as libc::c_uint,
+        76 as libc::c_int as libc::c_uint,
+        136 as libc::c_int as libc::c_uint,
+        157 as libc::c_int as libc::c_uint,
+        190 as libc::c_int as libc::c_uint,
+        239 as libc::c_int as libc::c_uint,
+        312 as libc::c_int as libc::c_uint,
+        419 as libc::c_int as libc::c_uint,
     ],
     [
-        7i32 as libc::c_uint,
-        8i32 as libc::c_uint,
-        10i32 as libc::c_uint,
-        14i32 as libc::c_uint,
-        23i32 as libc::c_uint,
-        44i32 as libc::c_uint,
-        95i32 as libc::c_uint,
-        241i32 as libc::c_uint,
-        8i32 as libc::c_uint,
-        8i32 as libc::c_uint,
-        11i32 as libc::c_uint,
-        15i32 as libc::c_uint,
-        25i32 as libc::c_uint,
-        47i32 as libc::c_uint,
-        102i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        10i32 as libc::c_uint,
-        11i32 as libc::c_uint,
-        13i32 as libc::c_uint,
-        19i32 as libc::c_uint,
-        31i32 as libc::c_uint,
-        58i32 as libc::c_uint,
-        127i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        14i32 as libc::c_uint,
-        15i32 as libc::c_uint,
-        19i32 as libc::c_uint,
-        27i32 as libc::c_uint,
-        44i32 as libc::c_uint,
-        83i32 as libc::c_uint,
-        181i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        23i32 as libc::c_uint,
-        25i32 as libc::c_uint,
-        31i32 as libc::c_uint,
-        44i32 as libc::c_uint,
-        72i32 as libc::c_uint,
-        136i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        44i32 as libc::c_uint,
-        47i32 as libc::c_uint,
-        58i32 as libc::c_uint,
-        83i32 as libc::c_uint,
-        136i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        95i32 as libc::c_uint,
-        102i32 as libc::c_uint,
-        127i32 as libc::c_uint,
-        181i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        241i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        255i32 as libc::c_uint,
+        7 as libc::c_int as libc::c_uint,
+        8 as libc::c_int as libc::c_uint,
+        10 as libc::c_int as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        23 as libc::c_int as libc::c_uint,
+        44 as libc::c_int as libc::c_uint,
+        95 as libc::c_int as libc::c_uint,
+        241 as libc::c_int as libc::c_uint,
+        8 as libc::c_int as libc::c_uint,
+        8 as libc::c_int as libc::c_uint,
+        11 as libc::c_int as libc::c_uint,
+        15 as libc::c_int as libc::c_uint,
+        25 as libc::c_int as libc::c_uint,
+        47 as libc::c_int as libc::c_uint,
+        102 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        10 as libc::c_int as libc::c_uint,
+        11 as libc::c_int as libc::c_uint,
+        13 as libc::c_int as libc::c_uint,
+        19 as libc::c_int as libc::c_uint,
+        31 as libc::c_int as libc::c_uint,
+        58 as libc::c_int as libc::c_uint,
+        127 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        15 as libc::c_int as libc::c_uint,
+        19 as libc::c_int as libc::c_uint,
+        27 as libc::c_int as libc::c_uint,
+        44 as libc::c_int as libc::c_uint,
+        83 as libc::c_int as libc::c_uint,
+        181 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        23 as libc::c_int as libc::c_uint,
+        25 as libc::c_int as libc::c_uint,
+        31 as libc::c_int as libc::c_uint,
+        44 as libc::c_int as libc::c_uint,
+        72 as libc::c_int as libc::c_uint,
+        136 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        44 as libc::c_int as libc::c_uint,
+        47 as libc::c_int as libc::c_uint,
+        58 as libc::c_int as libc::c_uint,
+        83 as libc::c_int as libc::c_uint,
+        136 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        95 as libc::c_int as libc::c_uint,
+        102 as libc::c_int as libc::c_uint,
+        127 as libc::c_int as libc::c_uint,
+        181 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        241 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
     ],
     [
-        15i32 as libc::c_uint,
-        11i32 as libc::c_uint,
-        11i32 as libc::c_uint,
-        12i32 as libc::c_uint,
-        15i32 as libc::c_uint,
-        19i32 as libc::c_uint,
-        25i32 as libc::c_uint,
-        32i32 as libc::c_uint,
-        11i32 as libc::c_uint,
-        13i32 as libc::c_uint,
-        10i32 as libc::c_uint,
-        10i32 as libc::c_uint,
-        12i32 as libc::c_uint,
-        15i32 as libc::c_uint,
-        19i32 as libc::c_uint,
-        24i32 as libc::c_uint,
-        11i32 as libc::c_uint,
-        10i32 as libc::c_uint,
-        14i32 as libc::c_uint,
-        14i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        18i32 as libc::c_uint,
-        22i32 as libc::c_uint,
-        27i32 as libc::c_uint,
-        12i32 as libc::c_uint,
-        10i32 as libc::c_uint,
-        14i32 as libc::c_uint,
-        18i32 as libc::c_uint,
-        21i32 as libc::c_uint,
-        24i32 as libc::c_uint,
-        28i32 as libc::c_uint,
-        33i32 as libc::c_uint,
-        15i32 as libc::c_uint,
-        12i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        21i32 as libc::c_uint,
-        26i32 as libc::c_uint,
-        31i32 as libc::c_uint,
-        36i32 as libc::c_uint,
-        42i32 as libc::c_uint,
-        19i32 as libc::c_uint,
-        15i32 as libc::c_uint,
-        18i32 as libc::c_uint,
-        24i32 as libc::c_uint,
-        31i32 as libc::c_uint,
-        38i32 as libc::c_uint,
-        45i32 as libc::c_uint,
-        53i32 as libc::c_uint,
-        25i32 as libc::c_uint,
-        19i32 as libc::c_uint,
-        22i32 as libc::c_uint,
-        28i32 as libc::c_uint,
-        36i32 as libc::c_uint,
-        45i32 as libc::c_uint,
-        55i32 as libc::c_uint,
-        65i32 as libc::c_uint,
-        32i32 as libc::c_uint,
-        24i32 as libc::c_uint,
-        27i32 as libc::c_uint,
-        33i32 as libc::c_uint,
-        42i32 as libc::c_uint,
-        53i32 as libc::c_uint,
-        65i32 as libc::c_uint,
-        77i32 as libc::c_uint,
+        15 as libc::c_int as libc::c_uint,
+        11 as libc::c_int as libc::c_uint,
+        11 as libc::c_int as libc::c_uint,
+        12 as libc::c_int as libc::c_uint,
+        15 as libc::c_int as libc::c_uint,
+        19 as libc::c_int as libc::c_uint,
+        25 as libc::c_int as libc::c_uint,
+        32 as libc::c_int as libc::c_uint,
+        11 as libc::c_int as libc::c_uint,
+        13 as libc::c_int as libc::c_uint,
+        10 as libc::c_int as libc::c_uint,
+        10 as libc::c_int as libc::c_uint,
+        12 as libc::c_int as libc::c_uint,
+        15 as libc::c_int as libc::c_uint,
+        19 as libc::c_int as libc::c_uint,
+        24 as libc::c_int as libc::c_uint,
+        11 as libc::c_int as libc::c_uint,
+        10 as libc::c_int as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        18 as libc::c_int as libc::c_uint,
+        22 as libc::c_int as libc::c_uint,
+        27 as libc::c_int as libc::c_uint,
+        12 as libc::c_int as libc::c_uint,
+        10 as libc::c_int as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        18 as libc::c_int as libc::c_uint,
+        21 as libc::c_int as libc::c_uint,
+        24 as libc::c_int as libc::c_uint,
+        28 as libc::c_int as libc::c_uint,
+        33 as libc::c_int as libc::c_uint,
+        15 as libc::c_int as libc::c_uint,
+        12 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        21 as libc::c_int as libc::c_uint,
+        26 as libc::c_int as libc::c_uint,
+        31 as libc::c_int as libc::c_uint,
+        36 as libc::c_int as libc::c_uint,
+        42 as libc::c_int as libc::c_uint,
+        19 as libc::c_int as libc::c_uint,
+        15 as libc::c_int as libc::c_uint,
+        18 as libc::c_int as libc::c_uint,
+        24 as libc::c_int as libc::c_uint,
+        31 as libc::c_int as libc::c_uint,
+        38 as libc::c_int as libc::c_uint,
+        45 as libc::c_int as libc::c_uint,
+        53 as libc::c_int as libc::c_uint,
+        25 as libc::c_int as libc::c_uint,
+        19 as libc::c_int as libc::c_uint,
+        22 as libc::c_int as libc::c_uint,
+        28 as libc::c_int as libc::c_uint,
+        36 as libc::c_int as libc::c_uint,
+        45 as libc::c_int as libc::c_uint,
+        55 as libc::c_int as libc::c_uint,
+        65 as libc::c_int as libc::c_uint,
+        32 as libc::c_int as libc::c_uint,
+        24 as libc::c_int as libc::c_uint,
+        27 as libc::c_int as libc::c_uint,
+        33 as libc::c_int as libc::c_uint,
+        42 as libc::c_int as libc::c_uint,
+        53 as libc::c_int as libc::c_uint,
+        65 as libc::c_int as libc::c_uint,
+        77 as libc::c_int as libc::c_uint,
     ],
     [
-        14i32 as libc::c_uint,
-        10i32 as libc::c_uint,
-        11i32 as libc::c_uint,
-        14i32 as libc::c_uint,
-        19i32 as libc::c_uint,
-        25i32 as libc::c_uint,
-        34i32 as libc::c_uint,
-        45i32 as libc::c_uint,
-        10i32 as libc::c_uint,
-        11i32 as libc::c_uint,
-        11i32 as libc::c_uint,
-        12i32 as libc::c_uint,
-        15i32 as libc::c_uint,
-        20i32 as libc::c_uint,
-        26i32 as libc::c_uint,
-        33i32 as libc::c_uint,
-        11i32 as libc::c_uint,
-        11i32 as libc::c_uint,
-        15i32 as libc::c_uint,
-        18i32 as libc::c_uint,
-        21i32 as libc::c_uint,
-        25i32 as libc::c_uint,
-        31i32 as libc::c_uint,
-        38i32 as libc::c_uint,
-        14i32 as libc::c_uint,
-        12i32 as libc::c_uint,
-        18i32 as libc::c_uint,
-        24i32 as libc::c_uint,
-        28i32 as libc::c_uint,
-        33i32 as libc::c_uint,
-        39i32 as libc::c_uint,
-        47i32 as libc::c_uint,
-        19i32 as libc::c_uint,
-        15i32 as libc::c_uint,
-        21i32 as libc::c_uint,
-        28i32 as libc::c_uint,
-        36i32 as libc::c_uint,
-        43i32 as libc::c_uint,
-        51i32 as libc::c_uint,
-        59i32 as libc::c_uint,
-        25i32 as libc::c_uint,
-        20i32 as libc::c_uint,
-        25i32 as libc::c_uint,
-        33i32 as libc::c_uint,
-        43i32 as libc::c_uint,
-        54i32 as libc::c_uint,
-        64i32 as libc::c_uint,
-        74i32 as libc::c_uint,
-        34i32 as libc::c_uint,
-        26i32 as libc::c_uint,
-        31i32 as libc::c_uint,
-        39i32 as libc::c_uint,
-        51i32 as libc::c_uint,
-        64i32 as libc::c_uint,
-        77i32 as libc::c_uint,
-        91i32 as libc::c_uint,
-        45i32 as libc::c_uint,
-        33i32 as libc::c_uint,
-        38i32 as libc::c_uint,
-        47i32 as libc::c_uint,
-        59i32 as libc::c_uint,
-        74i32 as libc::c_uint,
-        91i32 as libc::c_uint,
-        108i32 as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        10 as libc::c_int as libc::c_uint,
+        11 as libc::c_int as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        19 as libc::c_int as libc::c_uint,
+        25 as libc::c_int as libc::c_uint,
+        34 as libc::c_int as libc::c_uint,
+        45 as libc::c_int as libc::c_uint,
+        10 as libc::c_int as libc::c_uint,
+        11 as libc::c_int as libc::c_uint,
+        11 as libc::c_int as libc::c_uint,
+        12 as libc::c_int as libc::c_uint,
+        15 as libc::c_int as libc::c_uint,
+        20 as libc::c_int as libc::c_uint,
+        26 as libc::c_int as libc::c_uint,
+        33 as libc::c_int as libc::c_uint,
+        11 as libc::c_int as libc::c_uint,
+        11 as libc::c_int as libc::c_uint,
+        15 as libc::c_int as libc::c_uint,
+        18 as libc::c_int as libc::c_uint,
+        21 as libc::c_int as libc::c_uint,
+        25 as libc::c_int as libc::c_uint,
+        31 as libc::c_int as libc::c_uint,
+        38 as libc::c_int as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        12 as libc::c_int as libc::c_uint,
+        18 as libc::c_int as libc::c_uint,
+        24 as libc::c_int as libc::c_uint,
+        28 as libc::c_int as libc::c_uint,
+        33 as libc::c_int as libc::c_uint,
+        39 as libc::c_int as libc::c_uint,
+        47 as libc::c_int as libc::c_uint,
+        19 as libc::c_int as libc::c_uint,
+        15 as libc::c_int as libc::c_uint,
+        21 as libc::c_int as libc::c_uint,
+        28 as libc::c_int as libc::c_uint,
+        36 as libc::c_int as libc::c_uint,
+        43 as libc::c_int as libc::c_uint,
+        51 as libc::c_int as libc::c_uint,
+        59 as libc::c_int as libc::c_uint,
+        25 as libc::c_int as libc::c_uint,
+        20 as libc::c_int as libc::c_uint,
+        25 as libc::c_int as libc::c_uint,
+        33 as libc::c_int as libc::c_uint,
+        43 as libc::c_int as libc::c_uint,
+        54 as libc::c_int as libc::c_uint,
+        64 as libc::c_int as libc::c_uint,
+        74 as libc::c_int as libc::c_uint,
+        34 as libc::c_int as libc::c_uint,
+        26 as libc::c_int as libc::c_uint,
+        31 as libc::c_int as libc::c_uint,
+        39 as libc::c_int as libc::c_uint,
+        51 as libc::c_int as libc::c_uint,
+        64 as libc::c_int as libc::c_uint,
+        77 as libc::c_int as libc::c_uint,
+        91 as libc::c_int as libc::c_uint,
+        45 as libc::c_int as libc::c_uint,
+        33 as libc::c_int as libc::c_uint,
+        38 as libc::c_int as libc::c_uint,
+        47 as libc::c_int as libc::c_uint,
+        59 as libc::c_int as libc::c_uint,
+        74 as libc::c_int as libc::c_uint,
+        91 as libc::c_int as libc::c_uint,
+        108 as libc::c_int as libc::c_uint,
     ],
 ];
 
 static mut std_chrominance_quant_tbl: [[libc::c_uint; 64]; 9] = [
     [
-        17i32 as libc::c_uint,
-        18i32 as libc::c_uint,
-        24i32 as libc::c_uint,
-        47i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        18i32 as libc::c_uint,
-        21i32 as libc::c_uint,
-        26i32 as libc::c_uint,
-        66i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        24i32 as libc::c_uint,
-        26i32 as libc::c_uint,
-        56i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        47i32 as libc::c_uint,
-        66i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
+        17 as libc::c_int as libc::c_uint,
+        18 as libc::c_int as libc::c_uint,
+        24 as libc::c_int as libc::c_uint,
+        47 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        18 as libc::c_int as libc::c_uint,
+        21 as libc::c_int as libc::c_uint,
+        26 as libc::c_int as libc::c_uint,
+        66 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        24 as libc::c_int as libc::c_uint,
+        26 as libc::c_int as libc::c_uint,
+        56 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        47 as libc::c_int as libc::c_uint,
+        66 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
     ],
     [
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
     ],
     [
-        8i32 as libc::c_uint,
-        12i32 as libc::c_uint,
-        15i32 as libc::c_uint,
-        15i32 as libc::c_uint,
-        86i32 as libc::c_uint,
-        96i32 as libc::c_uint,
-        96i32 as libc::c_uint,
-        98i32 as libc::c_uint,
-        13i32 as libc::c_uint,
-        13i32 as libc::c_uint,
-        15i32 as libc::c_uint,
-        26i32 as libc::c_uint,
-        90i32 as libc::c_uint,
-        96i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        98i32 as libc::c_uint,
-        12i32 as libc::c_uint,
-        15i32 as libc::c_uint,
-        18i32 as libc::c_uint,
-        96i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        17i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        90i32 as libc::c_uint,
-        96i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        96i32 as libc::c_uint,
-        96i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
+        8 as libc::c_int as libc::c_uint,
+        12 as libc::c_int as libc::c_uint,
+        15 as libc::c_int as libc::c_uint,
+        15 as libc::c_int as libc::c_uint,
+        86 as libc::c_int as libc::c_uint,
+        96 as libc::c_int as libc::c_uint,
+        96 as libc::c_int as libc::c_uint,
+        98 as libc::c_int as libc::c_uint,
+        13 as libc::c_int as libc::c_uint,
+        13 as libc::c_int as libc::c_uint,
+        15 as libc::c_int as libc::c_uint,
+        26 as libc::c_int as libc::c_uint,
+        90 as libc::c_int as libc::c_uint,
+        96 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        98 as libc::c_int as libc::c_uint,
+        12 as libc::c_int as libc::c_uint,
+        15 as libc::c_int as libc::c_uint,
+        18 as libc::c_int as libc::c_uint,
+        96 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        17 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        90 as libc::c_int as libc::c_uint,
+        96 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        96 as libc::c_int as libc::c_uint,
+        96 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
     ],
     [
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        18i32 as libc::c_uint,
-        25i32 as libc::c_uint,
-        37i32 as libc::c_uint,
-        56i32 as libc::c_uint,
-        85i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        17i32 as libc::c_uint,
-        20i32 as libc::c_uint,
-        27i32 as libc::c_uint,
-        34i32 as libc::c_uint,
-        40i32 as libc::c_uint,
-        53i32 as libc::c_uint,
-        75i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        20i32 as libc::c_uint,
-        24i32 as libc::c_uint,
-        31i32 as libc::c_uint,
-        43i32 as libc::c_uint,
-        62i32 as libc::c_uint,
-        91i32 as libc::c_uint,
-        135i32 as libc::c_uint,
-        18i32 as libc::c_uint,
-        27i32 as libc::c_uint,
-        31i32 as libc::c_uint,
-        40i32 as libc::c_uint,
-        53i32 as libc::c_uint,
-        74i32 as libc::c_uint,
-        106i32 as libc::c_uint,
-        156i32 as libc::c_uint,
-        25i32 as libc::c_uint,
-        34i32 as libc::c_uint,
-        43i32 as libc::c_uint,
-        53i32 as libc::c_uint,
-        69i32 as libc::c_uint,
-        94i32 as libc::c_uint,
-        131i32 as libc::c_uint,
-        189i32 as libc::c_uint,
-        37i32 as libc::c_uint,
-        40i32 as libc::c_uint,
-        62i32 as libc::c_uint,
-        74i32 as libc::c_uint,
-        94i32 as libc::c_uint,
-        124i32 as libc::c_uint,
-        169i32 as libc::c_uint,
-        238i32 as libc::c_uint,
-        56i32 as libc::c_uint,
-        53i32 as libc::c_uint,
-        91i32 as libc::c_uint,
-        106i32 as libc::c_uint,
-        131i32 as libc::c_uint,
-        169i32 as libc::c_uint,
-        226i32 as libc::c_uint,
-        311i32 as libc::c_uint,
-        85i32 as libc::c_uint,
-        75i32 as libc::c_uint,
-        135i32 as libc::c_uint,
-        156i32 as libc::c_uint,
-        189i32 as libc::c_uint,
-        238i32 as libc::c_uint,
-        311i32 as libc::c_uint,
-        418i32 as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        18 as libc::c_int as libc::c_uint,
+        25 as libc::c_int as libc::c_uint,
+        37 as libc::c_int as libc::c_uint,
+        56 as libc::c_int as libc::c_uint,
+        85 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        17 as libc::c_int as libc::c_uint,
+        20 as libc::c_int as libc::c_uint,
+        27 as libc::c_int as libc::c_uint,
+        34 as libc::c_int as libc::c_uint,
+        40 as libc::c_int as libc::c_uint,
+        53 as libc::c_int as libc::c_uint,
+        75 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        20 as libc::c_int as libc::c_uint,
+        24 as libc::c_int as libc::c_uint,
+        31 as libc::c_int as libc::c_uint,
+        43 as libc::c_int as libc::c_uint,
+        62 as libc::c_int as libc::c_uint,
+        91 as libc::c_int as libc::c_uint,
+        135 as libc::c_int as libc::c_uint,
+        18 as libc::c_int as libc::c_uint,
+        27 as libc::c_int as libc::c_uint,
+        31 as libc::c_int as libc::c_uint,
+        40 as libc::c_int as libc::c_uint,
+        53 as libc::c_int as libc::c_uint,
+        74 as libc::c_int as libc::c_uint,
+        106 as libc::c_int as libc::c_uint,
+        156 as libc::c_int as libc::c_uint,
+        25 as libc::c_int as libc::c_uint,
+        34 as libc::c_int as libc::c_uint,
+        43 as libc::c_int as libc::c_uint,
+        53 as libc::c_int as libc::c_uint,
+        69 as libc::c_int as libc::c_uint,
+        94 as libc::c_int as libc::c_uint,
+        131 as libc::c_int as libc::c_uint,
+        189 as libc::c_int as libc::c_uint,
+        37 as libc::c_int as libc::c_uint,
+        40 as libc::c_int as libc::c_uint,
+        62 as libc::c_int as libc::c_uint,
+        74 as libc::c_int as libc::c_uint,
+        94 as libc::c_int as libc::c_uint,
+        124 as libc::c_int as libc::c_uint,
+        169 as libc::c_int as libc::c_uint,
+        238 as libc::c_int as libc::c_uint,
+        56 as libc::c_int as libc::c_uint,
+        53 as libc::c_int as libc::c_uint,
+        91 as libc::c_int as libc::c_uint,
+        106 as libc::c_int as libc::c_uint,
+        131 as libc::c_int as libc::c_uint,
+        169 as libc::c_int as libc::c_uint,
+        226 as libc::c_int as libc::c_uint,
+        311 as libc::c_int as libc::c_uint,
+        85 as libc::c_int as libc::c_uint,
+        75 as libc::c_int as libc::c_uint,
+        135 as libc::c_int as libc::c_uint,
+        156 as libc::c_int as libc::c_uint,
+        189 as libc::c_int as libc::c_uint,
+        238 as libc::c_int as libc::c_uint,
+        311 as libc::c_int as libc::c_uint,
+        418 as libc::c_int as libc::c_uint,
     ],
     [
-        9i32 as libc::c_uint,
-        10i32 as libc::c_uint,
-        17i32 as libc::c_uint,
-        19i32 as libc::c_uint,
-        62i32 as libc::c_uint,
-        89i32 as libc::c_uint,
-        91i32 as libc::c_uint,
-        97i32 as libc::c_uint,
-        12i32 as libc::c_uint,
-        13i32 as libc::c_uint,
-        18i32 as libc::c_uint,
-        29i32 as libc::c_uint,
-        84i32 as libc::c_uint,
-        91i32 as libc::c_uint,
-        88i32 as libc::c_uint,
-        98i32 as libc::c_uint,
-        14i32 as libc::c_uint,
-        19i32 as libc::c_uint,
-        29i32 as libc::c_uint,
-        93i32 as libc::c_uint,
-        95i32 as libc::c_uint,
-        95i32 as libc::c_uint,
-        98i32 as libc::c_uint,
-        97i32 as libc::c_uint,
-        20i32 as libc::c_uint,
-        26i32 as libc::c_uint,
-        84i32 as libc::c_uint,
-        88i32 as libc::c_uint,
-        95i32 as libc::c_uint,
-        95i32 as libc::c_uint,
-        98i32 as libc::c_uint,
-        94i32 as libc::c_uint,
-        26i32 as libc::c_uint,
-        86i32 as libc::c_uint,
-        91i32 as libc::c_uint,
-        93i32 as libc::c_uint,
-        97i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        98i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        100i32 as libc::c_uint,
-        98i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        97i32 as libc::c_uint,
-        97i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        99i32 as libc::c_uint,
-        97i32 as libc::c_uint,
-        99i32 as libc::c_uint,
+        9 as libc::c_int as libc::c_uint,
+        10 as libc::c_int as libc::c_uint,
+        17 as libc::c_int as libc::c_uint,
+        19 as libc::c_int as libc::c_uint,
+        62 as libc::c_int as libc::c_uint,
+        89 as libc::c_int as libc::c_uint,
+        91 as libc::c_int as libc::c_uint,
+        97 as libc::c_int as libc::c_uint,
+        12 as libc::c_int as libc::c_uint,
+        13 as libc::c_int as libc::c_uint,
+        18 as libc::c_int as libc::c_uint,
+        29 as libc::c_int as libc::c_uint,
+        84 as libc::c_int as libc::c_uint,
+        91 as libc::c_int as libc::c_uint,
+        88 as libc::c_int as libc::c_uint,
+        98 as libc::c_int as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        19 as libc::c_int as libc::c_uint,
+        29 as libc::c_int as libc::c_uint,
+        93 as libc::c_int as libc::c_uint,
+        95 as libc::c_int as libc::c_uint,
+        95 as libc::c_int as libc::c_uint,
+        98 as libc::c_int as libc::c_uint,
+        97 as libc::c_int as libc::c_uint,
+        20 as libc::c_int as libc::c_uint,
+        26 as libc::c_int as libc::c_uint,
+        84 as libc::c_int as libc::c_uint,
+        88 as libc::c_int as libc::c_uint,
+        95 as libc::c_int as libc::c_uint,
+        95 as libc::c_int as libc::c_uint,
+        98 as libc::c_int as libc::c_uint,
+        94 as libc::c_int as libc::c_uint,
+        26 as libc::c_int as libc::c_uint,
+        86 as libc::c_int as libc::c_uint,
+        91 as libc::c_int as libc::c_uint,
+        93 as libc::c_int as libc::c_uint,
+        97 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        98 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        100 as libc::c_int as libc::c_uint,
+        98 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        97 as libc::c_int as libc::c_uint,
+        97 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
+        97 as libc::c_int as libc::c_uint,
+        99 as libc::c_int as libc::c_uint,
     ],
     [
-        10i32 as libc::c_uint,
-        12i32 as libc::c_uint,
-        14i32 as libc::c_uint,
-        19i32 as libc::c_uint,
-        26i32 as libc::c_uint,
-        38i32 as libc::c_uint,
-        57i32 as libc::c_uint,
-        86i32 as libc::c_uint,
-        12i32 as libc::c_uint,
-        18i32 as libc::c_uint,
-        21i32 as libc::c_uint,
-        28i32 as libc::c_uint,
-        35i32 as libc::c_uint,
-        41i32 as libc::c_uint,
-        54i32 as libc::c_uint,
-        76i32 as libc::c_uint,
-        14i32 as libc::c_uint,
-        21i32 as libc::c_uint,
-        25i32 as libc::c_uint,
-        32i32 as libc::c_uint,
-        44i32 as libc::c_uint,
-        63i32 as libc::c_uint,
-        92i32 as libc::c_uint,
-        136i32 as libc::c_uint,
-        19i32 as libc::c_uint,
-        28i32 as libc::c_uint,
-        32i32 as libc::c_uint,
-        41i32 as libc::c_uint,
-        54i32 as libc::c_uint,
-        75i32 as libc::c_uint,
-        107i32 as libc::c_uint,
-        157i32 as libc::c_uint,
-        26i32 as libc::c_uint,
-        35i32 as libc::c_uint,
-        44i32 as libc::c_uint,
-        54i32 as libc::c_uint,
-        70i32 as libc::c_uint,
-        95i32 as libc::c_uint,
-        132i32 as libc::c_uint,
-        190i32 as libc::c_uint,
-        38i32 as libc::c_uint,
-        41i32 as libc::c_uint,
-        63i32 as libc::c_uint,
-        75i32 as libc::c_uint,
-        95i32 as libc::c_uint,
-        125i32 as libc::c_uint,
-        170i32 as libc::c_uint,
-        239i32 as libc::c_uint,
-        57i32 as libc::c_uint,
-        54i32 as libc::c_uint,
-        92i32 as libc::c_uint,
-        107i32 as libc::c_uint,
-        132i32 as libc::c_uint,
-        170i32 as libc::c_uint,
-        227i32 as libc::c_uint,
-        312i32 as libc::c_uint,
-        86i32 as libc::c_uint,
-        76i32 as libc::c_uint,
-        136i32 as libc::c_uint,
-        157i32 as libc::c_uint,
-        190i32 as libc::c_uint,
-        239i32 as libc::c_uint,
-        312i32 as libc::c_uint,
-        419i32 as libc::c_uint,
+        10 as libc::c_int as libc::c_uint,
+        12 as libc::c_int as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        19 as libc::c_int as libc::c_uint,
+        26 as libc::c_int as libc::c_uint,
+        38 as libc::c_int as libc::c_uint,
+        57 as libc::c_int as libc::c_uint,
+        86 as libc::c_int as libc::c_uint,
+        12 as libc::c_int as libc::c_uint,
+        18 as libc::c_int as libc::c_uint,
+        21 as libc::c_int as libc::c_uint,
+        28 as libc::c_int as libc::c_uint,
+        35 as libc::c_int as libc::c_uint,
+        41 as libc::c_int as libc::c_uint,
+        54 as libc::c_int as libc::c_uint,
+        76 as libc::c_int as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        21 as libc::c_int as libc::c_uint,
+        25 as libc::c_int as libc::c_uint,
+        32 as libc::c_int as libc::c_uint,
+        44 as libc::c_int as libc::c_uint,
+        63 as libc::c_int as libc::c_uint,
+        92 as libc::c_int as libc::c_uint,
+        136 as libc::c_int as libc::c_uint,
+        19 as libc::c_int as libc::c_uint,
+        28 as libc::c_int as libc::c_uint,
+        32 as libc::c_int as libc::c_uint,
+        41 as libc::c_int as libc::c_uint,
+        54 as libc::c_int as libc::c_uint,
+        75 as libc::c_int as libc::c_uint,
+        107 as libc::c_int as libc::c_uint,
+        157 as libc::c_int as libc::c_uint,
+        26 as libc::c_int as libc::c_uint,
+        35 as libc::c_int as libc::c_uint,
+        44 as libc::c_int as libc::c_uint,
+        54 as libc::c_int as libc::c_uint,
+        70 as libc::c_int as libc::c_uint,
+        95 as libc::c_int as libc::c_uint,
+        132 as libc::c_int as libc::c_uint,
+        190 as libc::c_int as libc::c_uint,
+        38 as libc::c_int as libc::c_uint,
+        41 as libc::c_int as libc::c_uint,
+        63 as libc::c_int as libc::c_uint,
+        75 as libc::c_int as libc::c_uint,
+        95 as libc::c_int as libc::c_uint,
+        125 as libc::c_int as libc::c_uint,
+        170 as libc::c_int as libc::c_uint,
+        239 as libc::c_int as libc::c_uint,
+        57 as libc::c_int as libc::c_uint,
+        54 as libc::c_int as libc::c_uint,
+        92 as libc::c_int as libc::c_uint,
+        107 as libc::c_int as libc::c_uint,
+        132 as libc::c_int as libc::c_uint,
+        170 as libc::c_int as libc::c_uint,
+        227 as libc::c_int as libc::c_uint,
+        312 as libc::c_int as libc::c_uint,
+        86 as libc::c_int as libc::c_uint,
+        76 as libc::c_int as libc::c_uint,
+        136 as libc::c_int as libc::c_uint,
+        157 as libc::c_int as libc::c_uint,
+        190 as libc::c_int as libc::c_uint,
+        239 as libc::c_int as libc::c_uint,
+        312 as libc::c_int as libc::c_uint,
+        419 as libc::c_int as libc::c_uint,
     ],
     [
-        7i32 as libc::c_uint,
-        8i32 as libc::c_uint,
-        10i32 as libc::c_uint,
-        14i32 as libc::c_uint,
-        23i32 as libc::c_uint,
-        44i32 as libc::c_uint,
-        95i32 as libc::c_uint,
-        241i32 as libc::c_uint,
-        8i32 as libc::c_uint,
-        8i32 as libc::c_uint,
-        11i32 as libc::c_uint,
-        15i32 as libc::c_uint,
-        25i32 as libc::c_uint,
-        47i32 as libc::c_uint,
-        102i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        10i32 as libc::c_uint,
-        11i32 as libc::c_uint,
-        13i32 as libc::c_uint,
-        19i32 as libc::c_uint,
-        31i32 as libc::c_uint,
-        58i32 as libc::c_uint,
-        127i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        14i32 as libc::c_uint,
-        15i32 as libc::c_uint,
-        19i32 as libc::c_uint,
-        27i32 as libc::c_uint,
-        44i32 as libc::c_uint,
-        83i32 as libc::c_uint,
-        181i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        23i32 as libc::c_uint,
-        25i32 as libc::c_uint,
-        31i32 as libc::c_uint,
-        44i32 as libc::c_uint,
-        72i32 as libc::c_uint,
-        136i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        44i32 as libc::c_uint,
-        47i32 as libc::c_uint,
-        58i32 as libc::c_uint,
-        83i32 as libc::c_uint,
-        136i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        95i32 as libc::c_uint,
-        102i32 as libc::c_uint,
-        127i32 as libc::c_uint,
-        181i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        241i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        255i32 as libc::c_uint,
-        255i32 as libc::c_uint,
+        7 as libc::c_int as libc::c_uint,
+        8 as libc::c_int as libc::c_uint,
+        10 as libc::c_int as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        23 as libc::c_int as libc::c_uint,
+        44 as libc::c_int as libc::c_uint,
+        95 as libc::c_int as libc::c_uint,
+        241 as libc::c_int as libc::c_uint,
+        8 as libc::c_int as libc::c_uint,
+        8 as libc::c_int as libc::c_uint,
+        11 as libc::c_int as libc::c_uint,
+        15 as libc::c_int as libc::c_uint,
+        25 as libc::c_int as libc::c_uint,
+        47 as libc::c_int as libc::c_uint,
+        102 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        10 as libc::c_int as libc::c_uint,
+        11 as libc::c_int as libc::c_uint,
+        13 as libc::c_int as libc::c_uint,
+        19 as libc::c_int as libc::c_uint,
+        31 as libc::c_int as libc::c_uint,
+        58 as libc::c_int as libc::c_uint,
+        127 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        15 as libc::c_int as libc::c_uint,
+        19 as libc::c_int as libc::c_uint,
+        27 as libc::c_int as libc::c_uint,
+        44 as libc::c_int as libc::c_uint,
+        83 as libc::c_int as libc::c_uint,
+        181 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        23 as libc::c_int as libc::c_uint,
+        25 as libc::c_int as libc::c_uint,
+        31 as libc::c_int as libc::c_uint,
+        44 as libc::c_int as libc::c_uint,
+        72 as libc::c_int as libc::c_uint,
+        136 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        44 as libc::c_int as libc::c_uint,
+        47 as libc::c_int as libc::c_uint,
+        58 as libc::c_int as libc::c_uint,
+        83 as libc::c_int as libc::c_uint,
+        136 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        95 as libc::c_int as libc::c_uint,
+        102 as libc::c_int as libc::c_uint,
+        127 as libc::c_int as libc::c_uint,
+        181 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        241 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
+        255 as libc::c_int as libc::c_uint,
     ],
     [
-        15i32 as libc::c_uint,
-        11i32 as libc::c_uint,
-        11i32 as libc::c_uint,
-        12i32 as libc::c_uint,
-        15i32 as libc::c_uint,
-        19i32 as libc::c_uint,
-        25i32 as libc::c_uint,
-        32i32 as libc::c_uint,
-        11i32 as libc::c_uint,
-        13i32 as libc::c_uint,
-        10i32 as libc::c_uint,
-        10i32 as libc::c_uint,
-        12i32 as libc::c_uint,
-        15i32 as libc::c_uint,
-        19i32 as libc::c_uint,
-        24i32 as libc::c_uint,
-        11i32 as libc::c_uint,
-        10i32 as libc::c_uint,
-        14i32 as libc::c_uint,
-        14i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        18i32 as libc::c_uint,
-        22i32 as libc::c_uint,
-        27i32 as libc::c_uint,
-        12i32 as libc::c_uint,
-        10i32 as libc::c_uint,
-        14i32 as libc::c_uint,
-        18i32 as libc::c_uint,
-        21i32 as libc::c_uint,
-        24i32 as libc::c_uint,
-        28i32 as libc::c_uint,
-        33i32 as libc::c_uint,
-        15i32 as libc::c_uint,
-        12i32 as libc::c_uint,
-        16i32 as libc::c_uint,
-        21i32 as libc::c_uint,
-        26i32 as libc::c_uint,
-        31i32 as libc::c_uint,
-        36i32 as libc::c_uint,
-        42i32 as libc::c_uint,
-        19i32 as libc::c_uint,
-        15i32 as libc::c_uint,
-        18i32 as libc::c_uint,
-        24i32 as libc::c_uint,
-        31i32 as libc::c_uint,
-        38i32 as libc::c_uint,
-        45i32 as libc::c_uint,
-        53i32 as libc::c_uint,
-        25i32 as libc::c_uint,
-        19i32 as libc::c_uint,
-        22i32 as libc::c_uint,
-        28i32 as libc::c_uint,
-        36i32 as libc::c_uint,
-        45i32 as libc::c_uint,
-        55i32 as libc::c_uint,
-        65i32 as libc::c_uint,
-        32i32 as libc::c_uint,
-        24i32 as libc::c_uint,
-        27i32 as libc::c_uint,
-        33i32 as libc::c_uint,
-        42i32 as libc::c_uint,
-        53i32 as libc::c_uint,
-        65i32 as libc::c_uint,
-        77i32 as libc::c_uint,
+        15 as libc::c_int as libc::c_uint,
+        11 as libc::c_int as libc::c_uint,
+        11 as libc::c_int as libc::c_uint,
+        12 as libc::c_int as libc::c_uint,
+        15 as libc::c_int as libc::c_uint,
+        19 as libc::c_int as libc::c_uint,
+        25 as libc::c_int as libc::c_uint,
+        32 as libc::c_int as libc::c_uint,
+        11 as libc::c_int as libc::c_uint,
+        13 as libc::c_int as libc::c_uint,
+        10 as libc::c_int as libc::c_uint,
+        10 as libc::c_int as libc::c_uint,
+        12 as libc::c_int as libc::c_uint,
+        15 as libc::c_int as libc::c_uint,
+        19 as libc::c_int as libc::c_uint,
+        24 as libc::c_int as libc::c_uint,
+        11 as libc::c_int as libc::c_uint,
+        10 as libc::c_int as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        18 as libc::c_int as libc::c_uint,
+        22 as libc::c_int as libc::c_uint,
+        27 as libc::c_int as libc::c_uint,
+        12 as libc::c_int as libc::c_uint,
+        10 as libc::c_int as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        18 as libc::c_int as libc::c_uint,
+        21 as libc::c_int as libc::c_uint,
+        24 as libc::c_int as libc::c_uint,
+        28 as libc::c_int as libc::c_uint,
+        33 as libc::c_int as libc::c_uint,
+        15 as libc::c_int as libc::c_uint,
+        12 as libc::c_int as libc::c_uint,
+        16 as libc::c_int as libc::c_uint,
+        21 as libc::c_int as libc::c_uint,
+        26 as libc::c_int as libc::c_uint,
+        31 as libc::c_int as libc::c_uint,
+        36 as libc::c_int as libc::c_uint,
+        42 as libc::c_int as libc::c_uint,
+        19 as libc::c_int as libc::c_uint,
+        15 as libc::c_int as libc::c_uint,
+        18 as libc::c_int as libc::c_uint,
+        24 as libc::c_int as libc::c_uint,
+        31 as libc::c_int as libc::c_uint,
+        38 as libc::c_int as libc::c_uint,
+        45 as libc::c_int as libc::c_uint,
+        53 as libc::c_int as libc::c_uint,
+        25 as libc::c_int as libc::c_uint,
+        19 as libc::c_int as libc::c_uint,
+        22 as libc::c_int as libc::c_uint,
+        28 as libc::c_int as libc::c_uint,
+        36 as libc::c_int as libc::c_uint,
+        45 as libc::c_int as libc::c_uint,
+        55 as libc::c_int as libc::c_uint,
+        65 as libc::c_int as libc::c_uint,
+        32 as libc::c_int as libc::c_uint,
+        24 as libc::c_int as libc::c_uint,
+        27 as libc::c_int as libc::c_uint,
+        33 as libc::c_int as libc::c_uint,
+        42 as libc::c_int as libc::c_uint,
+        53 as libc::c_int as libc::c_uint,
+        65 as libc::c_int as libc::c_uint,
+        77 as libc::c_int as libc::c_uint,
     ],
     [
-        14i32 as libc::c_uint,
-        10i32 as libc::c_uint,
-        11i32 as libc::c_uint,
-        14i32 as libc::c_uint,
-        19i32 as libc::c_uint,
-        25i32 as libc::c_uint,
-        34i32 as libc::c_uint,
-        45i32 as libc::c_uint,
-        10i32 as libc::c_uint,
-        11i32 as libc::c_uint,
-        11i32 as libc::c_uint,
-        12i32 as libc::c_uint,
-        15i32 as libc::c_uint,
-        20i32 as libc::c_uint,
-        26i32 as libc::c_uint,
-        33i32 as libc::c_uint,
-        11i32 as libc::c_uint,
-        11i32 as libc::c_uint,
-        15i32 as libc::c_uint,
-        18i32 as libc::c_uint,
-        21i32 as libc::c_uint,
-        25i32 as libc::c_uint,
-        31i32 as libc::c_uint,
-        38i32 as libc::c_uint,
-        14i32 as libc::c_uint,
-        12i32 as libc::c_uint,
-        18i32 as libc::c_uint,
-        24i32 as libc::c_uint,
-        28i32 as libc::c_uint,
-        33i32 as libc::c_uint,
-        39i32 as libc::c_uint,
-        47i32 as libc::c_uint,
-        19i32 as libc::c_uint,
-        15i32 as libc::c_uint,
-        21i32 as libc::c_uint,
-        28i32 as libc::c_uint,
-        36i32 as libc::c_uint,
-        43i32 as libc::c_uint,
-        51i32 as libc::c_uint,
-        59i32 as libc::c_uint,
-        25i32 as libc::c_uint,
-        20i32 as libc::c_uint,
-        25i32 as libc::c_uint,
-        33i32 as libc::c_uint,
-        43i32 as libc::c_uint,
-        54i32 as libc::c_uint,
-        64i32 as libc::c_uint,
-        74i32 as libc::c_uint,
-        34i32 as libc::c_uint,
-        26i32 as libc::c_uint,
-        31i32 as libc::c_uint,
-        39i32 as libc::c_uint,
-        51i32 as libc::c_uint,
-        64i32 as libc::c_uint,
-        77i32 as libc::c_uint,
-        91i32 as libc::c_uint,
-        45i32 as libc::c_uint,
-        33i32 as libc::c_uint,
-        38i32 as libc::c_uint,
-        47i32 as libc::c_uint,
-        59i32 as libc::c_uint,
-        74i32 as libc::c_uint,
-        91i32 as libc::c_uint,
-        108i32 as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        10 as libc::c_int as libc::c_uint,
+        11 as libc::c_int as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        19 as libc::c_int as libc::c_uint,
+        25 as libc::c_int as libc::c_uint,
+        34 as libc::c_int as libc::c_uint,
+        45 as libc::c_int as libc::c_uint,
+        10 as libc::c_int as libc::c_uint,
+        11 as libc::c_int as libc::c_uint,
+        11 as libc::c_int as libc::c_uint,
+        12 as libc::c_int as libc::c_uint,
+        15 as libc::c_int as libc::c_uint,
+        20 as libc::c_int as libc::c_uint,
+        26 as libc::c_int as libc::c_uint,
+        33 as libc::c_int as libc::c_uint,
+        11 as libc::c_int as libc::c_uint,
+        11 as libc::c_int as libc::c_uint,
+        15 as libc::c_int as libc::c_uint,
+        18 as libc::c_int as libc::c_uint,
+        21 as libc::c_int as libc::c_uint,
+        25 as libc::c_int as libc::c_uint,
+        31 as libc::c_int as libc::c_uint,
+        38 as libc::c_int as libc::c_uint,
+        14 as libc::c_int as libc::c_uint,
+        12 as libc::c_int as libc::c_uint,
+        18 as libc::c_int as libc::c_uint,
+        24 as libc::c_int as libc::c_uint,
+        28 as libc::c_int as libc::c_uint,
+        33 as libc::c_int as libc::c_uint,
+        39 as libc::c_int as libc::c_uint,
+        47 as libc::c_int as libc::c_uint,
+        19 as libc::c_int as libc::c_uint,
+        15 as libc::c_int as libc::c_uint,
+        21 as libc::c_int as libc::c_uint,
+        28 as libc::c_int as libc::c_uint,
+        36 as libc::c_int as libc::c_uint,
+        43 as libc::c_int as libc::c_uint,
+        51 as libc::c_int as libc::c_uint,
+        59 as libc::c_int as libc::c_uint,
+        25 as libc::c_int as libc::c_uint,
+        20 as libc::c_int as libc::c_uint,
+        25 as libc::c_int as libc::c_uint,
+        33 as libc::c_int as libc::c_uint,
+        43 as libc::c_int as libc::c_uint,
+        54 as libc::c_int as libc::c_uint,
+        64 as libc::c_int as libc::c_uint,
+        74 as libc::c_int as libc::c_uint,
+        34 as libc::c_int as libc::c_uint,
+        26 as libc::c_int as libc::c_uint,
+        31 as libc::c_int as libc::c_uint,
+        39 as libc::c_int as libc::c_uint,
+        51 as libc::c_int as libc::c_uint,
+        64 as libc::c_int as libc::c_uint,
+        77 as libc::c_int as libc::c_uint,
+        91 as libc::c_int as libc::c_uint,
+        45 as libc::c_int as libc::c_uint,
+        33 as libc::c_int as libc::c_uint,
+        38 as libc::c_int as libc::c_uint,
+        47 as libc::c_int as libc::c_uint,
+        59 as libc::c_int as libc::c_uint,
+        74 as libc::c_int as libc::c_uint,
+        91 as libc::c_int as libc::c_uint,
+        108 as libc::c_int as libc::c_uint,
     ],
 ];
 #[no_mangle]
@@ -1546,14 +2114,14 @@ pub unsafe extern "C" fn jpeg_set_linear_quality(
     /* Set up two quantization tables using the specified scaling */
     jpeg_add_quant_table(
         cinfo,
-        0i32,
+        0 as libc::c_int,
         std_luminance_quant_tbl[(*(*cinfo).master).quant_tbl_master_idx as usize].as_ptr(),
         scale_factor,
         force_baseline,
     );
     jpeg_add_quant_table(
         cinfo,
-        1i32,
+        1 as libc::c_int,
         std_chrominance_quant_tbl[(*(*cinfo).master).quant_tbl_master_idx as usize].as_ptr(),
         scale_factor,
         force_baseline,
@@ -1626,7 +2194,7 @@ pub unsafe extern "C" fn jpeg_set_defaults(mut cinfo: crate::jpeglib_h::j_compre
     /* Safety check to ensure start_compress not called yet. */
     if (*cinfo).global_state != crate::jpegint_h::CSTATE_START {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = (*cinfo).global_state;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -1655,20 +2223,20 @@ pub unsafe extern "C" fn jpeg_set_defaults(mut cinfo: crate::jpeglib_h::j_compre
     /* Initialize everything not dependent on the color space */
     (*cinfo).data_precision = crate::jconfig_h::BITS_IN_JSAMPLE;
     /* Set up two quantization tables using default quality of 75 */
-    jpeg_set_quality(cinfo, 75i32, crate::jmorecfg_h::TRUE);
+    jpeg_set_quality(cinfo, 75 as libc::c_int, crate::jmorecfg_h::TRUE);
     /* Set up two Huffman tables */
-    crate::jstdhuff_c::std_huff_tables(cinfo as crate::jpeglib_h::j_common_ptr);
+    std_huff_tables(cinfo as crate::jpeglib_h::j_common_ptr);
     /* Initialize default arithmetic coding conditioning */
-    i = 0i32;
+    i = 0 as libc::c_int;
     while i < crate::jpeglib_h::NUM_ARITH_TBLS {
-        (*cinfo).arith_dc_L[i as usize] = 0i32 as crate::jmorecfg_h::UINT8;
-        (*cinfo).arith_dc_U[i as usize] = 1i32 as crate::jmorecfg_h::UINT8;
-        (*cinfo).arith_ac_K[i as usize] = 5i32 as crate::jmorecfg_h::UINT8;
+        (*cinfo).arith_dc_L[i as usize] = 0 as libc::c_int as crate::jmorecfg_h::UINT8;
+        (*cinfo).arith_dc_U[i as usize] = 1 as libc::c_int as crate::jmorecfg_h::UINT8;
+        (*cinfo).arith_ac_K[i as usize] = 5 as libc::c_int as crate::jmorecfg_h::UINT8;
         i += 1
     }
     /* Default is no multiple-scan output */
     (*cinfo).scan_info = crate::stddef_h::NULL as *const crate::jpeglib_h::jpeg_scan_info;
-    (*cinfo).num_scans = 0i32;
+    (*cinfo).num_scans = 0 as libc::c_int;
     /* Expect normal source image, not raw downsampled data */
     (*cinfo).raw_data_in = crate::jmorecfg_h::FALSE;
     /* Use Huffman coding, not arithmetic coding, by default */
@@ -1685,7 +2253,7 @@ pub unsafe extern "C" fn jpeg_set_defaults(mut cinfo: crate::jpeglib_h::j_compre
      * tables will be computed.  This test can be removed if default tables
      * are supplied that are valid for the desired precision.
      */
-    if (*cinfo).data_precision > 8i32 {
+    if (*cinfo).data_precision > 8 as libc::c_int {
         (*cinfo).optimize_coding = crate::jmorecfg_h::TRUE
     }
     /* By default, use the simpler non-cosited sampling alignment */
@@ -1694,12 +2262,12 @@ pub unsafe extern "C" fn jpeg_set_defaults(mut cinfo: crate::jpeglib_h::j_compre
         == crate::jpeglib_h::JCP_MAX_COMPRESSION as libc::c_int)
         as libc::c_int;
     /* No input smoothing */
-    (*cinfo).smoothing_factor = 0i32;
+    (*cinfo).smoothing_factor = 0 as libc::c_int;
     /* DCT algorithm preference */
     (*cinfo).dct_method = crate::jpeglib_h::JDCT_DEFAULT as crate::jpeglib_h::J_DCT_METHOD;
     /* No restart markers */
-    (*cinfo).restart_interval = 0i32 as libc::c_uint;
-    (*cinfo).restart_in_rows = 0i32;
+    (*cinfo).restart_interval = 0 as libc::c_int as libc::c_uint;
+    (*cinfo).restart_in_rows = 0 as libc::c_int;
     /* Fill in default JFIF marker parameters.  Note that whether the marker
      * will actually be written is determined by jpeg_set_colorspace.
      *
@@ -1709,14 +2277,14 @@ pub unsafe extern "C" fn jpeg_set_defaults(mut cinfo: crate::jpeglib_h::j_compre
      * to 1.02, but there may still be some decoders in use that will complain
      * about that; saying 1.01 should minimize compatibility problems.
      */
-    (*cinfo).JFIF_major_version = 1i32 as crate::jmorecfg_h::UINT8; /* Default JFIF version = 1.01 */
-    (*cinfo).JFIF_minor_version = 1i32 as crate::jmorecfg_h::UINT8; /* Pixel size is unknown by default */
-    (*cinfo).density_unit = 0i32 as crate::jmorecfg_h::UINT8; /* Pixel aspect ratio is square by default */
-    (*cinfo).X_density = 1i32 as crate::jmorecfg_h::UINT16;
-    (*cinfo).Y_density = 1i32 as crate::jmorecfg_h::UINT16;
+    (*cinfo).JFIF_major_version = 1 as libc::c_int as crate::jmorecfg_h::UINT8; /* Default JFIF version = 1.01 */
+    (*cinfo).JFIF_minor_version = 1 as libc::c_int as crate::jmorecfg_h::UINT8; /* Pixel size is unknown by default */
+    (*cinfo).density_unit = 0 as libc::c_int as crate::jmorecfg_h::UINT8; /* Pixel aspect ratio is square by default */
+    (*cinfo).X_density = 1 as libc::c_int as crate::jmorecfg_h::UINT16;
+    (*cinfo).Y_density = 1 as libc::c_int as crate::jmorecfg_h::UINT16;
     /* Choose JPEG colorspace based on input space, set defaults accordingly */
     jpeg_default_colorspace(cinfo);
-    (*(*cinfo).master).dc_scan_opt_mode = 1i32;
+    (*(*cinfo).master).dc_scan_opt_mode = 1 as libc::c_int;
     if (*(*cinfo).master).compress_profile == crate::jpeglib_h::JCP_MAX_COMPRESSION as libc::c_int {
         (*(*cinfo).master).optimize_scans = crate::jmorecfg_h::TRUE;
         jpeg_simple_progression(cinfo);
@@ -1731,14 +2299,14 @@ pub unsafe extern "C" fn jpeg_set_defaults(mut cinfo: crate::jpeglib_h::j_compre
     (*(*cinfo).master).quant_tbl_master_idx = if (*(*cinfo).master).compress_profile
         == crate::jpeglib_h::JCP_MAX_COMPRESSION as libc::c_int
     {
-        3i32
+        3 as libc::c_int
     } else {
-        0i32
+        0 as libc::c_int
     };
     (*(*cinfo).master).use_lambda_weight_tbl = crate::jmorecfg_h::TRUE;
     (*(*cinfo).master).use_scans_in_trellis = crate::jmorecfg_h::FALSE;
-    (*(*cinfo).master).trellis_freq_split = 8i32;
-    (*(*cinfo).master).trellis_num_loops = 1i32;
+    (*(*cinfo).master).trellis_freq_split = 8 as libc::c_int;
+    (*(*cinfo).master).trellis_num_loops = 1 as libc::c_int;
     (*(*cinfo).master).trellis_q_opt = crate::jmorecfg_h::FALSE;
     (*(*cinfo).master).trellis_quant_dc = crate::jmorecfg_h::TRUE;
     (*(*cinfo).master).trellis_delta_dc_weight = 0.0f64 as libc::c_float;
@@ -1797,7 +2365,7 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
     /* Safety check to ensure start_compress not called yet. */
     if (*cinfo).global_state != crate::jpegint_h::CSTATE_START {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = (*cinfo).global_state;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -1814,155 +2382,155 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
     match colorspace as libc::c_uint {
         1 => {
             (*cinfo).write_JFIF_header = crate::jmorecfg_h::TRUE;
-            (*cinfo).num_components = 1i32;
+            (*cinfo).num_components = 1 as libc::c_int;
             /* JFIF specifies component ID 1 */
-            compptr =
-                &mut *(*cinfo).comp_info.offset(0) as *mut crate::jpeglib_h::jpeg_component_info; /* write Adobe marker to flag RGB */
-            (*compptr).component_id = 1i32; /* Write a JFIF marker */
-            (*compptr).h_samp_factor = 1i32;
-            (*compptr).v_samp_factor = 1i32;
-            (*compptr).quant_tbl_no = 0i32;
-            (*compptr).dc_tbl_no = 0i32;
-            (*compptr).ac_tbl_no = 0i32
+            compptr = &mut *(*cinfo).comp_info.offset(0 as libc::c_int as isize)
+                as *mut crate::jpeglib_h::jpeg_component_info; /* write Adobe marker to flag RGB */
+            (*compptr).component_id = 1 as libc::c_int; /* Write a JFIF marker */
+            (*compptr).h_samp_factor = 1 as libc::c_int;
+            (*compptr).v_samp_factor = 1 as libc::c_int;
+            (*compptr).quant_tbl_no = 0 as libc::c_int;
+            (*compptr).dc_tbl_no = 0 as libc::c_int;
+            (*compptr).ac_tbl_no = 0 as libc::c_int
         }
         2 => {
             (*cinfo).write_Adobe_marker = crate::jmorecfg_h::TRUE;
-            (*cinfo).num_components = 3i32;
-            compptr =
-                &mut *(*cinfo).comp_info.offset(0) as *mut crate::jpeglib_h::jpeg_component_info;
-            (*compptr).component_id = 0x52i32;
-            (*compptr).h_samp_factor = 1i32;
-            (*compptr).v_samp_factor = 1i32;
-            (*compptr).quant_tbl_no = 0i32;
-            (*compptr).dc_tbl_no = 0i32;
-            (*compptr).ac_tbl_no = 0i32;
-            compptr =
-                &mut *(*cinfo).comp_info.offset(1) as *mut crate::jpeglib_h::jpeg_component_info;
-            (*compptr).component_id = 0x47i32;
-            (*compptr).h_samp_factor = 1i32;
-            (*compptr).v_samp_factor = 1i32;
-            (*compptr).quant_tbl_no = 0i32;
-            (*compptr).dc_tbl_no = 0i32;
-            (*compptr).ac_tbl_no = 0i32;
-            compptr =
-                &mut *(*cinfo).comp_info.offset(2) as *mut crate::jpeglib_h::jpeg_component_info;
-            (*compptr).component_id = 0x42i32;
-            (*compptr).h_samp_factor = 1i32;
-            (*compptr).v_samp_factor = 1i32;
-            (*compptr).quant_tbl_no = 0i32;
-            (*compptr).dc_tbl_no = 0i32;
-            (*compptr).ac_tbl_no = 0i32
+            (*cinfo).num_components = 3 as libc::c_int;
+            compptr = &mut *(*cinfo).comp_info.offset(0 as libc::c_int as isize)
+                as *mut crate::jpeglib_h::jpeg_component_info;
+            (*compptr).component_id = 0x52 as libc::c_int;
+            (*compptr).h_samp_factor = 1 as libc::c_int;
+            (*compptr).v_samp_factor = 1 as libc::c_int;
+            (*compptr).quant_tbl_no = 0 as libc::c_int;
+            (*compptr).dc_tbl_no = 0 as libc::c_int;
+            (*compptr).ac_tbl_no = 0 as libc::c_int;
+            compptr = &mut *(*cinfo).comp_info.offset(1 as libc::c_int as isize)
+                as *mut crate::jpeglib_h::jpeg_component_info;
+            (*compptr).component_id = 0x47 as libc::c_int;
+            (*compptr).h_samp_factor = 1 as libc::c_int;
+            (*compptr).v_samp_factor = 1 as libc::c_int;
+            (*compptr).quant_tbl_no = 0 as libc::c_int;
+            (*compptr).dc_tbl_no = 0 as libc::c_int;
+            (*compptr).ac_tbl_no = 0 as libc::c_int;
+            compptr = &mut *(*cinfo).comp_info.offset(2 as libc::c_int as isize)
+                as *mut crate::jpeglib_h::jpeg_component_info;
+            (*compptr).component_id = 0x42 as libc::c_int;
+            (*compptr).h_samp_factor = 1 as libc::c_int;
+            (*compptr).v_samp_factor = 1 as libc::c_int;
+            (*compptr).quant_tbl_no = 0 as libc::c_int;
+            (*compptr).dc_tbl_no = 0 as libc::c_int;
+            (*compptr).ac_tbl_no = 0 as libc::c_int
         }
         3 => {
             (*cinfo).write_JFIF_header = crate::jmorecfg_h::TRUE;
-            (*cinfo).num_components = 3i32;
+            (*cinfo).num_components = 3 as libc::c_int;
             /* JFIF specifies component IDs 1,2,3 */
             /* We default to 2x2 subsamples of chrominance */
-            compptr =
-                &mut *(*cinfo).comp_info.offset(0) as *mut crate::jpeglib_h::jpeg_component_info; /* write Adobe marker to flag CMYK */
-            (*compptr).component_id = 1i32; /* write Adobe marker to flag YCCK */
-            (*compptr).h_samp_factor = 2i32;
-            (*compptr).v_samp_factor = 2i32;
-            (*compptr).quant_tbl_no = 0i32;
-            (*compptr).dc_tbl_no = 0i32;
-            (*compptr).ac_tbl_no = 0i32;
-            compptr =
-                &mut *(*cinfo).comp_info.offset(1) as *mut crate::jpeglib_h::jpeg_component_info;
-            (*compptr).component_id = 2i32;
-            (*compptr).h_samp_factor = 1i32;
-            (*compptr).v_samp_factor = 1i32;
-            (*compptr).quant_tbl_no = 1i32;
-            (*compptr).dc_tbl_no = 1i32;
-            (*compptr).ac_tbl_no = 1i32;
-            compptr =
-                &mut *(*cinfo).comp_info.offset(2) as *mut crate::jpeglib_h::jpeg_component_info;
-            (*compptr).component_id = 3i32;
-            (*compptr).h_samp_factor = 1i32;
-            (*compptr).v_samp_factor = 1i32;
-            (*compptr).quant_tbl_no = 1i32;
-            (*compptr).dc_tbl_no = 1i32;
-            (*compptr).ac_tbl_no = 1i32
+            compptr = &mut *(*cinfo).comp_info.offset(0 as libc::c_int as isize)
+                as *mut crate::jpeglib_h::jpeg_component_info; /* write Adobe marker to flag CMYK */
+            (*compptr).component_id = 1 as libc::c_int; /* write Adobe marker to flag YCCK */
+            (*compptr).h_samp_factor = 2 as libc::c_int;
+            (*compptr).v_samp_factor = 2 as libc::c_int;
+            (*compptr).quant_tbl_no = 0 as libc::c_int;
+            (*compptr).dc_tbl_no = 0 as libc::c_int;
+            (*compptr).ac_tbl_no = 0 as libc::c_int;
+            compptr = &mut *(*cinfo).comp_info.offset(1 as libc::c_int as isize)
+                as *mut crate::jpeglib_h::jpeg_component_info;
+            (*compptr).component_id = 2 as libc::c_int;
+            (*compptr).h_samp_factor = 1 as libc::c_int;
+            (*compptr).v_samp_factor = 1 as libc::c_int;
+            (*compptr).quant_tbl_no = 1 as libc::c_int;
+            (*compptr).dc_tbl_no = 1 as libc::c_int;
+            (*compptr).ac_tbl_no = 1 as libc::c_int;
+            compptr = &mut *(*cinfo).comp_info.offset(2 as libc::c_int as isize)
+                as *mut crate::jpeglib_h::jpeg_component_info;
+            (*compptr).component_id = 3 as libc::c_int;
+            (*compptr).h_samp_factor = 1 as libc::c_int;
+            (*compptr).v_samp_factor = 1 as libc::c_int;
+            (*compptr).quant_tbl_no = 1 as libc::c_int;
+            (*compptr).dc_tbl_no = 1 as libc::c_int;
+            (*compptr).ac_tbl_no = 1 as libc::c_int
         }
         4 => {
             (*cinfo).write_Adobe_marker = crate::jmorecfg_h::TRUE;
-            (*cinfo).num_components = 4i32;
-            compptr =
-                &mut *(*cinfo).comp_info.offset(0) as *mut crate::jpeglib_h::jpeg_component_info;
-            (*compptr).component_id = 0x43i32;
-            (*compptr).h_samp_factor = 1i32;
-            (*compptr).v_samp_factor = 1i32;
-            (*compptr).quant_tbl_no = 0i32;
-            (*compptr).dc_tbl_no = 0i32;
-            (*compptr).ac_tbl_no = 0i32;
-            compptr =
-                &mut *(*cinfo).comp_info.offset(1) as *mut crate::jpeglib_h::jpeg_component_info;
-            (*compptr).component_id = 0x4di32;
-            (*compptr).h_samp_factor = 1i32;
-            (*compptr).v_samp_factor = 1i32;
-            (*compptr).quant_tbl_no = 0i32;
-            (*compptr).dc_tbl_no = 0i32;
-            (*compptr).ac_tbl_no = 0i32;
-            compptr =
-                &mut *(*cinfo).comp_info.offset(2) as *mut crate::jpeglib_h::jpeg_component_info;
-            (*compptr).component_id = 0x59i32;
-            (*compptr).h_samp_factor = 1i32;
-            (*compptr).v_samp_factor = 1i32;
-            (*compptr).quant_tbl_no = 0i32;
-            (*compptr).dc_tbl_no = 0i32;
-            (*compptr).ac_tbl_no = 0i32;
-            compptr =
-                &mut *(*cinfo).comp_info.offset(3) as *mut crate::jpeglib_h::jpeg_component_info;
-            (*compptr).component_id = 0x4bi32;
-            (*compptr).h_samp_factor = 1i32;
-            (*compptr).v_samp_factor = 1i32;
-            (*compptr).quant_tbl_no = 0i32;
-            (*compptr).dc_tbl_no = 0i32;
-            (*compptr).ac_tbl_no = 0i32
+            (*cinfo).num_components = 4 as libc::c_int;
+            compptr = &mut *(*cinfo).comp_info.offset(0 as libc::c_int as isize)
+                as *mut crate::jpeglib_h::jpeg_component_info;
+            (*compptr).component_id = 0x43 as libc::c_int;
+            (*compptr).h_samp_factor = 1 as libc::c_int;
+            (*compptr).v_samp_factor = 1 as libc::c_int;
+            (*compptr).quant_tbl_no = 0 as libc::c_int;
+            (*compptr).dc_tbl_no = 0 as libc::c_int;
+            (*compptr).ac_tbl_no = 0 as libc::c_int;
+            compptr = &mut *(*cinfo).comp_info.offset(1 as libc::c_int as isize)
+                as *mut crate::jpeglib_h::jpeg_component_info;
+            (*compptr).component_id = 0x4d as libc::c_int;
+            (*compptr).h_samp_factor = 1 as libc::c_int;
+            (*compptr).v_samp_factor = 1 as libc::c_int;
+            (*compptr).quant_tbl_no = 0 as libc::c_int;
+            (*compptr).dc_tbl_no = 0 as libc::c_int;
+            (*compptr).ac_tbl_no = 0 as libc::c_int;
+            compptr = &mut *(*cinfo).comp_info.offset(2 as libc::c_int as isize)
+                as *mut crate::jpeglib_h::jpeg_component_info;
+            (*compptr).component_id = 0x59 as libc::c_int;
+            (*compptr).h_samp_factor = 1 as libc::c_int;
+            (*compptr).v_samp_factor = 1 as libc::c_int;
+            (*compptr).quant_tbl_no = 0 as libc::c_int;
+            (*compptr).dc_tbl_no = 0 as libc::c_int;
+            (*compptr).ac_tbl_no = 0 as libc::c_int;
+            compptr = &mut *(*cinfo).comp_info.offset(3 as libc::c_int as isize)
+                as *mut crate::jpeglib_h::jpeg_component_info;
+            (*compptr).component_id = 0x4b as libc::c_int;
+            (*compptr).h_samp_factor = 1 as libc::c_int;
+            (*compptr).v_samp_factor = 1 as libc::c_int;
+            (*compptr).quant_tbl_no = 0 as libc::c_int;
+            (*compptr).dc_tbl_no = 0 as libc::c_int;
+            (*compptr).ac_tbl_no = 0 as libc::c_int
         }
         5 => {
             (*cinfo).write_Adobe_marker = crate::jmorecfg_h::TRUE;
-            (*cinfo).num_components = 4i32;
-            compptr =
-                &mut *(*cinfo).comp_info.offset(0) as *mut crate::jpeglib_h::jpeg_component_info;
-            (*compptr).component_id = 1i32;
-            (*compptr).h_samp_factor = 2i32;
-            (*compptr).v_samp_factor = 2i32;
-            (*compptr).quant_tbl_no = 0i32;
-            (*compptr).dc_tbl_no = 0i32;
-            (*compptr).ac_tbl_no = 0i32;
-            compptr =
-                &mut *(*cinfo).comp_info.offset(1) as *mut crate::jpeglib_h::jpeg_component_info;
-            (*compptr).component_id = 2i32;
-            (*compptr).h_samp_factor = 1i32;
-            (*compptr).v_samp_factor = 1i32;
-            (*compptr).quant_tbl_no = 1i32;
-            (*compptr).dc_tbl_no = 1i32;
-            (*compptr).ac_tbl_no = 1i32;
-            compptr =
-                &mut *(*cinfo).comp_info.offset(2) as *mut crate::jpeglib_h::jpeg_component_info;
-            (*compptr).component_id = 3i32;
-            (*compptr).h_samp_factor = 1i32;
-            (*compptr).v_samp_factor = 1i32;
-            (*compptr).quant_tbl_no = 1i32;
-            (*compptr).dc_tbl_no = 1i32;
-            (*compptr).ac_tbl_no = 1i32;
-            compptr =
-                &mut *(*cinfo).comp_info.offset(3) as *mut crate::jpeglib_h::jpeg_component_info;
-            (*compptr).component_id = 4i32;
-            (*compptr).h_samp_factor = 2i32;
-            (*compptr).v_samp_factor = 2i32;
-            (*compptr).quant_tbl_no = 0i32;
-            (*compptr).dc_tbl_no = 0i32;
-            (*compptr).ac_tbl_no = 0i32
+            (*cinfo).num_components = 4 as libc::c_int;
+            compptr = &mut *(*cinfo).comp_info.offset(0 as libc::c_int as isize)
+                as *mut crate::jpeglib_h::jpeg_component_info;
+            (*compptr).component_id = 1 as libc::c_int;
+            (*compptr).h_samp_factor = 2 as libc::c_int;
+            (*compptr).v_samp_factor = 2 as libc::c_int;
+            (*compptr).quant_tbl_no = 0 as libc::c_int;
+            (*compptr).dc_tbl_no = 0 as libc::c_int;
+            (*compptr).ac_tbl_no = 0 as libc::c_int;
+            compptr = &mut *(*cinfo).comp_info.offset(1 as libc::c_int as isize)
+                as *mut crate::jpeglib_h::jpeg_component_info;
+            (*compptr).component_id = 2 as libc::c_int;
+            (*compptr).h_samp_factor = 1 as libc::c_int;
+            (*compptr).v_samp_factor = 1 as libc::c_int;
+            (*compptr).quant_tbl_no = 1 as libc::c_int;
+            (*compptr).dc_tbl_no = 1 as libc::c_int;
+            (*compptr).ac_tbl_no = 1 as libc::c_int;
+            compptr = &mut *(*cinfo).comp_info.offset(2 as libc::c_int as isize)
+                as *mut crate::jpeglib_h::jpeg_component_info;
+            (*compptr).component_id = 3 as libc::c_int;
+            (*compptr).h_samp_factor = 1 as libc::c_int;
+            (*compptr).v_samp_factor = 1 as libc::c_int;
+            (*compptr).quant_tbl_no = 1 as libc::c_int;
+            (*compptr).dc_tbl_no = 1 as libc::c_int;
+            (*compptr).ac_tbl_no = 1 as libc::c_int;
+            compptr = &mut *(*cinfo).comp_info.offset(3 as libc::c_int as isize)
+                as *mut crate::jpeglib_h::jpeg_component_info;
+            (*compptr).component_id = 4 as libc::c_int;
+            (*compptr).h_samp_factor = 2 as libc::c_int;
+            (*compptr).v_samp_factor = 2 as libc::c_int;
+            (*compptr).quant_tbl_no = 0 as libc::c_int;
+            (*compptr).dc_tbl_no = 0 as libc::c_int;
+            (*compptr).ac_tbl_no = 0 as libc::c_int
         }
         0 => {
             (*cinfo).num_components = (*cinfo).input_components;
-            if (*cinfo).num_components < 1i32
+            if (*cinfo).num_components < 1 as libc::c_int
                 || (*cinfo).num_components > crate::jmorecfg_h::MAX_COMPONENTS
             {
                 (*(*cinfo).err).msg_code = crate::src::jerror::JERR_COMPONENT_COUNT as libc::c_int;
-                (*(*cinfo).err).msg_parm.i[0] = (*cinfo).num_components;
-                (*(*cinfo).err).msg_parm.i[1] = 10i32;
+                (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = (*cinfo).num_components;
+                (*(*cinfo).err).msg_parm.i[1 as libc::c_int as usize] = 10 as libc::c_int;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
@@ -1972,16 +2540,16 @@ pub unsafe extern "C" fn jpeg_set_colorspace(
                     cinfo as crate::jpeglib_h::j_common_ptr
                 );
             }
-            ci = 0i32;
+            ci = 0 as libc::c_int;
             while ci < (*cinfo).num_components {
                 compptr = &mut *(*cinfo).comp_info.offset(ci as isize)
                     as *mut crate::jpeglib_h::jpeg_component_info;
                 (*compptr).component_id = ci;
-                (*compptr).h_samp_factor = 1i32;
-                (*compptr).v_samp_factor = 1i32;
-                (*compptr).quant_tbl_no = 0i32;
-                (*compptr).dc_tbl_no = 0i32;
-                (*compptr).ac_tbl_no = 0i32;
+                (*compptr).h_samp_factor = 1 as libc::c_int;
+                (*compptr).v_samp_factor = 1 as libc::c_int;
+                (*compptr).quant_tbl_no = 0 as libc::c_int;
+                (*compptr).dc_tbl_no = 0 as libc::c_int;
+                (*compptr).ac_tbl_no = 0 as libc::c_int;
                 ci += 1
             }
         }
@@ -2008,8 +2576,8 @@ unsafe extern "C" fn fill_a_scan(
     mut Al: libc::c_int,
 ) -> *mut crate::jpeglib_h::jpeg_scan_info
 /* Support routine: generate one scan for specified component */ {
-    (*scanptr).comps_in_scan = 1i32;
-    (*scanptr).component_index[0] = ci;
+    (*scanptr).comps_in_scan = 1 as libc::c_int;
+    (*scanptr).component_index[0 as libc::c_int as usize] = ci;
     (*scanptr).Ss = Ss;
     (*scanptr).Se = Se;
     (*scanptr).Ah = Ah;
@@ -2027,9 +2595,9 @@ unsafe extern "C" fn fill_a_scan_pair(
     mut Al: libc::c_int,
 ) -> *mut crate::jpeglib_h::jpeg_scan_info
 /* Support routine: generate one scan for pair of components */ {
-    (*scanptr).comps_in_scan = 2i32;
-    (*scanptr).component_index[0] = ci;
-    (*scanptr).component_index[1] = ci + 1i32;
+    (*scanptr).comps_in_scan = 2 as libc::c_int;
+    (*scanptr).component_index[0 as libc::c_int as usize] = ci;
+    (*scanptr).component_index[1 as libc::c_int as usize] = ci + 1 as libc::c_int;
     (*scanptr).Ss = Ss;
     (*scanptr).Se = Se;
     (*scanptr).Ah = Ah;
@@ -2048,10 +2616,10 @@ unsafe extern "C" fn fill_scans(
 ) -> *mut crate::jpeglib_h::jpeg_scan_info
 /* Support routine: generate one scan for each component */ {
     let mut ci: libc::c_int = 0;
-    ci = 0i32;
+    ci = 0 as libc::c_int;
     while ci < ncomps {
-        (*scanptr).comps_in_scan = 1i32;
-        (*scanptr).component_index[0] = ci;
+        (*scanptr).comps_in_scan = 1 as libc::c_int;
+        (*scanptr).component_index[0 as libc::c_int as usize] = ci;
         (*scanptr).Ss = Ss;
         (*scanptr).Se = Se;
         (*scanptr).Ah = Ah;
@@ -2073,19 +2641,19 @@ unsafe extern "C" fn fill_dc_scans(
     if ncomps <= crate::jpeglib_h::MAX_COMPS_IN_SCAN {
         /* Single interleaved DC scan */
         (*scanptr).comps_in_scan = ncomps;
-        ci = 0i32;
+        ci = 0 as libc::c_int;
         while ci < ncomps {
             (*scanptr).component_index[ci as usize] = ci;
             ci += 1
         }
-        (*scanptr).Se = 0i32;
+        (*scanptr).Se = 0 as libc::c_int;
         (*scanptr).Ss = (*scanptr).Se;
         (*scanptr).Ah = Ah;
         (*scanptr).Al = Al;
         scanptr = scanptr.offset(1)
     } else {
         /* Noninterleaved DC scan for each component */
-        scanptr = fill_scans(scanptr, ncomps, 0i32, 0i32, Ah, Al)
+        scanptr = fill_scans(scanptr, ncomps, 0 as libc::c_int, 0 as libc::c_int, Ah, Al)
     }
     return scanptr;
 }
@@ -2102,12 +2670,18 @@ unsafe extern "C" fn jpeg_search_progression(
     let mut scanptr: *mut crate::jpeglib_h::jpeg_scan_info =
         0 as *mut crate::jpeglib_h::jpeg_scan_info;
     let mut Al: libc::c_int = 0;
-    let mut frequency_split: [libc::c_int; 5] = [2i32, 8i32, 5i32, 12i32, 18i32];
+    let mut frequency_split: [libc::c_int; 5] = [
+        2 as libc::c_int,
+        8 as libc::c_int,
+        5 as libc::c_int,
+        12 as libc::c_int,
+        18 as libc::c_int,
+    ];
     let mut i: libc::c_int = 0;
     /* Safety check to ensure start_compress not called yet. */
     if (*cinfo).global_state != crate::jpegint_h::CSTATE_START {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = (*cinfo).global_state;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -2116,16 +2690,16 @@ unsafe extern "C" fn jpeg_search_progression(
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
     /* Figure space needed for script.  Calculation must match code below! */
-    if ncomps == 3i32
+    if ncomps == 3 as libc::c_int
         && (*cinfo).jpeg_color_space as libc::c_uint
             == crate::jpeglib_h::JCS_YCbCr as libc::c_int as libc::c_uint
     {
         /* Custom script for YCbCr color images. */
-        nscans = 64i32
-    } else if ncomps == 1i32 {
-        nscans = 23i32
+        nscans = 64 as libc::c_int
+    } else if ncomps == 1 as libc::c_int {
+        nscans = 23 as libc::c_int
     } else {
-        (*(*cinfo).master).num_scans_luma = 0i32;
+        (*(*cinfo).master).num_scans_luma = 0 as libc::c_int;
         return crate::jmorecfg_h::FALSE;
     }
     /* Allocate space for script.
@@ -2136,7 +2710,11 @@ unsafe extern "C" fn jpeg_search_progression(
      * enough space to handle YCbCr even if initially asked for grayscale.
      */
     if (*cinfo).script_space.is_null() || (*cinfo).script_space_size < nscans {
-        (*cinfo).script_space_size = if nscans > 64i32 { nscans } else { 64i32 };
+        (*cinfo).script_space_size = if nscans > 64 as libc::c_int {
+            nscans
+        } else {
+            64 as libc::c_int
+        };
         (*cinfo).script_space = Some(
             (*(*cinfo).mem)
                 .alloc_small
@@ -2154,12 +2732,12 @@ unsafe extern "C" fn jpeg_search_progression(
     scanptr = (*cinfo).script_space;
     (*cinfo).scan_info = scanptr;
     (*cinfo).num_scans = nscans;
-    (*(*cinfo).master).Al_max_luma = 3i32;
-    (*(*cinfo).master).num_scans_luma_dc = 1i32;
-    (*(*cinfo).master).num_frequency_splits = 5i32;
+    (*(*cinfo).master).Al_max_luma = 3 as libc::c_int;
+    (*(*cinfo).master).num_scans_luma_dc = 1 as libc::c_int;
+    (*(*cinfo).master).num_frequency_splits = 5 as libc::c_int;
     (*(*cinfo).master).num_scans_luma = (*(*cinfo).master).num_scans_luma_dc
-        + (3i32 * (*(*cinfo).master).Al_max_luma + 2i32)
-        + (2i32 * (*(*cinfo).master).num_frequency_splits + 1i32);
+        + (3 as libc::c_int * (*(*cinfo).master).Al_max_luma + 2 as libc::c_int)
+        + (2 as libc::c_int * (*(*cinfo).master).num_frequency_splits + 1 as libc::c_int);
     /* 23 scans for luma */
     /* 1 scan for DC */
     /* 11 scans to determine successive approximation */
@@ -2168,81 +2746,254 @@ unsafe extern "C" fn jpeg_search_progression(
     /* after 23 scans need to determine which to keep */
     /* last 4 done conditionally */
     /* luma DC by itself */
-    if (*(*cinfo).master).dc_scan_opt_mode == 0i32 {
-        scanptr = fill_dc_scans(scanptr, ncomps, 0i32, 0i32)
+    if (*(*cinfo).master).dc_scan_opt_mode == 0 as libc::c_int {
+        scanptr = fill_dc_scans(scanptr, ncomps, 0 as libc::c_int, 0 as libc::c_int)
     } else {
-        scanptr = fill_dc_scans(scanptr, 1i32, 0i32, 0i32)
+        scanptr = fill_dc_scans(
+            scanptr,
+            1 as libc::c_int,
+            0 as libc::c_int,
+            0 as libc::c_int,
+        )
     }
-    scanptr = fill_a_scan(scanptr, 0i32, 1i32, 8i32, 0i32, 0i32);
-    scanptr = fill_a_scan(scanptr, 0i32, 9i32, 63i32, 0i32, 0i32);
-    Al = 0i32;
+    scanptr = fill_a_scan(
+        scanptr,
+        0 as libc::c_int,
+        1 as libc::c_int,
+        8 as libc::c_int,
+        0 as libc::c_int,
+        0 as libc::c_int,
+    );
+    scanptr = fill_a_scan(
+        scanptr,
+        0 as libc::c_int,
+        9 as libc::c_int,
+        63 as libc::c_int,
+        0 as libc::c_int,
+        0 as libc::c_int,
+    );
+    Al = 0 as libc::c_int;
     while Al < (*(*cinfo).master).Al_max_luma {
-        scanptr = fill_a_scan(scanptr, 0i32, 1i32, 63i32, Al + 1i32, Al);
-        scanptr = fill_a_scan(scanptr, 0i32, 1i32, 8i32, 0i32, Al + 1i32);
-        scanptr = fill_a_scan(scanptr, 0i32, 9i32, 63i32, 0i32, Al + 1i32);
-        Al += 1
-    }
-    scanptr = fill_a_scan(scanptr, 0i32, 1i32, 63i32, 0i32, 0i32);
-    i = 0i32;
-    while i < (*(*cinfo).master).num_frequency_splits {
-        scanptr = fill_a_scan(scanptr, 0i32, 1i32, frequency_split[i as usize], 0i32, 0i32);
         scanptr = fill_a_scan(
             scanptr,
-            0i32,
-            frequency_split[i as usize] + 1i32,
-            63i32,
-            0i32,
-            0i32,
+            0 as libc::c_int,
+            1 as libc::c_int,
+            63 as libc::c_int,
+            Al + 1 as libc::c_int,
+            Al,
+        );
+        scanptr = fill_a_scan(
+            scanptr,
+            0 as libc::c_int,
+            1 as libc::c_int,
+            8 as libc::c_int,
+            0 as libc::c_int,
+            Al + 1 as libc::c_int,
+        );
+        scanptr = fill_a_scan(
+            scanptr,
+            0 as libc::c_int,
+            9 as libc::c_int,
+            63 as libc::c_int,
+            0 as libc::c_int,
+            Al + 1 as libc::c_int,
+        );
+        Al += 1
+    }
+    scanptr = fill_a_scan(
+        scanptr,
+        0 as libc::c_int,
+        1 as libc::c_int,
+        63 as libc::c_int,
+        0 as libc::c_int,
+        0 as libc::c_int,
+    );
+    i = 0 as libc::c_int;
+    while i < (*(*cinfo).master).num_frequency_splits {
+        scanptr = fill_a_scan(
+            scanptr,
+            0 as libc::c_int,
+            1 as libc::c_int,
+            frequency_split[i as usize],
+            0 as libc::c_int,
+            0 as libc::c_int,
+        );
+        scanptr = fill_a_scan(
+            scanptr,
+            0 as libc::c_int,
+            frequency_split[i as usize] + 1 as libc::c_int,
+            63 as libc::c_int,
+            0 as libc::c_int,
+            0 as libc::c_int,
         );
         i += 1
     }
-    if ncomps == 1i32 {
-        (*(*cinfo).master).Al_max_chroma = 0i32;
-        (*(*cinfo).master).num_scans_chroma_dc = 0i32
+    if ncomps == 1 as libc::c_int {
+        (*(*cinfo).master).Al_max_chroma = 0 as libc::c_int;
+        (*(*cinfo).master).num_scans_chroma_dc = 0 as libc::c_int
     } else {
-        (*(*cinfo).master).Al_max_chroma = 2i32;
-        (*(*cinfo).master).num_scans_chroma_dc = 3i32;
+        (*(*cinfo).master).Al_max_chroma = 2 as libc::c_int;
+        (*(*cinfo).master).num_scans_chroma_dc = 3 as libc::c_int;
         /* 41 scans for chroma */
         /* chroma DC combined */
-        scanptr = fill_a_scan_pair(scanptr, 1i32, 0i32, 0i32, 0i32, 0i32);
+        scanptr = fill_a_scan_pair(
+            scanptr,
+            1 as libc::c_int,
+            0 as libc::c_int,
+            0 as libc::c_int,
+            0 as libc::c_int,
+            0 as libc::c_int,
+        );
         /* chroma DC separate */
-        scanptr = fill_a_scan(scanptr, 1i32, 0i32, 0i32, 0i32, 0i32);
-        scanptr = fill_a_scan(scanptr, 2i32, 0i32, 0i32, 0i32, 0i32);
-        scanptr = fill_a_scan(scanptr, 1i32, 1i32, 8i32, 0i32, 0i32);
-        scanptr = fill_a_scan(scanptr, 1i32, 9i32, 63i32, 0i32, 0i32);
-        scanptr = fill_a_scan(scanptr, 2i32, 1i32, 8i32, 0i32, 0i32);
-        scanptr = fill_a_scan(scanptr, 2i32, 9i32, 63i32, 0i32, 0i32);
-        Al = 0i32;
+        scanptr = fill_a_scan(
+            scanptr,
+            1 as libc::c_int,
+            0 as libc::c_int,
+            0 as libc::c_int,
+            0 as libc::c_int,
+            0 as libc::c_int,
+        );
+        scanptr = fill_a_scan(
+            scanptr,
+            2 as libc::c_int,
+            0 as libc::c_int,
+            0 as libc::c_int,
+            0 as libc::c_int,
+            0 as libc::c_int,
+        );
+        scanptr = fill_a_scan(
+            scanptr,
+            1 as libc::c_int,
+            1 as libc::c_int,
+            8 as libc::c_int,
+            0 as libc::c_int,
+            0 as libc::c_int,
+        );
+        scanptr = fill_a_scan(
+            scanptr,
+            1 as libc::c_int,
+            9 as libc::c_int,
+            63 as libc::c_int,
+            0 as libc::c_int,
+            0 as libc::c_int,
+        );
+        scanptr = fill_a_scan(
+            scanptr,
+            2 as libc::c_int,
+            1 as libc::c_int,
+            8 as libc::c_int,
+            0 as libc::c_int,
+            0 as libc::c_int,
+        );
+        scanptr = fill_a_scan(
+            scanptr,
+            2 as libc::c_int,
+            9 as libc::c_int,
+            63 as libc::c_int,
+            0 as libc::c_int,
+            0 as libc::c_int,
+        );
+        Al = 0 as libc::c_int;
         while Al < (*(*cinfo).master).Al_max_chroma {
-            scanptr = fill_a_scan(scanptr, 1i32, 1i32, 63i32, Al + 1i32, Al);
-            scanptr = fill_a_scan(scanptr, 2i32, 1i32, 63i32, Al + 1i32, Al);
-            scanptr = fill_a_scan(scanptr, 1i32, 1i32, 8i32, 0i32, Al + 1i32);
-            scanptr = fill_a_scan(scanptr, 1i32, 9i32, 63i32, 0i32, Al + 1i32);
-            scanptr = fill_a_scan(scanptr, 2i32, 1i32, 8i32, 0i32, Al + 1i32);
-            scanptr = fill_a_scan(scanptr, 2i32, 9i32, 63i32, 0i32, Al + 1i32);
+            scanptr = fill_a_scan(
+                scanptr,
+                1 as libc::c_int,
+                1 as libc::c_int,
+                63 as libc::c_int,
+                Al + 1 as libc::c_int,
+                Al,
+            );
+            scanptr = fill_a_scan(
+                scanptr,
+                2 as libc::c_int,
+                1 as libc::c_int,
+                63 as libc::c_int,
+                Al + 1 as libc::c_int,
+                Al,
+            );
+            scanptr = fill_a_scan(
+                scanptr,
+                1 as libc::c_int,
+                1 as libc::c_int,
+                8 as libc::c_int,
+                0 as libc::c_int,
+                Al + 1 as libc::c_int,
+            );
+            scanptr = fill_a_scan(
+                scanptr,
+                1 as libc::c_int,
+                9 as libc::c_int,
+                63 as libc::c_int,
+                0 as libc::c_int,
+                Al + 1 as libc::c_int,
+            );
+            scanptr = fill_a_scan(
+                scanptr,
+                2 as libc::c_int,
+                1 as libc::c_int,
+                8 as libc::c_int,
+                0 as libc::c_int,
+                Al + 1 as libc::c_int,
+            );
+            scanptr = fill_a_scan(
+                scanptr,
+                2 as libc::c_int,
+                9 as libc::c_int,
+                63 as libc::c_int,
+                0 as libc::c_int,
+                Al + 1 as libc::c_int,
+            );
             Al += 1
         }
-        scanptr = fill_a_scan(scanptr, 1i32, 1i32, 63i32, 0i32, 0i32);
-        scanptr = fill_a_scan(scanptr, 2i32, 1i32, 63i32, 0i32, 0i32);
-        i = 0i32;
+        scanptr = fill_a_scan(
+            scanptr,
+            1 as libc::c_int,
+            1 as libc::c_int,
+            63 as libc::c_int,
+            0 as libc::c_int,
+            0 as libc::c_int,
+        );
+        scanptr = fill_a_scan(
+            scanptr,
+            2 as libc::c_int,
+            1 as libc::c_int,
+            63 as libc::c_int,
+            0 as libc::c_int,
+            0 as libc::c_int,
+        );
+        i = 0 as libc::c_int;
         while i < (*(*cinfo).master).num_frequency_splits {
-            scanptr = fill_a_scan(scanptr, 1i32, 1i32, frequency_split[i as usize], 0i32, 0i32);
             scanptr = fill_a_scan(
                 scanptr,
-                1i32,
-                frequency_split[i as usize] + 1i32,
-                63i32,
-                0i32,
-                0i32,
+                1 as libc::c_int,
+                1 as libc::c_int,
+                frequency_split[i as usize],
+                0 as libc::c_int,
+                0 as libc::c_int,
             );
-            scanptr = fill_a_scan(scanptr, 2i32, 1i32, frequency_split[i as usize], 0i32, 0i32);
             scanptr = fill_a_scan(
                 scanptr,
-                2i32,
-                frequency_split[i as usize] + 1i32,
-                63i32,
-                0i32,
-                0i32,
+                1 as libc::c_int,
+                frequency_split[i as usize] + 1 as libc::c_int,
+                63 as libc::c_int,
+                0 as libc::c_int,
+                0 as libc::c_int,
+            );
+            scanptr = fill_a_scan(
+                scanptr,
+                2 as libc::c_int,
+                1 as libc::c_int,
+                frequency_split[i as usize],
+                0 as libc::c_int,
+                0 as libc::c_int,
+            );
+            scanptr = fill_a_scan(
+                scanptr,
+                2 as libc::c_int,
+                frequency_split[i as usize] + 1 as libc::c_int,
+                63 as libc::c_int,
+                0 as libc::c_int,
+                0 as libc::c_int,
             );
             i += 1
         }
@@ -2268,7 +3019,7 @@ pub unsafe extern "C" fn jpeg_simple_progression(mut cinfo: crate::jpeglib_h::j_
     /* Safety check to ensure start_compress not called yet. */
     if (*cinfo).global_state != crate::jpegint_h::CSTATE_START {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = (*cinfo).global_state;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -2278,7 +3029,7 @@ pub unsafe extern "C" fn jpeg_simple_progression(mut cinfo: crate::jpeglib_h::j_
     }
     /* Figure space needed for script.  Calculation must match code below! */
     ncomps = (*cinfo).num_components;
-    if ncomps == 3i32
+    if ncomps == 3 as libc::c_int
         && (*cinfo).jpeg_color_space as libc::c_uint
             == crate::jpeglib_h::JCS_YCbCr as libc::c_int as libc::c_uint
     {
@@ -2286,18 +3037,18 @@ pub unsafe extern "C" fn jpeg_simple_progression(mut cinfo: crate::jpeglib_h::j_
         if (*(*cinfo).master).compress_profile
             == crate::jpeglib_h::JCP_MAX_COMPRESSION as libc::c_int
         {
-            if (*(*cinfo).master).dc_scan_opt_mode == 0i32 {
-                nscans = 9i32
+            if (*(*cinfo).master).dc_scan_opt_mode == 0 as libc::c_int {
+                nscans = 9 as libc::c_int
             /* 1 DC scan for all components */
-            } else if (*(*cinfo).master).dc_scan_opt_mode == 1i32 {
-                nscans = 11i32
+            } else if (*(*cinfo).master).dc_scan_opt_mode == 1 as libc::c_int {
+                nscans = 11 as libc::c_int
             /* 1 DC scan for each component */
             } else {
-                nscans = 10i32
+                nscans = 10 as libc::c_int
                 /* 1 DC scan for luminance and 1 DC scan for chroma */
             }
         } else {
-            nscans = 10i32
+            nscans = 10 as libc::c_int
             /* 2 DC scans and 8 AC scans */
         }
     } else if (*(*cinfo).master).compress_profile
@@ -2305,15 +3056,15 @@ pub unsafe extern "C" fn jpeg_simple_progression(mut cinfo: crate::jpeglib_h::j_
     {
         if ncomps > crate::jpeglib_h::MAX_COMPS_IN_SCAN {
             /* All-purpose script for other color spaces. */
-            nscans = 5i32 * ncomps
+            nscans = 5 as libc::c_int * ncomps
         } else {
-            nscans = 1i32 + 4i32 * ncomps
+            nscans = 1 as libc::c_int + 4 as libc::c_int * ncomps
         } /* 2 DC + 4 AC scans per component */
     /* 2 DC scans; 4 AC scans per component */
     } else if ncomps > crate::jpeglib_h::MAX_COMPS_IN_SCAN {
-        nscans = 6i32 * ncomps
+        nscans = 6 as libc::c_int * ncomps
     } else {
-        nscans = 2i32 + 4i32 * ncomps
+        nscans = 2 as libc::c_int + 4 as libc::c_int * ncomps
     } /* 2 DC + 4 AC scans per component */
     /* 2 DC scans; 4 AC scans per component */
     /* Allocate space for script.
@@ -2324,7 +3075,11 @@ pub unsafe extern "C" fn jpeg_simple_progression(mut cinfo: crate::jpeglib_h::j_
      * enough space to handle YCbCr even if initially asked for grayscale.
      */
     if (*cinfo).script_space.is_null() || (*cinfo).script_space_size < nscans {
-        (*cinfo).script_space_size = if nscans > 10i32 { nscans } else { 10i32 };
+        (*cinfo).script_space_size = if nscans > 10 as libc::c_int {
+            nscans
+        } else {
+            10 as libc::c_int
+        };
         (*cinfo).script_space = Some(
             (*(*cinfo).mem)
                 .alloc_small
@@ -2342,7 +3097,7 @@ pub unsafe extern "C" fn jpeg_simple_progression(mut cinfo: crate::jpeglib_h::j_
     scanptr = (*cinfo).script_space;
     (*cinfo).scan_info = scanptr;
     (*cinfo).num_scans = nscans;
-    if ncomps == 3i32
+    if ncomps == 3 as libc::c_int
         && (*cinfo).jpeg_color_space as libc::c_uint
             == crate::jpeglib_h::JCS_YCbCr as libc::c_int as libc::c_uint
     {
@@ -2352,50 +3107,195 @@ pub unsafe extern "C" fn jpeg_simple_progression(mut cinfo: crate::jpeglib_h::j_
         {
             /* scan defined in jpeg_scan_rgb.txt in jpgcrush */
             /* Initial DC scan */
-            if (*(*cinfo).master).dc_scan_opt_mode == 0i32 {
+            if (*(*cinfo).master).dc_scan_opt_mode == 0 as libc::c_int {
                 /* 1 DC scan for all components */
-                scanptr = fill_dc_scans(scanptr, ncomps, 0i32, 0i32)
-            } else if (*(*cinfo).master).dc_scan_opt_mode == 1i32 {
+                scanptr = fill_dc_scans(scanptr, ncomps, 0 as libc::c_int, 0 as libc::c_int)
+            } else if (*(*cinfo).master).dc_scan_opt_mode == 1 as libc::c_int {
                 /* 1 DC scan for each component */
-                scanptr = fill_a_scan(scanptr, 0i32, 0i32, 0i32, 0i32, 0i32);
-                scanptr = fill_a_scan(scanptr, 1i32, 0i32, 0i32, 0i32, 0i32);
-                scanptr = fill_a_scan(scanptr, 2i32, 0i32, 0i32, 0i32, 0i32)
+                scanptr = fill_a_scan(
+                    scanptr,
+                    0 as libc::c_int,
+                    0 as libc::c_int,
+                    0 as libc::c_int,
+                    0 as libc::c_int,
+                    0 as libc::c_int,
+                );
+                scanptr = fill_a_scan(
+                    scanptr,
+                    1 as libc::c_int,
+                    0 as libc::c_int,
+                    0 as libc::c_int,
+                    0 as libc::c_int,
+                    0 as libc::c_int,
+                );
+                scanptr = fill_a_scan(
+                    scanptr,
+                    2 as libc::c_int,
+                    0 as libc::c_int,
+                    0 as libc::c_int,
+                    0 as libc::c_int,
+                    0 as libc::c_int,
+                )
             } else {
                 /* 1 DC scan for luminance and 1 DC scan for chroma */
-                scanptr = fill_dc_scans(scanptr, 1i32, 0i32, 0i32);
-                scanptr = fill_a_scan_pair(scanptr, 1i32, 0i32, 0i32, 0i32, 0i32)
+                scanptr = fill_dc_scans(
+                    scanptr,
+                    1 as libc::c_int,
+                    0 as libc::c_int,
+                    0 as libc::c_int,
+                );
+                scanptr = fill_a_scan_pair(
+                    scanptr,
+                    1 as libc::c_int,
+                    0 as libc::c_int,
+                    0 as libc::c_int,
+                    0 as libc::c_int,
+                    0 as libc::c_int,
+                )
             }
             /* Low frequency AC scans */
-            scanptr = fill_a_scan(scanptr, 0i32, 1i32, 8i32, 0i32, 2i32);
-            scanptr = fill_a_scan(scanptr, 1i32, 1i32, 8i32, 0i32, 0i32);
-            scanptr = fill_a_scan(scanptr, 2i32, 1i32, 8i32, 0i32, 0i32);
+            scanptr = fill_a_scan(
+                scanptr,
+                0 as libc::c_int,
+                1 as libc::c_int,
+                8 as libc::c_int,
+                0 as libc::c_int,
+                2 as libc::c_int,
+            );
+            scanptr = fill_a_scan(
+                scanptr,
+                1 as libc::c_int,
+                1 as libc::c_int,
+                8 as libc::c_int,
+                0 as libc::c_int,
+                0 as libc::c_int,
+            );
+            scanptr = fill_a_scan(
+                scanptr,
+                2 as libc::c_int,
+                1 as libc::c_int,
+                8 as libc::c_int,
+                0 as libc::c_int,
+                0 as libc::c_int,
+            );
             /* Complete spectral selection for luma AC */
-            scanptr = fill_a_scan(scanptr, 0i32, 9i32, 63i32, 0i32, 2i32);
+            scanptr = fill_a_scan(
+                scanptr,
+                0 as libc::c_int,
+                9 as libc::c_int,
+                63 as libc::c_int,
+                0 as libc::c_int,
+                2 as libc::c_int,
+            );
             /* Finish luma AC successive approximation */
-            scanptr = fill_a_scan(scanptr, 0i32, 1i32, 63i32, 2i32, 1i32);
-            scanptr = fill_a_scan(scanptr, 0i32, 1i32, 63i32, 1i32, 0i32);
+            scanptr = fill_a_scan(
+                scanptr,
+                0 as libc::c_int,
+                1 as libc::c_int,
+                63 as libc::c_int,
+                2 as libc::c_int,
+                1 as libc::c_int,
+            );
+            scanptr = fill_a_scan(
+                scanptr,
+                0 as libc::c_int,
+                1 as libc::c_int,
+                63 as libc::c_int,
+                1 as libc::c_int,
+                0 as libc::c_int,
+            );
             /* Complete spectral selection for chroma AC */
-            scanptr = fill_a_scan(scanptr, 1i32, 9i32, 63i32, 0i32, 0i32);
-            scanptr = fill_a_scan(scanptr, 2i32, 9i32, 63i32, 0i32, 0i32)
+            scanptr = fill_a_scan(
+                scanptr,
+                1 as libc::c_int,
+                9 as libc::c_int,
+                63 as libc::c_int,
+                0 as libc::c_int,
+                0 as libc::c_int,
+            );
+            scanptr = fill_a_scan(
+                scanptr,
+                2 as libc::c_int,
+                9 as libc::c_int,
+                63 as libc::c_int,
+                0 as libc::c_int,
+                0 as libc::c_int,
+            )
         } else {
             /* Initial DC scan */
-            scanptr = fill_dc_scans(scanptr, ncomps, 0i32, 1i32);
+            scanptr = fill_dc_scans(scanptr, ncomps, 0 as libc::c_int, 1 as libc::c_int);
             /* Initial AC scan: get some luma data out in a hurry */
-            scanptr = fill_a_scan(scanptr, 0i32, 1i32, 5i32, 0i32, 2i32);
+            scanptr = fill_a_scan(
+                scanptr,
+                0 as libc::c_int,
+                1 as libc::c_int,
+                5 as libc::c_int,
+                0 as libc::c_int,
+                2 as libc::c_int,
+            );
             /* Chroma data is too small to be worth expending many scans on */
-            scanptr = fill_a_scan(scanptr, 2i32, 1i32, 63i32, 0i32, 1i32);
-            scanptr = fill_a_scan(scanptr, 1i32, 1i32, 63i32, 0i32, 1i32);
+            scanptr = fill_a_scan(
+                scanptr,
+                2 as libc::c_int,
+                1 as libc::c_int,
+                63 as libc::c_int,
+                0 as libc::c_int,
+                1 as libc::c_int,
+            );
+            scanptr = fill_a_scan(
+                scanptr,
+                1 as libc::c_int,
+                1 as libc::c_int,
+                63 as libc::c_int,
+                0 as libc::c_int,
+                1 as libc::c_int,
+            );
             /* Complete spectral selection for luma AC */
-            scanptr = fill_a_scan(scanptr, 0i32, 6i32, 63i32, 0i32, 2i32);
+            scanptr = fill_a_scan(
+                scanptr,
+                0 as libc::c_int,
+                6 as libc::c_int,
+                63 as libc::c_int,
+                0 as libc::c_int,
+                2 as libc::c_int,
+            );
             /* Refine next bit of luma AC */
-            scanptr = fill_a_scan(scanptr, 0i32, 1i32, 63i32, 2i32, 1i32);
+            scanptr = fill_a_scan(
+                scanptr,
+                0 as libc::c_int,
+                1 as libc::c_int,
+                63 as libc::c_int,
+                2 as libc::c_int,
+                1 as libc::c_int,
+            );
             /* Finish DC successive approximation */
-            scanptr = fill_dc_scans(scanptr, ncomps, 1i32, 0i32);
+            scanptr = fill_dc_scans(scanptr, ncomps, 1 as libc::c_int, 0 as libc::c_int);
             /* Finish AC successive approximation */
-            scanptr = fill_a_scan(scanptr, 2i32, 1i32, 63i32, 1i32, 0i32);
-            scanptr = fill_a_scan(scanptr, 1i32, 1i32, 63i32, 1i32, 0i32);
+            scanptr = fill_a_scan(
+                scanptr,
+                2 as libc::c_int,
+                1 as libc::c_int,
+                63 as libc::c_int,
+                1 as libc::c_int,
+                0 as libc::c_int,
+            );
+            scanptr = fill_a_scan(
+                scanptr,
+                1 as libc::c_int,
+                1 as libc::c_int,
+                63 as libc::c_int,
+                1 as libc::c_int,
+                0 as libc::c_int,
+            );
             /* Luma bottom bit comes last since it's usually largest scan */
-            scanptr = fill_a_scan(scanptr, 0i32, 1i32, 63i32, 1i32, 0i32)
+            scanptr = fill_a_scan(
+                scanptr,
+                0 as libc::c_int,
+                1 as libc::c_int,
+                63 as libc::c_int,
+                1 as libc::c_int,
+                0 as libc::c_int,
+            )
         }
     } else if (*(*cinfo).master).compress_profile
         == crate::jpeglib_h::JCP_MAX_COMPRESSION as libc::c_int
@@ -2403,24 +3303,80 @@ pub unsafe extern "C" fn jpeg_simple_progression(mut cinfo: crate::jpeglib_h::j_
         /* All-purpose script for other color spaces. */
         /* scan defined in jpeg_scan_bw.txt in jpgcrush */
         /* DC component, no successive approximation */
-        scanptr = fill_dc_scans(scanptr, ncomps, 0i32, 0i32);
+        scanptr = fill_dc_scans(scanptr, ncomps, 0 as libc::c_int, 0 as libc::c_int);
         /* Successive approximation first pass */
-        scanptr = fill_scans(scanptr, ncomps, 1i32, 8i32, 0i32, 2i32);
-        scanptr = fill_scans(scanptr, ncomps, 9i32, 63i32, 0i32, 2i32);
+        scanptr = fill_scans(
+            scanptr,
+            ncomps,
+            1 as libc::c_int,
+            8 as libc::c_int,
+            0 as libc::c_int,
+            2 as libc::c_int,
+        );
+        scanptr = fill_scans(
+            scanptr,
+            ncomps,
+            9 as libc::c_int,
+            63 as libc::c_int,
+            0 as libc::c_int,
+            2 as libc::c_int,
+        );
         /* Successive approximation second pass */
-        scanptr = fill_scans(scanptr, ncomps, 1i32, 63i32, 2i32, 1i32);
+        scanptr = fill_scans(
+            scanptr,
+            ncomps,
+            1 as libc::c_int,
+            63 as libc::c_int,
+            2 as libc::c_int,
+            1 as libc::c_int,
+        );
         /* Successive approximation final pass */
-        scanptr = fill_scans(scanptr, ncomps, 1i32, 63i32, 1i32, 0i32)
+        scanptr = fill_scans(
+            scanptr,
+            ncomps,
+            1 as libc::c_int,
+            63 as libc::c_int,
+            1 as libc::c_int,
+            0 as libc::c_int,
+        )
     } else {
         /* Successive approximation first pass */
-        scanptr = fill_dc_scans(scanptr, ncomps, 0i32, 1i32);
-        scanptr = fill_scans(scanptr, ncomps, 1i32, 5i32, 0i32, 2i32);
-        scanptr = fill_scans(scanptr, ncomps, 6i32, 63i32, 0i32, 2i32);
+        scanptr = fill_dc_scans(scanptr, ncomps, 0 as libc::c_int, 1 as libc::c_int);
+        scanptr = fill_scans(
+            scanptr,
+            ncomps,
+            1 as libc::c_int,
+            5 as libc::c_int,
+            0 as libc::c_int,
+            2 as libc::c_int,
+        );
+        scanptr = fill_scans(
+            scanptr,
+            ncomps,
+            6 as libc::c_int,
+            63 as libc::c_int,
+            0 as libc::c_int,
+            2 as libc::c_int,
+        );
         /* Successive approximation second pass */
-        scanptr = fill_scans(scanptr, ncomps, 1i32, 63i32, 2i32, 1i32);
+        scanptr = fill_scans(
+            scanptr,
+            ncomps,
+            1 as libc::c_int,
+            63 as libc::c_int,
+            2 as libc::c_int,
+            1 as libc::c_int,
+        );
         /* Successive approximation final pass */
-        scanptr = fill_dc_scans(scanptr, ncomps, 1i32, 0i32);
-        scanptr = fill_scans(scanptr, ncomps, 1i32, 63i32, 1i32, 0i32)
+        scanptr = fill_dc_scans(scanptr, ncomps, 1 as libc::c_int, 0 as libc::c_int);
+        scanptr = fill_scans(
+            scanptr,
+            ncomps,
+            1 as libc::c_int,
+            63 as libc::c_int,
+            1 as libc::c_int,
+            0 as libc::c_int,
+        )
     };
 }
 /* C_PROGRESSIVE_SUPPORTED */

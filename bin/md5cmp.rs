@@ -1,22 +1,88 @@
-#![allow(dead_code)]
-#![allow(mutable_transmutes)]
-#![allow(non_camel_case_types)]
-#![allow(non_snake_case)]
-#![allow(non_upper_case_globals)]
-#![allow(unused_assignments)]
-#![allow(unused_mut)]
-#![feature(const_raw_ptr_to_usize_cast)]
-#![feature(const_transmute)]
-#![feature(extern_types)]
-#![feature(label_break_value)]
-#![feature(ptr_wrapping_offset_from)]
-#![feature(main)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
+#![register_tool(c2rust)]
+#![feature(const_raw_ptr_to_usize_cast, extern_types, main, register_tool)]
+pub mod md5_h {
+    extern "C" {
+        #[no_mangle]
+        pub fn MD5File(_: *const libc::c_char, _: *mut libc::c_char) -> *mut libc::c_char;
+    }
+}
+pub mod stddef_h {
+    pub type size_t = libc::c_ulong;
 
+    pub const NULL: libc::c_int = 0 as libc::c_int;
+}
+pub mod stdlib {
+    extern "C" {
+        #[no_mangle]
+        pub static mut stderr: *mut crate::stdlib::FILE;
 
-use mozjpeg::*;
+        #[no_mangle]
+        pub fn fprintf(_: *mut crate::stdlib::FILE, _: *const libc::c_char, _: ...) -> libc::c_int;
 
+        #[no_mangle]
+        pub fn perror(__s: *const libc::c_char);
+        #[no_mangle]
+        pub fn strlen(_: *const libc::c_char) -> libc::c_ulong;
+        #[no_mangle]
+        pub fn strcasecmp(_: *const libc::c_char, _: *const libc::c_char) -> libc::c_int;
+        pub type _IO_wide_data;
 
-use crate::src::md5::md5::MD5File;
+        pub type _IO_codecvt;
+
+        pub type _IO_marker;
+    }
+    pub type FILE = crate::stdlib::_IO_FILE;
+    #[repr(C)]
+    #[derive(Copy, Clone)]
+    pub struct _IO_FILE {
+        pub _flags: libc::c_int,
+        pub _IO_read_ptr: *mut libc::c_char,
+        pub _IO_read_end: *mut libc::c_char,
+        pub _IO_read_base: *mut libc::c_char,
+        pub _IO_write_base: *mut libc::c_char,
+        pub _IO_write_ptr: *mut libc::c_char,
+        pub _IO_write_end: *mut libc::c_char,
+        pub _IO_buf_base: *mut libc::c_char,
+        pub _IO_buf_end: *mut libc::c_char,
+        pub _IO_save_base: *mut libc::c_char,
+        pub _IO_backup_base: *mut libc::c_char,
+        pub _IO_save_end: *mut libc::c_char,
+        pub _markers: *mut crate::stdlib::_IO_marker,
+        pub _chain: *mut crate::stdlib::_IO_FILE,
+        pub _fileno: libc::c_int,
+        pub _flags2: libc::c_int,
+        pub _old_offset: crate::stdlib::__off_t,
+        pub _cur_column: libc::c_ushort,
+        pub _vtable_offset: libc::c_schar,
+        pub _shortbuf: [libc::c_char; 1],
+        pub _lock: *mut libc::c_void,
+        pub _offset: crate::stdlib::__off64_t,
+        pub _codecvt: *mut crate::stdlib::_IO_codecvt,
+        pub _wide_data: *mut crate::stdlib::_IO_wide_data,
+        pub _freeres_list: *mut crate::stdlib::_IO_FILE,
+        pub _freeres_buf: *mut libc::c_void,
+        pub __pad5: crate::stddef_h::size_t,
+        pub _mode: libc::c_int,
+        pub _unused2: [libc::c_char; 20],
+    }
+
+    pub type _IO_lock_t = ();
+    pub type __off_t = libc::c_long;
+
+    pub type __off64_t = libc::c_long;
+}
+use ::mozjpeg::*;
+
+use crate::md5_h::MD5File;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 pub use crate::stdlib::_IO_codecvt;
@@ -63,40 +129,42 @@ pub use crate::stdlib::_IO_FILE;
 unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> libc::c_int {
     let mut md5sum: *mut libc::c_char = crate::stddef_h::NULL as *mut libc::c_char;
     let mut buf: [libc::c_char; 65] = [0; 65];
-    if argc < 3i32 {
+    if argc < 3 as libc::c_int {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
             b"USAGE: %s <correct MD5 sum> <file>\n\x00" as *const u8 as *const libc::c_char,
-            *argv.offset(0),
+            *argv.offset(0 as libc::c_int as isize),
         );
-        return -1i32;
+        return -(1 as libc::c_int);
     }
-    if crate::stdlib::strlen(*argv.offset(1)) != 32i32 as libc::c_ulong {
+    if crate::stdlib::strlen(*argv.offset(1 as libc::c_int as isize))
+        != 32 as libc::c_int as libc::c_ulong
+    {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
             b"WARNING: MD5 hash size is wrong.\n\x00" as *const u8 as *const libc::c_char,
         );
     }
-    md5sum = crate::src::md5::md5::MD5File(*argv.offset(2), buf.as_mut_ptr());
+    md5sum = crate::md5_h::MD5File(*argv.offset(2 as libc::c_int as isize), buf.as_mut_ptr());
     if md5sum.is_null() {
         crate::stdlib::perror(b"Could not obtain MD5 sum\x00" as *const u8 as *const libc::c_char);
-        return -1i32;
+        return -(1 as libc::c_int);
     }
-    if crate::stdlib::strcasecmp(md5sum, *argv.offset(1)) == 0 {
+    if crate::stdlib::strcasecmp(md5sum, *argv.offset(1 as libc::c_int as isize)) == 0 {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
             b"%s: OK\n\x00" as *const u8 as *const libc::c_char,
-            *argv.offset(2),
+            *argv.offset(2 as libc::c_int as isize),
         );
-        return 0i32;
+        return 0 as libc::c_int;
     } else {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
             b"%s: FAILED.  Checksum is %s\n\x00" as *const u8 as *const libc::c_char,
-            *argv.offset(2),
+            *argv.offset(2 as libc::c_int as isize),
             md5sum,
         );
-        return -1i32;
+        return -(1 as libc::c_int);
     };
 }
 #[main]

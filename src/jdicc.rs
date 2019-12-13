@@ -1,4 +1,4 @@
-use libc;
+use ::libc;
 
 pub use crate::jmorecfg_h::boolean;
 pub use crate::jmorecfg_h::FALSE;
@@ -10,6 +10,17 @@ pub use crate::jmorecfg_h::TRUE;
 pub use crate::jmorecfg_h::UINT16;
 pub use crate::jmorecfg_h::UINT8;
 pub use crate::jpegint_h::inverse_DCT_method_ptr;
+pub use crate::jpegint_h::jpeg_color_deconverter;
+pub use crate::jpegint_h::jpeg_color_quantizer;
+pub use crate::jpegint_h::jpeg_d_coef_controller;
+pub use crate::jpegint_h::jpeg_d_main_controller;
+pub use crate::jpegint_h::jpeg_d_post_controller;
+pub use crate::jpegint_h::jpeg_decomp_master;
+pub use crate::jpegint_h::jpeg_entropy_decoder;
+pub use crate::jpegint_h::jpeg_input_controller;
+pub use crate::jpegint_h::jpeg_inverse_dct;
+pub use crate::jpegint_h::jpeg_marker_reader;
+pub use crate::jpegint_h::jpeg_upsampler;
 pub use crate::jpegint_h::DSTATE_READY;
 pub use crate::jpegint_h::JBUF_CRANK_DEST;
 pub use crate::jpegint_h::JBUF_PASS_THRU;
@@ -19,27 +30,16 @@ pub use crate::jpegint_h::JBUF_SAVE_SOURCE;
 pub use crate::jpegint_h::J_BUF_MODE;
 pub use crate::jpeglib_h::j_common_ptr;
 pub use crate::jpeglib_h::j_decompress_ptr;
-pub use crate::jpeglib_h::jpeg_color_deconverter;
-pub use crate::jpeglib_h::jpeg_color_quantizer;
 pub use crate::jpeglib_h::jpeg_common_struct;
 pub use crate::jpeglib_h::jpeg_component_info;
-pub use crate::jpeglib_h::jpeg_d_coef_controller;
-pub use crate::jpeglib_h::jpeg_d_main_controller;
-pub use crate::jpeglib_h::jpeg_d_post_controller;
-pub use crate::jpeglib_h::jpeg_decomp_master;
 pub use crate::jpeglib_h::jpeg_decompress_struct;
-pub use crate::jpeglib_h::jpeg_entropy_decoder;
 pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_input_controller;
-pub use crate::jpeglib_h::jpeg_inverse_dct;
 pub use crate::jpeglib_h::jpeg_marker_parser_method;
-pub use crate::jpeglib_h::jpeg_marker_reader;
 pub use crate::jpeglib_h::jpeg_marker_struct;
 pub use crate::jpeglib_h::jpeg_memory_mgr;
 pub use crate::jpeglib_h::jpeg_progress_mgr;
 pub use crate::jpeglib_h::jpeg_saved_marker_ptr;
 pub use crate::jpeglib_h::jpeg_source_mgr;
-pub use crate::jpeglib_h::jpeg_upsampler;
 pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
@@ -81,7 +81,6 @@ pub use crate::jpeglib_h::JSAMPROW;
 pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::jpeglib_h::J_DITHER_MODE;
-pub use crate::src::jerror::C2RustUnnamed_3;
 pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -215,6 +214,7 @@ pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 use crate::stdlib::malloc;
+pub use crate::stdlib::C2RustUnnamed_0;
 /*
  * jdicc.c
  *
@@ -231,10 +231,10 @@ use crate::stdlib::malloc;
  */
 /* <stdlib.h> should declare malloc() */
 
-pub const ICC_MARKER: libc::c_int = crate::jpeglib_h::JPEG_APP0 + 2i32;
+pub const ICC_MARKER: libc::c_int = crate::jpeglib_h::JPEG_APP0 + 2 as libc::c_int;
 /* JPEG marker code for ICC */
 
-pub const ICC_OVERHEAD_LEN: libc::c_int = 14i32;
+pub const ICC_OVERHEAD_LEN: libc::c_int = 14 as libc::c_int;
 /* size of non-profile data in APP2 */
 /*
  * Handy subroutine to test whether a saved marker is an ICC profile marker.
@@ -245,18 +245,19 @@ unsafe extern "C" fn marker_is_icc(
 ) -> crate::jmorecfg_h::boolean {
     return ((*marker).marker as libc::c_int == ICC_MARKER
         && (*marker).data_length >= ICC_OVERHEAD_LEN as libc::c_uint
-        && *(*marker).data.offset(0) as libc::c_int == 0x49i32
-        && *(*marker).data.offset(1) as libc::c_int == 0x43i32
-        && *(*marker).data.offset(2) as libc::c_int == 0x43i32
-        && *(*marker).data.offset(3) as libc::c_int == 0x5fi32
-        && *(*marker).data.offset(4) as libc::c_int == 0x50i32
-        && *(*marker).data.offset(5) as libc::c_int == 0x52i32
-        && *(*marker).data.offset(6) as libc::c_int == 0x4fi32
-        && *(*marker).data.offset(7) as libc::c_int == 0x46i32
-        && *(*marker).data.offset(8) as libc::c_int == 0x49i32
-        && *(*marker).data.offset(9) as libc::c_int == 0x4ci32
-        && *(*marker).data.offset(10) as libc::c_int == 0x45i32
-        && *(*marker).data.offset(11) as libc::c_int == 0i32) as libc::c_int;
+        && *(*marker).data.offset(0 as libc::c_int as isize) as libc::c_int == 0x49 as libc::c_int
+        && *(*marker).data.offset(1 as libc::c_int as isize) as libc::c_int == 0x43 as libc::c_int
+        && *(*marker).data.offset(2 as libc::c_int as isize) as libc::c_int == 0x43 as libc::c_int
+        && *(*marker).data.offset(3 as libc::c_int as isize) as libc::c_int == 0x5f as libc::c_int
+        && *(*marker).data.offset(4 as libc::c_int as isize) as libc::c_int == 0x50 as libc::c_int
+        && *(*marker).data.offset(5 as libc::c_int as isize) as libc::c_int == 0x52 as libc::c_int
+        && *(*marker).data.offset(6 as libc::c_int as isize) as libc::c_int == 0x4f as libc::c_int
+        && *(*marker).data.offset(7 as libc::c_int as isize) as libc::c_int == 0x46 as libc::c_int
+        && *(*marker).data.offset(8 as libc::c_int as isize) as libc::c_int == 0x49 as libc::c_int
+        && *(*marker).data.offset(9 as libc::c_int as isize) as libc::c_int == 0x4c as libc::c_int
+        && *(*marker).data.offset(10 as libc::c_int as isize) as libc::c_int == 0x45 as libc::c_int
+        && *(*marker).data.offset(11 as libc::c_int as isize) as libc::c_int == 0 as libc::c_int)
+        as libc::c_int;
 }
 /* Accessor functions for extension parameters */
 /* Read ICC profile.  See libjpeg.txt for usage information. */
@@ -285,7 +286,7 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
 ) -> crate::jmorecfg_h::boolean {
     let mut marker: crate::jpeglib_h::jpeg_saved_marker_ptr =
         0 as *mut crate::jpeglib_h::jpeg_marker_struct;
-    let mut num_markers: libc::c_int = 0i32;
+    let mut num_markers: libc::c_int = 0 as libc::c_int;
     let mut seq_no: libc::c_int = 0;
     let mut icc_data: *mut crate::jmorecfg_h::JOCTET = 0 as *mut crate::jmorecfg_h::JOCTET;
     let mut total_length: libc::c_uint = 0;
@@ -304,7 +305,7 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
     }
     if (*cinfo).global_state < crate::jpegint_h::DSTATE_READY {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = (*cinfo).global_state;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -313,21 +314,23 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
     *icc_data_ptr = crate::stddef_h::NULL as *mut crate::jmorecfg_h::JOCTET;
-    *icc_data_len = 0i32 as libc::c_uint;
+    *icc_data_len = 0 as libc::c_int as libc::c_uint;
     /* This first pass over the saved markers discovers whether there are
      * any ICC markers and verifies the consistency of the marker numbering.
      */
-    seq_no = 1i32; /* inconsistent num_markers fields */
+    seq_no = 1 as libc::c_int; /* inconsistent num_markers fields */
     while seq_no <= MAX_SEQ_NO {
-        marker_present[seq_no as usize] = 0i32 as libc::c_char; /* bogus sequence number */
+        marker_present[seq_no as usize] = 0 as libc::c_int as libc::c_char; /* bogus sequence number */
         seq_no += 1
     } /* duplicate sequence numbers */
     marker = (*cinfo).marker_list;
     while !marker.is_null() {
         if marker_is_icc(marker) != 0 {
-            if num_markers == 0i32 {
-                num_markers = *(*marker).data.offset(13) as libc::c_int
-            } else if num_markers != *(*marker).data.offset(13) as libc::c_int {
+            if num_markers == 0 as libc::c_int {
+                num_markers = *(*marker).data.offset(13 as libc::c_int as isize) as libc::c_int
+            } else if num_markers
+                != *(*marker).data.offset(13 as libc::c_int as isize) as libc::c_int
+            {
                 (*(*cinfo).err).msg_code = crate::src::jerror::JWRN_BOGUS_ICC as libc::c_int;
                 Some(
                     (*(*cinfo).err)
@@ -336,12 +339,12 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
                 )
                 .expect("non-null function pointer")(
                     cinfo as crate::jpeglib_h::j_common_ptr,
-                    -1i32,
+                    -(1 as libc::c_int),
                 );
                 return crate::jmorecfg_h::FALSE;
             }
-            seq_no = *(*marker).data.offset(12) as libc::c_int;
-            if seq_no <= 0i32 || seq_no > num_markers {
+            seq_no = *(*marker).data.offset(12 as libc::c_int as isize) as libc::c_int;
+            if seq_no <= 0 as libc::c_int || seq_no > num_markers {
                 (*(*cinfo).err).msg_code = crate::src::jerror::JWRN_BOGUS_ICC as libc::c_int;
                 Some(
                     (*(*cinfo).err)
@@ -350,7 +353,7 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
                 )
                 .expect("non-null function pointer")(
                     cinfo as crate::jpeglib_h::j_common_ptr,
-                    -1i32,
+                    -(1 as libc::c_int),
                 );
                 return crate::jmorecfg_h::FALSE;
             }
@@ -363,27 +366,27 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
                 )
                 .expect("non-null function pointer")(
                     cinfo as crate::jpeglib_h::j_common_ptr,
-                    -1i32,
+                    -(1 as libc::c_int),
                 );
                 return crate::jmorecfg_h::FALSE;
             }
-            marker_present[seq_no as usize] = 1i32 as libc::c_char;
+            marker_present[seq_no as usize] = 1 as libc::c_int as libc::c_char;
             data_length[seq_no as usize] = (*marker)
                 .data_length
                 .wrapping_sub(ICC_OVERHEAD_LEN as libc::c_uint)
         }
         marker = (*marker).next
     }
-    if num_markers == 0i32 {
+    if num_markers == 0 as libc::c_int {
         return crate::jmorecfg_h::FALSE;
     }
     /* Check for missing markers, count total space needed,
      * compute offset of each marker's part of the data.
      */
-    total_length = 0i32 as libc::c_uint; /* missing sequence number */
-    seq_no = 1i32; /* found only empty markers? */
+    total_length = 0 as libc::c_int as libc::c_uint; /* missing sequence number */
+    seq_no = 1 as libc::c_int; /* found only empty markers? */
     while seq_no <= num_markers {
-        if marker_present[seq_no as usize] as libc::c_int == 0i32 {
+        if marker_present[seq_no as usize] as libc::c_int == 0 as libc::c_int {
             (*(*cinfo).err).msg_code = crate::src::jerror::JWRN_BOGUS_ICC as libc::c_int;
             Some(
                 (*(*cinfo).err)
@@ -391,7 +394,8 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(
-                cinfo as crate::jpeglib_h::j_common_ptr, -1i32
+                cinfo as crate::jpeglib_h::j_common_ptr,
+                -(1 as libc::c_int),
             );
             return crate::jmorecfg_h::FALSE;
         }
@@ -399,14 +403,17 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
         total_length = total_length.wrapping_add(data_length[seq_no as usize]);
         seq_no += 1
     }
-    if total_length == 0i32 as libc::c_uint {
+    if total_length == 0 as libc::c_int as libc::c_uint {
         (*(*cinfo).err).msg_code = crate::src::jerror::JWRN_BOGUS_ICC as libc::c_int;
         Some(
             (*(*cinfo).err)
                 .emit_message
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, -1i32);
+        .expect("non-null function pointer")(
+            cinfo as crate::jpeglib_h::j_common_ptr,
+            -(1 as libc::c_int),
+        );
         return crate::jmorecfg_h::FALSE;
     }
     /* Allocate space for assembled data */
@@ -416,7 +423,7 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
     ) as *mut crate::jmorecfg_h::JOCTET; /* oops, out of memory */
     if icc_data.is_null() {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_OUT_OF_MEMORY as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = 11i32;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = 11 as libc::c_int;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -431,7 +438,7 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
             let mut src_ptr: *mut crate::jmorecfg_h::JOCTET = 0 as *mut crate::jmorecfg_h::JOCTET;
             let mut dst_ptr: *mut crate::jmorecfg_h::JOCTET = 0 as *mut crate::jmorecfg_h::JOCTET;
             let mut length: libc::c_uint = 0;
-            seq_no = *(*marker).data.offset(12) as libc::c_int;
+            seq_no = *(*marker).data.offset(12 as libc::c_int as isize) as libc::c_int;
             dst_ptr = icc_data.offset(data_offset[seq_no as usize] as isize);
             src_ptr = (*marker).data.offset(ICC_OVERHEAD_LEN as isize);
             length = data_length[seq_no as usize];
@@ -455,4 +462,4 @@ pub unsafe extern "C" fn jpeg_read_icc_profile(
     return crate::jmorecfg_h::TRUE;
 }
 
-pub const MAX_SEQ_NO: libc::c_int = 255i32;
+pub const MAX_SEQ_NO: libc::c_int = 255 as libc::c_int;

@@ -1,4 +1,18 @@
-use libc;
+use ::libc;
+
+#[c2rust::header_src = "/usr/include/sys/stat.h:38"]
+pub mod sys_stat_h {
+    #[inline]
+
+    pub unsafe extern "C" fn fstat(
+        mut __fd: libc::c_int,
+        mut __statbuf: *mut crate::stdlib::stat,
+    ) -> libc::c_int {
+        return crate::stdlib::__fxstat(crate::stdlib::_STAT_VER, __fd, __statbuf);
+    }
+
+    use crate::stdlib::_STAT_VER;
+}
 
 pub use crate::stddef_h::size_t;
 pub use crate::stdlib::__blkcnt_t;
@@ -23,10 +37,10 @@ pub use crate::src::md5::md5::MD5Final;
 pub use crate::src::md5::md5::MD5Init;
 pub use crate::src::md5::md5::MD5Update;
 pub use crate::src::md5::md5::MD5_CTX;
+pub use crate::src::md5::md5hl::sys_stat_h::fstat;
 use crate::stdlib::__errno_location;
 pub use crate::stdlib::__fxstat;
 use crate::stdlib::close;
-pub use crate::stdlib::fstat;
 use crate::stdlib::lseek;
 use crate::stdlib::malloc;
 use crate::stdlib::open;
@@ -72,7 +86,7 @@ pub use crate::stdlib::_STAT_VER_LINUX;
  * ----------------------------------------------------------------------------
  */
 
-pub const LENGTH: libc::c_int = 16i32;
+pub const LENGTH: libc::c_int = 16 as libc::c_int;
 #[no_mangle]
 
 pub unsafe extern "C" fn MD5End(
@@ -85,17 +99,19 @@ pub unsafe extern "C" fn MD5End(
         48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 97, 98, 99, 100, 101, 102, 0,
     ];
     if buf.is_null() {
-        buf = crate::stdlib::malloc((2i32 * LENGTH + 1i32) as libc::c_ulong) as *mut libc::c_char
+        buf = crate::stdlib::malloc((2 as libc::c_int * LENGTH + 1 as libc::c_int) as libc::c_ulong)
+            as *mut libc::c_char
     }
     if buf.is_null() {
         return 0 as *mut libc::c_char;
     }
     crate::src::md5::md5::MD5Final(digest.as_mut_ptr(), ctx);
-    i = 0i32;
+    i = 0 as libc::c_int;
     while i < LENGTH {
-        *buf.offset((i + i) as isize) = hex[(digest[i as usize] as libc::c_int >> 4i32) as usize];
-        *buf.offset((i + i + 1i32) as isize) =
-            hex[(digest[i as usize] as libc::c_int & 0xfi32) as usize];
+        *buf.offset((i + i) as isize) =
+            hex[(digest[i as usize] as libc::c_int >> 4 as libc::c_int) as usize];
+        *buf.offset((i + i + 1 as libc::c_int) as isize) =
+            hex[(digest[i as usize] as libc::c_int & 0xf as libc::c_int) as usize];
         i += 1
     }
     *buf.offset((i + i) as isize) = '\u{0}' as i32 as libc::c_char;
@@ -110,8 +126,8 @@ pub unsafe extern "C" fn MD5File(
     return MD5FileChunk(
         filename,
         buf,
-        0i32 as crate::stdlib::off_t,
-        0i32 as crate::stdlib::off_t,
+        0 as libc::c_int as crate::stdlib::off_t,
+        0 as libc::c_int as crate::stdlib::off_t,
     );
 }
 #[no_mangle]
@@ -160,24 +176,24 @@ pub unsafe extern "C" fn MD5FileChunk(
     let mut n: crate::stdlib::off_t = 0;
     crate::src::md5::md5::MD5Init(&mut ctx);
     f = crate::stdlib::open(filename, crate::stdlib::O_RDONLY);
-    if f < 0i32 {
+    if f < 0 as libc::c_int {
         return 0 as *mut libc::c_char;
     }
-    if crate::stdlib::fstat(f, &mut stbuf) < 0i32 {
+    if fstat(f, &mut stbuf) < 0 as libc::c_int {
         return 0 as *mut libc::c_char;
     }
     if ofs > stbuf.st_size {
         ofs = stbuf.st_size
     }
-    if len == 0i32 as libc::c_long || len > stbuf.st_size - ofs {
+    if len == 0 as libc::c_int as libc::c_long || len > stbuf.st_size - ofs {
         len = stbuf.st_size - ofs
     }
-    if crate::stdlib::lseek(f, ofs, crate::stdlib::SEEK_SET) < 0i32 as libc::c_long {
+    if crate::stdlib::lseek(f, ofs, crate::stdlib::SEEK_SET) < 0 as libc::c_int as libc::c_long {
         return 0 as *mut libc::c_char;
     }
     n = len;
-    i = 0i32;
-    while n > 0i32 as libc::c_long {
+    i = 0 as libc::c_int;
+    while n > 0 as libc::c_int as libc::c_long {
         if n as libc::c_ulong > ::std::mem::size_of::<[libc::c_uchar; 8192]>() as libc::c_ulong {
             i = crate::stdlib::read(
                 f,
@@ -191,7 +207,7 @@ pub unsafe extern "C" fn MD5FileChunk(
                 n as crate::stddef_h::size_t,
             ) as libc::c_int
         }
-        if i < 0i32 {
+        if i < 0 as libc::c_int {
             break;
         }
         crate::src::md5::md5::MD5Update(&mut ctx, buffer.as_mut_ptr(), i as libc::c_uint);
@@ -200,7 +216,7 @@ pub unsafe extern "C" fn MD5FileChunk(
     e = *crate::stdlib::__errno_location();
     crate::stdlib::close(f);
     *crate::stdlib::__errno_location() = e;
-    if i < 0i32 {
+    if i < 0 as libc::c_int {
         return 0 as *mut libc::c_char;
     }
     return MD5End(&mut ctx, buf);

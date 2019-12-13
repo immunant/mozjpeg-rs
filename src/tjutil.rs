@@ -1,4 +1,4 @@
-use libc;
+use ::libc;
 
 pub use crate::stddef_h::NULL;
 pub use crate::stdlib::__suseconds_t;
@@ -44,7 +44,7 @@ pub unsafe extern "C" fn getTime() -> libc::c_double {
     if crate::stdlib::gettimeofday(
         &mut tv,
         crate::stddef_h::NULL as *mut crate::stdlib::timezone,
-    ) < 0i32
+    ) < 0 as libc::c_int
     {
         return 0.0f64;
     } else {

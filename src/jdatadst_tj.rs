@@ -1,4 +1,4 @@
-use libc;
+use ::libc;
 
 pub use crate::jmorecfg_h::boolean;
 pub use crate::jmorecfg_h::FALSE;
@@ -9,22 +9,22 @@ pub use crate::jmorecfg_h::JSAMPLE;
 pub use crate::jmorecfg_h::TRUE;
 pub use crate::jmorecfg_h::UINT16;
 pub use crate::jmorecfg_h::UINT8;
+pub use crate::jpegint_h::jpeg_c_coef_controller;
+pub use crate::jpegint_h::jpeg_c_main_controller;
+pub use crate::jpegint_h::jpeg_c_prep_controller;
+pub use crate::jpegint_h::jpeg_color_converter;
+pub use crate::jpegint_h::jpeg_comp_master;
+pub use crate::jpegint_h::jpeg_downsampler;
+pub use crate::jpegint_h::jpeg_entropy_encoder;
+pub use crate::jpegint_h::jpeg_forward_dct;
+pub use crate::jpegint_h::jpeg_marker_writer;
 pub use crate::jpeglib_h::j_common_ptr;
 pub use crate::jpeglib_h::j_compress_ptr;
-pub use crate::jpeglib_h::jpeg_c_coef_controller;
-pub use crate::jpeglib_h::jpeg_c_main_controller;
-pub use crate::jpeglib_h::jpeg_c_prep_controller;
-pub use crate::jpeglib_h::jpeg_color_converter;
 pub use crate::jpeglib_h::jpeg_common_struct;
-pub use crate::jpeglib_h::jpeg_comp_master;
 pub use crate::jpeglib_h::jpeg_component_info;
 pub use crate::jpeglib_h::jpeg_compress_struct;
 pub use crate::jpeglib_h::jpeg_destination_mgr;
-pub use crate::jpeglib_h::jpeg_downsampler;
-pub use crate::jpeglib_h::jpeg_entropy_encoder;
 pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_forward_dct;
-pub use crate::jpeglib_h::jpeg_marker_writer;
 pub use crate::jpeglib_h::jpeg_memory_mgr;
 pub use crate::jpeglib_h::jpeg_progress_mgr;
 pub use crate::jpeglib_h::jpeg_scan_info;
@@ -63,7 +63,6 @@ pub use crate::jpeglib_h::JSAMPARRAY;
 pub use crate::jpeglib_h::JSAMPROW;
 pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
-pub use crate::src::jerror::C2RustUnnamed_3;
 pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -199,6 +198,7 @@ pub use crate::stddef_h::NULL;
 use crate::stdlib::free;
 use crate::stdlib::malloc;
 use crate::stdlib::memcpy;
+pub use crate::stdlib::C2RustUnnamed_0;
 
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -235,7 +235,7 @@ pub type my_mem_dest_ptr = *mut my_mem_destination_mgr;
 /* this is not a core library module, so it doesn't define JPEG_INTERNALS */
 /* <stdlib.h> should declare malloc(),free() */
 
-pub const OUTPUT_BUF_SIZE: libc::c_int = 4096i32;
+pub const OUTPUT_BUF_SIZE: libc::c_int = 4096 as libc::c_int;
 /*
  * Initialize destination --- called by jpeg_start_compress
  * before any data is actually written.
@@ -283,11 +283,13 @@ unsafe extern "C" fn empty_mem_output_buffer(
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
     /* Try to allocate new buffer with double size */
-    nextsize = (*dest).bufsize.wrapping_mul(2i32 as libc::c_ulong);
+    nextsize = (*dest)
+        .bufsize
+        .wrapping_mul(2 as libc::c_int as libc::c_ulong);
     nextbuffer = crate::stdlib::malloc(nextsize) as *mut crate::jmorecfg_h::JOCTET;
     if nextbuffer.is_null() {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_OUT_OF_MEMORY as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = 10i32;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = 10 as libc::c_int;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -409,7 +411,7 @@ pub unsafe extern "C" fn jpeg_mem_dest_tj(
     (*dest).outbuffer = outbuffer;
     (*dest).outsize = outsize;
     (*dest).alloc = alloc;
-    if (*outbuffer).is_null() || *outsize == 0i32 as libc::c_ulong {
+    if (*outbuffer).is_null() || *outsize == 0 as libc::c_int as libc::c_ulong {
         if alloc != 0 {
             /* Allocate initial buffer */
             *outbuffer =
@@ -417,7 +419,7 @@ pub unsafe extern "C" fn jpeg_mem_dest_tj(
             (*dest).newbuffer = *outbuffer;
             if (*dest).newbuffer.is_null() {
                 (*(*cinfo).err).msg_code = crate::src::jerror::JERR_OUT_OF_MEMORY as libc::c_int;
-                (*(*cinfo).err).msg_parm.i[0] = 10i32;
+                (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = 10 as libc::c_int;
                 Some(
                     (*(*cinfo).err)
                         .error_exit

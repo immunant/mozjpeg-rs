@@ -1,4 +1,4 @@
-use libc;
+use ::libc;
 
 /* JERROR_H */
 
@@ -26,6 +26,15 @@ pub use crate::jmorecfg_h::JSAMPLE;
 pub use crate::jmorecfg_h::TRUE;
 pub use crate::jmorecfg_h::UINT16;
 pub use crate::jmorecfg_h::UINT8;
+pub use crate::jpegint_h::jpeg_c_coef_controller;
+pub use crate::jpegint_h::jpeg_c_main_controller;
+pub use crate::jpegint_h::jpeg_c_prep_controller;
+pub use crate::jpegint_h::jpeg_color_converter;
+pub use crate::jpegint_h::jpeg_comp_master;
+pub use crate::jpegint_h::jpeg_downsampler;
+pub use crate::jpegint_h::jpeg_entropy_encoder;
+pub use crate::jpegint_h::jpeg_forward_dct;
+pub use crate::jpegint_h::jpeg_marker_writer;
 pub use crate::jpegint_h::JBUF_CRANK_DEST;
 pub use crate::jpegint_h::JBUF_PASS_THRU;
 pub use crate::jpegint_h::JBUF_REQUANT;
@@ -34,20 +43,11 @@ pub use crate::jpegint_h::JBUF_SAVE_SOURCE;
 pub use crate::jpegint_h::J_BUF_MODE;
 pub use crate::jpeglib_h::j_common_ptr;
 pub use crate::jpeglib_h::j_compress_ptr;
-pub use crate::jpeglib_h::jpeg_c_coef_controller;
-pub use crate::jpeglib_h::jpeg_c_main_controller;
-pub use crate::jpeglib_h::jpeg_c_prep_controller;
-pub use crate::jpeglib_h::jpeg_color_converter;
 pub use crate::jpeglib_h::jpeg_common_struct;
-pub use crate::jpeglib_h::jpeg_comp_master;
 pub use crate::jpeglib_h::jpeg_component_info;
 pub use crate::jpeglib_h::jpeg_compress_struct;
 pub use crate::jpeglib_h::jpeg_destination_mgr;
-pub use crate::jpeglib_h::jpeg_downsampler;
-pub use crate::jpeglib_h::jpeg_entropy_encoder;
 pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_forward_dct;
-pub use crate::jpeglib_h::jpeg_marker_writer;
 pub use crate::jpeglib_h::jpeg_memory_mgr;
 pub use crate::jpeglib_h::jpeg_progress_mgr;
 pub use crate::jpeglib_h::jpeg_scan_info;
@@ -55,7 +55,6 @@ pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
-pub use crate::jpeglib_h::C2RustUnnamed_1;
 pub use crate::jpeglib_h::C2RustUnnamed_2;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::JBLOCK;
@@ -108,7 +107,6 @@ pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::jpeglib_h::J_FLOAT_PARAM;
 pub use crate::jpeglib_h::J_INT_PARAM;
-pub use crate::src::jerror::C2RustUnnamed_3;
 pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -239,6 +237,7 @@ pub use crate::src::jerror::JWRN_JPEG_EOF;
 pub use crate::src::jerror::JWRN_MUST_RESYNC;
 pub use crate::src::jerror::JWRN_NOT_SEQUENTIAL;
 pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
+pub use crate::stdlib::C2RustUnnamed_0;
 /*
  * jcext.c
  *
@@ -379,7 +378,7 @@ pub unsafe extern "C" fn jpeg_c_get_float_param(
             );
         }
     }
-    return -1i32 as libc::c_float;
+    return -(1 as libc::c_int) as libc::c_float;
 }
 #[no_mangle]
 
@@ -420,7 +419,7 @@ pub unsafe extern "C" fn jpeg_c_set_int_param(
         1873801511 => (*(*cinfo).master).trellis_freq_split = value,
         3057565497 => (*(*cinfo).master).trellis_num_loops = value,
         1145645745 => {
-            if value >= 0i32 && value <= 8i32 {
+            if value >= 0 as libc::c_int && value <= 8 as libc::c_int {
                 (*(*cinfo).master).quant_tbl_master_idx = value
             }
         }
@@ -502,5 +501,5 @@ pub unsafe extern "C" fn jpeg_c_get_int_param(
             );
         }
     }
-    return -1i32;
+    return -(1 as libc::c_int);
 }

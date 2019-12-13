@@ -1,4 +1,4 @@
-use libc;
+use ::libc;
 
 /* JERROR_H */
 
@@ -25,16 +25,15 @@ pub use crate::jmorecfg_h::JOCTET;
 pub use crate::jmorecfg_h::JSAMPLE;
 pub use crate::jmorecfg_h::UINT16;
 pub use crate::jmorecfg_h::UINT8;
-pub use crate::jpegint_h::jinit_c_coef_controller;
-pub use crate::jpegint_h::jinit_c_main_controller;
-pub use crate::jpegint_h::jinit_c_master_control;
-pub use crate::jpegint_h::jinit_c_prep_controller;
-pub use crate::jpegint_h::jinit_color_converter;
-pub use crate::jpegint_h::jinit_downsampler;
-pub use crate::jpegint_h::jinit_forward_dct;
-pub use crate::jpegint_h::jinit_huff_encoder;
-pub use crate::jpegint_h::jinit_marker_writer;
-pub use crate::jpegint_h::jinit_phuff_encoder;
+pub use crate::jpegint_h::jpeg_c_coef_controller;
+pub use crate::jpegint_h::jpeg_c_main_controller;
+pub use crate::jpegint_h::jpeg_c_prep_controller;
+pub use crate::jpegint_h::jpeg_color_converter;
+pub use crate::jpegint_h::jpeg_comp_master;
+pub use crate::jpegint_h::jpeg_downsampler;
+pub use crate::jpegint_h::jpeg_entropy_encoder;
+pub use crate::jpegint_h::jpeg_forward_dct;
+pub use crate::jpegint_h::jpeg_marker_writer;
 pub use crate::jpegint_h::JBUF_CRANK_DEST;
 pub use crate::jpegint_h::JBUF_PASS_THRU;
 pub use crate::jpegint_h::JBUF_REQUANT;
@@ -43,20 +42,11 @@ pub use crate::jpegint_h::JBUF_SAVE_SOURCE;
 pub use crate::jpegint_h::J_BUF_MODE;
 pub use crate::jpeglib_h::j_common_ptr;
 pub use crate::jpeglib_h::j_compress_ptr;
-pub use crate::jpeglib_h::jpeg_c_coef_controller;
-pub use crate::jpeglib_h::jpeg_c_main_controller;
-pub use crate::jpeglib_h::jpeg_c_prep_controller;
-pub use crate::jpeglib_h::jpeg_color_converter;
 pub use crate::jpeglib_h::jpeg_common_struct;
-pub use crate::jpeglib_h::jpeg_comp_master;
 pub use crate::jpeglib_h::jpeg_component_info;
 pub use crate::jpeglib_h::jpeg_compress_struct;
 pub use crate::jpeglib_h::jpeg_destination_mgr;
-pub use crate::jpeglib_h::jpeg_downsampler;
-pub use crate::jpeglib_h::jpeg_entropy_encoder;
 pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_forward_dct;
-pub use crate::jpeglib_h::jpeg_marker_writer;
 pub use crate::jpeglib_h::jpeg_memory_mgr;
 pub use crate::jpeglib_h::jpeg_progress_mgr;
 pub use crate::jpeglib_h::jpeg_scan_info;
@@ -95,7 +85,16 @@ pub use crate::jpeglib_h::JSAMPIMAGE;
 pub use crate::jpeglib_h::JSAMPROW;
 pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
-pub use crate::src::jerror::C2RustUnnamed_3;
+pub use crate::src::jccoefct::jinit_c_coef_controller;
+pub use crate::src::jccolor::jinit_color_converter;
+pub use crate::src::jcdctmgr::jinit_forward_dct;
+pub use crate::src::jchuff::jinit_huff_encoder;
+pub use crate::src::jcmainct::jinit_c_main_controller;
+pub use crate::src::jcmarker::jinit_marker_writer;
+pub use crate::src::jcmaster::jinit_c_master_control;
+pub use crate::src::jcphuff::jinit_phuff_encoder;
+pub use crate::src::jcprepct::jinit_c_prep_controller;
+pub use crate::src::jcsample::jinit_downsampler;
 pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -226,6 +225,7 @@ pub use crate::src::jerror::JWRN_JPEG_EOF;
 pub use crate::src::jerror::JWRN_MUST_RESYNC;
 pub use crate::src::jerror::JWRN_NOT_SEQUENTIAL;
 pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
+pub use crate::stdlib::C2RustUnnamed_0;
 /* It is useful to allow each component to have a separate IDCT method. */
 /* Upsampling (note that upsampler must also call color converter) */
 /* TRUE if need rows above & below */
@@ -269,15 +269,15 @@ pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
 
 pub unsafe extern "C" fn jinit_compress_master(mut cinfo: crate::jpeglib_h::j_compress_ptr) {
     /* Initialize master control (includes parameter checking/processing) */
-    crate::jpegint_h::jinit_c_master_control(cinfo, crate::jmorecfg_h::FALSE);
+    crate::src::jcmaster::jinit_c_master_control(cinfo, crate::jmorecfg_h::FALSE);
     /* Preprocessing */
     if (*cinfo).raw_data_in == 0 {
-        crate::jpegint_h::jinit_color_converter(cinfo);
-        crate::jpegint_h::jinit_downsampler(cinfo);
-        crate::jpegint_h::jinit_c_prep_controller(cinfo, crate::jmorecfg_h::FALSE);
+        crate::src::jccolor::jinit_color_converter(cinfo);
+        crate::src::jcsample::jinit_downsampler(cinfo);
+        crate::src::jcprepct::jinit_c_prep_controller(cinfo, crate::jmorecfg_h::FALSE);
     }
     /* Forward DCT */
-    crate::jpegint_h::jinit_forward_dct(cinfo);
+    crate::src::jcdctmgr::jinit_forward_dct(cinfo);
     /* Entropy encoding: either Huffman or arithmetic coding. */
     if (*cinfo).arith_code != 0 {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_ARITH_NOTIMPL as libc::c_int;
@@ -288,20 +288,20 @@ pub unsafe extern "C" fn jinit_compress_master(mut cinfo: crate::jpeglib_h::j_co
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     } else if (*cinfo).progressive_mode != 0 {
-        crate::jpegint_h::jinit_phuff_encoder(cinfo);
+        crate::src::jcphuff::jinit_phuff_encoder(cinfo);
     } else {
-        crate::jpegint_h::jinit_huff_encoder(cinfo);
+        crate::src::jchuff::jinit_huff_encoder(cinfo);
     }
     /* Need a full-image coefficient buffer in any multi-pass mode. */
-    crate::jpegint_h::jinit_c_coef_controller(
+    crate::src::jccoefct::jinit_c_coef_controller(
         cinfo,
-        ((*cinfo).num_scans > 1i32
+        ((*cinfo).num_scans > 1 as libc::c_int
             || (*cinfo).optimize_coding != 0
             || (*(*cinfo).master).optimize_scans != 0
             || (*(*cinfo).master).trellis_quant != 0) as libc::c_int,
     );
-    crate::jpegint_h::jinit_c_main_controller(cinfo, crate::jmorecfg_h::FALSE);
-    crate::jpegint_h::jinit_marker_writer(cinfo);
+    crate::src::jcmainct::jinit_c_main_controller(cinfo, crate::jmorecfg_h::FALSE);
+    crate::src::jcmarker::jinit_marker_writer(cinfo);
     /* We can now tell the memory manager to allocate virtual arrays. */
     Some(
         (*(*cinfo).mem)

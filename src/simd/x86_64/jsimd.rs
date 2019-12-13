@@ -900,34 +900,67 @@ extern "C" {
         bits: *mut crate::stddef_h::size_t,
     ) -> libc::c_int;
 }
-pub use crate::jdct_h::DCTELEM;
-pub use crate::jmorecfg_h::JCOEF;
-pub use crate::jmorecfg_h::JDIMENSION;
-pub use crate::jmorecfg_h::JOCTET;
-pub use crate::jpeglib_h::j_compress_ptr;
-pub use crate::jpeglib_h::j_decompress_ptr;
-pub use crate::jpeglib_h::jpeg_component_info;
-pub use crate::jpeglib_h::jpeg_compress_struct;
-pub use crate::jpeglib_h::jpeg_decompress_struct;
-pub use crate::jpeglib_h::C2RustUnnamed_2;
-pub use crate::jpeglib_h::JCOEFPTR;
-pub use crate::jpeglib_h::JSAMPARRAY;
-pub use crate::jpeglib_h::JSAMPIMAGE;
-pub use crate::jpeglib_h::JSAMPROW;
-pub use crate::src::jchuff::c_derived_tbl;
-pub use crate::stddef_h::size_t;
-/* TARGA_SUPPORTED */
+// =============== BEGIN jsimd_h ================
+
+/*
+ * simd/jsimd.h
+ *
+ * Copyright 2009 Pierre Ossman <ossman@cendio.se> for Cendio AB
+ * Copyright (C) 2011, 2014-2016, 2018, D. R. Commander.
+ * Copyright (C) 2013-2014, MIPS Technologies, Inc., California.
+ * Copyright (C) 2014, Linaro Limited.
+ * Copyright (C) 2015-2016, 2018, Matthieu Darbois.
+ * Copyright (C) 2016-2017, Loongson Technology Corporation Limited, BeiJing.
+ *
+ * Based on the x86 SIMD extension for IJG JPEG library,
+ * Copyright (C) 1999-2006, MIYASAKA Masaru.
+ * For conditions of distribution and use, see copyright notice in jsimdext.inc
+ *
+ */
+
+/* Bitmask for supported acceleration methods */
+pub const JSIMD_SSE: libc::c_int = 0x4 as libc::c_int;
+
+pub const JSIMD_SSE2: libc::c_int = 0x8 as libc::c_int;
+
+pub const JSIMD_AVX2: libc::c_int = 0x80 as libc::c_int;
+use ::libc;
+
 pub use crate::jconfig_h::BITS_IN_JSAMPLE;
+pub use crate::jdct_h::DCTELEM;
 pub use crate::jdct_h::FLOAT_MULT_TYPE;
 pub use crate::jdct_h::IFAST_MULT_TYPE;
 pub use crate::jdct_h::IFAST_SCALE_BITS;
 pub use crate::jdct_h::ISLOW_MULT_TYPE;
 pub use crate::jmorecfg_h::boolean;
+pub use crate::jmorecfg_h::JCOEF;
+pub use crate::jmorecfg_h::JDIMENSION;
+pub use crate::jmorecfg_h::JOCTET;
 pub use crate::jmorecfg_h::JSAMPLE;
 pub use crate::jmorecfg_h::RGB_PIXELSIZE;
 pub use crate::jmorecfg_h::UINT16;
 pub use crate::jmorecfg_h::UINT8;
 pub use crate::jpegint_h::inverse_DCT_method_ptr;
+pub use crate::jpegint_h::jpeg_c_coef_controller;
+pub use crate::jpegint_h::jpeg_c_main_controller;
+pub use crate::jpegint_h::jpeg_c_prep_controller;
+pub use crate::jpegint_h::jpeg_color_converter;
+pub use crate::jpegint_h::jpeg_color_deconverter;
+pub use crate::jpegint_h::jpeg_color_quantizer;
+pub use crate::jpegint_h::jpeg_comp_master;
+pub use crate::jpegint_h::jpeg_d_coef_controller;
+pub use crate::jpegint_h::jpeg_d_main_controller;
+pub use crate::jpegint_h::jpeg_d_post_controller;
+pub use crate::jpegint_h::jpeg_decomp_master;
+pub use crate::jpegint_h::jpeg_downsampler;
+pub use crate::jpegint_h::jpeg_entropy_decoder;
+pub use crate::jpegint_h::jpeg_entropy_encoder;
+pub use crate::jpegint_h::jpeg_forward_dct;
+pub use crate::jpegint_h::jpeg_input_controller;
+pub use crate::jpegint_h::jpeg_inverse_dct;
+pub use crate::jpegint_h::jpeg_marker_reader;
+pub use crate::jpegint_h::jpeg_marker_writer;
+pub use crate::jpegint_h::jpeg_upsampler;
 pub use crate::jpegint_h::JBUF_CRANK_DEST;
 pub use crate::jpegint_h::JBUF_PASS_THRU;
 pub use crate::jpegint_h::JBUF_REQUANT;
@@ -935,45 +968,32 @@ pub use crate::jpegint_h::JBUF_SAVE_AND_PASS;
 pub use crate::jpegint_h::JBUF_SAVE_SOURCE;
 pub use crate::jpegint_h::J_BUF_MODE;
 pub use crate::jpeglib_h::j_common_ptr;
-pub use crate::jpeglib_h::jpeg_c_coef_controller;
-pub use crate::jpeglib_h::jpeg_c_main_controller;
-pub use crate::jpeglib_h::jpeg_c_prep_controller;
-pub use crate::jpeglib_h::jpeg_color_converter;
-pub use crate::jpeglib_h::jpeg_color_deconverter;
-pub use crate::jpeglib_h::jpeg_color_quantizer;
+pub use crate::jpeglib_h::j_compress_ptr;
+pub use crate::jpeglib_h::j_decompress_ptr;
 pub use crate::jpeglib_h::jpeg_common_struct;
-pub use crate::jpeglib_h::jpeg_comp_master;
-pub use crate::jpeglib_h::jpeg_d_coef_controller;
-pub use crate::jpeglib_h::jpeg_d_main_controller;
-pub use crate::jpeglib_h::jpeg_d_post_controller;
-pub use crate::jpeglib_h::jpeg_decomp_master;
+pub use crate::jpeglib_h::jpeg_component_info;
+pub use crate::jpeglib_h::jpeg_compress_struct;
+pub use crate::jpeglib_h::jpeg_decompress_struct;
 pub use crate::jpeglib_h::jpeg_destination_mgr;
-pub use crate::jpeglib_h::jpeg_downsampler;
-pub use crate::jpeglib_h::jpeg_entropy_decoder;
-pub use crate::jpeglib_h::jpeg_entropy_encoder;
 pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_forward_dct;
-pub use crate::jpeglib_h::jpeg_input_controller;
-pub use crate::jpeglib_h::jpeg_inverse_dct;
 pub use crate::jpeglib_h::jpeg_marker_parser_method;
-pub use crate::jpeglib_h::jpeg_marker_reader;
 pub use crate::jpeglib_h::jpeg_marker_struct;
-pub use crate::jpeglib_h::jpeg_marker_writer;
 pub use crate::jpeglib_h::jpeg_memory_mgr;
 pub use crate::jpeglib_h::jpeg_progress_mgr;
 pub use crate::jpeglib_h::jpeg_saved_marker_ptr;
 pub use crate::jpeglib_h::jpeg_scan_info;
 pub use crate::jpeglib_h::jpeg_source_mgr;
-pub use crate::jpeglib_h::jpeg_upsampler;
 pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
+pub use crate::jpeglib_h::C2RustUnnamed_2;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::DCTSIZE;
 pub use crate::jpeglib_h::JBLOCK;
 pub use crate::jpeglib_h::JBLOCKARRAY;
 pub use crate::jpeglib_h::JBLOCKROW;
+pub use crate::jpeglib_h::JCOEFPTR;
 pub use crate::jpeglib_h::JCS_CMYK;
 pub use crate::jpeglib_h::JCS_EXT_ABGR;
 pub use crate::jpeglib_h::JCS_EXT_ARGB;
@@ -998,39 +1018,19 @@ pub use crate::jpeglib_h::JDITHER_NONE;
 pub use crate::jpeglib_h::JDITHER_ORDERED;
 pub use crate::jpeglib_h::JHUFF_TBL;
 pub use crate::jpeglib_h::JQUANT_TBL;
+pub use crate::jpeglib_h::JSAMPARRAY;
+pub use crate::jpeglib_h::JSAMPIMAGE;
+pub use crate::jpeglib_h::JSAMPROW;
 pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::jpeglib_h::J_DITHER_MODE;
+pub use crate::src::jchuff::c_derived_tbl;
+pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 use crate::stdlib::getenv;
 use crate::stdlib::strcmp;
-use libc;
 
 pub use crate::jconfigint_h::SIZEOF_SIZE_T;
-// =============== BEGIN jsimd_h ================
-
-/*
- * simd/jsimd.h
- *
- * Copyright 2009 Pierre Ossman <ossman@cendio.se> for Cendio AB
- * Copyright (C) 2011, 2014-2016, 2018, D. R. Commander.
- * Copyright (C) 2013-2014, MIPS Technologies, Inc., California.
- * Copyright (C) 2014, Linaro Limited.
- * Copyright (C) 2015-2016, 2018, Matthieu Darbois.
- * Copyright (C) 2016-2017, Loongson Technology Corporation Limited, BeiJing.
- *
- * Based on the x86 SIMD extension for IJG JPEG library,
- * Copyright (C) 1999-2006, MIYASAKA Masaru.
- * For conditions of distribution and use, see copyright notice in jsimdext.inc
- *
- */
-
-/* Bitmask for supported acceleration methods */
-pub const JSIMD_SSE: libc::c_int = 0x4i32;
-
-pub const JSIMD_SSE2: libc::c_int = 0x8i32;
-
-pub const JSIMD_AVX2: libc::c_int = 0x80i32;
 /*
  * jsimd_x86_64.c
  *
@@ -1053,9 +1053,9 @@ pub const JSIMD_AVX2: libc::c_int = 0x80i32;
 /* 16 byte alignment */
 /* 32 byte alignment */
 
-static mut simd_support: libc::c_uint = !0i32 as libc::c_uint;
+static mut simd_support: libc::c_uint = !(0 as libc::c_int) as libc::c_uint;
 
-static mut simd_huffman: libc::c_uint = 1i32 as libc::c_uint;
+static mut simd_huffman: libc::c_uint = 1 as libc::c_int as libc::c_uint;
 /*
  * Check what SIMD accelerations are supported.
  *
@@ -1064,34 +1064,38 @@ static mut simd_huffman: libc::c_uint = 1i32 as libc::c_uint;
 
 unsafe extern "C" fn init_simd() {
     let mut env: *mut libc::c_char = crate::stddef_h::NULL as *mut libc::c_char;
-    if simd_support != !0u32 {
+    if simd_support != !(0 as libc::c_uint) {
         return;
     }
     simd_support = crate::src::simd::x86_64::jsimd::jpeg_simd_cpu_support();
     /* Force different settings through environment variables */
     env = crate::stdlib::getenv(b"JSIMD_FORCESSE2\x00" as *const u8 as *const libc::c_char);
     if !env.is_null()
-        && crate::stdlib::strcmp(env, b"1\x00" as *const u8 as *const libc::c_char) == 0i32
+        && crate::stdlib::strcmp(env, b"1\x00" as *const u8 as *const libc::c_char)
+            == 0 as libc::c_int
     {
         simd_support &= crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint
     }
     env = crate::stdlib::getenv(b"JSIMD_FORCEAVX2\x00" as *const u8 as *const libc::c_char);
     if !env.is_null()
-        && crate::stdlib::strcmp(env, b"1\x00" as *const u8 as *const libc::c_char) == 0i32
+        && crate::stdlib::strcmp(env, b"1\x00" as *const u8 as *const libc::c_char)
+            == 0 as libc::c_int
     {
         simd_support &= crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint
     }
     env = crate::stdlib::getenv(b"JSIMD_FORCENONE\x00" as *const u8 as *const libc::c_char);
     if !env.is_null()
-        && crate::stdlib::strcmp(env, b"1\x00" as *const u8 as *const libc::c_char) == 0i32
+        && crate::stdlib::strcmp(env, b"1\x00" as *const u8 as *const libc::c_char)
+            == 0 as libc::c_int
     {
-        simd_support = 0i32 as libc::c_uint
+        simd_support = 0 as libc::c_int as libc::c_uint
     }
     env = crate::stdlib::getenv(b"JSIMD_NOHUFFENC\x00" as *const u8 as *const libc::c_char);
     if !env.is_null()
-        && crate::stdlib::strcmp(env, b"1\x00" as *const u8 as *const libc::c_char) == 0i32
+        && crate::stdlib::strcmp(env, b"1\x00" as *const u8 as *const libc::c_char)
+            == 0 as libc::c_int
     {
-        simd_huffman = 0i32 as libc::c_uint
+        simd_huffman = 0 as libc::c_int as libc::c_uint
     };
 }
 /*
@@ -1111,107 +1115,113 @@ unsafe extern "C" fn init_simd() {
 pub unsafe extern "C" fn jsimd_can_rgb_ycc() -> libc::c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
-        return 0i32;
+    if crate::jconfig_h::BITS_IN_JSAMPLE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
     if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
-        != 4i32 as libc::c_ulong
+        != 4 as libc::c_int as libc::c_ulong
     {
-        return 0i32;
+        return 0 as libc::c_int;
     }
-    if crate::jmorecfg_h::RGB_PIXELSIZE != 3i32 && crate::jmorecfg_h::RGB_PIXELSIZE != 4i32 {
-        return 0i32;
+    if crate::jmorecfg_h::RGB_PIXELSIZE != 3 as libc::c_int
+        && crate::jmorecfg_h::RGB_PIXELSIZE != 4 as libc::c_int
+    {
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0
         && crate::src::simd::x86_64::jsimd::jconst_rgb_ycc_convert_avx2.as_ptr()
             as crate::stddef_h::size_t
-            & ((1i32 << 5i32) - 1i32) as libc::c_ulong
-            == 0i32 as libc::c_ulong
+            & (((1 as libc::c_int) << 5 as libc::c_int) - 1 as libc::c_int) as libc::c_ulong
+            == 0 as libc::c_int as libc::c_ulong
     {
-        return 1i32;
+        return 1 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
         && crate::src::simd::x86_64::jsimd::jconst_rgb_ycc_convert_sse2.as_ptr()
             as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
-            == 0i32 as libc::c_ulong
+            & (((1 as libc::c_int) << 4 as libc::c_int) - 1 as libc::c_int) as libc::c_ulong
+            == 0 as libc::c_int as libc::c_ulong
     {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_can_rgb_gray() -> libc::c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
-        return 0i32;
+    if crate::jconfig_h::BITS_IN_JSAMPLE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
     if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
-        != 4i32 as libc::c_ulong
+        != 4 as libc::c_int as libc::c_ulong
     {
-        return 0i32;
+        return 0 as libc::c_int;
     }
-    if crate::jmorecfg_h::RGB_PIXELSIZE != 3i32 && crate::jmorecfg_h::RGB_PIXELSIZE != 4i32 {
-        return 0i32;
+    if crate::jmorecfg_h::RGB_PIXELSIZE != 3 as libc::c_int
+        && crate::jmorecfg_h::RGB_PIXELSIZE != 4 as libc::c_int
+    {
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0
         && crate::src::simd::x86_64::jsimd::jconst_rgb_gray_convert_avx2.as_ptr()
             as crate::stddef_h::size_t
-            & ((1i32 << 5i32) - 1i32) as libc::c_ulong
-            == 0i32 as libc::c_ulong
+            & (((1 as libc::c_int) << 5 as libc::c_int) - 1 as libc::c_int) as libc::c_ulong
+            == 0 as libc::c_int as libc::c_ulong
     {
-        return 1i32;
+        return 1 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
         && crate::src::simd::x86_64::jsimd::jconst_rgb_gray_convert_sse2.as_ptr()
             as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
-            == 0i32 as libc::c_ulong
+            & (((1 as libc::c_int) << 4 as libc::c_int) - 1 as libc::c_int) as libc::c_ulong
+            == 0 as libc::c_int as libc::c_ulong
     {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_can_ycc_rgb() -> libc::c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
-        return 0i32;
+    if crate::jconfig_h::BITS_IN_JSAMPLE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
     if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
-        != 4i32 as libc::c_ulong
+        != 4 as libc::c_int as libc::c_ulong
     {
-        return 0i32;
+        return 0 as libc::c_int;
     }
-    if crate::jmorecfg_h::RGB_PIXELSIZE != 3i32 && crate::jmorecfg_h::RGB_PIXELSIZE != 4i32 {
-        return 0i32;
+    if crate::jmorecfg_h::RGB_PIXELSIZE != 3 as libc::c_int
+        && crate::jmorecfg_h::RGB_PIXELSIZE != 4 as libc::c_int
+    {
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0
         && crate::src::simd::x86_64::jsimd::jconst_ycc_rgb_convert_avx2.as_ptr()
             as crate::stddef_h::size_t
-            & ((1i32 << 5i32) - 1i32) as libc::c_ulong
-            == 0i32 as libc::c_ulong
+            & (((1 as libc::c_int) << 5 as libc::c_int) - 1 as libc::c_int) as libc::c_ulong
+            == 0 as libc::c_int as libc::c_ulong
     {
-        return 1i32;
+        return 1 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
         && crate::src::simd::x86_64::jsimd::jconst_ycc_rgb_convert_sse2.as_ptr()
             as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
-            == 0i32 as libc::c_ulong
+            & (((1 as libc::c_int) << 4 as libc::c_int) - 1 as libc::c_int) as libc::c_ulong
+            == 0 as libc::c_int as libc::c_ulong
     {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_can_ycc_rgb565() -> libc::c_int {
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
@@ -1831,42 +1841,42 @@ pub unsafe extern "C" fn jsimd_ycc_rgb565_convert(
 pub unsafe extern "C" fn jsimd_can_h2v2_downsample() -> libc::c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
-        return 0i32;
+    if crate::jconfig_h::BITS_IN_JSAMPLE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
     if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
-        != 4i32 as libc::c_ulong
+        != 4 as libc::c_int as libc::c_ulong
     {
-        return 0i32;
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
-        return 1i32;
+        return 1 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0 {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_can_h2v1_downsample() -> libc::c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
-        return 0i32;
+    if crate::jconfig_h::BITS_IN_JSAMPLE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
     if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
-        != 4i32 as libc::c_ulong
+        != 4 as libc::c_int as libc::c_ulong
     {
-        return 0i32;
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
-        return 1i32;
+        return 1 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0 {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
@@ -1929,42 +1939,42 @@ pub unsafe extern "C" fn jsimd_h2v1_downsample(
 pub unsafe extern "C" fn jsimd_can_h2v2_upsample() -> libc::c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
-        return 0i32;
+    if crate::jconfig_h::BITS_IN_JSAMPLE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
     if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
-        != 4i32 as libc::c_ulong
+        != 4 as libc::c_int as libc::c_ulong
     {
-        return 0i32;
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
-        return 1i32;
+        return 1 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0 {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_can_h2v1_upsample() -> libc::c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
-        return 0i32;
+    if crate::jconfig_h::BITS_IN_JSAMPLE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
     if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
-        != 4i32 as libc::c_ulong
+        != 4 as libc::c_int as libc::c_ulong
     {
-        return 0i32;
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
-        return 1i32;
+        return 1 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0 {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
@@ -2019,62 +2029,62 @@ pub unsafe extern "C" fn jsimd_h2v1_upsample(
 pub unsafe extern "C" fn jsimd_can_h2v2_fancy_upsample() -> libc::c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
-        return 0i32;
+    if crate::jconfig_h::BITS_IN_JSAMPLE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
     if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
-        != 4i32 as libc::c_ulong
+        != 4 as libc::c_int as libc::c_ulong
     {
-        return 0i32;
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0
         && crate::src::simd::x86_64::jsimd::jconst_fancy_upsample_avx2.as_ptr()
             as crate::stddef_h::size_t
-            & ((1i32 << 5i32) - 1i32) as libc::c_ulong
-            == 0i32 as libc::c_ulong
+            & (((1 as libc::c_int) << 5 as libc::c_int) - 1 as libc::c_int) as libc::c_ulong
+            == 0 as libc::c_int as libc::c_ulong
     {
-        return 1i32;
+        return 1 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
         && crate::src::simd::x86_64::jsimd::jconst_fancy_upsample_sse2.as_ptr()
             as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
-            == 0i32 as libc::c_ulong
+            & (((1 as libc::c_int) << 4 as libc::c_int) - 1 as libc::c_int) as libc::c_ulong
+            == 0 as libc::c_int as libc::c_ulong
     {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_can_h2v1_fancy_upsample() -> libc::c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
-        return 0i32;
+    if crate::jconfig_h::BITS_IN_JSAMPLE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
     if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
-        != 4i32 as libc::c_ulong
+        != 4 as libc::c_int as libc::c_ulong
     {
-        return 0i32;
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0
         && crate::src::simd::x86_64::jsimd::jconst_fancy_upsample_avx2.as_ptr()
             as crate::stddef_h::size_t
-            & ((1i32 << 5i32) - 1i32) as libc::c_ulong
-            == 0i32 as libc::c_ulong
+            & (((1 as libc::c_int) << 5 as libc::c_int) - 1 as libc::c_int) as libc::c_ulong
+            == 0 as libc::c_int as libc::c_ulong
     {
-        return 1i32;
+        return 1 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
         && crate::src::simd::x86_64::jsimd::jconst_fancy_upsample_sse2.as_ptr()
             as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
-            == 0i32 as libc::c_ulong
+            & (((1 as libc::c_int) << 4 as libc::c_int) - 1 as libc::c_int) as libc::c_ulong
+            == 0 as libc::c_int as libc::c_ulong
     {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
@@ -2129,62 +2139,62 @@ pub unsafe extern "C" fn jsimd_h2v1_fancy_upsample(
 pub unsafe extern "C" fn jsimd_can_h2v2_merged_upsample() -> libc::c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
-        return 0i32;
+    if crate::jconfig_h::BITS_IN_JSAMPLE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
     if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
-        != 4i32 as libc::c_ulong
+        != 4 as libc::c_int as libc::c_ulong
     {
-        return 0i32;
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0
         && crate::src::simd::x86_64::jsimd::jconst_merged_upsample_avx2.as_ptr()
             as crate::stddef_h::size_t
-            & ((1i32 << 5i32) - 1i32) as libc::c_ulong
-            == 0i32 as libc::c_ulong
+            & (((1 as libc::c_int) << 5 as libc::c_int) - 1 as libc::c_int) as libc::c_ulong
+            == 0 as libc::c_int as libc::c_ulong
     {
-        return 1i32;
+        return 1 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
         && crate::src::simd::x86_64::jsimd::jconst_merged_upsample_sse2.as_ptr()
             as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
-            == 0i32 as libc::c_ulong
+            & (((1 as libc::c_int) << 4 as libc::c_int) - 1 as libc::c_int) as libc::c_ulong
+            == 0 as libc::c_int as libc::c_ulong
     {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_can_h2v1_merged_upsample() -> libc::c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
-        return 0i32;
+    if crate::jconfig_h::BITS_IN_JSAMPLE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
     if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
-        != 4i32 as libc::c_ulong
+        != 4 as libc::c_int as libc::c_ulong
     {
-        return 0i32;
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0
         && crate::src::simd::x86_64::jsimd::jconst_merged_upsample_avx2.as_ptr()
             as crate::stddef_h::size_t
-            & ((1i32 << 5i32) - 1i32) as libc::c_ulong
-            == 0i32 as libc::c_ulong
+            & (((1 as libc::c_int) << 5 as libc::c_int) - 1 as libc::c_int) as libc::c_ulong
+            == 0 as libc::c_int as libc::c_ulong
     {
-        return 1i32;
+        return 1 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
         && crate::src::simd::x86_64::jsimd::jconst_merged_upsample_sse2.as_ptr()
             as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
-            == 0i32 as libc::c_ulong
+            & (((1 as libc::c_int) << 4 as libc::c_int) - 1 as libc::c_int) as libc::c_ulong
+            == 0 as libc::c_int as libc::c_ulong
     {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
@@ -2565,51 +2575,54 @@ pub unsafe extern "C" fn jsimd_h2v1_merged_upsample(
 pub unsafe extern "C" fn jsimd_can_convsamp() -> libc::c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
-        return 0i32;
+    if crate::jpeglib_h::DCTSIZE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
-        return 0i32;
+    if crate::jconfig_h::BITS_IN_JSAMPLE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
     if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
-        != 4i32 as libc::c_ulong
+        != 4 as libc::c_int as libc::c_ulong
     {
-        return 0i32;
+        return 0 as libc::c_int;
     }
-    if ::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong != 2i32 as libc::c_ulong {
-        return 0i32;
+    if ::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong
+        != 2 as libc::c_int as libc::c_ulong
+    {
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
-        return 1i32;
+        return 1 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0 {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_can_convsamp_float() -> libc::c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
-        return 0i32;
+    if crate::jpeglib_h::DCTSIZE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
-        return 0i32;
+    if crate::jconfig_h::BITS_IN_JSAMPLE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
     if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
-        != 4i32 as libc::c_ulong
+        != 4 as libc::c_int as libc::c_ulong
     {
-        return 0i32;
+        return 0 as libc::c_int;
     }
-    if ::std::mem::size_of::<libc::c_float>() as libc::c_ulong != 4i32 as libc::c_ulong {
-        return 0i32;
+    if ::std::mem::size_of::<libc::c_float>() as libc::c_ulong != 4 as libc::c_int as libc::c_ulong
+    {
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0 {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
@@ -2638,71 +2651,76 @@ pub unsafe extern "C" fn jsimd_convsamp_float(
 pub unsafe extern "C" fn jsimd_can_fdct_islow() -> libc::c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
-        return 0i32;
+    if crate::jpeglib_h::DCTSIZE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
-    if ::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong != 2i32 as libc::c_ulong {
-        return 0i32;
+    if ::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong
+        != 2 as libc::c_int as libc::c_ulong
+    {
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0
         && crate::src::simd::x86_64::jsimd::jconst_fdct_islow_avx2.as_ptr()
             as crate::stddef_h::size_t
-            & ((1i32 << 5i32) - 1i32) as libc::c_ulong
-            == 0i32 as libc::c_ulong
+            & (((1 as libc::c_int) << 5 as libc::c_int) - 1 as libc::c_int) as libc::c_ulong
+            == 0 as libc::c_int as libc::c_ulong
     {
-        return 1i32;
+        return 1 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
         && crate::src::simd::x86_64::jsimd::jconst_fdct_islow_sse2.as_ptr()
             as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
-            == 0i32 as libc::c_ulong
+            & (((1 as libc::c_int) << 4 as libc::c_int) - 1 as libc::c_int) as libc::c_ulong
+            == 0 as libc::c_int as libc::c_ulong
     {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_can_fdct_ifast() -> libc::c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
-        return 0i32;
+    if crate::jpeglib_h::DCTSIZE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
-    if ::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong != 2i32 as libc::c_ulong {
-        return 0i32;
+    if ::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong
+        != 2 as libc::c_int as libc::c_ulong
+    {
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
         && crate::src::simd::x86_64::jsimd::jconst_fdct_ifast_sse2.as_ptr()
             as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
-            == 0i32 as libc::c_ulong
+            & (((1 as libc::c_int) << 4 as libc::c_int) - 1 as libc::c_int) as libc::c_ulong
+            == 0 as libc::c_int as libc::c_ulong
     {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_can_fdct_float() -> libc::c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
-        return 0i32;
+    if crate::jpeglib_h::DCTSIZE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
-    if ::std::mem::size_of::<libc::c_float>() as libc::c_ulong != 4i32 as libc::c_ulong {
-        return 0i32;
+    if ::std::mem::size_of::<libc::c_float>() as libc::c_ulong != 4 as libc::c_int as libc::c_ulong
+    {
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE as libc::c_uint != 0
         && crate::src::simd::x86_64::jsimd::jconst_fdct_float_sse.as_ptr()
             as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
-            == 0i32 as libc::c_ulong
+            & (((1 as libc::c_int) << 4 as libc::c_int) - 1 as libc::c_int) as libc::c_ulong
+            == 0 as libc::c_int as libc::c_ulong
     {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
@@ -2728,41 +2746,48 @@ pub unsafe extern "C" fn jsimd_fdct_float(mut data: *mut libc::c_float) {
 pub unsafe extern "C" fn jsimd_can_quantize() -> libc::c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
-        return 0i32;
+    if crate::jpeglib_h::DCTSIZE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong != 2i32 as libc::c_ulong {
-        return 0i32;
+    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong
+        != 2 as libc::c_int as libc::c_ulong
+    {
+        return 0 as libc::c_int;
     }
-    if ::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong != 2i32 as libc::c_ulong {
-        return 0i32;
+    if ::std::mem::size_of::<crate::jdct_h::DCTELEM>() as libc::c_ulong
+        != 2 as libc::c_int as libc::c_ulong
+    {
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0 {
-        return 1i32;
+        return 1 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0 {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_can_quantize_float() -> libc::c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
-        return 0i32;
+    if crate::jpeglib_h::DCTSIZE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong != 2i32 as libc::c_ulong {
-        return 0i32;
+    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong
+        != 2 as libc::c_int as libc::c_ulong
+    {
+        return 0 as libc::c_int;
     }
-    if ::std::mem::size_of::<libc::c_float>() as libc::c_ulong != 4i32 as libc::c_ulong {
-        return 0i32;
+    if ::std::mem::size_of::<libc::c_float>() as libc::c_ulong != 4 as libc::c_int as libc::c_ulong
+    {
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0 {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
@@ -2791,66 +2816,70 @@ pub unsafe extern "C" fn jsimd_quantize_float(
 pub unsafe extern "C" fn jsimd_can_idct_2x2() -> libc::c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
-        return 0i32;
+    if crate::jpeglib_h::DCTSIZE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong != 2i32 as libc::c_ulong {
-        return 0i32;
+    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong
+        != 2 as libc::c_int as libc::c_ulong
+    {
+        return 0 as libc::c_int;
     }
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
-        return 0i32;
+    if crate::jconfig_h::BITS_IN_JSAMPLE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
     if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
-        != 4i32 as libc::c_ulong
+        != 4 as libc::c_int as libc::c_ulong
     {
-        return 0i32;
+        return 0 as libc::c_int;
     }
     if ::std::mem::size_of::<crate::jdct_h::ISLOW_MULT_TYPE>() as libc::c_ulong
-        != 2i32 as libc::c_ulong
+        != 2 as libc::c_int as libc::c_ulong
     {
-        return 0i32;
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
         && crate::src::simd::x86_64::jsimd::jconst_idct_red_sse2.as_ptr() as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
-            == 0i32 as libc::c_ulong
+            & (((1 as libc::c_int) << 4 as libc::c_int) - 1 as libc::c_int) as libc::c_ulong
+            == 0 as libc::c_int as libc::c_ulong
     {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_can_idct_4x4() -> libc::c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
-        return 0i32;
+    if crate::jpeglib_h::DCTSIZE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong != 2i32 as libc::c_ulong {
-        return 0i32;
+    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong
+        != 2 as libc::c_int as libc::c_ulong
+    {
+        return 0 as libc::c_int;
     }
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
-        return 0i32;
+    if crate::jconfig_h::BITS_IN_JSAMPLE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
     if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
-        != 4i32 as libc::c_ulong
+        != 4 as libc::c_int as libc::c_ulong
     {
-        return 0i32;
+        return 0 as libc::c_int;
     }
     if ::std::mem::size_of::<crate::jdct_h::ISLOW_MULT_TYPE>() as libc::c_ulong
-        != 2i32 as libc::c_ulong
+        != 2 as libc::c_int as libc::c_ulong
     {
-        return 0i32;
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
         && crate::src::simd::x86_64::jsimd::jconst_idct_red_sse2.as_ptr() as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
-            == 0i32 as libc::c_ulong
+            & (((1 as libc::c_int) << 4 as libc::c_int) - 1 as libc::c_int) as libc::c_ulong
+            == 0 as libc::c_int as libc::c_ulong
     {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
@@ -2889,115 +2918,122 @@ pub unsafe extern "C" fn jsimd_idct_4x4(
 pub unsafe extern "C" fn jsimd_can_idct_islow() -> libc::c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
-        return 0i32;
+    if crate::jpeglib_h::DCTSIZE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong != 2i32 as libc::c_ulong {
-        return 0i32;
+    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong
+        != 2 as libc::c_int as libc::c_ulong
+    {
+        return 0 as libc::c_int;
     }
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
-        return 0i32;
+    if crate::jconfig_h::BITS_IN_JSAMPLE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
     if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
-        != 4i32 as libc::c_ulong
+        != 4 as libc::c_int as libc::c_ulong
     {
-        return 0i32;
+        return 0 as libc::c_int;
     }
     if ::std::mem::size_of::<crate::jdct_h::ISLOW_MULT_TYPE>() as libc::c_ulong
-        != 2i32 as libc::c_ulong
+        != 2 as libc::c_int as libc::c_ulong
     {
-        return 0i32;
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_AVX2 as libc::c_uint != 0
         && crate::src::simd::x86_64::jsimd::jconst_idct_islow_avx2.as_ptr()
             as crate::stddef_h::size_t
-            & ((1i32 << 5i32) - 1i32) as libc::c_ulong
-            == 0i32 as libc::c_ulong
+            & (((1 as libc::c_int) << 5 as libc::c_int) - 1 as libc::c_int) as libc::c_ulong
+            == 0 as libc::c_int as libc::c_ulong
     {
-        return 1i32;
+        return 1 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
         && crate::src::simd::x86_64::jsimd::jconst_idct_islow_sse2.as_ptr()
             as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
-            == 0i32 as libc::c_ulong
+            & (((1 as libc::c_int) << 4 as libc::c_int) - 1 as libc::c_int) as libc::c_ulong
+            == 0 as libc::c_int as libc::c_ulong
     {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_can_idct_ifast() -> libc::c_int {
     init_simd();
     /* The code is optimised for these values only */
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
-        return 0i32;
+    if crate::jpeglib_h::DCTSIZE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong != 2i32 as libc::c_ulong {
-        return 0i32;
+    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong
+        != 2 as libc::c_int as libc::c_ulong
+    {
+        return 0 as libc::c_int;
     }
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
-        return 0i32;
+    if crate::jconfig_h::BITS_IN_JSAMPLE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
     if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
-        != 4i32 as libc::c_ulong
+        != 4 as libc::c_int as libc::c_ulong
     {
-        return 0i32;
+        return 0 as libc::c_int;
     }
     if ::std::mem::size_of::<crate::jdct_h::IFAST_MULT_TYPE>() as libc::c_ulong
-        != 2i32 as libc::c_ulong
+        != 2 as libc::c_int as libc::c_ulong
     {
-        return 0i32;
+        return 0 as libc::c_int;
     }
-    if crate::jdct_h::IFAST_SCALE_BITS != 2i32 {
-        return 0i32;
+    if crate::jdct_h::IFAST_SCALE_BITS != 2 as libc::c_int {
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
         && crate::src::simd::x86_64::jsimd::jconst_idct_ifast_sse2.as_ptr()
             as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
-            == 0i32 as libc::c_ulong
+            & (((1 as libc::c_int) << 4 as libc::c_int) - 1 as libc::c_int) as libc::c_ulong
+            == 0 as libc::c_int as libc::c_ulong
     {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
 pub unsafe extern "C" fn jsimd_can_idct_float() -> libc::c_int {
     init_simd();
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
-        return 0i32;
+    if crate::jpeglib_h::DCTSIZE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong != 2i32 as libc::c_ulong {
-        return 0i32;
+    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong
+        != 2 as libc::c_int as libc::c_ulong
+    {
+        return 0 as libc::c_int;
     }
-    if crate::jconfig_h::BITS_IN_JSAMPLE != 8i32 {
-        return 0i32;
+    if crate::jconfig_h::BITS_IN_JSAMPLE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
     if ::std::mem::size_of::<crate::jmorecfg_h::JDIMENSION>() as libc::c_ulong
-        != 4i32 as libc::c_ulong
+        != 4 as libc::c_int as libc::c_ulong
     {
-        return 0i32;
+        return 0 as libc::c_int;
     }
-    if ::std::mem::size_of::<libc::c_float>() as libc::c_ulong != 4i32 as libc::c_ulong {
-        return 0i32;
+    if ::std::mem::size_of::<libc::c_float>() as libc::c_ulong != 4 as libc::c_int as libc::c_ulong
+    {
+        return 0 as libc::c_int;
     }
     if ::std::mem::size_of::<crate::jdct_h::FLOAT_MULT_TYPE>() as libc::c_ulong
-        != 4i32 as libc::c_ulong
+        != 4 as libc::c_int as libc::c_ulong
     {
-        return 0i32;
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
         && crate::src::simd::x86_64::jsimd::jconst_idct_float_sse2.as_ptr()
             as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
-            == 0i32 as libc::c_ulong
+            & (((1 as libc::c_int) << 4 as libc::c_int) - 1 as libc::c_int) as libc::c_ulong
+            == 0 as libc::c_int as libc::c_ulong
     {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
@@ -3060,22 +3096,24 @@ pub unsafe extern "C" fn jsimd_idct_float(
 
 pub unsafe extern "C" fn jsimd_can_huff_encode_one_block() -> libc::c_int {
     init_simd();
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
-        return 0i32;
+    if crate::jpeglib_h::DCTSIZE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong != 2i32 as libc::c_ulong {
-        return 0i32;
+    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong
+        != 2 as libc::c_int as libc::c_ulong
+    {
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0
         && simd_huffman != 0
         && crate::src::simd::x86_64::jsimd::jconst_huff_encode_one_block.as_ptr()
             as crate::stddef_h::size_t
-            & ((1i32 << 4i32) - 1i32) as libc::c_ulong
-            == 0i32 as libc::c_ulong
+            & (((1 as libc::c_int) << 4 as libc::c_int) - 1 as libc::c_int) as libc::c_ulong
+            == 0 as libc::c_int as libc::c_ulong
     {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
@@ -3100,19 +3138,21 @@ pub unsafe extern "C" fn jsimd_huff_encode_one_block(
 
 pub unsafe extern "C" fn jsimd_can_encode_mcu_AC_first_prepare() -> libc::c_int {
     init_simd();
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
-        return 0i32;
+    if crate::jpeglib_h::DCTSIZE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong != 2i32 as libc::c_ulong {
-        return 0i32;
+    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong
+        != 2 as libc::c_int as libc::c_ulong
+    {
+        return 0 as libc::c_int;
     }
-    if crate::jconfigint_h::SIZEOF_SIZE_T != 8i32 {
-        return 0i32;
+    if crate::jconfigint_h::SIZEOF_SIZE_T != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0 {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 
@@ -3137,19 +3177,21 @@ pub unsafe extern "C" fn jsimd_encode_mcu_AC_first_prepare(
 
 pub unsafe extern "C" fn jsimd_can_encode_mcu_AC_refine_prepare() -> libc::c_int {
     init_simd();
-    if crate::jpeglib_h::DCTSIZE != 8i32 {
-        return 0i32;
+    if crate::jpeglib_h::DCTSIZE != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
-    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong != 2i32 as libc::c_ulong {
-        return 0i32;
+    if ::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong
+        != 2 as libc::c_int as libc::c_ulong
+    {
+        return 0 as libc::c_int;
     }
-    if crate::jconfigint_h::SIZEOF_SIZE_T != 8i32 {
-        return 0i32;
+    if crate::jconfigint_h::SIZEOF_SIZE_T != 8 as libc::c_int {
+        return 0 as libc::c_int;
     }
     if simd_support & crate::src::simd::x86_64::jsimd::JSIMD_SSE2 as libc::c_uint != 0 {
-        return 1i32;
+        return 1 as libc::c_int;
     }
-    return 0i32;
+    return 0 as libc::c_int;
 }
 #[no_mangle]
 

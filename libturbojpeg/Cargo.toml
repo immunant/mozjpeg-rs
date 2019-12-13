@@ -8,7 +8,7 @@ edition = "2018"
 [lib]
 name = "turbojpeg"
 path = "lib.rs"
-crate_type = ["dylib"]
+crate_type = ["cdylib"]
 
 [dependencies]
 libc = "0.2"

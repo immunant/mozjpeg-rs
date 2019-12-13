@@ -1,6 +1,6 @@
-use libc;
+use ::libc;
 
-#[header_src = "/home/sjcrane/projects/c2rust/mozjpeg/mozjpeg-c2rust/mozjpeg-c/jmorecfg.h:22"]
+#[c2rust::header_src = "/home/sjcrane/projects/c2rust/mozjpeg/mozjpeg-c2rust/mozjpeg-c/jmorecfg.h:22"]
 pub mod jmorecfg_h {
     /*
      * jmorecfg.h
@@ -176,13 +176,73 @@ pub mod jmorecfg_h {
     /* Offset of Blue */
     /* JSAMPLEs per RGB scanline element */
 
+    pub static mut rgb_red: [libc::c_int; 17] = [
+        -(1 as libc::c_int),
+        -(1 as libc::c_int),
+        crate::jmorecfg_h::RGB_RED,
+        -(1 as libc::c_int),
+        -(1 as libc::c_int),
+        -(1 as libc::c_int),
+        crate::jmorecfg_h::EXT_RGB_RED,
+        crate::jmorecfg_h::EXT_RGBX_RED,
+        crate::jmorecfg_h::EXT_BGR_RED,
+        crate::jmorecfg_h::EXT_BGRX_RED,
+        crate::jmorecfg_h::EXT_XBGR_RED,
+        crate::jmorecfg_h::EXT_XRGB_RED,
+        crate::jmorecfg_h::EXT_RGBX_RED,
+        crate::jmorecfg_h::EXT_BGRX_RED,
+        crate::jmorecfg_h::EXT_XBGR_RED,
+        crate::jmorecfg_h::EXT_XRGB_RED,
+        -(1 as libc::c_int),
+    ];
+
+    pub static mut rgb_green: [libc::c_int; 17] = [
+        -(1 as libc::c_int),
+        -(1 as libc::c_int),
+        crate::jmorecfg_h::RGB_GREEN,
+        -(1 as libc::c_int),
+        -(1 as libc::c_int),
+        -(1 as libc::c_int),
+        crate::jmorecfg_h::EXT_RGB_GREEN,
+        crate::jmorecfg_h::EXT_RGBX_GREEN,
+        crate::jmorecfg_h::EXT_BGR_GREEN,
+        crate::jmorecfg_h::EXT_BGRX_GREEN,
+        crate::jmorecfg_h::EXT_XBGR_GREEN,
+        crate::jmorecfg_h::EXT_XRGB_GREEN,
+        crate::jmorecfg_h::EXT_RGBX_GREEN,
+        crate::jmorecfg_h::EXT_BGRX_GREEN,
+        crate::jmorecfg_h::EXT_XBGR_GREEN,
+        crate::jmorecfg_h::EXT_XRGB_GREEN,
+        -(1 as libc::c_int),
+    ];
+
+    pub static mut rgb_blue: [libc::c_int; 17] = [
+        -(1 as libc::c_int),
+        -(1 as libc::c_int),
+        crate::jmorecfg_h::RGB_BLUE,
+        -(1 as libc::c_int),
+        -(1 as libc::c_int),
+        -(1 as libc::c_int),
+        crate::jmorecfg_h::EXT_RGB_BLUE,
+        crate::jmorecfg_h::EXT_RGBX_BLUE,
+        crate::jmorecfg_h::EXT_BGR_BLUE,
+        crate::jmorecfg_h::EXT_BGRX_BLUE,
+        crate::jmorecfg_h::EXT_XBGR_BLUE,
+        crate::jmorecfg_h::EXT_XRGB_BLUE,
+        crate::jmorecfg_h::EXT_RGBX_BLUE,
+        crate::jmorecfg_h::EXT_BGRX_BLUE,
+        crate::jmorecfg_h::EXT_XBGR_BLUE,
+        crate::jmorecfg_h::EXT_XRGB_BLUE,
+        -(1 as libc::c_int),
+    ];
+
     pub static mut rgb_pixelsize: [libc::c_int; 17] = [
-        -1i32,
-        -1i32,
+        -(1 as libc::c_int),
+        -(1 as libc::c_int),
         crate::jmorecfg_h::RGB_PIXELSIZE,
-        -1i32,
-        -1i32,
-        -1i32,
+        -(1 as libc::c_int),
+        -(1 as libc::c_int),
+        -(1 as libc::c_int),
         crate::jmorecfg_h::EXT_RGB_PIXELSIZE,
         crate::jmorecfg_h::EXT_RGBX_PIXELSIZE,
         crate::jmorecfg_h::EXT_BGR_PIXELSIZE,
@@ -193,7 +253,7 @@ pub mod jmorecfg_h {
         crate::jmorecfg_h::EXT_BGRX_PIXELSIZE,
         crate::jmorecfg_h::EXT_XBGR_PIXELSIZE,
         crate::jmorecfg_h::EXT_XRGB_PIXELSIZE,
-        -1i32,
+        -(1 as libc::c_int),
     ];
 
     /* JPEG_INTERNAL_OPTIONS */
@@ -209,7 +269,46 @@ pub mod jmorecfg_h {
     /* Definitions for speed-related optimizations. */
 }
 
+#[c2rust::header_src = "/home/sjcrane/projects/c2rust/mozjpeg/mozjpeg-c2rust/mozjpeg-c/cmyk.h:22"]
+pub mod cmyk_h {
+    /*
+     * cmyk.h
+     *
+     * Copyright (C) 2017-2018, D. R. Commander.
+     * For conditions of distribution and use, see the accompanying README.ijg
+     * file.
+     *
+     * This file contains convenience functions for performing quick & dirty
+     * CMYK<->RGB conversion.  This algorithm is suitable for testing purposes
+     * only.  Properly converting between CMYK and RGB requires a color management
+     * system.
+     */
+    /* Fully reversible */
+    /* Fully reversible only for C/M/Y/K values generated with rgb_to_cmyk() */
+    #[inline(always)]
+
+    pub unsafe extern "C" fn cmyk_to_rgb(
+        mut c: crate::jmorecfg_h::JSAMPLE,
+        mut m: crate::jmorecfg_h::JSAMPLE,
+        mut y: crate::jmorecfg_h::JSAMPLE,
+        mut k: crate::jmorecfg_h::JSAMPLE,
+        mut r: *mut crate::jmorecfg_h::JSAMPLE,
+        mut g: *mut crate::jmorecfg_h::JSAMPLE,
+        mut b: *mut crate::jmorecfg_h::JSAMPLE,
+    ) {
+        *r = (c as libc::c_double * k as libc::c_double / 255.0f64 + 0.5f64)
+            as crate::jmorecfg_h::JSAMPLE;
+        *g = (m as libc::c_double * k as libc::c_double / 255.0f64 + 0.5f64)
+            as crate::jmorecfg_h::JSAMPLE;
+        *b = (y as libc::c_double * k as libc::c_double / 255.0f64 + 0.5f64)
+            as crate::jmorecfg_h::JSAMPLE;
+    }
+    use crate::jmorecfg_h::JSAMPLE;
+    /* CMYK_H */
+}
+
 pub use crate::stddef_h::size_t;
+
 pub use crate::stdlib::_IO_codecvt;
 pub use crate::stdlib::_IO_lock_t;
 pub use crate::stdlib::_IO_marker;
@@ -219,7 +318,6 @@ pub use crate::stdlib::__off_t;
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::_IO_FILE;
 
-pub use crate::cderror_h::C2RustUnnamed_4;
 pub use crate::cderror_h::JERR_BAD_CMAP_FILE;
 pub use crate::cderror_h::JERR_BMP_BADCMAP;
 pub use crate::cderror_h::JERR_BMP_BADDEPTH;
@@ -267,12 +365,10 @@ pub use crate::cderror_h::JWRN_GIF_BADDATA;
 pub use crate::cderror_h::JWRN_GIF_CHAR;
 pub use crate::cderror_h::JWRN_GIF_ENDCODE;
 pub use crate::cderror_h::JWRN_GIF_NOMOREDATA;
-pub use crate::cmyk_h::cmyk_to_rgb;
+pub use crate::cdjpeg_h::djpeg_dest_ptr;
+pub use crate::cdjpeg_h::djpeg_dest_struct;
 pub use crate::jconfig_h::BITS_IN_JSAMPLE;
 pub use crate::jmorecfg_h::boolean;
-pub use crate::jmorecfg_h::rgb_blue;
-pub use crate::jmorecfg_h::rgb_green;
-pub use crate::jmorecfg_h::rgb_red;
 pub use crate::jmorecfg_h::EXT_BGRX_BLUE;
 pub use crate::jmorecfg_h::EXT_BGRX_GREEN;
 pub use crate::jmorecfg_h::EXT_BGRX_PIXELSIZE;
@@ -308,6 +404,17 @@ pub use crate::jmorecfg_h::RGB_RED;
 pub use crate::jmorecfg_h::UINT16;
 pub use crate::jmorecfg_h::UINT8;
 pub use crate::jpegint_h::inverse_DCT_method_ptr;
+pub use crate::jpegint_h::jpeg_color_deconverter;
+pub use crate::jpegint_h::jpeg_color_quantizer;
+pub use crate::jpegint_h::jpeg_d_coef_controller;
+pub use crate::jpegint_h::jpeg_d_main_controller;
+pub use crate::jpegint_h::jpeg_d_post_controller;
+pub use crate::jpegint_h::jpeg_decomp_master;
+pub use crate::jpegint_h::jpeg_entropy_decoder;
+pub use crate::jpegint_h::jpeg_input_controller;
+pub use crate::jpegint_h::jpeg_inverse_dct;
+pub use crate::jpegint_h::jpeg_marker_reader;
+pub use crate::jpegint_h::jpeg_upsampler;
 pub use crate::jpegint_h::JBUF_CRANK_DEST;
 pub use crate::jpegint_h::JBUF_PASS_THRU;
 pub use crate::jpegint_h::JBUF_REQUANT;
@@ -316,28 +423,16 @@ pub use crate::jpegint_h::JBUF_SAVE_SOURCE;
 pub use crate::jpegint_h::J_BUF_MODE;
 pub use crate::jpeglib_h::j_common_ptr;
 pub use crate::jpeglib_h::j_decompress_ptr;
-pub use crate::jpeglib_h::jpeg_calc_output_dimensions;
-pub use crate::jpeglib_h::jpeg_color_deconverter;
-pub use crate::jpeglib_h::jpeg_color_quantizer;
 pub use crate::jpeglib_h::jpeg_common_struct;
 pub use crate::jpeglib_h::jpeg_component_info;
-pub use crate::jpeglib_h::jpeg_d_coef_controller;
-pub use crate::jpeglib_h::jpeg_d_main_controller;
-pub use crate::jpeglib_h::jpeg_d_post_controller;
-pub use crate::jpeglib_h::jpeg_decomp_master;
 pub use crate::jpeglib_h::jpeg_decompress_struct;
-pub use crate::jpeglib_h::jpeg_entropy_decoder;
 pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_input_controller;
-pub use crate::jpeglib_h::jpeg_inverse_dct;
 pub use crate::jpeglib_h::jpeg_marker_parser_method;
-pub use crate::jpeglib_h::jpeg_marker_reader;
 pub use crate::jpeglib_h::jpeg_marker_struct;
 pub use crate::jpeglib_h::jpeg_memory_mgr;
 pub use crate::jpeglib_h::jpeg_progress_mgr;
 pub use crate::jpeglib_h::jpeg_saved_marker_ptr;
 pub use crate::jpeglib_h::jpeg_source_mgr;
-pub use crate::jpeglib_h::jpeg_upsampler;
 pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
@@ -379,9 +474,7 @@ pub use crate::jpeglib_h::JSAMPROW;
 pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::jpeglib_h::J_DITHER_MODE;
-pub use crate::src::cdjpeg::djpeg_dest_ptr;
-pub use crate::src::cdjpeg::djpeg_dest_struct;
-pub use crate::src::jerror::C2RustUnnamed_3;
+pub use crate::src::jdmaster::jpeg_calc_output_dimensions;
 pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -512,19 +605,24 @@ pub use crate::src::jerror::JWRN_JPEG_EOF;
 pub use crate::src::jerror::JWRN_MUST_RESYNC;
 pub use crate::src::jerror::JWRN_NOT_SEQUENTIAL;
 pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
+pub use crate::src::wrppm::cmyk_h::cmyk_to_rgb;
+pub use crate::src::wrppm::jmorecfg_h::rgb_blue;
+pub use crate::src::wrppm::jmorecfg_h::rgb_green;
 pub use crate::src::wrppm::jmorecfg_h::rgb_pixelsize;
+pub use crate::src::wrppm::jmorecfg_h::rgb_red;
 use crate::stdlib::ferror;
 use crate::stdlib::fflush;
 use crate::stdlib::fprintf;
 use crate::stdlib::fwrite;
 use crate::stdlib::memcpy;
+pub use crate::stdlib::C2RustUnnamed_0;
 
 pub type ppm_dest_ptr = *mut ppm_dest_struct;
 
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct ppm_dest_struct {
-    pub pub_0: crate::src::cdjpeg::djpeg_dest_struct,
+    pub pub_0: crate::cdjpeg_h::djpeg_dest_struct,
     pub iobuffer: *mut libc::c_char,
     pub pixrow: crate::jpeglib_h::JSAMPROW,
     pub buffer_width: crate::stddef_h::size_t,
@@ -560,9 +658,9 @@ pub struct ppm_dest_struct {
  * implementation will be to ask for that instead.)
  */
 
-pub const BYTESPERSAMPLE: libc::c_int = 1i32;
+pub const BYTESPERSAMPLE: libc::c_int = 1 as libc::c_int;
 
-pub const PPM_MAXVAL: libc::c_int = 255i32;
+pub const PPM_MAXVAL: libc::c_int = 255 as libc::c_int;
 /*
  * Write some pixel data.
  * In this module rows_supplied will always be 1.
@@ -573,13 +671,13 @@ pub const PPM_MAXVAL: libc::c_int = 255i32;
 
 unsafe extern "C" fn put_pixel_rows(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
+    mut dinfo: crate::cdjpeg_h::djpeg_dest_ptr,
     mut rows_supplied: crate::jmorecfg_h::JDIMENSION,
 ) {
     let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
-        1i32 as crate::stddef_h::size_t,
+        1 as libc::c_int as crate::stddef_h::size_t,
         (*dest).buffer_width,
         (*dest).pub_0.output_file,
     );
@@ -591,13 +689,13 @@ unsafe extern "C" fn put_pixel_rows(
 
 unsafe extern "C" fn copy_pixel_rows(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
+    mut dinfo: crate::cdjpeg_h::djpeg_dest_ptr,
     mut rows_supplied: crate::jmorecfg_h::JDIMENSION,
 ) {
     let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
     let mut bufferptr: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
-    ptr = *(*dest).pub_0.buffer.offset(0);
+    ptr = *(*dest).pub_0.buffer.offset(0 as libc::c_int as isize);
     bufferptr = (*dest).iobuffer;
     crate::stdlib::memcpy(
         bufferptr as *mut libc::c_void,
@@ -606,7 +704,7 @@ unsafe extern "C" fn copy_pixel_rows(
     );
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
-        1i32 as crate::stddef_h::size_t,
+        1 as libc::c_int as crate::stddef_h::size_t,
         (*dest).buffer_width,
         (*dest).pub_0.output_file,
     );
@@ -617,21 +715,21 @@ unsafe extern "C" fn copy_pixel_rows(
 
 unsafe extern "C" fn put_rgb(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
+    mut dinfo: crate::cdjpeg_h::djpeg_dest_ptr,
     mut rows_supplied: crate::jmorecfg_h::JDIMENSION,
 ) {
     let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
     let mut bufferptr: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
-    let mut rindex: libc::c_int = crate::jmorecfg_h::rgb_red[(*cinfo).out_color_space as usize];
-    let mut gindex: libc::c_int = crate::jmorecfg_h::rgb_green[(*cinfo).out_color_space as usize];
-    let mut bindex: libc::c_int = crate::jmorecfg_h::rgb_blue[(*cinfo).out_color_space as usize];
+    let mut rindex: libc::c_int = rgb_red[(*cinfo).out_color_space as usize];
+    let mut gindex: libc::c_int = rgb_green[(*cinfo).out_color_space as usize];
+    let mut bindex: libc::c_int = rgb_blue[(*cinfo).out_color_space as usize];
     let mut ps: libc::c_int = rgb_pixelsize[(*cinfo).out_color_space as usize];
-    ptr = *(*dest).pub_0.buffer.offset(0);
+    ptr = *(*dest).pub_0.buffer.offset(0 as libc::c_int as isize);
     bufferptr = (*dest).iobuffer;
     col = (*cinfo).output_width;
-    while col > 0i32 as libc::c_uint {
+    while col > 0 as libc::c_int as libc::c_uint {
         let fresh0 = bufferptr;
         bufferptr = bufferptr.offset(1);
         *fresh0 = *ptr.offset(rindex as isize) as libc::c_char;
@@ -646,7 +744,7 @@ unsafe extern "C" fn put_rgb(
     }
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
-        1i32 as crate::stddef_h::size_t,
+        1 as libc::c_int as crate::stddef_h::size_t,
         (*dest).buffer_width,
         (*dest).pub_0.output_file,
     );
@@ -657,17 +755,17 @@ unsafe extern "C" fn put_rgb(
 
 unsafe extern "C" fn put_cmyk(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
+    mut dinfo: crate::cdjpeg_h::djpeg_dest_ptr,
     mut rows_supplied: crate::jmorecfg_h::JDIMENSION,
 ) {
     let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
     let mut bufferptr: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
-    ptr = *(*dest).pub_0.buffer.offset(0);
+    ptr = *(*dest).pub_0.buffer.offset(0 as libc::c_int as isize);
     bufferptr = (*dest).iobuffer;
     col = (*cinfo).output_width;
-    while col > 0i32 as libc::c_uint {
+    while col > 0 as libc::c_int as libc::c_uint {
         let mut r: crate::jmorecfg_h::JSAMPLE = 0;
         let mut g: crate::jmorecfg_h::JSAMPLE = 0;
         let mut b: crate::jmorecfg_h::JSAMPLE = 0;
@@ -683,7 +781,7 @@ unsafe extern "C" fn put_cmyk(
         let fresh6 = ptr;
         ptr = ptr.offset(1);
         let mut k: crate::jmorecfg_h::JSAMPLE = *fresh6;
-        crate::cmyk_h::cmyk_to_rgb(c, m, y, k, &mut r, &mut g, &mut b);
+        cmyk_to_rgb(c, m, y, k, &mut r, &mut g, &mut b);
         let fresh7 = bufferptr;
         bufferptr = bufferptr.offset(1);
         *fresh7 = r as libc::c_char;
@@ -697,7 +795,7 @@ unsafe extern "C" fn put_cmyk(
     }
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
-        1i32 as crate::stddef_h::size_t,
+        1 as libc::c_int as crate::stddef_h::size_t,
         (*dest).buffer_width,
         (*dest).pub_0.output_file,
     );
@@ -709,21 +807,24 @@ unsafe extern "C" fn put_cmyk(
 
 unsafe extern "C" fn put_demapped_rgb(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
+    mut dinfo: crate::cdjpeg_h::djpeg_dest_ptr,
     mut rows_supplied: crate::jmorecfg_h::JDIMENSION,
 ) {
     let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
     let mut bufferptr: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut pixval: libc::c_int = 0;
     let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
-    let mut color_map0: crate::jpeglib_h::JSAMPROW = *(*cinfo).colormap.offset(0);
-    let mut color_map1: crate::jpeglib_h::JSAMPROW = *(*cinfo).colormap.offset(1);
-    let mut color_map2: crate::jpeglib_h::JSAMPROW = *(*cinfo).colormap.offset(2);
+    let mut color_map0: crate::jpeglib_h::JSAMPROW =
+        *(*cinfo).colormap.offset(0 as libc::c_int as isize);
+    let mut color_map1: crate::jpeglib_h::JSAMPROW =
+        *(*cinfo).colormap.offset(1 as libc::c_int as isize);
+    let mut color_map2: crate::jpeglib_h::JSAMPROW =
+        *(*cinfo).colormap.offset(2 as libc::c_int as isize);
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
-    ptr = *(*dest).pub_0.buffer.offset(0);
+    ptr = *(*dest).pub_0.buffer.offset(0 as libc::c_int as isize);
     bufferptr = (*dest).iobuffer;
     col = (*cinfo).output_width;
-    while col > 0i32 as libc::c_uint {
+    while col > 0 as libc::c_int as libc::c_uint {
         let fresh10 = ptr;
         ptr = ptr.offset(1);
         pixval = *fresh10 as libc::c_int;
@@ -740,7 +841,7 @@ unsafe extern "C" fn put_demapped_rgb(
     }
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
-        1i32 as crate::stddef_h::size_t,
+        1 as libc::c_int as crate::stddef_h::size_t,
         (*dest).buffer_width,
         (*dest).pub_0.output_file,
     );
@@ -748,18 +849,19 @@ unsafe extern "C" fn put_demapped_rgb(
 
 unsafe extern "C" fn put_demapped_gray(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
+    mut dinfo: crate::cdjpeg_h::djpeg_dest_ptr,
     mut rows_supplied: crate::jmorecfg_h::JDIMENSION,
 ) {
     let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
     let mut bufferptr: *mut libc::c_char = 0 as *mut libc::c_char;
     let mut ptr: crate::jpeglib_h::JSAMPROW = 0 as *mut crate::jmorecfg_h::JSAMPLE;
-    let mut color_map: crate::jpeglib_h::JSAMPROW = *(*cinfo).colormap.offset(0);
+    let mut color_map: crate::jpeglib_h::JSAMPROW =
+        *(*cinfo).colormap.offset(0 as libc::c_int as isize);
     let mut col: crate::jmorecfg_h::JDIMENSION = 0;
-    ptr = *(*dest).pub_0.buffer.offset(0);
+    ptr = *(*dest).pub_0.buffer.offset(0 as libc::c_int as isize);
     bufferptr = (*dest).iobuffer;
     col = (*cinfo).output_width;
-    while col > 0i32 as libc::c_uint {
+    while col > 0 as libc::c_int as libc::c_uint {
         let fresh14 = ptr;
         ptr = ptr.offset(1);
         let fresh15 = bufferptr;
@@ -770,7 +872,7 @@ unsafe extern "C" fn put_demapped_gray(
     }
     crate::stdlib::fwrite(
         (*dest).iobuffer as *const libc::c_void,
-        1i32 as crate::stddef_h::size_t,
+        1 as libc::c_int as crate::stddef_h::size_t,
         (*dest).buffer_width,
         (*dest).pub_0.output_file,
     );
@@ -781,7 +883,7 @@ unsafe extern "C" fn put_demapped_gray(
 
 unsafe extern "C" fn start_output_ppm(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
+    mut dinfo: crate::cdjpeg_h::djpeg_dest_ptr,
 ) {
     let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
     /* Emit file header */
@@ -825,7 +927,7 @@ unsafe extern "C" fn start_output_ppm(
 
 unsafe extern "C" fn finish_output_ppm(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
+    mut dinfo: crate::cdjpeg_h::djpeg_dest_ptr,
 ) {
     /* Make sure we wrote the output file OK */
     crate::stdlib::fflush((*dinfo).output_file);
@@ -845,7 +947,7 @@ unsafe extern "C" fn finish_output_ppm(
 
 unsafe extern "C" fn calc_buffer_dimensions_ppm(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-    mut dinfo: crate::src::cdjpeg::djpeg_dest_ptr,
+    mut dinfo: crate::cdjpeg_h::djpeg_dest_ptr,
 ) {
     let mut dest: ppm_dest_ptr = dinfo as ppm_dest_ptr;
     if (*cinfo).out_color_space as libc::c_uint
@@ -855,7 +957,9 @@ unsafe extern "C" fn calc_buffer_dimensions_ppm(
             .output_width
             .wrapping_mul((*cinfo).out_color_components as libc::c_uint)
     } else {
-        (*dest).samples_per_row = (*cinfo).output_width.wrapping_mul(3i32 as libc::c_uint)
+        (*dest).samples_per_row = (*cinfo)
+            .output_width
+            .wrapping_mul(3 as libc::c_int as libc::c_uint)
     }
     (*dest).buffer_width = ((*dest).samples_per_row as libc::c_ulong).wrapping_mul(
         (BYTESPERSAMPLE as libc::c_ulong)
@@ -869,7 +973,7 @@ unsafe extern "C" fn calc_buffer_dimensions_ppm(
 
 pub unsafe extern "C" fn jinit_write_ppm(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
-) -> crate::src::cdjpeg::djpeg_dest_ptr {
+) -> crate::cdjpeg_h::djpeg_dest_ptr {
     let mut dest: ppm_dest_ptr = 0 as *mut ppm_dest_struct;
     /* Create module interface object, fill in method pointers */
     dest = Some(
@@ -886,30 +990,30 @@ pub unsafe extern "C" fn jinit_write_ppm(
         start_output_ppm
             as unsafe extern "C" fn(
                 _: crate::jpeglib_h::j_decompress_ptr,
-                _: crate::src::cdjpeg::djpeg_dest_ptr,
+                _: crate::cdjpeg_h::djpeg_dest_ptr,
             ) -> (),
     );
     (*dest).pub_0.finish_output = Some(
         finish_output_ppm
             as unsafe extern "C" fn(
                 _: crate::jpeglib_h::j_decompress_ptr,
-                _: crate::src::cdjpeg::djpeg_dest_ptr,
+                _: crate::cdjpeg_h::djpeg_dest_ptr,
             ) -> (),
     );
     (*dest).pub_0.calc_buffer_dimensions = Some(
         calc_buffer_dimensions_ppm
             as unsafe extern "C" fn(
                 _: crate::jpeglib_h::j_decompress_ptr,
-                _: crate::src::cdjpeg::djpeg_dest_ptr,
+                _: crate::cdjpeg_h::djpeg_dest_ptr,
             ) -> (),
     );
     /* Calculate output image dimensions so we can allocate space */
-    crate::jpeglib_h::jpeg_calc_output_dimensions(cinfo);
+    crate::src::jdmaster::jpeg_calc_output_dimensions(cinfo);
     /* Create physical I/O buffer */
     (*dest)
         .pub_0
         .calc_buffer_dimensions
-        .expect("non-null function pointer")(cinfo, dest as crate::src::cdjpeg::djpeg_dest_ptr);
+        .expect("non-null function pointer")(cinfo, dest as crate::cdjpeg_h::djpeg_dest_ptr);
     (*dest).iobuffer = Some(
         (*(*cinfo).mem)
             .alloc_small
@@ -921,7 +1025,7 @@ pub unsafe extern "C" fn jinit_write_ppm(
         (*dest).buffer_width,
     ) as *mut libc::c_char;
     if (*cinfo).quantize_colors != 0
-        || crate::jconfig_h::BITS_IN_JSAMPLE != 8i32
+        || crate::jconfig_h::BITS_IN_JSAMPLE != 8 as libc::c_int
         || ::std::mem::size_of::<crate::jmorecfg_h::JSAMPLE>() as libc::c_ulong
             != ::std::mem::size_of::<libc::c_char>() as libc::c_ulong
         || (*cinfo).out_color_space as libc::c_uint
@@ -944,9 +1048,9 @@ pub unsafe extern "C" fn jinit_write_ppm(
             (*cinfo)
                 .output_width
                 .wrapping_mul((*cinfo).output_components as libc::c_uint),
-            1i32 as crate::jmorecfg_h::JDIMENSION,
+            1 as libc::c_int as crate::jmorecfg_h::JDIMENSION,
         );
-        (*dest).pub_0.buffer_height = 1i32 as crate::jmorecfg_h::JDIMENSION;
+        (*dest).pub_0.buffer_height = 1 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
         if (*cinfo).out_color_space as libc::c_uint
             == crate::jpeglib_h::JCS_RGB as libc::c_int as libc::c_uint
             || (*cinfo).out_color_space as libc::c_uint
@@ -958,7 +1062,7 @@ pub unsafe extern "C" fn jinit_write_ppm(
                 put_rgb
                     as unsafe extern "C" fn(
                         _: crate::jpeglib_h::j_decompress_ptr,
-                        _: crate::src::cdjpeg::djpeg_dest_ptr,
+                        _: crate::cdjpeg_h::djpeg_dest_ptr,
                         _: crate::jmorecfg_h::JDIMENSION,
                     ) -> (),
             )
@@ -969,7 +1073,7 @@ pub unsafe extern "C" fn jinit_write_ppm(
                 put_cmyk
                     as unsafe extern "C" fn(
                         _: crate::jpeglib_h::j_decompress_ptr,
-                        _: crate::src::cdjpeg::djpeg_dest_ptr,
+                        _: crate::cdjpeg_h::djpeg_dest_ptr,
                         _: crate::jmorecfg_h::JDIMENSION,
                     ) -> (),
             )
@@ -978,7 +1082,7 @@ pub unsafe extern "C" fn jinit_write_ppm(
                 copy_pixel_rows
                     as unsafe extern "C" fn(
                         _: crate::jpeglib_h::j_decompress_ptr,
-                        _: crate::src::cdjpeg::djpeg_dest_ptr,
+                        _: crate::cdjpeg_h::djpeg_dest_ptr,
                         _: crate::jmorecfg_h::JDIMENSION,
                     ) -> (),
             )
@@ -989,7 +1093,7 @@ pub unsafe extern "C" fn jinit_write_ppm(
                 put_demapped_gray
                     as unsafe extern "C" fn(
                         _: crate::jpeglib_h::j_decompress_ptr,
-                        _: crate::src::cdjpeg::djpeg_dest_ptr,
+                        _: crate::cdjpeg_h::djpeg_dest_ptr,
                         _: crate::jmorecfg_h::JDIMENSION,
                     ) -> (),
             )
@@ -998,7 +1102,7 @@ pub unsafe extern "C" fn jinit_write_ppm(
                 put_demapped_rgb
                     as unsafe extern "C" fn(
                         _: crate::jpeglib_h::j_decompress_ptr,
-                        _: crate::src::cdjpeg::djpeg_dest_ptr,
+                        _: crate::cdjpeg_h::djpeg_dest_ptr,
                         _: crate::jmorecfg_h::JDIMENSION,
                     ) -> (),
             )
@@ -1008,16 +1112,16 @@ pub unsafe extern "C" fn jinit_write_ppm(
         /* Synthesize a JSAMPARRAY pointer structure */
         (*dest).pixrow = (*dest).iobuffer as crate::jpeglib_h::JSAMPROW;
         (*dest).pub_0.buffer = &mut (*dest).pixrow;
-        (*dest).pub_0.buffer_height = 1i32 as crate::jmorecfg_h::JDIMENSION;
+        (*dest).pub_0.buffer_height = 1 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
         (*dest).pub_0.put_pixel_rows = Some(
             put_pixel_rows
                 as unsafe extern "C" fn(
                     _: crate::jpeglib_h::j_decompress_ptr,
-                    _: crate::src::cdjpeg::djpeg_dest_ptr,
+                    _: crate::cdjpeg_h::djpeg_dest_ptr,
                     _: crate::jmorecfg_h::JDIMENSION,
                 ) -> (),
         )
     }
-    return dest as crate::src::cdjpeg::djpeg_dest_ptr;
+    return dest as crate::cdjpeg_h::djpeg_dest_ptr;
 }
 /* PPM_SUPPORTED */

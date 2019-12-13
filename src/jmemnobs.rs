@@ -1,6 +1,7 @@
-use libc;
+use ::libc;
 
 pub use crate::stddef_h::size_t;
+
 pub use crate::stdlib::_IO_codecvt;
 pub use crate::stdlib::_IO_lock_t;
 pub use crate::stdlib::_IO_marker;
@@ -31,7 +32,6 @@ pub use crate::jpeglib_h::JBLOCKARRAY;
 pub use crate::jpeglib_h::JBLOCKROW;
 pub use crate::jpeglib_h::JSAMPARRAY;
 pub use crate::jpeglib_h::JSAMPROW;
-pub use crate::src::jerror::C2RustUnnamed_3;
 pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -164,6 +164,7 @@ pub use crate::src::jerror::JWRN_NOT_SEQUENTIAL;
 pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
 use crate::stdlib::free;
 use crate::stdlib::malloc;
+pub use crate::stdlib::C2RustUnnamed_0;
 /*
  * jmemsys.h
  *
@@ -309,7 +310,7 @@ pub unsafe extern "C" fn jpeg_mem_available(
             return ((*(*cinfo).mem).max_memory_to_use as libc::c_ulong)
                 .wrapping_sub(already_allocated);
         } else {
-            return 0i32 as crate::stddef_h::size_t;
+            return 0 as libc::c_int as crate::stddef_h::size_t;
         }
     } else {
         /* Here we always say, "we got all you want bud!" */
@@ -361,7 +362,7 @@ pub unsafe extern "C" fn jpeg_open_backing_store(
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_mem_init(mut cinfo: crate::jpeglib_h::j_common_ptr) -> libc::c_long {
-    return 0i32 as libc::c_long;
+    return 0 as libc::c_int as libc::c_long;
     /* just set max_memory_to_use to 0 */
 }
 #[no_mangle]

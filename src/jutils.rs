@@ -1,4 +1,4 @@
-use libc;
+use ::libc;
 
 pub use crate::stddef_h::size_t;
 
@@ -47,12 +47,86 @@ use crate::stdlib::memset;
 #[no_mangle]
 
 pub static mut jpeg_natural_order: [libc::c_int; 80] = [
-    0i32, 1i32, 8i32, 16i32, 9i32, 2i32, 3i32, 10i32, 17i32, 24i32, 32i32, 25i32, 18i32, 11i32,
-    4i32, 5i32, 12i32, 19i32, 26i32, 33i32, 40i32, 48i32, 41i32, 34i32, 27i32, 20i32, 13i32, 6i32,
-    7i32, 14i32, 21i32, 28i32, 35i32, 42i32, 49i32, 56i32, 57i32, 50i32, 43i32, 36i32, 29i32,
-    22i32, 15i32, 23i32, 30i32, 37i32, 44i32, 51i32, 58i32, 59i32, 52i32, 45i32, 38i32, 31i32,
-    39i32, 46i32, 53i32, 60i32, 61i32, 54i32, 47i32, 55i32, 62i32, 63i32, 63i32, 63i32, 63i32,
-    63i32, 63i32, 63i32, 63i32, 63i32, 63i32, 63i32, 63i32, 63i32, 63i32, 63i32, 63i32, 63i32,
+    0 as libc::c_int,
+    1 as libc::c_int,
+    8 as libc::c_int,
+    16 as libc::c_int,
+    9 as libc::c_int,
+    2 as libc::c_int,
+    3 as libc::c_int,
+    10 as libc::c_int,
+    17 as libc::c_int,
+    24 as libc::c_int,
+    32 as libc::c_int,
+    25 as libc::c_int,
+    18 as libc::c_int,
+    11 as libc::c_int,
+    4 as libc::c_int,
+    5 as libc::c_int,
+    12 as libc::c_int,
+    19 as libc::c_int,
+    26 as libc::c_int,
+    33 as libc::c_int,
+    40 as libc::c_int,
+    48 as libc::c_int,
+    41 as libc::c_int,
+    34 as libc::c_int,
+    27 as libc::c_int,
+    20 as libc::c_int,
+    13 as libc::c_int,
+    6 as libc::c_int,
+    7 as libc::c_int,
+    14 as libc::c_int,
+    21 as libc::c_int,
+    28 as libc::c_int,
+    35 as libc::c_int,
+    42 as libc::c_int,
+    49 as libc::c_int,
+    56 as libc::c_int,
+    57 as libc::c_int,
+    50 as libc::c_int,
+    43 as libc::c_int,
+    36 as libc::c_int,
+    29 as libc::c_int,
+    22 as libc::c_int,
+    15 as libc::c_int,
+    23 as libc::c_int,
+    30 as libc::c_int,
+    37 as libc::c_int,
+    44 as libc::c_int,
+    51 as libc::c_int,
+    58 as libc::c_int,
+    59 as libc::c_int,
+    52 as libc::c_int,
+    45 as libc::c_int,
+    38 as libc::c_int,
+    31 as libc::c_int,
+    39 as libc::c_int,
+    46 as libc::c_int,
+    53 as libc::c_int,
+    60 as libc::c_int,
+    61 as libc::c_int,
+    54 as libc::c_int,
+    47 as libc::c_int,
+    55 as libc::c_int,
+    62 as libc::c_int,
+    63 as libc::c_int,
+    63 as libc::c_int,
+    63 as libc::c_int,
+    63 as libc::c_int,
+    63 as libc::c_int,
+    63 as libc::c_int,
+    63 as libc::c_int,
+    63 as libc::c_int,
+    63 as libc::c_int,
+    63 as libc::c_int,
+    63 as libc::c_int,
+    63 as libc::c_int,
+    63 as libc::c_int,
+    63 as libc::c_int,
+    63 as libc::c_int,
+    63 as libc::c_int,
+    63 as libc::c_int,
 ];
 /*
  * Arithmetic utilities
@@ -62,14 +136,14 @@ pub static mut jpeg_natural_order: [libc::c_int; 80] = [
 pub unsafe extern "C" fn jdiv_round_up(mut a: libc::c_long, mut b: libc::c_long) -> libc::c_long
 /* Compute a/b rounded up to next integer, ie, ceil(a/b) */
 /* Assumes a >= 0, b > 0 */ {
-    return (a + b - 1i64) / b;
+    return (a + b - 1 as libc::c_long) / b;
 }
 #[no_mangle]
 
 pub unsafe extern "C" fn jround_up(mut a: libc::c_long, mut b: libc::c_long) -> libc::c_long
 /* Compute a rounded up to next multiple of b, ie, ceil(a/b)*b */
 /* Assumes a >= 0, b > 0 */ {
-    a += b - 1i64;
+    a += b - 1 as libc::c_long;
     return a - a % b;
 }
 #[no_mangle]
@@ -96,7 +170,7 @@ pub unsafe extern "C" fn jcopy_sample_rows(
     input_array = input_array.offset(source_row as isize);
     output_array = output_array.offset(dest_row as isize);
     row = num_rows;
-    while row > 0i32 {
+    while row > 0 as libc::c_int {
         let fresh0 = input_array;
         input_array = input_array.offset(1);
         inptr = *fresh0;
@@ -124,7 +198,7 @@ pub unsafe extern "C" fn jcopy_block_row(
         output_row as *mut libc::c_void,
         input_row as *const libc::c_void,
         (num_blocks as libc::c_ulong).wrapping_mul(
-            (64i32 as libc::c_ulong)
+            (64 as libc::c_int as libc::c_ulong)
                 .wrapping_mul(::std::mem::size_of::<crate::jmorecfg_h::JCOEF>() as libc::c_ulong),
         ),
     );
@@ -157,5 +231,5 @@ pub unsafe extern "C" fn jzero_far(
 /* Zero out a chunk of memory. */
 /* This might be sample-array data, block-array data, or alloc_large data. */
 {
-    crate::stdlib::memset(target, 0i32, bytestozero);
+    crate::stdlib::memset(target, 0 as libc::c_int, bytestozero);
 }

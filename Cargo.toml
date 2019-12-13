@@ -15,6 +15,7 @@ edition = "2018"
 [lib]
 name = "mozjpeg"
 path = "lib.rs"
+crate-type = ["rlib", "cdylib"]
 
 [[bin]]
 name = "cjpeg"

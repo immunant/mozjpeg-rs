@@ -1,4 +1,4 @@
-use libc;
+use ::libc;
 
 pub use crate::jmorecfg_h::boolean;
 pub use crate::jmorecfg_h::JCOEF;
@@ -9,9 +9,17 @@ pub use crate::jmorecfg_h::TRUE;
 pub use crate::jmorecfg_h::UINT16;
 pub use crate::jmorecfg_h::UINT8;
 pub use crate::jpegint_h::inverse_DCT_method_ptr;
-pub use crate::jpegint_h::jinit_d_coef_controller;
-pub use crate::jpegint_h::jinit_huff_decoder;
-pub use crate::jpegint_h::jinit_phuff_decoder;
+pub use crate::jpegint_h::jpeg_color_deconverter;
+pub use crate::jpegint_h::jpeg_color_quantizer;
+pub use crate::jpegint_h::jpeg_d_coef_controller;
+pub use crate::jpegint_h::jpeg_d_main_controller;
+pub use crate::jpegint_h::jpeg_d_post_controller;
+pub use crate::jpegint_h::jpeg_decomp_master;
+pub use crate::jpegint_h::jpeg_entropy_decoder;
+pub use crate::jpegint_h::jpeg_input_controller;
+pub use crate::jpegint_h::jpeg_inverse_dct;
+pub use crate::jpegint_h::jpeg_marker_reader;
+pub use crate::jpegint_h::jpeg_upsampler;
 pub use crate::jpegint_h::DSTATE_BUFIMAGE;
 pub use crate::jpegint_h::DSTATE_RDCOEFS;
 pub use crate::jpegint_h::DSTATE_READY;
@@ -24,27 +32,16 @@ pub use crate::jpegint_h::JBUF_SAVE_SOURCE;
 pub use crate::jpegint_h::J_BUF_MODE;
 pub use crate::jpeglib_h::j_common_ptr;
 pub use crate::jpeglib_h::j_decompress_ptr;
-pub use crate::jpeglib_h::jpeg_color_deconverter;
-pub use crate::jpeglib_h::jpeg_color_quantizer;
 pub use crate::jpeglib_h::jpeg_common_struct;
 pub use crate::jpeglib_h::jpeg_component_info;
-pub use crate::jpeglib_h::jpeg_d_coef_controller;
-pub use crate::jpeglib_h::jpeg_d_main_controller;
-pub use crate::jpeglib_h::jpeg_d_post_controller;
-pub use crate::jpeglib_h::jpeg_decomp_master;
 pub use crate::jpeglib_h::jpeg_decompress_struct;
-pub use crate::jpeglib_h::jpeg_entropy_decoder;
 pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_input_controller;
-pub use crate::jpeglib_h::jpeg_inverse_dct;
 pub use crate::jpeglib_h::jpeg_marker_parser_method;
-pub use crate::jpeglib_h::jpeg_marker_reader;
 pub use crate::jpeglib_h::jpeg_marker_struct;
 pub use crate::jpeglib_h::jpeg_memory_mgr;
 pub use crate::jpeglib_h::jpeg_progress_mgr;
 pub use crate::jpeglib_h::jpeg_saved_marker_ptr;
 pub use crate::jpeglib_h::jpeg_source_mgr;
-pub use crate::jpeglib_h::jpeg_upsampler;
 pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
@@ -89,7 +86,9 @@ pub use crate::jpeglib_h::JSAMPROW;
 pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::jpeglib_h::J_DITHER_MODE;
-pub use crate::src::jerror::C2RustUnnamed_3;
+pub use crate::src::jdcoefct::jinit_d_coef_controller;
+pub use crate::src::jdhuff::jinit_huff_decoder;
+pub use crate::src::jdphuff::jinit_phuff_decoder;
 pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -222,6 +221,7 @@ pub use crate::src::jerror::JWRN_NOT_SEQUENTIAL;
 pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
+pub use crate::stdlib::C2RustUnnamed_0;
 /*
  * Read the coefficient arrays from a JPEG file.
  * jpeg_read_header must be completed before calling this.
@@ -309,7 +309,7 @@ pub unsafe extern "C" fn jpeg_read_coefficients(
     }
     /* Oops, improper usage */
     (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
-    (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
+    (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = (*cinfo).global_state;
     Some(
         (*(*cinfo).err)
             .error_exit
@@ -352,12 +352,12 @@ unsafe extern "C" fn transdecode_master_selection(mut cinfo: crate::jpeglib_h::j
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     } else if (*cinfo).progressive_mode != 0 {
-        crate::jpegint_h::jinit_phuff_decoder(cinfo);
+        crate::src::jdphuff::jinit_phuff_decoder(cinfo);
     } else {
-        crate::jpegint_h::jinit_huff_decoder(cinfo);
+        crate::src::jdhuff::jinit_huff_decoder(cinfo);
     }
     /* Always get a full-image coefficient buffer. */
-    crate::jpegint_h::jinit_d_coef_controller(cinfo, crate::jmorecfg_h::TRUE);
+    crate::src::jdcoefct::jinit_d_coef_controller(cinfo, crate::jmorecfg_h::TRUE);
     /* We can now tell the memory manager to allocate virtual arrays. */
     Some(
         (*(*cinfo).mem)
@@ -378,17 +378,17 @@ unsafe extern "C" fn transdecode_master_selection(mut cinfo: crate::jpeglib_h::j
         /* Estimate number of scans to set pass_limit. */
         if (*cinfo).progressive_mode != 0 {
             /* Arbitrarily estimate 2 interleaved DC scans + 3 AC scans/component. */
-            nscans = 2i32 + 3i32 * (*cinfo).num_components
+            nscans = 2 as libc::c_int + 3 as libc::c_int * (*cinfo).num_components
         } else if (*(*cinfo).inputctl).has_multiple_scans != 0 {
             /* For a nonprogressive multiscan file, estimate 1 scan per component. */
             nscans = (*cinfo).num_components
         } else {
-            nscans = 1i32
+            nscans = 1 as libc::c_int
         }
-        (*(*cinfo).progress).pass_counter = 0i64;
+        (*(*cinfo).progress).pass_counter = 0 as libc::c_long;
         (*(*cinfo).progress).pass_limit =
             (*cinfo).total_iMCU_rows as libc::c_long * nscans as libc::c_long;
-        (*(*cinfo).progress).completed_passes = 0i32;
-        (*(*cinfo).progress).total_passes = 1i32
+        (*(*cinfo).progress).completed_passes = 0 as libc::c_int;
+        (*(*cinfo).progress).total_passes = 1 as libc::c_int
     };
 }

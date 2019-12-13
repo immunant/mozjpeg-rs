@@ -1,4 +1,4 @@
-use libc;
+use ::libc;
 
 pub use crate::jmorecfg_h::boolean;
 pub use crate::jmorecfg_h::FALSE;
@@ -8,7 +8,15 @@ pub use crate::jmorecfg_h::JOCTET;
 pub use crate::jmorecfg_h::JSAMPLE;
 pub use crate::jmorecfg_h::UINT16;
 pub use crate::jmorecfg_h::UINT8;
-pub use crate::jpegint_h::jinit_compress_master;
+pub use crate::jpegint_h::jpeg_c_coef_controller;
+pub use crate::jpegint_h::jpeg_c_main_controller;
+pub use crate::jpegint_h::jpeg_c_prep_controller;
+pub use crate::jpegint_h::jpeg_color_converter;
+pub use crate::jpegint_h::jpeg_comp_master;
+pub use crate::jpegint_h::jpeg_downsampler;
+pub use crate::jpegint_h::jpeg_entropy_encoder;
+pub use crate::jpegint_h::jpeg_forward_dct;
+pub use crate::jpegint_h::jpeg_marker_writer;
 pub use crate::jpegint_h::CSTATE_RAW_OK;
 pub use crate::jpegint_h::CSTATE_SCANNING;
 pub use crate::jpegint_h::CSTATE_START;
@@ -20,24 +28,14 @@ pub use crate::jpegint_h::JBUF_SAVE_SOURCE;
 pub use crate::jpegint_h::J_BUF_MODE;
 pub use crate::jpeglib_h::j_common_ptr;
 pub use crate::jpeglib_h::j_compress_ptr;
-pub use crate::jpeglib_h::jpeg_c_coef_controller;
-pub use crate::jpeglib_h::jpeg_c_main_controller;
-pub use crate::jpeglib_h::jpeg_c_prep_controller;
-pub use crate::jpeglib_h::jpeg_color_converter;
 pub use crate::jpeglib_h::jpeg_common_struct;
-pub use crate::jpeglib_h::jpeg_comp_master;
 pub use crate::jpeglib_h::jpeg_component_info;
 pub use crate::jpeglib_h::jpeg_compress_struct;
 pub use crate::jpeglib_h::jpeg_destination_mgr;
-pub use crate::jpeglib_h::jpeg_downsampler;
-pub use crate::jpeglib_h::jpeg_entropy_encoder;
 pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_forward_dct;
-pub use crate::jpeglib_h::jpeg_marker_writer;
 pub use crate::jpeglib_h::jpeg_memory_mgr;
 pub use crate::jpeglib_h::jpeg_progress_mgr;
 pub use crate::jpeglib_h::jpeg_scan_info;
-pub use crate::jpeglib_h::jpeg_suppress_tables;
 pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
@@ -74,7 +72,8 @@ pub use crate::jpeglib_h::JSAMPIMAGE;
 pub use crate::jpeglib_h::JSAMPROW;
 pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
-pub use crate::src::jerror::C2RustUnnamed_3;
+pub use crate::src::jcapimin::jpeg_suppress_tables;
+pub use crate::src::jcinit::jinit_compress_master;
 pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -207,6 +206,7 @@ pub use crate::src::jerror::JWRN_NOT_SEQUENTIAL;
 pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
+pub use crate::stdlib::C2RustUnnamed_0;
 /* Main entry points for compression */
 /*
  * jcapistd.c
@@ -247,7 +247,7 @@ pub unsafe extern "C" fn jpeg_start_compress(
 ) {
     if (*cinfo).global_state != crate::jpegint_h::CSTATE_START {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int; /* mark all tables to be written */
-        (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = (*cinfo).global_state;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -256,12 +256,12 @@ pub unsafe extern "C" fn jpeg_start_compress(
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
     if write_all_tables != 0 {
-        crate::jpeglib_h::jpeg_suppress_tables(cinfo, crate::jmorecfg_h::FALSE);
+        crate::src::jcapimin::jpeg_suppress_tables(cinfo, crate::jmorecfg_h::FALSE);
     }
     /* setting up scan optimisation pattern failed, disable scan optimisation */
-    if (*(*cinfo).master).num_scans_luma == 0i32
+    if (*(*cinfo).master).num_scans_luma == 0 as libc::c_int
         || (*cinfo).scan_info.is_null()
-        || (*cinfo).num_scans == 0i32
+        || (*cinfo).num_scans == 0 as libc::c_int
     {
         (*(*cinfo).master).optimize_scans = crate::jmorecfg_h::FALSE
     }
@@ -279,7 +279,7 @@ pub unsafe extern "C" fn jpeg_start_compress(
     )
     .expect("non-null function pointer")(cinfo);
     /* Perform master selection of active modules */
-    crate::jpegint_h::jinit_compress_master(cinfo);
+    crate::src::jcinit::jinit_compress_master(cinfo);
     /* Set up for the first pass */
     Some(
         (*(*cinfo).master)
@@ -290,7 +290,7 @@ pub unsafe extern "C" fn jpeg_start_compress(
     /* Ready for application to drive first pass through jpeg_write_scanlines
      * or jpeg_write_raw_data.
      */
-    (*cinfo).next_scanline = 0i32 as crate::jmorecfg_h::JDIMENSION;
+    (*cinfo).next_scanline = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
     (*cinfo).global_state = if (*cinfo).raw_data_in != 0 {
         crate::jpegint_h::CSTATE_RAW_OK
     } else {
@@ -322,7 +322,7 @@ pub unsafe extern "C" fn jpeg_write_scanlines(
     let mut rows_left: crate::jmorecfg_h::JDIMENSION = 0;
     if (*cinfo).global_state != crate::jpegint_h::CSTATE_SCANNING {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = (*cinfo).global_state;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -337,7 +337,10 @@ pub unsafe extern "C" fn jpeg_write_scanlines(
                 .emit_message
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, -1i32);
+        .expect("non-null function pointer")(
+            cinfo as crate::jpeglib_h::j_common_ptr,
+            -(1 as libc::c_int),
+        );
     }
     /* Call progress monitor hook if present */
     if !(*cinfo).progress.is_null() {
@@ -368,7 +371,7 @@ pub unsafe extern "C" fn jpeg_write_scanlines(
     if num_lines > rows_left {
         num_lines = rows_left
     }
-    row_ctr = 0i32 as crate::jmorecfg_h::JDIMENSION;
+    row_ctr = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
     Some(
         (*(*cinfo).main)
             .process_data
@@ -395,7 +398,7 @@ pub unsafe extern "C" fn jpeg_write_raw_data(
     let mut lines_per_iMCU_row: crate::jmorecfg_h::JDIMENSION = 0;
     if (*cinfo).global_state != crate::jpegint_h::CSTATE_RAW_OK {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = (*cinfo).global_state;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -410,8 +413,11 @@ pub unsafe extern "C" fn jpeg_write_raw_data(
                 .emit_message
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, -1i32);
-        return 0i32 as crate::jmorecfg_h::JDIMENSION;
+        .expect("non-null function pointer")(
+            cinfo as crate::jpeglib_h::j_common_ptr,
+            -(1 as libc::c_int),
+        );
+        return 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
     }
     /* Call progress monitor hook if present */
     if !(*cinfo).progress.is_null() {
@@ -459,7 +465,7 @@ pub unsafe extern "C" fn jpeg_write_raw_data(
         == 0
     {
         /* If compressor did not consume the whole row, suspend processing. */
-        return 0i32 as crate::jmorecfg_h::JDIMENSION;
+        return 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
     }
     /* OK, we processed one iMCU row. */
     (*cinfo).next_scanline =

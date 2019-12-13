@@ -1,4 +1,4 @@
-use libc;
+use ::libc;
 
 pub use crate::stddef_h::size_t;
 
@@ -11,7 +11,15 @@ pub use crate::jmorecfg_h::JSAMPLE;
 pub use crate::jmorecfg_h::TRUE;
 pub use crate::jmorecfg_h::UINT16;
 pub use crate::jmorecfg_h::UINT8;
-pub use crate::jpegint_h::jcopy_sample_rows;
+pub use crate::jpegint_h::jpeg_c_coef_controller;
+pub use crate::jpegint_h::jpeg_c_main_controller;
+pub use crate::jpegint_h::jpeg_c_prep_controller;
+pub use crate::jpegint_h::jpeg_color_converter;
+pub use crate::jpegint_h::jpeg_comp_master;
+pub use crate::jpegint_h::jpeg_downsampler;
+pub use crate::jpegint_h::jpeg_entropy_encoder;
+pub use crate::jpegint_h::jpeg_forward_dct;
+pub use crate::jpegint_h::jpeg_marker_writer;
 pub use crate::jpegint_h::JBUF_CRANK_DEST;
 pub use crate::jpegint_h::JBUF_PASS_THRU;
 pub use crate::jpegint_h::JBUF_REQUANT;
@@ -21,20 +29,11 @@ pub use crate::jpegint_h::JLONG;
 pub use crate::jpegint_h::J_BUF_MODE;
 pub use crate::jpeglib_h::j_common_ptr;
 pub use crate::jpeglib_h::j_compress_ptr;
-pub use crate::jpeglib_h::jpeg_c_coef_controller;
-pub use crate::jpeglib_h::jpeg_c_main_controller;
-pub use crate::jpeglib_h::jpeg_c_prep_controller;
-pub use crate::jpeglib_h::jpeg_color_converter;
 pub use crate::jpeglib_h::jpeg_common_struct;
-pub use crate::jpeglib_h::jpeg_comp_master;
 pub use crate::jpeglib_h::jpeg_component_info;
 pub use crate::jpeglib_h::jpeg_compress_struct;
 pub use crate::jpeglib_h::jpeg_destination_mgr;
-pub use crate::jpeglib_h::jpeg_downsampler;
-pub use crate::jpeglib_h::jpeg_entropy_encoder;
 pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_forward_dct;
-pub use crate::jpeglib_h::jpeg_marker_writer;
 pub use crate::jpeglib_h::jpeg_memory_mgr;
 pub use crate::jpeglib_h::jpeg_progress_mgr;
 pub use crate::jpeglib_h::jpeg_scan_info;
@@ -75,7 +74,6 @@ pub use crate::jpeglib_h::JSAMPIMAGE;
 pub use crate::jpeglib_h::JSAMPROW;
 pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
-pub use crate::src::jerror::C2RustUnnamed_3;
 pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -206,10 +204,12 @@ pub use crate::src::jerror::JWRN_JPEG_EOF;
 pub use crate::src::jerror::JWRN_MUST_RESYNC;
 pub use crate::src::jerror::JWRN_NOT_SEQUENTIAL;
 pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
+pub use crate::src::jutils::jcopy_sample_rows;
 use crate::src::simd::x86_64::jsimd::jsimd_can_h2v1_downsample;
 use crate::src::simd::x86_64::jsimd::jsimd_can_h2v2_downsample;
 use crate::src::simd::x86_64::jsimd::jsimd_h2v1_downsample;
 use crate::src::simd::x86_64::jsimd::jsimd_h2v2_downsample;
+pub use crate::stdlib::C2RustUnnamed_0;
 /*
  * jcsample.c
  *
@@ -277,7 +277,7 @@ pub type my_downsample_ptr = *mut my_downsampler;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct my_downsampler {
-    pub pub_0: crate::jpeglib_h::jpeg_downsampler,
+    pub pub_0: crate::jpegint_h::jpeg_downsampler,
     pub methods: [downsample1_ptr; 10],
 }
 /*
@@ -303,13 +303,13 @@ unsafe extern "C" fn expand_right_edge(
     let mut count: libc::c_int = 0;
     let mut row: libc::c_int = 0;
     let mut numcols: libc::c_int = output_cols.wrapping_sub(input_cols) as libc::c_int;
-    if numcols > 0i32 {
-        row = 0i32;
+    if numcols > 0 as libc::c_int {
+        row = 0 as libc::c_int;
         while row < num_rows {
             ptr = (*image_data.offset(row as isize)).offset(input_cols as isize);
-            pixval = *ptr.offset(-1i32 as isize);
+            pixval = *ptr.offset(-(1 as libc::c_int) as isize);
             count = numcols;
-            while count > 0i32 {
+            while count > 0 as libc::c_int {
                 let fresh0 = ptr;
                 ptr = ptr.offset(1);
                 *fresh0 = pixval;
@@ -338,7 +338,7 @@ unsafe extern "C" fn sep_downsample(
         0 as *mut crate::jpeglib_h::jpeg_component_info;
     let mut in_ptr: crate::jpeglib_h::JSAMPARRAY = 0 as *mut crate::jpeglib_h::JSAMPROW;
     let mut out_ptr: crate::jpeglib_h::JSAMPARRAY = 0 as *mut crate::jpeglib_h::JSAMPROW;
-    ci = 0i32;
+    ci = 0 as libc::c_int;
     compptr = (*cinfo).comp_info;
     while ci < (*cinfo).num_components {
         in_ptr = (*input_buf.offset(ci as isize)).offset(in_row_index as isize);
@@ -386,7 +386,7 @@ unsafe extern "C" fn int_downsample(
     h_expand = (*cinfo).max_h_samp_factor / (*compptr).h_samp_factor;
     v_expand = (*cinfo).max_v_samp_factor / (*compptr).v_samp_factor;
     numpix = h_expand * v_expand;
-    numpix2 = numpix / 2i32;
+    numpix2 = numpix / 2 as libc::c_int;
     /* Expand input data enough to let all the output samples be generated
      * by the standard loop.  Special-casing padded output would be more
      * efficient.
@@ -397,18 +397,18 @@ unsafe extern "C" fn int_downsample(
         (*cinfo).image_width,
         output_cols.wrapping_mul(h_expand as libc::c_uint),
     );
-    inrow = 0i32;
-    outrow = 0i32;
+    inrow = 0 as libc::c_int;
+    outrow = 0 as libc::c_int;
     while outrow < (*compptr).v_samp_factor {
         outptr = *output_data.offset(outrow as isize);
-        outcol = 0i32 as crate::jmorecfg_h::JDIMENSION;
-        outcol_h = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        outcol = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
+        outcol_h = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
         while outcol < output_cols {
-            outvalue = 0i32 as crate::jpegint_h::JLONG;
-            v = 0i32;
+            outvalue = 0 as libc::c_int as crate::jpegint_h::JLONG;
+            v = 0 as libc::c_int;
             while v < v_expand {
                 inptr = (*input_data.offset((inrow + v) as isize)).offset(outcol_h as isize);
-                h = 0i32;
+                h = 0 as libc::c_int;
                 while h < h_expand {
                     let fresh1 = inptr;
                     inptr = inptr.offset(1);
@@ -443,11 +443,11 @@ unsafe extern "C" fn fullsize_downsample(
     mut output_data: crate::jpeglib_h::JSAMPARRAY,
 ) {
     /* Copy the data */
-    crate::jpegint_h::jcopy_sample_rows(
+    crate::src::jutils::jcopy_sample_rows(
         input_data,
-        0i32,
+        0 as libc::c_int,
         output_data,
-        0i32,
+        0 as libc::c_int,
         (*cinfo).max_v_samp_factor,
         (*cinfo).image_width,
     );
@@ -495,21 +495,23 @@ unsafe extern "C" fn h2v1_downsample(
         input_data,
         (*cinfo).max_v_samp_factor,
         (*cinfo).image_width,
-        output_cols.wrapping_mul(2i32 as libc::c_uint),
+        output_cols.wrapping_mul(2 as libc::c_int as libc::c_uint),
     ); /* bias = 0,1,0,1,... for successive samples */
-    outrow = 0i32; /* 0=>1, 1=>0 */
+    outrow = 0 as libc::c_int; /* 0=>1, 1=>0 */
     while outrow < (*compptr).v_samp_factor {
         outptr = *output_data.offset(outrow as isize);
         inptr = *input_data.offset(outrow as isize);
-        bias = 0i32;
-        outcol = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        bias = 0 as libc::c_int;
+        outcol = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
         while outcol < output_cols {
             let fresh3 = outptr;
             outptr = outptr.offset(1);
-            *fresh3 = (*inptr as libc::c_int + *inptr.offset(1) as libc::c_int + bias >> 1i32)
-                as crate::jmorecfg_h::JSAMPLE;
-            bias ^= 1i32;
-            inptr = inptr.offset(2);
+            *fresh3 = (*inptr as libc::c_int
+                + *inptr.offset(1 as libc::c_int as isize) as libc::c_int
+                + bias
+                >> 1 as libc::c_int) as crate::jmorecfg_h::JSAMPLE;
+            bias ^= 1 as libc::c_int;
+            inptr = inptr.offset(2 as libc::c_int as isize);
             outcol = outcol.wrapping_add(1)
         }
         outrow += 1
@@ -545,31 +547,31 @@ unsafe extern "C" fn h2v2_downsample(
         input_data,
         (*cinfo).max_v_samp_factor,
         (*cinfo).image_width,
-        output_cols.wrapping_mul(2i32 as libc::c_uint),
+        output_cols.wrapping_mul(2 as libc::c_int as libc::c_uint),
     ); /* bias = 1,2,1,2,... for successive samples */
-    inrow = 0i32; /* 1=>2, 2=>1 */
-    outrow = 0i32;
+    inrow = 0 as libc::c_int; /* 1=>2, 2=>1 */
+    outrow = 0 as libc::c_int;
     while outrow < (*compptr).v_samp_factor {
         outptr = *output_data.offset(outrow as isize);
         inptr0 = *input_data.offset(inrow as isize);
-        inptr1 = *input_data.offset((inrow + 1i32) as isize);
-        bias = 1i32;
-        outcol = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        inptr1 = *input_data.offset((inrow + 1 as libc::c_int) as isize);
+        bias = 1 as libc::c_int;
+        outcol = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
         while outcol < output_cols {
             let fresh4 = outptr;
             outptr = outptr.offset(1);
             *fresh4 = (*inptr0 as libc::c_int
-                + *inptr0.offset(1) as libc::c_int
+                + *inptr0.offset(1 as libc::c_int as isize) as libc::c_int
                 + *inptr1 as libc::c_int
-                + *inptr1.offset(1) as libc::c_int
+                + *inptr1.offset(1 as libc::c_int as isize) as libc::c_int
                 + bias
-                >> 2i32) as crate::jmorecfg_h::JSAMPLE;
-            bias ^= 3i32;
-            inptr0 = inptr0.offset(2);
-            inptr1 = inptr1.offset(2);
+                >> 2 as libc::c_int) as crate::jmorecfg_h::JSAMPLE;
+            bias ^= 3 as libc::c_int;
+            inptr0 = inptr0.offset(2 as libc::c_int as isize);
+            inptr1 = inptr1.offset(2 as libc::c_int as isize);
             outcol = outcol.wrapping_add(1)
         }
-        inrow += 2i32;
+        inrow += 2 as libc::c_int;
         outrow += 1
     }
 }
@@ -605,10 +607,10 @@ unsafe extern "C" fn h2v2_smooth_downsample(
      * efficient.
      */
     expand_right_edge(
-        input_data.offset(-1),
-        (*cinfo).max_v_samp_factor + 2i32,
+        input_data.offset(-(1 as libc::c_int as isize)),
+        (*cinfo).max_v_samp_factor + 2 as libc::c_int,
         (*cinfo).image_width,
-        output_cols.wrapping_mul(2i32 as libc::c_uint),
+        output_cols.wrapping_mul(2 as libc::c_int as libc::c_uint),
     );
     /* We don't bother to form the individual "smoothed" input pixel values;
      * we can directly compute the output which is the average of the four
@@ -622,100 +624,111 @@ unsafe extern "C" fn h2v2_smooth_downsample(
      * factors are scaled by 2^16 = 65536.
      * Also recall that SF = smoothing_factor / 1024.
      */
-    memberscale = (16384i32 - (*cinfo).smoothing_factor * 80i32) as crate::jpegint_h::JLONG; /* scaled (1-5*SF)/4 */
-    neighscale = ((*cinfo).smoothing_factor * 16i32) as crate::jpegint_h::JLONG; /* scaled SF/4 */
-    inrow = 0i32;
-    outrow = 0i32;
+    memberscale = (16384 as libc::c_int - (*cinfo).smoothing_factor * 80 as libc::c_int)
+        as crate::jpegint_h::JLONG; /* scaled (1-5*SF)/4 */
+    neighscale = ((*cinfo).smoothing_factor * 16 as libc::c_int) as crate::jpegint_h::JLONG; /* scaled SF/4 */
+    inrow = 0 as libc::c_int;
+    outrow = 0 as libc::c_int;
     while outrow < (*compptr).v_samp_factor {
         outptr = *output_data.offset(outrow as isize);
         inptr0 = *input_data.offset(inrow as isize);
-        inptr1 = *input_data.offset((inrow + 1i32) as isize);
-        above_ptr = *input_data.offset((inrow - 1i32) as isize);
-        below_ptr = *input_data.offset((inrow + 2i32) as isize);
+        inptr1 = *input_data.offset((inrow + 1 as libc::c_int) as isize);
+        above_ptr = *input_data.offset((inrow - 1 as libc::c_int) as isize);
+        below_ptr = *input_data.offset((inrow + 2 as libc::c_int) as isize);
         /* Special case for first column: pretend column -1 is same as column 0 */
         membersum = (*inptr0 as libc::c_int
-            + *inptr0.offset(1) as libc::c_int
+            + *inptr0.offset(1 as libc::c_int as isize) as libc::c_int
             + *inptr1 as libc::c_int
-            + *inptr1.offset(1) as libc::c_int) as crate::jpegint_h::JLONG;
+            + *inptr1.offset(1 as libc::c_int as isize) as libc::c_int)
+            as crate::jpegint_h::JLONG;
         neighsum = (*above_ptr as libc::c_int
-            + *above_ptr.offset(1) as libc::c_int
+            + *above_ptr.offset(1 as libc::c_int as isize) as libc::c_int
             + *below_ptr as libc::c_int
-            + *below_ptr.offset(1) as libc::c_int
+            + *below_ptr.offset(1 as libc::c_int as isize) as libc::c_int
             + *inptr0 as libc::c_int
-            + *inptr0.offset(2) as libc::c_int
+            + *inptr0.offset(2 as libc::c_int as isize) as libc::c_int
             + *inptr1 as libc::c_int
-            + *inptr1.offset(2) as libc::c_int) as crate::jpegint_h::JLONG;
+            + *inptr1.offset(2 as libc::c_int as isize) as libc::c_int)
+            as crate::jpegint_h::JLONG;
         neighsum += neighsum;
         neighsum += (*above_ptr as libc::c_int
-            + *above_ptr.offset(2) as libc::c_int
+            + *above_ptr.offset(2 as libc::c_int as isize) as libc::c_int
             + *below_ptr as libc::c_int
-            + *below_ptr.offset(2) as libc::c_int) as libc::c_long;
+            + *below_ptr.offset(2 as libc::c_int as isize) as libc::c_int)
+            as libc::c_long;
         membersum = membersum * memberscale + neighsum * neighscale;
         let fresh5 = outptr;
         outptr = outptr.offset(1);
-        *fresh5 = (membersum + 32768i32 as libc::c_long >> 16i32) as crate::jmorecfg_h::JSAMPLE;
-        inptr0 = inptr0.offset(2);
-        inptr1 = inptr1.offset(2);
-        above_ptr = above_ptr.offset(2);
-        below_ptr = below_ptr.offset(2);
-        colctr = output_cols.wrapping_sub(2i32 as libc::c_uint);
-        while colctr > 0i32 as libc::c_uint {
+        *fresh5 = (membersum + 32768 as libc::c_int as libc::c_long >> 16 as libc::c_int)
+            as crate::jmorecfg_h::JSAMPLE;
+        inptr0 = inptr0.offset(2 as libc::c_int as isize);
+        inptr1 = inptr1.offset(2 as libc::c_int as isize);
+        above_ptr = above_ptr.offset(2 as libc::c_int as isize);
+        below_ptr = below_ptr.offset(2 as libc::c_int as isize);
+        colctr = output_cols.wrapping_sub(2 as libc::c_int as libc::c_uint);
+        while colctr > 0 as libc::c_int as libc::c_uint {
             /* sum of pixels directly mapped to this output element */
             membersum = (*inptr0 as libc::c_int
-                + *inptr0.offset(1) as libc::c_int
+                + *inptr0.offset(1 as libc::c_int as isize) as libc::c_int
                 + *inptr1 as libc::c_int
-                + *inptr1.offset(1) as libc::c_int)
+                + *inptr1.offset(1 as libc::c_int as isize) as libc::c_int)
                 as crate::jpegint_h::JLONG;
             /* sum of edge-neighbor pixels */
             neighsum = (*above_ptr as libc::c_int
-                + *above_ptr.offset(1) as libc::c_int
+                + *above_ptr.offset(1 as libc::c_int as isize) as libc::c_int
                 + *below_ptr as libc::c_int
-                + *below_ptr.offset(1) as libc::c_int
-                + *inptr0.offset(-1i32 as isize) as libc::c_int
-                + *inptr0.offset(2) as libc::c_int
-                + *inptr1.offset(-1i32 as isize) as libc::c_int
-                + *inptr1.offset(2) as libc::c_int)
+                + *below_ptr.offset(1 as libc::c_int as isize) as libc::c_int
+                + *inptr0.offset(-(1 as libc::c_int) as isize) as libc::c_int
+                + *inptr0.offset(2 as libc::c_int as isize) as libc::c_int
+                + *inptr1.offset(-(1 as libc::c_int) as isize) as libc::c_int
+                + *inptr1.offset(2 as libc::c_int as isize) as libc::c_int)
                 as crate::jpegint_h::JLONG;
             /* The edge-neighbors count twice as much as corner-neighbors */
             neighsum += neighsum;
             /* Add in the corner-neighbors */
-            neighsum += (*above_ptr.offset(-1i32 as isize) as libc::c_int
-                + *above_ptr.offset(2) as libc::c_int
-                + *below_ptr.offset(-1i32 as isize) as libc::c_int
-                + *below_ptr.offset(2) as libc::c_int) as libc::c_long;
+            neighsum += (*above_ptr.offset(-(1 as libc::c_int) as isize) as libc::c_int
+                + *above_ptr.offset(2 as libc::c_int as isize) as libc::c_int
+                + *below_ptr.offset(-(1 as libc::c_int) as isize) as libc::c_int
+                + *below_ptr.offset(2 as libc::c_int as isize) as libc::c_int)
+                as libc::c_long;
             /* form final output scaled up by 2^16 */
             membersum = membersum * memberscale + neighsum * neighscale;
             /* round, descale and output it */
             let fresh6 = outptr;
             outptr = outptr.offset(1);
-            *fresh6 = (membersum + 32768i32 as libc::c_long >> 16i32) as crate::jmorecfg_h::JSAMPLE;
-            inptr0 = inptr0.offset(2);
-            inptr1 = inptr1.offset(2);
-            above_ptr = above_ptr.offset(2);
-            below_ptr = below_ptr.offset(2);
+            *fresh6 = (membersum + 32768 as libc::c_int as libc::c_long >> 16 as libc::c_int)
+                as crate::jmorecfg_h::JSAMPLE;
+            inptr0 = inptr0.offset(2 as libc::c_int as isize);
+            inptr1 = inptr1.offset(2 as libc::c_int as isize);
+            above_ptr = above_ptr.offset(2 as libc::c_int as isize);
+            below_ptr = below_ptr.offset(2 as libc::c_int as isize);
             colctr = colctr.wrapping_sub(1)
         }
         /* Special case for last column */
         membersum = (*inptr0 as libc::c_int
-            + *inptr0.offset(1) as libc::c_int
+            + *inptr0.offset(1 as libc::c_int as isize) as libc::c_int
             + *inptr1 as libc::c_int
-            + *inptr1.offset(1) as libc::c_int) as crate::jpegint_h::JLONG;
+            + *inptr1.offset(1 as libc::c_int as isize) as libc::c_int)
+            as crate::jpegint_h::JLONG;
         neighsum = (*above_ptr as libc::c_int
-            + *above_ptr.offset(1) as libc::c_int
+            + *above_ptr.offset(1 as libc::c_int as isize) as libc::c_int
             + *below_ptr as libc::c_int
-            + *below_ptr.offset(1) as libc::c_int
-            + *inptr0.offset(-1i32 as isize) as libc::c_int
-            + *inptr0.offset(1) as libc::c_int
-            + *inptr1.offset(-1i32 as isize) as libc::c_int
-            + *inptr1.offset(1) as libc::c_int) as crate::jpegint_h::JLONG;
+            + *below_ptr.offset(1 as libc::c_int as isize) as libc::c_int
+            + *inptr0.offset(-(1 as libc::c_int) as isize) as libc::c_int
+            + *inptr0.offset(1 as libc::c_int as isize) as libc::c_int
+            + *inptr1.offset(-(1 as libc::c_int) as isize) as libc::c_int
+            + *inptr1.offset(1 as libc::c_int as isize) as libc::c_int)
+            as crate::jpegint_h::JLONG;
         neighsum += neighsum;
-        neighsum += (*above_ptr.offset(-1i32 as isize) as libc::c_int
-            + *above_ptr.offset(1) as libc::c_int
-            + *below_ptr.offset(-1i32 as isize) as libc::c_int
-            + *below_ptr.offset(1) as libc::c_int) as libc::c_long;
+        neighsum += (*above_ptr.offset(-(1 as libc::c_int) as isize) as libc::c_int
+            + *above_ptr.offset(1 as libc::c_int as isize) as libc::c_int
+            + *below_ptr.offset(-(1 as libc::c_int) as isize) as libc::c_int
+            + *below_ptr.offset(1 as libc::c_int as isize) as libc::c_int)
+            as libc::c_long;
         membersum = membersum * memberscale + neighsum * neighscale;
-        *outptr = (membersum + 32768i32 as libc::c_long >> 16i32) as crate::jmorecfg_h::JSAMPLE;
-        inrow += 2i32;
+        *outptr = (membersum + 32768 as libc::c_int as libc::c_long >> 16 as libc::c_int)
+            as crate::jmorecfg_h::JSAMPLE;
+        inrow += 2 as libc::c_int;
         outrow += 1
     }
 }
@@ -752,8 +765,8 @@ unsafe extern "C" fn fullsize_smooth_downsample(
      * efficient.
      */
     expand_right_edge(
-        input_data.offset(-1),
-        (*cinfo).max_v_samp_factor + 2i32,
+        input_data.offset(-(1 as libc::c_int as isize)),
+        (*cinfo).max_v_samp_factor + 2 as libc::c_int,
         (*cinfo).image_width,
         output_cols,
     );
@@ -762,14 +775,15 @@ unsafe extern "C" fn fullsize_smooth_downsample(
      * to use integer arithmetic, these factors are multiplied by 2^16 = 65536.
      * Also recall that SF = smoothing_factor / 1024.
      */
-    memberscale = 65536i64 - (*cinfo).smoothing_factor as libc::c_long * 512i64; /* scaled 1-8*SF */
-    neighscale = ((*cinfo).smoothing_factor * 64i32) as crate::jpegint_h::JLONG; /* scaled SF */
-    outrow = 0i32;
+    memberscale =
+        65536 as libc::c_long - (*cinfo).smoothing_factor as libc::c_long * 512 as libc::c_long; /* scaled 1-8*SF */
+    neighscale = ((*cinfo).smoothing_factor * 64 as libc::c_int) as crate::jpegint_h::JLONG; /* scaled SF */
+    outrow = 0 as libc::c_int;
     while outrow < (*compptr).v_samp_factor {
         outptr = *output_data.offset(outrow as isize);
         inptr = *input_data.offset(outrow as isize);
-        above_ptr = *input_data.offset((outrow - 1i32) as isize);
-        below_ptr = *input_data.offset((outrow + 1i32) as isize);
+        above_ptr = *input_data.offset((outrow - 1 as libc::c_int) as isize);
+        below_ptr = *input_data.offset((outrow + 1 as libc::c_int) as isize);
         /* Special case for first column */
         let fresh7 = above_ptr;
         above_ptr = above_ptr.offset(1);
@@ -786,11 +800,12 @@ unsafe extern "C" fn fullsize_smooth_downsample(
         membersum = membersum * memberscale + neighsum * neighscale;
         let fresh10 = outptr;
         outptr = outptr.offset(1);
-        *fresh10 = (membersum + 32768i32 as libc::c_long >> 16i32) as crate::jmorecfg_h::JSAMPLE;
+        *fresh10 = (membersum + 32768 as libc::c_int as libc::c_long >> 16 as libc::c_int)
+            as crate::jmorecfg_h::JSAMPLE;
         lastcolsum = colsum;
         colsum = nextcolsum;
-        colctr = output_cols.wrapping_sub(2i32 as libc::c_uint);
-        while colctr > 0i32 as libc::c_uint {
+        colctr = output_cols.wrapping_sub(2 as libc::c_int as libc::c_uint);
+        while colctr > 0 as libc::c_int as libc::c_uint {
             let fresh11 = inptr;
             inptr = inptr.offset(1);
             membersum = *fresh11 as libc::c_int as crate::jpegint_h::JLONG;
@@ -804,8 +819,8 @@ unsafe extern "C" fn fullsize_smooth_downsample(
             membersum = membersum * memberscale + neighsum * neighscale;
             let fresh12 = outptr;
             outptr = outptr.offset(1);
-            *fresh12 =
-                (membersum + 32768i32 as libc::c_long >> 16i32) as crate::jmorecfg_h::JSAMPLE;
+            *fresh12 = (membersum + 32768 as libc::c_int as libc::c_long >> 16 as libc::c_int)
+                as crate::jmorecfg_h::JSAMPLE;
             lastcolsum = colsum;
             colsum = nextcolsum;
             colctr = colctr.wrapping_sub(1)
@@ -816,7 +831,8 @@ unsafe extern "C" fn fullsize_smooth_downsample(
             + (colsum as libc::c_long - membersum)
             + colsum as libc::c_long;
         membersum = membersum * memberscale + neighsum * neighscale;
-        *outptr = (membersum + 32768i32 as libc::c_long >> 16i32) as crate::jmorecfg_h::JSAMPLE;
+        *outptr = (membersum + 32768 as libc::c_int as libc::c_long >> 16 as libc::c_int)
+            as crate::jmorecfg_h::JSAMPLE;
         outrow += 1
     }
 }
@@ -859,7 +875,7 @@ pub unsafe extern "C" fn jinit_downsampler(mut cinfo: crate::jpeglib_h::j_compre
         crate::jpeglib_h::JPOOL_IMAGE,
         ::std::mem::size_of::<my_downsampler>() as libc::c_ulong,
     ) as my_downsample_ptr;
-    (*cinfo).downsample = downsample as *mut crate::jpeglib_h::jpeg_downsampler;
+    (*cinfo).downsample = downsample as *mut crate::jpegint_h::jpeg_downsampler;
     (*downsample).pub_0.start_pass = Some(
         start_pass_downsample as unsafe extern "C" fn(_: crate::jpeglib_h::j_compress_ptr) -> (),
     );
@@ -884,7 +900,7 @@ pub unsafe extern "C" fn jinit_downsampler(mut cinfo: crate::jpeglib_h::j_compre
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
     /* Verify we can handle the sampling factors, and set up method pointers */
-    ci = 0i32;
+    ci = 0 as libc::c_int;
     compptr = (*cinfo).comp_info;
     while ci < (*cinfo).num_components {
         if (*compptr).h_samp_factor == (*cinfo).max_h_samp_factor
@@ -912,7 +928,7 @@ pub unsafe extern "C" fn jinit_downsampler(mut cinfo: crate::jpeglib_h::j_compre
                         ) -> (),
                 )
             }
-        } else if (*compptr).h_samp_factor * 2i32 == (*cinfo).max_h_samp_factor
+        } else if (*compptr).h_samp_factor * 2 as libc::c_int == (*cinfo).max_h_samp_factor
             && (*compptr).v_samp_factor == (*cinfo).max_v_samp_factor
         {
             smoothok = crate::jmorecfg_h::FALSE;
@@ -937,8 +953,8 @@ pub unsafe extern "C" fn jinit_downsampler(mut cinfo: crate::jpeglib_h::j_compre
                         ) -> (),
                 )
             }
-        } else if (*compptr).h_samp_factor * 2i32 == (*cinfo).max_h_samp_factor
-            && (*compptr).v_samp_factor * 2i32 == (*cinfo).max_v_samp_factor
+        } else if (*compptr).h_samp_factor * 2 as libc::c_int == (*cinfo).max_h_samp_factor
+            && (*compptr).v_samp_factor * 2 as libc::c_int == (*cinfo).max_v_samp_factor
         {
             if (*cinfo).smoothing_factor != 0 {
                 (*downsample).methods[ci as usize] = Some(
@@ -972,8 +988,8 @@ pub unsafe extern "C" fn jinit_downsampler(mut cinfo: crate::jpeglib_h::j_compre
                         ) -> (),
                 )
             }
-        } else if (*cinfo).max_h_samp_factor % (*compptr).h_samp_factor == 0i32
-            && (*cinfo).max_v_samp_factor % (*compptr).v_samp_factor == 0i32
+        } else if (*cinfo).max_h_samp_factor % (*compptr).h_samp_factor == 0 as libc::c_int
+            && (*cinfo).max_v_samp_factor % (*compptr).v_samp_factor == 0 as libc::c_int
         {
             smoothok = crate::jmorecfg_h::FALSE;
             (*downsample).methods[ci as usize] = Some(
@@ -1006,6 +1022,9 @@ pub unsafe extern "C" fn jinit_downsampler(mut cinfo: crate::jpeglib_h::j_compre
                 .emit_message
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, 0i32);
+        .expect("non-null function pointer")(
+            cinfo as crate::jpeglib_h::j_common_ptr,
+            0 as libc::c_int,
+        );
     };
 }

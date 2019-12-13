@@ -1,4 +1,4 @@
-use libc;
+use ::libc;
 
 pub use crate::jmorecfg_h::boolean;
 pub use crate::jmorecfg_h::FALSE;
@@ -10,7 +10,17 @@ pub use crate::jmorecfg_h::TRUE;
 pub use crate::jmorecfg_h::UINT16;
 pub use crate::jmorecfg_h::UINT8;
 pub use crate::jpegint_h::inverse_DCT_method_ptr;
-pub use crate::jpegint_h::jpeg_natural_order;
+pub use crate::jpegint_h::jpeg_color_deconverter;
+pub use crate::jpegint_h::jpeg_color_quantizer;
+pub use crate::jpegint_h::jpeg_d_coef_controller;
+pub use crate::jpegint_h::jpeg_d_main_controller;
+pub use crate::jpegint_h::jpeg_d_post_controller;
+pub use crate::jpegint_h::jpeg_decomp_master;
+pub use crate::jpegint_h::jpeg_entropy_decoder;
+pub use crate::jpegint_h::jpeg_input_controller;
+pub use crate::jpegint_h::jpeg_inverse_dct;
+pub use crate::jpegint_h::jpeg_marker_reader;
+pub use crate::jpegint_h::jpeg_upsampler;
 pub use crate::jpegint_h::JBUF_CRANK_DEST;
 pub use crate::jpegint_h::JBUF_PASS_THRU;
 pub use crate::jpegint_h::JBUF_REQUANT;
@@ -20,29 +30,16 @@ pub use crate::jpegint_h::JLONG;
 pub use crate::jpegint_h::J_BUF_MODE;
 pub use crate::jpeglib_h::j_common_ptr;
 pub use crate::jpeglib_h::j_decompress_ptr;
-pub use crate::jpeglib_h::jpeg_alloc_huff_table;
-pub use crate::jpeglib_h::jpeg_alloc_quant_table;
-pub use crate::jpeglib_h::jpeg_color_deconverter;
-pub use crate::jpeglib_h::jpeg_color_quantizer;
 pub use crate::jpeglib_h::jpeg_common_struct;
 pub use crate::jpeglib_h::jpeg_component_info;
-pub use crate::jpeglib_h::jpeg_d_coef_controller;
-pub use crate::jpeglib_h::jpeg_d_main_controller;
-pub use crate::jpeglib_h::jpeg_d_post_controller;
-pub use crate::jpeglib_h::jpeg_decomp_master;
 pub use crate::jpeglib_h::jpeg_decompress_struct;
-pub use crate::jpeglib_h::jpeg_entropy_decoder;
 pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_input_controller;
-pub use crate::jpeglib_h::jpeg_inverse_dct;
 pub use crate::jpeglib_h::jpeg_marker_parser_method;
-pub use crate::jpeglib_h::jpeg_marker_reader;
 pub use crate::jpeglib_h::jpeg_marker_struct;
 pub use crate::jpeglib_h::jpeg_memory_mgr;
 pub use crate::jpeglib_h::jpeg_progress_mgr;
 pub use crate::jpeglib_h::jpeg_saved_marker_ptr;
 pub use crate::jpeglib_h::jpeg_source_mgr;
-pub use crate::jpeglib_h::jpeg_upsampler;
 pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
@@ -93,7 +90,8 @@ pub use crate::jpeglib_h::MAX_COMPS_IN_SCAN;
 pub use crate::jpeglib_h::NUM_ARITH_TBLS;
 pub use crate::jpeglib_h::NUM_HUFF_TBLS;
 pub use crate::jpeglib_h::NUM_QUANT_TBLS;
-pub use crate::src::jerror::C2RustUnnamed_3;
+pub use crate::src::jcomapi::jpeg_alloc_huff_table;
+pub use crate::src::jcomapi::jpeg_alloc_quant_table;
 pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -224,19 +222,21 @@ pub use crate::src::jerror::JWRN_JPEG_EOF;
 pub use crate::src::jerror::JWRN_MUST_RESYNC;
 pub use crate::src::jerror::JWRN_NOT_SEQUENTIAL;
 pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
+pub use crate::src::jutils::jpeg_natural_order;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 use crate::stdlib::memcpy;
 use crate::stdlib::memset;
+pub use crate::stdlib::C2RustUnnamed_0;
 
-pub const M_APP0: C2RustUnnamed_76 = 224;
+pub const M_APP0: C2RustUnnamed_67 = 224;
 
 pub type my_marker_ptr = *mut my_marker_reader;
 
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct my_marker_reader {
-    pub pub_0: crate::jpeglib_h::jpeg_marker_reader,
+    pub pub_0: crate::jpegint_h::jpeg_marker_reader,
     pub process_COM: crate::jpeglib_h::jpeg_marker_parser_method,
     pub process_APPn: [crate::jpeglib_h::jpeg_marker_parser_method; 16],
     pub length_limit_COM: libc::c_uint,
@@ -245,111 +245,111 @@ pub struct my_marker_reader {
     pub bytes_read: libc::c_uint,
 }
 
-pub const M_APP15: C2RustUnnamed_76 = 239;
+pub const M_APP15: C2RustUnnamed_67 = 239;
 
-pub const M_COM: C2RustUnnamed_76 = 254;
+pub const M_COM: C2RustUnnamed_67 = 254;
 
-pub const M_APP14: C2RustUnnamed_76 = 238;
+pub const M_APP14: C2RustUnnamed_67 = 238;
 
-pub const M_RST0: C2RustUnnamed_76 = 208;
+pub const M_RST0: C2RustUnnamed_67 = 208;
 
-pub const M_RST7: C2RustUnnamed_76 = 215;
+pub const M_RST7: C2RustUnnamed_67 = 215;
 
-pub const M_SOF0: C2RustUnnamed_76 = 192;
+pub const M_SOF0: C2RustUnnamed_67 = 192;
 
-pub const M_DNL: C2RustUnnamed_76 = 220;
+pub const M_DNL: C2RustUnnamed_67 = 220;
 
-pub const M_TEM: C2RustUnnamed_76 = 1;
+pub const M_TEM: C2RustUnnamed_67 = 1;
 
-pub const M_RST6: C2RustUnnamed_76 = 214;
+pub const M_RST6: C2RustUnnamed_67 = 214;
 
-pub const M_RST5: C2RustUnnamed_76 = 213;
+pub const M_RST5: C2RustUnnamed_67 = 213;
 
-pub const M_RST4: C2RustUnnamed_76 = 212;
+pub const M_RST4: C2RustUnnamed_67 = 212;
 
-pub const M_RST3: C2RustUnnamed_76 = 211;
+pub const M_RST3: C2RustUnnamed_67 = 211;
 
-pub const M_RST2: C2RustUnnamed_76 = 210;
+pub const M_RST2: C2RustUnnamed_67 = 210;
 
-pub const M_RST1: C2RustUnnamed_76 = 209;
+pub const M_RST1: C2RustUnnamed_67 = 209;
 
-pub const M_APP13: C2RustUnnamed_76 = 237;
+pub const M_APP13: C2RustUnnamed_67 = 237;
 
-pub const M_APP12: C2RustUnnamed_76 = 236;
+pub const M_APP12: C2RustUnnamed_67 = 236;
 
-pub const M_APP11: C2RustUnnamed_76 = 235;
+pub const M_APP11: C2RustUnnamed_67 = 235;
 
-pub const M_APP10: C2RustUnnamed_76 = 234;
+pub const M_APP10: C2RustUnnamed_67 = 234;
 
-pub const M_APP9: C2RustUnnamed_76 = 233;
+pub const M_APP9: C2RustUnnamed_67 = 233;
 
-pub const M_APP8: C2RustUnnamed_76 = 232;
+pub const M_APP8: C2RustUnnamed_67 = 232;
 
-pub const M_APP7: C2RustUnnamed_76 = 231;
+pub const M_APP7: C2RustUnnamed_67 = 231;
 
-pub const M_APP6: C2RustUnnamed_76 = 230;
+pub const M_APP6: C2RustUnnamed_67 = 230;
 
-pub const M_APP5: C2RustUnnamed_76 = 229;
+pub const M_APP5: C2RustUnnamed_67 = 229;
 
-pub const M_APP4: C2RustUnnamed_76 = 228;
+pub const M_APP4: C2RustUnnamed_67 = 228;
 
-pub const M_APP3: C2RustUnnamed_76 = 227;
+pub const M_APP3: C2RustUnnamed_67 = 227;
 
-pub const M_APP2: C2RustUnnamed_76 = 226;
+pub const M_APP2: C2RustUnnamed_67 = 226;
 
-pub const M_APP1: C2RustUnnamed_76 = 225;
+pub const M_APP1: C2RustUnnamed_67 = 225;
 
-pub const M_DRI: C2RustUnnamed_76 = 221;
+pub const M_DRI: C2RustUnnamed_67 = 221;
 
-pub const M_DQT: C2RustUnnamed_76 = 219;
+pub const M_DQT: C2RustUnnamed_67 = 219;
 
-pub const M_DHT: C2RustUnnamed_76 = 196;
+pub const M_DHT: C2RustUnnamed_67 = 196;
 
-pub const M_DAC: C2RustUnnamed_76 = 204;
+pub const M_DAC: C2RustUnnamed_67 = 204;
 
-pub const M_EOI: C2RustUnnamed_76 = 217;
+pub const M_EOI: C2RustUnnamed_67 = 217;
 
-pub const M_SOS: C2RustUnnamed_76 = 218;
+pub const M_SOS: C2RustUnnamed_67 = 218;
 
-pub const M_SOF15: C2RustUnnamed_76 = 207;
+pub const M_SOF15: C2RustUnnamed_67 = 207;
 
-pub const M_SOF14: C2RustUnnamed_76 = 206;
+pub const M_SOF14: C2RustUnnamed_67 = 206;
 
-pub const M_SOF13: C2RustUnnamed_76 = 205;
+pub const M_SOF13: C2RustUnnamed_67 = 205;
 
-pub const M_SOF11: C2RustUnnamed_76 = 203;
+pub const M_SOF11: C2RustUnnamed_67 = 203;
 
-pub const M_JPG: C2RustUnnamed_76 = 200;
+pub const M_JPG: C2RustUnnamed_67 = 200;
 
-pub const M_SOF7: C2RustUnnamed_76 = 199;
+pub const M_SOF7: C2RustUnnamed_67 = 199;
 
-pub const M_SOF6: C2RustUnnamed_76 = 198;
+pub const M_SOF6: C2RustUnnamed_67 = 198;
 
-pub const M_SOF5: C2RustUnnamed_76 = 197;
+pub const M_SOF5: C2RustUnnamed_67 = 197;
 
-pub const M_SOF3: C2RustUnnamed_76 = 195;
+pub const M_SOF3: C2RustUnnamed_67 = 195;
 
-pub const M_SOF10: C2RustUnnamed_76 = 202;
+pub const M_SOF10: C2RustUnnamed_67 = 202;
 
-pub const M_SOF9: C2RustUnnamed_76 = 201;
+pub const M_SOF9: C2RustUnnamed_67 = 201;
 
-pub const M_SOF2: C2RustUnnamed_76 = 194;
+pub const M_SOF2: C2RustUnnamed_67 = 194;
 
-pub const M_SOF1: C2RustUnnamed_76 = 193;
+pub const M_SOF1: C2RustUnnamed_67 = 193;
 
-pub const M_SOI: C2RustUnnamed_76 = 216;
+pub const M_SOI: C2RustUnnamed_67 = 216;
 
-pub type C2RustUnnamed_76 = libc::c_uint;
+pub type C2RustUnnamed_67 = libc::c_uint;
 
-pub const M_ERROR: C2RustUnnamed_76 = 256;
+pub const M_ERROR: C2RustUnnamed_67 = 256;
 
-pub const M_JPG13: C2RustUnnamed_76 = 253;
+pub const M_JPG13: C2RustUnnamed_67 = 253;
 
-pub const M_JPG0: C2RustUnnamed_76 = 240;
+pub const M_JPG0: C2RustUnnamed_67 = 240;
 
-pub const M_EXP: C2RustUnnamed_76 = 223;
+pub const M_EXP: C2RustUnnamed_67 = 223;
 
-pub const M_DHP: C2RustUnnamed_76 = 222;
+pub const M_DHP: C2RustUnnamed_67 = 222;
 /*
  * Macros for fetching data from the data source module.
  *
@@ -411,7 +411,9 @@ unsafe extern "C" fn get_soi(
             .emit_message
             .expect("non-null function pointer"),
     )
-    .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, 1i32);
+    .expect("non-null function pointer")(
+        cinfo as crate::jpeglib_h::j_common_ptr, 1 as libc::c_int
+    );
     if (*(*cinfo).marker).saw_SOI != 0 {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_SOI_DUPLICATE as libc::c_int;
         Some(
@@ -422,25 +424,25 @@ unsafe extern "C" fn get_soi(
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
     /* Reset all parameters that are defined to be reset by SOI */
-    i = 0i32;
+    i = 0 as libc::c_int;
     while i < crate::jpeglib_h::NUM_ARITH_TBLS {
-        (*cinfo).arith_dc_L[i as usize] = 0i32 as crate::jmorecfg_h::UINT8;
-        (*cinfo).arith_dc_U[i as usize] = 1i32 as crate::jmorecfg_h::UINT8;
-        (*cinfo).arith_ac_K[i as usize] = 5i32 as crate::jmorecfg_h::UINT8;
+        (*cinfo).arith_dc_L[i as usize] = 0 as libc::c_int as crate::jmorecfg_h::UINT8;
+        (*cinfo).arith_dc_U[i as usize] = 1 as libc::c_int as crate::jmorecfg_h::UINT8;
+        (*cinfo).arith_ac_K[i as usize] = 5 as libc::c_int as crate::jmorecfg_h::UINT8;
         i += 1
     }
-    (*cinfo).restart_interval = 0i32 as libc::c_uint;
+    (*cinfo).restart_interval = 0 as libc::c_int as libc::c_uint;
     /* Set initial assumptions for colorspace etc */
     (*cinfo).jpeg_color_space = crate::jpeglib_h::JCS_UNKNOWN; /* Assume non-CCIR sampling??? */
     (*cinfo).CCIR601_sampling = crate::jmorecfg_h::FALSE; /* set default JFIF APP0 values */
     (*cinfo).saw_JFIF_marker = crate::jmorecfg_h::FALSE;
-    (*cinfo).JFIF_major_version = 1i32 as crate::jmorecfg_h::UINT8;
-    (*cinfo).JFIF_minor_version = 1i32 as crate::jmorecfg_h::UINT8;
-    (*cinfo).density_unit = 0i32 as crate::jmorecfg_h::UINT8;
-    (*cinfo).X_density = 1i32 as crate::jmorecfg_h::UINT16;
-    (*cinfo).Y_density = 1i32 as crate::jmorecfg_h::UINT16;
+    (*cinfo).JFIF_major_version = 1 as libc::c_int as crate::jmorecfg_h::UINT8;
+    (*cinfo).JFIF_minor_version = 1 as libc::c_int as crate::jmorecfg_h::UINT8;
+    (*cinfo).density_unit = 0 as libc::c_int as crate::jmorecfg_h::UINT8;
+    (*cinfo).X_density = 1 as libc::c_int as crate::jmorecfg_h::UINT16;
+    (*cinfo).Y_density = 1 as libc::c_int as crate::jmorecfg_h::UINT16;
     (*cinfo).saw_Adobe_marker = crate::jmorecfg_h::FALSE;
-    (*cinfo).Adobe_transform = 0i32 as crate::jmorecfg_h::UINT8;
+    (*cinfo).Adobe_transform = 0 as libc::c_int as crate::jmorecfg_h::UINT8;
     (*(*cinfo).marker).saw_SOI = crate::jmorecfg_h::TRUE;
     return crate::jmorecfg_h::TRUE;
 }
@@ -461,7 +463,7 @@ unsafe extern "C" fn get_sof(
     let mut bytes_in_buffer: crate::stddef_h::size_t = (*datasrc).bytes_in_buffer;
     (*cinfo).progressive_mode = is_prog;
     (*cinfo).arith_code = is_arith;
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -470,7 +472,7 @@ unsafe extern "C" fn get_sof(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -478,8 +480,8 @@ unsafe extern "C" fn get_sof(
     bytes_in_buffer = bytes_in_buffer.wrapping_sub(1);
     let fresh0 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
-    length = ((*fresh0 as libc::c_uint) << 8i32) as crate::jpegint_h::JLONG;
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    length = ((*fresh0 as libc::c_uint) << 8 as libc::c_int) as crate::jpegint_h::JLONG;
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -488,7 +490,7 @@ unsafe extern "C" fn get_sof(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -497,7 +499,7 @@ unsafe extern "C" fn get_sof(
     let fresh1 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     length += *fresh1 as libc::c_long;
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -506,7 +508,7 @@ unsafe extern "C" fn get_sof(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -515,7 +517,7 @@ unsafe extern "C" fn get_sof(
     let fresh2 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     (*cinfo).data_precision = *fresh2 as libc::c_int;
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -524,7 +526,7 @@ unsafe extern "C" fn get_sof(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -532,8 +534,8 @@ unsafe extern "C" fn get_sof(
     bytes_in_buffer = bytes_in_buffer.wrapping_sub(1);
     let fresh3 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
-    (*cinfo).image_height = (*fresh3 as libc::c_uint) << 8i32;
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    (*cinfo).image_height = (*fresh3 as libc::c_uint) << 8 as libc::c_int;
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -542,7 +544,7 @@ unsafe extern "C" fn get_sof(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -553,7 +555,7 @@ unsafe extern "C" fn get_sof(
     (*cinfo).image_height =
         ((*cinfo).image_height as libc::c_uint).wrapping_add(*fresh4 as libc::c_uint)
             as crate::jmorecfg_h::JDIMENSION as crate::jmorecfg_h::JDIMENSION;
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -562,7 +564,7 @@ unsafe extern "C" fn get_sof(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -570,8 +572,8 @@ unsafe extern "C" fn get_sof(
     bytes_in_buffer = bytes_in_buffer.wrapping_sub(1);
     let fresh5 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
-    (*cinfo).image_width = (*fresh5 as libc::c_uint) << 8i32;
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    (*cinfo).image_width = (*fresh5 as libc::c_uint) << 8 as libc::c_int;
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -580,7 +582,7 @@ unsafe extern "C" fn get_sof(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -591,7 +593,7 @@ unsafe extern "C" fn get_sof(
     (*cinfo).image_width =
         ((*cinfo).image_width as libc::c_uint).wrapping_add(*fresh6 as libc::c_uint)
             as crate::jmorecfg_h::JDIMENSION as crate::jmorecfg_h::JDIMENSION;
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -600,7 +602,7 @@ unsafe extern "C" fn get_sof(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -609,19 +611,21 @@ unsafe extern "C" fn get_sof(
     let fresh7 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     (*cinfo).num_components = *fresh7 as libc::c_int;
-    length -= 8i32 as libc::c_long;
+    length -= 8 as libc::c_int as libc::c_long;
     let mut _mp: *mut libc::c_int = (*(*cinfo).err).msg_parm.i.as_mut_ptr();
-    *_mp.offset(0) = (*cinfo).unread_marker;
-    *_mp.offset(1) = (*cinfo).image_width as libc::c_int;
-    *_mp.offset(2) = (*cinfo).image_height as libc::c_int;
-    *_mp.offset(3) = (*cinfo).num_components;
+    *_mp.offset(0 as libc::c_int as isize) = (*cinfo).unread_marker;
+    *_mp.offset(1 as libc::c_int as isize) = (*cinfo).image_width as libc::c_int;
+    *_mp.offset(2 as libc::c_int as isize) = (*cinfo).image_height as libc::c_int;
+    *_mp.offset(3 as libc::c_int as isize) = (*cinfo).num_components;
     (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_SOF as libc::c_int;
     Some(
         (*(*cinfo).err)
             .emit_message
             .expect("non-null function pointer"),
     )
-    .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, 1i32);
+    .expect("non-null function pointer")(
+        cinfo as crate::jpeglib_h::j_common_ptr, 1 as libc::c_int
+    );
     if (*(*cinfo).marker).saw_SOF != 0 {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_SOF_DUPLICATE as libc::c_int;
         Some(
@@ -634,9 +638,9 @@ unsafe extern "C" fn get_sof(
     /* We don't support files in which the image height is initially specified */
     /* as 0 and is later redefined by DNL.  As long as we have to check that,  */
     /* might as well have a general sanity check. */
-    if (*cinfo).image_height <= 0i32 as libc::c_uint
-        || (*cinfo).image_width <= 0i32 as libc::c_uint
-        || (*cinfo).num_components <= 0i32
+    if (*cinfo).image_height <= 0 as libc::c_int as libc::c_uint
+        || (*cinfo).image_width <= 0 as libc::c_int as libc::c_uint
+        || (*cinfo).num_components <= 0 as libc::c_int
     {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_EMPTY_IMAGE as libc::c_int;
         Some(
@@ -646,7 +650,7 @@ unsafe extern "C" fn get_sof(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    if length != ((*cinfo).num_components * 3i32) as libc::c_long {
+    if length != ((*cinfo).num_components * 3 as libc::c_int) as libc::c_long {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_LENGTH as libc::c_int;
         Some(
             (*(*cinfo).err)
@@ -671,11 +675,11 @@ unsafe extern "C" fn get_sof(
                 ),
         ) as *mut crate::jpeglib_h::jpeg_component_info
     }
-    ci = 0i32;
+    ci = 0 as libc::c_int;
     compptr = (*cinfo).comp_info;
     while ci < (*cinfo).num_components {
         (*compptr).component_index = ci;
-        if bytes_in_buffer == 0i32 as libc::c_ulong {
+        if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
             if Some(
                 (*datasrc)
                     .fill_input_buffer
@@ -684,7 +688,7 @@ unsafe extern "C" fn get_sof(
             .expect("non-null function pointer")(cinfo)
                 == 0
             {
-                return 0i32;
+                return 0 as libc::c_int;
             }
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -693,7 +697,7 @@ unsafe extern "C" fn get_sof(
         let fresh8 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
         (*compptr).component_id = *fresh8 as libc::c_int;
-        if bytes_in_buffer == 0i32 as libc::c_ulong {
+        if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
             if Some(
                 (*datasrc)
                     .fill_input_buffer
@@ -702,7 +706,7 @@ unsafe extern "C" fn get_sof(
             .expect("non-null function pointer")(cinfo)
                 == 0
             {
-                return 0i32;
+                return 0 as libc::c_int;
             }
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -711,9 +715,9 @@ unsafe extern "C" fn get_sof(
         let fresh9 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
         c = *fresh9 as libc::c_int;
-        (*compptr).h_samp_factor = c >> 4i32 & 15i32;
-        (*compptr).v_samp_factor = c & 15i32;
-        if bytes_in_buffer == 0i32 as libc::c_ulong {
+        (*compptr).h_samp_factor = c >> 4 as libc::c_int & 15 as libc::c_int;
+        (*compptr).v_samp_factor = c & 15 as libc::c_int;
+        if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
             if Some(
                 (*datasrc)
                     .fill_input_buffer
@@ -722,7 +726,7 @@ unsafe extern "C" fn get_sof(
             .expect("non-null function pointer")(cinfo)
                 == 0
             {
-                return 0i32;
+                return 0 as libc::c_int;
             }
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -732,17 +736,20 @@ unsafe extern "C" fn get_sof(
         next_input_byte = next_input_byte.offset(1);
         (*compptr).quant_tbl_no = *fresh10 as libc::c_int;
         let mut _mp_0: *mut libc::c_int = (*(*cinfo).err).msg_parm.i.as_mut_ptr();
-        *_mp_0.offset(0) = (*compptr).component_id;
-        *_mp_0.offset(1) = (*compptr).h_samp_factor;
-        *_mp_0.offset(2) = (*compptr).v_samp_factor;
-        *_mp_0.offset(3) = (*compptr).quant_tbl_no;
+        *_mp_0.offset(0 as libc::c_int as isize) = (*compptr).component_id;
+        *_mp_0.offset(1 as libc::c_int as isize) = (*compptr).h_samp_factor;
+        *_mp_0.offset(2 as libc::c_int as isize) = (*compptr).v_samp_factor;
+        *_mp_0.offset(3 as libc::c_int as isize) = (*compptr).quant_tbl_no;
         (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_SOF_COMPONENT as libc::c_int;
         Some(
             (*(*cinfo).err)
                 .emit_message
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, 1i32);
+        .expect("non-null function pointer")(
+            cinfo as crate::jpeglib_h::j_common_ptr,
+            1 as libc::c_int,
+        );
         ci += 1;
         compptr = compptr.offset(1)
     }
@@ -777,7 +784,7 @@ unsafe extern "C" fn get_sos(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -786,7 +793,7 @@ unsafe extern "C" fn get_sos(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -794,8 +801,8 @@ unsafe extern "C" fn get_sos(
     bytes_in_buffer = bytes_in_buffer.wrapping_sub(1);
     let fresh11 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
-    length = ((*fresh11 as libc::c_uint) << 8i32) as crate::jpegint_h::JLONG;
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    length = ((*fresh11 as libc::c_uint) << 8 as libc::c_int) as crate::jpegint_h::JLONG;
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -804,7 +811,7 @@ unsafe extern "C" fn get_sos(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -813,7 +820,7 @@ unsafe extern "C" fn get_sos(
     let fresh12 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     length += *fresh12 as libc::c_long;
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -822,7 +829,7 @@ unsafe extern "C" fn get_sos(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -832,15 +839,17 @@ unsafe extern "C" fn get_sos(
     next_input_byte = next_input_byte.offset(1);
     n = *fresh13 as libc::c_int;
     (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_SOS as libc::c_int;
-    (*(*cinfo).err).msg_parm.i[0] = n;
+    (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = n;
     Some(
         (*(*cinfo).err)
             .emit_message
             .expect("non-null function pointer"),
     )
-    .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, 1i32);
-    if length != (n * 2i32 + 6i32) as libc::c_long
-        || n < 1i32
+    .expect("non-null function pointer")(
+        cinfo as crate::jpeglib_h::j_common_ptr, 1 as libc::c_int
+    );
+    if length != (n * 2 as libc::c_int + 6 as libc::c_int) as libc::c_long
+        || n < 1 as libc::c_int
         || n > crate::jpeglib_h::MAX_COMPS_IN_SCAN
     {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_LENGTH as libc::c_int;
@@ -853,16 +862,16 @@ unsafe extern "C" fn get_sos(
     }
     (*cinfo).comps_in_scan = n;
     /* Collect the component-spec parameters */
-    i = 0i32;
+    i = 0 as libc::c_int;
     while i < crate::jpeglib_h::MAX_COMPS_IN_SCAN {
         (*cinfo).cur_comp_info[i as usize] =
             crate::stddef_h::NULL as *mut crate::jpeglib_h::jpeg_component_info;
         i += 1
     }
-    i = 0i32;
+    i = 0 as libc::c_int;
     while i < n {
         let mut current_block_80: u64;
-        if bytes_in_buffer == 0i32 as libc::c_ulong {
+        if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
             if Some(
                 (*datasrc)
                     .fill_input_buffer
@@ -871,7 +880,7 @@ unsafe extern "C" fn get_sos(
             .expect("non-null function pointer")(cinfo)
                 == 0
             {
-                return 0i32;
+                return 0 as libc::c_int;
             }
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -880,7 +889,7 @@ unsafe extern "C" fn get_sos(
         let fresh14 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
         cc = *fresh14 as libc::c_int;
-        if bytes_in_buffer == 0i32 as libc::c_ulong {
+        if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
             if Some(
                 (*datasrc)
                     .fill_input_buffer
@@ -889,7 +898,7 @@ unsafe extern "C" fn get_sos(
             .expect("non-null function pointer")(cinfo)
                 == 0
             {
-                return 0i32;
+                return 0 as libc::c_int;
             }
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -898,7 +907,7 @@ unsafe extern "C" fn get_sos(
         let fresh15 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
         c = *fresh15 as libc::c_int;
-        ci = 0i32;
+        ci = 0 as libc::c_int;
         compptr = (*cinfo).comp_info;
         loop {
             if !(ci < (*cinfo).num_components && ci < crate::jpeglib_h::MAX_COMPS_IN_SCAN) {
@@ -915,7 +924,7 @@ unsafe extern "C" fn get_sos(
         match current_block_80 {
             5181772461570869434 => {
                 (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_COMPONENT_ID as libc::c_int;
-                (*(*cinfo).err).msg_parm.i[0] = cc;
+                (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = cc;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
@@ -928,25 +937,28 @@ unsafe extern "C" fn get_sos(
             _ => {}
         }
         (*cinfo).cur_comp_info[i as usize] = compptr;
-        (*compptr).dc_tbl_no = c >> 4i32 & 15i32;
-        (*compptr).ac_tbl_no = c & 15i32;
+        (*compptr).dc_tbl_no = c >> 4 as libc::c_int & 15 as libc::c_int;
+        (*compptr).ac_tbl_no = c & 15 as libc::c_int;
         let mut _mp: *mut libc::c_int = (*(*cinfo).err).msg_parm.i.as_mut_ptr();
-        *_mp.offset(0) = cc;
-        *_mp.offset(1) = (*compptr).dc_tbl_no;
-        *_mp.offset(2) = (*compptr).ac_tbl_no;
+        *_mp.offset(0 as libc::c_int as isize) = cc;
+        *_mp.offset(1 as libc::c_int as isize) = (*compptr).dc_tbl_no;
+        *_mp.offset(2 as libc::c_int as isize) = (*compptr).ac_tbl_no;
         (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_SOS_COMPONENT as libc::c_int;
         Some(
             (*(*cinfo).err)
                 .emit_message
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, 1i32);
+        .expect("non-null function pointer")(
+            cinfo as crate::jpeglib_h::j_common_ptr,
+            1 as libc::c_int,
+        );
         /* This CSi (cc) should differ from the previous CSi */
-        pi = 0i32;
+        pi = 0 as libc::c_int;
         while pi < i {
             if (*cinfo).cur_comp_info[pi as usize] == compptr {
                 (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_COMPONENT_ID as libc::c_int;
-                (*(*cinfo).err).msg_parm.i[0] = cc;
+                (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = cc;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
@@ -961,7 +973,7 @@ unsafe extern "C" fn get_sos(
         i += 1
     }
     /* Collect the additional scan parameters Ss, Se, Ah/Al. */
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -970,7 +982,7 @@ unsafe extern "C" fn get_sos(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -980,7 +992,7 @@ unsafe extern "C" fn get_sos(
     next_input_byte = next_input_byte.offset(1);
     c = *fresh16 as libc::c_int;
     (*cinfo).Ss = c;
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -989,7 +1001,7 @@ unsafe extern "C" fn get_sos(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -999,7 +1011,7 @@ unsafe extern "C" fn get_sos(
     next_input_byte = next_input_byte.offset(1);
     c = *fresh17 as libc::c_int;
     (*cinfo).Se = c;
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -1008,7 +1020,7 @@ unsafe extern "C" fn get_sos(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -1017,22 +1029,24 @@ unsafe extern "C" fn get_sos(
     let fresh18 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     c = *fresh18 as libc::c_int;
-    (*cinfo).Ah = c >> 4i32 & 15i32;
-    (*cinfo).Al = c & 15i32;
+    (*cinfo).Ah = c >> 4 as libc::c_int & 15 as libc::c_int;
+    (*cinfo).Al = c & 15 as libc::c_int;
     let mut _mp_0: *mut libc::c_int = (*(*cinfo).err).msg_parm.i.as_mut_ptr();
-    *_mp_0.offset(0) = (*cinfo).Ss;
-    *_mp_0.offset(1) = (*cinfo).Se;
-    *_mp_0.offset(2) = (*cinfo).Ah;
-    *_mp_0.offset(3) = (*cinfo).Al;
+    *_mp_0.offset(0 as libc::c_int as isize) = (*cinfo).Ss;
+    *_mp_0.offset(1 as libc::c_int as isize) = (*cinfo).Se;
+    *_mp_0.offset(2 as libc::c_int as isize) = (*cinfo).Ah;
+    *_mp_0.offset(3 as libc::c_int as isize) = (*cinfo).Al;
     (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_SOS_PARAMS as libc::c_int;
     Some(
         (*(*cinfo).err)
             .emit_message
             .expect("non-null function pointer"),
     )
-    .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, 1i32);
+    .expect("non-null function pointer")(
+        cinfo as crate::jpeglib_h::j_common_ptr, 1 as libc::c_int
+    );
     /* Prepare to scan data & restart markers */
-    (*(*cinfo).marker).next_restart_num = 0i32;
+    (*(*cinfo).marker).next_restart_num = 0 as libc::c_int;
     /* Count another SOS marker */
     (*cinfo).input_scan_number += 1;
     (*datasrc).next_input_byte = next_input_byte;
@@ -1057,7 +1071,7 @@ unsafe extern "C" fn get_dht(
     let mut datasrc: *mut crate::jpeglib_h::jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const crate::jmorecfg_h::JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: crate::stddef_h::size_t = (*datasrc).bytes_in_buffer;
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -1066,7 +1080,7 @@ unsafe extern "C" fn get_dht(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -1074,8 +1088,8 @@ unsafe extern "C" fn get_dht(
     bytes_in_buffer = bytes_in_buffer.wrapping_sub(1);
     let fresh19 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
-    length = ((*fresh19 as libc::c_uint) << 8i32) as crate::jpegint_h::JLONG;
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    length = ((*fresh19 as libc::c_uint) << 8 as libc::c_int) as crate::jpegint_h::JLONG;
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -1084,7 +1098,7 @@ unsafe extern "C" fn get_dht(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -1093,9 +1107,9 @@ unsafe extern "C" fn get_dht(
     let fresh20 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     length += *fresh20 as libc::c_long;
-    length -= 2i32 as libc::c_long;
-    while length > 16i32 as libc::c_long {
-        if bytes_in_buffer == 0i32 as libc::c_ulong {
+    length -= 2 as libc::c_int as libc::c_long;
+    while length > 16 as libc::c_int as libc::c_long {
+        if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
             if Some(
                 (*datasrc)
                     .fill_input_buffer
@@ -1104,7 +1118,7 @@ unsafe extern "C" fn get_dht(
             .expect("non-null function pointer")(cinfo)
                 == 0
             {
-                return 0i32;
+                return 0 as libc::c_int;
             }
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -1114,18 +1128,21 @@ unsafe extern "C" fn get_dht(
         next_input_byte = next_input_byte.offset(1);
         index = *fresh21 as libc::c_int;
         (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_DHT as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = index;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = index;
         Some(
             (*(*cinfo).err)
                 .emit_message
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, 1i32);
-        bits[0] = 0i32 as crate::jmorecfg_h::UINT8;
-        count = 0i32;
-        i = 1i32;
-        while i <= 16i32 {
-            if bytes_in_buffer == 0i32 as libc::c_ulong {
+        .expect("non-null function pointer")(
+            cinfo as crate::jpeglib_h::j_common_ptr,
+            1 as libc::c_int,
+        );
+        bits[0 as libc::c_int as usize] = 0 as libc::c_int as crate::jmorecfg_h::UINT8;
+        count = 0 as libc::c_int;
+        i = 1 as libc::c_int;
+        while i <= 16 as libc::c_int {
+            if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
                 if Some(
                     (*datasrc)
                         .fill_input_buffer
@@ -1134,7 +1151,7 @@ unsafe extern "C" fn get_dht(
                 .expect("non-null function pointer")(cinfo)
                     == 0
                 {
-                    return 0i32;
+                    return 0 as libc::c_int;
                 }
                 next_input_byte = (*datasrc).next_input_byte;
                 bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -1146,43 +1163,49 @@ unsafe extern "C" fn get_dht(
             count += bits[i as usize] as libc::c_int;
             i += 1
         }
-        length -= (1i32 + 16i32) as libc::c_long;
+        length -= (1 as libc::c_int + 16 as libc::c_int) as libc::c_long;
         let mut _mp: *mut libc::c_int = (*(*cinfo).err).msg_parm.i.as_mut_ptr();
-        *_mp.offset(0) = bits[1] as libc::c_int;
-        *_mp.offset(1) = bits[2] as libc::c_int;
-        *_mp.offset(2) = bits[3] as libc::c_int;
-        *_mp.offset(3) = bits[4] as libc::c_int;
-        *_mp.offset(4) = bits[5] as libc::c_int;
-        *_mp.offset(5) = bits[6] as libc::c_int;
-        *_mp.offset(6) = bits[7] as libc::c_int;
-        *_mp.offset(7) = bits[8] as libc::c_int;
+        *_mp.offset(0 as libc::c_int as isize) = bits[1 as libc::c_int as usize] as libc::c_int;
+        *_mp.offset(1 as libc::c_int as isize) = bits[2 as libc::c_int as usize] as libc::c_int;
+        *_mp.offset(2 as libc::c_int as isize) = bits[3 as libc::c_int as usize] as libc::c_int;
+        *_mp.offset(3 as libc::c_int as isize) = bits[4 as libc::c_int as usize] as libc::c_int;
+        *_mp.offset(4 as libc::c_int as isize) = bits[5 as libc::c_int as usize] as libc::c_int;
+        *_mp.offset(5 as libc::c_int as isize) = bits[6 as libc::c_int as usize] as libc::c_int;
+        *_mp.offset(6 as libc::c_int as isize) = bits[7 as libc::c_int as usize] as libc::c_int;
+        *_mp.offset(7 as libc::c_int as isize) = bits[8 as libc::c_int as usize] as libc::c_int;
         (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_HUFFBITS as libc::c_int;
         Some(
             (*(*cinfo).err)
                 .emit_message
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, 2i32);
+        .expect("non-null function pointer")(
+            cinfo as crate::jpeglib_h::j_common_ptr,
+            2 as libc::c_int,
+        );
         let mut _mp_0: *mut libc::c_int = (*(*cinfo).err).msg_parm.i.as_mut_ptr();
-        *_mp_0.offset(0) = bits[9] as libc::c_int;
-        *_mp_0.offset(1) = bits[10] as libc::c_int;
-        *_mp_0.offset(2) = bits[11] as libc::c_int;
-        *_mp_0.offset(3) = bits[12] as libc::c_int;
-        *_mp_0.offset(4) = bits[13] as libc::c_int;
-        *_mp_0.offset(5) = bits[14] as libc::c_int;
-        *_mp_0.offset(6) = bits[15] as libc::c_int;
-        *_mp_0.offset(7) = bits[16] as libc::c_int;
+        *_mp_0.offset(0 as libc::c_int as isize) = bits[9 as libc::c_int as usize] as libc::c_int;
+        *_mp_0.offset(1 as libc::c_int as isize) = bits[10 as libc::c_int as usize] as libc::c_int;
+        *_mp_0.offset(2 as libc::c_int as isize) = bits[11 as libc::c_int as usize] as libc::c_int;
+        *_mp_0.offset(3 as libc::c_int as isize) = bits[12 as libc::c_int as usize] as libc::c_int;
+        *_mp_0.offset(4 as libc::c_int as isize) = bits[13 as libc::c_int as usize] as libc::c_int;
+        *_mp_0.offset(5 as libc::c_int as isize) = bits[14 as libc::c_int as usize] as libc::c_int;
+        *_mp_0.offset(6 as libc::c_int as isize) = bits[15 as libc::c_int as usize] as libc::c_int;
+        *_mp_0.offset(7 as libc::c_int as isize) = bits[16 as libc::c_int as usize] as libc::c_int;
         (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_HUFFBITS as libc::c_int;
         Some(
             (*(*cinfo).err)
                 .emit_message
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, 2i32);
+        .expect("non-null function pointer")(
+            cinfo as crate::jpeglib_h::j_common_ptr,
+            2 as libc::c_int,
+        );
         /* Here we just do minimal validation of the counts to avoid walking
          * off the end of our table space.  jdhuff.c will check more carefully.
          */
-        if count > 256i32 || count as crate::jpegint_h::JLONG > length {
+        if count > 256 as libc::c_int || count as crate::jpegint_h::JLONG > length {
             (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_HUFF_TABLE as libc::c_int; /* DC table definition */
             Some(
                 (*(*cinfo).err)
@@ -1193,9 +1216,9 @@ unsafe extern "C" fn get_dht(
                 cinfo as crate::jpeglib_h::j_common_ptr
             );
         }
-        i = 0i32;
+        i = 0 as libc::c_int;
         while i < count {
-            if bytes_in_buffer == 0i32 as libc::c_ulong {
+            if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
                 if Some(
                     (*datasrc)
                         .fill_input_buffer
@@ -1204,7 +1227,7 @@ unsafe extern "C" fn get_dht(
                 .expect("non-null function pointer")(cinfo)
                     == 0
                 {
-                    return 0i32;
+                    return 0 as libc::c_int;
                 }
                 next_input_byte = (*datasrc).next_input_byte;
                 bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -1218,17 +1241,17 @@ unsafe extern "C" fn get_dht(
         crate::stdlib::memset(
             &mut *huffval.as_mut_ptr().offset(count as isize) as *mut crate::jmorecfg_h::UINT8
                 as *mut libc::c_void,
-            0i32,
-            ((256i32 - count) as libc::c_ulong)
+            0 as libc::c_int,
+            ((256 as libc::c_int - count) as libc::c_ulong)
                 .wrapping_mul(::std::mem::size_of::<crate::jmorecfg_h::UINT8>() as libc::c_ulong),
         );
         length -= count as libc::c_long;
-        if index & 0x10i32 != 0 {
+        if index & 0x10 as libc::c_int != 0 {
             /* AC table definition */
-            index -= 0x10i32;
-            if index < 0i32 || index >= crate::jpeglib_h::NUM_HUFF_TBLS {
+            index -= 0x10 as libc::c_int;
+            if index < 0 as libc::c_int || index >= crate::jpeglib_h::NUM_HUFF_TBLS {
                 (*(*cinfo).err).msg_code = crate::src::jerror::JERR_DHT_INDEX as libc::c_int;
-                (*(*cinfo).err).msg_parm.i[0] = index;
+                (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = index;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
@@ -1244,9 +1267,9 @@ unsafe extern "C" fn get_dht(
                 .offset(index as isize)
                 as *mut *mut crate::jpeglib_h::JHUFF_TBL
         } else {
-            if index < 0i32 || index >= crate::jpeglib_h::NUM_HUFF_TBLS {
+            if index < 0 as libc::c_int || index >= crate::jpeglib_h::NUM_HUFF_TBLS {
                 (*(*cinfo).err).msg_code = crate::src::jerror::JERR_DHT_INDEX as libc::c_int;
-                (*(*cinfo).err).msg_parm.i[0] = index;
+                (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = index;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
@@ -1264,7 +1287,7 @@ unsafe extern "C" fn get_dht(
         }
         if (*htblptr).is_null() {
             *htblptr =
-                crate::jpeglib_h::jpeg_alloc_huff_table(cinfo as crate::jpeglib_h::j_common_ptr)
+                crate::src::jcomapi::jpeg_alloc_huff_table(cinfo as crate::jpeglib_h::j_common_ptr)
         }
         crate::stdlib::memcpy(
             (**htblptr).bits.as_mut_ptr() as *mut libc::c_void,
@@ -1277,7 +1300,7 @@ unsafe extern "C" fn get_dht(
             ::std::mem::size_of::<[crate::jmorecfg_h::UINT8; 256]>() as libc::c_ulong,
         );
     }
-    if length != 0i32 as libc::c_long {
+    if length != 0 as libc::c_int as libc::c_long {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_LENGTH as libc::c_int;
         Some(
             (*(*cinfo).err)
@@ -1304,7 +1327,7 @@ unsafe extern "C" fn get_dqt(
     let mut datasrc: *mut crate::jpeglib_h::jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const crate::jmorecfg_h::JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: crate::stddef_h::size_t = (*datasrc).bytes_in_buffer;
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -1313,7 +1336,7 @@ unsafe extern "C" fn get_dqt(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -1321,8 +1344,8 @@ unsafe extern "C" fn get_dqt(
     bytes_in_buffer = bytes_in_buffer.wrapping_sub(1);
     let fresh24 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
-    length = ((*fresh24 as libc::c_uint) << 8i32) as crate::jpegint_h::JLONG;
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    length = ((*fresh24 as libc::c_uint) << 8 as libc::c_int) as crate::jpegint_h::JLONG;
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -1331,7 +1354,7 @@ unsafe extern "C" fn get_dqt(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -1340,9 +1363,9 @@ unsafe extern "C" fn get_dqt(
     let fresh25 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     length += *fresh25 as libc::c_long;
-    length -= 2i32 as libc::c_long;
-    while length > 0i32 as libc::c_long {
-        if bytes_in_buffer == 0i32 as libc::c_ulong {
+    length -= 2 as libc::c_int as libc::c_long;
+    while length > 0 as libc::c_int as libc::c_long {
+        if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
             if Some(
                 (*datasrc)
                     .fill_input_buffer
@@ -1351,7 +1374,7 @@ unsafe extern "C" fn get_dqt(
             .expect("non-null function pointer")(cinfo)
                 == 0
             {
-                return 0i32;
+                return 0 as libc::c_int;
             }
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -1360,20 +1383,23 @@ unsafe extern "C" fn get_dqt(
         let fresh26 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
         n = *fresh26 as libc::c_int;
-        prec = n >> 4i32;
-        n &= 0xfi32;
+        prec = n >> 4 as libc::c_int;
+        n &= 0xf as libc::c_int;
         (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_DQT as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = n;
-        (*(*cinfo).err).msg_parm.i[1] = prec;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = n;
+        (*(*cinfo).err).msg_parm.i[1 as libc::c_int as usize] = prec;
         Some(
             (*(*cinfo).err)
                 .emit_message
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, 1i32);
+        .expect("non-null function pointer")(
+            cinfo as crate::jpeglib_h::j_common_ptr,
+            1 as libc::c_int,
+        );
         if n >= crate::jpeglib_h::NUM_QUANT_TBLS {
             (*(*cinfo).err).msg_code = crate::src::jerror::JERR_DQT_INDEX as libc::c_int;
-            (*(*cinfo).err).msg_parm.i[0] = n;
+            (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = n;
             Some(
                 (*(*cinfo).err)
                     .error_exit
@@ -1385,13 +1411,13 @@ unsafe extern "C" fn get_dqt(
         }
         if (*cinfo).quant_tbl_ptrs[n as usize].is_null() {
             (*cinfo).quant_tbl_ptrs[n as usize] =
-                crate::jpeglib_h::jpeg_alloc_quant_table(cinfo as crate::jpeglib_h::j_common_ptr)
+                crate::src::jcomapi::jpeg_alloc_quant_table(cinfo as crate::jpeglib_h::j_common_ptr)
         }
         quant_ptr = (*cinfo).quant_tbl_ptrs[n as usize];
-        i = 0i32;
+        i = 0 as libc::c_int;
         while i < crate::jpeglib_h::DCTSIZE2 {
             if prec != 0 {
-                if bytes_in_buffer == 0i32 as libc::c_ulong {
+                if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
                     if Some(
                         (*datasrc)
                             .fill_input_buffer
@@ -1400,7 +1426,7 @@ unsafe extern "C" fn get_dqt(
                     .expect("non-null function pointer")(cinfo)
                         == 0
                     {
-                        return 0i32;
+                        return 0 as libc::c_int;
                     }
                     next_input_byte = (*datasrc).next_input_byte;
                     bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -1408,8 +1434,8 @@ unsafe extern "C" fn get_dqt(
                 bytes_in_buffer = bytes_in_buffer.wrapping_sub(1);
                 let fresh27 = next_input_byte;
                 next_input_byte = next_input_byte.offset(1);
-                tmp = (*fresh27 as libc::c_uint) << 8i32;
-                if bytes_in_buffer == 0i32 as libc::c_ulong {
+                tmp = (*fresh27 as libc::c_uint) << 8 as libc::c_int;
+                if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
                     if Some(
                         (*datasrc)
                             .fill_input_buffer
@@ -1418,7 +1444,7 @@ unsafe extern "C" fn get_dqt(
                     .expect("non-null function pointer")(cinfo)
                         == 0
                     {
-                        return 0i32;
+                        return 0 as libc::c_int;
                     }
                     next_input_byte = (*datasrc).next_input_byte;
                     bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -1428,7 +1454,7 @@ unsafe extern "C" fn get_dqt(
                 next_input_byte = next_input_byte.offset(1);
                 tmp = tmp.wrapping_add(*fresh28 as libc::c_uint)
             } else {
-                if bytes_in_buffer == 0i32 as libc::c_ulong {
+                if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
                     if Some(
                         (*datasrc)
                             .fill_input_buffer
@@ -1437,7 +1463,7 @@ unsafe extern "C" fn get_dqt(
                     .expect("non-null function pointer")(cinfo)
                         == 0
                     {
-                        return 0i32;
+                        return 0 as libc::c_int;
                     }
                     next_input_byte = (*datasrc).next_input_byte;
                     bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -1448,23 +1474,31 @@ unsafe extern "C" fn get_dqt(
                 tmp = *fresh29 as libc::c_uint
             }
             /* We convert the zigzag-order table to natural array order. */
-            (*quant_ptr).quantval[*crate::jpegint_h::jpeg_natural_order
+            (*quant_ptr).quantval[*crate::src::jutils::jpeg_natural_order
                 .as_ptr()
                 .offset(i as isize) as usize] = tmp as crate::jmorecfg_h::UINT16;
             i += 1
         }
-        if (*(*cinfo).err).trace_level >= 2i32 {
-            i = 0i32;
+        if (*(*cinfo).err).trace_level >= 2 as libc::c_int {
+            i = 0 as libc::c_int;
             while i < crate::jpeglib_h::DCTSIZE2 {
                 let mut _mp: *mut libc::c_int = (*(*cinfo).err).msg_parm.i.as_mut_ptr();
-                *_mp.offset(0) = (*quant_ptr).quantval[i as usize] as libc::c_int;
-                *_mp.offset(1) = (*quant_ptr).quantval[(i + 1i32) as usize] as libc::c_int;
-                *_mp.offset(2) = (*quant_ptr).quantval[(i + 2i32) as usize] as libc::c_int;
-                *_mp.offset(3) = (*quant_ptr).quantval[(i + 3i32) as usize] as libc::c_int;
-                *_mp.offset(4) = (*quant_ptr).quantval[(i + 4i32) as usize] as libc::c_int;
-                *_mp.offset(5) = (*quant_ptr).quantval[(i + 5i32) as usize] as libc::c_int;
-                *_mp.offset(6) = (*quant_ptr).quantval[(i + 6i32) as usize] as libc::c_int;
-                *_mp.offset(7) = (*quant_ptr).quantval[(i + 7i32) as usize] as libc::c_int;
+                *_mp.offset(0 as libc::c_int as isize) =
+                    (*quant_ptr).quantval[i as usize] as libc::c_int;
+                *_mp.offset(1 as libc::c_int as isize) =
+                    (*quant_ptr).quantval[(i + 1 as libc::c_int) as usize] as libc::c_int;
+                *_mp.offset(2 as libc::c_int as isize) =
+                    (*quant_ptr).quantval[(i + 2 as libc::c_int) as usize] as libc::c_int;
+                *_mp.offset(3 as libc::c_int as isize) =
+                    (*quant_ptr).quantval[(i + 3 as libc::c_int) as usize] as libc::c_int;
+                *_mp.offset(4 as libc::c_int as isize) =
+                    (*quant_ptr).quantval[(i + 4 as libc::c_int) as usize] as libc::c_int;
+                *_mp.offset(5 as libc::c_int as isize) =
+                    (*quant_ptr).quantval[(i + 5 as libc::c_int) as usize] as libc::c_int;
+                *_mp.offset(6 as libc::c_int as isize) =
+                    (*quant_ptr).quantval[(i + 6 as libc::c_int) as usize] as libc::c_int;
+                *_mp.offset(7 as libc::c_int as isize) =
+                    (*quant_ptr).quantval[(i + 7 as libc::c_int) as usize] as libc::c_int;
                 (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_QUANTVALS as libc::c_int;
                 Some(
                     (*(*cinfo).err)
@@ -1472,17 +1506,18 @@ unsafe extern "C" fn get_dqt(
                         .expect("non-null function pointer"),
                 )
                 .expect("non-null function pointer")(
-                    cinfo as crate::jpeglib_h::j_common_ptr, 2i32
+                    cinfo as crate::jpeglib_h::j_common_ptr,
+                    2 as libc::c_int,
                 );
-                i += 8i32
+                i += 8 as libc::c_int
             }
         }
-        length -= (crate::jpeglib_h::DCTSIZE2 + 1i32) as libc::c_long;
+        length -= (crate::jpeglib_h::DCTSIZE2 + 1 as libc::c_int) as libc::c_long;
         if prec != 0 {
             length -= crate::jpeglib_h::DCTSIZE2 as libc::c_long
         }
     }
-    if length != 0i32 as libc::c_long {
+    if length != 0 as libc::c_int as libc::c_long {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_LENGTH as libc::c_int;
         Some(
             (*(*cinfo).err)
@@ -1505,7 +1540,7 @@ unsafe extern "C" fn get_dri(
     let mut datasrc: *mut crate::jpeglib_h::jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const crate::jmorecfg_h::JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: crate::stddef_h::size_t = (*datasrc).bytes_in_buffer;
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -1514,7 +1549,7 @@ unsafe extern "C" fn get_dri(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -1522,8 +1557,8 @@ unsafe extern "C" fn get_dri(
     bytes_in_buffer = bytes_in_buffer.wrapping_sub(1);
     let fresh30 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
-    length = ((*fresh30 as libc::c_uint) << 8i32) as crate::jpegint_h::JLONG;
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    length = ((*fresh30 as libc::c_uint) << 8 as libc::c_int) as crate::jpegint_h::JLONG;
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -1532,7 +1567,7 @@ unsafe extern "C" fn get_dri(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -1541,7 +1576,7 @@ unsafe extern "C" fn get_dri(
     let fresh31 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     length += *fresh31 as libc::c_long;
-    if length != 4i32 as libc::c_long {
+    if length != 4 as libc::c_int as libc::c_long {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_LENGTH as libc::c_int;
         Some(
             (*(*cinfo).err)
@@ -1550,7 +1585,7 @@ unsafe extern "C" fn get_dri(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -1559,7 +1594,7 @@ unsafe extern "C" fn get_dri(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -1567,8 +1602,8 @@ unsafe extern "C" fn get_dri(
     bytes_in_buffer = bytes_in_buffer.wrapping_sub(1);
     let fresh32 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
-    tmp = (*fresh32 as libc::c_uint) << 8i32;
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    tmp = (*fresh32 as libc::c_uint) << 8 as libc::c_int;
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -1577,7 +1612,7 @@ unsafe extern "C" fn get_dri(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -1587,13 +1622,15 @@ unsafe extern "C" fn get_dri(
     next_input_byte = next_input_byte.offset(1);
     tmp = tmp.wrapping_add(*fresh33 as libc::c_uint);
     (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_DRI as libc::c_int;
-    (*(*cinfo).err).msg_parm.i[0] = tmp as libc::c_int;
+    (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = tmp as libc::c_int;
     Some(
         (*(*cinfo).err)
             .emit_message
             .expect("non-null function pointer"),
     )
-    .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, 1i32);
+    .expect("non-null function pointer")(
+        cinfo as crate::jpeglib_h::j_common_ptr, 1 as libc::c_int
+    );
     (*cinfo).restart_interval = tmp;
     (*datasrc).next_input_byte = next_input_byte;
     (*datasrc).bytes_in_buffer = bytes_in_buffer;
@@ -1606,13 +1643,13 @@ unsafe extern "C" fn get_dri(
  * JFIF and Adobe markers, respectively.
  */
 
-pub const APP0_DATA_LEN: libc::c_int = 14i32;
+pub const APP0_DATA_LEN: libc::c_int = 14 as libc::c_int;
 /* Length of interesting data in APP0 */
 
-pub const APP14_DATA_LEN: libc::c_int = 12i32;
+pub const APP14_DATA_LEN: libc::c_int = 12 as libc::c_int;
 /* Length of interesting data in APP14 */
 
-pub const APPN_DATA_LEN: libc::c_int = 14i32;
+pub const APPN_DATA_LEN: libc::c_int = 14 as libc::c_int;
 /* Must be the largest of the above!! */
 
 unsafe extern "C" fn examine_app0(
@@ -1628,22 +1665,24 @@ unsafe extern "C" fn examine_app0(
 {
     let mut totallen: crate::jpegint_h::JLONG = datalen as crate::jpegint_h::JLONG + remaining;
     if datalen >= APP0_DATA_LEN as libc::c_uint
-        && *data.offset(0) as libc::c_int == 0x4ai32
-        && *data.offset(1) as libc::c_int == 0x46i32
-        && *data.offset(2) as libc::c_int == 0x49i32
-        && *data.offset(3) as libc::c_int == 0x46i32
-        && *data.offset(4) as libc::c_int == 0i32
+        && *data.offset(0 as libc::c_int as isize) as libc::c_int == 0x4a as libc::c_int
+        && *data.offset(1 as libc::c_int as isize) as libc::c_int == 0x46 as libc::c_int
+        && *data.offset(2 as libc::c_int as isize) as libc::c_int == 0x49 as libc::c_int
+        && *data.offset(3 as libc::c_int as isize) as libc::c_int == 0x46 as libc::c_int
+        && *data.offset(4 as libc::c_int as isize) as libc::c_int == 0 as libc::c_int
     {
         /* Found JFIF APP0 marker: save info */
         (*cinfo).saw_JFIF_marker = crate::jmorecfg_h::TRUE;
-        (*cinfo).JFIF_major_version = *data.offset(5);
-        (*cinfo).JFIF_minor_version = *data.offset(6);
-        (*cinfo).density_unit = *data.offset(7);
-        (*cinfo).X_density = (((*data.offset(8) as libc::c_int) << 8i32)
-            + *data.offset(9) as libc::c_int)
+        (*cinfo).JFIF_major_version = *data.offset(5 as libc::c_int as isize);
+        (*cinfo).JFIF_minor_version = *data.offset(6 as libc::c_int as isize);
+        (*cinfo).density_unit = *data.offset(7 as libc::c_int as isize);
+        (*cinfo).X_density = (((*data.offset(8 as libc::c_int as isize) as libc::c_int)
+            << 8 as libc::c_int)
+            + *data.offset(9 as libc::c_int as isize) as libc::c_int)
             as crate::jmorecfg_h::UINT16;
-        (*cinfo).Y_density = (((*data.offset(10) as libc::c_int) << 8i32)
-            + *data.offset(11) as libc::c_int)
+        (*cinfo).Y_density = (((*data.offset(10 as libc::c_int as isize) as libc::c_int)
+            << 8 as libc::c_int)
+            + *data.offset(11 as libc::c_int as isize) as libc::c_int)
             as crate::jmorecfg_h::UINT16;
         /* Check version.
          * Major version must be 1, anything else signals an incompatible change.
@@ -1651,137 +1690,158 @@ unsafe extern "C" fn examine_app0(
          * because some bozo at Hijaak couldn't read the spec.)
          * Minor version should be 0..2, but process anyway if newer.
          */
-        if (*cinfo).JFIF_major_version as libc::c_int != 1i32 {
+        if (*cinfo).JFIF_major_version as libc::c_int != 1 as libc::c_int {
             (*(*cinfo).err).msg_code = crate::src::jerror::JWRN_JFIF_MAJOR as libc::c_int;
-            (*(*cinfo).err).msg_parm.i[0] = (*cinfo).JFIF_major_version as libc::c_int;
-            (*(*cinfo).err).msg_parm.i[1] = (*cinfo).JFIF_minor_version as libc::c_int;
+            (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] =
+                (*cinfo).JFIF_major_version as libc::c_int;
+            (*(*cinfo).err).msg_parm.i[1 as libc::c_int as usize] =
+                (*cinfo).JFIF_minor_version as libc::c_int;
             Some(
                 (*(*cinfo).err)
                     .emit_message
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(
-                cinfo as crate::jpeglib_h::j_common_ptr, -1i32
+                cinfo as crate::jpeglib_h::j_common_ptr,
+                -(1 as libc::c_int),
             );
         }
         /* Generate trace messages */
         let mut _mp: *mut libc::c_int = (*(*cinfo).err).msg_parm.i.as_mut_ptr();
-        *_mp.offset(0) = (*cinfo).JFIF_major_version as libc::c_int;
-        *_mp.offset(1) = (*cinfo).JFIF_minor_version as libc::c_int;
-        *_mp.offset(2) = (*cinfo).X_density as libc::c_int;
-        *_mp.offset(3) = (*cinfo).Y_density as libc::c_int;
-        *_mp.offset(4) = (*cinfo).density_unit as libc::c_int;
+        *_mp.offset(0 as libc::c_int as isize) = (*cinfo).JFIF_major_version as libc::c_int;
+        *_mp.offset(1 as libc::c_int as isize) = (*cinfo).JFIF_minor_version as libc::c_int;
+        *_mp.offset(2 as libc::c_int as isize) = (*cinfo).X_density as libc::c_int;
+        *_mp.offset(3 as libc::c_int as isize) = (*cinfo).Y_density as libc::c_int;
+        *_mp.offset(4 as libc::c_int as isize) = (*cinfo).density_unit as libc::c_int;
         (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_JFIF as libc::c_int;
         Some(
             (*(*cinfo).err)
                 .emit_message
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, 1i32);
+        .expect("non-null function pointer")(
+            cinfo as crate::jpeglib_h::j_common_ptr,
+            1 as libc::c_int,
+        );
         /* Validate thumbnail dimensions and issue appropriate messages */
-        if *data.offset(12) as libc::c_int | *data.offset(13) as libc::c_int != 0 {
+        if *data.offset(12 as libc::c_int as isize) as libc::c_int
+            | *data.offset(13 as libc::c_int as isize) as libc::c_int
+            != 0
+        {
             (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_JFIF_THUMBNAIL as libc::c_int;
-            (*(*cinfo).err).msg_parm.i[0] = *data.offset(12) as libc::c_int;
-            (*(*cinfo).err).msg_parm.i[1] = *data.offset(13) as libc::c_int;
+            (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] =
+                *data.offset(12 as libc::c_int as isize) as libc::c_int;
+            (*(*cinfo).err).msg_parm.i[1 as libc::c_int as usize] =
+                *data.offset(13 as libc::c_int as isize) as libc::c_int;
             Some(
                 (*(*cinfo).err)
                     .emit_message
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(
-                cinfo as crate::jpeglib_h::j_common_ptr, 1i32
+                cinfo as crate::jpeglib_h::j_common_ptr,
+                1 as libc::c_int,
             );
         }
         totallen -= APP0_DATA_LEN as libc::c_long;
         if totallen
-            != *data.offset(12) as crate::jpegint_h::JLONG
-                * *data.offset(13) as crate::jpegint_h::JLONG
-                * 3i32 as crate::jpegint_h::JLONG
+            != *data.offset(12 as libc::c_int as isize) as crate::jpegint_h::JLONG
+                * *data.offset(13 as libc::c_int as isize) as crate::jpegint_h::JLONG
+                * 3 as libc::c_int as crate::jpegint_h::JLONG
         {
             (*(*cinfo).err).msg_code =
                 crate::src::jerror::JTRC_JFIF_BADTHUMBNAILSIZE as libc::c_int;
-            (*(*cinfo).err).msg_parm.i[0] = totallen as libc::c_int;
+            (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = totallen as libc::c_int;
             Some(
                 (*(*cinfo).err)
                     .emit_message
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(
-                cinfo as crate::jpeglib_h::j_common_ptr, 1i32
+                cinfo as crate::jpeglib_h::j_common_ptr,
+                1 as libc::c_int,
             );
         }
-    } else if datalen >= 6i32 as libc::c_uint
-        && *data.offset(0) as libc::c_int == 0x4ai32
-        && *data.offset(1) as libc::c_int == 0x46i32
-        && *data.offset(2) as libc::c_int == 0x58i32
-        && *data.offset(3) as libc::c_int == 0x58i32
-        && *data.offset(4) as libc::c_int == 0i32
+    } else if datalen >= 6 as libc::c_int as libc::c_uint
+        && *data.offset(0 as libc::c_int as isize) as libc::c_int == 0x4a as libc::c_int
+        && *data.offset(1 as libc::c_int as isize) as libc::c_int == 0x46 as libc::c_int
+        && *data.offset(2 as libc::c_int as isize) as libc::c_int == 0x58 as libc::c_int
+        && *data.offset(3 as libc::c_int as isize) as libc::c_int == 0x58 as libc::c_int
+        && *data.offset(4 as libc::c_int as isize) as libc::c_int == 0 as libc::c_int
     {
         /* Found JFIF "JFXX" extension APP0 marker */
         /* The library doesn't actually do anything with these,
          * but we try to produce a helpful trace message.
          */
-        match *data.offset(5) as libc::c_int {
+        match *data.offset(5 as libc::c_int as isize) as libc::c_int {
             16 => {
                 (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_THUMB_JPEG as libc::c_int;
-                (*(*cinfo).err).msg_parm.i[0] = totallen as libc::c_int;
+                (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = totallen as libc::c_int;
                 Some(
                     (*(*cinfo).err)
                         .emit_message
                         .expect("non-null function pointer"),
                 )
                 .expect("non-null function pointer")(
-                    cinfo as crate::jpeglib_h::j_common_ptr, 1i32
+                    cinfo as crate::jpeglib_h::j_common_ptr,
+                    1 as libc::c_int,
                 );
             }
             17 => {
                 (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_THUMB_PALETTE as libc::c_int;
-                (*(*cinfo).err).msg_parm.i[0] = totallen as libc::c_int;
+                (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = totallen as libc::c_int;
                 Some(
                     (*(*cinfo).err)
                         .emit_message
                         .expect("non-null function pointer"),
                 )
                 .expect("non-null function pointer")(
-                    cinfo as crate::jpeglib_h::j_common_ptr, 1i32
+                    cinfo as crate::jpeglib_h::j_common_ptr,
+                    1 as libc::c_int,
                 );
             }
             19 => {
                 (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_THUMB_RGB as libc::c_int;
-                (*(*cinfo).err).msg_parm.i[0] = totallen as libc::c_int;
+                (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = totallen as libc::c_int;
                 Some(
                     (*(*cinfo).err)
                         .emit_message
                         .expect("non-null function pointer"),
                 )
                 .expect("non-null function pointer")(
-                    cinfo as crate::jpeglib_h::j_common_ptr, 1i32
+                    cinfo as crate::jpeglib_h::j_common_ptr,
+                    1 as libc::c_int,
                 );
             }
             _ => {
                 (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_JFIF_EXTENSION as libc::c_int;
-                (*(*cinfo).err).msg_parm.i[0] = *data.offset(5) as libc::c_int;
-                (*(*cinfo).err).msg_parm.i[1] = totallen as libc::c_int;
+                (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] =
+                    *data.offset(5 as libc::c_int as isize) as libc::c_int;
+                (*(*cinfo).err).msg_parm.i[1 as libc::c_int as usize] = totallen as libc::c_int;
                 Some(
                     (*(*cinfo).err)
                         .emit_message
                         .expect("non-null function pointer"),
                 )
                 .expect("non-null function pointer")(
-                    cinfo as crate::jpeglib_h::j_common_ptr, 1i32
+                    cinfo as crate::jpeglib_h::j_common_ptr,
+                    1 as libc::c_int,
                 );
             }
         }
     } else {
         /* Start of APP0 does not match "JFIF" or "JFXX", or too short */
         (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_APP0 as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = totallen as libc::c_int;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = totallen as libc::c_int;
         Some(
             (*(*cinfo).err)
                 .emit_message
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, 1i32);
+        .expect("non-null function pointer")(
+            cinfo as crate::jpeglib_h::j_common_ptr,
+            1 as libc::c_int,
+        );
     };
 }
 
@@ -1801,44 +1861,54 @@ unsafe extern "C" fn examine_app14(
     let mut flags1: libc::c_uint = 0;
     let mut transform: libc::c_uint = 0;
     if datalen >= APP14_DATA_LEN as libc::c_uint
-        && *data.offset(0) as libc::c_int == 0x41i32
-        && *data.offset(1) as libc::c_int == 0x64i32
-        && *data.offset(2) as libc::c_int == 0x6fi32
-        && *data.offset(3) as libc::c_int == 0x62i32
-        && *data.offset(4) as libc::c_int == 0x65i32
+        && *data.offset(0 as libc::c_int as isize) as libc::c_int == 0x41 as libc::c_int
+        && *data.offset(1 as libc::c_int as isize) as libc::c_int == 0x64 as libc::c_int
+        && *data.offset(2 as libc::c_int as isize) as libc::c_int == 0x6f as libc::c_int
+        && *data.offset(3 as libc::c_int as isize) as libc::c_int == 0x62 as libc::c_int
+        && *data.offset(4 as libc::c_int as isize) as libc::c_int == 0x65 as libc::c_int
     {
         /* Found Adobe APP14 marker */
-        version = (((*data.offset(5) as libc::c_int) << 8i32) + *data.offset(6) as libc::c_int)
+        version = (((*data.offset(5 as libc::c_int as isize) as libc::c_int) << 8 as libc::c_int)
+            + *data.offset(6 as libc::c_int as isize) as libc::c_int)
             as libc::c_uint;
-        flags0 = (((*data.offset(7) as libc::c_int) << 8i32) + *data.offset(8) as libc::c_int)
+        flags0 = (((*data.offset(7 as libc::c_int as isize) as libc::c_int) << 8 as libc::c_int)
+            + *data.offset(8 as libc::c_int as isize) as libc::c_int)
             as libc::c_uint;
-        flags1 = (((*data.offset(9) as libc::c_int) << 8i32) + *data.offset(10) as libc::c_int)
+        flags1 = (((*data.offset(9 as libc::c_int as isize) as libc::c_int) << 8 as libc::c_int)
+            + *data.offset(10 as libc::c_int as isize) as libc::c_int)
             as libc::c_uint;
-        transform = *data.offset(11) as libc::c_uint;
+        transform = *data.offset(11 as libc::c_int as isize) as libc::c_uint;
         let mut _mp: *mut libc::c_int = (*(*cinfo).err).msg_parm.i.as_mut_ptr();
-        *_mp.offset(0) = version as libc::c_int;
-        *_mp.offset(1) = flags0 as libc::c_int;
-        *_mp.offset(2) = flags1 as libc::c_int;
-        *_mp.offset(3) = transform as libc::c_int;
+        *_mp.offset(0 as libc::c_int as isize) = version as libc::c_int;
+        *_mp.offset(1 as libc::c_int as isize) = flags0 as libc::c_int;
+        *_mp.offset(2 as libc::c_int as isize) = flags1 as libc::c_int;
+        *_mp.offset(3 as libc::c_int as isize) = transform as libc::c_int;
         (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_ADOBE as libc::c_int;
         Some(
             (*(*cinfo).err)
                 .emit_message
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, 1i32);
+        .expect("non-null function pointer")(
+            cinfo as crate::jpeglib_h::j_common_ptr,
+            1 as libc::c_int,
+        );
         (*cinfo).saw_Adobe_marker = crate::jmorecfg_h::TRUE;
         (*cinfo).Adobe_transform = transform as crate::jmorecfg_h::UINT8
     } else {
         /* Start of APP14 does not match "Adobe", or too short */
         (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_APP14 as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = (datalen as libc::c_long + remaining) as libc::c_int;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] =
+            (datalen as libc::c_long + remaining) as libc::c_int;
         Some(
             (*(*cinfo).err)
                 .emit_message
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, 1i32);
+        .expect("non-null function pointer")(
+            cinfo as crate::jpeglib_h::j_common_ptr,
+            1 as libc::c_int,
+        );
     };
 }
 
@@ -1853,7 +1923,7 @@ unsafe extern "C" fn get_interesting_appn(
     let mut datasrc: *mut crate::jpeglib_h::jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const crate::jmorecfg_h::JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: crate::stddef_h::size_t = (*datasrc).bytes_in_buffer;
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -1862,7 +1932,7 @@ unsafe extern "C" fn get_interesting_appn(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -1870,8 +1940,8 @@ unsafe extern "C" fn get_interesting_appn(
     bytes_in_buffer = bytes_in_buffer.wrapping_sub(1);
     let fresh34 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
-    length = ((*fresh34 as libc::c_uint) << 8i32) as crate::jpegint_h::JLONG;
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    length = ((*fresh34 as libc::c_uint) << 8 as libc::c_int) as crate::jpegint_h::JLONG;
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -1880,7 +1950,7 @@ unsafe extern "C" fn get_interesting_appn(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -1889,18 +1959,18 @@ unsafe extern "C" fn get_interesting_appn(
     let fresh35 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     length += *fresh35 as libc::c_long;
-    length -= 2i32 as libc::c_long;
+    length -= 2 as libc::c_int as libc::c_long;
     /* get the interesting part of the marker data */
     if length >= APPN_DATA_LEN as libc::c_long {
         numtoread = APPN_DATA_LEN as libc::c_uint
-    } else if length > 0i32 as libc::c_long {
+    } else if length > 0 as libc::c_int as libc::c_long {
         numtoread = length as libc::c_uint
     } else {
-        numtoread = 0i32 as libc::c_uint
+        numtoread = 0 as libc::c_int as libc::c_uint
     }
-    i = 0i32 as libc::c_uint;
+    i = 0 as libc::c_int as libc::c_uint;
     while i < numtoread {
-        if bytes_in_buffer == 0i32 as libc::c_ulong {
+        if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
             if Some(
                 (*datasrc)
                     .fill_input_buffer
@@ -1909,7 +1979,7 @@ unsafe extern "C" fn get_interesting_appn(
             .expect("non-null function pointer")(cinfo)
                 == 0
             {
-                return 0i32;
+                return 0 as libc::c_int;
             }
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -1932,7 +2002,7 @@ unsafe extern "C" fn get_interesting_appn(
         _ => {
             /* can't get here unless jpeg_save_markers chooses wrong processor */
             (*(*cinfo).err).msg_code = crate::src::jerror::JERR_UNKNOWN_MARKER as libc::c_int;
-            (*(*cinfo).err).msg_parm.i[0] = (*cinfo).unread_marker;
+            (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = (*cinfo).unread_marker;
             Some(
                 (*(*cinfo).err)
                     .error_exit
@@ -1946,7 +2016,7 @@ unsafe extern "C" fn get_interesting_appn(
     /* skip any remaining data -- could be lots */
     (*datasrc).next_input_byte = next_input_byte;
     (*datasrc).bytes_in_buffer = bytes_in_buffer;
-    if length > 0i32 as libc::c_long {
+    if length > 0 as libc::c_int as libc::c_long {
         Some(
             (*(*cinfo).src)
                 .skip_input_data
@@ -1966,13 +2036,13 @@ unsafe extern "C" fn save_marker(
     let mut bytes_read: libc::c_uint = 0;
     let mut data_length: libc::c_uint = 0;
     let mut data: *mut crate::jmorecfg_h::JOCTET = 0 as *mut crate::jmorecfg_h::JOCTET;
-    let mut length: crate::jpegint_h::JLONG = 0i32 as crate::jpegint_h::JLONG;
+    let mut length: crate::jpegint_h::JLONG = 0 as libc::c_int as crate::jpegint_h::JLONG;
     let mut datasrc: *mut crate::jpeglib_h::jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const crate::jmorecfg_h::JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: crate::stddef_h::size_t = (*datasrc).bytes_in_buffer;
     if cur_marker.is_null() {
         /* begin reading a marker */
-        if bytes_in_buffer == 0i32 as libc::c_ulong {
+        if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
             if Some(
                 (*datasrc)
                     .fill_input_buffer
@@ -1981,7 +2051,7 @@ unsafe extern "C" fn save_marker(
             .expect("non-null function pointer")(cinfo)
                 == 0
             {
-                return 0i32;
+                return 0 as libc::c_int;
             }
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -1989,8 +2059,8 @@ unsafe extern "C" fn save_marker(
         bytes_in_buffer = bytes_in_buffer.wrapping_sub(1);
         let fresh37 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
-        length = ((*fresh37 as libc::c_uint) << 8i32) as crate::jpegint_h::JLONG;
-        if bytes_in_buffer == 0i32 as libc::c_ulong {
+        length = ((*fresh37 as libc::c_uint) << 8 as libc::c_int) as crate::jpegint_h::JLONG;
+        if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
             if Some(
                 (*datasrc)
                     .fill_input_buffer
@@ -1999,7 +2069,7 @@ unsafe extern "C" fn save_marker(
             .expect("non-null function pointer")(cinfo)
                 == 0
             {
-                return 0i32;
+                return 0 as libc::c_int;
             }
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -2008,8 +2078,8 @@ unsafe extern "C" fn save_marker(
         let fresh38 = next_input_byte;
         next_input_byte = next_input_byte.offset(1);
         length += *fresh38 as libc::c_long;
-        length -= 2i32 as libc::c_long;
-        if length >= 0i32 as libc::c_long {
+        length -= 2 as libc::c_int as libc::c_long;
+        if length >= 0 as libc::c_int as libc::c_long {
             /* watch out for bogus length word */
             /* figure out how much we want to save */
             let mut limit: libc::c_uint = 0;
@@ -2039,15 +2109,16 @@ unsafe extern "C" fn save_marker(
             (*cur_marker).original_length = length as libc::c_uint;
             (*cur_marker).data_length = limit;
             /* data area is just beyond the jpeg_marker_struct */
-            (*cur_marker).data = cur_marker.offset(1) as *mut crate::jmorecfg_h::JOCTET;
+            (*cur_marker).data =
+                cur_marker.offset(1 as libc::c_int as isize) as *mut crate::jmorecfg_h::JOCTET;
             data = (*cur_marker).data;
             (*marker).cur_marker = cur_marker;
-            (*marker).bytes_read = 0i32 as libc::c_uint;
-            bytes_read = 0i32 as libc::c_uint;
+            (*marker).bytes_read = 0 as libc::c_int as libc::c_uint;
+            bytes_read = 0 as libc::c_int as libc::c_uint;
             data_length = limit
         } else {
             /* deal with bogus length word */
-            data_length = 0i32 as libc::c_uint;
+            data_length = 0 as libc::c_int as libc::c_uint;
             bytes_read = data_length;
             data = crate::stddef_h::NULL as *mut crate::jmorecfg_h::JOCTET
         }
@@ -2062,7 +2133,7 @@ unsafe extern "C" fn save_marker(
         (*datasrc).bytes_in_buffer = bytes_in_buffer;
         (*marker).bytes_read = bytes_read;
         /* If there's not at least one byte in buffer, suspend */
-        if bytes_in_buffer == 0i32 as libc::c_ulong {
+        if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
             if Some(
                 (*datasrc)
                     .fill_input_buffer
@@ -2071,13 +2142,13 @@ unsafe extern "C" fn save_marker(
             .expect("non-null function pointer")(cinfo)
                 == 0
             {
-                return 0i32;
+                return 0 as libc::c_int;
             }
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
         }
         /* Copy bytes with reasonable rapidity */
-        while bytes_read < data_length && bytes_in_buffer > 0i32 as libc::c_ulong {
+        while bytes_read < data_length && bytes_in_buffer > 0 as libc::c_int as libc::c_ulong {
             let fresh39 = next_input_byte;
             next_input_byte = next_input_byte.offset(1);
             let fresh40 = data;
@@ -2116,22 +2187,24 @@ unsafe extern "C" fn save_marker(
         }
         _ => {
             (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_MISC_MARKER as libc::c_int;
-            (*(*cinfo).err).msg_parm.i[0] = (*cinfo).unread_marker;
-            (*(*cinfo).err).msg_parm.i[1] = (data_length as libc::c_long + length) as libc::c_int;
+            (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = (*cinfo).unread_marker;
+            (*(*cinfo).err).msg_parm.i[1 as libc::c_int as usize] =
+                (data_length as libc::c_long + length) as libc::c_int;
             Some(
                 (*(*cinfo).err)
                     .emit_message
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(
-                cinfo as crate::jpeglib_h::j_common_ptr, 1i32
+                cinfo as crate::jpeglib_h::j_common_ptr,
+                1 as libc::c_int,
             );
         }
     }
     /* skip any remaining data -- could be lots */
     (*datasrc).next_input_byte = next_input_byte; /* do before skip_input_data */
     (*datasrc).bytes_in_buffer = bytes_in_buffer;
-    if length > 0i32 as libc::c_long {
+    if length > 0 as libc::c_int as libc::c_long {
         Some(
             (*(*cinfo).src)
                 .skip_input_data
@@ -2151,7 +2224,7 @@ unsafe extern "C" fn skip_variable(
     let mut datasrc: *mut crate::jpeglib_h::jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const crate::jmorecfg_h::JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: crate::stddef_h::size_t = (*datasrc).bytes_in_buffer;
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -2160,7 +2233,7 @@ unsafe extern "C" fn skip_variable(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -2168,8 +2241,8 @@ unsafe extern "C" fn skip_variable(
     bytes_in_buffer = bytes_in_buffer.wrapping_sub(1);
     let fresh41 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
-    length = ((*fresh41 as libc::c_uint) << 8i32) as crate::jpegint_h::JLONG;
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    length = ((*fresh41 as libc::c_uint) << 8 as libc::c_int) as crate::jpegint_h::JLONG;
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -2178,7 +2251,7 @@ unsafe extern "C" fn skip_variable(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -2187,19 +2260,21 @@ unsafe extern "C" fn skip_variable(
     let fresh42 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     length += *fresh42 as libc::c_long;
-    length -= 2i32 as libc::c_long;
+    length -= 2 as libc::c_int as libc::c_long;
     (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_MISC_MARKER as libc::c_int;
-    (*(*cinfo).err).msg_parm.i[0] = (*cinfo).unread_marker;
-    (*(*cinfo).err).msg_parm.i[1] = length as libc::c_int;
+    (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = (*cinfo).unread_marker;
+    (*(*cinfo).err).msg_parm.i[1 as libc::c_int as usize] = length as libc::c_int;
     Some(
         (*(*cinfo).err)
             .emit_message
             .expect("non-null function pointer"),
     )
-    .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, 1i32);
+    .expect("non-null function pointer")(
+        cinfo as crate::jpeglib_h::j_common_ptr, 1 as libc::c_int
+    );
     (*datasrc).next_input_byte = next_input_byte;
     (*datasrc).bytes_in_buffer = bytes_in_buffer;
-    if length > 0i32 as libc::c_long {
+    if length > 0 as libc::c_int as libc::c_long {
         Some(
             (*(*cinfo).src)
                 .skip_input_data
@@ -2226,7 +2301,7 @@ unsafe extern "C" fn next_marker(
     let mut next_input_byte: *const crate::jmorecfg_h::JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: crate::stddef_h::size_t = (*datasrc).bytes_in_buffer;
     loop {
-        if bytes_in_buffer == 0i32 as libc::c_ulong {
+        if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
             if Some(
                 (*datasrc)
                     .fill_input_buffer
@@ -2235,7 +2310,7 @@ unsafe extern "C" fn next_marker(
             .expect("non-null function pointer")(cinfo)
                 == 0
             {
-                return 0i32;
+                return 0 as libc::c_int;
             }
             next_input_byte = (*datasrc).next_input_byte;
             bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -2249,11 +2324,11 @@ unsafe extern "C" fn next_marker(
          * We sync after each discarded byte so that a suspending data source
          * can discard the byte from its buffer.
          */
-        while c != 0xffi32 {
+        while c != 0xff as libc::c_int {
             (*(*cinfo).marker).discarded_bytes = (*(*cinfo).marker).discarded_bytes.wrapping_add(1);
             (*datasrc).next_input_byte = next_input_byte;
             (*datasrc).bytes_in_buffer = bytes_in_buffer;
-            if bytes_in_buffer == 0i32 as libc::c_ulong {
+            if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
                 if Some(
                     (*datasrc)
                         .fill_input_buffer
@@ -2262,7 +2337,7 @@ unsafe extern "C" fn next_marker(
                 .expect("non-null function pointer")(cinfo)
                     == 0
                 {
-                    return 0i32;
+                    return 0 as libc::c_int;
                 }
                 next_input_byte = (*datasrc).next_input_byte;
                 bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -2279,7 +2354,7 @@ unsafe extern "C" fn next_marker(
          * data source's input buffer.
          */
         {
-            if bytes_in_buffer == 0i32 as libc::c_ulong {
+            if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
                 if Some(
                     (*datasrc)
                         .fill_input_buffer
@@ -2288,7 +2363,7 @@ unsafe extern "C" fn next_marker(
                 .expect("non-null function pointer")(cinfo)
                     == 0
                 {
-                    return 0i32;
+                    return 0 as libc::c_int;
                 } /* found a valid marker, exit loop */
                 next_input_byte = (*datasrc).next_input_byte;
                 bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -2297,11 +2372,11 @@ unsafe extern "C" fn next_marker(
             let fresh45 = next_input_byte;
             next_input_byte = next_input_byte.offset(1);
             c = *fresh45 as libc::c_int;
-            if !(c == 0xffi32) {
+            if !(c == 0xff as libc::c_int) {
                 break;
             }
         }
-        if c != 0i32 {
+        if c != 0 as libc::c_int {
             break;
         }
         /* Reach here if we found a stuffed-zero data sequence (FF/00).
@@ -2309,21 +2384,25 @@ unsafe extern "C" fn next_marker(
          */
         (*(*cinfo).marker).discarded_bytes = (*(*cinfo).marker)
             .discarded_bytes
-            .wrapping_add(2i32 as libc::c_uint);
+            .wrapping_add(2 as libc::c_int as libc::c_uint);
         (*datasrc).next_input_byte = next_input_byte;
         (*datasrc).bytes_in_buffer = bytes_in_buffer
     }
-    if (*(*cinfo).marker).discarded_bytes != 0i32 as libc::c_uint {
+    if (*(*cinfo).marker).discarded_bytes != 0 as libc::c_int as libc::c_uint {
         (*(*cinfo).err).msg_code = crate::src::jerror::JWRN_EXTRANEOUS_DATA as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = (*(*cinfo).marker).discarded_bytes as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[1] = c;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] =
+            (*(*cinfo).marker).discarded_bytes as libc::c_int;
+        (*(*cinfo).err).msg_parm.i[1 as libc::c_int as usize] = c;
         Some(
             (*(*cinfo).err)
                 .emit_message
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, -1i32);
-        (*(*cinfo).marker).discarded_bytes = 0i32 as libc::c_uint
+        .expect("non-null function pointer")(
+            cinfo as crate::jpeglib_h::j_common_ptr,
+            -(1 as libc::c_int),
+        );
+        (*(*cinfo).marker).discarded_bytes = 0 as libc::c_int as libc::c_uint
     }
     (*cinfo).unread_marker = c;
     (*datasrc).next_input_byte = next_input_byte;
@@ -2345,7 +2424,7 @@ unsafe extern "C" fn first_marker(
     let mut datasrc: *mut crate::jpeglib_h::jpeg_source_mgr = (*cinfo).src;
     let mut next_input_byte: *const crate::jmorecfg_h::JOCTET = (*datasrc).next_input_byte;
     let mut bytes_in_buffer: crate::stddef_h::size_t = (*datasrc).bytes_in_buffer;
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -2354,7 +2433,7 @@ unsafe extern "C" fn first_marker(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -2363,7 +2442,7 @@ unsafe extern "C" fn first_marker(
     let fresh46 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     c = *fresh46 as libc::c_int;
-    if bytes_in_buffer == 0i32 as libc::c_ulong {
+    if bytes_in_buffer == 0 as libc::c_int as libc::c_ulong {
         if Some(
             (*datasrc)
                 .fill_input_buffer
@@ -2372,7 +2451,7 @@ unsafe extern "C" fn first_marker(
         .expect("non-null function pointer")(cinfo)
             == 0
         {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         next_input_byte = (*datasrc).next_input_byte;
         bytes_in_buffer = (*datasrc).bytes_in_buffer
@@ -2381,10 +2460,10 @@ unsafe extern "C" fn first_marker(
     let fresh47 = next_input_byte;
     next_input_byte = next_input_byte.offset(1);
     c2 = *fresh47 as libc::c_int;
-    if c != 0xffi32 || c2 != M_SOI as libc::c_int {
+    if c != 0xff as libc::c_int || c2 != M_SOI as libc::c_int {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_NO_SOI as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = c;
-        (*(*cinfo).err).msg_parm.i[1] = c2;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = c;
+        (*(*cinfo).err).msg_parm.i[1 as libc::c_int as usize] = c2;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -2410,7 +2489,7 @@ unsafe extern "C" fn read_markers(mut cinfo: crate::jpeglib_h::j_decompress_ptr)
     /* Collect the marker proper, unless we already did. */
     /* NB: first_marker() enforces the requirement that SOI appear first. */
     {
-        if (*cinfo).unread_marker == 0i32 {
+        if (*cinfo).unread_marker == 0 as libc::c_int {
             if (*(*cinfo).marker).saw_SOI == 0 {
                 if first_marker(cinfo) == 0 {
                     return crate::jpeglib_h::JPEG_SUSPENDED;
@@ -2489,7 +2568,7 @@ unsafe extern "C" fn read_markers(mut cinfo: crate::jpeglib_h::j_decompress_ptr)
                 if get_sos(cinfo) == 0 {
                     return crate::jpeglib_h::JPEG_SUSPENDED;
                 }
-                (*cinfo).unread_marker = 0i32;
+                (*cinfo).unread_marker = 0 as libc::c_int;
                 return crate::jpeglib_h::JPEG_REACHED_SOS;
             }
             217 => {
@@ -2500,9 +2579,10 @@ unsafe extern "C" fn read_markers(mut cinfo: crate::jpeglib_h::j_decompress_ptr)
                         .expect("non-null function pointer"),
                 )
                 .expect("non-null function pointer")(
-                    cinfo as crate::jpeglib_h::j_common_ptr, 1i32
+                    cinfo as crate::jpeglib_h::j_common_ptr,
+                    1 as libc::c_int,
                 );
-                (*cinfo).unread_marker = 0i32;
+                (*cinfo).unread_marker = 0 as libc::c_int;
                 return crate::jpeglib_h::JPEG_REACHED_EOI;
             }
             204 => {
@@ -2561,14 +2641,15 @@ unsafe extern "C" fn read_markers(mut cinfo: crate::jpeglib_h::j_decompress_ptr)
             208 | 209 | 210 | 211 | 212 | 213 | 214 | 215 | 1 => {
                 /* these are all parameterless */
                 (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_PARMLESS_MARKER as libc::c_int;
-                (*(*cinfo).err).msg_parm.i[0] = (*cinfo).unread_marker;
+                (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = (*cinfo).unread_marker;
                 Some(
                     (*(*cinfo).err)
                         .emit_message
                         .expect("non-null function pointer"),
                 )
                 .expect("non-null function pointer")(
-                    cinfo as crate::jpeglib_h::j_common_ptr, 1i32
+                    cinfo as crate::jpeglib_h::j_common_ptr,
+                    1 as libc::c_int,
                 );
                 current_block_42 = 15594603006322722090;
             }
@@ -2587,7 +2668,7 @@ unsafe extern "C" fn read_markers(mut cinfo: crate::jpeglib_h::j_decompress_ptr)
                  * ought to change!
                  */
                 (*(*cinfo).err).msg_code = crate::src::jerror::JERR_UNKNOWN_MARKER as libc::c_int;
-                (*(*cinfo).err).msg_parm.i[0] = (*cinfo).unread_marker;
+                (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = (*cinfo).unread_marker;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
@@ -2653,7 +2734,7 @@ unsafe extern "C" fn read_markers(mut cinfo: crate::jpeglib_h::j_decompress_ptr)
             /* Differential lossless, arithmetic */
             {
                 (*(*cinfo).err).msg_code = crate::src::jerror::JERR_SOF_UNSUPPORTED as libc::c_int;
-                (*(*cinfo).err).msg_parm.i[0] = (*cinfo).unread_marker;
+                (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = (*cinfo).unread_marker;
                 Some(
                     (*(*cinfo).err)
                         .error_exit
@@ -2666,7 +2747,7 @@ unsafe extern "C" fn read_markers(mut cinfo: crate::jpeglib_h::j_decompress_ptr)
             _ => {}
         }
         /* Successfully processed marker, so reset state variable */
-        (*cinfo).unread_marker = 0i32
+        (*cinfo).unread_marker = 0 as libc::c_int
     }
     /* end loop */
 }
@@ -2687,7 +2768,7 @@ unsafe extern "C" fn read_restart_marker(
 ) -> crate::jmorecfg_h::boolean {
     /* Obtain a marker unless we already did. */
     /* Note that next_marker will complain if it skips any data. */
-    if (*cinfo).unread_marker == 0i32 {
+    if (*cinfo).unread_marker == 0 as libc::c_int {
         if next_marker(cinfo) == 0 {
             return crate::jmorecfg_h::FALSE;
         }
@@ -2695,14 +2776,17 @@ unsafe extern "C" fn read_restart_marker(
     if (*cinfo).unread_marker == M_RST0 as libc::c_int + (*(*cinfo).marker).next_restart_num {
         /* Normal case --- swallow the marker and let entropy decoder continue */
         (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_RST as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = (*(*cinfo).marker).next_restart_num;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = (*(*cinfo).marker).next_restart_num;
         Some(
             (*(*cinfo).err)
                 .emit_message
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, 3i32);
-        (*cinfo).unread_marker = 0i32
+        .expect("non-null function pointer")(
+            cinfo as crate::jpeglib_h::j_common_ptr,
+            3 as libc::c_int,
+        );
+        (*cinfo).unread_marker = 0 as libc::c_int
     } else if Some(
         (*(*cinfo).src)
             .resync_to_restart
@@ -2716,7 +2800,8 @@ unsafe extern "C" fn read_restart_marker(
     /* Uh-oh, the restart markers have been messed up. */
     /* Let the data source manager determine how to resync. */
     /* Update next-restart state */
-    (*(*cinfo).marker).next_restart_num = (*(*cinfo).marker).next_restart_num + 1i32 & 7i32;
+    (*(*cinfo).marker).next_restart_num =
+        (*(*cinfo).marker).next_restart_num + 1 as libc::c_int & 7 as libc::c_int;
     return crate::jmorecfg_h::TRUE;
 }
 /* Default restart-marker-resync procedure for use by data source modules */
@@ -2775,52 +2860,58 @@ pub unsafe extern "C" fn jpeg_resync_to_restart(
     mut desired: libc::c_int,
 ) -> crate::jmorecfg_h::boolean {
     let mut marker: libc::c_int = (*cinfo).unread_marker;
-    let mut action: libc::c_int = 1i32;
+    let mut action: libc::c_int = 1 as libc::c_int;
     /* Always put up a warning. */
     (*(*cinfo).err).msg_code = crate::src::jerror::JWRN_MUST_RESYNC as libc::c_int;
-    (*(*cinfo).err).msg_parm.i[0] = marker;
-    (*(*cinfo).err).msg_parm.i[1] = desired;
+    (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = marker;
+    (*(*cinfo).err).msg_parm.i[1 as libc::c_int as usize] = desired;
     Some(
         (*(*cinfo).err)
             .emit_message
             .expect("non-null function pointer"),
     )
-    .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, -1i32);
+    .expect("non-null function pointer")(
+        cinfo as crate::jpeglib_h::j_common_ptr,
+        -(1 as libc::c_int),
+    );
     loop
     /* Outer loop handles repeated decision after scanning forward. */
     {
         if marker < M_SOF0 as libc::c_int {
-            action = 2i32
+            action = 2 as libc::c_int
         } else if marker < M_RST0 as libc::c_int || marker > M_RST7 as libc::c_int {
             /* invalid marker */
-            action = 3i32
-        } else if marker == M_RST0 as libc::c_int + (desired + 1i32 & 7i32)
-            || marker == M_RST0 as libc::c_int + (desired + 2i32 & 7i32)
+            action = 3 as libc::c_int
+        } else if marker == M_RST0 as libc::c_int + (desired + 1 as libc::c_int & 7 as libc::c_int)
+            || marker == M_RST0 as libc::c_int + (desired + 2 as libc::c_int & 7 as libc::c_int)
         {
             /* valid non-restart marker */
-            action = 3i32
-        } else if marker == M_RST0 as libc::c_int + (desired - 1i32 & 7i32)
-            || marker == M_RST0 as libc::c_int + (desired - 2i32 & 7i32)
+            action = 3 as libc::c_int
+        } else if marker == M_RST0 as libc::c_int + (desired - 1 as libc::c_int & 7 as libc::c_int)
+            || marker == M_RST0 as libc::c_int + (desired - 2 as libc::c_int & 7 as libc::c_int)
         {
             /* one of the next two expected restarts */
-            action = 2i32
+            action = 2 as libc::c_int
         } else {
-            action = 1i32
+            action = 1 as libc::c_int
         } /* a prior restart, so advance */
         (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_RECOVERY_ACTION as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = marker;
-        (*(*cinfo).err).msg_parm.i[1] = action;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = marker;
+        (*(*cinfo).err).msg_parm.i[1 as libc::c_int as usize] = action;
         Some(
             (*(*cinfo).err)
                 .emit_message
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, 4i32);
+        .expect("non-null function pointer")(
+            cinfo as crate::jpeglib_h::j_common_ptr,
+            4 as libc::c_int,
+        );
         match action {
             1 => {
                 /* desired restart or too far away */
                 /* Discard marker and let entropy decoder resume processing. */
-                (*cinfo).unread_marker = 0i32;
+                (*cinfo).unread_marker = 0 as libc::c_int;
                 return crate::jmorecfg_h::TRUE;
             }
             2 => {
@@ -2847,11 +2938,11 @@ pub unsafe extern "C" fn jpeg_resync_to_restart(
 unsafe extern "C" fn reset_marker_reader(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
     let mut marker: my_marker_ptr = (*cinfo).marker as my_marker_ptr; /* until allocated by get_sof */
     (*cinfo).comp_info = crate::stddef_h::NULL as *mut crate::jpeglib_h::jpeg_component_info; /* no SOS seen yet */
-    (*cinfo).input_scan_number = 0i32; /* no pending marker */
-    (*cinfo).unread_marker = 0i32; /* set internal state too */
+    (*cinfo).input_scan_number = 0 as libc::c_int; /* no pending marker */
+    (*cinfo).unread_marker = 0 as libc::c_int; /* set internal state too */
     (*marker).pub_0.saw_SOI = crate::jmorecfg_h::FALSE;
     (*marker).pub_0.saw_SOF = crate::jmorecfg_h::FALSE;
-    (*marker).pub_0.discarded_bytes = 0i32 as libc::c_uint;
+    (*marker).pub_0.discarded_bytes = 0 as libc::c_int as libc::c_uint;
     (*marker).cur_marker = crate::stddef_h::NULL as crate::jpeglib_h::jpeg_saved_marker_ptr;
 }
 /*
@@ -2874,7 +2965,7 @@ pub unsafe extern "C" fn jinit_marker_reader(mut cinfo: crate::jpeglib_h::j_deco
         crate::jpeglib_h::JPOOL_PERMANENT,
         ::std::mem::size_of::<my_marker_reader>() as libc::c_ulong,
     ) as my_marker_ptr;
-    (*cinfo).marker = marker as *mut crate::jpeglib_h::jpeg_marker_reader;
+    (*cinfo).marker = marker as *mut crate::jpegint_h::jpeg_marker_reader;
     /* Initialize public method pointers */
     (*marker).pub_0.reset_marker_reader = Some(
         reset_marker_reader as unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> (),
@@ -2898,25 +2989,25 @@ pub unsafe extern "C" fn jinit_marker_reader(mut cinfo: crate::jpeglib_h::j_deco
                 _: crate::jpeglib_h::j_decompress_ptr,
             ) -> crate::jmorecfg_h::boolean,
     );
-    (*marker).length_limit_COM = 0i32 as libc::c_uint;
-    i = 0i32;
-    while i < 16i32 {
+    (*marker).length_limit_COM = 0 as libc::c_int as libc::c_uint;
+    i = 0 as libc::c_int;
+    while i < 16 as libc::c_int {
         (*marker).process_APPn[i as usize] = Some(
             skip_variable
                 as unsafe extern "C" fn(
                     _: crate::jpeglib_h::j_decompress_ptr,
                 ) -> crate::jmorecfg_h::boolean,
         );
-        (*marker).length_limit_APPn[i as usize] = 0i32 as libc::c_uint;
+        (*marker).length_limit_APPn[i as usize] = 0 as libc::c_int as libc::c_uint;
         i += 1
     }
-    (*marker).process_APPn[0] = Some(
+    (*marker).process_APPn[0 as libc::c_int as usize] = Some(
         get_interesting_appn
             as unsafe extern "C" fn(
                 _: crate::jpeglib_h::j_decompress_ptr,
             ) -> crate::jmorecfg_h::boolean,
     );
-    (*marker).process_APPn[14] = Some(
+    (*marker).process_APPn[14 as libc::c_int as usize] = Some(
         get_interesting_appn
             as unsafe extern "C" fn(
                 _: crate::jpeglib_h::j_decompress_ptr,
@@ -2993,7 +3084,7 @@ pub unsafe extern "C" fn jpeg_save_markers(
         (*marker).length_limit_APPn[(marker_code - M_APP0 as libc::c_int) as usize] = length_limit
     } else {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_UNKNOWN_MARKER as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = marker_code;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = marker_code;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -3021,7 +3112,7 @@ pub unsafe extern "C" fn jpeg_set_marker_processor(
         (*marker).process_APPn[(marker_code - M_APP0 as libc::c_int) as usize] = routine
     } else {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_UNKNOWN_MARKER as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = marker_code;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = marker_code;
         Some(
             (*(*cinfo).err)
                 .error_exit

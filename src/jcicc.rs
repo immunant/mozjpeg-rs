@@ -1,4 +1,4 @@
-use libc;
+use ::libc;
 
 pub use crate::jmorecfg_h::boolean;
 pub use crate::jmorecfg_h::JCOEF;
@@ -7,6 +7,15 @@ pub use crate::jmorecfg_h::JOCTET;
 pub use crate::jmorecfg_h::JSAMPLE;
 pub use crate::jmorecfg_h::UINT16;
 pub use crate::jmorecfg_h::UINT8;
+pub use crate::jpegint_h::jpeg_c_coef_controller;
+pub use crate::jpegint_h::jpeg_c_main_controller;
+pub use crate::jpegint_h::jpeg_c_prep_controller;
+pub use crate::jpegint_h::jpeg_color_converter;
+pub use crate::jpegint_h::jpeg_comp_master;
+pub use crate::jpegint_h::jpeg_downsampler;
+pub use crate::jpegint_h::jpeg_entropy_encoder;
+pub use crate::jpegint_h::jpeg_forward_dct;
+pub use crate::jpegint_h::jpeg_marker_writer;
 pub use crate::jpegint_h::CSTATE_SCANNING;
 pub use crate::jpegint_h::JBUF_CRANK_DEST;
 pub use crate::jpegint_h::JBUF_PASS_THRU;
@@ -16,25 +25,14 @@ pub use crate::jpegint_h::JBUF_SAVE_SOURCE;
 pub use crate::jpegint_h::J_BUF_MODE;
 pub use crate::jpeglib_h::j_common_ptr;
 pub use crate::jpeglib_h::j_compress_ptr;
-pub use crate::jpeglib_h::jpeg_c_coef_controller;
-pub use crate::jpeglib_h::jpeg_c_main_controller;
-pub use crate::jpeglib_h::jpeg_c_prep_controller;
-pub use crate::jpeglib_h::jpeg_color_converter;
 pub use crate::jpeglib_h::jpeg_common_struct;
-pub use crate::jpeglib_h::jpeg_comp_master;
 pub use crate::jpeglib_h::jpeg_component_info;
 pub use crate::jpeglib_h::jpeg_compress_struct;
 pub use crate::jpeglib_h::jpeg_destination_mgr;
-pub use crate::jpeglib_h::jpeg_downsampler;
-pub use crate::jpeglib_h::jpeg_entropy_encoder;
 pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_forward_dct;
-pub use crate::jpeglib_h::jpeg_marker_writer;
 pub use crate::jpeglib_h::jpeg_memory_mgr;
 pub use crate::jpeglib_h::jpeg_progress_mgr;
 pub use crate::jpeglib_h::jpeg_scan_info;
-pub use crate::jpeglib_h::jpeg_write_m_byte;
-pub use crate::jpeglib_h::jpeg_write_m_header;
 pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
@@ -71,7 +69,8 @@ pub use crate::jpeglib_h::JSAMPIMAGE;
 pub use crate::jpeglib_h::JSAMPROW;
 pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
-pub use crate::src::jerror::C2RustUnnamed_3;
+pub use crate::src::jcapimin::jpeg_write_m_byte;
+pub use crate::src::jcapimin::jpeg_write_m_header;
 pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -204,6 +203,7 @@ pub use crate::src::jerror::JWRN_NOT_SEQUENTIAL;
 pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
+pub use crate::stdlib::C2RustUnnamed_0;
 /*
  * jcicc.c
  *
@@ -231,13 +231,13 @@ pub use crate::stddef_h::NULL;
  * rather than assuming that the APP2 markers appear in the correct sequence.
  */
 
-pub const ICC_MARKER: libc::c_int = crate::jpeglib_h::JPEG_APP0 + 2i32;
+pub const ICC_MARKER: libc::c_int = crate::jpeglib_h::JPEG_APP0 + 2 as libc::c_int;
 /* JPEG marker code for ICC */
 
-pub const ICC_OVERHEAD_LEN: libc::c_int = 14i32;
+pub const ICC_OVERHEAD_LEN: libc::c_int = 14 as libc::c_int;
 /* size of non-profile data in APP2 */
 
-pub const MAX_BYTES_IN_MARKER: libc::c_int = 65533i32;
+pub const MAX_BYTES_IN_MARKER: libc::c_int = 65533 as libc::c_int;
 /* maximum data len of a JPEG marker */
 
 pub const MAX_DATA_BYTES_IN_MARKER: libc::c_int = MAX_BYTES_IN_MARKER - ICC_OVERHEAD_LEN;
@@ -256,9 +256,9 @@ pub unsafe extern "C" fn jpeg_write_icc_profile(
     mut icc_data_len: libc::c_uint,
 ) {
     let mut num_markers: libc::c_uint = 0; /* total number of markers we'll write */
-    let mut cur_marker: libc::c_int = 1i32; /* per spec, counting starts at 1 */
+    let mut cur_marker: libc::c_int = 1 as libc::c_int; /* per spec, counting starts at 1 */
     let mut length: libc::c_uint = 0; /* number of bytes to write in this marker */
-    if icc_data_ptr.is_null() || icc_data_len == 0i32 as libc::c_uint {
+    if icc_data_ptr.is_null() || icc_data_len == 0 as libc::c_int as libc::c_uint {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BUFFER_SIZE as libc::c_int;
         Some(
             (*(*cinfo).err)
@@ -269,7 +269,7 @@ pub unsafe extern "C" fn jpeg_write_icc_profile(
     }
     if (*cinfo).global_state < crate::jpegint_h::CSTATE_SCANNING {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = (*cinfo).global_state;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -282,7 +282,7 @@ pub unsafe extern "C" fn jpeg_write_icc_profile(
     if num_markers.wrapping_mul(MAX_DATA_BYTES_IN_MARKER as libc::c_uint) != icc_data_len {
         num_markers = num_markers.wrapping_add(1)
     }
-    while icc_data_len > 0i32 as libc::c_uint {
+    while icc_data_len > 0 as libc::c_int as libc::c_uint {
         /* length of profile to put in this marker */
         length = icc_data_len;
         if length > MAX_DATA_BYTES_IN_MARKER as libc::c_uint {
@@ -290,7 +290,7 @@ pub unsafe extern "C" fn jpeg_write_icc_profile(
         }
         icc_data_len = icc_data_len.wrapping_sub(length);
         /* Write the JPEG marker header (APP2 code and marker length) */
-        crate::jpeglib_h::jpeg_write_m_header(
+        crate::src::jcapimin::jpeg_write_m_header(
             cinfo,
             ICC_MARKER,
             length.wrapping_add(ICC_OVERHEAD_LEN as libc::c_uint),
@@ -299,21 +299,21 @@ pub unsafe extern "C" fn jpeg_write_icc_profile(
          * code it in this less-than-transparent way so that the code works even if
          * the local character set is not ASCII.
          */
-        crate::jpeglib_h::jpeg_write_m_byte(cinfo, 0x49i32);
-        crate::jpeglib_h::jpeg_write_m_byte(cinfo, 0x43i32);
-        crate::jpeglib_h::jpeg_write_m_byte(cinfo, 0x43i32);
-        crate::jpeglib_h::jpeg_write_m_byte(cinfo, 0x5fi32);
-        crate::jpeglib_h::jpeg_write_m_byte(cinfo, 0x50i32);
-        crate::jpeglib_h::jpeg_write_m_byte(cinfo, 0x52i32);
-        crate::jpeglib_h::jpeg_write_m_byte(cinfo, 0x4fi32);
-        crate::jpeglib_h::jpeg_write_m_byte(cinfo, 0x46i32);
-        crate::jpeglib_h::jpeg_write_m_byte(cinfo, 0x49i32);
-        crate::jpeglib_h::jpeg_write_m_byte(cinfo, 0x4ci32);
-        crate::jpeglib_h::jpeg_write_m_byte(cinfo, 0x45i32);
-        crate::jpeglib_h::jpeg_write_m_byte(cinfo, 0i32);
+        crate::src::jcapimin::jpeg_write_m_byte(cinfo, 0x49 as libc::c_int);
+        crate::src::jcapimin::jpeg_write_m_byte(cinfo, 0x43 as libc::c_int);
+        crate::src::jcapimin::jpeg_write_m_byte(cinfo, 0x43 as libc::c_int);
+        crate::src::jcapimin::jpeg_write_m_byte(cinfo, 0x5f as libc::c_int);
+        crate::src::jcapimin::jpeg_write_m_byte(cinfo, 0x50 as libc::c_int);
+        crate::src::jcapimin::jpeg_write_m_byte(cinfo, 0x52 as libc::c_int);
+        crate::src::jcapimin::jpeg_write_m_byte(cinfo, 0x4f as libc::c_int);
+        crate::src::jcapimin::jpeg_write_m_byte(cinfo, 0x46 as libc::c_int);
+        crate::src::jcapimin::jpeg_write_m_byte(cinfo, 0x49 as libc::c_int);
+        crate::src::jcapimin::jpeg_write_m_byte(cinfo, 0x4c as libc::c_int);
+        crate::src::jcapimin::jpeg_write_m_byte(cinfo, 0x45 as libc::c_int);
+        crate::src::jcapimin::jpeg_write_m_byte(cinfo, 0 as libc::c_int);
         /* Add the sequencing info */
-        crate::jpeglib_h::jpeg_write_m_byte(cinfo, cur_marker);
-        crate::jpeglib_h::jpeg_write_m_byte(cinfo, num_markers as libc::c_int);
+        crate::src::jcapimin::jpeg_write_m_byte(cinfo, cur_marker);
+        crate::src::jcapimin::jpeg_write_m_byte(cinfo, num_markers as libc::c_int);
         loop
         /* Add the profile data */
         {
@@ -322,7 +322,7 @@ pub unsafe extern "C" fn jpeg_write_icc_profile(
             if !(fresh0 != 0) {
                 break;
             }
-            crate::jpeglib_h::jpeg_write_m_byte(cinfo, *icc_data_ptr as libc::c_int);
+            crate::src::jcapimin::jpeg_write_m_byte(cinfo, *icc_data_ptr as libc::c_int);
             icc_data_ptr = icc_data_ptr.offset(1)
         }
         cur_marker += 1

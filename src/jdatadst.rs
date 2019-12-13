@@ -1,4 +1,4 @@
-use libc;
+use ::libc;
 
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
@@ -19,6 +19,15 @@ pub use crate::jmorecfg_h::JSAMPLE;
 pub use crate::jmorecfg_h::TRUE;
 pub use crate::jmorecfg_h::UINT16;
 pub use crate::jmorecfg_h::UINT8;
+pub use crate::jpegint_h::jpeg_c_coef_controller;
+pub use crate::jpegint_h::jpeg_c_main_controller;
+pub use crate::jpegint_h::jpeg_c_prep_controller;
+pub use crate::jpegint_h::jpeg_color_converter;
+pub use crate::jpegint_h::jpeg_comp_master;
+pub use crate::jpegint_h::jpeg_downsampler;
+pub use crate::jpegint_h::jpeg_entropy_encoder;
+pub use crate::jpegint_h::jpeg_forward_dct;
+pub use crate::jpegint_h::jpeg_marker_writer;
 pub use crate::jpegint_h::JBUF_CRANK_DEST;
 pub use crate::jpegint_h::JBUF_PASS_THRU;
 pub use crate::jpegint_h::JBUF_REQUANT;
@@ -27,20 +36,11 @@ pub use crate::jpegint_h::JBUF_SAVE_SOURCE;
 pub use crate::jpegint_h::J_BUF_MODE;
 pub use crate::jpeglib_h::j_common_ptr;
 pub use crate::jpeglib_h::j_compress_ptr;
-pub use crate::jpeglib_h::jpeg_c_coef_controller;
-pub use crate::jpeglib_h::jpeg_c_main_controller;
-pub use crate::jpeglib_h::jpeg_c_prep_controller;
-pub use crate::jpeglib_h::jpeg_color_converter;
 pub use crate::jpeglib_h::jpeg_common_struct;
-pub use crate::jpeglib_h::jpeg_comp_master;
 pub use crate::jpeglib_h::jpeg_component_info;
 pub use crate::jpeglib_h::jpeg_compress_struct;
 pub use crate::jpeglib_h::jpeg_destination_mgr;
-pub use crate::jpeglib_h::jpeg_downsampler;
-pub use crate::jpeglib_h::jpeg_entropy_encoder;
 pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_forward_dct;
-pub use crate::jpeglib_h::jpeg_marker_writer;
 pub use crate::jpeglib_h::jpeg_memory_mgr;
 pub use crate::jpeglib_h::jpeg_progress_mgr;
 pub use crate::jpeglib_h::jpeg_scan_info;
@@ -81,7 +81,6 @@ pub use crate::jpeglib_h::JSAMPIMAGE;
 pub use crate::jpeglib_h::JSAMPROW;
 pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
-pub use crate::src::jerror::C2RustUnnamed_3;
 pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -218,6 +217,7 @@ use crate::stdlib::free;
 use crate::stdlib::fwrite;
 use crate::stdlib::malloc;
 use crate::stdlib::memcpy;
+pub use crate::stdlib::C2RustUnnamed_0;
 
 pub type my_dest_ptr = *mut my_destination_mgr;
 
@@ -242,7 +242,7 @@ pub struct my_mem_destination_mgr {
     pub bufsize: crate::stddef_h::size_t,
 }
 
-pub const OUTPUT_BUF_SIZE: libc::c_int = 4096i32;
+pub const OUTPUT_BUF_SIZE: libc::c_int = 4096 as libc::c_int;
 /*
  * Initialize destination --- called by jpeg_start_compress
  * before any data is actually written.
@@ -298,8 +298,8 @@ unsafe extern "C" fn empty_output_buffer(
     let mut dest: my_dest_ptr = (*cinfo).dest as my_dest_ptr;
     if crate::stdlib::fwrite(
         (*dest).buffer as *const libc::c_void,
-        1i32 as crate::stddef_h::size_t,
-        4096i32 as crate::stddef_h::size_t,
+        1 as libc::c_int as crate::stddef_h::size_t,
+        4096 as libc::c_int as crate::stddef_h::size_t,
         (*dest).outfile,
     ) != OUTPUT_BUF_SIZE as crate::stddef_h::size_t
     {
@@ -323,11 +323,13 @@ unsafe extern "C" fn empty_mem_output_buffer(
     let mut nextbuffer: *mut crate::jmorecfg_h::JOCTET = 0 as *mut crate::jmorecfg_h::JOCTET;
     let mut dest: my_mem_dest_ptr = (*cinfo).dest as my_mem_dest_ptr;
     /* Try to allocate new buffer with double size */
-    nextsize = (*dest).bufsize.wrapping_mul(2i32 as libc::c_ulong);
+    nextsize = (*dest)
+        .bufsize
+        .wrapping_mul(2 as libc::c_int as libc::c_ulong);
     nextbuffer = crate::stdlib::malloc(nextsize) as *mut crate::jmorecfg_h::JOCTET;
     if nextbuffer.is_null() {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_OUT_OF_MEMORY as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = 10i32;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = 10 as libc::c_int;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -364,10 +366,10 @@ unsafe extern "C" fn term_destination(mut cinfo: crate::jpeglib_h::j_compress_pt
     let mut datacount: crate::stddef_h::size_t =
         (OUTPUT_BUF_SIZE as libc::c_ulong).wrapping_sub((*dest).pub_0.free_in_buffer);
     /* Write any data remaining in the buffer */
-    if datacount > 0i32 as libc::c_ulong {
+    if datacount > 0 as libc::c_int as libc::c_ulong {
         if crate::stdlib::fwrite(
             (*dest).buffer as *const libc::c_void,
-            1i32 as crate::stddef_h::size_t,
+            1 as libc::c_int as crate::stddef_h::size_t,
             datacount,
             (*dest).outfile,
         ) != datacount
@@ -539,13 +541,13 @@ pub unsafe extern "C" fn jpeg_mem_dest_internal(
     (*dest).outbuffer = outbuffer;
     (*dest).outsize = outsize;
     (*dest).newbuffer = crate::stddef_h::NULL as *mut libc::c_uchar;
-    if (*outbuffer).is_null() || *outsize == 0i32 as libc::c_ulong {
+    if (*outbuffer).is_null() || *outsize == 0 as libc::c_int as libc::c_ulong {
         /* Allocate initial buffer */
         *outbuffer = crate::stdlib::malloc(OUTPUT_BUF_SIZE as libc::c_ulong) as *mut libc::c_uchar;
         (*dest).newbuffer = *outbuffer;
         if (*dest).newbuffer.is_null() {
             (*(*cinfo).err).msg_code = crate::src::jerror::JERR_OUT_OF_MEMORY as libc::c_int;
-            (*(*cinfo).err).msg_parm.i[0] = 10i32;
+            (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = 10 as libc::c_int;
             Some(
                 (*(*cinfo).err)
                     .error_exit

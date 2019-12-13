@@ -1,4 +1,4 @@
-use libc;
+use ::libc;
 
 /* default definition */
 
@@ -54,6 +54,17 @@ pub use crate::jmorecfg_h::MAXJSAMPLE;
 pub use crate::jmorecfg_h::UINT16;
 pub use crate::jmorecfg_h::UINT8;
 pub use crate::jpegint_h::inverse_DCT_method_ptr;
+pub use crate::jpegint_h::jpeg_color_deconverter;
+pub use crate::jpegint_h::jpeg_color_quantizer;
+pub use crate::jpegint_h::jpeg_d_coef_controller;
+pub use crate::jpegint_h::jpeg_d_main_controller;
+pub use crate::jpegint_h::jpeg_d_post_controller;
+pub use crate::jpegint_h::jpeg_decomp_master;
+pub use crate::jpegint_h::jpeg_entropy_decoder;
+pub use crate::jpegint_h::jpeg_input_controller;
+pub use crate::jpegint_h::jpeg_inverse_dct;
+pub use crate::jpegint_h::jpeg_marker_reader;
+pub use crate::jpegint_h::jpeg_upsampler;
 pub use crate::jpegint_h::JBUF_CRANK_DEST;
 pub use crate::jpegint_h::JBUF_PASS_THRU;
 pub use crate::jpegint_h::JBUF_REQUANT;
@@ -63,27 +74,16 @@ pub use crate::jpegint_h::JLONG;
 pub use crate::jpegint_h::J_BUF_MODE;
 pub use crate::jpeglib_h::j_common_ptr;
 pub use crate::jpeglib_h::j_decompress_ptr;
-pub use crate::jpeglib_h::jpeg_color_deconverter;
-pub use crate::jpeglib_h::jpeg_color_quantizer;
 pub use crate::jpeglib_h::jpeg_common_struct;
 pub use crate::jpeglib_h::jpeg_component_info;
-pub use crate::jpeglib_h::jpeg_d_coef_controller;
-pub use crate::jpeglib_h::jpeg_d_main_controller;
-pub use crate::jpeglib_h::jpeg_d_post_controller;
-pub use crate::jpeglib_h::jpeg_decomp_master;
 pub use crate::jpeglib_h::jpeg_decompress_struct;
-pub use crate::jpeglib_h::jpeg_entropy_decoder;
 pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_input_controller;
-pub use crate::jpeglib_h::jpeg_inverse_dct;
 pub use crate::jpeglib_h::jpeg_marker_parser_method;
-pub use crate::jpeglib_h::jpeg_marker_reader;
 pub use crate::jpeglib_h::jpeg_marker_struct;
 pub use crate::jpeglib_h::jpeg_memory_mgr;
 pub use crate::jpeglib_h::jpeg_progress_mgr;
 pub use crate::jpeglib_h::jpeg_saved_marker_ptr;
 pub use crate::jpeglib_h::jpeg_source_mgr;
-pub use crate::jpeglib_h::jpeg_upsampler;
 pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
@@ -219,81 +219,105 @@ pub unsafe extern "C" fn jpeg_idct_4x4(
     quantptr = (*compptr).dct_table as *mut crate::jdct_h::ISLOW_MULT_TYPE;
     wsptr = workspace.as_mut_ptr();
     ctr = crate::jpeglib_h::DCTSIZE;
-    while ctr > 0i32 {
+    while ctr > 0 as libc::c_int {
         /* Don't bother to process column 4, because second pass won't use it */
-        if !(ctr == crate::jpeglib_h::DCTSIZE - 4i32) {
-            if *inptr.offset((crate::jpeglib_h::DCTSIZE * 1i32) as isize) as libc::c_int == 0i32
-                && *inptr.offset((crate::jpeglib_h::DCTSIZE * 2i32) as isize) as libc::c_int == 0i32
-                && *inptr.offset((crate::jpeglib_h::DCTSIZE * 3i32) as isize) as libc::c_int == 0i32
-                && *inptr.offset((crate::jpeglib_h::DCTSIZE * 5i32) as isize) as libc::c_int == 0i32
-                && *inptr.offset((crate::jpeglib_h::DCTSIZE * 6i32) as isize) as libc::c_int == 0i32
-                && *inptr.offset((crate::jpeglib_h::DCTSIZE * 7i32) as isize) as libc::c_int == 0i32
+        if !(ctr == crate::jpeglib_h::DCTSIZE - 4 as libc::c_int) {
+            if *inptr.offset((crate::jpeglib_h::DCTSIZE * 1 as libc::c_int) as isize) as libc::c_int
+                == 0 as libc::c_int
+                && *inptr.offset((crate::jpeglib_h::DCTSIZE * 2 as libc::c_int) as isize)
+                    as libc::c_int
+                    == 0 as libc::c_int
+                && *inptr.offset((crate::jpeglib_h::DCTSIZE * 3 as libc::c_int) as isize)
+                    as libc::c_int
+                    == 0 as libc::c_int
+                && *inptr.offset((crate::jpeglib_h::DCTSIZE * 5 as libc::c_int) as isize)
+                    as libc::c_int
+                    == 0 as libc::c_int
+                && *inptr.offset((crate::jpeglib_h::DCTSIZE * 6 as libc::c_int) as isize)
+                    as libc::c_int
+                    == 0 as libc::c_int
+                && *inptr.offset((crate::jpeglib_h::DCTSIZE * 7 as libc::c_int) as isize)
+                    as libc::c_int
+                    == 0 as libc::c_int
             {
                 /* AC terms all zero; we need not examine term 4 for 4x4 output */
                 let mut dcval: libc::c_int =
-                    (((*inptr.offset((8i32 * 0i32) as isize) as libc::c_int
-                        * *quantptr.offset((8i32 * 0i32) as isize) as libc::c_int)
-                        as libc::c_ulong)
-                        << 2i32) as crate::jpegint_h::JLONG as libc::c_int;
-                *wsptr.offset((crate::jpeglib_h::DCTSIZE * 0i32) as isize) = dcval;
-                *wsptr.offset((crate::jpeglib_h::DCTSIZE * 1i32) as isize) = dcval;
-                *wsptr.offset((crate::jpeglib_h::DCTSIZE * 2i32) as isize) = dcval;
-                *wsptr.offset((crate::jpeglib_h::DCTSIZE * 3i32) as isize) = dcval
+                    (((*inptr.offset((8 as libc::c_int * 0 as libc::c_int) as isize) as libc::c_int
+                        * *quantptr.offset((8 as libc::c_int * 0 as libc::c_int) as isize)
+                            as libc::c_int) as libc::c_ulong)
+                        << 2 as libc::c_int) as crate::jpegint_h::JLONG
+                        as libc::c_int;
+                *wsptr.offset((crate::jpeglib_h::DCTSIZE * 0 as libc::c_int) as isize) = dcval;
+                *wsptr.offset((crate::jpeglib_h::DCTSIZE * 1 as libc::c_int) as isize) = dcval;
+                *wsptr.offset((crate::jpeglib_h::DCTSIZE * 2 as libc::c_int) as isize) = dcval;
+                *wsptr.offset((crate::jpeglib_h::DCTSIZE * 3 as libc::c_int) as isize) = dcval
             } else {
                 /* Even part */
-                tmp0 = (*inptr.offset((8i32 * 0i32) as isize) as libc::c_int
-                    * *quantptr.offset((8i32 * 0i32) as isize) as libc::c_int)
+                tmp0 = (*inptr.offset((8 as libc::c_int * 0 as libc::c_int) as isize)
+                    as libc::c_int
+                    * *quantptr.offset((8 as libc::c_int * 0 as libc::c_int) as isize)
+                        as libc::c_int) as crate::jpegint_h::JLONG;
+                tmp0 = ((tmp0 as libc::c_ulong) << 13 as libc::c_int + 1 as libc::c_int)
                     as crate::jpegint_h::JLONG;
-                tmp0 = ((tmp0 as libc::c_ulong) << 13i32 + 1i32) as crate::jpegint_h::JLONG;
-                z2 = (*inptr.offset((8i32 * 2i32) as isize) as libc::c_int
-                    * *quantptr.offset((8i32 * 2i32) as isize) as libc::c_int)
-                    as crate::jpegint_h::JLONG;
-                z3 = (*inptr.offset((8i32 * 6i32) as isize) as libc::c_int
-                    * *quantptr.offset((8i32 * 6i32) as isize) as libc::c_int)
-                    as crate::jpegint_h::JLONG;
-                tmp2 = z2 * 15137i32 as crate::jpegint_h::JLONG
-                    + z3 * -(6270i32 as crate::jpegint_h::JLONG);
+                z2 = (*inptr.offset((8 as libc::c_int * 2 as libc::c_int) as isize) as libc::c_int
+                    * *quantptr.offset((8 as libc::c_int * 2 as libc::c_int) as isize)
+                        as libc::c_int) as crate::jpegint_h::JLONG;
+                z3 = (*inptr.offset((8 as libc::c_int * 6 as libc::c_int) as isize) as libc::c_int
+                    * *quantptr.offset((8 as libc::c_int * 6 as libc::c_int) as isize)
+                        as libc::c_int) as crate::jpegint_h::JLONG;
+                tmp2 = z2 * 15137 as libc::c_int as crate::jpegint_h::JLONG
+                    + z3 * -(6270 as libc::c_int as crate::jpegint_h::JLONG);
                 tmp10 = tmp0 + tmp2;
                 tmp12 = tmp0 - tmp2;
                 /* Odd part */
-                z1 = (*inptr.offset((8i32 * 7i32) as isize) as libc::c_int
-                    * *quantptr.offset((8i32 * 7i32) as isize) as libc::c_int)
-                    as crate::jpegint_h::JLONG; /* sqrt(2) * ( c5+c7) */
-                z2 = (*inptr.offset((8i32 * 5i32) as isize) as libc::c_int
-                    * *quantptr.offset((8i32 * 5i32) as isize) as libc::c_int)
-                    as crate::jpegint_h::JLONG; /* sqrt(2) * (c1+c3) */
-                z3 = (*inptr.offset((8i32 * 3i32) as isize) as libc::c_int
-                    * *quantptr.offset((8i32 * 3i32) as isize) as libc::c_int)
-                    as crate::jpegint_h::JLONG;
-                z4 = (*inptr.offset((8i32 * 1i32) as isize) as libc::c_int
-                    * *quantptr.offset((8i32 * 1i32) as isize) as libc::c_int)
-                    as crate::jpegint_h::JLONG;
-                tmp0 = z1 * -(1730i32 as crate::jpegint_h::JLONG)
-                    + z2 * 11893i32 as crate::jpegint_h::JLONG
-                    + z3 * -(17799i32 as crate::jpegint_h::JLONG)
-                    + z4 * 8697i32 as crate::jpegint_h::JLONG;
-                tmp2 = z1 * -(4176i32 as crate::jpegint_h::JLONG)
-                    + z2 * -(4926i32 as crate::jpegint_h::JLONG)
-                    + z3 * 7373i32 as crate::jpegint_h::JLONG
-                    + z4 * 20995i32 as crate::jpegint_h::JLONG;
+                z1 = (*inptr.offset((8 as libc::c_int * 7 as libc::c_int) as isize) as libc::c_int
+                    * *quantptr.offset((8 as libc::c_int * 7 as libc::c_int) as isize)
+                        as libc::c_int) as crate::jpegint_h::JLONG; /* sqrt(2) * ( c5+c7) */
+                z2 = (*inptr.offset((8 as libc::c_int * 5 as libc::c_int) as isize) as libc::c_int
+                    * *quantptr.offset((8 as libc::c_int * 5 as libc::c_int) as isize)
+                        as libc::c_int) as crate::jpegint_h::JLONG; /* sqrt(2) * (c1+c3) */
+                z3 = (*inptr.offset((8 as libc::c_int * 3 as libc::c_int) as isize) as libc::c_int
+                    * *quantptr.offset((8 as libc::c_int * 3 as libc::c_int) as isize)
+                        as libc::c_int) as crate::jpegint_h::JLONG;
+                z4 = (*inptr.offset((8 as libc::c_int * 1 as libc::c_int) as isize) as libc::c_int
+                    * *quantptr.offset((8 as libc::c_int * 1 as libc::c_int) as isize)
+                        as libc::c_int) as crate::jpegint_h::JLONG;
+                tmp0 = z1 * -(1730 as libc::c_int as crate::jpegint_h::JLONG)
+                    + z2 * 11893 as libc::c_int as crate::jpegint_h::JLONG
+                    + z3 * -(17799 as libc::c_int as crate::jpegint_h::JLONG)
+                    + z4 * 8697 as libc::c_int as crate::jpegint_h::JLONG;
+                tmp2 = z1 * -(4176 as libc::c_int as crate::jpegint_h::JLONG)
+                    + z2 * -(4926 as libc::c_int as crate::jpegint_h::JLONG)
+                    + z3 * 7373 as libc::c_int as crate::jpegint_h::JLONG
+                    + z4 * 20995 as libc::c_int as crate::jpegint_h::JLONG;
                 /* Final output stage */
-                *wsptr.offset((crate::jpeglib_h::DCTSIZE * 0i32) as isize) = (tmp10
+                *wsptr.offset((crate::jpeglib_h::DCTSIZE * 0 as libc::c_int) as isize) = (tmp10
                     + tmp2
-                    + ((1i32 as crate::jpegint_h::JLONG) << 13i32 - 2i32 + 1i32 - 1i32)
-                    >> 13i32 - 2i32 + 1i32)
+                    + ((1 as libc::c_int as crate::jpegint_h::JLONG)
+                        << 13 as libc::c_int - 2 as libc::c_int + 1 as libc::c_int
+                            - 1 as libc::c_int)
+                    >> 13 as libc::c_int - 2 as libc::c_int + 1 as libc::c_int)
                     as libc::c_int;
-                *wsptr.offset((crate::jpeglib_h::DCTSIZE * 3i32) as isize) = (tmp10 - tmp2
-                    + ((1i32 as crate::jpegint_h::JLONG) << 13i32 - 2i32 + 1i32 - 1i32)
-                    >> 13i32 - 2i32 + 1i32)
+                *wsptr.offset((crate::jpeglib_h::DCTSIZE * 3 as libc::c_int) as isize) = (tmp10
+                    - tmp2
+                    + ((1 as libc::c_int as crate::jpegint_h::JLONG)
+                        << 13 as libc::c_int - 2 as libc::c_int + 1 as libc::c_int
+                            - 1 as libc::c_int)
+                    >> 13 as libc::c_int - 2 as libc::c_int + 1 as libc::c_int)
                     as libc::c_int;
-                *wsptr.offset((crate::jpeglib_h::DCTSIZE * 1i32) as isize) = (tmp12
+                *wsptr.offset((crate::jpeglib_h::DCTSIZE * 1 as libc::c_int) as isize) = (tmp12
                     + tmp0
-                    + ((1i32 as crate::jpegint_h::JLONG) << 13i32 - 2i32 + 1i32 - 1i32)
-                    >> 13i32 - 2i32 + 1i32)
+                    + ((1 as libc::c_int as crate::jpegint_h::JLONG)
+                        << 13 as libc::c_int - 2 as libc::c_int + 1 as libc::c_int
+                            - 1 as libc::c_int)
+                    >> 13 as libc::c_int - 2 as libc::c_int + 1 as libc::c_int)
                     as libc::c_int;
-                *wsptr.offset((crate::jpeglib_h::DCTSIZE * 2i32) as isize) = (tmp12 - tmp0
-                    + ((1i32 as crate::jpegint_h::JLONG) << 13i32 - 2i32 + 1i32 - 1i32)
-                    >> 13i32 - 2i32 + 1i32)
+                *wsptr.offset((crate::jpeglib_h::DCTSIZE * 2 as libc::c_int) as isize) = (tmp12
+                    - tmp0
+                    + ((1 as libc::c_int as crate::jpegint_h::JLONG)
+                        << 13 as libc::c_int - 2 as libc::c_int + 1 as libc::c_int
+                            - 1 as libc::c_int)
+                    >> 13 as libc::c_int - 2 as libc::c_int + 1 as libc::c_int)
                     as libc::c_int
             }
         }
@@ -304,78 +328,105 @@ pub unsafe extern "C" fn jpeg_idct_4x4(
     }
     /* Pass 2: process 4 rows from work array, store into output array. */
     wsptr = workspace.as_mut_ptr();
-    ctr = 0i32;
-    while ctr < 4i32 {
+    ctr = 0 as libc::c_int;
+    while ctr < 4 as libc::c_int {
         outptr = (*output_buf.offset(ctr as isize)).offset(output_col as isize);
         /* advance pointer to next row */
         /* It's not clear whether a zero row test is worthwhile here ... */
-        if *wsptr.offset(1) == 0i32
-            && *wsptr.offset(2) == 0i32
-            && *wsptr.offset(3) == 0i32
-            && *wsptr.offset(5) == 0i32
-            && *wsptr.offset(6) == 0i32
-            && *wsptr.offset(7) == 0i32
+        if *wsptr.offset(1 as libc::c_int as isize) == 0 as libc::c_int
+            && *wsptr.offset(2 as libc::c_int as isize) == 0 as libc::c_int
+            && *wsptr.offset(3 as libc::c_int as isize) == 0 as libc::c_int
+            && *wsptr.offset(5 as libc::c_int as isize) == 0 as libc::c_int
+            && *wsptr.offset(6 as libc::c_int as isize) == 0 as libc::c_int
+            && *wsptr.offset(7 as libc::c_int as isize) == 0 as libc::c_int
         {
             /* AC terms all zero */
             let mut dcval_0: crate::jmorecfg_h::JSAMPLE = *range_limit.offset(
-                ((*wsptr.offset(0) as crate::jpegint_h::JLONG
-                    + ((1i32 as crate::jpegint_h::JLONG) << 2i32 + 3i32 - 1i32)
-                    >> 2i32 + 3i32) as libc::c_int
+                ((*wsptr.offset(0 as libc::c_int as isize) as crate::jpegint_h::JLONG
+                    + ((1 as libc::c_int as crate::jpegint_h::JLONG)
+                        << 2 as libc::c_int + 3 as libc::c_int - 1 as libc::c_int)
+                    >> 2 as libc::c_int + 3 as libc::c_int) as libc::c_int
                     & crate::jdct_h::RANGE_MASK) as isize,
             ); /* advance pointer to next row */
-            *outptr.offset(0) = dcval_0;
-            *outptr.offset(1) = dcval_0;
-            *outptr.offset(2) = dcval_0;
-            *outptr.offset(3) = dcval_0;
+            *outptr.offset(0 as libc::c_int as isize) = dcval_0;
+            *outptr.offset(1 as libc::c_int as isize) = dcval_0;
+            *outptr.offset(2 as libc::c_int as isize) = dcval_0;
+            *outptr.offset(3 as libc::c_int as isize) = dcval_0;
             wsptr = wsptr.offset(crate::jpeglib_h::DCTSIZE as isize)
         } else {
             /* Even part */
-            tmp0 = ((*wsptr.offset(0) as crate::jpegint_h::JLONG as libc::c_ulong) << 13i32 + 1i32)
+            tmp0 = ((*wsptr.offset(0 as libc::c_int as isize) as crate::jpegint_h::JLONG
+                as libc::c_ulong)
+                << 13 as libc::c_int + 1 as libc::c_int)
                 as crate::jpegint_h::JLONG;
-            tmp2 = *wsptr.offset(2) as crate::jpegint_h::JLONG
-                * 15137i32 as crate::jpegint_h::JLONG
-                + *wsptr.offset(6) as crate::jpegint_h::JLONG
-                    * -(6270i32 as crate::jpegint_h::JLONG);
+            tmp2 = *wsptr.offset(2 as libc::c_int as isize) as crate::jpegint_h::JLONG
+                * 15137 as libc::c_int as crate::jpegint_h::JLONG
+                + *wsptr.offset(6 as libc::c_int as isize) as crate::jpegint_h::JLONG
+                    * -(6270 as libc::c_int as crate::jpegint_h::JLONG);
             tmp10 = tmp0 + tmp2;
             tmp12 = tmp0 - tmp2;
             /* Odd part */
-            z1 = *wsptr.offset(7) as crate::jpegint_h::JLONG; /* sqrt(2) * ( c5+c7) */
-            z2 = *wsptr.offset(5) as crate::jpegint_h::JLONG; /* sqrt(2) * (c1+c3) */
-            z3 = *wsptr.offset(3) as crate::jpegint_h::JLONG;
-            z4 = *wsptr.offset(1) as crate::jpegint_h::JLONG;
-            tmp0 = z1 * -(1730i32 as crate::jpegint_h::JLONG)
-                + z2 * 11893i32 as crate::jpegint_h::JLONG
-                + z3 * -(17799i32 as crate::jpegint_h::JLONG)
-                + z4 * 8697i32 as crate::jpegint_h::JLONG;
-            tmp2 = z1 * -(4176i32 as crate::jpegint_h::JLONG)
-                + z2 * -(4926i32 as crate::jpegint_h::JLONG)
-                + z3 * 7373i32 as crate::jpegint_h::JLONG
-                + z4 * 20995i32 as crate::jpegint_h::JLONG;
+            z1 = *wsptr.offset(7 as libc::c_int as isize) as crate::jpegint_h::JLONG; /* sqrt(2) * ( c5+c7) */
+            z2 = *wsptr.offset(5 as libc::c_int as isize) as crate::jpegint_h::JLONG; /* sqrt(2) * (c1+c3) */
+            z3 = *wsptr.offset(3 as libc::c_int as isize) as crate::jpegint_h::JLONG;
+            z4 = *wsptr.offset(1 as libc::c_int as isize) as crate::jpegint_h::JLONG;
+            tmp0 = z1 * -(1730 as libc::c_int as crate::jpegint_h::JLONG)
+                + z2 * 11893 as libc::c_int as crate::jpegint_h::JLONG
+                + z3 * -(17799 as libc::c_int as crate::jpegint_h::JLONG)
+                + z4 * 8697 as libc::c_int as crate::jpegint_h::JLONG;
+            tmp2 = z1 * -(4176 as libc::c_int as crate::jpegint_h::JLONG)
+                + z2 * -(4926 as libc::c_int as crate::jpegint_h::JLONG)
+                + z3 * 7373 as libc::c_int as crate::jpegint_h::JLONG
+                + z4 * 20995 as libc::c_int as crate::jpegint_h::JLONG;
             /* Final output stage */
-            *outptr.offset(0) = *range_limit.offset(
+            *outptr.offset(0 as libc::c_int as isize) = *range_limit.offset(
                 ((tmp10
                     + tmp2
-                    + ((1i32 as crate::jpegint_h::JLONG) << 13i32 + 2i32 + 3i32 + 1i32 - 1i32)
-                    >> 13i32 + 2i32 + 3i32 + 1i32) as libc::c_int
+                    + ((1 as libc::c_int as crate::jpegint_h::JLONG)
+                        << 13 as libc::c_int
+                            + 2 as libc::c_int
+                            + 3 as libc::c_int
+                            + 1 as libc::c_int
+                            - 1 as libc::c_int)
+                    >> 13 as libc::c_int + 2 as libc::c_int + 3 as libc::c_int + 1 as libc::c_int)
+                    as libc::c_int
                     & crate::jdct_h::RANGE_MASK) as isize,
             );
-            *outptr.offset(3) = *range_limit.offset(
+            *outptr.offset(3 as libc::c_int as isize) = *range_limit.offset(
                 ((tmp10 - tmp2
-                    + ((1i32 as crate::jpegint_h::JLONG) << 13i32 + 2i32 + 3i32 + 1i32 - 1i32)
-                    >> 13i32 + 2i32 + 3i32 + 1i32) as libc::c_int
+                    + ((1 as libc::c_int as crate::jpegint_h::JLONG)
+                        << 13 as libc::c_int
+                            + 2 as libc::c_int
+                            + 3 as libc::c_int
+                            + 1 as libc::c_int
+                            - 1 as libc::c_int)
+                    >> 13 as libc::c_int + 2 as libc::c_int + 3 as libc::c_int + 1 as libc::c_int)
+                    as libc::c_int
                     & crate::jdct_h::RANGE_MASK) as isize,
             );
-            *outptr.offset(1) = *range_limit.offset(
+            *outptr.offset(1 as libc::c_int as isize) = *range_limit.offset(
                 ((tmp12
                     + tmp0
-                    + ((1i32 as crate::jpegint_h::JLONG) << 13i32 + 2i32 + 3i32 + 1i32 - 1i32)
-                    >> 13i32 + 2i32 + 3i32 + 1i32) as libc::c_int
+                    + ((1 as libc::c_int as crate::jpegint_h::JLONG)
+                        << 13 as libc::c_int
+                            + 2 as libc::c_int
+                            + 3 as libc::c_int
+                            + 1 as libc::c_int
+                            - 1 as libc::c_int)
+                    >> 13 as libc::c_int + 2 as libc::c_int + 3 as libc::c_int + 1 as libc::c_int)
+                    as libc::c_int
                     & crate::jdct_h::RANGE_MASK) as isize,
             );
-            *outptr.offset(2) = *range_limit.offset(
+            *outptr.offset(2 as libc::c_int as isize) = *range_limit.offset(
                 ((tmp12 - tmp0
-                    + ((1i32 as crate::jpegint_h::JLONG) << 13i32 + 2i32 + 3i32 + 1i32 - 1i32)
-                    >> 13i32 + 2i32 + 3i32 + 1i32) as libc::c_int
+                    + ((1 as libc::c_int as crate::jpegint_h::JLONG)
+                        << 13 as libc::c_int
+                            + 2 as libc::c_int
+                            + 3 as libc::c_int
+                            + 1 as libc::c_int
+                            - 1 as libc::c_int)
+                    >> 13 as libc::c_int + 2 as libc::c_int + 3 as libc::c_int + 1 as libc::c_int)
+                    as libc::c_int
                     & crate::jdct_h::RANGE_MASK) as isize,
             );
             wsptr = wsptr.offset(crate::jpeglib_h::DCTSIZE as isize)
@@ -414,57 +465,71 @@ pub unsafe extern "C" fn jpeg_idct_2x2(
     quantptr = (*compptr).dct_table as *mut crate::jdct_h::ISLOW_MULT_TYPE;
     wsptr = workspace.as_mut_ptr();
     ctr = crate::jpeglib_h::DCTSIZE;
-    while ctr > 0i32 {
+    while ctr > 0 as libc::c_int {
         /* Don't bother to process columns 2,4,6 */
-        if !(ctr == crate::jpeglib_h::DCTSIZE - 2i32
-            || ctr == crate::jpeglib_h::DCTSIZE - 4i32
-            || ctr == crate::jpeglib_h::DCTSIZE - 6i32)
+        if !(ctr == crate::jpeglib_h::DCTSIZE - 2 as libc::c_int
+            || ctr == crate::jpeglib_h::DCTSIZE - 4 as libc::c_int
+            || ctr == crate::jpeglib_h::DCTSIZE - 6 as libc::c_int)
         {
-            if *inptr.offset((crate::jpeglib_h::DCTSIZE * 1i32) as isize) as libc::c_int == 0i32
-                && *inptr.offset((crate::jpeglib_h::DCTSIZE * 3i32) as isize) as libc::c_int == 0i32
-                && *inptr.offset((crate::jpeglib_h::DCTSIZE * 5i32) as isize) as libc::c_int == 0i32
-                && *inptr.offset((crate::jpeglib_h::DCTSIZE * 7i32) as isize) as libc::c_int == 0i32
+            if *inptr.offset((crate::jpeglib_h::DCTSIZE * 1 as libc::c_int) as isize) as libc::c_int
+                == 0 as libc::c_int
+                && *inptr.offset((crate::jpeglib_h::DCTSIZE * 3 as libc::c_int) as isize)
+                    as libc::c_int
+                    == 0 as libc::c_int
+                && *inptr.offset((crate::jpeglib_h::DCTSIZE * 5 as libc::c_int) as isize)
+                    as libc::c_int
+                    == 0 as libc::c_int
+                && *inptr.offset((crate::jpeglib_h::DCTSIZE * 7 as libc::c_int) as isize)
+                    as libc::c_int
+                    == 0 as libc::c_int
             {
                 /* AC terms all zero; we need not examine terms 2,4,6 for 2x2 output */
                 let mut dcval: libc::c_int =
-                    (((*inptr.offset((8i32 * 0i32) as isize) as libc::c_int
-                        * *quantptr.offset((8i32 * 0i32) as isize) as libc::c_int)
-                        as libc::c_ulong)
-                        << 2i32) as crate::jpegint_h::JLONG as libc::c_int;
-                *wsptr.offset((crate::jpeglib_h::DCTSIZE * 0i32) as isize) = dcval;
-                *wsptr.offset((crate::jpeglib_h::DCTSIZE * 1i32) as isize) = dcval
+                    (((*inptr.offset((8 as libc::c_int * 0 as libc::c_int) as isize) as libc::c_int
+                        * *quantptr.offset((8 as libc::c_int * 0 as libc::c_int) as isize)
+                            as libc::c_int) as libc::c_ulong)
+                        << 2 as libc::c_int) as crate::jpegint_h::JLONG
+                        as libc::c_int;
+                *wsptr.offset((crate::jpeglib_h::DCTSIZE * 0 as libc::c_int) as isize) = dcval;
+                *wsptr.offset((crate::jpeglib_h::DCTSIZE * 1 as libc::c_int) as isize) = dcval
             } else {
                 /* Even part */
-                z1 = (*inptr.offset((8i32 * 0i32) as isize) as libc::c_int
-                    * *quantptr.offset((8i32 * 0i32) as isize) as libc::c_int)
+                z1 = (*inptr.offset((8 as libc::c_int * 0 as libc::c_int) as isize) as libc::c_int
+                    * *quantptr.offset((8 as libc::c_int * 0 as libc::c_int) as isize)
+                        as libc::c_int) as crate::jpegint_h::JLONG;
+                tmp10 = ((z1 as libc::c_ulong) << 13 as libc::c_int + 2 as libc::c_int)
                     as crate::jpegint_h::JLONG;
-                tmp10 = ((z1 as libc::c_ulong) << 13i32 + 2i32) as crate::jpegint_h::JLONG;
                 /* Odd part */
-                z1 = (*inptr.offset((8i32 * 7i32) as isize) as libc::c_int
-                    * *quantptr.offset((8i32 * 7i32) as isize) as libc::c_int)
-                    as crate::jpegint_h::JLONG; /* sqrt(2) * ( c7-c5+c3-c1) */
-                tmp0 = z1 * -(5906i32 as crate::jpegint_h::JLONG); /* sqrt(2) * (-c1+c3+c5+c7) */
-                z1 = (*inptr.offset((8i32 * 5i32) as isize) as libc::c_int
-                    * *quantptr.offset((8i32 * 5i32) as isize) as libc::c_int)
-                    as crate::jpegint_h::JLONG; /* sqrt(2) * (-c1+c3-c5-c7) */
-                tmp0 += z1 * 6967i32 as crate::jpegint_h::JLONG; /* sqrt(2) * ( c1+c3+c5+c7) */
-                z1 = (*inptr.offset((8i32 * 3i32) as isize) as libc::c_int
-                    * *quantptr.offset((8i32 * 3i32) as isize) as libc::c_int)
-                    as crate::jpegint_h::JLONG;
-                tmp0 += z1 * -(10426i32 as crate::jpegint_h::JLONG);
-                z1 = (*inptr.offset((8i32 * 1i32) as isize) as libc::c_int
-                    * *quantptr.offset((8i32 * 1i32) as isize) as libc::c_int)
-                    as crate::jpegint_h::JLONG;
-                tmp0 += z1 * 29692i32 as crate::jpegint_h::JLONG;
+                z1 = (*inptr.offset((8 as libc::c_int * 7 as libc::c_int) as isize) as libc::c_int
+                    * *quantptr.offset((8 as libc::c_int * 7 as libc::c_int) as isize)
+                        as libc::c_int) as crate::jpegint_h::JLONG; /* sqrt(2) * ( c7-c5+c3-c1) */
+                tmp0 = z1 * -(5906 as libc::c_int as crate::jpegint_h::JLONG); /* sqrt(2) * (-c1+c3+c5+c7) */
+                z1 = (*inptr.offset((8 as libc::c_int * 5 as libc::c_int) as isize) as libc::c_int
+                    * *quantptr.offset((8 as libc::c_int * 5 as libc::c_int) as isize)
+                        as libc::c_int) as crate::jpegint_h::JLONG; /* sqrt(2) * (-c1+c3-c5-c7) */
+                tmp0 += z1 * 6967 as libc::c_int as crate::jpegint_h::JLONG; /* sqrt(2) * ( c1+c3+c5+c7) */
+                z1 = (*inptr.offset((8 as libc::c_int * 3 as libc::c_int) as isize) as libc::c_int
+                    * *quantptr.offset((8 as libc::c_int * 3 as libc::c_int) as isize)
+                        as libc::c_int) as crate::jpegint_h::JLONG;
+                tmp0 += z1 * -(10426 as libc::c_int as crate::jpegint_h::JLONG);
+                z1 = (*inptr.offset((8 as libc::c_int * 1 as libc::c_int) as isize) as libc::c_int
+                    * *quantptr.offset((8 as libc::c_int * 1 as libc::c_int) as isize)
+                        as libc::c_int) as crate::jpegint_h::JLONG;
+                tmp0 += z1 * 29692 as libc::c_int as crate::jpegint_h::JLONG;
                 /* Final output stage */
-                *wsptr.offset((crate::jpeglib_h::DCTSIZE * 0i32) as isize) = (tmp10
+                *wsptr.offset((crate::jpeglib_h::DCTSIZE * 0 as libc::c_int) as isize) = (tmp10
                     + tmp0
-                    + ((1i32 as crate::jpegint_h::JLONG) << 13i32 - 2i32 + 2i32 - 1i32)
-                    >> 13i32 - 2i32 + 2i32)
+                    + ((1 as libc::c_int as crate::jpegint_h::JLONG)
+                        << 13 as libc::c_int - 2 as libc::c_int + 2 as libc::c_int
+                            - 1 as libc::c_int)
+                    >> 13 as libc::c_int - 2 as libc::c_int + 2 as libc::c_int)
                     as libc::c_int;
-                *wsptr.offset((crate::jpeglib_h::DCTSIZE * 1i32) as isize) = (tmp10 - tmp0
-                    + ((1i32 as crate::jpegint_h::JLONG) << 13i32 - 2i32 + 2i32 - 1i32)
-                    >> 13i32 - 2i32 + 2i32)
+                *wsptr.offset((crate::jpeglib_h::DCTSIZE * 1 as libc::c_int) as isize) = (tmp10
+                    - tmp0
+                    + ((1 as libc::c_int as crate::jpegint_h::JLONG)
+                        << 13 as libc::c_int - 2 as libc::c_int + 2 as libc::c_int
+                            - 1 as libc::c_int)
+                    >> 13 as libc::c_int - 2 as libc::c_int + 2 as libc::c_int)
                     as libc::c_int
             }
         }
@@ -475,49 +540,66 @@ pub unsafe extern "C" fn jpeg_idct_2x2(
     }
     /* Pass 2: process 2 rows from work array, store into output array. */
     wsptr = workspace.as_mut_ptr();
-    ctr = 0i32;
-    while ctr < 2i32 {
+    ctr = 0 as libc::c_int;
+    while ctr < 2 as libc::c_int {
         outptr = (*output_buf.offset(ctr as isize)).offset(output_col as isize);
         /* advance pointer to next row */
         /* It's not clear whether a zero row test is worthwhile here ... */
-        if *wsptr.offset(1) == 0i32
-            && *wsptr.offset(3) == 0i32
-            && *wsptr.offset(5) == 0i32
-            && *wsptr.offset(7) == 0i32
+        if *wsptr.offset(1 as libc::c_int as isize) == 0 as libc::c_int
+            && *wsptr.offset(3 as libc::c_int as isize) == 0 as libc::c_int
+            && *wsptr.offset(5 as libc::c_int as isize) == 0 as libc::c_int
+            && *wsptr.offset(7 as libc::c_int as isize) == 0 as libc::c_int
         {
             /* AC terms all zero */
             let mut dcval_0: crate::jmorecfg_h::JSAMPLE = *range_limit.offset(
-                ((*wsptr.offset(0) as crate::jpegint_h::JLONG
-                    + ((1i32 as crate::jpegint_h::JLONG) << 2i32 + 3i32 - 1i32)
-                    >> 2i32 + 3i32) as libc::c_int
+                ((*wsptr.offset(0 as libc::c_int as isize) as crate::jpegint_h::JLONG
+                    + ((1 as libc::c_int as crate::jpegint_h::JLONG)
+                        << 2 as libc::c_int + 3 as libc::c_int - 1 as libc::c_int)
+                    >> 2 as libc::c_int + 3 as libc::c_int) as libc::c_int
                     & crate::jdct_h::RANGE_MASK) as isize,
             ); /* advance pointer to next row */
-            *outptr.offset(0) = dcval_0;
-            *outptr.offset(1) = dcval_0;
+            *outptr.offset(0 as libc::c_int as isize) = dcval_0;
+            *outptr.offset(1 as libc::c_int as isize) = dcval_0;
             wsptr = wsptr.offset(crate::jpeglib_h::DCTSIZE as isize)
         } else {
             /* Even part */
-            tmp10 = ((*wsptr.offset(0) as crate::jpegint_h::JLONG as libc::c_ulong) << 13i32 + 2i32)
+            tmp10 = ((*wsptr.offset(0 as libc::c_int as isize) as crate::jpegint_h::JLONG
+                as libc::c_ulong)
+                << 13 as libc::c_int + 2 as libc::c_int)
                 as crate::jpegint_h::JLONG;
             /* Odd part */
-            tmp0 = *wsptr.offset(7) as crate::jpegint_h::JLONG
-                * -(5906i32 as crate::jpegint_h::JLONG)
-                + *wsptr.offset(5) as crate::jpegint_h::JLONG * 6967i32 as crate::jpegint_h::JLONG
-                + *wsptr.offset(3) as crate::jpegint_h::JLONG
-                    * -(10426i32 as crate::jpegint_h::JLONG)
-                + *wsptr.offset(1) as crate::jpegint_h::JLONG * 29692i32 as crate::jpegint_h::JLONG; /* sqrt(2) * ( c1+c3+c5+c7) */
+            tmp0 = *wsptr.offset(7 as libc::c_int as isize) as crate::jpegint_h::JLONG
+                * -(5906 as libc::c_int as crate::jpegint_h::JLONG)
+                + *wsptr.offset(5 as libc::c_int as isize) as crate::jpegint_h::JLONG
+                    * 6967 as libc::c_int as crate::jpegint_h::JLONG
+                + *wsptr.offset(3 as libc::c_int as isize) as crate::jpegint_h::JLONG
+                    * -(10426 as libc::c_int as crate::jpegint_h::JLONG)
+                + *wsptr.offset(1 as libc::c_int as isize) as crate::jpegint_h::JLONG
+                    * 29692 as libc::c_int as crate::jpegint_h::JLONG; /* sqrt(2) * ( c1+c3+c5+c7) */
             /* Final output stage */
-            *outptr.offset(0) = *range_limit.offset(
+            *outptr.offset(0 as libc::c_int as isize) = *range_limit.offset(
                 ((tmp10
                     + tmp0
-                    + ((1i32 as crate::jpegint_h::JLONG) << 13i32 + 2i32 + 3i32 + 2i32 - 1i32)
-                    >> 13i32 + 2i32 + 3i32 + 2i32) as libc::c_int
+                    + ((1 as libc::c_int as crate::jpegint_h::JLONG)
+                        << 13 as libc::c_int
+                            + 2 as libc::c_int
+                            + 3 as libc::c_int
+                            + 2 as libc::c_int
+                            - 1 as libc::c_int)
+                    >> 13 as libc::c_int + 2 as libc::c_int + 3 as libc::c_int + 2 as libc::c_int)
+                    as libc::c_int
                     & crate::jdct_h::RANGE_MASK) as isize,
             );
-            *outptr.offset(1) = *range_limit.offset(
+            *outptr.offset(1 as libc::c_int as isize) = *range_limit.offset(
                 ((tmp10 - tmp0
-                    + ((1i32 as crate::jpegint_h::JLONG) << 13i32 + 2i32 + 3i32 + 2i32 - 1i32)
-                    >> 13i32 + 2i32 + 3i32 + 2i32) as libc::c_int
+                    + ((1 as libc::c_int as crate::jpegint_h::JLONG)
+                        << 13 as libc::c_int
+                            + 2 as libc::c_int
+                            + 3 as libc::c_int
+                            + 2 as libc::c_int
+                            - 1 as libc::c_int)
+                    >> 13 as libc::c_int + 2 as libc::c_int + 3 as libc::c_int + 2 as libc::c_int)
+                    as libc::c_int
                     & crate::jdct_h::RANGE_MASK) as isize,
             );
             wsptr = wsptr.offset(crate::jpeglib_h::DCTSIZE as isize)
@@ -548,10 +630,12 @@ pub unsafe extern "C" fn jpeg_idct_1x1(
      * average pixel value, which is one-eighth of the DC coefficient.
      */
     quantptr = (*compptr).dct_table as *mut crate::jdct_h::ISLOW_MULT_TYPE;
-    dcval = *coef_block.offset(0) as libc::c_int * *quantptr.offset(0) as libc::c_int;
-    dcval = (dcval as crate::jpegint_h::JLONG + ((1i32 as crate::jpegint_h::JLONG) << 3i32 - 1i32)
-        >> 3i32) as libc::c_int;
-    *(*output_buf.offset(0)).offset(output_col as isize) =
+    dcval = *coef_block.offset(0 as libc::c_int as isize) as libc::c_int
+        * *quantptr.offset(0 as libc::c_int as isize) as libc::c_int;
+    dcval = (dcval as crate::jpegint_h::JLONG
+        + ((1 as libc::c_int as crate::jpegint_h::JLONG) << 3 as libc::c_int - 1 as libc::c_int)
+        >> 3 as libc::c_int) as libc::c_int;
+    *(*output_buf.offset(0 as libc::c_int as isize)).offset(output_col as isize) =
         *range_limit.offset((dcval & crate::jdct_h::RANGE_MASK) as isize);
 }
 /* IDCT_SCALING_SUPPORTED */

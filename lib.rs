@@ -7,16 +7,49 @@
 #![allow(unused_mut)]
 #![feature(const_raw_ptr_to_usize_cast)]
 #![feature(const_transmute)]
-#![feature(custom_attribute)]
 #![feature(extern_types)]
 #![feature(label_break_value)]
 #![feature(main)]
 #![feature(ptr_wrapping_offset_from)]
+#![feature(register_tool)]
+#![register_tool(c2rust)]
+
+#[path = "src/cderror_h.rs"]
+pub mod cderror_h;
+#[path = "src/cderror_h_0.rs"]
+pub mod cderror_h_0;
+#[path = "src/cdjpeg_h.rs"]
+pub mod cdjpeg_h;
+#[path = "src/internal.rs"]
+pub mod internal;
+#[path = "src/jccolext_c.rs"]
+pub mod jccolext_c;
+#[path = "src/jconfig_h.rs"]
+pub mod jconfig_h;
+#[path = "src/jconfigint_h.rs"]
+pub mod jconfigint_h;
+#[path = "src/jdcol565_c.rs"]
+pub mod jdcol565_c;
+#[path = "src/jdct_h.rs"]
+pub mod jdct_h;
+#[path = "src/jmemsys_h.rs"]
+pub mod jmemsys_h;
+#[path = "src/jmorecfg_h.rs"]
+pub mod jmorecfg_h;
+#[path = "src/jpegint_h.rs"]
+pub mod jpegint_h;
+#[path = "src/jpeglib_h.rs"]
+pub mod jpeglib_h;
+#[path = "src/limits_h.rs"]
+pub mod limits_h;
+#[path = "src/stddef_h.rs"]
+pub mod stddef_h;
+#[path = "src/stdlib.rs"]
+pub mod stdlib;
+extern crate libc;
 
 pub mod src {
     pub mod cdjpeg;
-    
-    
     pub mod jcapimin;
     pub mod jcapistd;
     pub mod jccoefct;
@@ -34,7 +67,6 @@ pub mod src {
     pub mod jcphuff;
     pub mod jcprepct;
     pub mod jcsample;
-    
     pub mod jctrans;
     pub mod jdapimin;
     pub mod jdapistd;
@@ -66,20 +98,17 @@ pub mod src {
     pub mod jidctred;
     pub mod jmemmgr;
     pub mod jmemnobs;
-    
     pub mod jquant1;
     pub mod jquant2;
     pub mod jutils;
     pub mod md5 {
         pub mod md5;
-        
         pub mod md5hl;
     } // mod md5
     pub mod rdbmp;
     pub mod rdcolmap;
     pub mod rdgif;
     pub mod rdjpeg;
-    
     pub mod rdppm;
     pub mod rdswitch;
     pub mod rdtarga;
@@ -88,57 +117,11 @@ pub mod src {
             pub mod jsimd;
         } // mod x86_64
     } // mod simd
-    
-    
-    
     pub mod tjutil;
     pub mod transupp;
     pub mod turbojpeg;
     pub mod wrbmp;
     pub mod wrgif;
-    
     pub mod wrppm;
     pub mod wrtarga;
-}
-#[path = "src/cderror_h.rs"]
-pub mod cderror_h;
-#[path = "src/cmyk_h.rs"]
-pub mod cmyk_h;
-#[path = "src/internal.rs"]
-pub mod internal;
-#[path = "src/jccolext_c.rs"]
-pub mod jccolext_c;
-#[path = "src/jconfig_h.rs"]
-pub mod jconfig_h;
-#[path = "src/jconfigint_h.rs"]
-pub mod jconfigint_h;
-#[path = "src/jdcol565_c.rs"]
-pub mod jdcol565_c;
-#[path = "src/jdcolext_c.rs"]
-pub mod jdcolext_c;
-#[path = "src/jdct_h.rs"]
-pub mod jdct_h;
-#[path = "src/jdmrg565_c.rs"]
-pub mod jdmrg565_c;
-#[path = "src/jdmrgext_c.rs"]
-pub mod jdmrgext_c;
-#[path = "src/jmemsys_h.rs"]
-pub mod jmemsys_h;
-#[path = "src/jmorecfg_h.rs"]
-pub mod jmorecfg_h;
-#[path = "src/jpeg_nbits_table_h.rs"]
-pub mod jpeg_nbits_table_h;
-#[path = "src/jpegint_h.rs"]
-pub mod jpegint_h;
-#[path = "src/jpeglib_h.rs"]
-pub mod jpeglib_h;
-#[path = "src/jstdhuff_c.rs"]
-pub mod jstdhuff_c;
-#[path = "src/jversion_h.rs"]
-pub mod jversion_h;
-#[path = "src/limits_h.rs"]
-pub mod limits_h;
-#[path = "src/stddef_h.rs"]
-pub mod stddef_h;
-#[path = "src/stdlib.rs"]
-pub mod stdlib; // mod src
+} // mod src

@@ -1,4 +1,4 @@
-use libc;
+use ::libc;
 
 /* Define to `unsigned int' if <sys/types.h> does not define. */
 
@@ -40,6 +40,7 @@ memset/memcpy in <string.h>. */
 
 /* use 8 or 12 */
 pub use crate::stddef_h::size_t;
+
 pub use crate::stdlib::_IO_codecvt;
 pub use crate::stdlib::_IO_lock_t;
 pub use crate::stdlib::_IO_marker;
@@ -49,7 +50,6 @@ pub use crate::stdlib::__off_t;
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::_IO_FILE;
 
-pub use crate::cderror_h::C2RustUnnamed_4;
 pub use crate::cderror_h::JERR_BAD_CMAP_FILE;
 pub use crate::cderror_h::JERR_BMP_BADCMAP;
 pub use crate::cderror_h::JERR_BMP_BADDEPTH;
@@ -106,28 +106,28 @@ pub use crate::jmorecfg_h::JSAMPLE;
 pub use crate::jmorecfg_h::MAXJSAMPLE;
 pub use crate::jmorecfg_h::UINT16;
 pub use crate::jmorecfg_h::UINT8;
+pub use crate::jpegint_h::jpeg_color_deconverter;
+pub use crate::jpegint_h::jpeg_color_quantizer;
+pub use crate::jpegint_h::jpeg_d_coef_controller;
+pub use crate::jpegint_h::jpeg_d_main_controller;
+pub use crate::jpegint_h::jpeg_d_post_controller;
+pub use crate::jpegint_h::jpeg_decomp_master;
+pub use crate::jpegint_h::jpeg_entropy_decoder;
+pub use crate::jpegint_h::jpeg_input_controller;
+pub use crate::jpegint_h::jpeg_inverse_dct;
+pub use crate::jpegint_h::jpeg_marker_reader;
+pub use crate::jpegint_h::jpeg_upsampler;
 pub use crate::jpeglib_h::j_common_ptr;
 pub use crate::jpeglib_h::j_decompress_ptr;
-pub use crate::jpeglib_h::jpeg_color_deconverter;
-pub use crate::jpeglib_h::jpeg_color_quantizer;
 pub use crate::jpeglib_h::jpeg_common_struct;
 pub use crate::jpeglib_h::jpeg_component_info;
-pub use crate::jpeglib_h::jpeg_d_coef_controller;
-pub use crate::jpeglib_h::jpeg_d_main_controller;
-pub use crate::jpeglib_h::jpeg_d_post_controller;
-pub use crate::jpeglib_h::jpeg_decomp_master;
 pub use crate::jpeglib_h::jpeg_decompress_struct;
-pub use crate::jpeglib_h::jpeg_entropy_decoder;
 pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_input_controller;
-pub use crate::jpeglib_h::jpeg_inverse_dct;
-pub use crate::jpeglib_h::jpeg_marker_reader;
 pub use crate::jpeglib_h::jpeg_marker_struct;
 pub use crate::jpeglib_h::jpeg_memory_mgr;
 pub use crate::jpeglib_h::jpeg_progress_mgr;
 pub use crate::jpeglib_h::jpeg_saved_marker_ptr;
 pub use crate::jpeglib_h::jpeg_source_mgr;
-pub use crate::jpeglib_h::jpeg_upsampler;
 pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
@@ -167,7 +167,6 @@ pub use crate::jpeglib_h::JSAMPROW;
 pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::jpeglib_h::J_DITHER_MODE;
-pub use crate::src::jerror::C2RustUnnamed_3;
 pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -299,6 +298,7 @@ pub use crate::src::jerror::JWRN_MUST_RESYNC;
 pub use crate::src::jerror::JWRN_NOT_SEQUENTIAL;
 pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
 pub use crate::stdlib::getc;
+pub use crate::stdlib::C2RustUnnamed_0;
 pub use crate::stdlib::EOF;
 /*
  * rdcolmap.c
@@ -345,13 +345,16 @@ unsafe extern "C" fn add_map_entry(
     mut G: libc::c_int,
     mut B: libc::c_int,
 ) {
-    let mut colormap0: crate::jpeglib_h::JSAMPROW = *(*cinfo).colormap.offset(0);
-    let mut colormap1: crate::jpeglib_h::JSAMPROW = *(*cinfo).colormap.offset(1);
-    let mut colormap2: crate::jpeglib_h::JSAMPROW = *(*cinfo).colormap.offset(2);
+    let mut colormap0: crate::jpeglib_h::JSAMPROW =
+        *(*cinfo).colormap.offset(0 as libc::c_int as isize);
+    let mut colormap1: crate::jpeglib_h::JSAMPROW =
+        *(*cinfo).colormap.offset(1 as libc::c_int as isize);
+    let mut colormap2: crate::jpeglib_h::JSAMPROW =
+        *(*cinfo).colormap.offset(2 as libc::c_int as isize);
     let mut ncolors: libc::c_int = (*cinfo).actual_number_of_colors;
     let mut index: libc::c_int = 0;
     /* Check for duplicate color. */
-    index = 0i32;
+    index = 0 as libc::c_int;
     while index < ncolors {
         if *colormap0.offset(index as isize) as libc::c_int == R
             && *colormap1.offset(index as isize) as libc::c_int == G
@@ -363,9 +366,10 @@ unsafe extern "C" fn add_map_entry(
         /* color is already in map */
     }
     /* Check for map overflow. */
-    if ncolors >= crate::jmorecfg_h::MAXJSAMPLE + 1i32 {
+    if ncolors >= crate::jmorecfg_h::MAXJSAMPLE + 1 as libc::c_int {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_QUANT_MANY_COLORS as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = 255i32 + 1i32;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] =
+            255 as libc::c_int + 1 as libc::c_int;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -395,8 +399,8 @@ unsafe extern "C" fn read_gif_map(
     let mut B: libc::c_int = 0;
     /* Initial 'G' has already been read by read_color_map */
     /* Read the rest of the GIF header and logical screen descriptor */
-    i = 1i32;
-    while i < 13i32 {
+    i = 1 as libc::c_int;
+    while i < 13 as libc::c_int {
         header[i as usize] = crate::stdlib::getc(infile);
         if header[i as usize] == crate::stdlib::EOF {
             (*(*cinfo).err).msg_code = crate::cderror_h::JERR_BAD_CMAP_FILE as libc::c_int;
@@ -412,7 +416,9 @@ unsafe extern "C" fn read_gif_map(
         i += 1
     }
     /* Verify GIF Header */
-    if header[1] != 'I' as i32 || header[2] != 'F' as i32 {
+    if header[1 as libc::c_int as usize] != 'I' as i32
+        || header[2 as libc::c_int as usize] != 'F' as i32
+    {
         (*(*cinfo).err).msg_code = crate::cderror_h::JERR_BAD_CMAP_FILE as libc::c_int;
         Some(
             (*(*cinfo).err)
@@ -422,7 +428,7 @@ unsafe extern "C" fn read_gif_map(
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
     /* There must be a global color map. */
-    if header[10] & 0x80i32 == 0i32 {
+    if header[10 as libc::c_int as usize] & 0x80 as libc::c_int == 0 as libc::c_int {
         (*(*cinfo).err).msg_code = crate::cderror_h::JERR_BAD_CMAP_FILE as libc::c_int;
         Some(
             (*(*cinfo).err)
@@ -432,8 +438,8 @@ unsafe extern "C" fn read_gif_map(
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
     /* OK, fetch it. */
-    colormaplen = 2i32 << (header[10] & 0x7i32);
-    i = 0i32;
+    colormaplen = (2 as libc::c_int) << (header[10 as libc::c_int as usize] & 0x7 as libc::c_int);
+    i = 0 as libc::c_int;
     while i < colormaplen {
         R = crate::stdlib::getc(infile);
         G = crate::stdlib::getc(infile);
@@ -451,9 +457,9 @@ unsafe extern "C" fn read_gif_map(
         }
         add_map_entry(
             cinfo,
-            R << crate::jconfig_h::BITS_IN_JSAMPLE - 8i32,
-            G << crate::jconfig_h::BITS_IN_JSAMPLE - 8i32,
-            B << crate::jconfig_h::BITS_IN_JSAMPLE - 8i32,
+            R << crate::jconfig_h::BITS_IN_JSAMPLE - 8 as libc::c_int,
+            G << crate::jconfig_h::BITS_IN_JSAMPLE - 8 as libc::c_int,
+            B << crate::jconfig_h::BITS_IN_JSAMPLE - 8 as libc::c_int,
         );
         i += 1
     }
@@ -520,7 +526,7 @@ unsafe extern "C" fn read_pbm_integer(
         if !(ch >= '0' as i32 && ch <= '9' as i32) {
             break;
         }
-        val = val.wrapping_mul(10i32 as libc::c_uint);
+        val = val.wrapping_mul(10 as libc::c_int as libc::c_uint);
         val = val.wrapping_add((ch - '0' as i32) as libc::c_uint)
     }
     return val;
@@ -548,7 +554,10 @@ unsafe extern "C" fn read_ppm_map(
     w = read_pbm_integer(cinfo, infile);
     h = read_pbm_integer(cinfo, infile);
     maxval = read_pbm_integer(cinfo, infile);
-    if w <= 0i32 as libc::c_uint || h <= 0i32 as libc::c_uint || maxval <= 0i32 as libc::c_uint {
+    if w <= 0 as libc::c_int as libc::c_uint
+        || h <= 0 as libc::c_int as libc::c_uint
+        || maxval <= 0 as libc::c_int as libc::c_uint
+    {
         /* error check */
         (*(*cinfo).err).msg_code = crate::cderror_h::JERR_BAD_CMAP_FILE as libc::c_int;
         Some(
@@ -571,9 +580,9 @@ unsafe extern "C" fn read_ppm_map(
     match c {
         51 => {
             /* it's a text-format PPM file */
-            row = 0i32 as libc::c_uint;
+            row = 0 as libc::c_int as libc::c_uint;
             while row < h {
-                col = 0i32 as libc::c_uint;
+                col = 0 as libc::c_int as libc::c_uint;
                 while col < w {
                     R = read_pbm_integer(cinfo, infile) as libc::c_int;
                     G = read_pbm_integer(cinfo, infile) as libc::c_int;
@@ -586,9 +595,9 @@ unsafe extern "C" fn read_ppm_map(
         }
         54 => {
             /* it's a raw-format PPM file */
-            row = 0i32 as libc::c_uint;
+            row = 0 as libc::c_int as libc::c_uint;
             while row < h {
-                col = 0i32 as libc::c_uint;
+                col = 0 as libc::c_int as libc::c_uint;
                 while col < w {
                     R = crate::stdlib::getc(infile);
                     G = crate::stdlib::getc(infile);
@@ -696,10 +705,10 @@ pub unsafe extern "C" fn read_color_map(
     .expect("non-null function pointer")(
         cinfo as crate::jpeglib_h::j_common_ptr,
         crate::jpeglib_h::JPOOL_IMAGE,
-        (crate::jmorecfg_h::MAXJSAMPLE + 1i32) as crate::jmorecfg_h::JDIMENSION,
-        3i32 as crate::jmorecfg_h::JDIMENSION,
+        (crate::jmorecfg_h::MAXJSAMPLE + 1 as libc::c_int) as crate::jmorecfg_h::JDIMENSION,
+        3 as libc::c_int as crate::jmorecfg_h::JDIMENSION,
     ); /* initialize map to empty */
-    (*cinfo).actual_number_of_colors = 0i32;
+    (*cinfo).actual_number_of_colors = 0 as libc::c_int;
     /* Read first byte to determine file format */
     match crate::stdlib::getc(infile) {
         71 => {

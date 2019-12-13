@@ -1,4 +1,4 @@
-use libc;
+use ::libc;
 
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
@@ -20,29 +20,28 @@ pub use crate::jmorecfg_h::JSAMPLE;
 pub use crate::jmorecfg_h::TRUE;
 pub use crate::jmorecfg_h::UINT16;
 pub use crate::jmorecfg_h::UINT8;
+pub use crate::jpegint_h::jpeg_color_deconverter;
+pub use crate::jpegint_h::jpeg_color_quantizer;
+pub use crate::jpegint_h::jpeg_d_coef_controller;
+pub use crate::jpegint_h::jpeg_d_main_controller;
+pub use crate::jpegint_h::jpeg_d_post_controller;
+pub use crate::jpegint_h::jpeg_decomp_master;
+pub use crate::jpegint_h::jpeg_entropy_decoder;
+pub use crate::jpegint_h::jpeg_input_controller;
+pub use crate::jpegint_h::jpeg_inverse_dct;
+pub use crate::jpegint_h::jpeg_marker_reader;
+pub use crate::jpegint_h::jpeg_upsampler;
 pub use crate::jpeglib_h::j_common_ptr;
 pub use crate::jpeglib_h::j_decompress_ptr;
-pub use crate::jpeglib_h::jpeg_color_deconverter;
-pub use crate::jpeglib_h::jpeg_color_quantizer;
 pub use crate::jpeglib_h::jpeg_common_struct;
 pub use crate::jpeglib_h::jpeg_component_info;
-pub use crate::jpeglib_h::jpeg_d_coef_controller;
-pub use crate::jpeglib_h::jpeg_d_main_controller;
-pub use crate::jpeglib_h::jpeg_d_post_controller;
-pub use crate::jpeglib_h::jpeg_decomp_master;
 pub use crate::jpeglib_h::jpeg_decompress_struct;
-pub use crate::jpeglib_h::jpeg_entropy_decoder;
 pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_input_controller;
-pub use crate::jpeglib_h::jpeg_inverse_dct;
-pub use crate::jpeglib_h::jpeg_marker_reader;
 pub use crate::jpeglib_h::jpeg_marker_struct;
 pub use crate::jpeglib_h::jpeg_memory_mgr;
 pub use crate::jpeglib_h::jpeg_progress_mgr;
-pub use crate::jpeglib_h::jpeg_resync_to_restart;
 pub use crate::jpeglib_h::jpeg_saved_marker_ptr;
 pub use crate::jpeglib_h::jpeg_source_mgr;
-pub use crate::jpeglib_h::jpeg_upsampler;
 pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
@@ -83,7 +82,7 @@ pub use crate::jpeglib_h::JSAMPROW;
 pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::jpeglib_h::J_DITHER_MODE;
-pub use crate::src::jerror::C2RustUnnamed_3;
+pub use crate::src::jdmarker::jpeg_resync_to_restart;
 pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -215,6 +214,7 @@ pub use crate::src::jerror::JWRN_MUST_RESYNC;
 pub use crate::src::jerror::JWRN_NOT_SEQUENTIAL;
 pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
 use crate::stdlib::fread;
+pub use crate::stdlib::C2RustUnnamed_0;
 
 pub type my_src_ptr = *mut my_source_mgr;
 
@@ -227,7 +227,7 @@ pub struct my_source_mgr {
     pub start_of_file: crate::jmorecfg_h::boolean,
 }
 
-pub const INPUT_BUF_SIZE: libc::c_int = 4096i32;
+pub const INPUT_BUF_SIZE: libc::c_int = 4096 as libc::c_int;
 /* choose an efficiently fread'able size */
 /*
  * Initialize source --- called by jpeg_read_header
@@ -286,11 +286,11 @@ unsafe extern "C" fn fill_input_buffer(
     let mut nbytes: crate::stddef_h::size_t = 0;
     nbytes = crate::stdlib::fread(
         (*src).buffer as *mut libc::c_void,
-        1i32 as crate::stddef_h::size_t,
-        4096i32 as crate::stddef_h::size_t,
+        1 as libc::c_int as crate::stddef_h::size_t,
+        4096 as libc::c_int as crate::stddef_h::size_t,
         (*src).infile,
     );
-    if nbytes <= 0i32 as libc::c_ulong {
+    if nbytes <= 0 as libc::c_int as libc::c_ulong {
         if (*src).start_of_file != 0 {
             /* Treat empty input file as fatal error */
             (*(*cinfo).err).msg_code = crate::src::jerror::JERR_INPUT_EMPTY as libc::c_int;
@@ -309,11 +309,16 @@ unsafe extern "C" fn fill_input_buffer(
                 .emit_message
                 .expect("non-null function pointer"),
         )
-        .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, -1i32);
+        .expect("non-null function pointer")(
+            cinfo as crate::jpeglib_h::j_common_ptr,
+            -(1 as libc::c_int),
+        );
         /* Insert a fake EOI marker */
-        *(*src).buffer.offset(0) = 0xffi32 as crate::jmorecfg_h::JOCTET;
-        *(*src).buffer.offset(1) = crate::jpeglib_h::JPEG_EOI as crate::jmorecfg_h::JOCTET;
-        nbytes = 2i32 as crate::stddef_h::size_t
+        *(*src).buffer.offset(0 as libc::c_int as isize) =
+            0xff as libc::c_int as crate::jmorecfg_h::JOCTET;
+        *(*src).buffer.offset(1 as libc::c_int as isize) =
+            crate::jpeglib_h::JPEG_EOI as crate::jmorecfg_h::JOCTET;
+        nbytes = 2 as libc::c_int as crate::stddef_h::size_t
     }
     (*src).pub_0.next_input_byte = (*src).buffer;
     (*src).pub_0.bytes_in_buffer = nbytes;
@@ -325,10 +330,10 @@ unsafe extern "C" fn fill_mem_input_buffer(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
 ) -> crate::jmorecfg_h::boolean {
     static mut mybuffer: [crate::jmorecfg_h::JOCTET; 4] = [
-        0xffi32 as crate::jmorecfg_h::JOCTET,
+        0xff as libc::c_int as crate::jmorecfg_h::JOCTET,
         crate::jpeglib_h::JPEG_EOI as crate::jmorecfg_h::JOCTET,
-        0i32 as crate::jmorecfg_h::JOCTET,
-        0i32 as crate::jmorecfg_h::JOCTET,
+        0 as libc::c_int as crate::jmorecfg_h::JOCTET,
+        0 as libc::c_int as crate::jmorecfg_h::JOCTET,
     ];
     /* The whole JPEG data is expected to reside in the supplied memory
      * buffer, so any request for more data beyond the given buffer size
@@ -340,10 +345,13 @@ unsafe extern "C" fn fill_mem_input_buffer(
             .emit_message
             .expect("non-null function pointer"),
     )
-    .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr, -1i32);
+    .expect("non-null function pointer")(
+        cinfo as crate::jpeglib_h::j_common_ptr,
+        -(1 as libc::c_int),
+    );
     /* Insert a fake EOI marker */
     (*(*cinfo).src).next_input_byte = mybuffer.as_ptr();
-    (*(*cinfo).src).bytes_in_buffer = 2i32 as crate::stddef_h::size_t;
+    (*(*cinfo).src).bytes_in_buffer = 2 as libc::c_int as crate::stddef_h::size_t;
     return crate::jmorecfg_h::TRUE;
 }
 /*
@@ -367,7 +375,7 @@ unsafe extern "C" fn skip_input_data(
      * it doesn't work on pipes.  Not clear that being smart is worth
      * any trouble anyway --- large skips are infrequent.
      */
-    if num_bytes > 0i32 as libc::c_long {
+    if num_bytes > 0 as libc::c_int as libc::c_long {
         while num_bytes > (*src).bytes_in_buffer as libc::c_long {
             num_bytes -= (*src).bytes_in_buffer as libc::c_long;
             Some((*src).fill_input_buffer.expect("non-null function pointer"))
@@ -476,7 +484,7 @@ pub unsafe extern "C" fn jpeg_stdio_src(
             as unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr, _: libc::c_long) -> (),
     );
     (*src).pub_0.resync_to_restart = Some(
-        crate::jpeglib_h::jpeg_resync_to_restart
+        crate::src::jdmarker::jpeg_resync_to_restart
             as unsafe extern "C" fn(
                 _: crate::jpeglib_h::j_decompress_ptr,
                 _: libc::c_int,
@@ -485,7 +493,7 @@ pub unsafe extern "C" fn jpeg_stdio_src(
     (*src).pub_0.term_source =
         Some(term_source as unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr) -> ());
     (*src).infile = infile;
-    (*src).pub_0.bytes_in_buffer = 0i32 as crate::stddef_h::size_t;
+    (*src).pub_0.bytes_in_buffer = 0 as libc::c_int as crate::stddef_h::size_t;
     (*src).pub_0.next_input_byte = crate::stddef_h::NULL as *const crate::jmorecfg_h::JOCTET;
     /* until buffer loaded */
 }
@@ -502,7 +510,7 @@ pub unsafe extern "C" fn jpeg_mem_src(
 ) {
     let mut src: *mut crate::jpeglib_h::jpeg_source_mgr =
         0 as *mut crate::jpeglib_h::jpeg_source_mgr;
-    if inbuffer.is_null() || insize == 0i32 as libc::c_ulong {
+    if inbuffer.is_null() || insize == 0 as libc::c_int as libc::c_ulong {
         /* Treat empty input as fatal error */
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_INPUT_EMPTY as libc::c_int;
         Some(
@@ -558,7 +566,7 @@ pub unsafe extern "C" fn jpeg_mem_src(
             as unsafe extern "C" fn(_: crate::jpeglib_h::j_decompress_ptr, _: libc::c_long) -> (),
     );
     (*src).resync_to_restart = Some(
-        crate::jpeglib_h::jpeg_resync_to_restart
+        crate::src::jdmarker::jpeg_resync_to_restart
             as unsafe extern "C" fn(
                 _: crate::jpeglib_h::j_decompress_ptr,
                 _: libc::c_int,

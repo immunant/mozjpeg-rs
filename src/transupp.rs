@@ -1,25 +1,112 @@
-pub use crate::jmorecfg_h::boolean;
-pub use crate::jmorecfg_h::JDIMENSION;
-pub use crate::jpeglib_h::j_compress_ptr;
-pub use crate::jpeglib_h::j_decompress_ptr;
-pub use crate::jpeglib_h::jpeg_compress_struct;
-pub use crate::jpeglib_h::jpeg_decompress_struct;
-pub use crate::jpeglib_h::jvirt_barray_ptr;
-pub use crate::jpeglib_h::C2RustUnnamed_2;
-pub use crate::src::jerror::C2RustUnnamed_3;
-pub use crate::stdlib::C2RustUnnamed_0;
-use libc;
+// =============== BEGIN transupp_h ================
+pub type JXFORM_CODE = libc::c_uint;
 
+pub type JCROP_CODE = libc::c_uint;
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct jpeg_transform_info {
+    pub transform: crate::src::transupp::JXFORM_CODE,
+    pub perfect: crate::jmorecfg_h::boolean,
+    pub trim: crate::jmorecfg_h::boolean,
+    pub force_grayscale: crate::jmorecfg_h::boolean,
+    pub crop: crate::jmorecfg_h::boolean,
+    pub slow_hflip: crate::jmorecfg_h::boolean,
+    pub crop_width: crate::jmorecfg_h::JDIMENSION,
+    pub crop_width_set: crate::src::transupp::JCROP_CODE,
+    pub crop_height: crate::jmorecfg_h::JDIMENSION,
+    pub crop_height_set: crate::src::transupp::JCROP_CODE,
+    pub crop_xoffset: crate::jmorecfg_h::JDIMENSION,
+    pub crop_xoffset_set: crate::src::transupp::JCROP_CODE,
+    pub crop_yoffset: crate::jmorecfg_h::JDIMENSION,
+    pub crop_yoffset_set: crate::src::transupp::JCROP_CODE,
+    pub num_components: libc::c_int,
+    pub workspace_coef_arrays: *mut crate::jpeglib_h::jvirt_barray_ptr,
+    pub output_width: crate::jmorecfg_h::JDIMENSION,
+    pub output_height: crate::jmorecfg_h::JDIMENSION,
+    pub x_crop_offset: crate::jmorecfg_h::JDIMENSION,
+    pub y_crop_offset: crate::jmorecfg_h::JDIMENSION,
+    pub iMCU_sample_width: libc::c_int,
+    pub iMCU_sample_height: libc::c_int,
+}
+
+pub type JCOPY_OPTION = libc::c_uint;
+
+pub const JXFORM_ROT_270: crate::src::transupp::JXFORM_CODE = 7;
+
+pub const JXFORM_ROT_180: crate::src::transupp::JXFORM_CODE = 6;
+
+pub const JXFORM_ROT_90: crate::src::transupp::JXFORM_CODE = 5;
+
+pub const JXFORM_TRANSVERSE: crate::src::transupp::JXFORM_CODE = 4;
+
+pub const JXFORM_TRANSPOSE: crate::src::transupp::JXFORM_CODE = 3;
+
+pub const JXFORM_FLIP_V: crate::src::transupp::JXFORM_CODE = 2;
+
+pub const JXFORM_FLIP_H: crate::src::transupp::JXFORM_CODE = 1;
+
+pub const JXFORM_NONE: crate::src::transupp::JXFORM_CODE = 0;
+
+pub const JCROP_FORCE: crate::src::transupp::JCROP_CODE = 3;
+
+pub const JCROP_NEG: crate::src::transupp::JCROP_CODE = 2;
+
+pub const JCROP_POS: crate::src::transupp::JCROP_CODE = 1;
+
+pub const JCROP_UNSET: crate::src::transupp::JCROP_CODE = 0;
+
+pub const JCOPYOPT_ALL_EXCEPT_ICC: crate::src::transupp::JCOPY_OPTION = 3;
+
+pub const JCOPYOPT_ALL: crate::src::transupp::JCOPY_OPTION = 2;
+
+pub const JCOPYOPT_COMMENTS: crate::src::transupp::JCOPY_OPTION = 1;
+
+pub const JCOPYOPT_NONE: crate::src::transupp::JCOPY_OPTION = 0;
+/* jtransform_execute_transform used to be called
+ * jtransform_execute_transformation, but some compilers complain about
+ * routine names that long.  This macro is here to avoid breaking any
+ * old source code that uses the original name...
+ */
+
+pub const jtransform_execute_transformation: unsafe extern "C" fn(
+    _: crate::jpeglib_h::j_decompress_ptr,
+    _: crate::jpeglib_h::j_compress_ptr,
+    _: *mut crate::jpeglib_h::jvirt_barray_ptr,
+    _: *mut crate::src::transupp::jpeg_transform_info,
+) -> () = crate::src::transupp::jtransform_execute_transform;
+use ::libc;
+
+pub use crate::jmorecfg_h::boolean;
 pub use crate::jmorecfg_h::FALSE;
 pub use crate::jmorecfg_h::JCOEF;
+pub use crate::jmorecfg_h::JDIMENSION;
 pub use crate::jmorecfg_h::JOCTET;
 pub use crate::jmorecfg_h::JSAMPLE;
 pub use crate::jmorecfg_h::TRUE;
 pub use crate::jmorecfg_h::UINT16;
 pub use crate::jmorecfg_h::UINT8;
 pub use crate::jpegint_h::inverse_DCT_method_ptr;
-pub use crate::jpegint_h::jcopy_block_row;
-pub use crate::jpegint_h::jdiv_round_up;
+pub use crate::jpegint_h::jpeg_c_coef_controller;
+pub use crate::jpegint_h::jpeg_c_main_controller;
+pub use crate::jpegint_h::jpeg_c_prep_controller;
+pub use crate::jpegint_h::jpeg_color_converter;
+pub use crate::jpegint_h::jpeg_color_deconverter;
+pub use crate::jpegint_h::jpeg_color_quantizer;
+pub use crate::jpegint_h::jpeg_comp_master;
+pub use crate::jpegint_h::jpeg_d_coef_controller;
+pub use crate::jpegint_h::jpeg_d_main_controller;
+pub use crate::jpegint_h::jpeg_d_post_controller;
+pub use crate::jpegint_h::jpeg_decomp_master;
+pub use crate::jpegint_h::jpeg_downsampler;
+pub use crate::jpegint_h::jpeg_entropy_decoder;
+pub use crate::jpegint_h::jpeg_entropy_encoder;
+pub use crate::jpegint_h::jpeg_forward_dct;
+pub use crate::jpegint_h::jpeg_input_controller;
+pub use crate::jpegint_h::jpeg_inverse_dct;
+pub use crate::jpegint_h::jpeg_marker_reader;
+pub use crate::jpegint_h::jpeg_marker_writer;
+pub use crate::jpegint_h::jpeg_upsampler;
 pub use crate::jpegint_h::JBUF_CRANK_DEST;
 pub use crate::jpegint_h::JBUF_PASS_THRU;
 pub use crate::jpegint_h::JBUF_REQUANT;
@@ -27,43 +114,26 @@ pub use crate::jpegint_h::JBUF_SAVE_AND_PASS;
 pub use crate::jpegint_h::JBUF_SAVE_SOURCE;
 pub use crate::jpegint_h::J_BUF_MODE;
 pub use crate::jpeglib_h::j_common_ptr;
-pub use crate::jpeglib_h::jpeg_c_coef_controller;
-pub use crate::jpeglib_h::jpeg_c_main_controller;
-pub use crate::jpeglib_h::jpeg_c_prep_controller;
-pub use crate::jpeglib_h::jpeg_color_converter;
-pub use crate::jpeglib_h::jpeg_color_deconverter;
-pub use crate::jpeglib_h::jpeg_color_quantizer;
+pub use crate::jpeglib_h::j_compress_ptr;
+pub use crate::jpeglib_h::j_decompress_ptr;
 pub use crate::jpeglib_h::jpeg_common_struct;
-pub use crate::jpeglib_h::jpeg_comp_master;
 pub use crate::jpeglib_h::jpeg_component_info;
-pub use crate::jpeglib_h::jpeg_d_coef_controller;
-pub use crate::jpeglib_h::jpeg_d_main_controller;
-pub use crate::jpeglib_h::jpeg_d_post_controller;
-pub use crate::jpeglib_h::jpeg_decomp_master;
+pub use crate::jpeglib_h::jpeg_compress_struct;
+pub use crate::jpeglib_h::jpeg_decompress_struct;
 pub use crate::jpeglib_h::jpeg_destination_mgr;
-pub use crate::jpeglib_h::jpeg_downsampler;
-pub use crate::jpeglib_h::jpeg_entropy_decoder;
-pub use crate::jpeglib_h::jpeg_entropy_encoder;
 pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_forward_dct;
-pub use crate::jpeglib_h::jpeg_input_controller;
-pub use crate::jpeglib_h::jpeg_inverse_dct;
 pub use crate::jpeglib_h::jpeg_marker_parser_method;
-pub use crate::jpeglib_h::jpeg_marker_reader;
 pub use crate::jpeglib_h::jpeg_marker_struct;
-pub use crate::jpeglib_h::jpeg_marker_writer;
 pub use crate::jpeglib_h::jpeg_memory_mgr;
 pub use crate::jpeglib_h::jpeg_progress_mgr;
-pub use crate::jpeglib_h::jpeg_save_markers;
 pub use crate::jpeglib_h::jpeg_saved_marker_ptr;
 pub use crate::jpeglib_h::jpeg_scan_info;
-pub use crate::jpeglib_h::jpeg_set_colorspace;
 pub use crate::jpeglib_h::jpeg_source_mgr;
-pub use crate::jpeglib_h::jpeg_upsampler;
-pub use crate::jpeglib_h::jpeg_write_marker;
 pub use crate::jpeglib_h::jvirt_barray_control;
+pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
 pub use crate::jpeglib_h::jvirt_sarray_ptr;
+pub use crate::jpeglib_h::C2RustUnnamed_2;
 pub use crate::jpeglib_h::JCS_YCbCr;
 pub use crate::jpeglib_h::DCTSIZE;
 pub use crate::jpeglib_h::DCTSIZE2;
@@ -105,6 +175,9 @@ pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::jpeglib_h::J_DITHER_MODE;
 pub use crate::jpeglib_h::NUM_QUANT_TBLS;
+pub use crate::src::jcapimin::jpeg_write_marker;
+pub use crate::src::jcparam::jpeg_set_colorspace;
+pub use crate::src::jdmarker::jpeg_save_markers;
 pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -235,8 +308,11 @@ pub use crate::src::jerror::JWRN_JPEG_EOF;
 pub use crate::src::jerror::JWRN_MUST_RESYNC;
 pub use crate::src::jerror::JWRN_NOT_SEQUENTIAL;
 pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
+pub use crate::src::jutils::jcopy_block_row;
+pub use crate::src::jutils::jdiv_round_up;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
+pub use crate::stdlib::C2RustUnnamed_0;
 pub use crate::stdlib::_ISalnum;
 pub use crate::stdlib::_ISalpha;
 pub use crate::stdlib::_ISblank;
@@ -250,85 +326,6 @@ pub use crate::stdlib::_ISspace;
 pub use crate::stdlib::_ISupper;
 pub use crate::stdlib::_ISxdigit;
 pub use crate::stdlib::__ctype_b_loc;
-// =============== BEGIN transupp_h ================
-pub type JXFORM_CODE = libc::c_uint;
-
-pub type JCROP_CODE = libc::c_uint;
-
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct jpeg_transform_info {
-    pub transform: crate::src::transupp::JXFORM_CODE,
-    pub perfect: crate::jmorecfg_h::boolean,
-    pub trim: crate::jmorecfg_h::boolean,
-    pub force_grayscale: crate::jmorecfg_h::boolean,
-    pub crop: crate::jmorecfg_h::boolean,
-    pub slow_hflip: crate::jmorecfg_h::boolean,
-    pub crop_width: crate::jmorecfg_h::JDIMENSION,
-    pub crop_width_set: crate::src::transupp::JCROP_CODE,
-    pub crop_height: crate::jmorecfg_h::JDIMENSION,
-    pub crop_height_set: crate::src::transupp::JCROP_CODE,
-    pub crop_xoffset: crate::jmorecfg_h::JDIMENSION,
-    pub crop_xoffset_set: crate::src::transupp::JCROP_CODE,
-    pub crop_yoffset: crate::jmorecfg_h::JDIMENSION,
-    pub crop_yoffset_set: crate::src::transupp::JCROP_CODE,
-    pub num_components: libc::c_int,
-    pub workspace_coef_arrays: *mut crate::jpeglib_h::jvirt_barray_ptr,
-    pub output_width: crate::jmorecfg_h::JDIMENSION,
-    pub output_height: crate::jmorecfg_h::JDIMENSION,
-    pub x_crop_offset: crate::jmorecfg_h::JDIMENSION,
-    pub y_crop_offset: crate::jmorecfg_h::JDIMENSION,
-    pub iMCU_sample_width: libc::c_int,
-    pub iMCU_sample_height: libc::c_int,
-}
-
-pub type JCOPY_OPTION = libc::c_uint;
-
-pub const JXFORM_ROT_270: crate::src::transupp::JXFORM_CODE = 7;
-
-pub const JXFORM_ROT_180: crate::src::transupp::JXFORM_CODE = 6;
-
-pub const JXFORM_ROT_90: crate::src::transupp::JXFORM_CODE = 5;
-
-pub const JXFORM_TRANSVERSE: crate::src::transupp::JXFORM_CODE = 4;
-
-pub const JXFORM_TRANSPOSE: crate::src::transupp::JXFORM_CODE = 3;
-
-pub const JXFORM_FLIP_V: crate::src::transupp::JXFORM_CODE = 2;
-
-pub const JXFORM_FLIP_H: crate::src::transupp::JXFORM_CODE = 1;
-
-pub const JXFORM_NONE: crate::src::transupp::JXFORM_CODE = 0;
-
-pub const JCROP_FORCE: crate::src::transupp::JCROP_CODE = 3;
-
-pub const JCROP_NEG: crate::src::transupp::JCROP_CODE = 2;
-
-pub const JCROP_POS: crate::src::transupp::JCROP_CODE = 1;
-
-pub const JCROP_UNSET: crate::src::transupp::JCROP_CODE = 0;
-
-pub const JCOPYOPT_ALL_EXCEPT_ICC: crate::src::transupp::JCOPY_OPTION = 3;
-
-pub const JCOPYOPT_ALL: crate::src::transupp::JCOPY_OPTION = 2;
-
-pub const JCOPYOPT_COMMENTS: crate::src::transupp::JCOPY_OPTION = 1;
-
-pub const JCOPYOPT_NONE: crate::src::transupp::JCOPY_OPTION = 0;
-/* jtransform_execute_transform used to be called
- * jtransform_execute_transformation, but some compilers complain about
- * routine names that long.  This macro is here to avoid breaking any
- * old source code that uses the original name...
- */
-
-pub const jtransform_execute_transformation: unsafe extern "C" fn(
-    _: crate::jpeglib_h::j_decompress_ptr,
-    _: crate::jpeglib_h::j_compress_ptr,
-    _: *mut crate::jpeglib_h::jvirt_barray_ptr,
-    _: *mut crate::src::transupp::jpeg_transform_info,
-) -> () = crate::src::transupp::jtransform_execute_transform;
-
-pub const JCOPYOPT_DEFAULT: libc::c_int = crate::src::transupp::JCOPYOPT_COMMENTS as libc::c_int;
 /*
  * transupp.c
  *
@@ -424,12 +421,12 @@ unsafe extern "C" fn do_crop(
     /* We simply have to copy the right amount of data (the destination's
      * image size) starting at the given X and Y offsets in the source.
      */
-    ci = 0i32;
+    ci = 0 as libc::c_int;
     while ci < (*dstinfo).num_components {
         compptr = (*dstinfo).comp_info.offset(ci as isize);
         x_crop_blocks = x_crop_offset.wrapping_mul((*compptr).h_samp_factor as libc::c_uint);
         y_crop_blocks = y_crop_offset.wrapping_mul((*compptr).v_samp_factor as libc::c_uint);
-        dst_blk_y = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        dst_blk_y = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
         while dst_blk_y < (*compptr).height_in_blocks {
             dst_buffer = Some(
                 (*(*srcinfo).mem)
@@ -455,9 +452,9 @@ unsafe extern "C" fn do_crop(
                 (*compptr).v_samp_factor as crate::jmorecfg_h::JDIMENSION,
                 crate::jmorecfg_h::FALSE,
             );
-            offset_y = 0i32;
+            offset_y = 0 as libc::c_int;
             while offset_y < (*compptr).v_samp_factor {
-                crate::jpegint_h::jcopy_block_row(
+                crate::src::jutils::jcopy_block_row(
                     (*src_buffer.offset(offset_y as isize)).offset(x_crop_blocks as isize),
                     *dst_buffer.offset(offset_y as isize),
                     (*compptr).width_in_blocks,
@@ -506,12 +503,12 @@ unsafe extern "C" fn do_flip_h_no_crop(
     MCU_cols = (*srcinfo).output_width.wrapping_div(
         ((*dstinfo).max_h_samp_factor * dstinfo_min_DCT_h_scaled_size) as libc::c_uint,
     );
-    ci = 0i32;
+    ci = 0 as libc::c_int;
     while ci < (*dstinfo).num_components {
         compptr = (*dstinfo).comp_info.offset(ci as isize);
         comp_width = MCU_cols.wrapping_mul((*compptr).h_samp_factor as libc::c_uint);
         x_crop_blocks = x_crop_offset.wrapping_mul((*compptr).h_samp_factor as libc::c_uint);
-        blk_y = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        blk_y = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
         while blk_y < (*compptr).height_in_blocks {
             buffer = Some(
                 (*(*srcinfo).mem)
@@ -525,21 +522,22 @@ unsafe extern "C" fn do_flip_h_no_crop(
                 (*compptr).v_samp_factor as crate::jmorecfg_h::JDIMENSION,
                 crate::jmorecfg_h::TRUE,
             );
-            offset_y = 0i32;
+            offset_y = 0 as libc::c_int;
             while offset_y < (*compptr).v_samp_factor {
                 /* Do the mirroring */
-                blk_x = 0i32 as crate::jmorecfg_h::JDIMENSION;
-                while blk_x.wrapping_mul(2i32 as libc::c_uint) < comp_width {
+                blk_x = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
+                while blk_x.wrapping_mul(2 as libc::c_int as libc::c_uint) < comp_width {
                     ptr1 =
                         (*(*buffer.offset(offset_y as isize)).offset(blk_x as isize)).as_mut_ptr();
                     ptr2 = (*(*buffer.offset(offset_y as isize)).offset(
                         comp_width
                             .wrapping_sub(blk_x)
-                            .wrapping_sub(1i32 as libc::c_uint) as isize,
+                            .wrapping_sub(1 as libc::c_int as libc::c_uint)
+                            as isize,
                     ))
                     .as_mut_ptr();
                     /* this unrolled loop doesn't need to know which row it's on... */
-                    k = 0i32; /* swap even column */
+                    k = 0 as libc::c_int; /* swap even column */
                     while k < crate::jpeglib_h::DCTSIZE2 {
                         temp1 = *ptr1; /* swap odd column with sign change */
                         temp2 = *ptr2;
@@ -557,24 +555,24 @@ unsafe extern "C" fn do_flip_h_no_crop(
                         let fresh3 = ptr2;
                         ptr2 = ptr2.offset(1);
                         *fresh3 = -(temp1 as libc::c_int) as crate::jmorecfg_h::JCOEF;
-                        k += 2i32
+                        k += 2 as libc::c_int
                     }
                     blk_x = blk_x.wrapping_add(1)
                 }
-                if x_crop_blocks > 0i32 as libc::c_uint {
+                if x_crop_blocks > 0 as libc::c_int as libc::c_uint {
                     /* Now left-justify the portion of the data to be kept.
                      * We can't use a single jcopy_block_row() call because that routine
                      * depends on memcpy(), whose behavior is unspecified for overlapping
                      * source and destination areas.  Sigh.
                      */
-                    blk_x = 0i32 as crate::jmorecfg_h::JDIMENSION;
+                    blk_x = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
                     while blk_x < (*compptr).width_in_blocks {
-                        crate::jpegint_h::jcopy_block_row(
+                        crate::src::jutils::jcopy_block_row(
                             (*buffer.offset(offset_y as isize))
                                 .offset(blk_x as isize)
                                 .offset(x_crop_blocks as isize),
                             (*buffer.offset(offset_y as isize)).offset(blk_x as isize),
-                            1i32 as crate::jmorecfg_h::JDIMENSION,
+                            1 as libc::c_int as crate::jmorecfg_h::JDIMENSION,
                         );
                         blk_x = blk_x.wrapping_add(1)
                     }
@@ -623,13 +621,13 @@ unsafe extern "C" fn do_flip_h(
     MCU_cols = (*srcinfo).output_width.wrapping_div(
         ((*dstinfo).max_h_samp_factor * dstinfo_min_DCT_h_scaled_size) as libc::c_uint,
     );
-    ci = 0i32;
+    ci = 0 as libc::c_int;
     while ci < (*dstinfo).num_components {
         compptr = (*dstinfo).comp_info.offset(ci as isize);
         comp_width = MCU_cols.wrapping_mul((*compptr).h_samp_factor as libc::c_uint);
         x_crop_blocks = x_crop_offset.wrapping_mul((*compptr).h_samp_factor as libc::c_uint);
         y_crop_blocks = y_crop_offset.wrapping_mul((*compptr).v_samp_factor as libc::c_uint);
-        dst_blk_y = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        dst_blk_y = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
         while dst_blk_y < (*compptr).height_in_blocks {
             dst_buffer = Some(
                 (*(*srcinfo).mem)
@@ -655,11 +653,11 @@ unsafe extern "C" fn do_flip_h(
                 (*compptr).v_samp_factor as crate::jmorecfg_h::JDIMENSION,
                 crate::jmorecfg_h::FALSE,
             );
-            offset_y = 0i32;
+            offset_y = 0 as libc::c_int;
             while offset_y < (*compptr).v_samp_factor {
                 dst_row_ptr = *dst_buffer.offset(offset_y as isize);
                 src_row_ptr = *src_buffer.offset(offset_y as isize);
-                dst_blk_x = 0i32 as crate::jmorecfg_h::JDIMENSION;
+                dst_blk_x = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
                 while dst_blk_x < (*compptr).width_in_blocks {
                     if x_crop_blocks.wrapping_add(dst_blk_x) < comp_width {
                         /* Do the mirrorable blocks */
@@ -668,12 +666,12 @@ unsafe extern "C" fn do_flip_h(
                             comp_width
                                 .wrapping_sub(x_crop_blocks)
                                 .wrapping_sub(dst_blk_x)
-                                .wrapping_sub(1i32 as libc::c_uint)
+                                .wrapping_sub(1 as libc::c_int as libc::c_uint)
                                 as isize,
                         ))
                         .as_mut_ptr();
                         /* this unrolled loop doesn't need to know which row it's on... */
-                        k = 0i32; /* copy even column */
+                        k = 0 as libc::c_int; /* copy even column */
                         while k < crate::jpeglib_h::DCTSIZE2 {
                             let fresh4 = src_ptr;
                             src_ptr = src_ptr.offset(1);
@@ -685,17 +683,17 @@ unsafe extern "C" fn do_flip_h(
                             let fresh7 = dst_ptr;
                             dst_ptr = dst_ptr.offset(1);
                             *fresh7 = -(*fresh6 as libc::c_int) as crate::jmorecfg_h::JCOEF;
-                            k += 2i32
+                            k += 2 as libc::c_int
                             /* copy odd column with sign change */
                         }
                     } else {
                         /* Copy last partial block(s) verbatim */
-                        crate::jpegint_h::jcopy_block_row(
+                        crate::src::jutils::jcopy_block_row(
                             src_row_ptr
                                 .offset(dst_blk_x as isize)
                                 .offset(x_crop_blocks as isize),
                             dst_row_ptr.offset(dst_blk_x as isize),
-                            1i32 as crate::jmorecfg_h::JDIMENSION,
+                            1 as libc::c_int as crate::jmorecfg_h::JDIMENSION,
                         );
                     }
                     dst_blk_x = dst_blk_x.wrapping_add(1)
@@ -749,13 +747,13 @@ unsafe extern "C" fn do_flip_v(
     MCU_rows = (*srcinfo).output_height.wrapping_div(
         ((*dstinfo).max_v_samp_factor * dstinfo_min_DCT_v_scaled_size) as libc::c_uint,
     );
-    ci = 0i32;
+    ci = 0 as libc::c_int;
     while ci < (*dstinfo).num_components {
         compptr = (*dstinfo).comp_info.offset(ci as isize);
         comp_height = MCU_rows.wrapping_mul((*compptr).v_samp_factor as libc::c_uint);
         x_crop_blocks = x_crop_offset.wrapping_mul((*compptr).h_samp_factor as libc::c_uint);
         y_crop_blocks = y_crop_offset.wrapping_mul((*compptr).v_samp_factor as libc::c_uint);
-        dst_blk_y = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        dst_blk_y = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
         while dst_blk_y < (*compptr).height_in_blocks {
             dst_buffer = Some(
                 (*(*srcinfo).mem)
@@ -801,22 +799,22 @@ unsafe extern "C" fn do_flip_v(
                     crate::jmorecfg_h::FALSE,
                 )
             }
-            offset_y = 0i32;
+            offset_y = 0 as libc::c_int;
             while offset_y < (*compptr).v_samp_factor {
                 if y_crop_blocks.wrapping_add(dst_blk_y) < comp_height {
                     /* Row is within the mirrorable area. */
                     dst_row_ptr = *dst_buffer.offset(offset_y as isize);
-                    src_row_ptr =
-                        *src_buffer.offset(((*compptr).v_samp_factor - offset_y - 1i32) as isize);
+                    src_row_ptr = *src_buffer
+                        .offset(((*compptr).v_samp_factor - offset_y - 1 as libc::c_int) as isize);
                     src_row_ptr = src_row_ptr.offset(x_crop_blocks as isize);
-                    dst_blk_x = 0i32 as crate::jmorecfg_h::JDIMENSION;
+                    dst_blk_x = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
                     while dst_blk_x < (*compptr).width_in_blocks {
                         dst_ptr = (*dst_row_ptr.offset(dst_blk_x as isize)).as_mut_ptr();
                         src_ptr = (*src_row_ptr.offset(dst_blk_x as isize)).as_mut_ptr();
-                        i = 0i32;
+                        i = 0 as libc::c_int;
                         while i < crate::jpeglib_h::DCTSIZE {
                             /* copy even row */
-                            j = 0i32;
+                            j = 0 as libc::c_int;
                             while j < crate::jpeglib_h::DCTSIZE {
                                 let fresh8 = src_ptr;
                                 src_ptr = src_ptr.offset(1);
@@ -826,7 +824,7 @@ unsafe extern "C" fn do_flip_v(
                                 j += 1
                             }
                             /* copy odd row with sign change */
-                            j = 0i32;
+                            j = 0 as libc::c_int;
                             while j < crate::jpeglib_h::DCTSIZE {
                                 let fresh10 = src_ptr;
                                 src_ptr = src_ptr.offset(1);
@@ -835,13 +833,13 @@ unsafe extern "C" fn do_flip_v(
                                 *fresh11 = -(*fresh10 as libc::c_int) as crate::jmorecfg_h::JCOEF;
                                 j += 1
                             }
-                            i += 2i32
+                            i += 2 as libc::c_int
                         }
                         dst_blk_x = dst_blk_x.wrapping_add(1)
                     }
                 } else {
                     /* Just copy row verbatim. */
-                    crate::jpegint_h::jcopy_block_row(
+                    crate::src::jutils::jcopy_block_row(
                         (*src_buffer.offset(offset_y as isize)).offset(x_crop_blocks as isize),
                         *dst_buffer.offset(offset_y as isize),
                         (*compptr).width_in_blocks,
@@ -888,12 +886,12 @@ unsafe extern "C" fn do_transpose(
      * Partial iMCUs at the edges require no special treatment; we simply
      * process all the available DCT blocks for every component.
      */
-    ci = 0i32;
+    ci = 0 as libc::c_int;
     while ci < (*dstinfo).num_components {
         compptr = (*dstinfo).comp_info.offset(ci as isize);
         x_crop_blocks = x_crop_offset.wrapping_mul((*compptr).h_samp_factor as libc::c_uint);
         y_crop_blocks = y_crop_offset.wrapping_mul((*compptr).v_samp_factor as libc::c_uint);
-        dst_blk_y = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        dst_blk_y = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
         while dst_blk_y < (*compptr).height_in_blocks {
             dst_buffer = Some(
                 (*(*srcinfo).mem)
@@ -907,9 +905,9 @@ unsafe extern "C" fn do_transpose(
                 (*compptr).v_samp_factor as crate::jmorecfg_h::JDIMENSION,
                 crate::jmorecfg_h::TRUE,
             );
-            offset_y = 0i32;
+            offset_y = 0 as libc::c_int;
             while offset_y < (*compptr).v_samp_factor {
-                dst_blk_x = 0i32 as crate::jmorecfg_h::JDIMENSION;
+                dst_blk_x = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
                 while dst_blk_x < (*compptr).width_in_blocks {
                     src_buffer = Some(
                         (*(*srcinfo).mem)
@@ -923,7 +921,7 @@ unsafe extern "C" fn do_transpose(
                         (*compptr).h_samp_factor as crate::jmorecfg_h::JDIMENSION,
                         crate::jmorecfg_h::FALSE,
                     );
-                    offset_x = 0i32;
+                    offset_x = 0 as libc::c_int;
                     while offset_x < (*compptr).h_samp_factor {
                         dst_ptr = (*(*dst_buffer.offset(offset_y as isize))
                             .offset(dst_blk_x.wrapping_add(offset_x as libc::c_uint) as isize))
@@ -934,9 +932,9 @@ unsafe extern "C" fn do_transpose(
                                 .wrapping_add(y_crop_blocks) as isize,
                         ))
                         .as_mut_ptr();
-                        i = 0i32;
+                        i = 0 as libc::c_int;
                         while i < crate::jpeglib_h::DCTSIZE {
-                            j = 0i32;
+                            j = 0 as libc::c_int;
                             while j < crate::jpeglib_h::DCTSIZE {
                                 *dst_ptr.offset((j * crate::jpeglib_h::DCTSIZE + i) as isize) =
                                     *src_ptr.offset((i * crate::jpeglib_h::DCTSIZE + j) as isize);
@@ -1000,13 +998,13 @@ unsafe extern "C" fn do_rot_90(
     MCU_cols = (*srcinfo).output_height.wrapping_div(
         ((*dstinfo).max_h_samp_factor * dstinfo_min_DCT_h_scaled_size) as libc::c_uint,
     );
-    ci = 0i32;
+    ci = 0 as libc::c_int;
     while ci < (*dstinfo).num_components {
         compptr = (*dstinfo).comp_info.offset(ci as isize);
         comp_width = MCU_cols.wrapping_mul((*compptr).h_samp_factor as libc::c_uint);
         x_crop_blocks = x_crop_offset.wrapping_mul((*compptr).h_samp_factor as libc::c_uint);
         y_crop_blocks = y_crop_offset.wrapping_mul((*compptr).v_samp_factor as libc::c_uint);
-        dst_blk_y = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        dst_blk_y = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
         while dst_blk_y < (*compptr).height_in_blocks {
             dst_buffer = Some(
                 (*(*srcinfo).mem)
@@ -1020,9 +1018,9 @@ unsafe extern "C" fn do_rot_90(
                 (*compptr).v_samp_factor as crate::jmorecfg_h::JDIMENSION,
                 crate::jmorecfg_h::TRUE,
             );
-            offset_y = 0i32;
+            offset_y = 0 as libc::c_int;
             while offset_y < (*compptr).v_samp_factor {
-                dst_blk_x = 0i32 as crate::jmorecfg_h::JDIMENSION;
+                dst_blk_x = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
                 while dst_blk_x < (*compptr).width_in_blocks {
                     if x_crop_blocks.wrapping_add(dst_blk_x) < comp_width {
                         /* Block is within the mirrorable area. */
@@ -1058,15 +1056,16 @@ unsafe extern "C" fn do_rot_90(
                             crate::jmorecfg_h::FALSE,
                         )
                     }
-                    offset_x = 0i32;
+                    offset_x = 0 as libc::c_int;
                     while offset_x < (*compptr).h_samp_factor {
                         dst_ptr = (*(*dst_buffer.offset(offset_y as isize))
                             .offset(dst_blk_x.wrapping_add(offset_x as libc::c_uint) as isize))
                         .as_mut_ptr();
                         if x_crop_blocks.wrapping_add(dst_blk_x) < comp_width {
                             /* Block is within the mirrorable area. */
-                            src_ptr = (*(*src_buffer
-                                .offset(((*compptr).h_samp_factor - offset_x - 1i32) as isize))
+                            src_ptr = (*(*src_buffer.offset(
+                                ((*compptr).h_samp_factor - offset_x - 1 as libc::c_int) as isize,
+                            ))
                             .offset(
                                 dst_blk_y
                                     .wrapping_add(offset_y as libc::c_uint)
@@ -1074,9 +1073,9 @@ unsafe extern "C" fn do_rot_90(
                                     as isize,
                             ))
                             .as_mut_ptr();
-                            i = 0i32;
+                            i = 0 as libc::c_int;
                             while i < crate::jpeglib_h::DCTSIZE {
-                                j = 0i32;
+                                j = 0 as libc::c_int;
                                 while j < crate::jpeglib_h::DCTSIZE {
                                     *dst_ptr.offset((j * crate::jpeglib_h::DCTSIZE + i) as isize) =
                                         *src_ptr
@@ -1084,7 +1083,7 @@ unsafe extern "C" fn do_rot_90(
                                     j += 1
                                 }
                                 i += 1;
-                                j = 0i32;
+                                j = 0 as libc::c_int;
                                 while j < crate::jpeglib_h::DCTSIZE {
                                     *dst_ptr.offset((j * crate::jpeglib_h::DCTSIZE + i) as isize) =
                                         -(*src_ptr
@@ -1104,9 +1103,9 @@ unsafe extern "C" fn do_rot_90(
                                     as isize,
                             ))
                             .as_mut_ptr();
-                            i = 0i32;
+                            i = 0 as libc::c_int;
                             while i < crate::jpeglib_h::DCTSIZE {
-                                j = 0i32;
+                                j = 0 as libc::c_int;
                                 while j < crate::jpeglib_h::DCTSIZE {
                                     *dst_ptr.offset((j * crate::jpeglib_h::DCTSIZE + i) as isize) =
                                         *src_ptr
@@ -1172,13 +1171,13 @@ unsafe extern "C" fn do_rot_270(
     MCU_rows = (*srcinfo).output_width.wrapping_div(
         ((*dstinfo).max_v_samp_factor * dstinfo_min_DCT_v_scaled_size) as libc::c_uint,
     );
-    ci = 0i32;
+    ci = 0 as libc::c_int;
     while ci < (*dstinfo).num_components {
         compptr = (*dstinfo).comp_info.offset(ci as isize);
         comp_height = MCU_rows.wrapping_mul((*compptr).v_samp_factor as libc::c_uint);
         x_crop_blocks = x_crop_offset.wrapping_mul((*compptr).h_samp_factor as libc::c_uint);
         y_crop_blocks = y_crop_offset.wrapping_mul((*compptr).v_samp_factor as libc::c_uint);
-        dst_blk_y = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        dst_blk_y = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
         while dst_blk_y < (*compptr).height_in_blocks {
             dst_buffer = Some(
                 (*(*srcinfo).mem)
@@ -1192,9 +1191,9 @@ unsafe extern "C" fn do_rot_270(
                 (*compptr).v_samp_factor as crate::jmorecfg_h::JDIMENSION,
                 crate::jmorecfg_h::TRUE,
             );
-            offset_y = 0i32;
+            offset_y = 0 as libc::c_int;
             while offset_y < (*compptr).v_samp_factor {
-                dst_blk_x = 0i32 as crate::jmorecfg_h::JDIMENSION;
+                dst_blk_x = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
                 while dst_blk_x < (*compptr).width_in_blocks {
                     src_buffer = Some(
                         (*(*srcinfo).mem)
@@ -1208,7 +1207,7 @@ unsafe extern "C" fn do_rot_270(
                         (*compptr).h_samp_factor as crate::jmorecfg_h::JDIMENSION,
                         crate::jmorecfg_h::FALSE,
                     );
-                    offset_x = 0i32;
+                    offset_x = 0 as libc::c_int;
                     while offset_x < (*compptr).h_samp_factor {
                         dst_ptr = (*(*dst_buffer.offset(offset_y as isize))
                             .offset(dst_blk_x.wrapping_add(offset_x as libc::c_uint) as isize))
@@ -1220,13 +1219,13 @@ unsafe extern "C" fn do_rot_270(
                                     .wrapping_sub(y_crop_blocks)
                                     .wrapping_sub(dst_blk_y)
                                     .wrapping_sub(offset_y as libc::c_uint)
-                                    .wrapping_sub(1i32 as libc::c_uint)
+                                    .wrapping_sub(1 as libc::c_int as libc::c_uint)
                                     as isize,
                             ))
                             .as_mut_ptr();
-                            i = 0i32;
+                            i = 0 as libc::c_int;
                             while i < crate::jpeglib_h::DCTSIZE {
-                                j = 0i32;
+                                j = 0 as libc::c_int;
                                 while j < crate::jpeglib_h::DCTSIZE {
                                     *dst_ptr.offset((j * crate::jpeglib_h::DCTSIZE + i) as isize) =
                                         *src_ptr
@@ -1250,9 +1249,9 @@ unsafe extern "C" fn do_rot_270(
                                     as isize,
                             ))
                             .as_mut_ptr();
-                            i = 0i32;
+                            i = 0 as libc::c_int;
                             while i < crate::jpeglib_h::DCTSIZE {
-                                j = 0i32;
+                                j = 0 as libc::c_int;
                                 while j < crate::jpeglib_h::DCTSIZE {
                                     *dst_ptr.offset((j * crate::jpeglib_h::DCTSIZE + i) as isize) =
                                         *src_ptr
@@ -1320,14 +1319,14 @@ unsafe extern "C" fn do_rot_180(
     MCU_rows = (*srcinfo).output_height.wrapping_div(
         ((*dstinfo).max_v_samp_factor * dstinfo_min_DCT_v_scaled_size) as libc::c_uint,
     );
-    ci = 0i32;
+    ci = 0 as libc::c_int;
     while ci < (*dstinfo).num_components {
         compptr = (*dstinfo).comp_info.offset(ci as isize);
         comp_width = MCU_cols.wrapping_mul((*compptr).h_samp_factor as libc::c_uint);
         comp_height = MCU_rows.wrapping_mul((*compptr).v_samp_factor as libc::c_uint);
         x_crop_blocks = x_crop_offset.wrapping_mul((*compptr).h_samp_factor as libc::c_uint);
         y_crop_blocks = y_crop_offset.wrapping_mul((*compptr).v_samp_factor as libc::c_uint);
-        dst_blk_y = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        dst_blk_y = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
         while dst_blk_y < (*compptr).height_in_blocks {
             dst_buffer = Some(
                 (*(*srcinfo).mem)
@@ -1373,14 +1372,14 @@ unsafe extern "C" fn do_rot_180(
                     crate::jmorecfg_h::FALSE,
                 )
             }
-            offset_y = 0i32;
+            offset_y = 0 as libc::c_int;
             while offset_y < (*compptr).v_samp_factor {
                 dst_row_ptr = *dst_buffer.offset(offset_y as isize);
                 if y_crop_blocks.wrapping_add(dst_blk_y) < comp_height {
                     /* Row is within the mirrorable area. */
-                    src_row_ptr =
-                        *src_buffer.offset(((*compptr).v_samp_factor - offset_y - 1i32) as isize);
-                    dst_blk_x = 0i32 as crate::jmorecfg_h::JDIMENSION;
+                    src_row_ptr = *src_buffer
+                        .offset(((*compptr).v_samp_factor - offset_y - 1 as libc::c_int) as isize);
+                    dst_blk_x = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
                     while dst_blk_x < (*compptr).width_in_blocks {
                         dst_ptr = (*dst_row_ptr.offset(dst_blk_x as isize)).as_mut_ptr();
                         if x_crop_blocks.wrapping_add(dst_blk_x) < comp_width {
@@ -1389,14 +1388,14 @@ unsafe extern "C" fn do_rot_180(
                                 comp_width
                                     .wrapping_sub(x_crop_blocks)
                                     .wrapping_sub(dst_blk_x)
-                                    .wrapping_sub(1i32 as libc::c_uint)
+                                    .wrapping_sub(1 as libc::c_int as libc::c_uint)
                                     as isize,
                             ))
                             .as_mut_ptr();
-                            i = 0i32;
+                            i = 0 as libc::c_int;
                             while i < crate::jpeglib_h::DCTSIZE {
                                 /* For even row, negate every odd column. */
-                                j = 0i32;
+                                j = 0 as libc::c_int;
                                 while j < crate::jpeglib_h::DCTSIZE {
                                     let fresh12 = src_ptr;
                                     src_ptr = src_ptr.offset(1);
@@ -1409,10 +1408,10 @@ unsafe extern "C" fn do_rot_180(
                                     dst_ptr = dst_ptr.offset(1);
                                     *fresh15 =
                                         -(*fresh14 as libc::c_int) as crate::jmorecfg_h::JCOEF;
-                                    j += 2i32
+                                    j += 2 as libc::c_int
                                 }
                                 /* For odd row, negate every even column. */
-                                j = 0i32;
+                                j = 0 as libc::c_int;
                                 while j < crate::jpeglib_h::DCTSIZE {
                                     let fresh16 = src_ptr;
                                     src_ptr = src_ptr.offset(1);
@@ -1425,18 +1424,18 @@ unsafe extern "C" fn do_rot_180(
                                     let fresh19 = dst_ptr;
                                     dst_ptr = dst_ptr.offset(1);
                                     *fresh19 = *fresh18;
-                                    j += 2i32
+                                    j += 2 as libc::c_int
                                 }
-                                i += 2i32
+                                i += 2 as libc::c_int
                             }
                         } else {
                             /* Any remaining right-edge blocks are only mirrored vertically. */
                             src_ptr = (*src_row_ptr
                                 .offset(x_crop_blocks.wrapping_add(dst_blk_x) as isize))
                             .as_mut_ptr();
-                            i = 0i32;
+                            i = 0 as libc::c_int;
                             while i < crate::jpeglib_h::DCTSIZE {
-                                j = 0i32;
+                                j = 0 as libc::c_int;
                                 while j < crate::jpeglib_h::DCTSIZE {
                                     let fresh20 = src_ptr;
                                     src_ptr = src_ptr.offset(1);
@@ -1445,7 +1444,7 @@ unsafe extern "C" fn do_rot_180(
                                     *fresh21 = *fresh20;
                                     j += 1
                                 }
-                                j = 0i32;
+                                j = 0 as libc::c_int;
                                 while j < crate::jpeglib_h::DCTSIZE {
                                     let fresh22 = src_ptr;
                                     src_ptr = src_ptr.offset(1);
@@ -1455,7 +1454,7 @@ unsafe extern "C" fn do_rot_180(
                                         -(*fresh22 as libc::c_int) as crate::jmorecfg_h::JCOEF;
                                     j += 1
                                 }
-                                i += 2i32
+                                i += 2 as libc::c_int
                             }
                         }
                         dst_blk_x = dst_blk_x.wrapping_add(1)
@@ -1463,7 +1462,7 @@ unsafe extern "C" fn do_rot_180(
                 } else {
                     /* Remaining rows are just mirrored horizontally. */
                     src_row_ptr = *src_buffer.offset(offset_y as isize);
-                    dst_blk_x = 0i32 as crate::jmorecfg_h::JDIMENSION;
+                    dst_blk_x = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
                     while dst_blk_x < (*compptr).width_in_blocks {
                         if x_crop_blocks.wrapping_add(dst_blk_x) < comp_width {
                             /* Process the blocks that can be mirrored. */
@@ -1472,11 +1471,11 @@ unsafe extern "C" fn do_rot_180(
                                 comp_width
                                     .wrapping_sub(x_crop_blocks)
                                     .wrapping_sub(dst_blk_x)
-                                    .wrapping_sub(1i32 as libc::c_uint)
+                                    .wrapping_sub(1 as libc::c_int as libc::c_uint)
                                     as isize,
                             ))
                             .as_mut_ptr();
-                            i = 0i32;
+                            i = 0 as libc::c_int;
                             while i < crate::jpeglib_h::DCTSIZE2 {
                                 let fresh24 = src_ptr;
                                 src_ptr = src_ptr.offset(1);
@@ -1488,16 +1487,16 @@ unsafe extern "C" fn do_rot_180(
                                 let fresh27 = dst_ptr;
                                 dst_ptr = dst_ptr.offset(1);
                                 *fresh27 = -(*fresh26 as libc::c_int) as crate::jmorecfg_h::JCOEF;
-                                i += 2i32
+                                i += 2 as libc::c_int
                             }
                         } else {
                             /* Any remaining right-edge blocks are only copied. */
-                            crate::jpegint_h::jcopy_block_row(
+                            crate::src::jutils::jcopy_block_row(
                                 src_row_ptr
                                     .offset(dst_blk_x as isize)
                                     .offset(x_crop_blocks as isize),
                                 dst_row_ptr.offset(dst_blk_x as isize),
-                                1i32 as crate::jmorecfg_h::JDIMENSION,
+                                1 as libc::c_int as crate::jmorecfg_h::JDIMENSION,
                             );
                         }
                         dst_blk_x = dst_blk_x.wrapping_add(1)
@@ -1557,14 +1556,14 @@ unsafe extern "C" fn do_transverse(
     MCU_rows = (*srcinfo).output_width.wrapping_div(
         ((*dstinfo).max_v_samp_factor * dstinfo_min_DCT_v_scaled_size) as libc::c_uint,
     );
-    ci = 0i32;
+    ci = 0 as libc::c_int;
     while ci < (*dstinfo).num_components {
         compptr = (*dstinfo).comp_info.offset(ci as isize);
         comp_width = MCU_cols.wrapping_mul((*compptr).h_samp_factor as libc::c_uint);
         comp_height = MCU_rows.wrapping_mul((*compptr).v_samp_factor as libc::c_uint);
         x_crop_blocks = x_crop_offset.wrapping_mul((*compptr).h_samp_factor as libc::c_uint);
         y_crop_blocks = y_crop_offset.wrapping_mul((*compptr).v_samp_factor as libc::c_uint);
-        dst_blk_y = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        dst_blk_y = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
         while dst_blk_y < (*compptr).height_in_blocks {
             dst_buffer = Some(
                 (*(*srcinfo).mem)
@@ -1578,9 +1577,9 @@ unsafe extern "C" fn do_transverse(
                 (*compptr).v_samp_factor as crate::jmorecfg_h::JDIMENSION,
                 crate::jmorecfg_h::TRUE,
             );
-            offset_y = 0i32;
+            offset_y = 0 as libc::c_int;
             while offset_y < (*compptr).v_samp_factor {
-                dst_blk_x = 0i32 as crate::jmorecfg_h::JDIMENSION;
+                dst_blk_x = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
                 while dst_blk_x < (*compptr).width_in_blocks {
                     if x_crop_blocks.wrapping_add(dst_blk_x) < comp_width {
                         /* Block is within the mirrorable area. */
@@ -1615,7 +1614,7 @@ unsafe extern "C" fn do_transverse(
                             crate::jmorecfg_h::FALSE,
                         )
                     }
-                    offset_x = 0i32;
+                    offset_x = 0 as libc::c_int;
                     while offset_x < (*compptr).h_samp_factor {
                         dst_ptr = (*(*dst_buffer.offset(offset_y as isize))
                             .offset(dst_blk_x.wrapping_add(offset_x as libc::c_uint) as isize))
@@ -1624,20 +1623,21 @@ unsafe extern "C" fn do_transverse(
                             if x_crop_blocks.wrapping_add(dst_blk_x) < comp_width {
                                 /* Block is within the mirrorable area. */
                                 src_ptr = (*(*src_buffer.offset(
-                                    ((*compptr).h_samp_factor - offset_x - 1i32) as isize,
+                                    ((*compptr).h_samp_factor - offset_x - 1 as libc::c_int)
+                                        as isize,
                                 ))
                                 .offset(
                                     comp_height
                                         .wrapping_sub(y_crop_blocks)
                                         .wrapping_sub(dst_blk_y)
                                         .wrapping_sub(offset_y as libc::c_uint)
-                                        .wrapping_sub(1i32 as libc::c_uint)
+                                        .wrapping_sub(1 as libc::c_int as libc::c_uint)
                                         as isize,
                                 ))
                                 .as_mut_ptr();
-                                i = 0i32;
+                                i = 0 as libc::c_int;
                                 while i < crate::jpeglib_h::DCTSIZE {
-                                    j = 0i32;
+                                    j = 0 as libc::c_int;
                                     while j < crate::jpeglib_h::DCTSIZE {
                                         *dst_ptr
                                             .offset((j * crate::jpeglib_h::DCTSIZE + i) as isize) =
@@ -1655,7 +1655,7 @@ unsafe extern "C" fn do_transverse(
                                         j += 1
                                     }
                                     i += 1;
-                                    j = 0i32;
+                                    j = 0 as libc::c_int;
                                     while j < crate::jpeglib_h::DCTSIZE {
                                         *dst_ptr
                                             .offset((j * crate::jpeglib_h::DCTSIZE + i) as isize) =
@@ -1681,13 +1681,13 @@ unsafe extern "C" fn do_transverse(
                                         .wrapping_sub(y_crop_blocks)
                                         .wrapping_sub(dst_blk_y)
                                         .wrapping_sub(offset_y as libc::c_uint)
-                                        .wrapping_sub(1i32 as libc::c_uint)
+                                        .wrapping_sub(1 as libc::c_int as libc::c_uint)
                                         as isize,
                                 ))
                                 .as_mut_ptr();
-                                i = 0i32;
+                                i = 0 as libc::c_int;
                                 while i < crate::jpeglib_h::DCTSIZE {
-                                    j = 0i32;
+                                    j = 0 as libc::c_int;
                                     while j < crate::jpeglib_h::DCTSIZE {
                                         *dst_ptr
                                             .offset((j * crate::jpeglib_h::DCTSIZE + i) as isize) =
@@ -1709,8 +1709,9 @@ unsafe extern "C" fn do_transverse(
                             }
                         } else if x_crop_blocks.wrapping_add(dst_blk_x) < comp_width {
                             /* Bottom-edge blocks are mirrored in x only */
-                            src_ptr = (*(*src_buffer
-                                .offset(((*compptr).h_samp_factor - offset_x - 1i32) as isize))
+                            src_ptr = (*(*src_buffer.offset(
+                                ((*compptr).h_samp_factor - offset_x - 1 as libc::c_int) as isize,
+                            ))
                             .offset(
                                 dst_blk_y
                                     .wrapping_add(offset_y as libc::c_uint)
@@ -1718,9 +1719,9 @@ unsafe extern "C" fn do_transverse(
                                     as isize,
                             ))
                             .as_mut_ptr();
-                            i = 0i32;
+                            i = 0 as libc::c_int;
                             while i < crate::jpeglib_h::DCTSIZE {
-                                j = 0i32;
+                                j = 0 as libc::c_int;
                                 while j < crate::jpeglib_h::DCTSIZE {
                                     *dst_ptr.offset((j * crate::jpeglib_h::DCTSIZE + i) as isize) =
                                         *src_ptr
@@ -1728,7 +1729,7 @@ unsafe extern "C" fn do_transverse(
                                     j += 1
                                 }
                                 i += 1;
-                                j = 0i32;
+                                j = 0 as libc::c_int;
                                 while j < crate::jpeglib_h::DCTSIZE {
                                     *dst_ptr.offset((j * crate::jpeglib_h::DCTSIZE + i) as isize) =
                                         -(*src_ptr
@@ -1748,9 +1749,9 @@ unsafe extern "C" fn do_transverse(
                                     as isize,
                             ))
                             .as_mut_ptr();
-                            i = 0i32;
+                            i = 0 as libc::c_int;
                             while i < crate::jpeglib_h::DCTSIZE {
-                                j = 0i32;
+                                j = 0 as libc::c_int;
                                 while j < crate::jpeglib_h::DCTSIZE {
                                     *dst_ptr.offset((j * crate::jpeglib_h::DCTSIZE + i) as isize) =
                                         *src_ptr
@@ -1787,13 +1788,13 @@ unsafe extern "C" fn jt_read_integer(
     mut result: *mut crate::jmorecfg_h::JDIMENSION,
 ) -> crate::jmorecfg_h::boolean {
     let mut ptr: *const libc::c_char = *strptr; /* oops, no digits */
-    let mut val: crate::jmorecfg_h::JDIMENSION = 0i32 as crate::jmorecfg_h::JDIMENSION;
+    let mut val: crate::jmorecfg_h::JDIMENSION = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
     while *(*crate::stdlib::__ctype_b_loc()).offset(*ptr as libc::c_int as isize) as libc::c_int
         & crate::stdlib::_ISdigit as libc::c_int as libc::c_ushort as libc::c_int
         != 0
     {
         val = val
-            .wrapping_mul(10i32 as libc::c_uint)
+            .wrapping_mul(10 as libc::c_int as libc::c_uint)
             .wrapping_add((*ptr as libc::c_int - '0' as i32) as crate::jmorecfg_h::JDIMENSION);
         ptr = ptr.offset(1)
     }
@@ -1897,7 +1898,7 @@ unsafe extern "C" fn trim_right_edge(
     MCU_cols = (*info)
         .output_width
         .wrapping_div((*info).iMCU_sample_width as libc::c_uint);
-    if MCU_cols > 0i32 as libc::c_uint
+    if MCU_cols > 0 as libc::c_int as libc::c_uint
         && (*info).x_crop_offset.wrapping_add(MCU_cols)
             == full_width.wrapping_div((*info).iMCU_sample_width as libc::c_uint)
     {
@@ -1913,7 +1914,7 @@ unsafe extern "C" fn trim_bottom_edge(
     MCU_rows = (*info)
         .output_height
         .wrapping_div((*info).iMCU_sample_height as libc::c_uint);
-    if MCU_rows > 0i32 as libc::c_uint
+    if MCU_rows > 0 as libc::c_int as libc::c_uint
         && (*info).y_crop_offset.wrapping_add(MCU_rows)
             == full_height.wrapping_div((*info).iMCU_sample_height as libc::c_uint)
     {
@@ -1962,10 +1963,10 @@ pub unsafe extern "C" fn jtransform_request_workspace(
     if (*info).force_grayscale != 0
         && (*srcinfo).jpeg_color_space as libc::c_uint
             == crate::jpeglib_h::JCS_YCbCr as libc::c_int as libc::c_uint
-        && (*srcinfo).num_components == 3i32
+        && (*srcinfo).num_components == 3 as libc::c_int
     {
         /* We'll only process the first component */
-        (*info).num_components = 1i32
+        (*info).num_components = 1 as libc::c_int
     } else {
         /* Process all the components */
         (*info).num_components = (*srcinfo).num_components
@@ -1976,7 +1977,7 @@ pub unsafe extern "C" fn jtransform_request_workspace(
     /* Return right away if -perfect is given and transformation is not perfect.
      */
     if (*info).perfect != 0 {
-        if (*info).num_components == 1i32 {
+        if (*info).num_components == 1 as libc::c_int {
             if jtransform_perfect_transform(
                 (*srcinfo).output_width,
                 (*srcinfo).output_height,
@@ -2007,7 +2008,7 @@ pub unsafe extern "C" fn jtransform_request_workspace(
         3 | 4 | 5 | 7 => {
             (*info).output_width = (*srcinfo).output_height;
             (*info).output_height = (*srcinfo).output_width;
-            if (*info).num_components == 1i32 {
+            if (*info).num_components == 1 as libc::c_int {
                 (*info).iMCU_sample_width = (*srcinfo).min_DCT_scaled_size;
                 (*info).iMCU_sample_height = (*srcinfo).min_DCT_scaled_size
             } else {
@@ -2020,7 +2021,7 @@ pub unsafe extern "C" fn jtransform_request_workspace(
         _ => {
             (*info).output_width = (*srcinfo).output_width;
             (*info).output_height = (*srcinfo).output_height;
-            if (*info).num_components == 1i32 {
+            if (*info).num_components == 1 as libc::c_int {
                 (*info).iMCU_sample_width = (*srcinfo).min_DCT_scaled_size;
                 (*info).iMCU_sample_height = (*srcinfo).min_DCT_scaled_size
             } else {
@@ -2039,12 +2040,12 @@ pub unsafe extern "C" fn jtransform_request_workspace(
         if (*info).crop_xoffset_set as libc::c_uint
             == crate::src::transupp::JCROP_UNSET as libc::c_int as libc::c_uint
         {
-            (*info).crop_xoffset = 0i32 as crate::jmorecfg_h::JDIMENSION
+            (*info).crop_xoffset = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION
         } /* default to +0 */
         if (*info).crop_yoffset_set as libc::c_uint
             == crate::src::transupp::JCROP_UNSET as libc::c_int as libc::c_uint
         {
-            (*info).crop_yoffset = 0i32 as crate::jmorecfg_h::JDIMENSION
+            (*info).crop_yoffset = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION
         } /* default to +0 */
         if (*info).crop_xoffset >= (*info).output_width
             || (*info).crop_yoffset >= (*info).output_height
@@ -2070,9 +2071,9 @@ pub unsafe extern "C" fn jtransform_request_workspace(
             (*info).crop_height = (*info).output_height.wrapping_sub((*info).crop_yoffset)
         }
         /* Ensure parameters are valid */
-        if (*info).crop_width <= 0i32 as libc::c_uint
+        if (*info).crop_width <= 0 as libc::c_int as libc::c_uint
             || (*info).crop_width > (*info).output_width
-            || (*info).crop_height <= 0i32 as libc::c_uint
+            || (*info).crop_height <= 0 as libc::c_int as libc::c_uint
             || (*info).crop_height > (*info).output_height
             || (*info).crop_xoffset > (*info).output_width.wrapping_sub((*info).crop_width)
             || (*info).crop_yoffset > (*info).output_height.wrapping_sub((*info).crop_height)
@@ -2131,8 +2132,8 @@ pub unsafe extern "C" fn jtransform_request_workspace(
         (*info).x_crop_offset = xoffset.wrapping_div((*info).iMCU_sample_width as libc::c_uint);
         (*info).y_crop_offset = yoffset.wrapping_div((*info).iMCU_sample_height as libc::c_uint)
     } else {
-        (*info).x_crop_offset = 0i32 as crate::jmorecfg_h::JDIMENSION;
-        (*info).y_crop_offset = 0i32 as crate::jmorecfg_h::JDIMENSION
+        (*info).x_crop_offset = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
+        (*info).y_crop_offset = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION
     }
     /* Figure out whether we need workspace arrays,
      * and if so whether they are transposed relative to the source.
@@ -2141,8 +2142,8 @@ pub unsafe extern "C" fn jtransform_request_workspace(
     transpose_it = crate::jmorecfg_h::FALSE;
     match (*info).transform as libc::c_uint {
         0 => {
-            if (*info).x_crop_offset != 0i32 as libc::c_uint
-                || (*info).y_crop_offset != 0i32 as libc::c_uint
+            if (*info).x_crop_offset != 0 as libc::c_int as libc::c_uint
+                || (*info).y_crop_offset != 0 as libc::c_int as libc::c_uint
             {
                 need_workspace = crate::jmorecfg_h::TRUE
             }
@@ -2151,7 +2152,8 @@ pub unsafe extern "C" fn jtransform_request_workspace(
             if (*info).trim != 0 {
                 trim_right_edge(info, (*srcinfo).output_width);
             }
-            if (*info).y_crop_offset != 0i32 as libc::c_uint || (*info).slow_hflip != 0 {
+            if (*info).y_crop_offset != 0 as libc::c_int as libc::c_uint || (*info).slow_hflip != 0
+            {
                 need_workspace = crate::jmorecfg_h::TRUE
             }
         }
@@ -2219,20 +2221,20 @@ pub unsafe extern "C" fn jtransform_request_workspace(
             (::std::mem::size_of::<crate::jpeglib_h::jvirt_barray_ptr>() as libc::c_ulong)
                 .wrapping_mul((*info).num_components as libc::c_ulong),
         ) as *mut crate::jpeglib_h::jvirt_barray_ptr;
-        width_in_iMCUs = crate::jpegint_h::jdiv_round_up(
+        width_in_iMCUs = crate::src::jutils::jdiv_round_up(
             (*info).output_width as libc::c_long,
             (*info).iMCU_sample_width as libc::c_long,
         ) as crate::jmorecfg_h::JDIMENSION;
-        height_in_iMCUs = crate::jpegint_h::jdiv_round_up(
+        height_in_iMCUs = crate::src::jutils::jdiv_round_up(
             (*info).output_height as libc::c_long,
             (*info).iMCU_sample_height as libc::c_long,
         ) as crate::jmorecfg_h::JDIMENSION;
-        ci = 0i32;
+        ci = 0 as libc::c_int;
         while ci < (*info).num_components {
             compptr = (*srcinfo).comp_info.offset(ci as isize);
-            if (*info).num_components == 1i32 {
+            if (*info).num_components == 1 as libc::c_int {
                 /* we're going to force samp factors to 1x1 in this case */
-                v_samp_factor = 1i32;
+                v_samp_factor = 1 as libc::c_int;
                 h_samp_factor = v_samp_factor
             } else if transpose_it != 0 {
                 h_samp_factor = (*compptr).v_samp_factor;
@@ -2284,7 +2286,7 @@ unsafe extern "C" fn transpose_critical_parameters(mut dstinfo: crate::jpeglib_h
     (*dstinfo).image_width = (*dstinfo).image_height;
     (*dstinfo).image_height = jtemp;
     /* Transpose sampling factors */
-    ci = 0i32;
+    ci = 0 as libc::c_int;
     while ci < (*dstinfo).num_components {
         compptr = (*dstinfo).comp_info.offset(ci as isize);
         itemp = (*compptr).h_samp_factor;
@@ -2293,13 +2295,13 @@ unsafe extern "C" fn transpose_critical_parameters(mut dstinfo: crate::jpeglib_h
         ci += 1
     }
     /* Transpose quantization tables */
-    tblno = 0i32;
+    tblno = 0 as libc::c_int;
     while tblno < crate::jpeglib_h::NUM_QUANT_TBLS {
         qtblptr = (*dstinfo).quant_tbl_ptrs[tblno as usize];
         if !qtblptr.is_null() {
-            i = 0i32;
+            i = 0 as libc::c_int;
             while i < crate::jpeglib_h::DCTSIZE {
-                j = 0i32;
+                j = 0 as libc::c_int;
                 while j < i {
                     qtemp = (*qtblptr).quantval[(i * crate::jpeglib_h::DCTSIZE + j) as usize];
                     (*qtblptr).quantval[(i * crate::jpeglib_h::DCTSIZE + j) as usize] =
@@ -2330,13 +2332,16 @@ unsafe extern "C" fn adjust_exif_parameters(
     let mut firstoffset: libc::c_uint = 0;
     let mut offset: libc::c_uint = 0;
     let mut new_value: crate::jmorecfg_h::JDIMENSION = 0;
-    if length < 12i32 as libc::c_uint {
+    if length < 12 as libc::c_int as libc::c_uint {
         return;
     }
     /* Discover byte order */
-    if *data.offset(0) as libc::c_int == 0x49i32 && *data.offset(1) as libc::c_int == 0x49i32 {
+    if *data.offset(0 as libc::c_int as isize) as libc::c_int == 0x49 as libc::c_int
+        && *data.offset(1 as libc::c_int as isize) as libc::c_int == 0x49 as libc::c_int
+    {
         is_motorola = crate::jmorecfg_h::FALSE
-    } else if *data.offset(0) as libc::c_int == 0x4di32 && *data.offset(1) as libc::c_int == 0x4di32
+    } else if *data.offset(0 as libc::c_int as isize) as libc::c_int == 0x4d as libc::c_int
+        && *data.offset(1 as libc::c_int as isize) as libc::c_int == 0x4d as libc::c_int
     {
         is_motorola = crate::jmorecfg_h::TRUE
     } else {
@@ -2344,218 +2349,236 @@ unsafe extern "C" fn adjust_exif_parameters(
     }
     /* Check Tag Mark */
     if is_motorola != 0 {
-        if *data.offset(2) as libc::c_int != 0i32 {
+        if *data.offset(2 as libc::c_int as isize) as libc::c_int != 0 as libc::c_int {
             return;
         }
-        if *data.offset(3) as libc::c_int != 0x2ai32 {
+        if *data.offset(3 as libc::c_int as isize) as libc::c_int != 0x2a as libc::c_int {
             return;
         }
     } else {
-        if *data.offset(3) as libc::c_int != 0i32 {
+        if *data.offset(3 as libc::c_int as isize) as libc::c_int != 0 as libc::c_int {
             return;
         }
-        if *data.offset(2) as libc::c_int != 0x2ai32 {
+        if *data.offset(2 as libc::c_int as isize) as libc::c_int != 0x2a as libc::c_int {
             return;
         }
     }
     /* Get first IFD offset (offset to IFD0) */
     if is_motorola != 0 {
-        if *data.offset(4) as libc::c_int != 0i32 {
+        if *data.offset(4 as libc::c_int as isize) as libc::c_int != 0 as libc::c_int {
             return;
         } /* check end of data segment */
-        if *data.offset(5) as libc::c_int != 0i32 {
+        if *data.offset(5 as libc::c_int as isize) as libc::c_int != 0 as libc::c_int {
             return;
         }
-        firstoffset = *data.offset(6) as libc::c_uint;
-        firstoffset <<= 8i32;
-        firstoffset = firstoffset.wrapping_add(*data.offset(7) as libc::c_uint)
+        firstoffset = *data.offset(6 as libc::c_int as isize) as libc::c_uint;
+        firstoffset <<= 8 as libc::c_int;
+        firstoffset =
+            firstoffset.wrapping_add(*data.offset(7 as libc::c_int as isize) as libc::c_uint)
     } else {
-        if *data.offset(7) as libc::c_int != 0i32 {
+        if *data.offset(7 as libc::c_int as isize) as libc::c_int != 0 as libc::c_int {
             return;
         }
-        if *data.offset(6) as libc::c_int != 0i32 {
+        if *data.offset(6 as libc::c_int as isize) as libc::c_int != 0 as libc::c_int {
             return;
         }
-        firstoffset = *data.offset(5) as libc::c_uint;
-        firstoffset <<= 8i32;
-        firstoffset = firstoffset.wrapping_add(*data.offset(4) as libc::c_uint)
+        firstoffset = *data.offset(5 as libc::c_int as isize) as libc::c_uint;
+        firstoffset <<= 8 as libc::c_int;
+        firstoffset =
+            firstoffset.wrapping_add(*data.offset(4 as libc::c_int as isize) as libc::c_uint)
     }
-    if firstoffset > length.wrapping_sub(2i32 as libc::c_uint) {
+    if firstoffset > length.wrapping_sub(2 as libc::c_int as libc::c_uint) {
         return;
     }
     /* Get the number of directory entries contained in this IFD */
     if is_motorola != 0 {
         number_of_tags = *data.offset(firstoffset as isize) as libc::c_uint;
-        number_of_tags <<= 8i32;
+        number_of_tags <<= 8 as libc::c_int;
         number_of_tags = number_of_tags.wrapping_add(
-            *data.offset(firstoffset.wrapping_add(1i32 as libc::c_uint) as isize) as libc::c_uint,
+            *data.offset(firstoffset.wrapping_add(1 as libc::c_int as libc::c_uint) as isize)
+                as libc::c_uint,
         )
     } else {
-        number_of_tags =
-            *data.offset(firstoffset.wrapping_add(1i32 as libc::c_uint) as isize) as libc::c_uint;
-        number_of_tags <<= 8i32;
+        number_of_tags = *data
+            .offset(firstoffset.wrapping_add(1 as libc::c_int as libc::c_uint) as isize)
+            as libc::c_uint;
+        number_of_tags <<= 8 as libc::c_int;
         number_of_tags =
             number_of_tags.wrapping_add(*data.offset(firstoffset as isize) as libc::c_uint)
     }
-    if number_of_tags == 0i32 as libc::c_uint {
+    if number_of_tags == 0 as libc::c_int as libc::c_uint {
         return;
     }
-    firstoffset = firstoffset.wrapping_add(2i32 as libc::c_uint);
+    firstoffset = firstoffset.wrapping_add(2 as libc::c_int as libc::c_uint);
     loop
     /* Search for ExifSubIFD offset Tag in IFD0 */
     {
-        if firstoffset > length.wrapping_sub(12i32 as libc::c_uint) {
+        if firstoffset > length.wrapping_sub(12 as libc::c_int as libc::c_uint) {
             return;
         } /* check end of data segment */
         /* Get Tag number */
         if is_motorola != 0 {
             tagnum = *data.offset(firstoffset as isize) as libc::c_uint; /* found ExifSubIFD offset Tag */
-            tagnum <<= 8i32;
+            tagnum <<= 8 as libc::c_int;
             tagnum = tagnum.wrapping_add(
-                *data.offset(firstoffset.wrapping_add(1i32 as libc::c_uint) as isize)
+                *data.offset(firstoffset.wrapping_add(1 as libc::c_int as libc::c_uint) as isize)
                     as libc::c_uint,
             )
         } else {
-            tagnum = *data.offset(firstoffset.wrapping_add(1i32 as libc::c_uint) as isize)
+            tagnum = *data
+                .offset(firstoffset.wrapping_add(1 as libc::c_int as libc::c_uint) as isize)
                 as libc::c_uint;
-            tagnum <<= 8i32;
+            tagnum <<= 8 as libc::c_int;
             tagnum = tagnum.wrapping_add(*data.offset(firstoffset as isize) as libc::c_uint)
         }
-        if tagnum == 0x8769i32 as libc::c_uint {
+        if tagnum == 0x8769 as libc::c_int as libc::c_uint {
             break;
         }
         number_of_tags = number_of_tags.wrapping_sub(1);
-        if number_of_tags == 0i32 as libc::c_uint {
+        if number_of_tags == 0 as libc::c_int as libc::c_uint {
             return;
         }
-        firstoffset = firstoffset.wrapping_add(12i32 as libc::c_uint)
+        firstoffset = firstoffset.wrapping_add(12 as libc::c_int as libc::c_uint)
     }
     /* Get the ExifSubIFD offset */
     if is_motorola != 0 {
-        if *data.offset(firstoffset.wrapping_add(8i32 as libc::c_uint) as isize) as libc::c_int
-            != 0i32
+        if *data.offset(firstoffset.wrapping_add(8 as libc::c_int as libc::c_uint) as isize)
+            as libc::c_int
+            != 0 as libc::c_int
         {
             return;
         } /* check end of data segment */
-        if *data.offset(firstoffset.wrapping_add(9i32 as libc::c_uint) as isize) as libc::c_int
-            != 0i32
+        if *data.offset(firstoffset.wrapping_add(9 as libc::c_int as libc::c_uint) as isize)
+            as libc::c_int
+            != 0 as libc::c_int
         {
             return;
         }
-        offset =
-            *data.offset(firstoffset.wrapping_add(10i32 as libc::c_uint) as isize) as libc::c_uint;
-        offset <<= 8i32;
+        offset = *data.offset(firstoffset.wrapping_add(10 as libc::c_int as libc::c_uint) as isize)
+            as libc::c_uint;
+        offset <<= 8 as libc::c_int;
         offset = offset.wrapping_add(
-            *data.offset(firstoffset.wrapping_add(11i32 as libc::c_uint) as isize) as libc::c_uint,
+            *data.offset(firstoffset.wrapping_add(11 as libc::c_int as libc::c_uint) as isize)
+                as libc::c_uint,
         )
     } else {
-        if *data.offset(firstoffset.wrapping_add(11i32 as libc::c_uint) as isize) as libc::c_int
-            != 0i32
+        if *data.offset(firstoffset.wrapping_add(11 as libc::c_int as libc::c_uint) as isize)
+            as libc::c_int
+            != 0 as libc::c_int
         {
             return;
         }
-        if *data.offset(firstoffset.wrapping_add(10i32 as libc::c_uint) as isize) as libc::c_int
-            != 0i32
+        if *data.offset(firstoffset.wrapping_add(10 as libc::c_int as libc::c_uint) as isize)
+            as libc::c_int
+            != 0 as libc::c_int
         {
             return;
         }
-        offset =
-            *data.offset(firstoffset.wrapping_add(9i32 as libc::c_uint) as isize) as libc::c_uint;
-        offset <<= 8i32;
+        offset = *data.offset(firstoffset.wrapping_add(9 as libc::c_int as libc::c_uint) as isize)
+            as libc::c_uint;
+        offset <<= 8 as libc::c_int;
         offset = offset.wrapping_add(
-            *data.offset(firstoffset.wrapping_add(8i32 as libc::c_uint) as isize) as libc::c_uint,
+            *data.offset(firstoffset.wrapping_add(8 as libc::c_int as libc::c_uint) as isize)
+                as libc::c_uint,
         )
     }
-    if offset > length.wrapping_sub(2i32 as libc::c_uint) {
+    if offset > length.wrapping_sub(2 as libc::c_int as libc::c_uint) {
         return;
     }
     /* Get the number of directory entries contained in this SubIFD */
     if is_motorola != 0 {
         number_of_tags = *data.offset(offset as isize) as libc::c_uint;
-        number_of_tags <<= 8i32;
+        number_of_tags <<= 8 as libc::c_int;
         number_of_tags = number_of_tags.wrapping_add(
-            *data.offset(offset.wrapping_add(1i32 as libc::c_uint) as isize) as libc::c_uint,
+            *data.offset(offset.wrapping_add(1 as libc::c_int as libc::c_uint) as isize)
+                as libc::c_uint,
         )
     } else {
-        number_of_tags =
-            *data.offset(offset.wrapping_add(1i32 as libc::c_uint) as isize) as libc::c_uint;
-        number_of_tags <<= 8i32;
+        number_of_tags = *data
+            .offset(offset.wrapping_add(1 as libc::c_int as libc::c_uint) as isize)
+            as libc::c_uint;
+        number_of_tags <<= 8 as libc::c_int;
         number_of_tags = number_of_tags.wrapping_add(*data.offset(offset as isize) as libc::c_uint)
     }
-    if number_of_tags < 2i32 as libc::c_uint {
+    if number_of_tags < 2 as libc::c_int as libc::c_uint {
         return;
     }
-    offset = offset.wrapping_add(2i32 as libc::c_uint);
+    offset = offset.wrapping_add(2 as libc::c_int as libc::c_uint);
     loop
     /* Search for ExifImageWidth and ExifImageHeight Tags in this SubIFD */
     {
-        if offset > length.wrapping_sub(12i32 as libc::c_uint) {
+        if offset > length.wrapping_sub(12 as libc::c_int as libc::c_uint) {
             return;
         } /* check end of data segment */
         /* Get Tag number */
         if is_motorola != 0 {
             tagnum = *data.offset(offset as isize) as libc::c_uint; /* ExifImageHeight Tag */
-            tagnum <<= 8i32; /* ExifImageWidth Tag */
+            tagnum <<= 8 as libc::c_int; /* ExifImageWidth Tag */
             tagnum = tagnum.wrapping_add(
-                *data.offset(offset.wrapping_add(1i32 as libc::c_uint) as isize) as libc::c_uint,
+                *data.offset(offset.wrapping_add(1 as libc::c_int as libc::c_uint) as isize)
+                    as libc::c_uint,
             )
         } else {
-            tagnum =
-                *data.offset(offset.wrapping_add(1i32 as libc::c_uint) as isize) as libc::c_uint; /* Format = unsigned long (4 octets) */
-            tagnum <<= 8i32; /* Number Of Components = 1 */
+            tagnum = *data.offset(offset.wrapping_add(1 as libc::c_int as libc::c_uint) as isize)
+                as libc::c_uint; /* Format = unsigned long (4 octets) */
+            tagnum <<= 8 as libc::c_int; /* Number Of Components = 1 */
             tagnum = tagnum.wrapping_add(*data.offset(offset as isize) as libc::c_uint)
         } /* Format = unsigned long (4 octets) */
-        if tagnum == 0xa002i32 as libc::c_uint || tagnum == 0xa003i32 as libc::c_uint {
-            if tagnum == 0xa002i32 as libc::c_uint {
+        if tagnum == 0xa002 as libc::c_int as libc::c_uint
+            || tagnum == 0xa003 as libc::c_int as libc::c_uint
+        {
+            if tagnum == 0xa002 as libc::c_int as libc::c_uint {
                 new_value = new_width
             } else {
                 new_value = new_height
             } /* Number Of Components = 1 */
             if is_motorola != 0 {
-                *data.offset(offset.wrapping_add(2i32 as libc::c_uint) as isize) =
-                    0i32 as crate::jmorecfg_h::JOCTET;
-                *data.offset(offset.wrapping_add(3i32 as libc::c_uint) as isize) =
-                    4i32 as crate::jmorecfg_h::JOCTET;
-                *data.offset(offset.wrapping_add(4i32 as libc::c_uint) as isize) =
-                    0i32 as crate::jmorecfg_h::JOCTET;
-                *data.offset(offset.wrapping_add(5i32 as libc::c_uint) as isize) =
-                    0i32 as crate::jmorecfg_h::JOCTET;
-                *data.offset(offset.wrapping_add(6i32 as libc::c_uint) as isize) =
-                    0i32 as crate::jmorecfg_h::JOCTET;
-                *data.offset(offset.wrapping_add(7i32 as libc::c_uint) as isize) =
-                    1i32 as crate::jmorecfg_h::JOCTET;
-                *data.offset(offset.wrapping_add(8i32 as libc::c_uint) as isize) =
-                    0i32 as crate::jmorecfg_h::JOCTET;
-                *data.offset(offset.wrapping_add(9i32 as libc::c_uint) as isize) =
-                    0i32 as crate::jmorecfg_h::JOCTET;
-                *data.offset(offset.wrapping_add(10i32 as libc::c_uint) as isize) =
-                    (new_value >> 8i32 & 0xffi32 as libc::c_uint) as crate::jmorecfg_h::JOCTET;
-                *data.offset(offset.wrapping_add(11i32 as libc::c_uint) as isize) =
-                    (new_value & 0xffi32 as libc::c_uint) as crate::jmorecfg_h::JOCTET
+                *data.offset(offset.wrapping_add(2 as libc::c_int as libc::c_uint) as isize) =
+                    0 as libc::c_int as crate::jmorecfg_h::JOCTET;
+                *data.offset(offset.wrapping_add(3 as libc::c_int as libc::c_uint) as isize) =
+                    4 as libc::c_int as crate::jmorecfg_h::JOCTET;
+                *data.offset(offset.wrapping_add(4 as libc::c_int as libc::c_uint) as isize) =
+                    0 as libc::c_int as crate::jmorecfg_h::JOCTET;
+                *data.offset(offset.wrapping_add(5 as libc::c_int as libc::c_uint) as isize) =
+                    0 as libc::c_int as crate::jmorecfg_h::JOCTET;
+                *data.offset(offset.wrapping_add(6 as libc::c_int as libc::c_uint) as isize) =
+                    0 as libc::c_int as crate::jmorecfg_h::JOCTET;
+                *data.offset(offset.wrapping_add(7 as libc::c_int as libc::c_uint) as isize) =
+                    1 as libc::c_int as crate::jmorecfg_h::JOCTET;
+                *data.offset(offset.wrapping_add(8 as libc::c_int as libc::c_uint) as isize) =
+                    0 as libc::c_int as crate::jmorecfg_h::JOCTET;
+                *data.offset(offset.wrapping_add(9 as libc::c_int as libc::c_uint) as isize) =
+                    0 as libc::c_int as crate::jmorecfg_h::JOCTET;
+                *data.offset(offset.wrapping_add(10 as libc::c_int as libc::c_uint) as isize) =
+                    (new_value >> 8 as libc::c_int & 0xff as libc::c_int as libc::c_uint)
+                        as crate::jmorecfg_h::JOCTET;
+                *data.offset(offset.wrapping_add(11 as libc::c_int as libc::c_uint) as isize) =
+                    (new_value & 0xff as libc::c_int as libc::c_uint) as crate::jmorecfg_h::JOCTET
             } else {
-                *data.offset(offset.wrapping_add(2i32 as libc::c_uint) as isize) =
-                    4i32 as crate::jmorecfg_h::JOCTET;
-                *data.offset(offset.wrapping_add(3i32 as libc::c_uint) as isize) =
-                    0i32 as crate::jmorecfg_h::JOCTET;
-                *data.offset(offset.wrapping_add(4i32 as libc::c_uint) as isize) =
-                    1i32 as crate::jmorecfg_h::JOCTET;
-                *data.offset(offset.wrapping_add(5i32 as libc::c_uint) as isize) =
-                    0i32 as crate::jmorecfg_h::JOCTET;
-                *data.offset(offset.wrapping_add(6i32 as libc::c_uint) as isize) =
-                    0i32 as crate::jmorecfg_h::JOCTET;
-                *data.offset(offset.wrapping_add(7i32 as libc::c_uint) as isize) =
-                    0i32 as crate::jmorecfg_h::JOCTET;
-                *data.offset(offset.wrapping_add(8i32 as libc::c_uint) as isize) =
-                    (new_value & 0xffi32 as libc::c_uint) as crate::jmorecfg_h::JOCTET;
-                *data.offset(offset.wrapping_add(9i32 as libc::c_uint) as isize) =
-                    (new_value >> 8i32 & 0xffi32 as libc::c_uint) as crate::jmorecfg_h::JOCTET;
-                *data.offset(offset.wrapping_add(10i32 as libc::c_uint) as isize) =
-                    0i32 as crate::jmorecfg_h::JOCTET;
-                *data.offset(offset.wrapping_add(11i32 as libc::c_uint) as isize) =
-                    0i32 as crate::jmorecfg_h::JOCTET
+                *data.offset(offset.wrapping_add(2 as libc::c_int as libc::c_uint) as isize) =
+                    4 as libc::c_int as crate::jmorecfg_h::JOCTET;
+                *data.offset(offset.wrapping_add(3 as libc::c_int as libc::c_uint) as isize) =
+                    0 as libc::c_int as crate::jmorecfg_h::JOCTET;
+                *data.offset(offset.wrapping_add(4 as libc::c_int as libc::c_uint) as isize) =
+                    1 as libc::c_int as crate::jmorecfg_h::JOCTET;
+                *data.offset(offset.wrapping_add(5 as libc::c_int as libc::c_uint) as isize) =
+                    0 as libc::c_int as crate::jmorecfg_h::JOCTET;
+                *data.offset(offset.wrapping_add(6 as libc::c_int as libc::c_uint) as isize) =
+                    0 as libc::c_int as crate::jmorecfg_h::JOCTET;
+                *data.offset(offset.wrapping_add(7 as libc::c_int as libc::c_uint) as isize) =
+                    0 as libc::c_int as crate::jmorecfg_h::JOCTET;
+                *data.offset(offset.wrapping_add(8 as libc::c_int as libc::c_uint) as isize) =
+                    (new_value & 0xff as libc::c_int as libc::c_uint) as crate::jmorecfg_h::JOCTET;
+                *data.offset(offset.wrapping_add(9 as libc::c_int as libc::c_uint) as isize) =
+                    (new_value >> 8 as libc::c_int & 0xff as libc::c_int as libc::c_uint)
+                        as crate::jmorecfg_h::JOCTET;
+                *data.offset(offset.wrapping_add(10 as libc::c_int as libc::c_uint) as isize) =
+                    0 as libc::c_int as crate::jmorecfg_h::JOCTET;
+                *data.offset(offset.wrapping_add(11 as libc::c_int as libc::c_uint) as isize) =
+                    0 as libc::c_int as crate::jmorecfg_h::JOCTET
             }
         }
-        offset = offset.wrapping_add(12i32 as libc::c_uint);
+        offset = offset.wrapping_add(12 as libc::c_int as libc::c_uint);
         number_of_tags = number_of_tags.wrapping_sub(1);
         if !(number_of_tags != 0) {
             break;
@@ -2590,21 +2613,24 @@ pub unsafe extern "C" fn jtransform_adjust_parameters(
          */
         if ((*dstinfo).jpeg_color_space as libc::c_uint
             == crate::jpeglib_h::JCS_YCbCr as libc::c_int as libc::c_uint
-            && (*dstinfo).num_components == 3i32
+            && (*dstinfo).num_components == 3 as libc::c_int
             || (*dstinfo).jpeg_color_space as libc::c_uint
                 == crate::jpeglib_h::JCS_GRAYSCALE as libc::c_int as libc::c_uint
-                && (*dstinfo).num_components == 1i32)
-            && (*(*srcinfo).comp_info.offset(0)).h_samp_factor == (*srcinfo).max_h_samp_factor
-            && (*(*srcinfo).comp_info.offset(0)).v_samp_factor == (*srcinfo).max_v_samp_factor
+                && (*dstinfo).num_components == 1 as libc::c_int)
+            && (*(*srcinfo).comp_info.offset(0 as libc::c_int as isize)).h_samp_factor
+                == (*srcinfo).max_h_samp_factor
+            && (*(*srcinfo).comp_info.offset(0 as libc::c_int as isize)).v_samp_factor
+                == (*srcinfo).max_v_samp_factor
         {
             /* We use jpeg_set_colorspace to make sure subsidiary settings get fixed
              * properly.  Among other things, it sets the target h_samp_factor &
              * v_samp_factor to 1, which typically won't match the source.
              * We have to preserve the source's quantization table number, however.
              */
-            let mut sv_quant_tbl_no: libc::c_int = (*(*dstinfo).comp_info.offset(0)).quant_tbl_no;
-            crate::jpeglib_h::jpeg_set_colorspace(dstinfo, crate::jpeglib_h::JCS_GRAYSCALE);
-            (*(*dstinfo).comp_info.offset(0)).quant_tbl_no = sv_quant_tbl_no
+            let mut sv_quant_tbl_no: libc::c_int =
+                (*(*dstinfo).comp_info.offset(0 as libc::c_int as isize)).quant_tbl_no;
+            crate::src::jcparam::jpeg_set_colorspace(dstinfo, crate::jpeglib_h::JCS_GRAYSCALE);
+            (*(*dstinfo).comp_info.offset(0 as libc::c_int as isize)).quant_tbl_no = sv_quant_tbl_no
         } else {
             /* Sorry, can't do it */
             (*(*dstinfo).err).msg_code = crate::src::jerror::JERR_CONVERSION_NOTIMPL as libc::c_int;
@@ -2617,13 +2643,13 @@ pub unsafe extern "C" fn jtransform_adjust_parameters(
                 dstinfo as crate::jpeglib_h::j_common_ptr
             );
         }
-    } else if (*info).num_components == 1i32 {
+    } else if (*info).num_components == 1 as libc::c_int {
         /* For a single-component source, we force the destination sampling factors
          * to 1x1, with or without force_grayscale.  This is useful because some
          * decoders choke on grayscale images with other sampling factors.
          */
-        (*(*dstinfo).comp_info.offset(0)).h_samp_factor = 1i32;
-        (*(*dstinfo).comp_info.offset(0)).v_samp_factor = 1i32
+        (*(*dstinfo).comp_info.offset(0 as libc::c_int as isize)).h_samp_factor = 1 as libc::c_int;
+        (*(*dstinfo).comp_info.offset(0 as libc::c_int as isize)).v_samp_factor = 1 as libc::c_int
     }
     /* Correct the destination's image dimensions as necessary
      * for rotate/flip, resize, and crop operations.
@@ -2642,14 +2668,33 @@ pub unsafe extern "C" fn jtransform_adjust_parameters(
     }
     /* Adjust Exif properties */
     if !(*srcinfo).marker_list.is_null()
-        && (*(*srcinfo).marker_list).marker as libc::c_int == crate::jpeglib_h::JPEG_APP0 + 1i32
-        && (*(*srcinfo).marker_list).data_length >= 6i32 as libc::c_uint
-        && *(*(*srcinfo).marker_list).data.offset(0) as libc::c_int == 0x45i32
-        && *(*(*srcinfo).marker_list).data.offset(1) as libc::c_int == 0x78i32
-        && *(*(*srcinfo).marker_list).data.offset(2) as libc::c_int == 0x69i32
-        && *(*(*srcinfo).marker_list).data.offset(3) as libc::c_int == 0x66i32
-        && *(*(*srcinfo).marker_list).data.offset(4) as libc::c_int == 0i32
-        && *(*(*srcinfo).marker_list).data.offset(5) as libc::c_int == 0i32
+        && (*(*srcinfo).marker_list).marker as libc::c_int
+            == crate::jpeglib_h::JPEG_APP0 + 1 as libc::c_int
+        && (*(*srcinfo).marker_list).data_length >= 6 as libc::c_int as libc::c_uint
+        && *(*(*srcinfo).marker_list)
+            .data
+            .offset(0 as libc::c_int as isize) as libc::c_int
+            == 0x45 as libc::c_int
+        && *(*(*srcinfo).marker_list)
+            .data
+            .offset(1 as libc::c_int as isize) as libc::c_int
+            == 0x78 as libc::c_int
+        && *(*(*srcinfo).marker_list)
+            .data
+            .offset(2 as libc::c_int as isize) as libc::c_int
+            == 0x69 as libc::c_int
+        && *(*(*srcinfo).marker_list)
+            .data
+            .offset(3 as libc::c_int as isize) as libc::c_int
+            == 0x66 as libc::c_int
+        && *(*(*srcinfo).marker_list)
+            .data
+            .offset(4 as libc::c_int as isize) as libc::c_int
+            == 0 as libc::c_int
+        && *(*(*srcinfo).marker_list)
+            .data
+            .offset(5 as libc::c_int as isize) as libc::c_int
+            == 0 as libc::c_int
     {
         /* Suppress output of JFIF marker */
         (*dstinfo).write_JFIF_header = crate::jmorecfg_h::FALSE;
@@ -2659,10 +2704,12 @@ pub unsafe extern "C" fn jtransform_adjust_parameters(
         {
             /* Align data segment to start of TIFF structure for parsing */
             adjust_exif_parameters(
-                (*(*srcinfo).marker_list).data.offset(6),
+                (*(*srcinfo).marker_list)
+                    .data
+                    .offset(6 as libc::c_int as isize),
                 (*(*srcinfo).marker_list)
                     .data_length
-                    .wrapping_sub(6i32 as libc::c_uint),
+                    .wrapping_sub(6 as libc::c_int as libc::c_uint),
                 (*dstinfo).image_width,
                 (*dstinfo).image_height,
             );
@@ -2698,8 +2745,8 @@ pub unsafe extern "C" fn jtransform_execute_transform(
      */
     match (*info).transform as libc::c_uint {
         0 => {
-            if (*info).x_crop_offset != 0i32 as libc::c_uint
-                || (*info).y_crop_offset != 0i32 as libc::c_uint
+            if (*info).x_crop_offset != 0 as libc::c_int as libc::c_uint
+                || (*info).y_crop_offset != 0 as libc::c_int as libc::c_uint
             {
                 do_crop(
                     srcinfo,
@@ -2712,7 +2759,8 @@ pub unsafe extern "C" fn jtransform_execute_transform(
             }
         }
         1 => {
-            if (*info).y_crop_offset != 0i32 as libc::c_uint || (*info).slow_hflip != 0 {
+            if (*info).y_crop_offset != 0 as libc::c_int as libc::c_uint || (*info).slow_hflip != 0
+            {
                 do_flip_h(
                     srcinfo,
                     dstinfo,
@@ -2860,10 +2908,10 @@ pub unsafe extern "C" fn jcopy_markers_setup(
     /* Save comments except under NONE option */
     if option as libc::c_uint != crate::src::transupp::JCOPYOPT_NONE as libc::c_int as libc::c_uint
     {
-        crate::jpeglib_h::jpeg_save_markers(
+        crate::src::jdmarker::jpeg_save_markers(
             srcinfo,
             crate::jpeglib_h::JPEG_COM,
-            0xffffi32 as libc::c_uint,
+            0xffff as libc::c_int as libc::c_uint,
         );
     }
     /* Save all types of APPn markers iff ALL option */
@@ -2871,16 +2919,16 @@ pub unsafe extern "C" fn jcopy_markers_setup(
         || option as libc::c_uint
             == crate::src::transupp::JCOPYOPT_ALL_EXCEPT_ICC as libc::c_int as libc::c_uint
     {
-        m = 0i32;
-        while m < 16i32 {
+        m = 0 as libc::c_int;
+        while m < 16 as libc::c_int {
             if !(option as libc::c_uint
                 == crate::src::transupp::JCOPYOPT_ALL_EXCEPT_ICC as libc::c_int as libc::c_uint
-                && m == 2i32)
+                && m == 2 as libc::c_int)
             {
-                crate::jpeglib_h::jpeg_save_markers(
+                crate::src::jdmarker::jpeg_save_markers(
                     srcinfo,
                     crate::jpeglib_h::JPEG_APP0 + m,
-                    0xffffi32 as libc::c_uint,
+                    0xffff as libc::c_int as libc::c_uint,
                 );
             }
             m += 1
@@ -2913,23 +2961,33 @@ pub unsafe extern "C" fn jcopy_markers_execute(
     while !marker.is_null() {
         if !((*dstinfo).write_JFIF_header != 0
             && (*marker).marker as libc::c_int == crate::jpeglib_h::JPEG_APP0
-            && (*marker).data_length >= 5i32 as libc::c_uint
-            && *(*marker).data.offset(0) as libc::c_int == 0x4ai32
-            && *(*marker).data.offset(1) as libc::c_int == 0x46i32
-            && *(*marker).data.offset(2) as libc::c_int == 0x49i32
-            && *(*marker).data.offset(3) as libc::c_int == 0x46i32
-            && *(*marker).data.offset(4) as libc::c_int == 0i32)
+            && (*marker).data_length >= 5 as libc::c_int as libc::c_uint
+            && *(*marker).data.offset(0 as libc::c_int as isize) as libc::c_int
+                == 0x4a as libc::c_int
+            && *(*marker).data.offset(1 as libc::c_int as isize) as libc::c_int
+                == 0x46 as libc::c_int
+            && *(*marker).data.offset(2 as libc::c_int as isize) as libc::c_int
+                == 0x49 as libc::c_int
+            && *(*marker).data.offset(3 as libc::c_int as isize) as libc::c_int
+                == 0x46 as libc::c_int
+            && *(*marker).data.offset(4 as libc::c_int as isize) as libc::c_int == 0 as libc::c_int)
         {
             if !((*dstinfo).write_Adobe_marker != 0
-                && (*marker).marker as libc::c_int == crate::jpeglib_h::JPEG_APP0 + 14i32
-                && (*marker).data_length >= 5i32 as libc::c_uint
-                && *(*marker).data.offset(0) as libc::c_int == 0x41i32
-                && *(*marker).data.offset(1) as libc::c_int == 0x64i32
-                && *(*marker).data.offset(2) as libc::c_int == 0x6fi32
-                && *(*marker).data.offset(3) as libc::c_int == 0x62i32
-                && *(*marker).data.offset(4) as libc::c_int == 0x65i32)
+                && (*marker).marker as libc::c_int
+                    == crate::jpeglib_h::JPEG_APP0 + 14 as libc::c_int
+                && (*marker).data_length >= 5 as libc::c_int as libc::c_uint
+                && *(*marker).data.offset(0 as libc::c_int as isize) as libc::c_int
+                    == 0x41 as libc::c_int
+                && *(*marker).data.offset(1 as libc::c_int as isize) as libc::c_int
+                    == 0x64 as libc::c_int
+                && *(*marker).data.offset(2 as libc::c_int as isize) as libc::c_int
+                    == 0x6f as libc::c_int
+                && *(*marker).data.offset(3 as libc::c_int as isize) as libc::c_int
+                    == 0x62 as libc::c_int
+                && *(*marker).data.offset(4 as libc::c_int as isize) as libc::c_int
+                    == 0x65 as libc::c_int)
             {
-                crate::jpeglib_h::jpeg_write_marker(
+                crate::src::jcapimin::jpeg_write_marker(
                     dstinfo,
                     (*marker).marker as libc::c_int,
                     (*marker).data,

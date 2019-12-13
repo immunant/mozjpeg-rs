@@ -1,4 +1,4 @@
-use libc;
+use ::libc;
 
 pub use crate::jconfig_h::JPEG_LIB_VERSION;
 pub use crate::jmorecfg_h::boolean;
@@ -11,9 +11,17 @@ pub use crate::jmorecfg_h::TRUE;
 pub use crate::jmorecfg_h::UINT16;
 pub use crate::jmorecfg_h::UINT8;
 pub use crate::jpegint_h::inverse_DCT_method_ptr;
-pub use crate::jpegint_h::jinit_input_controller;
-pub use crate::jpegint_h::jinit_marker_reader;
-pub use crate::jpegint_h::jinit_memory_mgr;
+pub use crate::jpegint_h::jpeg_color_deconverter;
+pub use crate::jpegint_h::jpeg_color_quantizer;
+pub use crate::jpegint_h::jpeg_d_coef_controller;
+pub use crate::jpegint_h::jpeg_d_main_controller;
+pub use crate::jpegint_h::jpeg_d_post_controller;
+pub use crate::jpegint_h::jpeg_decomp_master;
+pub use crate::jpegint_h::jpeg_entropy_decoder;
+pub use crate::jpegint_h::jpeg_input_controller;
+pub use crate::jpegint_h::jpeg_inverse_dct;
+pub use crate::jpegint_h::jpeg_marker_reader;
+pub use crate::jpegint_h::jpeg_upsampler;
 pub use crate::jpegint_h::JBUF_CRANK_DEST;
 pub use crate::jpegint_h::JBUF_PASS_THRU;
 pub use crate::jpegint_h::JBUF_REQUANT;
@@ -22,31 +30,18 @@ pub use crate::jpegint_h::JBUF_SAVE_SOURCE;
 pub use crate::jpegint_h::J_BUF_MODE;
 pub use crate::jpeglib_h::j_common_ptr;
 pub use crate::jpeglib_h::j_decompress_ptr;
-pub use crate::jpeglib_h::jpeg_abort;
-pub use crate::jpeglib_h::jpeg_color_deconverter;
-pub use crate::jpeglib_h::jpeg_color_quantizer;
 pub use crate::jpeglib_h::jpeg_common_struct;
 pub use crate::jpeglib_h::jpeg_component_info;
-pub use crate::jpeglib_h::jpeg_d_coef_controller;
-pub use crate::jpeglib_h::jpeg_d_main_controller;
-pub use crate::jpeglib_h::jpeg_d_post_controller;
-pub use crate::jpeglib_h::jpeg_decomp_master;
 pub use crate::jpeglib_h::jpeg_decompress_struct;
-pub use crate::jpeglib_h::jpeg_destroy;
-pub use crate::jpeglib_h::jpeg_entropy_decoder;
 pub use crate::jpeglib_h::jpeg_error_mgr;
 pub use crate::jpeglib_h::jpeg_idct_method;
 pub use crate::jpeglib_h::jpeg_idct_method_selector;
-pub use crate::jpeglib_h::jpeg_input_controller;
-pub use crate::jpeglib_h::jpeg_inverse_dct;
 pub use crate::jpeglib_h::jpeg_marker_parser_method;
-pub use crate::jpeglib_h::jpeg_marker_reader;
 pub use crate::jpeglib_h::jpeg_marker_struct;
 pub use crate::jpeglib_h::jpeg_memory_mgr;
 pub use crate::jpeglib_h::jpeg_progress_mgr;
 pub use crate::jpeglib_h::jpeg_saved_marker_ptr;
 pub use crate::jpeglib_h::jpeg_source_mgr;
-pub use crate::jpeglib_h::jpeg_upsampler;
 pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
@@ -93,8 +88,11 @@ pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::jpeglib_h::J_DITHER_MODE;
 pub use crate::jpeglib_h::NUM_HUFF_TBLS;
 pub use crate::jpeglib_h::NUM_QUANT_TBLS;
+pub use crate::src::jcomapi::jpeg_abort;
+pub use crate::src::jcomapi::jpeg_destroy;
+pub use crate::src::jdinput::jinit_input_controller;
+pub use crate::src::jdmarker::jinit_marker_reader;
 pub use crate::src::jdmaster::my_decomp_master;
-pub use crate::src::jerror::C2RustUnnamed_3;
 pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -225,9 +223,11 @@ pub use crate::src::jerror::JWRN_JPEG_EOF;
 pub use crate::src::jerror::JWRN_MUST_RESYNC;
 pub use crate::src::jerror::JWRN_NOT_SEQUENTIAL;
 pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
+pub use crate::src::jmemmgr::jinit_memory_mgr;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
 use crate::stdlib::memset;
+pub use crate::stdlib::C2RustUnnamed_0;
 /*
  * jdapimin.c
  *
@@ -264,8 +264,8 @@ pub unsafe extern "C" fn jpeg_CreateDecompress(
     (*cinfo).mem = crate::stddef_h::NULL as *mut crate::jpeglib_h::jpeg_memory_mgr; /* so jpeg_destroy knows mem mgr not called */
     if version != crate::jconfig_h::JPEG_LIB_VERSION {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_LIB_VERSION as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = 62i32;
-        (*(*cinfo).err).msg_parm.i[1] = version;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = 62 as libc::c_int;
+        (*(*cinfo).err).msg_parm.i[1 as libc::c_int as usize] = version;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -277,10 +277,10 @@ pub unsafe extern "C" fn jpeg_CreateDecompress(
         != ::std::mem::size_of::<crate::jpeglib_h::jpeg_decompress_struct>() as libc::c_ulong
     {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STRUCT_SIZE as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = ::std::mem::size_of::<
-            crate::jpeglib_h::jpeg_decompress_struct,
-        >() as libc::c_ulong as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[1] = structsize as libc::c_int;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] =
+            ::std::mem::size_of::<crate::jpeglib_h::jpeg_decompress_struct>() as libc::c_ulong
+                as libc::c_int;
+        (*(*cinfo).err).msg_parm.i[1 as libc::c_int as usize] = structsize as libc::c_int;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -298,24 +298,24 @@ pub unsafe extern "C" fn jpeg_CreateDecompress(
     let mut client_data: *mut libc::c_void = (*cinfo).client_data;
     crate::stdlib::memset(
         cinfo as *mut libc::c_void,
-        0i32,
+        0 as libc::c_int,
         ::std::mem::size_of::<crate::jpeglib_h::jpeg_decompress_struct>() as libc::c_ulong,
     );
     (*cinfo).err = err;
     (*cinfo).client_data = client_data;
     (*cinfo).is_decompressor = crate::jmorecfg_h::TRUE;
     /* Initialize a memory manager instance for this object */
-    crate::jpegint_h::jinit_memory_mgr(cinfo as crate::jpeglib_h::j_common_ptr);
+    crate::src::jmemmgr::jinit_memory_mgr(cinfo as crate::jpeglib_h::j_common_ptr);
     /* Zero out pointers to permanent structures. */
     (*cinfo).progress = crate::stddef_h::NULL as *mut crate::jpeglib_h::jpeg_progress_mgr;
     (*cinfo).src = crate::stddef_h::NULL as *mut crate::jpeglib_h::jpeg_source_mgr;
-    i = 0i32;
+    i = 0 as libc::c_int;
     while i < crate::jpeglib_h::NUM_QUANT_TBLS {
         (*cinfo).quant_tbl_ptrs[i as usize] =
             crate::stddef_h::NULL as *mut crate::jpeglib_h::JQUANT_TBL;
         i += 1
     }
-    i = 0i32;
+    i = 0 as libc::c_int;
     while i < crate::jpeglib_h::NUM_HUFF_TBLS {
         (*cinfo).dc_huff_tbl_ptrs[i as usize] =
             crate::stddef_h::NULL as *mut crate::jpeglib_h::JHUFF_TBL;
@@ -327,11 +327,11 @@ pub unsafe extern "C" fn jpeg_CreateDecompress(
      * for COM, APPn markers before calling jpeg_read_header.
      */
     (*cinfo).marker_list = crate::stddef_h::NULL as crate::jpeglib_h::jpeg_saved_marker_ptr;
-    crate::jpegint_h::jinit_marker_reader(cinfo);
+    crate::src::jdmarker::jinit_marker_reader(cinfo);
     /* And initialize the overall input controller. */
-    crate::jpegint_h::jinit_input_controller(cinfo);
+    crate::src::jdinput::jinit_input_controller(cinfo);
     /* OK, I'm ready */
-    (*cinfo).global_state = 200i32;
+    (*cinfo).global_state = 200 as libc::c_int;
     /* The master struct is used to store extension parameters, so we allocate it
      * here.
      */
@@ -344,10 +344,10 @@ pub unsafe extern "C" fn jpeg_CreateDecompress(
         cinfo as crate::jpeglib_h::j_common_ptr,
         crate::jpeglib_h::JPOOL_PERMANENT,
         ::std::mem::size_of::<crate::src::jdmaster::my_decomp_master>() as libc::c_ulong,
-    ) as *mut crate::jpeglib_h::jpeg_decomp_master;
+    ) as *mut crate::jpegint_h::jpeg_decomp_master;
     crate::stdlib::memset(
         (*cinfo).master as *mut libc::c_void,
-        0i32,
+        0 as libc::c_int,
         ::std::mem::size_of::<crate::src::jdmaster::my_decomp_master>() as libc::c_ulong,
     );
 }
@@ -357,7 +357,7 @@ pub unsafe extern "C" fn jpeg_CreateDecompress(
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_destroy_decompress(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
-    crate::jpeglib_h::jpeg_destroy(cinfo as crate::jpeglib_h::j_common_ptr);
+    crate::src::jcomapi::jpeg_destroy(cinfo as crate::jpeglib_h::j_common_ptr);
     /* use common routine */
 }
 /*
@@ -367,7 +367,7 @@ pub unsafe extern "C" fn jpeg_destroy_decompress(mut cinfo: crate::jpeglib_h::j_
 #[no_mangle]
 
 pub unsafe extern "C" fn jpeg_abort_decompress(mut cinfo: crate::jpeglib_h::j_decompress_ptr) {
-    crate::jpeglib_h::jpeg_abort(cinfo as crate::jpeglib_h::j_common_ptr);
+    crate::src::jcomapi::jpeg_abort(cinfo as crate::jpeglib_h::j_common_ptr);
     /* use common routine */
 }
 /*
@@ -394,7 +394,8 @@ unsafe extern "C" fn default_decompress_parms(mut cinfo: crate::jpeglib_h::j_dec
                     _ => {
                         (*(*cinfo).err).msg_code =
                             crate::src::jerror::JWRN_ADOBE_XFORM as libc::c_int; /* assume it's YCbCr */
-                        (*(*cinfo).err).msg_parm.i[0] = (*cinfo).Adobe_transform as libc::c_int;
+                        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] =
+                            (*cinfo).Adobe_transform as libc::c_int;
                         Some(
                             (*(*cinfo).err)
                                 .emit_message
@@ -402,25 +403,32 @@ unsafe extern "C" fn default_decompress_parms(mut cinfo: crate::jpeglib_h::j_dec
                         )
                         .expect("non-null function pointer")(
                             cinfo as crate::jpeglib_h::j_common_ptr,
-                            -1i32,
+                            -(1 as libc::c_int),
                         );
                         (*cinfo).jpeg_color_space = crate::jpeglib_h::JCS_YCbCr
                     }
                 }
             } else {
                 /* Saw no special markers, try to guess from the component IDs */
-                let mut cid0: libc::c_int = (*(*cinfo).comp_info.offset(0)).component_id; /* assume JFIF w/out marker */
-                let mut cid1: libc::c_int = (*(*cinfo).comp_info.offset(1)).component_id; /* ASCII 'R', 'G', 'B' */
-                let mut cid2: libc::c_int = (*(*cinfo).comp_info.offset(2)).component_id;
-                if cid0 == 1i32 && cid1 == 2i32 && cid2 == 3i32 {
+                let mut cid0: libc::c_int =
+                    (*(*cinfo).comp_info.offset(0 as libc::c_int as isize)).component_id; /* assume JFIF w/out marker */
+                let mut cid1: libc::c_int =
+                    (*(*cinfo).comp_info.offset(1 as libc::c_int as isize)).component_id; /* ASCII 'R', 'G', 'B' */
+                let mut cid2: libc::c_int =
+                    (*(*cinfo).comp_info.offset(2 as libc::c_int as isize)).component_id;
+                if cid0 == 1 as libc::c_int && cid1 == 2 as libc::c_int && cid2 == 3 as libc::c_int
+                {
                     (*cinfo).jpeg_color_space = crate::jpeglib_h::JCS_YCbCr
-                } else if cid0 == 82i32 && cid1 == 71i32 && cid2 == 66i32 {
+                } else if cid0 == 82 as libc::c_int
+                    && cid1 == 71 as libc::c_int
+                    && cid2 == 66 as libc::c_int
+                {
                     (*cinfo).jpeg_color_space = crate::jpeglib_h::JCS_RGB
                 } else {
                     let mut _mp: *mut libc::c_int = (*(*cinfo).err).msg_parm.i.as_mut_ptr();
-                    *_mp.offset(0) = cid0;
-                    *_mp.offset(1) = cid1;
-                    *_mp.offset(2) = cid2;
+                    *_mp.offset(0 as libc::c_int as isize) = cid0;
+                    *_mp.offset(1 as libc::c_int as isize) = cid1;
+                    *_mp.offset(2 as libc::c_int as isize) = cid2;
                     (*(*cinfo).err).msg_code = crate::src::jerror::JTRC_UNKNOWN_IDS as libc::c_int;
                     Some(
                         (*(*cinfo).err)
@@ -429,7 +437,7 @@ unsafe extern "C" fn default_decompress_parms(mut cinfo: crate::jpeglib_h::j_dec
                     )
                     .expect("non-null function pointer")(
                         cinfo as crate::jpeglib_h::j_common_ptr,
-                        1i32,
+                        1 as libc::c_int,
                     );
                     (*cinfo).jpeg_color_space = crate::jpeglib_h::JCS_YCbCr
                     /* assume it's YCbCr */
@@ -446,7 +454,8 @@ unsafe extern "C" fn default_decompress_parms(mut cinfo: crate::jpeglib_h::j_dec
                     _ => {
                         (*(*cinfo).err).msg_code =
                             crate::src::jerror::JWRN_ADOBE_XFORM as libc::c_int; /* assume it's YCCK */
-                        (*(*cinfo).err).msg_parm.i[0] = (*cinfo).Adobe_transform as libc::c_int;
+                        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] =
+                            (*cinfo).Adobe_transform as libc::c_int;
                         Some(
                             (*(*cinfo).err)
                                 .emit_message
@@ -454,7 +463,7 @@ unsafe extern "C" fn default_decompress_parms(mut cinfo: crate::jpeglib_h::j_dec
                         )
                         .expect("non-null function pointer")(
                             cinfo as crate::jpeglib_h::j_common_ptr,
-                            -1i32,
+                            -(1 as libc::c_int),
                         );
                         (*cinfo).jpeg_color_space = crate::jpeglib_h::JCS_YCCK
                     }
@@ -471,8 +480,8 @@ unsafe extern "C" fn default_decompress_parms(mut cinfo: crate::jpeglib_h::j_dec
         }
     }
     /* Set defaults for other decompression parameters. */
-    (*cinfo).scale_num = 1i32 as libc::c_uint; /* 1:1 scaling */
-    (*cinfo).scale_denom = 1i32 as libc::c_uint;
+    (*cinfo).scale_num = 1 as libc::c_int as libc::c_uint; /* 1:1 scaling */
+    (*cinfo).scale_denom = 1 as libc::c_int as libc::c_uint;
     (*cinfo).output_gamma = 1.0f64;
     (*cinfo).buffered_image = crate::jmorecfg_h::FALSE;
     (*cinfo).raw_data_out = crate::jmorecfg_h::FALSE;
@@ -483,7 +492,7 @@ unsafe extern "C" fn default_decompress_parms(mut cinfo: crate::jpeglib_h::j_dec
     /* We set these in case application only sets quantize_colors. */
     (*cinfo).dither_mode = crate::jpeglib_h::JDITHER_FS;
     (*cinfo).two_pass_quantize = crate::jmorecfg_h::TRUE;
-    (*cinfo).desired_number_of_colors = 256i32;
+    (*cinfo).desired_number_of_colors = 256 as libc::c_int;
     (*cinfo).colormap = crate::stddef_h::NULL as crate::jpeglib_h::JSAMPARRAY;
     /* Initialize for no mode change in buffered-image mode. */
     (*cinfo).enable_1pass_quant = crate::jmorecfg_h::FALSE;
@@ -523,9 +532,9 @@ pub unsafe extern "C" fn jpeg_read_header(
     mut require_image: crate::jmorecfg_h::boolean,
 ) -> libc::c_int {
     let mut retcode: libc::c_int = 0;
-    if (*cinfo).global_state != 200i32 && (*cinfo).global_state != 201i32 {
+    if (*cinfo).global_state != 200 as libc::c_int && (*cinfo).global_state != 201 as libc::c_int {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = (*cinfo).global_state;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -553,7 +562,7 @@ pub unsafe extern "C" fn jpeg_read_header(
              * call jpeg_abort, but we can't change it now for compatibility reasons.
              * A side effect is to free any temporary memory (there shouldn't be any).
              */
-            crate::jpeglib_h::jpeg_abort(cinfo as crate::jpeglib_h::j_common_ptr); /* sets state = DSTATE_START */
+            crate::src::jcomapi::jpeg_abort(cinfo as crate::jpeglib_h::j_common_ptr); /* sets state = DSTATE_START */
             retcode = crate::jpeglib_h::JPEG_HEADER_TABLES_ONLY
         }
         0 | _ => {}
@@ -576,7 +585,7 @@ pub unsafe extern "C" fn jpeg_read_header(
 pub unsafe extern "C" fn jpeg_consume_input(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
 ) -> libc::c_int {
-    let mut retcode: libc::c_int = 0i32;
+    let mut retcode: libc::c_int = 0 as libc::c_int;
     let mut current_block_10: u64;
     /* NB: every possible DSTATE value should be listed in this switch */
     match (*cinfo).global_state {
@@ -595,7 +604,7 @@ pub unsafe extern "C" fn jpeg_consume_input(
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(cinfo);
-            (*cinfo).global_state = 201i32;
+            (*cinfo).global_state = 201 as libc::c_int;
             current_block_10 = 7481093856908124627;
         }
         201 => {
@@ -603,7 +612,7 @@ pub unsafe extern "C" fn jpeg_consume_input(
         }
         202 => {
             /* Can't advance past first SOS until start_decompress is called */
-            retcode = 1i32;
+            retcode = 1 as libc::c_int;
             current_block_10 = 7149356873433890176;
         }
         203 | 204 | 205 | 206 | 207 | 208 | 210 => {
@@ -617,7 +626,7 @@ pub unsafe extern "C" fn jpeg_consume_input(
         }
         _ => {
             (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
-            (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
+            (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = (*cinfo).global_state;
             Some(
                 (*(*cinfo).err)
                     .error_exit
@@ -639,12 +648,12 @@ pub unsafe extern "C" fn jpeg_consume_input(
                     .expect("non-null function pointer"),
             )
             .expect("non-null function pointer")(cinfo);
-            if retcode == 1i32 {
+            if retcode == 1 as libc::c_int {
                 /* Found SOS, prepare to decompress */
                 /* Set up default parameters based on header data */
                 default_decompress_parms(cinfo);
                 /* Set global state: ready for start_decompress */
-                (*cinfo).global_state = 202i32
+                (*cinfo).global_state = 202 as libc::c_int
             }
         }
         _ => {}
@@ -660,9 +669,9 @@ pub unsafe extern "C" fn jpeg_input_complete(
     cinfo: crate::jpeglib_h::j_decompress_ptr,
 ) -> crate::jmorecfg_h::boolean {
     /* Check for valid jpeg object */
-    if (*cinfo).global_state < 200i32 || (*cinfo).global_state > 210i32 {
+    if (*cinfo).global_state < 200 as libc::c_int || (*cinfo).global_state > 210 as libc::c_int {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = (*cinfo).global_state;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -681,9 +690,9 @@ pub unsafe extern "C" fn jpeg_has_multiple_scans(
     cinfo: crate::jpeglib_h::j_decompress_ptr,
 ) -> crate::jmorecfg_h::boolean {
     /* Only valid after jpeg_read_header completes */
-    if (*cinfo).global_state < 202i32 || (*cinfo).global_state > 210i32 {
+    if (*cinfo).global_state < 202 as libc::c_int || (*cinfo).global_state > 210 as libc::c_int {
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = (*cinfo).global_state;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -706,7 +715,7 @@ pub unsafe extern "C" fn jpeg_has_multiple_scans(
 pub unsafe extern "C" fn jpeg_finish_decompress(
     mut cinfo: crate::jpeglib_h::j_decompress_ptr,
 ) -> crate::jmorecfg_h::boolean {
-    if ((*cinfo).global_state == 205i32 || (*cinfo).global_state == 206i32)
+    if ((*cinfo).global_state == 205 as libc::c_int || (*cinfo).global_state == 206 as libc::c_int)
         && (*cinfo).buffered_image == 0
     {
         /* Terminate final pass of non-buffered mode */
@@ -727,14 +736,14 @@ pub unsafe extern "C" fn jpeg_finish_decompress(
                 .expect("non-null function pointer"),
         )
         .expect("non-null function pointer")(cinfo);
-        (*cinfo).global_state = 210i32
-    } else if (*cinfo).global_state == 207i32 {
+        (*cinfo).global_state = 210 as libc::c_int
+    } else if (*cinfo).global_state == 207 as libc::c_int {
         /* Finishing after a buffered-image operation */
-        (*cinfo).global_state = 210i32
-    } else if (*cinfo).global_state != 210i32 {
+        (*cinfo).global_state = 210 as libc::c_int
+    } else if (*cinfo).global_state != 210 as libc::c_int {
         /* STOPPING = repeat call after a suspension, anything else is error */
         (*(*cinfo).err).msg_code = crate::src::jerror::JERR_BAD_STATE as libc::c_int;
-        (*(*cinfo).err).msg_parm.i[0] = (*cinfo).global_state;
+        (*(*cinfo).err).msg_parm.i[0 as libc::c_int as usize] = (*cinfo).global_state;
         Some(
             (*(*cinfo).err)
                 .error_exit
@@ -750,7 +759,7 @@ pub unsafe extern "C" fn jpeg_finish_decompress(
                 .expect("non-null function pointer"),
         )
         .expect("non-null function pointer")(cinfo)
-            == 0i32
+            == 0 as libc::c_int
         {
             return crate::jmorecfg_h::FALSE;
         }
@@ -764,6 +773,6 @@ pub unsafe extern "C" fn jpeg_finish_decompress(
     )
     .expect("non-null function pointer")(cinfo);
     /* We can use jpeg_abort to release memory and reset global_state */
-    crate::jpeglib_h::jpeg_abort(cinfo as crate::jpeglib_h::j_common_ptr);
+    crate::src::jcomapi::jpeg_abort(cinfo as crate::jpeglib_h::j_common_ptr);
     return crate::jmorecfg_h::TRUE;
 }

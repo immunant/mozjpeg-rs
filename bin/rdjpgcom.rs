@@ -1,20 +1,156 @@
-#![allow(dead_code)]
-#![allow(mutable_transmutes)]
-#![allow(non_camel_case_types)]
-#![allow(non_snake_case)]
-#![allow(non_upper_case_globals)]
-#![allow(unused_assignments)]
-#![allow(unused_mut)]
-#![feature(const_raw_ptr_to_usize_cast)]
-#![feature(const_transmute)]
-#![feature(extern_types)]
-#![feature(label_break_value)]
-#![feature(ptr_wrapping_offset_from)]
-#![feature(main)]
+#![allow(
+    dead_code,
+    mutable_transmutes,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals,
+    unused_assignments,
+    unused_mut
+)]
+#![register_tool(c2rust)]
+#![feature(
+    const_raw_ptr_to_usize_cast,
+    const_transmute,
+    extern_types,
+    main,
+    register_tool
+)]
+pub mod stddef_h {
+    pub type size_t = libc::c_ulong;
 
+    pub const NULL: libc::c_int = 0 as libc::c_int;
+}
+pub mod stdlib {
+    extern "C" {
+        #[no_mangle]
+        pub fn __ctype_b_loc() -> *mut *const libc::c_ushort;
 
-use mozjpeg::*;
+        #[no_mangle]
+        pub fn __ctype_tolower_loc() -> *mut *const crate::stdlib::__int32_t;
+        #[no_mangle]
+        pub fn setlocale(
+            __category: libc::c_int,
+            __locale: *const libc::c_char,
+        ) -> *mut libc::c_char;
+        #[no_mangle]
+        pub static mut stderr: *mut crate::stdlib::FILE;
 
+        #[no_mangle]
+        pub static mut stdin: *mut crate::stdlib::FILE;
+
+        #[no_mangle]
+        pub fn fopen(_: *const libc::c_char, _: *const libc::c_char) -> *mut crate::stdlib::FILE;
+
+        #[no_mangle]
+        pub fn fprintf(_: *mut crate::stdlib::FILE, _: *const libc::c_char, _: ...) -> libc::c_int;
+
+        #[no_mangle]
+        pub fn printf(_: *const libc::c_char, _: ...) -> libc::c_int;
+
+        #[no_mangle]
+        pub fn getc(__stream: *mut crate::stdlib::FILE) -> libc::c_int;
+
+        #[no_mangle]
+        pub fn putc(__c: libc::c_int, __stream: *mut crate::stdlib::FILE) -> libc::c_int;
+
+        #[no_mangle]
+        pub static mut stdout: *mut crate::stdlib::FILE;
+        #[no_mangle]
+        pub fn exit(_: libc::c_int) -> !;
+        pub type _IO_wide_data;
+
+        pub type _IO_codecvt;
+
+        pub type _IO_marker;
+    }
+    pub type FILE = crate::stdlib::_IO_FILE;
+    pub type C2RustUnnamed_0 = libc::c_uint;
+
+    pub const _ISalnum: crate::stdlib::C2RustUnnamed_0 = 8;
+
+    pub const _ISpunct: crate::stdlib::C2RustUnnamed_0 = 4;
+
+    pub const _IScntrl: crate::stdlib::C2RustUnnamed_0 = 2;
+
+    pub const _ISblank: crate::stdlib::C2RustUnnamed_0 = 1;
+
+    pub const _ISgraph: crate::stdlib::C2RustUnnamed_0 = 32768;
+
+    pub const _ISprint: crate::stdlib::C2RustUnnamed_0 = 16384;
+
+    pub const _ISspace: crate::stdlib::C2RustUnnamed_0 = 8192;
+
+    pub const _ISxdigit: crate::stdlib::C2RustUnnamed_0 = 4096;
+
+    pub const _ISdigit: crate::stdlib::C2RustUnnamed_0 = 2048;
+
+    pub const _ISalpha: crate::stdlib::C2RustUnnamed_0 = 1024;
+
+    pub const _ISlower: crate::stdlib::C2RustUnnamed_0 = 512;
+
+    pub const _ISupper: crate::stdlib::C2RustUnnamed_0 = 256;
+    pub const LC_CTYPE: libc::c_int = crate::stdlib::__LC_CTYPE;
+    pub const __LC_CTYPE: libc::c_int = 0 as libc::c_int;
+    pub const EOF: libc::c_int = -(1 as libc::c_int);
+    pub const EXIT_SUCCESS: libc::c_int = 0 as libc::c_int;
+
+    pub const EXIT_FAILURE: libc::c_int = 1 as libc::c_int;
+    #[repr(C)]
+    #[derive(Copy, Clone)]
+    pub struct _IO_FILE {
+        pub _flags: libc::c_int,
+        pub _IO_read_ptr: *mut libc::c_char,
+        pub _IO_read_end: *mut libc::c_char,
+        pub _IO_read_base: *mut libc::c_char,
+        pub _IO_write_base: *mut libc::c_char,
+        pub _IO_write_ptr: *mut libc::c_char,
+        pub _IO_write_end: *mut libc::c_char,
+        pub _IO_buf_base: *mut libc::c_char,
+        pub _IO_buf_end: *mut libc::c_char,
+        pub _IO_save_base: *mut libc::c_char,
+        pub _IO_backup_base: *mut libc::c_char,
+        pub _IO_save_end: *mut libc::c_char,
+        pub _markers: *mut crate::stdlib::_IO_marker,
+        pub _chain: *mut crate::stdlib::_IO_FILE,
+        pub _fileno: libc::c_int,
+        pub _flags2: libc::c_int,
+        pub _old_offset: crate::stdlib::__off_t,
+        pub _cur_column: libc::c_ushort,
+        pub _vtable_offset: libc::c_schar,
+        pub _shortbuf: [libc::c_char; 1],
+        pub _lock: *mut libc::c_void,
+        pub _offset: crate::stdlib::__off64_t,
+        pub _codecvt: *mut crate::stdlib::_IO_codecvt,
+        pub _wide_data: *mut crate::stdlib::_IO_wide_data,
+        pub _freeres_list: *mut crate::stdlib::_IO_FILE,
+        pub _freeres_buf: *mut libc::c_void,
+        pub __pad5: crate::stddef_h::size_t,
+        pub _mode: libc::c_int,
+        pub _unused2: [libc::c_char; 20],
+    }
+
+    pub type _IO_lock_t = ();
+    pub type __int32_t = libc::c_int;
+
+    pub type __off_t = libc::c_long;
+
+    pub type __off64_t = libc::c_long;
+}
+use ::mozjpeg::*;
+
+#[c2rust::header_src = "/usr/include/ctype.h:24"]
+pub mod ctype_h {
+
+    #[inline]
+
+    pub unsafe extern "C" fn tolower(mut __c: libc::c_int) -> libc::c_int {
+        return if __c >= -(128 as libc::c_int) && __c < 256 as libc::c_int {
+            *(*crate::stdlib::__ctype_tolower_loc()).offset(__c as isize)
+        } else {
+            __c
+        };
+    }
+}
 
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
@@ -28,6 +164,7 @@ pub use crate::stdlib::__off_t;
 pub use crate::stdlib::FILE;
 pub use crate::stdlib::_IO_FILE;
 
+pub use crate::ctype_h::tolower;
 pub use crate::stdlib::C2RustUnnamed_0;
 pub use crate::stdlib::_ISalnum;
 pub use crate::stdlib::_ISalpha;
@@ -53,7 +190,6 @@ pub use crate::stdlib::setlocale;
 pub use crate::stdlib::stderr;
 pub use crate::stdlib::stdin;
 pub use crate::stdlib::stdout;
-pub use crate::stdlib::tolower;
 pub use crate::stdlib::EOF;
 pub use crate::stdlib::EXIT_FAILURE;
 pub use crate::stdlib::EXIT_SUCCESS;
@@ -133,10 +269,10 @@ unsafe extern "C" fn read_2_bytes() -> libc::c_uint {
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
-    return ((c1 as libc::c_uint) << 8i32).wrapping_add(c2 as libc::c_uint);
+    return ((c1 as libc::c_uint) << 8 as libc::c_int).wrapping_add(c2 as libc::c_uint);
 }
 
-pub const M_SOI: libc::c_int = 0xd8i32;
+pub const M_SOI: libc::c_int = 0xd8 as libc::c_int;
 /* COMment */
 /*
  * Find the next JPEG marker and return its marker code.
@@ -150,10 +286,10 @@ pub const M_SOI: libc::c_int = 0xd8i32;
 
 unsafe extern "C" fn next_marker() -> libc::c_int {
     let mut c: libc::c_int = 0;
-    let mut discarded_bytes: libc::c_int = 0i32;
+    let mut discarded_bytes: libc::c_int = 0 as libc::c_int;
     /* Find 0xFF byte; count and skip any non-FFs. */
     c = read_1_byte();
-    while c != 0xffi32 {
+    while c != 0xff as libc::c_int {
         discarded_bytes += 1;
         c = read_1_byte()
     }
@@ -163,11 +299,11 @@ unsafe extern "C" fn next_marker() -> libc::c_int {
      */
     {
         c = read_1_byte();
-        if !(c == 0xffi32) {
+        if !(c == 0xff as libc::c_int) {
             break;
         }
     }
-    if discarded_bytes != 0i32 {
+    if discarded_bytes != 0 as libc::c_int {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
             b"Warning: garbage data found in JPEG file\n\x00" as *const u8 as *const libc::c_char,
@@ -188,7 +324,7 @@ unsafe extern "C" fn first_marker() -> libc::c_int {
     let mut c2: libc::c_int = 0;
     c1 = crate::stdlib::getc(infile);
     c2 = crate::stdlib::getc(infile);
-    if c1 != 0xffi32 || c2 != M_SOI {
+    if c1 != 0xff as libc::c_int || c2 != M_SOI {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
             b"%s\n\x00" as *const u8 as *const libc::c_char,
@@ -214,7 +350,7 @@ unsafe extern "C" fn skip_variable()
     /* Get the marker parameter length count */
     length = read_2_bytes();
     /* Length includes itself, so must be at least 2 */
-    if length < 2i32 as libc::c_uint {
+    if length < 2 as libc::c_int as libc::c_uint {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
             b"%s\n\x00" as *const u8 as *const libc::c_char,
@@ -222,9 +358,9 @@ unsafe extern "C" fn skip_variable()
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
-    length = length.wrapping_sub(2i32 as libc::c_uint);
+    length = length.wrapping_sub(2 as libc::c_int as libc::c_uint);
     /* Skip over the remaining bytes */
-    while length > 0i32 as libc::c_uint {
+    while length > 0 as libc::c_int as libc::c_uint {
         read_1_byte();
         length = length.wrapping_sub(1)
     }
@@ -238,7 +374,7 @@ unsafe extern "C" fn skip_variable()
 unsafe extern "C" fn process_COM(mut raw: libc::c_int) {
     let mut length: libc::c_uint = 0;
     let mut ch: libc::c_int = 0;
-    let mut lastch: libc::c_int = 0i32;
+    let mut lastch: libc::c_int = 0 as libc::c_int;
     /* Bill Allombert: set locale properly for isprint */
     crate::stdlib::setlocale(
         crate::stdlib::LC_CTYPE,
@@ -247,7 +383,7 @@ unsafe extern "C" fn process_COM(mut raw: libc::c_int) {
     /* Get the marker parameter length count */
     length = read_2_bytes();
     /* Length includes itself, so must be at least 2 */
-    if length < 2i32 as libc::c_uint {
+    if length < 2 as libc::c_int as libc::c_uint {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
             b"%s\n\x00" as *const u8 as *const libc::c_char,
@@ -255,8 +391,8 @@ unsafe extern "C" fn process_COM(mut raw: libc::c_int) {
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
-    length = length.wrapping_sub(2i32 as libc::c_uint);
-    while length > 0i32 as libc::c_uint {
+    length = length.wrapping_sub(2 as libc::c_int as libc::c_uint);
+    while length > 0 as libc::c_int as libc::c_uint {
         ch = read_1_byte();
         if raw != 0 {
             crate::stdlib::putc(ch, crate::stdlib::stdout);
@@ -349,7 +485,7 @@ unsafe extern "C" fn process_SOFn(mut marker: libc::c_int) {
         b"JPEG process: %s\n\x00" as *const u8 as *const libc::c_char,
         process,
     );
-    if length != (8i32 + num_components * 3i32) as libc::c_uint {
+    if length != (8 as libc::c_int + num_components * 3 as libc::c_int) as libc::c_uint {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
             b"%s\n\x00" as *const u8 as *const libc::c_char,
@@ -357,7 +493,7 @@ unsafe extern "C" fn process_SOFn(mut marker: libc::c_int) {
         );
         crate::stdlib::exit(crate::stdlib::EXIT_FAILURE);
     }
-    ci = 0i32;
+    ci = 0 as libc::c_int;
     while ci < num_components {
         read_1_byte();
         /* Quantization table number */
@@ -619,7 +755,7 @@ unsafe extern "C" fn keymatch(
 /* minchars is length of minimum legal abbreviation. */ {
     let mut ca: libc::c_int = 0; /* arg longer than keyword, no good */
     let mut ck: libc::c_int = 0;
-    let mut nmatched: libc::c_int = 0i32;
+    let mut nmatched: libc::c_int = 0 as libc::c_int;
     loop {
         let fresh0 = arg;
         arg = arg.offset(1);
@@ -631,7 +767,7 @@ unsafe extern "C" fn keymatch(
         keyword = keyword.offset(1);
         ck = *fresh1 as libc::c_int;
         if ck == '\u{0}' as i32 {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         if *(*crate::stdlib::__ctype_b_loc()).offset(ca as isize) as libc::c_int
             & crate::stdlib::_ISupper as libc::c_int as libc::c_ushort as libc::c_int
@@ -641,16 +777,18 @@ unsafe extern "C" fn keymatch(
             /* force arg to lcase (assume ck is already) */
             ca = ({
                 let mut __res: libc::c_int = 0; /* no good */
-                if ::std::mem::size_of::<libc::c_int>() as libc::c_ulong > 1i32 as libc::c_ulong {
+                if ::std::mem::size_of::<libc::c_int>() as libc::c_ulong
+                    > 1 as libc::c_int as libc::c_ulong
+                {
                     if 0 != 0 {
                         let mut __c: libc::c_int = ca;
-                        __res = if __c < -128i32 || __c > 255i32 {
+                        __res = if __c < -(128 as libc::c_int) || __c > 255 as libc::c_int {
                             __c
                         } else {
                             *(*crate::stdlib::__ctype_tolower_loc()).offset(__c as isize)
                         }
                     } else {
-                        __res = crate::stdlib::tolower(ca)
+                        __res = tolower(ca)
                     }
                 } else {
                     __res = *(*crate::stdlib::__ctype_tolower_loc()).offset(ca as isize)
@@ -659,15 +797,15 @@ unsafe extern "C" fn keymatch(
             })
         }
         if ca != ck {
-            return 0i32;
+            return 0 as libc::c_int;
         }
         nmatched += 1
     }
     /* reached end of argument; fail if it's too short for unique abbrev */
     if nmatched < minchars {
-        return 0i32;
+        return 0 as libc::c_int;
     }
-    return 1i32;
+    return 1 as libc::c_int;
     /* A-OK */
 }
 /*
@@ -677,30 +815,37 @@ unsafe extern "C" fn keymatch(
 unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> libc::c_int {
     let mut argn: libc::c_int = 0;
     let mut arg: *mut libc::c_char = 0 as *mut libc::c_char;
-    let mut verbose: libc::c_int = 0i32;
-    let mut raw: libc::c_int = 0i32;
+    let mut verbose: libc::c_int = 0 as libc::c_int;
+    let mut raw: libc::c_int = 0 as libc::c_int;
     /* On Mac, fetch a command line. */
-    progname = *argv.offset(0); /* in case C library doesn't provide it */
-    if progname.is_null() || *progname.offset(0) as libc::c_int == 0i32 {
+    progname = *argv.offset(0 as libc::c_int as isize); /* in case C library doesn't provide it */
+    if progname.is_null()
+        || *progname.offset(0 as libc::c_int as isize) as libc::c_int == 0 as libc::c_int
+    {
         progname = b"rdjpgcom\x00" as *const u8 as *const libc::c_char
     }
     /* Parse switches, if any */
-    argn = 1i32; /* not switch, must be file name */
+    argn = 1 as libc::c_int; /* not switch, must be file name */
     while argn < argc {
         arg = *argv.offset(argn as isize); /* advance over '-' */
-        if *arg.offset(0) as libc::c_int != '-' as i32 {
+        if *arg.offset(0 as libc::c_int as isize) as libc::c_int != '-' as i32 {
             break;
         }
         arg = arg.offset(1);
         if keymatch(
             arg,
             b"verbose\x00" as *const u8 as *const libc::c_char,
-            1i32,
+            1 as libc::c_int,
         ) != 0
         {
             verbose += 1
-        } else if keymatch(arg, b"raw\x00" as *const u8 as *const libc::c_char, 1i32) != 0 {
-            raw = 1i32
+        } else if keymatch(
+            arg,
+            b"raw\x00" as *const u8 as *const libc::c_char,
+            1 as libc::c_int,
+        ) != 0
+        {
+            raw = 1 as libc::c_int
         } else {
             usage();
         }
@@ -708,7 +853,7 @@ unsafe fn main_0(mut argc: libc::c_int, mut argv: *mut *mut libc::c_char) -> lib
     }
     /* Open the input file. */
     /* Unix style: expect zero or one file name */
-    if argn < argc - 1i32 {
+    if argn < argc - 1 as libc::c_int {
         crate::stdlib::fprintf(
             crate::stdlib::stderr,
             b"%s: only one input file\n\x00" as *const u8 as *const libc::c_char,

@@ -1,4 +1,4 @@
-use libc;
+use ::libc;
 
 /* JERROR_H */
 
@@ -26,6 +26,15 @@ pub use crate::jmorecfg_h::JSAMPLE;
 pub use crate::jmorecfg_h::TRUE;
 pub use crate::jmorecfg_h::UINT16;
 pub use crate::jmorecfg_h::UINT8;
+pub use crate::jpegint_h::jpeg_c_coef_controller;
+pub use crate::jpegint_h::jpeg_c_main_controller;
+pub use crate::jpegint_h::jpeg_c_prep_controller;
+pub use crate::jpegint_h::jpeg_color_converter;
+pub use crate::jpegint_h::jpeg_comp_master;
+pub use crate::jpegint_h::jpeg_downsampler;
+pub use crate::jpegint_h::jpeg_entropy_encoder;
+pub use crate::jpegint_h::jpeg_forward_dct;
+pub use crate::jpegint_h::jpeg_marker_writer;
 pub use crate::jpegint_h::JBUF_CRANK_DEST;
 pub use crate::jpegint_h::JBUF_PASS_THRU;
 pub use crate::jpegint_h::JBUF_REQUANT;
@@ -34,20 +43,11 @@ pub use crate::jpegint_h::JBUF_SAVE_SOURCE;
 pub use crate::jpegint_h::J_BUF_MODE;
 pub use crate::jpeglib_h::j_common_ptr;
 pub use crate::jpeglib_h::j_compress_ptr;
-pub use crate::jpeglib_h::jpeg_c_coef_controller;
-pub use crate::jpeglib_h::jpeg_c_main_controller;
-pub use crate::jpeglib_h::jpeg_c_prep_controller;
-pub use crate::jpeglib_h::jpeg_color_converter;
 pub use crate::jpeglib_h::jpeg_common_struct;
-pub use crate::jpeglib_h::jpeg_comp_master;
 pub use crate::jpeglib_h::jpeg_component_info;
 pub use crate::jpeglib_h::jpeg_compress_struct;
 pub use crate::jpeglib_h::jpeg_destination_mgr;
-pub use crate::jpeglib_h::jpeg_downsampler;
-pub use crate::jpeglib_h::jpeg_entropy_encoder;
 pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_forward_dct;
-pub use crate::jpeglib_h::jpeg_marker_writer;
 pub use crate::jpeglib_h::jpeg_memory_mgr;
 pub use crate::jpeglib_h::jpeg_progress_mgr;
 pub use crate::jpeglib_h::jpeg_scan_info;
@@ -88,7 +88,6 @@ pub use crate::jpeglib_h::JSAMPIMAGE;
 pub use crate::jpeglib_h::JSAMPROW;
 pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
-pub use crate::src::jerror::C2RustUnnamed_3;
 pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -219,13 +218,14 @@ pub use crate::src::jerror::JWRN_JPEG_EOF;
 pub use crate::src::jerror::JWRN_MUST_RESYNC;
 pub use crate::src::jerror::JWRN_NOT_SEQUENTIAL;
 pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
+pub use crate::stdlib::C2RustUnnamed_0;
 
 pub type my_main_ptr = *mut my_main_controller;
 
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct my_main_controller {
-    pub pub_0: crate::jpeglib_h::jpeg_c_main_controller,
+    pub pub_0: crate::jpegint_h::jpeg_c_main_controller,
     pub cur_iMCU_row: crate::jmorecfg_h::JDIMENSION,
     pub rowgroup_ctr: crate::jmorecfg_h::JDIMENSION,
     pub suspended: crate::jmorecfg_h::boolean,
@@ -255,8 +255,8 @@ unsafe extern "C" fn start_pass_main(
         )
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     }
-    (*main_ptr).cur_iMCU_row = 0i32 as crate::jmorecfg_h::JDIMENSION;
-    (*main_ptr).rowgroup_ctr = 0i32 as crate::jmorecfg_h::JDIMENSION;
+    (*main_ptr).cur_iMCU_row = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
+    (*main_ptr).rowgroup_ctr = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
     (*main_ptr).suspended = crate::jmorecfg_h::FALSE;
     (*main_ptr).pass_mode = pass_mode;
     (*main_ptr).pub_0.process_data = Some(
@@ -336,7 +336,7 @@ unsafe extern "C" fn process_data_simple_main(
             *in_row_ctr = (*in_row_ctr).wrapping_add(1);
             (*main_ptr).suspended = crate::jmorecfg_h::FALSE
         }
-        (*main_ptr).rowgroup_ctr = 0i32 as crate::jmorecfg_h::JDIMENSION;
+        (*main_ptr).rowgroup_ctr = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
         (*main_ptr).cur_iMCU_row = (*main_ptr).cur_iMCU_row.wrapping_add(1)
     }
 }
@@ -363,7 +363,7 @@ pub unsafe extern "C" fn jinit_c_main_controller(
         crate::jpeglib_h::JPOOL_IMAGE,
         ::std::mem::size_of::<my_main_controller>() as libc::c_ulong,
     ) as my_main_ptr;
-    (*cinfo).main = main_ptr as *mut crate::jpeglib_h::jpeg_c_main_controller;
+    (*cinfo).main = main_ptr as *mut crate::jpegint_h::jpeg_c_main_controller;
     (*main_ptr).pub_0.start_pass = Some(
         start_pass_main
             as unsafe extern "C" fn(
@@ -388,7 +388,7 @@ pub unsafe extern "C" fn jinit_c_main_controller(
         .expect("non-null function pointer")(cinfo as crate::jpeglib_h::j_common_ptr);
     } else {
         /* Allocate a strip buffer for each component */
-        ci = 0i32;
+        ci = 0 as libc::c_int;
         compptr = (*cinfo).comp_info;
         while ci < (*cinfo).num_components {
             (*main_ptr).buffer[ci as usize] = Some(

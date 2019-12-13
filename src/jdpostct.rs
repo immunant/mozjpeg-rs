@@ -1,4 +1,4 @@
-use libc;
+use ::libc;
 
 pub use crate::jmorecfg_h::boolean;
 pub use crate::jmorecfg_h::FALSE;
@@ -10,7 +10,17 @@ pub use crate::jmorecfg_h::TRUE;
 pub use crate::jmorecfg_h::UINT16;
 pub use crate::jmorecfg_h::UINT8;
 pub use crate::jpegint_h::inverse_DCT_method_ptr;
-pub use crate::jpegint_h::jround_up;
+pub use crate::jpegint_h::jpeg_color_deconverter;
+pub use crate::jpegint_h::jpeg_color_quantizer;
+pub use crate::jpegint_h::jpeg_d_coef_controller;
+pub use crate::jpegint_h::jpeg_d_main_controller;
+pub use crate::jpegint_h::jpeg_d_post_controller;
+pub use crate::jpegint_h::jpeg_decomp_master;
+pub use crate::jpegint_h::jpeg_entropy_decoder;
+pub use crate::jpegint_h::jpeg_input_controller;
+pub use crate::jpegint_h::jpeg_inverse_dct;
+pub use crate::jpegint_h::jpeg_marker_reader;
+pub use crate::jpegint_h::jpeg_upsampler;
 pub use crate::jpegint_h::JBUF_CRANK_DEST;
 pub use crate::jpegint_h::JBUF_PASS_THRU;
 pub use crate::jpegint_h::JBUF_REQUANT;
@@ -19,27 +29,16 @@ pub use crate::jpegint_h::JBUF_SAVE_SOURCE;
 pub use crate::jpegint_h::J_BUF_MODE;
 pub use crate::jpeglib_h::j_common_ptr;
 pub use crate::jpeglib_h::j_decompress_ptr;
-pub use crate::jpeglib_h::jpeg_color_deconverter;
-pub use crate::jpeglib_h::jpeg_color_quantizer;
 pub use crate::jpeglib_h::jpeg_common_struct;
 pub use crate::jpeglib_h::jpeg_component_info;
-pub use crate::jpeglib_h::jpeg_d_coef_controller;
-pub use crate::jpeglib_h::jpeg_d_main_controller;
-pub use crate::jpeglib_h::jpeg_d_post_controller;
-pub use crate::jpeglib_h::jpeg_decomp_master;
 pub use crate::jpeglib_h::jpeg_decompress_struct;
-pub use crate::jpeglib_h::jpeg_entropy_decoder;
 pub use crate::jpeglib_h::jpeg_error_mgr;
-pub use crate::jpeglib_h::jpeg_input_controller;
-pub use crate::jpeglib_h::jpeg_inverse_dct;
 pub use crate::jpeglib_h::jpeg_marker_parser_method;
-pub use crate::jpeglib_h::jpeg_marker_reader;
 pub use crate::jpeglib_h::jpeg_marker_struct;
 pub use crate::jpeglib_h::jpeg_memory_mgr;
 pub use crate::jpeglib_h::jpeg_progress_mgr;
 pub use crate::jpeglib_h::jpeg_saved_marker_ptr;
 pub use crate::jpeglib_h::jpeg_source_mgr;
-pub use crate::jpeglib_h::jpeg_upsampler;
 pub use crate::jpeglib_h::jvirt_barray_control;
 pub use crate::jpeglib_h::jvirt_barray_ptr;
 pub use crate::jpeglib_h::jvirt_sarray_control;
@@ -81,7 +80,6 @@ pub use crate::jpeglib_h::JSAMPROW;
 pub use crate::jpeglib_h::J_COLOR_SPACE;
 pub use crate::jpeglib_h::J_DCT_METHOD;
 pub use crate::jpeglib_h::J_DITHER_MODE;
-pub use crate::src::jerror::C2RustUnnamed_3;
 pub use crate::src::jerror::JERR_ARITH_NOTIMPL;
 pub use crate::src::jerror::JERR_BAD_ALIGN_TYPE;
 pub use crate::src::jerror::JERR_BAD_ALLOC_CHUNK;
@@ -212,15 +210,17 @@ pub use crate::src::jerror::JWRN_JPEG_EOF;
 pub use crate::src::jerror::JWRN_MUST_RESYNC;
 pub use crate::src::jerror::JWRN_NOT_SEQUENTIAL;
 pub use crate::src::jerror::JWRN_TOO_MUCH_DATA;
+pub use crate::src::jutils::jround_up;
 pub use crate::stddef_h::size_t;
 pub use crate::stddef_h::NULL;
+pub use crate::stdlib::C2RustUnnamed_0;
 
 pub type my_post_ptr = *mut my_post_controller;
 
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct my_post_controller {
-    pub pub_0: crate::jpeglib_h::jpeg_d_post_controller,
+    pub pub_0: crate::jpegint_h::jpeg_d_post_controller,
     pub whole_image: crate::jpeglib_h::jvirt_sarray_ptr,
     pub buffer: crate::jpeglib_h::JSAMPARRAY,
     pub strip_height: crate::jmorecfg_h::JDIMENSION,
@@ -265,7 +265,7 @@ unsafe extern "C" fn start_pass_dpost(
                     .expect("non-null function pointer")(
                         cinfo as crate::jpeglib_h::j_common_ptr,
                         (*post).whole_image,
-                        0i32 as crate::jmorecfg_h::JDIMENSION,
+                        0 as libc::c_int as crate::jmorecfg_h::JDIMENSION,
                         (*post).strip_height,
                         crate::jmorecfg_h::TRUE,
                     )
@@ -342,7 +342,7 @@ unsafe extern "C" fn start_pass_dpost(
             );
         }
     }
-    (*post).next_row = 0i32 as crate::jmorecfg_h::JDIMENSION;
+    (*post).next_row = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
     (*post).starting_row = (*post).next_row;
 }
 /* Forward declarations */
@@ -369,7 +369,7 @@ unsafe extern "C" fn post_process_1pass(
     if max_rows > (*post).strip_height {
         max_rows = (*post).strip_height
     }
-    num_rows = 0i32 as crate::jmorecfg_h::JDIMENSION;
+    num_rows = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION;
     Some(
         (*(*cinfo).upsample)
             .upsample
@@ -416,7 +416,7 @@ unsafe extern "C" fn post_process_prepass(
     let mut old_next_row: crate::jmorecfg_h::JDIMENSION = 0;
     let mut num_rows: crate::jmorecfg_h::JDIMENSION = 0;
     /* Reposition virtual buffer if at start of strip. */
-    if (*post).next_row == 0i32 as libc::c_uint {
+    if (*post).next_row == 0 as libc::c_int as libc::c_uint {
         (*post).buffer = Some(
             (*(*cinfo).mem)
                 .access_virt_sarray
@@ -469,7 +469,7 @@ unsafe extern "C" fn post_process_prepass(
         (*post).starting_row =
             ((*post).starting_row as libc::c_uint).wrapping_add((*post).strip_height)
                 as crate::jmorecfg_h::JDIMENSION as crate::jmorecfg_h::JDIMENSION;
-        (*post).next_row = 0i32 as crate::jmorecfg_h::JDIMENSION
+        (*post).next_row = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION
     };
 }
 /*
@@ -489,7 +489,7 @@ unsafe extern "C" fn post_process_2pass(
     let mut num_rows: crate::jmorecfg_h::JDIMENSION = 0;
     let mut max_rows: crate::jmorecfg_h::JDIMENSION = 0;
     /* Reposition virtual buffer if at start of strip. */
-    if (*post).next_row == 0i32 as libc::c_uint {
+    if (*post).next_row == 0 as libc::c_int as libc::c_uint {
         (*post).buffer = Some(
             (*(*cinfo).mem)
                 .access_virt_sarray
@@ -535,7 +535,7 @@ unsafe extern "C" fn post_process_2pass(
         (*post).starting_row =
             ((*post).starting_row as libc::c_uint).wrapping_add((*post).strip_height)
                 as crate::jmorecfg_h::JDIMENSION as crate::jmorecfg_h::JDIMENSION;
-        (*post).next_row = 0i32 as crate::jmorecfg_h::JDIMENSION
+        (*post).next_row = 0 as libc::c_int as crate::jmorecfg_h::JDIMENSION
     };
 }
 /* It is useful to allow each component to have a separate IDCT method. */
@@ -576,7 +576,7 @@ pub unsafe extern "C" fn jinit_d_post_controller(
         crate::jpeglib_h::JPOOL_IMAGE,
         ::std::mem::size_of::<my_post_controller>() as libc::c_ulong,
     ) as my_post_ptr; /* flag for no strip buffer */
-    (*cinfo).post = post as *mut crate::jpeglib_h::jpeg_d_post_controller;
+    (*cinfo).post = post as *mut crate::jpegint_h::jpeg_d_post_controller;
     (*post).pub_0.start_pass = Some(
         start_pass_dpost
             as unsafe extern "C" fn(
@@ -608,7 +608,7 @@ pub unsafe extern "C" fn jinit_d_post_controller(
                 (*cinfo)
                     .output_width
                     .wrapping_mul((*cinfo).out_color_components as libc::c_uint),
-                crate::jpegint_h::jround_up(
+                crate::src::jutils::jround_up(
                     (*cinfo).output_height as libc::c_long,
                     (*post).strip_height as libc::c_long,
                 ) as crate::jmorecfg_h::JDIMENSION,
